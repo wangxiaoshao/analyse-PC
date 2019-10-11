@@ -9,6 +9,8 @@
     border-bottom: 1px solid @border-color;
   }
   &-container {
+    height: 100vh;
+    overflow-y: hidden;
     //helper classes
     .position-static{
       position: static;
@@ -31,7 +33,6 @@
     .site-block {
       display: block;
       height: 100vh;
-      overflow-y: auto;
     }
     .operator-row{
       margin-bottom: 15px;
@@ -121,14 +122,18 @@
     }
   }
   &-breadcrumb{
-    padding-left: 15px;
     font-size: 16px !important;
     color: #888888;
+    line-height: @breadcrumb-height;
     .fa{
       margin-right: 5px;
       position: relative;
       top:2px;
       font-size: 20px;
+    }
+    .el-breadcrumb{
+      height: @breadcrumb-height;
+      line-height: @breadcrumb-height;
     }
   }
   &__side {
@@ -148,8 +153,9 @@
   }
   &-block {
     display: block;
-    height: 100vh;
     overflow-y: auto;
+    background: #f5f5f5;
+    padding: 0 15px 15px 15px;
   }
   &__body {
     position: absolute;
@@ -163,6 +169,9 @@
   &__menu {
     height: 100%;
   }
+}
+.el-header{
+  border-bottom: 1px solid @border-color;
 }
 .el-menu-item{
   &.is-active{

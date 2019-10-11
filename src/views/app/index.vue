@@ -1,19 +1,24 @@
 <template>
   <div id="app">
     <el-container class="site-container">
-      <side-menu @select="select" :asideMenu="asideMenu" :defaultActive="asideMenuActive"></side-menu>
-      <el-container class="site-block">
-        <site-head :user="user" :breadcrumb="app.breadcrumb"
-                   :pageBreadcrumb="app.pageBreadcrumb"
-                   @go-back="goBack"></site-head>
-        <el-scrollbar :style="scrollStyle" class="site-scroll">
-          <el-main id="siteMain"
-                   class="site-main">
-            <transition name="fade-transform" mode="out-in">
-              <router-view></router-view>
-            </transition>
-          </el-main>
-        </el-scrollbar>
+      <el-header>
+        <site-head :user="user"></site-head>
+      </el-header>
+      <el-container>
+        <side-menu @select="select" :asideMenu="asideMenu" :defaultActive="asideMenuActive"></side-menu>
+        <el-container class="site-block">
+          <site-breadcrumb :breadcrumb="app.breadcrumb"
+                           :pageBreadcrumb="app.pageBreadcrumb"
+                           @go-back="goBack"></site-breadcrumb>
+          <el-scrollbar :style="scrollStyle" class="site-scroll">
+            <el-main id="siteMain"
+                     class="site-main">
+              <transition name="fade-transform" mode="out-in">
+                <router-view></router-view>
+              </transition>
+            </el-main>
+          </el-scrollbar>
+        </el-container>
       </el-container>
     </el-container>
   </div>
@@ -24,6 +29,7 @@
   import { mapState, mapMutations } from 'vuex'
   import sideMenu from '@src/components/SideMenu'
   import siteHead from '@src/components/SiteHead'
+  import SiteBreadcrumb from '@src/components/SiteBreadcrumb.vue'
   import asideMenu from '@src/config/menu'
   import handleBreadcrumb from '@src/mixins/handleBreadcrumb'
 
@@ -37,7 +43,7 @@
       }
     },
     mixins: [handleBreadcrumb],
-    components: {sideMenu, siteHead},
+    components: {sideMenu, siteHead, SiteBreadcrumb},
     watch: {
       $route (newVal) {
         this.SET_PAGE_BREADCRUMB([])
@@ -52,7 +58,7 @@
       },
       scrollStyle () {
         return {
-          height: (this.app.windowHeight - 61) + 'px',
+          height: (this.app.windowHeight - 123) + 'px',
           width: '100%'
         }
       }

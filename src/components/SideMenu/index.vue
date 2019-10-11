@@ -1,11 +1,11 @@
 <template>
   <el-aside class="el-aside site-aside" :width="isCollapse ? '64px' : '210px'">
-    <el-scrollbar style="height: 100vh">
+    <el-scrollbar :style="asideStyle">
       <div class="site-side" v-bind:class="isCollapse ? 'collapse' : ''">
-        <div index="brand" class="site-brand" v-on:click="toggleAsideCollapse">
-          <span v-show="!isCollapse" class="brand-name">组织机构管控平台</span>
-          <span class="aside-toggle"></span>
-        </div>
+<!--        <div index="brand" class="site-brand" v-on:click="toggleAsideCollapse">-->
+<!--          <span v-show="!isCollapse" class="brand-name">组织机构管控平台</span>-->
+<!--          <span class="aside-toggle"></span>-->
+<!--        </div>-->
         <menus :menus="asideMenuList"
                :collapse="isCollapse"
                :defaultActive="defaultActive"
@@ -23,12 +23,20 @@
 <script type="text/ecmascript-6">
   import Menus from '@src/components/Packages/menus'
   import './index.less'
+  import { mapState, mapMutations } from 'vuex'
 
   export default {
     components: {
       Menus
     },
     computed: {
+      ...mapState(['app']),
+      asideStyle () {
+        return {
+          height: (this.app.windowHeight - 60) + 'px',
+          width: '100%'
+        }
+      },
       arrowClass () {
         return this.isCollapse ? 'el-icon-arrow-right' : 'el-icon-arrow-left'
       }

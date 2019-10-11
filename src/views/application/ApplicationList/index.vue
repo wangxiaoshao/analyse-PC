@@ -126,9 +126,6 @@
     },
     computed: {
       ...mapState(['application']),
-      tableMaxHeight () {
-        return this.$store.state.app.windowHeight - 200
-      }
     },
     created () {
       if (this.$route.query.type === 'back') {

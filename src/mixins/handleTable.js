@@ -20,7 +20,7 @@ export default {
   computed: {
     // 采用computed，依赖store中windowHeight计算table高度，避免重复绑定resize事件
     tableMaxHeight () {
-      return this.$store.state.app.windowHeight - 200
+      return this.$store.state.app.windowHeight - 258
     }
   },
   methods: {

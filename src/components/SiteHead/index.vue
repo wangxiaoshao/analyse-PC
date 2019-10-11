@@ -3,13 +3,14 @@
     <div class="site__head">
       <div class="site__head-content">
         <div class="site__head--center">
-          <el-breadcrumb class="site-breadcrumb" v-if="breadcrumb.length > 0">
-            <el-breadcrumb-item v-for="item in breadcrumb"
-                                class="breadcrumb-item"
-                                :key="item.menuId">{{item.name}}</el-breadcrumb-item>
-            <el-breadcrumb-item v-for="pageItem in pageBreadcrumb"
-                                class="breadcrumb-item">{{pageItem.name}}</el-breadcrumb-item>
-          </el-breadcrumb>
+          <h2>组织机构人员管控平台</h2>
+<!--          <el-breadcrumb class="site-breadcrumb" v-if="breadcrumb.length > 0">-->
+<!--            <el-breadcrumb-item v-for="item in breadcrumb"-->
+<!--                                class="breadcrumb-item"-->
+<!--                                :key="item.menuId">{{item.name}}</el-breadcrumb-item>-->
+<!--            <el-breadcrumb-item v-for="pageItem in pageBreadcrumb"-->
+<!--                                class="breadcrumb-item">{{pageItem.name}}</el-breadcrumb-item>-->
+<!--          </el-breadcrumb>-->
         </div>
         <div class="site__head--right" v-if="user">
           <span style="margin-right: 8px;">欢迎您</span>

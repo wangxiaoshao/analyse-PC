@@ -114,9 +114,6 @@
       }
     },
     computed: {
-      tableMaxHeight () {
-        return this.$store.state.app.windowHeight - 200
-      }
     },
     mounted () {
       this.getGrid()
