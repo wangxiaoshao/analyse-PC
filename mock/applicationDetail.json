@@ -1,0 +1,29 @@
+{
+  "error": 0,
+  "message": null,
+  "result": [
+    {
+      "id": 91,
+      "name": "测试1",
+      "shortName": "测试1",
+      "type": "system",
+      "logo": "files/logo/5d89be5c84820.png",
+      "url": "http://www.baidu.com",
+      "mobileUrl": null,
+      "mobileHeader": 1,
+      "appArgs": null,
+      "description": "测试1",
+      "areaId": 4,
+      "developOrgId": -1730833917365171700,
+      "parentApp": 0,
+      "info": "",
+      "contact": "测试1",
+      "contactMobile": 2147483647,
+      "serverMobile": 2147483647,
+      "sort": 0,
+      "enable": 1,
+      "createTime": "2019-09-23 18:57:44",
+      "removed": "0"
+    }
+  ]
+}

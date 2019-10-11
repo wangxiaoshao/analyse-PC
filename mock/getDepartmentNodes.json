@@ -1,0 +1,138 @@
+{
+  "error": 0,
+  "message": null,
+  "result": [
+    {
+      "id": "8156782651445890054",
+      "name": "党委系统",
+      "type": "org",
+      "isParent": true
+    },
+    {
+      "id": "-4159218964287894010",
+      "name": "人大系统",
+      "type": "org",
+      "isParent": true
+    },
+    {
+      "id": "-8007123721546936477",
+      "name": "政府系统",
+      "type": "org",
+      "isParent": true
+    },
+    {
+      "id": "-8330842829752414972",
+      "name": "政协系统",
+      "type": "org",
+      "isParent": true
+    },
+    {
+      "id": "3918081644068880755",
+      "name": "省人民团体",
+      "type": "org",
+      "isParent": true
+    },
+    {
+      "id": "1308049391682734790",
+      "name": "贵州省监察委员会",
+      "type": "org",
+      "isParent": true
+    },
+    {
+      "id": "-896713330154126373",
+      "name": "法院系统",
+      "type": "org",
+      "isParent": true
+    },
+    {
+      "id": "101255829718976624",
+      "name": "检察院系统",
+      "type": "org",
+      "isParent": true
+    },
+    {
+      "id": "875480500495270928",
+      "name": "民主党派系统",
+      "type": "org",
+      "isParent": true
+    },
+    {
+      "id": "-7163307482123778634",
+      "name": "群众团体系统",
+      "type": "org",
+      "isParent": true
+    },
+    {
+      "id": "7244821445136108275",
+      "name": "经济实体系统",
+      "type": "org",
+      "isParent": true
+    },
+    {
+      "id": "8891760925583625464",
+      "name": "其他系统",
+      "type": "org",
+      "isParent": true
+    },
+    {
+      "id": "-5665250506394023109",
+      "name": "贵阳市",
+      "type": "org",
+      "isParent": true
+    },
+    {
+      "id": "7016393598233300107",
+      "name": "遵义市",
+      "type": "org",
+      "isParent": true
+    },
+    {
+      "id": "-7150529506167602467",
+      "name": "六盘水市",
+      "type": "org",
+      "isParent": true
+    },
+    {
+      "id": "-1145506107035138269",
+      "name": "安顺市",
+      "type": "org",
+      "isParent": true
+    },
+    {
+      "id": "-3276097734199327633",
+      "name": "毕节市",
+      "type": "org",
+      "isParent": true
+    },
+    {
+      "id": "6405773389099977271",
+      "name": "铜仁市",
+      "type": "org",
+      "isParent": true
+    },
+    {
+      "id": "3743605416975942225",
+      "name": "黔东南苗族侗族自治州",
+      "type": "org",
+      "isParent": true
+    },
+    {
+      "id": "-8396440395108630400",
+      "name": "黔南布依族苗族自治州",
+      "type": "org",
+      "isParent": true
+    },
+    {
+      "id": "-2096261990631191982",
+      "name": "黔西南布依族苗族自治州",
+      "type": "org",
+      "isParent": true
+    },
+    {
+      "id": "-7724443220575958022",
+      "name": "贵安新区",
+      "type": "org",
+      "isParent": true
+    }
+  ]
+}

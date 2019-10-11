@@ -1,0 +1,13 @@
+{
+  "error": 0,
+  "message": null,
+  "result": {
+    "id": 10094,
+    "type": "pcServiceCount",
+    "canUseInClient": 1,
+    "lock": 1,
+    "level": 1,
+    "memberId": 0,
+    "value": "[{\"name\":\"应用入口\",\"key\":\"appEntrance\",\"count\":5},{\"name\":\"快捷入口\",\"key\":\"fastEntrance\",\"count\":5},{\"name\":\"信息订阅\",\"key\":\"subscribe\",\"maxModule\":5,\"maxInfo\":5,\"fontSize\":16},{\"name\":\"待办事项\",\"key\":\"todoList\",\"maxModule\":5,\"maxInfo\":5,\"fontSize\":16}]"
+  }
+}

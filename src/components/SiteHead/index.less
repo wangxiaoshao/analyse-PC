@@ -1,0 +1,49 @@
+.site__head{
+  background-color: #fff;
+  padding: 0 10px 0 0;
+  color: #333;
+  height: 61px;
+  border-bottom: 1px solid #F4F6F9;
+  min-width: 900px;
+  .site__head-content{
+    display: flex;
+    height: inherit;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .site__head--center{
+    // background-color: #333;
+    flex: 1 1 auto;
+  }
+  .site__head--left, .site__head--right{
+    flex: 0 1 auto;
+    height: inherit;
+    line-height: 60px;
+  }
+  .site__head--left img{
+    position: relative;
+    top: 1px;
+  }
+  .site__head--right{
+    padding-right: 5px;
+    text-align: right;
+  }
+  .site__head--left{
+    text-align: center;
+    a {
+      text-decoration: none;
+      color: #333;
+      img{
+        vertical-align: middle;
+      }
+    }
+  }
+
+  .el-menu{
+    border-bottom: none;
+  }
+  .el-dropdown{
+    cursor: pointer;
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "error": 0,
+  "message": null,
+  "result": {
+    "quick-link": [],
+    "todo": [
+      {
+        "id": 1,
+        "parentApp": 1,
+        "systemMemberId": 17,
+        "name": "通知公告",
+        "logo": "http:\/\/huizhi-mh.oss-cn-gzzwy-a-internal.aliyuncs.com\/gzt\/systems\/gzt_logo\/tzgg.png",
+        "dataUrl": "http:\/\/data-api.mh.gz.cegn.cn\/services\/notice",
+        "processedDataUrl": "http:\/\/data-api.mh.gz.cegn.cn\/services\/notice\/treated",
+        "mobileHeader": 0,
+        "description": "通知公告系统",
+        "areaId": 0,
+        "info": "通知公告系统",
+        "sort": 0,
+        "enable": 1
+      }
+    ],
+    "content": [
+      {
+        "id": 1,
+        "parentApp": 1,
+        "systemMemberId": 17,
+        "guid": "mh|bgt.mh.gz.cegn.cn|429",
+        "name": "图片新闻幻灯片(贵州省人民政府办公厅)",
+        "dataUrl": "http:\/\/data-api.mh.gz.cegn.cn\/services\/subscribe?guid=mh|bgt.mh.gz.cegn.cn|429",
+        "enable": 1,
+        "sort": 0
+      }
+    ]
+  }
+}

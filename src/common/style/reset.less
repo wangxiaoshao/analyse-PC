@@ -1,0 +1,100 @@
+/*
+ *reset
+ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  line-height: @line-height-base;
+  -ms-text-size-adjust: 100%; /* 2 */
+  -webkit-text-size-adjust: 100%; /* 2 */
+  font-size: @font-size-base;
+  font-family: @font-family-base;
+}
+
+body {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+article, aside, footer, header, nav, section {
+  display: block;
+}
+
+h1 {
+  font-size: @font-size-h1;
+  margin: 0.67em 0;
+}
+
+a {
+  color: @link-color;
+  text-decoration: none;
+  &:hover {
+    color: @link-hover-color;
+  }
+}
+
+sub, sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+sup {
+  top: -0.5em;
+}
+
+button, input, optgroup, select, textarea {
+  font-family: sans-serif; /* 1 */
+  font-size: 100%; /* 1 */
+  line-height: 1.15; /* 1 */
+  margin: 0; /* 2 */
+}
+
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+  color: @dark-light;
+}
+
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+  color: @dark-light;
+}
+
+input:-ms-input-placeholder {
+  color: @dark-light;
+}
+
+textarea:-ms-input-placeholder {
+  color: @dark-light;
+}
+
+textarea::-webkit-input-placeholder {
+  color: @dark-light;
+}
+
+input::-webkit-input-placeholder {
+  color: @dark-light;
+}
+
+input{
+  color: #606266;
+}
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 400px #fff inset;
+  -webkit-text-fill-color: inherit; //设置字体颜色
+}
+
+ul, li {
+  list-style: none;
+}

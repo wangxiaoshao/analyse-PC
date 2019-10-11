@@ -1,0 +1,177 @@
+@import "~@src/common/style/_variables";
+
+
+.site {
+  &-padding{
+    padding: 20px;
+  }
+  &-border{
+    border-bottom: 1px solid @border-color;
+  }
+  &-container {
+    //helper classes
+    .position-static{
+      position: static;
+    }
+    .text-right{
+      text-align: right;
+    }
+    .vertical-margin{
+      margin: 15px 0;
+    }
+
+    .el-loading-spinner i{
+      color: #aaa;
+      font-size: 35px;
+    }
+    .el-scrollbar__wrap {
+      overflow-x: hidden;
+    }
+    //site 主要模块样式
+    .site-block {
+      display: block;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    .operator-row{
+      margin-bottom: 15px;
+    }
+    .site-header {
+      position: relative;
+      border-bottom: 1px solid #e6e6e6;
+      .el-menu--horizontal {
+        border-bottom: 0;
+      }
+      .dropdown-trigger{
+        line-height: 60px;
+        height: 60px;
+        display: inline-block;
+        cursor: pointer;
+      }
+      .user-sec{
+        line-height: 60px;
+      }
+    }
+
+    //全局覆盖样式
+    //pagination
+    .el-pagination{
+      border: 1px solid #ebeef5;
+      border-top: none;
+      padding: 12px;
+      text-align: center;
+      .el-input__icon{
+        line-height: 20px !important;
+      }
+      .el-select .el-input .el-input__inner{
+        padding-right: 25px;
+        border-radius: 3px;
+        height: 28px;
+      }
+    }
+
+    .site-module{
+
+    }
+    //table
+    .el-table{
+      font-size: 14px;
+      thead{
+        color: #333;
+      }
+      .cell{
+        white-space: nowrap;
+      }
+    }
+  }
+  &-content{
+    .el-table--medium{
+      th{
+        padding:6px 0;
+      }
+      td {
+        padding: 4px 0;
+      }
+    }
+  }
+  &-scroll{
+    .el-scrollbar__wrap {
+      margin: 0;
+    }
+    .el-main{
+      overflow-x: hidden;
+    }
+    .site-main{
+      width: 100%;
+      padding: 15px;
+      height: 100%;
+      position: absolute;
+      right: 0;
+      top: 0px;
+      bottom: 0;
+      background: #fff;
+    }
+  }
+  &-module {
+    .operator-row{
+      margin-bottom: 15px;
+      .el-date-editor{
+        width: 100%;
+      }
+    }
+  }
+  &-breadcrumb{
+    padding-left: 15px;
+    font-size: 16px !important;
+    color: #888888;
+    .fa{
+      margin-right: 5px;
+      position: relative;
+      top:2px;
+      font-size: 20px;
+    }
+  }
+  &__side {
+    overflow: auto;
+  }
+  &-aside {
+    background: @menu-bgcolor;
+    //overflow-x: hidden;
+    transition: width 0.3s ease;
+    //max-height: 100vh;
+    .el-menu {
+      border: 0;
+    }
+    .el-menu--collapse {
+      text-align: center;
+    }
+  }
+  &-block {
+    display: block;
+    height: 100vh;
+    overflow-y: auto;
+  }
+  &__body {
+    position: absolute;
+    top: @head-height;
+    left: @side-width;
+    bottom: 0;
+    right: 0;
+    overflow: auto;
+    padding: 10px 10px 0;
+  }
+  &__menu {
+    height: 100%;
+  }
+}
+.el-menu-item{
+  &.is-active{
+    color: @theme !important;
+    background: #2B323E !important;
+  }
+  font-size: 14px;
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}
