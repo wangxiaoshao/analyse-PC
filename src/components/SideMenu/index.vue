@@ -1,24 +1,29 @@
 <template>
-  <el-aside class="el-aside site-aside" :width="isCollapse ? '64px' : '210px'">
-    <el-scrollbar :style="asideStyle">
-      <div class="site-side" v-bind:class="isCollapse ? 'collapse' : ''">
-<!--        <div index="brand" class="site-brand" v-on:click="toggleAsideCollapse">-->
-<!--          <span v-show="!isCollapse" class="brand-name">组织机构管控平台</span>-->
-<!--          <span class="aside-toggle"></span>-->
-<!--        </div>-->
-        <menus :menus="asideMenuList"
-               :collapse="isCollapse"
-               :defaultActive="defaultActive"
-               @open="open"
-               @close="close"
-               @select="select"
-               background-color="#363F4E"
-               text-color="#fff"
-               class="example"
-               :router="false"></menus>
-      </div>
-    </el-scrollbar>
-  </el-aside>
+  <div class="site-aside">
+    <el-aside :width="isCollapse ? '64px' : '210px'">
+      <el-scrollbar :style="asideStyle">
+        <div v-bind:class="isCollapse ? 'collapse' : ''">
+          <!--        <div index="brand" class="site-brand" v-on:click="toggleAsideCollapse">-->
+          <!--          <span v-show="!isCollapse" class="brand-name">组织机构管控平台</span>-->
+          <!--          <span class="aside-toggle"></span>-->
+          <!--        </div>-->
+          <menus :menus="asideMenuList"
+                 :collapse="isCollapse"
+                 :defaultActive="defaultActive"
+                 @open="open"
+                 @close="close"
+                 @select="select"
+                 background-color="#363F4E"
+                 text-color="#fff"
+                 class="example"
+                 :router="false"></menus>
+        </div>
+      </el-scrollbar>
+    </el-aside>
+    <div class="aside-toggle" v-on:click="toggleAsideCollapse">
+      <i class="fa" :class="isCollapse ? 'rightan fa-angle-double-right': 'leftan fa-angle-double-left'"></i>
+    </div>
+  </div>
 </template>
 <script type="text/ecmascript-6">
   import Menus from '@src/components/Packages/menus'
