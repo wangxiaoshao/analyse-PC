@@ -1,5 +1,12 @@
 module.exports = {
-  extends: [],
+  root: true,
+  env: {
+    node: true
+  },
+  'extends': [
+    'plugin:vue/essential',
+    '@vue/standard'
+  ],
   rules: {
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
     "linebreak-style": [0,"error", "windows"],
@@ -17,6 +24,9 @@ module.exports = {
     "vue/mustache-interpolation-spacing": 0,
     "eslint-disable-next-line": 1,
     "no-multiple-empty-lines": [1, {"max": 2}],//空行最多不能超过2行
+  },
+  parserOptions: {
+    parser: 'babel-eslint'
   },
   globals:{
     BASE_PUBLIC_PATH:true,
