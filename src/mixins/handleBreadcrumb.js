@@ -31,13 +31,22 @@ export default {
           if (item.list && item.list.length > 0) {
             this.findMenuByPath(item.list, path, index + 1)
           } else {
-            if (path.indexOf(item.path) > -1) {
+            if (path === '/') {   // 路由没有指定具体路径
               let length = this.breadcrumb.length
               if (length > (index - 1)) {
-                this.breadcrumb.splice(index + 1, (length - index - 1))
+                this.breadcrumb.splice(index + 1, (length - index - 1)) // 将面包屑最后一个元素替换成当前菜单
               }
               this.breakLoop = true
               break
+            } else {
+              if (path.indexOf(item.path) > -1) {
+                let length = this.breadcrumb.length
+                if (length > (index - 1)) {
+                  this.breadcrumb.splice(index + 1, (length - index - 1)) //  // 将面包屑最后一个元素替换成当前菜单
+                }
+                this.breakLoop = true
+                break
+              }
             }
           }
         }
