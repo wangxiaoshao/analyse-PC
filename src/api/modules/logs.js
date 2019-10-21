@@ -1,5 +1,5 @@
 
-// rights
+// examine
 import urlNames from '../url-names';
 
 export default {

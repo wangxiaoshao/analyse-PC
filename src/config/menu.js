@@ -27,25 +27,25 @@ export default {
         {
           "menuId": '21',
           "name": "待我审核",
-          "path": "/rights",
+          "path": "/examine",
           "type": 1
         },
         {
           "menuId": '22',
           "name": "我已审核",
-          "path": "/rights",
+          "path": "/examine",
           "type": 1
         },
         {
           "menuId": '23',
           "name": "我的申请",
-          "path": "/rights",
+          "path": "/examine",
           "type": 1
         },
         {
           "menuId": '24',
           "name": "信息确认",
-          "path": "/rights",
+          "path": "/examine",
           "type": 1
         },
       ]
@@ -93,19 +93,19 @@ export default {
         {
           "menuId": '41',
           "name": "数据统计",
-          "path": "/parameter",
+          "path": "/statistics",
           "type": 1
         },
         {
           "menuId": '42',
           "name": "数据查询",
-          "path": "/parameter",
+          "path": "/statistics",
           "type": 1
         },
         {
           "menuId": '43',
           "name": "系统日志",
-          "path": "/parameter",
+          "path": "/statistics",
           "type": 1
         }
       ]
@@ -120,25 +120,25 @@ export default {
         {
           "menuId": '51',
           "name": "角色权限",
-          "path": "/parameter",
+          "path": "/statistics",
           "type": 1
         },
         {
           "menuId": '52',
           "name": "字典管理",
-          "path": "/parameter",
+          "path": "/statistics",
           "type": 1
         },
         {
           "menuId": '53',
           "name": "修改密码",
-          "path": "/parameter",
+          "path": "/statistics",
           "type": 1
         },
         {
           "menuId": '54',
           "name": "系统设置",
-          "path": "/parameter",
+          "path": "/statistics",
           "type": 1
         }
       ]

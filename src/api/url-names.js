@@ -13,7 +13,7 @@ export default {
   editApplication: 'editApplication',
   getApplicationConfig: 'getApplicationConfig',
   editApplicationConfig: 'editApplicationConfig',
-  // rights
+  // 申请审核 examine
   getDepartmentNodes: 'getDepartmentNodes',
   geMtmemberSelector: 'geMtmemberSelector',
   geMtmemberSearch: 'geMtmemberSearch',
@@ -22,7 +22,7 @@ export default {
   getEditRightsInfo: 'getEditRightsInfo',
   sendEditRightsInfo: 'sendEditRightsInfo',
   getUserRemoveRight: 'getUserRemoveRight',
-  // parameter
+  // 数据统计 statistics
   setParameter: 'setParameter',
   getParameter: 'getParameter'
 }

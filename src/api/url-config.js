@@ -3,9 +3,9 @@
  */
 import urlNames from './url-names';
 import application from './modules/application';
-import rights from './modules/rights';
+import examine from './modules/examine';
 import logs from './modules/logs';
-import parameter from './modules/parameter';
+import statistics from './modules/statistics';
 
 export default {
   [urlNames.getUserInfo]: {
@@ -18,7 +18,7 @@ export default {
   },
   // 应用管理
   ...application,
-  ...rights,
+  ...examine, // 申请审核
   ...logs,
-  ...parameter
+  ...statistics // 数据统计
 };
