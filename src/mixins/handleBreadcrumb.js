@@ -2,16 +2,16 @@
  * mixins
  * 设置面包屑
  */
-import { mapState, mapMutations} from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 
 export default {
-  data(){
+  data () {
     return {
       breadcrumb: []
     }
   },
   computed: {
-    ...mapState(['app']),
+    ...mapState(['app'])
   },
   methods: {
     ...mapMutations(['SET_BREADCRUMB', 'SET_PAGE_BREADCRUMB']),
@@ -31,7 +31,7 @@ export default {
           if (item.list && item.list.length > 0) {
             this.findMenuByPath(item.list, path, index + 1)
           } else {
-            if (path === '/') {   // 路由没有指定具体路径
+            if (path === '/') { // 路由没有指定具体路径
               let length = this.breadcrumb.length
               if (length > (index - 1)) {
                 this.breadcrumb.splice(index + 1, (length - index - 1)) // 将面包屑最后一个元素替换成当前菜单
@@ -59,7 +59,7 @@ export default {
     },
     setBreadcrumb (breadcrumb) {
       this.SET_BREADCRUMB(breadcrumb)
-    },
+    }
   },
   mounted () {
 

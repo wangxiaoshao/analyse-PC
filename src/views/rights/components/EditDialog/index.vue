@@ -67,120 +67,120 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import { mapState, mapMutations } from 'vuex'
-  import { api, urlNames } from '@src/api';
+import { mapState, mapMutations } from 'vuex'
+import { api, urlNames } from '@src/api'
 
-  export default {
-    props: ['current', 'refreshList', 'visible', 'close', 'parent'],
-    components: {},
-    data() {
-      var validateAreaName = (rule, value, callback) => {
-        if (value.length > 0) {
-          callback();
-        } else {
-          callback(new Error('请选择地区'));
+export default {
+  props: ['current', 'refreshList', 'visible', 'close', 'parent'],
+  components: {},
+  data () {
+    var validateAreaName = (rule, value, callback) => {
+      if (value.length > 0) {
+        callback()
+      } else {
+        callback(new Error('请选择地区'))
+      }
+    }
+    return {
+      formLabelWidth: '100px',
+      defaultForm: {
+        areaId: [],
+        type: '',
+        uname: '',
+        uid: ''
+      },
+      currentSelect: {},
+      rules: {
+        areaId: [
+          { validator: validateAreaName, trigger: 'blur' }
+        ],
+        type: [
+          { required: true, message: '', trigger: 'blur' },
+          { min: 1, max: 50, message: '', trigger: 'blur' }
+        ],
+        uid: [
+          { required: true, message: '', trigger: 'blur' }
+        ]
+      },
+      filterText: '',
+      areaList: [],
+      options: []
+    }
+  },
+  mounted () {
+    this.getAreaList()
+  },
+  computed: {
+    ...mapState(['app']),
+    editForm () {
+      if (this.current) {
+        if (typeof this.current.areaId === 'string') {
+          let arr = this.current.areaId.split(',')
+          this.current['areaId'] = arr
         }
-      };
+        return this.current
+      } else {
+        return this.defaultForm
+      }
+    },
+    scrollStyle () {
       return {
-        formLabelWidth: '100px',
-        defaultForm: {
-          areaId: [],
-          type: '',
-          uname: '',
-          uid: '',
-        },
-        currentSelect: {},
-        rules: {
-          areaId: [
-            { validator: validateAreaName, trigger: 'blur' }
-          ],
-          type: [
-            {required: true, message: '', trigger: 'blur'},
-            {min: 1, max: 50, message: '', trigger: 'blur'}
-          ],
-          uid: [
-            {required: true, message: '', trigger: 'blur'},
-          ],
-        },
-        filterText: '',
-        areaList: [],
-        options: [],
-      };
-    },
-    mounted () {
-      this.getAreaList ()
-    },
-    computed: {
-      ...mapState(['app']),
-      editForm() {
-        if (this.current) {
-          if (typeof this.current.areaId === 'string') {
-            let arr = this.current.areaId.split(",")
-            this.current['areaId'] = arr;
-          }
-          return this.current
-        } else {
-          return this.defaultForm
-        }
-      },
-      scrollStyle () {
-        return {
-          height: this.$store.state.app.windowHeight - 30 + 'px'
-        }
+        height: this.$store.state.app.windowHeight - 30 + 'px'
       }
+    }
+  },
+  methods: {
+    remoteMethod (query) {
+      api[urlNames['geMtmemberSearch']]({
+        'keyword': query,
+        'types': 4
+      }).then((res) => {
+        this.loading = false
+        this.options = res.result
+      }, () => {
+        this.options = []
+      })
     },
-    methods: {
-      remoteMethod(query) {
-        api[urlNames['geMtmemberSearch']]({
-          'keyword': query,
-          'types': 4,
-        }).then((res) => {
-          this.loading = false;
-          this.options = res.result
-        }, () => {
-          this.options = [];
-        })
-      },
-      unameChange (val) {
-        console.log(val)
-        // this.editForm.uname = val.name
-        this.editForm.name = val.name
-      },
-      getAreaList () {
-        api[urlNames['getAreaList']]().then((res) => {
-          this.areaList = res.data
-        })
-      },
-      closeDialog () {
-        this.$refs.editForm.resetFields();
-        this.$emit('close')
-      },
-      submitForm (form) {
-        this.$refs[form].validate((valid) => {
-          if (valid) {
-            let data = new FormData()
-            let keys = Object.keys(this.editForm)
-            let len = keys.length
-            for (let i = 0; i < len; i++) {
-              let key = keys[i]
-              let value = this.editForm[key]
-              if (value) {
-                data.append(key, value)
-              }
+    unameChange (val) {
+      console.log(val)
+      // this.editForm.uname = val.name
+      this.editForm.name = val.name
+    },
+    getAreaList () {
+      api[urlNames['getAreaList']]().then((res) => {
+        this.areaList = res.data
+      })
+    },
+    closeDialog () {
+      this.$refs.editForm.resetFields()
+      this.$emit('close')
+    },
+    submitForm (form) {
+      this.$refs[form].validate((valid) => {
+        if (valid) {
+          let data = new FormData()
+          let keys = Object.keys(this.editForm)
+          let len = keys.length
+          for (let i = 0; i < len; i++) {
+            let key = keys[i]
+            let value = this.editForm[key]
+            if (value) {
+              data.append(key, value)
             }
-            api[urlNames['sendEditRightsInfo']](data).then((res) => {
-              this.$message({
-                message: this.current ? '修改成功' : '添加成功',
-                type: 'success'
-              })
-              this.$emit('refreshList')
-              this.closeDialog()
-            }, (error) => {
-
-            })
           }
-        })
-      }
-    },
+          api[urlNames['sendEditRightsInfo']](data).then((res) => {
+            this.$message({
+              message: this.current ? '修改成功' : '添加成功',
+              type: 'success'
+            })
+            this.$emit('refreshList')
+            this.closeDialog()
+          }, (error) => {
+
+          })
+        }
+      })
+    }
   }
+}
 </script>

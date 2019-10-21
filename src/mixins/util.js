@@ -10,6 +10,6 @@ export default {
   methods: {
     trim (str) {
       return (str + '').replace(/(\s+)$/g, '').replace(/^\s+/g, '')
-    },
+    }
   }
 }

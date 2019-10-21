@@ -20,40 +20,40 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  /**
+/**
    * Created by lxe on 2019-09-18.
    */
-  export default {
-    components: {},
-    name: 'SiteBreadcrumb',
-    props: {
-      user: {
-        type: Object,
-        default () {
-          return {}
-        }
-      },
-      breadcrumb: {
-        type: Array,
-        default () {
-          return []
-        }
-      },
-      pageBreadcrumb: {
-        type: Array,
-        default () {
-          return []
-        }
+export default {
+  components: {},
+  name: 'SiteBreadcrumb',
+  props: {
+    user: {
+      type: Object,
+      default () {
+        return {}
       }
     },
-    data(){
-      return {
+    breadcrumb: {
+      type: Array,
+      default () {
+        return []
       }
     },
-    methods: {
-      goBack () {
-        this.$emit('go-back')
+    pageBreadcrumb: {
+      type: Array,
+      default () {
+        return []
       }
     }
+  },
+  data () {
+    return {
+    }
+  },
+  methods: {
+    goBack () {
+      this.$emit('go-back')
+    }
   }
+}
 </script>

@@ -68,131 +68,131 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import handleTable from '@src/mixins/handleTable'
-  import { api, urlNames } from '@src/api';
-  import handleBreadcrumb from '@src/mixins/handleBreadcrumb.js'
-  import EditDialog from '../components/ConfigDialog'
+import handleTable from '@src/mixins/handleTable'
+import { api, urlNames } from '@src/api'
+import handleBreadcrumb from '@src/mixins/handleBreadcrumb.js'
+import EditDialog from '../components/ConfigDialog'
 
-  export default {
-    components: {EditDialog},
-    mixins: [handleTable, handleBreadcrumb],
-    data () {
-      return {
-        currentEdit: null,
-        editDialogVisible: false,
-        addDialogVisible: false,
-        type: 'content',
-        loading: true,
-        searchQuery: {
-          type: ''
-        },
-        list: [],
-        configData: {
-          content: [],
-          'quick-link': [],
-          todo: []
-        },
-        dictionaryNameList: [],
-        // page: {
-        //   limit: 10,
-        //   total: 0,
-        //   current: 1
-        // },
+export default {
+  components: { EditDialog },
+  mixins: [handleTable, handleBreadcrumb],
+  data () {
+    return {
+      currentEdit: null,
+      editDialogVisible: false,
+      addDialogVisible: false,
+      type: 'content',
+      loading: true,
+      searchQuery: {
+        type: ''
+      },
+      list: [],
+      configData: {
+        content: [],
+        'quick-link': [],
+        todo: []
+      },
+      dictionaryNameList: []
+      // page: {
+      //   limit: 10,
+      //   total: 0,
+      //   current: 1
+      // },
+    }
+  },
+  computed: {
+  },
+  mounted () {
+    this.pushBreadcrumb({
+      name: '配置',
+      parent: {
+        name: 'ApplicationList',
+        query: {
+          type: 'back'
+        }
       }
+    })
+    this.getGrid()
+  },
+  methods: {
+    trim (str) {
+      return (str + '').replace(/(\s+)$/g, '').replace(/^\s+/g, '')
     },
-    computed: {
+    closeEditDialog () {
+      this.editDialogVisible = false
     },
-    mounted () {
-      this.pushBreadcrumb({
-        name: '配置',
-        parent: {
-          name: 'ApplicationList',
-          query: {
-            type: 'back'
-          }
-        }
+    closeAddDialog () {
+      this.addDialogVisible = false
+    },
+    typeChange () {
+      // this.page.current = 1
+      this.$nextTick(() => {
+        this.list = this.configData[this.type]
+        // this.getGrid()
       })
-      this.getGrid()
     },
-    methods: {
-      trim (str) {
-        return (str + '').replace(/(\s+)$/g, '').replace(/^\s+/g, '')
-      },
-      closeEditDialog () {
-        this.editDialogVisible = false
-      },
-      closeAddDialog () {
-        this.addDialogVisible = false
-      },
-      typeChange () {
-        // this.page.current = 1
-        this.$nextTick(()=> {
-          this.list = this.configData[this.type]
-          // this.getGrid()
-        })
-      },
-      showAddDialog () {
-        this.addDialogVisible = true
-      },
-      showEditDialog (row) {
-        this.currentEdit = JSON.parse(JSON.stringify(row))
-        this.editDialogVisible = true
-      },
-      getGrid () {
-        this.loading = true
-        let data = {
-          // page: this.page.current,
-          // pageSize: this.page.limit,
-          parentApp: this.$route.params.id,
-          type: this.type
-        }
-        api[urlNames['getApplicationConfig']](data).then((res) => {
-          this.loading = false
-          this.configData = res.result
-          this.list = this.configData[this.type]
-          // this.page.total = res.result.total_items
-        },() => {
-          this.loading = false
-          this.list = []
-          // this.page.total = 0
-        })
-      },
-      handleAction (action, row) {
-        let actionName = '删除'
-        let actionUrl = 'deleteApplication'
-        let data = {
-          id: row.id,
-          type: this.type
-        }
-        this.$msgbox({
-          message: `确认${actionName}？`,
-          title: '提示',
-          showCancelButton: true,
-          type: 'warning',
-          beforeClose: (action, instance, done) => {
-            if (action === 'confirm') {
-              instance.confirmButtonLoading = true
-              instance.confirmButtonText = `${actionName}中...`
-              api[urlNames[actionUrl]](data).then((res) => {
-                instance.confirmButtonLoading = false
-                this.$message.success(`${actionName}成功`)
-                this.getGrid()
-              }, (res) => {
-                instance.confirmButtonLoading = false
-              })
-              done()
-            } else {
+    showAddDialog () {
+      this.addDialogVisible = true
+    },
+    showEditDialog (row) {
+      this.currentEdit = JSON.parse(JSON.stringify(row))
+      this.editDialogVisible = true
+    },
+    getGrid () {
+      this.loading = true
+      let data = {
+        // page: this.page.current,
+        // pageSize: this.page.limit,
+        parentApp: this.$route.params.id,
+        type: this.type
+      }
+      api[urlNames['getApplicationConfig']](data).then((res) => {
+        this.loading = false
+        this.configData = res.result
+        this.list = this.configData[this.type]
+        // this.page.total = res.result.total_items
+      }, () => {
+        this.loading = false
+        this.list = []
+        // this.page.total = 0
+      })
+    },
+    handleAction (action, row) {
+      let actionName = '删除'
+      let actionUrl = 'deleteApplication'
+      let data = {
+        id: row.id,
+        type: this.type
+      }
+      this.$msgbox({
+        message: `确认${actionName}？`,
+        title: '提示',
+        showCancelButton: true,
+        type: 'warning',
+        beforeClose: (action, instance, done) => {
+          if (action === 'confirm') {
+            instance.confirmButtonLoading = true
+            instance.confirmButtonText = `${actionName}中...`
+            api[urlNames[actionUrl]](data).then((res) => {
               instance.confirmButtonLoading = false
-              done()
-            }
+              this.$message.success(`${actionName}成功`)
+              this.getGrid()
+            }, (res) => {
+              instance.confirmButtonLoading = false
+            })
+            done()
+          } else {
+            instance.confirmButtonLoading = false
+            done()
           }
-        }).then(() => {
+        }
+      }).then(() => {
 
-        }).catch(() => {
-        })
-      },
+      }).catch(() => {
+      })
     }
   }
+}
 </script>
 <style lang="less">
   @import "./index";

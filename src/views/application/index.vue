@@ -10,16 +10,16 @@
 </template>
 
 <script type="text/ecmascript-6">
-  export default {
-    props: {},
-    data() {
-      return {
+export default {
+  props: {},
+  data () {
+    return {
 
-      }
-    },
-    created () {
+    }
+  },
+  created () {
 
-    },
-    methods: {}
-  }
+  },
+  methods: {}
+}
 </script>
