@@ -1,7 +1,7 @@
 <template>
   <div class="view-management">
     <div>
-      <el-button type="primary">创建视图</el-button>
+      <el-button type="primary" @click="createView">创建视图</el-button>
     </div>
     <div>
       <el-table
@@ -101,6 +101,10 @@ export default {
     }
   },
   methods: {
+    // 跳转创建视图
+    createView () {
+      this.$router.push({ path: '/createview' })
+    },
     closeselectMenmber () {
       this.seleceDialog.selectMenmberFlag = false
     },
@@ -118,6 +122,6 @@ export default {
 }
 </script>
 
-<style scoped>
-@import './ViewManagement.less';
+<style scoped lang="less">
+@import 'index.less';
 </style>

@@ -3,7 +3,8 @@ const ApplicationList = () => import('@src/views/application/ApplicationList/ind
 const ApplicationConfig = () => import('@src/views/application/ApplicationConfig/index.vue') /* webpackChunkName: 'home' */
 const Rights = () => import('@src/views/rights/index.vue') /* webpackChunkName: 'home' */
 const Shared = () => import('@src/views/shared/index.vue') /* webpackChunkName: 'home' */
-const ViewManagement = () => import('@src/views/shared/ViewManagement/ViewManagement.vue')
+const ViewManagement = () => import('@src/views/shared/ViewManagement/index.vue')
+const CreateView = () => import('@src/views/shared/CreateView/index.vue')
 const Parameter = () => import('@src/views/parameter/index.vue') /* webpackChunkName: 'home' */
 
 export default [
@@ -42,9 +43,14 @@ export default [
     component: Shared,
     children: [
       {
-        path: '/ViewManagement',
+        path: '/viewmanagement',
         name: 'ViewManagement',
         component: ViewManagement
+      },
+      {
+        path: '/createview',
+        name: 'CreateView',
+        component: CreateView
       }
     ]
   },

@@ -9,6 +9,7 @@ import handleTable from '@src/mixins/handleTable'
 import { api, urlNames } from '@src/api'
 
 export default {
+  name: 'Shared',
   components: {},
   mixins: [handleTable],
   data () {

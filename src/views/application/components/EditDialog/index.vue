@@ -173,182 +173,182 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {mapState, mapMutations} from 'vuex'
-  import {api, urlNames} from '@src/api';
+import { mapState, mapMutations } from 'vuex'
+import { api, urlNames } from '@src/api'
 
-  export default {
-    props: ['current', 'refreshList', 'visible', 'close', 'areaList'],
-    components: {},
-    data() {
+export default {
+  props: ['current', 'refreshList', 'visible', 'close', 'areaList'],
+  components: {},
+  data () {
+    return {
+      file: null,
+      formLabelWidth: '120px',
+      defaultForm: {
+        type: 'system',
+        id: '',
+        name: '', // 名称
+        shortName: '', // 简称
+        description: '', // 简介
+        logo: '', // 图标
+        develop: '', // 建设单位
+        developOrgId: '',
+        dataUrl: '', // 应用链接
+        mobileUrl: '',
+        info: '', // 厂商
+        serverMobile: '', // 运维服务电话
+        contact: '', // 联系人
+        contactMobile: '', // 联系电话
+        areaId: [], // 开通范围
+        sort: 0
+      },
+      currentChoseNode: null,
+      orgList: [],
+      defaultProps: {},
+      choseParentDialogVisible: false,
+      rules: {
+        name: [
+          { required: true, message: '', trigger: 'blur' }
+        ],
+        shortName: [
+          { required: true, message: '', trigger: 'blur' }
+        ],
+        description: [
+          { required: true, message: '', trigger: 'blur' }
+        ],
+        dataUrl: [
+          { required: true, message: '', trigger: 'blur' }
+        ],
+        info: [
+          { required: true, message: '', trigger: 'blur' }
+        ],
+        serverMobile: [
+          { required: true, message: '', trigger: 'blur' }
+        ],
+        contact: [
+          { required: true, message: '', trigger: 'blur' }
+        ],
+        contactMobile: [
+          { required: true, message: '', trigger: 'blur' }
+        ],
+        developOrgId: [
+          { required: true, message: '', trigger: 'blur' }
+        ],
+        areaId: [
+          { required: true, message: '', trigger: 'blur' }
+        ]
+      }
+    }
+  },
+  created () {
+  },
+  mounted () {
+  },
+  computed: {
+    ...mapState(['app']),
+    editForm () {
+      if (this.current) {
+        return this.current
+      } else {
+        return this.defaultForm
+      }
+    },
+    scrollStyle () {
       return {
-        file: null,
-        formLabelWidth: '120px',
-        defaultForm: {
-          type: 'system',
-          id: '',
-          name: '',           //名称
-          shortName: '',      //简称
-          description: '',    //简介
-          logo: '',           //图标
-          develop: '',        //建设单位
-          developOrgId: '',
-          dataUrl: '',        //应用链接
-          mobileUrl: '',
-          info: '',           //厂商
-          serverMobile: '',   //运维服务电话
-          contact: '',        //联系人
-          contactMobile: '',  //联系电话
-          areaId: [],         //开通范围
-          sort: 0,
-        },
-        currentChoseNode: null,
-        orgList: [],
-        defaultProps: {},
-        choseParentDialogVisible: false,
-        rules: {
-          name: [
-            {required: true, message: '', trigger: 'blur'},
-          ],
-          shortName: [
-            {required: true, message: '', trigger: 'blur'},
-          ],
-          description: [
-            {required: true, message: '', trigger: 'blur'},
-          ],
-          dataUrl: [
-            {required: true, message: '', trigger: 'blur'},
-          ],
-          info: [
-            {required: true, message: '', trigger: 'blur'},
-          ],
-          serverMobile: [
-            {required: true, message: '', trigger: 'blur'},
-          ],
-          contact: [
-            {required: true, message: '', trigger: 'blur'},
-          ],
-          contactMobile: [
-            {required: true, message: '', trigger: 'blur'},
-          ],
-          developOrgId: [
-            {required: true, message: '', trigger: 'blur'},
-          ],
-          areaId: [
-            {required: true, message: '', trigger: 'blur'},
-          ]
-        }
+        height: this.$store.state.app.windowHeight - 30 + 'px'
+      }
+    }
+  },
+  methods: {
+    closeDialog () {
+      this.file = null
+      if (this.current) {
+        this.$refs.editForm.clearValidate()
+      } else {
+        this.$refs.editForm.resetFields()
+      }
+      this.$emit('close')
+    },
+    fileChange (file) {
+      if (file) {
+        this.file = file
+      } else {
+        this.file = null
       }
     },
-    created() {
+    removeFile () {
+      this.file = null
+      this.editForm.logo = ''
     },
-    mounted() {
-    },
-    computed: {
-      ...mapState(['app']),
-      editForm() {
-        if (this.current) {
-          return this.current
-        } else {
-          return this.defaultForm
-        }
-      },
-      scrollStyle() {
-        return {
-          height: this.$store.state.app.windowHeight - 30 + 'px'
-        }
+    submitForm (form) {
+      if (!this.file && !this.editForm.logo) {
+        this.$message('请先上传应用图标')
+        return
       }
-    },
-    methods: {
-      closeDialog() {
-        this.file = null
-        if (this.current) {
-          this.$refs.editForm.clearValidate()
-        } else {
-          this.$refs.editForm.resetFields()
-        }
-        this.$emit('close')
-      },
-      fileChange(file) {
-        if (file) {
-          this.file = file
-        } else {
-          this.file = null
-        }
-      },
-      removeFile() {
-        this.file = null
-        this.editForm.logo = ''
-      },
-      submitForm(form) {
-        if (!this.file && !this.editForm.logo) {
-          this.$message('请先上传应用图标')
-          return
-        }
-        this.$refs[form].validate((valid) => {
-          if (valid) {
-            let data = new FormData()
-            let keys = Object.keys(this.editForm)
-            let len = keys.length
-            for (let i = 0; i < len; i++) {
-              let key = keys[i]
-              let value = this.editForm[key]
-              if (value) {
-                data.append(key, value)
-              }
+      this.$refs[form].validate((valid) => {
+        if (valid) {
+          let data = new FormData()
+          let keys = Object.keys(this.editForm)
+          let len = keys.length
+          for (let i = 0; i < len; i++) {
+            let key = keys[i]
+            let value = this.editForm[key]
+            if (value) {
+              data.append(key, value)
             }
-            if (this.file) {
-              data.append('file', this.file.raw)
-            }
-            api[urlNames['editApplication']](data).then((res) => {
-              this.$message({
-                message: this.current ? '修改成功' : '添加成功',
-                type: 'success'
-              })
-              this.$emit('refreshList')
-              this.closeDialog()
-            }, (error) => {
-
+          }
+          if (this.file) {
+            data.append('file', this.file.raw)
+          }
+          api[urlNames['editApplication']](data).then((res) => {
+            this.$message({
+              message: this.current ? '修改成功' : '添加成功',
+              type: 'success'
             })
-          }
-        })
-      },
-      openChoseParentDialog() {
-        this.currentChoseNode = null
-        this.choseParentDialogVisible = true
-      },
-      handleNodeClick(data) {
-        this.currentChoseNode = data
-      },
-      loadNode(node, resolve) {
-        if (node.level === 0) {
-          this.asyncDepartment(resolve);
+            this.$emit('refreshList')
+            this.closeDialog()
+          }, (error) => {
+
+          })
         }
-        if (node && node.data && node.data.id) {
-          this.asyncDepartment(resolve,node.data.id);
+      })
+    },
+    openChoseParentDialog () {
+      this.currentChoseNode = null
+      this.choseParentDialogVisible = true
+    },
+    handleNodeClick (data) {
+      this.currentChoseNode = data
+    },
+    loadNode (node, resolve) {
+      if (node.level === 0) {
+        this.asyncDepartment(resolve)
+      }
+      if (node && node.data && node.data.id) {
+        this.asyncDepartment(resolve, node.data.id)
+      }
+    },
+    async asyncDepartment (resolve, currentId) {
+      let arr = []
+      await api[urlNames['getDepartmentNodes']]({
+        parentId: currentId
+      }).then(res => {
+        if (res && res.result) {
+          arr = [...res.result]
+        } else {
+          arr = []
         }
-      },
-      async asyncDepartment(resolve,currentId){
-        let arr = [];
-        await  api[urlNames['getDepartmentNodes']]({
-          parentId: currentId
-        }).then(res => {
-          if(res && res.result){
-            arr = [...res.result]
-          } else {
-            arr = []
-          }
-          resolve(arr);
-        });
-      },
-      confirmChose () {
-        if (this.currentChoseNode) {
-          this.editForm.developOrgId = this.currentChoseNode.id
-          this.editForm.develop = this.currentChoseNode.name
-        }
-        this.choseParentDialogVisible = false
-      },
+        resolve(arr)
+      })
+    },
+    confirmChose () {
+      if (this.currentChoseNode) {
+        this.editForm.developOrgId = this.currentChoseNode.id
+        this.editForm.develop = this.currentChoseNode.name
+      }
+      this.choseParentDialogVisible = false
     }
   }
+}
 </script>
 <style lang="less">
   @import "./index";
