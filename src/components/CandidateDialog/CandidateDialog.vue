@@ -1,9 +1,11 @@
 <template>
   <div class="candidate">
     <el-dialog
+      custom-class="edit-dialog"
       :title="seleceDialog.selectMenmberTitle"
       :visible.sync="seleceDialog.selectMenmberFlag"
-      width="980px"
+      :fullscreen="true"
+      center
       :before-close="handleClose">
       <div class="panel">
         <div class="select-tree">

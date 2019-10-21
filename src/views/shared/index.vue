@@ -1,6 +1,11 @@
 <template>
   <div class="site-module mod-dictionary">
-    <router-view></router-view>
+    <transition name="fade-transform" mode="out-in">
+      <keep-alive v-if="$route.meta.keepAlive">
+        <router-view></router-view>
+      </keep-alive>
+      <router-view v-if="!$route.meta.keepAlive"></router-view>
+    </transition>
   </div>
 </template>
 

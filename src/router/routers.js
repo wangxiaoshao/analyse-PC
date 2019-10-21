@@ -48,7 +48,7 @@ export default [
         component: ViewManagement
       },
       {
-        path: '/createview',
+        path: 'createview',
         name: 'CreateView',
         component: CreateView
       }

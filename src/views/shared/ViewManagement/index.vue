@@ -103,7 +103,7 @@ export default {
   methods: {
     // 跳转创建视图
     createView () {
-      this.$router.push({ path: '/createview' })
+      this.$router.push({ name: 'CreateView' })
     },
     closeselectMenmber () {
       this.seleceDialog.selectMenmberFlag = false
