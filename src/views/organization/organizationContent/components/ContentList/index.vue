@@ -17,15 +17,16 @@
       highlight-current-row
       row-key="id"
       size="medium"
+      id="contentTable"
     >
-      <el-table-column prop="description" label="序号">
+      <el-table-column prop="description" label="序号" width="60">
         <template slot-scope="scope">
-          <i class="el-icon-menu sortBtn" v-if="sortListFlag"  Size="30"></i>
+          <i class="sortBtnDo menu-icon fa fa-bars"  v-if="sortListFlag" style="font-size: 25px"></i>
           <span :title="scope" v-else>{{scope.$index + 1}}</span>
         </template>
       </el-table-column>
       <el-table-column label="name" prop="name"></el-table-column>
-      <el-table-column prop="act" label="操作">
+      <el-table-column prop="act" label="操作" width="100">
         <template slot-scope="scope">
           <el-button
             @click.native.prevent="deleteRow(scope.$index, tableData4)"
@@ -57,7 +58,7 @@ export default {
   mixins: [handleTable],
   data () {
     return {
-      loading: false,
+      loading: true,
       list: [],
       sortListFlag: false
     }
@@ -94,11 +95,11 @@ export default {
   watch: {
     sortListFlag: {
       handler (val) {
-        const tbody = document.querySelector('.el-table__body-wrapper tbody')
+        const tbody = document.querySelector('#contentTable tbody')
         const items = this.list
-        if (this.sortListFlag) {
+        if (val) {
           Sortable.create(tbody, {
-            handle: '.sortBtn',
+            handle: '.sortBtnDo',
             animation: 150,
             onUpdate: function (evt) {
               console.log('onUpdate.foo:', [evt])
@@ -114,6 +115,7 @@ export default {
               const item = items.splice(oldIndex, 1)
               items.splice(newIndex, 0, item[0])
               this.list = items // 排序后列表
+              console.log(this.list)
             }
           })
         } else {
