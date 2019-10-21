@@ -1,9 +1,10 @@
-const Application = () => import('@src/views/application/index.vue'); /* webpackChunkName: 'home' */
-const ApplicationList = () => import('@src/views/application/ApplicationList/index.vue'); /* webpackChunkName: 'home' */
-const ApplicationConfig = () => import('@src/views/application/ApplicationConfig/index.vue'); /* webpackChunkName: 'home' */
-const Rights = () => import('@src/views/rights/index.vue'); /* webpackChunkName: 'home' */
-const Log = () => import('@src/views/log/index.vue'); /* webpackChunkName: 'home' */
-const Parameter = () => import('@src/views/parameter/index.vue'); /* webpackChunkName: 'home' */
+const Application = () => import('@src/views/application/index.vue') /* webpackChunkName: 'home' */
+const ApplicationList = () => import('@src/views/application/ApplicationList/index.vue') /* webpackChunkName: 'home' */
+const ApplicationConfig = () => import('@src/views/application/ApplicationConfig/index.vue') /* webpackChunkName: 'home' */
+const Rights = () => import('@src/views/rights/index.vue') /* webpackChunkName: 'home' */
+const Shared = () => import('@src/views/shared/index.vue') /* webpackChunkName: 'home' */
+const ViewManagement = () => import('@src/views/shared/ViewManagement/ViewManagement.vue')
+const Parameter = () => import('@src/views/parameter/index.vue') /* webpackChunkName: 'home' */
 
 export default [
   {
@@ -24,7 +25,7 @@ export default [
       {
         path: 'config/:id',
         name: 'ApplicationConfig',
-        component: ApplicationConfig,
+        component: ApplicationConfig
       }
     ]
   },
@@ -34,16 +35,23 @@ export default [
     name: 'Rights',
     component: Rights
   },
-  // 日志统计
+  // 共享管理
   {
-    path: '/log',
-    name: 'Log',
-    component: Log
+    path: '/shared',
+    name: 'Shared',
+    component: Shared,
+    children: [
+      {
+        path: '/ViewManagement',
+        name: 'ViewManagement',
+        component: ViewManagement
+      }
+    ]
   },
   // 参数配置
   {
     path: '/parameter',
     name: 'Parameter',
-    component: Parameter,
-  },
+    component: Parameter
+  }
 ]

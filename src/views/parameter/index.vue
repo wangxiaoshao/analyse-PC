@@ -72,94 +72,94 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {api, urlNames} from '@src/api';
+import { api, urlNames } from '@src/api'
 
-  export default {
-    components: {},
-    mixins: [],
-    data() {
-      return {
-        formLabelWidth: '150px',
-        defaultForm: {
-          appEntrance: {
-            name: '应用入口',
-            key: 'appEntrance',
-            count: 5,
-          },
-          fastEntrance: {
-            name: '快捷入口',
-            key: 'fastEntrance',
-            count: 5,
-          },
-          subscribe: {
-            name: '信息订阅',
-            key: 'subscribe',
-            maxModule: 5,
-            maxInfo: 5
-          },
-          todoList: {
-            name: '待办事项',
-            key: 'todoList',
-            maxModule: 5,
-            maxInfo: 3
-          },
+export default {
+  components: {},
+  mixins: [],
+  data () {
+    return {
+      formLabelWidth: '150px',
+      defaultForm: {
+        appEntrance: {
+          name: '应用入口',
+          key: 'appEntrance',
+          count: 5
         },
-        editForm: {
-          appEntrance: {},
-          fastEntrance: {},
-          subscribe: {},
-          todoList: {},
+        fastEntrance: {
+          name: '快捷入口',
+          key: 'fastEntrance',
+          count: 5
         },
-        appEntranceRules: {},
-        fastEntranceRules: {},
-        subscribeRules: {},
-        todoListRules: {},
-      }
-    },
-    computed: {},
-    mounted() {
-      this.getConfig()
-    },
-    methods: {
-      getConfig () {
-        api[urlNames['getParameter']]({
-          type: 'pcServiceCount'
-        }).then((res) => {
-          let value = JSON.parse(res.result.value)
-          let len = value.length
-          for (let i = 0; i < len; i++) {
-            let item = value[i]
-            this.editForm[item.key] = item
-          }
-        }, (res) => {
-
-        })
-      },
-      submit() {
-        let formData = {
-          type: 'pcServiceCount',
-          level: 1,
-          value: JSON.stringify([this.editForm.appEntrance, this.editForm.fastEntrance, this.editForm.subscribe, this.editForm.todoList])
+        subscribe: {
+          name: '信息订阅',
+          key: 'subscribe',
+          maxModule: 5,
+          maxInfo: 5
+        },
+        todoList: {
+          name: '待办事项',
+          key: 'todoList',
+          maxModule: 5,
+          maxInfo: 3
         }
-        api[urlNames['setParameter']](formData).then((res) => {
-          if (res.error === 0) {
-            this.$message.success('保存成功')
-          } else {
-            this.$message.success(res.message)
-          }
-        }, (res) => {
-          this.$message.success('服务器异常，请稍后重试')
-        })
       },
-      initConfig() {
-        this.editForm.appEntrance = Object.assign({}, this.defaultForm.appEntrance)
-        this.editForm.fastEntrance = Object.assign({}, this.defaultForm.fastEntrance)
-        this.editForm.subscribe = Object.assign({}, this.defaultForm.subscribe)
-        this.editForm.todoList = Object.assign({}, this.defaultForm.todoList)
-        this.submit()
+      editForm: {
+        appEntrance: {},
+        fastEntrance: {},
+        subscribe: {},
+        todoList: {}
+      },
+      appEntranceRules: {},
+      fastEntranceRules: {},
+      subscribeRules: {},
+      todoListRules: {}
+    }
+  },
+  computed: {},
+  mounted () {
+    this.getConfig()
+  },
+  methods: {
+    getConfig () {
+      api[urlNames['getParameter']]({
+        type: 'pcServiceCount'
+      }).then((res) => {
+        let value = JSON.parse(res.result.value)
+        let len = value.length
+        for (let i = 0; i < len; i++) {
+          let item = value[i]
+          this.editForm[item.key] = item
+        }
+      }, (res) => {
+
+      })
+    },
+    submit () {
+      let formData = {
+        type: 'pcServiceCount',
+        level: 1,
+        value: JSON.stringify([this.editForm.appEntrance, this.editForm.fastEntrance, this.editForm.subscribe, this.editForm.todoList])
       }
+      api[urlNames['setParameter']](formData).then((res) => {
+        if (res.error === 0) {
+          this.$message.success('保存成功')
+        } else {
+          this.$message.success(res.message)
+        }
+      }, (res) => {
+        this.$message.success('服务器异常，请稍后重试')
+      })
+    },
+    initConfig () {
+      this.editForm.appEntrance = Object.assign({}, this.defaultForm.appEntrance)
+      this.editForm.fastEntrance = Object.assign({}, this.defaultForm.fastEntrance)
+      this.editForm.subscribe = Object.assign({}, this.defaultForm.subscribe)
+      this.editForm.todoList = Object.assign({}, this.defaultForm.todoList)
+      this.submit()
     }
   }
+}
 </script>
 <style lang="less">
   @import "index";
