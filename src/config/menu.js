@@ -27,25 +27,25 @@ export default {
         {
           "menuId": '21',
           "name": "待我审核",
-          "path": "/examine",
+          "path": "/waitApprovalList",
           "type": 1
         },
         {
           "menuId": '22',
           "name": "我已审核",
-          "path": "/examine",
+          "path": "/approved",
           "type": 1
         },
         {
           "menuId": '23',
           "name": "我的申请",
-          "path": "/examine",
+          "path": "/myApplication",
           "type": 1
         },
         {
           "menuId": '24',
           "name": "信息确认",
-          "path": "/examine",
+          "path": "/confirmInfo",
           "type": 1
         },
       ]

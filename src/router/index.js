@@ -4,6 +4,8 @@ import routes from './routers'
 
 Vue.use(Router)
 
+
+
 export default new Router({
   base: 'static/work/admin',
   routes,

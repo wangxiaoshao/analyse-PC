@@ -32,9 +32,9 @@
                         :show-overflow-tooltip="item.showOverflowTooltip || false"
                         :min-width="item.minWidth || null">
               <template slot-scope="scope">
-                <el-tooltip class="item" effect="dark" :content="scope.row[item.key]" placement="top">
+                <el-tooltip class="item" effect="dark" :content="scope.row[item.field]" placement="top">
                   <div>
-                    {{scope.row[item.key]}}
+                    {{scope.row[item.field]}}
                   </div>
                 </el-tooltip>
               </template>
@@ -96,6 +96,9 @@ export default {
         return {}
       }
     }
+  },
+  created () {
+    console.log(this.tableConfig)
   },
   methods: {
         // 排序
