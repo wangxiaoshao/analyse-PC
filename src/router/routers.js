@@ -1,6 +1,7 @@
 const Shared = () => import('@src/views/shared/index.vue') /* webpackChunkName: 'home' */
 const ViewManagement = () => import('@src/views/shared/ViewManagement/index.vue')
 const CreateView = () => import('@src/views/shared/CreateView/index.vue')
+const GroupManagement = () => import('@src/views/shared/GroupManagement/index.vue')
 
 const Application = () => import('@src/views/application/index.vue') /* webpackChunkName: 'home' */
 const ApplicationList = () => import('@src/views/application/ApplicationList/index.vue') /* webpackChunkName: 'home' */
@@ -89,6 +90,11 @@ export default [
         path: 'createview',
         name: 'CreateView',
         component: CreateView
+      },
+      {
+        path: '/groupmanagement',
+        name: 'GroupManagement',
+        component: GroupManagement
       }
     ]
   },
