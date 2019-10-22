@@ -1,6 +1,6 @@
 <template>
   <div class="organization-content">
-    <add-dialog></add-dialog>
+    <!--<add-dialog></add-dialog>-->
     <div class="organization-wrap">
       <div class="organization-info">
         <span class="organization-value">贵州省</span>
@@ -25,7 +25,7 @@
 
 <script>
 import ContentList from './components/ContentList/index'
-/*import addDialog from './components/AddChild/index'*/
+import addDialog from './components/AddChild/index'
 export default {
   name: 'index',
   components: {
