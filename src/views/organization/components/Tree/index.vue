@@ -8,6 +8,7 @@
     ref="tree"
     highlight-current
     :props="defaultProps"
+    :render-content="renderContent"
     @node-click="selectNode"
   >
   </el-tree>
@@ -39,6 +40,28 @@ export default {
           id: this.id
         }
       })
+    },
+    renderContent (h, { node, data, store }) {
+      console.log(87, data)
+      if (data.type === 'node') {
+        return (
+          <span>
+            <i class="menu-icon fa fa-sitemap" style="margin: 0 5px;"></i>
+            <span>{node.label}</span>
+          </span>)
+      } else if (data.type === 'department') {
+        return (
+          <span>
+            <i class="menu-icon fa fa-sitemap" style="margin: 0 5px;"></i>
+            <span>{node.label}</span>
+          </span>)
+      } else {
+        return (
+          <span>
+            <i class="menu-icon fa fa-sitemap" style="margin: 0 5px;"></i>
+            <span>{node.label}</span>
+          </span>)
+      }
     }
   },
   created () {

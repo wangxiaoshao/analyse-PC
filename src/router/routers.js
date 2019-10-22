@@ -50,19 +50,19 @@ export default [
         name: 'OrganizationContent',
         component: OrganizationContent
       }, {
-        path: 'nodeEdit',
+        path: 'nodeEdit/:id',
         name: 'NodeEdit',
         component: NodeDetail
       }, {
-        path: 'unitEdit',
+        path: 'unitEdit/:id',
         name: 'UnitEdit',
         component: UnitDetail
       }, {
-        path: 'departmentEdit',
+        path: 'departmentEdit/:id',
         name: 'DepartmentEdit',
         component: DepartmentDetail
       }, {
-        path: 'personEdit',
+        path: 'personEdit/:id',
         name: 'PersonEdit',
         component: PersonDetail
       }
@@ -97,5 +97,35 @@ export default [
     path: '/parameter',
     name: 'Parameter',
     component: Parameter
+  },
+  // 组织机构详情页
+  {
+    path: '/organizationDetail',
+    name: 'organizationDetail',
+    component: OrganizationContent
+  },
+  // 节点详情
+  {
+    path: '/nodeDetail',
+    name: 'nodeDetail',
+    component: NodeDetail
+  },
+  // 单位详情
+  {
+    path: '/unitDetail',
+    name: 'unitDetail',
+    component: UnitDetail
+  },
+  // 部门详情
+  {
+    path: '/departmentDetail',
+    name: 'departmentDetail',
+    component: DepartmentDetail
+  },
+  // 人员详情
+  {
+    path: '/personDetail',
+    name: 'personDetail',
+    component: PersonDetail
   }
 ]

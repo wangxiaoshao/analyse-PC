@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 
 import app from './modules/app'
 import application from './modules/application'
+import organization from './modules/organization'
 
 Vue.use(Vuex)
 
@@ -18,7 +19,8 @@ const store = new Vuex.Store({
   },
   modules: {
     app,
-    application
+    application,
+    organization
   }
 })
 

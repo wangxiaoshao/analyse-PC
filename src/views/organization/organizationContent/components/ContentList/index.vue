@@ -1,6 +1,6 @@
 <template>
   <div class="content-list">
-    <div class="button-wrap">
+    <div class="button-wrap" v-if="isShowEditFlag">
       <el-button>添加下级</el-button>
       <el-button @click="sortListFlag = true">调整排序</el-button>
     </div>
@@ -60,7 +60,8 @@ export default {
     return {
       loading: true,
       list: [],
-      sortListFlag: false
+      sortListFlag: false,
+      isShowEditFlag: true
     }
   },
   props: {
@@ -75,6 +76,7 @@ export default {
         page: this.page.current,
         pageSize: this.page.limit
       }
+      this.loading = true
       api[urlNames['getChildList']](data).then((res) => {
         this.loading = false
         this.list = res.data
@@ -88,6 +90,11 @@ export default {
   },
   created () {
     this.getGrid()
+    if (this.$route.name === 'OrganizationContent') {
+      this.isShowEditFlag = true
+    } else {
+      this.isShowEditFlag = false
+    }
   },
   mounted () {
 
@@ -120,6 +127,7 @@ export default {
           })
         } else {
           this.sortListFlag = false
+          this.getGrid()
         }
       },
       deep: true
