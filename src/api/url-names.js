@@ -3,7 +3,7 @@
  * @description：api name mapping
  */
 export default {
-  getUserInfo: "getUserInfo",
+  getUserInfo: 'getUserInfo',
   // application
   getApplicationList: 'getApplicationList',
   toggleApplication: 'toggleApplication',
@@ -24,5 +24,7 @@ export default {
   getUserRemoveRight: 'getUserRemoveRight',
   // parameter
   setParameter: 'setParameter',
-  getParameter: 'getParameter'
+  getParameter: 'getParameter',
+  getTree: 'getTree',
+  getChildList: 'getChildList'
 }

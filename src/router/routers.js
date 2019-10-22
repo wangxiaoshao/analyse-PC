@@ -1,18 +1,16 @@
-const Application = () => import('@src/views/application/index.vue') /* webpackChunkName: 'home' */
-const ApplicationList = () => import('@src/views/application/ApplicationList/index.vue') /* webpackChunkName: 'home' */
-const ApplicationConfig = () => import('@src/views/application/ApplicationConfig/index.vue') /* webpackChunkName: 'home' */
-const Rights = () => import('@src/views/rights/index.vue') /* webpackChunkName: 'home' */
-const Shared = () => import('@src/views/shared/index.vue') /* webpackChunkName: 'home' */
-const ViewManagement = () => import('@src/views/shared/ViewManagement/index.vue')
-const CreateView = () => import('@src/views/shared/CreateView/index.vue')
-const Parameter = () => import('@src/views/parameter/index.vue') /* webpackChunkName: 'home' */
+const Application = () => import('@src/views/application/index.vue'); /* webpackChunkName: 'home' */
+const ApplicationList = () => import('@src/views/application/ApplicationList/index.vue'); /* webpackChunkName: 'home' */
+const ApplicationConfig = () => import('@src/views/application/ApplicationConfig/index.vue'); /* webpackChunkName: 'home' */
+const Rights = () => import('@src/views/rights/index.vue'); /* webpackChunkName: 'home' */
+const Log = () => import('@src/views/log/index.vue'); /* webpackChunkName: 'home' */
+const Parameter = () => import('@src/views/parameter/index.vue'); /* webpackChunkName: 'home' */
 
 
 export default [
   {
     path: '/',
     name: 'default',
-    redirect: '/application'
+    redirect: '/organization'
   },
   {
     path: '/application',
@@ -28,6 +26,35 @@ export default [
         path: 'config/:id',
         name: 'ApplicationConfig',
         component: ApplicationConfig
+      }
+    ]
+  },
+  // 组织机构管理
+  {
+    path: '/organization',
+    name: 'Organization',
+    component: Organization,
+    children: [
+      {
+        path: 'organizationContent/:id',
+        name: 'OrganizationContent',
+        component: OrganizationContent
+      }, {
+        path: 'nodeEdit',
+        name: 'NodeEdit',
+        component: NodeDetail
+      }, {
+        path: 'unitEdit',
+        name: 'UnitEdit',
+        component: UnitDetail
+      }, {
+        path: 'departmentEdit',
+        name: 'DepartmentEdit',
+        component: DepartmentDetail
+      }, {
+        path: 'personEdit',
+        name: 'PersonEdit',
+        component: PersonDetail
       }
     ]
   },
