@@ -9,7 +9,7 @@
             :value="item.value">
           </el-option>
         </el-select>
-        <el-button type="primary">创建分组</el-button>
+        <el-button type="primary" @click="openDialog">创建分组</el-button>
       </div>
       <div class="table">
         <el-table
@@ -62,14 +62,20 @@
           :total="1000">
         </el-pagination>
       </div>
+      <create-group-dialog @close="close" :creategroupdialogVisible="creategroupdialogVisible"></create-group-dialog>
     </div>
 </template>
 
 <script>
+import CreateGroupDialog from '@src/views/shared/GroupManagement/CreateGroupDialog/CreateGroupDialog'
 export default {
   name: 'GroupManagement',
+  components: {
+    CreateGroupDialog
+  },
   data () {
     return {
+      creategroupdialogVisible: false,
       currentPage: 1,
       options: [{
         value: '1',
@@ -103,6 +109,14 @@ export default {
     }
   },
   methods: {
+    // 关闭弹窗
+    close () {
+      this.creategroupdialogVisible = false
+    },
+    // 打开创建弹窗
+    openDialog () {
+      this.creategroupdialogVisible = true
+    },
     handleCurrentChange (val) {
       this.currentRow = val
     },
