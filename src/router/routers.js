@@ -6,6 +6,13 @@ const Log = () => import('@src/views/log/index.vue'); /* webpackChunkName: 'home
 const Parameter = () => import('@src/views/parameter/index.vue'); /* webpackChunkName: 'home' */
 
 
+const Organization = () => import('@src/views/organization/index.vue')
+const OrganizationContent = () => import('@src/views/organization/organizationContent/index.vue')
+const NodeDetail = () => import('@src/views/organization/NodeDetail/index.vue')
+const UnitDetail = () => import('@src/views/organization/UnitDetail/index.vue')
+const DepartmentDetail = () => import('@src/views/organization/DepartmentDetail/index.vue')
+const PersonDetail = () => import('@src/views/organization/PersonDetail/index.vue')
+
 /* 路由 */
 export default [
   {
