@@ -13,7 +13,7 @@ export default {
       'list': [{
         'menuId': '11',
         'name': '组织机构管理',
-        'path': '/application',
+        'path': '/Organization',
         'type': 1
       }]
     },
@@ -60,25 +60,25 @@ export default {
         {
           'menuId': '31',
           'name': '视图管理',
-          'path': '/ViewManagement',
+          'path': '/log',
           'type': 1
         },
         {
           'menuId': '32',
           'name': '分组管理',
-          'path': '/shared',
+          'path': '/log',
           'type': 1
         },
         {
           'menuId': '33',
           'name': '标签管理',
-          'path': '/shared',
+          'path': '/log',
           'type': 1
         },
         {
           'menuId': '34',
           'name': '应用管理',
-          'path': '/shared',
+          'path': '/log',
           'type': 1
         }
       ]

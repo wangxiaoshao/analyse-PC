@@ -5,7 +5,7 @@
 // 后端服务配置
 const Serve = {
   development: {
-    workspaceManagement: '//gzt.mh.gz.cegn.cn', //没有配置mock数据，默认发送的服务器
+    workspaceManagement: '//gzt.mh.gz.cegn.cn', // 没有配置mock数据，默认发送的服务器
     applicationCenter: '//59.215.226.21'
   },
   test: {
@@ -24,7 +24,7 @@ let host = window.location.host
 
 if (process.env.NODE_ENV === 'development') {
   prefix = Serve.development
-} else if(process.env.NODE_ENV === 'test') {
+} else if (process.env.NODE_ENV === 'test') {
   prefix = Serve.test
 } else {
   if (host.includes('59.215.222.122')) {

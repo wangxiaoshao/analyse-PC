@@ -11,7 +11,7 @@ export default {
       page: {
         limit: 10,
         current: 1,
-        total:0
+        total: 0
       },
       timeDuration: null,
       pickerOptions: pickerOptions
@@ -57,13 +57,13 @@ export default {
     filterMethod () {
       return true
     },
-    /*时间段过滤*/
+    /* 时间段过滤 */
     dateChange (val) {
       this.searchForm.startDate = val ? this.$options.filters['date'](val[0].getTime(), 'yyyy-MM-dd') : ''
       this.searchForm.endDate = val ? this.$options.filters['date'](val[1].getTime(), 'yyyy-MM-dd') : ''
       this.getGrid(this.searchForm.startDate)
     },
-    /*导出table数据*/
+    /* 导出table数据 */
     exportList (urlKey, fileName) {
       this.fullscreenLoading = this.$loading({
         lock: true,
@@ -89,7 +89,7 @@ export default {
         this.tableHeight = document.documentElement.clientHeight - 160 - height
       })
     },
-		/**
+    /**
 		 * 通用弹出确认操作 删除 下架等
 		 * @param {*} text 提示
 		 * @param {*} id row.id
@@ -104,7 +104,7 @@ export default {
         cb(id)
       }).catch(() => {
       })
-    },
+    }
   },
   mounted () {}
 }

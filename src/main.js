@@ -1,7 +1,7 @@
 /**
  * Created by luoxie on 2019-07-16.
  */
-import "babel-polyfill";
+import 'babel-polyfill'
 import Vue from 'vue'
 import App from './views/app'
 import router from './router'
