@@ -1,0 +1,24 @@
+{
+  "status": 200,
+  "message": "成功",
+  "data": [
+    {
+      "id": 1,
+      "label": "一级 1",
+      "type": "node",
+      "children": [{
+        "id": 4,
+        "label": "二级 1-1",
+        "type": "department"
+      },{
+        "id": 5,
+        "label": "二级1",
+        "type": "unit"
+      }]
+    },{
+      "id": 2,
+      "label": "二级1",
+      "type": "node"
+    }
+  ]
+}
