@@ -6,6 +6,7 @@ const Log = () => import('@src/views/log/index.vue'); /* webpackChunkName: 'home
 const Parameter = () => import('@src/views/parameter/index.vue'); /* webpackChunkName: 'home' */
 
 
+/* 路由 */
 export default [
   {
     path: '/',
