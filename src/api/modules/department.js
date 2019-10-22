@@ -1,7 +1,7 @@
 /**
  * Created by luoxie on 2019-07-16.
  */
-import urlNames from '../url-names';
+import urlNames from '../url-names'
 
 export default {
   /**
@@ -41,7 +41,7 @@ export default {
     type: 'post',
     url: '/api/converter/add_department',
     headers: {
-      'Content-Type': "application/json"
+      'Content-Type': 'application/json'
     },
     keepOriginResponse: true,
     showLoading: true,
@@ -54,7 +54,7 @@ export default {
     type: 'post',
     url: '/api/converter/add_user',
     headers: {
-      'Content-Type': "application/json"
+      'Content-Type': 'application/json'
     },
     keepOriginResponse: true,
     showLoading: true,
@@ -98,6 +98,6 @@ export default {
     url: '/api/converter/getDutyInfo',
     keepOriginResponse: true,
     showLoading: true,
-    serve: 'personnelManagement',
-  },
-};
+    serve: 'personnelManagement'
+  }
+}

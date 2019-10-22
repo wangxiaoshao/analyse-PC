@@ -32,51 +32,51 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  /**
+/**
    * Created by lxe on 2019-09-18.
    */
-  export default {
-    components: {},
-    name: 'Head',
-    props: {
-      user: {
-        type: Object,
-        default () {
-          return {}
-        }
-      },
-      breadcrumb: {
-        type: Array,
-        default () {
-          return []
-        }
-      },
-      pageBreadcrumb: {
-        type: Array,
-        default () {
-          return []
-        }
+export default {
+  components: {},
+  name: 'Head',
+  props: {
+    user: {
+      type: Object,
+      default () {
+        return {}
       }
     },
-    data(){
-      return {
+    breadcrumb: {
+      type: Array,
+      default () {
+        return []
       }
     },
-    methods: {
-      goBack () {
-        this.$emit('go-back')
-      },
-      handleCommand (command) {
-        if (command === 'logout') {
-          this.$store.dispatch('Logout').then(() => {
-            this.$router.push({
-              path: '/login'
-            })
+    pageBreadcrumb: {
+      type: Array,
+      default () {
+        return []
+      }
+    }
+  },
+  data () {
+    return {
+    }
+  },
+  methods: {
+    goBack () {
+      this.$emit('go-back')
+    },
+    handleCommand (command) {
+      if (command === 'logout') {
+        this.$store.dispatch('Logout').then(() => {
+          this.$router.push({
+            path: '/login'
           })
-        }
+        })
       }
     }
   }
+}
 </script>
 <style lang="less">
   @import "./index";

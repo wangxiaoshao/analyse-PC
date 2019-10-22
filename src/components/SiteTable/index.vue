@@ -92,7 +92,7 @@ export default {
     },
     pageConfig: {
       type: Object,
-      default() {
+      default () {
         return {}
       }
     }
@@ -101,11 +101,11 @@ export default {
     console.log(this.tableConfig)
   },
   methods: {
-        // 排序
+    // 排序
     sort () {
       this.emit('sort-change')
     },
-    selectionChange(selection) {
+    selectionChange (selection) {
       this.$emit('selection-change', selection)
     }
   }

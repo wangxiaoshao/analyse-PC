@@ -1,6 +1,6 @@
 
 // examine
-import urlNames from '../url-names';
+import urlNames from '../url-names'
 
 export default {
   [urlNames.getDepartmentNodes]: {
@@ -56,5 +56,5 @@ export default {
     keepOriginResponse: false,
     serve: 'workspaceManagement',
     mock: 'applicationEdit.json'
-  },
+  }
 }

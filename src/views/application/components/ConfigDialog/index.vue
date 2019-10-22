@@ -54,110 +54,110 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {mapState, mapMutations} from 'vuex'
-  import { api, urlNames } from '@src/api';
+import { mapState, mapMutations } from 'vuex'
+import { api, urlNames } from '@src/api'
 
-  export default {
-    props: ['current', 'refreshList', 'visible', 'close', 'configType'],
-    components: {},
-    data() {
+export default {
+  props: ['current', 'refreshList', 'visible', 'close', 'configType'],
+  components: {},
+  data () {
+    return {
+      file: null,
+      formLabelWidth: '120px',
+      defaultForm: {
+        name: '',
+        dataUrl: '',
+        logo: ''
+      },
+      rules: {
+        name: [
+          { required: true, message: '', trigger: 'blur' },
+          { min: 1, max: 500, message: '', trigger: 'blur' }
+        ],
+        dataUrl: [
+          { required: true, message: '', trigger: 'blur' },
+          { min: 1, max: 500, message: '', trigger: 'blur' }
+        ]
+      }
+    }
+  },
+  created () {
+  },
+  mounted () {
+  },
+  computed: {
+    ...mapState(['app']),
+    editForm () {
+      if (this.current) {
+        return this.current
+      } else {
+        return this.defaultForm
+      }
+    },
+    scrollStyle () {
       return {
-        file: null,
-        formLabelWidth: '120px',
-        defaultForm: {
-          name: '',
-          dataUrl: '',
-          logo: ''
-        },
-        rules: {
-          name: [
-            {required: true, message: '', trigger: 'blur'},
-            {min: 1, max: 500, message: '', trigger: 'blur'}
-          ],
-          dataUrl: [
-            {required: true, message: '', trigger: 'blur'},
-            {min: 1, max: 500, message: '', trigger: 'blur'}
-          ]
-        }
+        height: this.$store.state.app.windowHeight - 30 + 'px'
+      }
+    }
+  },
+  methods: {
+    closeDialog () {
+      this.file = null
+      if (this.current) {
+        this.$refs.editForm.clearValidate()
+      } else {
+        this.$refs.editForm.resetFields()
+      }
+      this.$emit('close')
+    },
+    fileChange (file) {
+      if (file) {
+        this.file = file
+      } else {
+        this.file = null
       }
     },
-    created() {
+    removeFile () {
+      this.file = null
+      this.editForm.logo = ''
     },
-    mounted() {
-    },
-    computed: {
-      ...mapState(['app']),
-      editForm() {
-        if (this.current) {
-          return this.current
-        } else {
-          return this.defaultForm
-        }
-      },
-      scrollStyle() {
-        return {
-          height: this.$store.state.app.windowHeight - 30 + 'px'
-        }
+    submitForm (form) {
+      if (this.configType !== 'content' && (!this.file && !this.editForm.logo)) {
+        this.$message('请先上传图标')
+        return
       }
-    },
-    methods: {
-      closeDialog() {
-        this.file = null
-        if (this.current) {
-          this.$refs.editForm.clearValidate()
-        } else {
-          this.$refs.editForm.resetFields()
-        }
-        this.$emit('close')
-      },
-      fileChange (file) {
-        if (file) {
-          this.file = file
-        } else {
-          this.file = null
-        }
-      },
-      removeFile () {
-        this.file = null
-        this.editForm.logo = ''
-      },
-      submitForm(form) {
-        if (this.configType !=='content' && (!this.file && !this.editForm.logo)) {
-          this.$message('请先上传图标')
-          return
-        }
-        this.$refs[form].validate((valid) => {
-          if (valid) {
-            let data = new FormData()
-            let keys = Object.keys(this.editForm)
-            let len = keys.length
-            for (let i = 0; i < len; i++) {
-              let key = keys[i]
-              let value = this.editForm[key]
-              if (value) {
-                data.append(key, value)
-              }
+      this.$refs[form].validate((valid) => {
+        if (valid) {
+          let data = new FormData()
+          let keys = Object.keys(this.editForm)
+          let len = keys.length
+          for (let i = 0; i < len; i++) {
+            let key = keys[i]
+            let value = this.editForm[key]
+            if (value) {
+              data.append(key, value)
             }
-            data.append('parentApp', this.$route.params.id)
-            data.append('type', this.configType)
-            if (this.file) {
-              data.append('file', this.file.raw)
-            }
-            api[urlNames['editApplicationConfig']](data).then((res) => {
-              this.$message({
-                message: this.current ? '修改成功' : '添加成功',
-                type: 'success'
-              })
-              this.$emit('refreshList')
-              this.closeDialog()
-            }, (error) => {
-
-            })
           }
-        })
-      },
+          data.append('parentApp', this.$route.params.id)
+          data.append('type', this.configType)
+          if (this.file) {
+            data.append('file', this.file.raw)
+          }
+          api[urlNames['editApplicationConfig']](data).then((res) => {
+            this.$message({
+              message: this.current ? '修改成功' : '添加成功',
+              type: 'success'
+            })
+            this.$emit('refreshList')
+            this.closeDialog()
+          }, (error) => {
+
+          })
+        }
+      })
     }
   }
+}
 </script>
 <style lang="less">
   @import "./index";

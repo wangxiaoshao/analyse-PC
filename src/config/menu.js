@@ -5,25 +5,25 @@
 export default {
   list: [
     {
-      "menuId": '1',
-      "name": "组织机构",
-      "path": "",
-      "type": 1,
-      "icon" : "fa fa-sitemap",
-      "list": [{
-        "menuId": '11',
-        "name": "组织机构管理",
-        "path": "/application",
-        "type": 1
+      'menuId': '1',
+      'name': '组织机构',
+      'path': '',
+      'type': 1,
+      'icon': 'fa fa-sitemap',
+      'list': [{
+        'menuId': '11',
+        'name': '组织机构管理',
+        'path': '/organization/organizationContent/:id',
+        'type': 1
       }]
     },
     {
-      "menuId": '2',
-      "name": "申请审核",
-      "path": "",
-      "type": 1,
-      "icon" : "fa fa-check-square-o",
-      "list": [
+      'menuId': '2',
+      'name': '申请审核',
+      'path': '',
+      'type': 1,
+      'icon': 'fa fa-check-square-o',
+      'list': [
         {
           "menuId": '21',
           "name": "待我审核",
@@ -51,45 +51,45 @@ export default {
       ]
     },
     {
-      "menuId": '3',
-      "name": "共享管理",
-      "path": "",
-      "type": 1,
-      "icon" : "fa fa-address-card-o",
-      "list": [
+      'menuId': '3',
+      'name': '共享管理',
+      'path': '',
+      'type': 1,
+      'icon': 'fa fa-address-card-o',
+      'list': [
         {
-          "menuId": '31',
-          "name": "视图管理",
-          "path": "/log",
-          "type": 1
+          'menuId': '31',
+          'name': '视图管理',
+          'path': '/viewmanagement',
+          'type': 1
         },
         {
-          "menuId": '32',
-          "name": "分组管理",
-          "path": "/log",
-          "type": 1
+          'menuId': '32',
+          'name': '分组管理',
+          'path': '/groupmanagement',
+          'type': 1
         },
         {
-          "menuId": '33',
-          "name": "标签管理",
-          "path": "/log",
-          "type": 1
+          'menuId': '33',
+          'name': '标签管理',
+          'path': '/log',
+          'type': 1
         },
         {
-          "menuId": '34',
-          "name": "应用管理",
-          "path": "/log",
-          "type": 1
-        },
+          'menuId': '34',
+          'name': '应用管理',
+          'path': '/log',
+          'type': 1
+        }
       ]
     },
     {
-      "menuId": '4',
-      "name": "统计管理",
-      "path": "",
-      "type": 1,
-      "icon" : "fa fa-bar-chart-o",
-      "list": [
+      'menuId': '4',
+      'name': '统计管理',
+      'path': '',
+      'type': 1,
+      'icon': 'fa fa-bar-chart-o',
+      'list': [
         {
           "menuId": '41',
           "name": "数据统计",
@@ -111,38 +111,38 @@ export default {
       ]
     },
     {
-      "menuId": '5',
-      "name": "系统设置",
-      "path": "",
-      "type": 1,
-      "icon" : "fa fa-cogs",
-      "list": [
+      'menuId': '5',
+      'name': '系统设置',
+      'path': '',
+      'type': 1,
+      'icon': 'fa fa-cogs',
+      'list': [
         {
-          "menuId": '51',
-          "name": "角色权限",
-          "path": "/statistics",
-          "type": 1
+          'menuId': '51',
+          'name': '角色权限',
+          'path': '/parameter',
+          'type': 1
         },
         {
-          "menuId": '52',
-          "name": "字典管理",
-          "path": "/statistics",
-          "type": 1
+          'menuId': '52',
+          'name': '字典管理',
+          'path': '/parameter',
+          'type': 1
         },
         {
-          "menuId": '53',
-          "name": "修改密码",
-          "path": "/statistics",
-          "type": 1
+          'menuId': '53',
+          'name': '修改密码',
+          'path': '/parameter',
+          'type': 1
         },
         {
-          "menuId": '54',
-          "name": "系统设置",
-          "path": "/statistics",
-          "type": 1
+          'menuId': '54',
+          'name': '系统设置',
+          'path': '/parameter',
+          'type': 1
         }
       ]
-    },
+    }
   ]
 }
 

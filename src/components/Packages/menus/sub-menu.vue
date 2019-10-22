@@ -24,11 +24,11 @@
 /**
  * Created by Luoxie on 2019-09-19.
  */
-import util from "../utils"
+import util from '../utils'
 
 export default {
-	name: "subMenu",
-	props: {
+  name: 'subMenu',
+  props: {
     menuItem: {
       type: Object,
       default () {
@@ -42,23 +42,23 @@ export default {
       }
     }
   },
-	data(){
-		return {}
-	},
-	created(){
+  data () {
+    return {}
+  },
+  created () {
 
-	},
-	methods: {},
-	computed: {
-		isItem(){
-			return util.isEmptyArray(this.menuItem.list) && util.isEmptyArray(this.menuItem.list)
-		},
-		isGroup(){
-			return this.menuItem.group && this.menuItem.group.length > 0
-		},
-		isSubMenu(){
-			return this.menuItem.list && this.menuItem.list.length > 0
-		}
-	}
+  },
+  methods: {},
+  computed: {
+    isItem () {
+      return util.isEmptyArray(this.menuItem.list) && util.isEmptyArray(this.menuItem.list)
+    },
+    isGroup () {
+      return this.menuItem.group && this.menuItem.group.length > 0
+    },
+    isSubMenu () {
+      return this.menuItem.list && this.menuItem.list.length > 0
+    }
+  }
 }
 </script>

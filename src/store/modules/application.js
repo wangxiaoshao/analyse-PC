@@ -3,7 +3,7 @@ import * as types from '../mutation-types'
 const app = {
   state: {
     page: {},
-    searchQuery: {},
+    searchQuery: {}
   },
   mutations: {
     [types.SET_APPLICATION_PAGE] (state, val) {

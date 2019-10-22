@@ -1,7 +1,7 @@
 /**
  * Created by luoxie on 2019-07-16.
  */
-import urlNames from '../url-names';
+import urlNames from '../url-names'
 
 export default {
   /**
@@ -21,8 +21,8 @@ export default {
     showLoading: true,
     serve: 'workspaceManagement',
     mock: 'setParameter.json',
-    headers:{
+    headers: {
       'Content-Type': 'application/json'
     }
-  },
-};
+  }
+}

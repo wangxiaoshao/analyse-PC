@@ -9,11 +9,19 @@ const ConfirmInfo = () => import('@src/views/examine/ConfirmInfo/index.vue'); /*
 const Log = () => import('@src/views/log/index.vue'); /* webpackChunkName: 'home' */
 const Statistics = () => import('@src/views/statistics/index.vue'); /* webpackChunkName: 'home' */
 
+const Organization = () => import('@src/views/organization/index.vue')
+const OrganizationContent = () => import('@src/views/organization/organizationContent/index.vue')
+const NodeDetail = () => import('@src/views/organization/NodeDetail/index.vue')
+const UnitDetail = () => import('@src/views/organization/UnitDetail/index.vue')
+const DepartmentDetail = () => import('@src/views/organization/DepartmentDetail/index.vue')
+const PersonDetail = () => import('@src/views/organization/PersonDetail/index.vue')
+
+/* 路由 */
 export default [
   {
     path: '/',
     name: 'default',
-    redirect: '/application'
+    redirect: '/organization'
   },
   {
     path: '/application',
@@ -28,7 +36,36 @@ export default [
       {
         path: 'config/:id',
         name: 'ApplicationConfig',
-        component: ApplicationConfig,
+        component: ApplicationConfig
+      }
+    ]
+  },
+  // 组织机构管理
+  {
+    path: '/organization',
+    name: 'Organization',
+    component: Organization,
+    children: [
+      {
+        path: 'organizationContent/:id',
+        name: 'OrganizationContent',
+        component: OrganizationContent
+      }, {
+        path: 'nodeEdit/:id',
+        name: 'NodeEdit',
+        component: NodeDetail
+      }, {
+        path: 'unitEdit/:id',
+        name: 'UnitEdit',
+        component: UnitDetail
+      }, {
+        path: 'departmentEdit/:id',
+        name: 'DepartmentEdit',
+        component: DepartmentDetail
+      }, {
+        path: 'personEdit/:id',
+        name: 'PersonEdit',
+        component: PersonDetail
       }
     ]
   },
@@ -58,17 +95,65 @@ export default [
     name: 'ConfirmInfo',
     component: ConfirmInfo
   },
+  // 共享管理
 
   // 日志统计
   {
-    path: '/log',
-    name: 'Log',
-    component: Log
+    path: '/shared',
+    name: 'Shared',
+    component: Shared,
+    children: [
+      {
+        path: '/viewmanagement',
+        name: 'ViewManagement',
+        component: ViewManagement
+      },
+      {
+        path: 'createview',
+        name: 'CreateView',
+        component: CreateView
+      },
+      {
+        path: '/groupmanagement',
+        name: 'GroupManagement',
+        component: GroupManagement
+      }
+    ]
   },
   // 参数配置
   {
-    path: '/statistics',
-    name: 'Statistics',
-    component: Statistics,
+    path: '/parameter',
+    name: 'Parameter',
+    component: Parameter
+  },
+  // 组织机构详情页
+  {
+    path: '/organizationDetail',
+    name: 'organizationDetail',
+    component: OrganizationContent
+  },
+  // 节点详情
+  {
+    path: '/nodeDetail',
+    name: 'nodeDetail',
+    component: NodeDetail
+  },
+  // 单位详情
+  {
+    path: '/unitDetail',
+    name: 'unitDetail',
+    component: UnitDetail
+  },
+  // 部门详情
+  {
+    path: '/departmentDetail',
+    name: 'departmentDetail',
+    component: DepartmentDetail
+  },
+  // 人员详情
+  {
+    path: '/personDetail',
+    name: 'personDetail',
+    component: PersonDetail
   }
 ]

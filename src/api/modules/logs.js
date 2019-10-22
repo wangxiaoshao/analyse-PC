@@ -1,6 +1,6 @@
 
 // examine
-import urlNames from '../url-names';
+import urlNames from '../url-names'
 
 export default {
   [urlNames.getAdminLog]: {
@@ -9,5 +9,5 @@ export default {
     keepOriginResponse: true,
     serve: 'workspaceManagement',
     mock: 'getAdminLog.json'
-  },
+  }
 }
