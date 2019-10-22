@@ -3,7 +3,7 @@
     <div>
       <el-button type="primary" @click="createView">创建视图</el-button>
     </div>
-    <div>
+    <div class="table">
       <el-table
         ref="singleTable"
         :data="tableData"
@@ -56,11 +56,19 @@
               @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
             <el-button
               size="mini"
-              type="danger"
+              type="text"
               @click="handleDelete(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentPageChange"
+        :current-page.sync="currentPage"
+        :page-size="100"
+        layout="prev, pager, next, jumper"
+        :total="1000">
+      </el-pagination>
     </div>
     <el-button @click="seleceDialog.selectMenmberFlag = true">选人组件</el-button>
     <candidate @closeselectMenmber="closeselectMenmber" :seleceDialog="seleceDialog"></candidate>
@@ -76,6 +84,7 @@ export default {
   },
   data () {
     return {
+      currentPage: 1,
       tableData: [{
         date: '2016-05-02',
         name: '王小虎',
@@ -116,6 +125,12 @@ export default {
     },
     handleDelete (index, row) {
       console.log(index, row)
+    },
+    handleSizeChange (val) {
+      console.log(`每页 ${val} 条`)
+    },
+    handleCurrentPageChange (val) {
+      console.log(`当前页: ${val}`)
     }
   }
 

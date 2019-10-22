@@ -60,13 +60,13 @@ export default {
         {
           'menuId': '31',
           'name': '视图管理',
-          'path': '/log',
+          'path': '/viewmanagement',
           'type': 1
         },
         {
           'menuId': '32',
           'name': '分组管理',
-          'path': '/log',
+          'path': '/groupmanagement',
           'type': 1
         },
         {
