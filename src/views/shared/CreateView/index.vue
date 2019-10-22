@@ -35,8 +35,8 @@
           <el-col :span="12">
             <div class="grid-content bg-purple-light">
               <el-form-item label="启用状态">
-                  <el-switch v-model="form.delivery"></el-switch>
-                </el-form-item>
+                <el-switch v-model="form.delivery"></el-switch>
+              </el-form-item>
             </div>
           </el-col>
         </el-row>
@@ -50,6 +50,11 @@
                     show-checkbox
                     node-key="id"
                     draggable
+                    @check-change="currentchange"
+                    :check-strictly="true"
+                    :allow-drop="allowDrop"
+                    @node-drag-end="nodedragend"
+                    @node-drag-over="handleDragOver"
                     :expand-on-click-node="false">
                   </el-tree>
                 </div>
@@ -65,7 +70,8 @@
                     show-checkbox
                     node-key="id"
                     draggable
-                    :allow-drop="allowDrop"
+                    :check-strictly="true"
+                    @node-drag-enter="handleDragEnter"
                     :expand-on-click-node="false">
                   </el-tree>
                 </div>
@@ -165,8 +171,41 @@ export default {
   methods: {
     allowDrop (draggingNode, dropNode, type) {
     },
+    handleDragOver (draggingNode, dropNode, ev) {
+      console.log('tree drag over: ', dropNode.label)
+    },
+    // 拖拽结束时触发的事件
+    nodedragend (Node, lastNode, lastTree, e) {
+      if (e.screenX > 1020 && e.screenX < 1330 && e.screenY > 425 && e.screenY < 725) {
+        console.log('111111')
+      }
+      // console.log(e.screenX, '1020----------1330')
+      // console.log(e.screenY, '425----------725')
+    },
+    handleDragEnter () {
+    },
     onSubmit () {
       console.log('submit!')
+    },
+    // 单选框选中
+    currentchange (node, checked) {
+      if (checked) {
+        this.$confirm('是否选择子节点', '提示', {
+          confirmButtonText: '选择',
+          cancelButtonText: '不选择',
+          type: 'warning'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '选择!'
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '不选择'
+          })
+        })
+      }
     }
   }
 }
