@@ -7,6 +7,7 @@ const ViewManagement = () => import('@src/views/shared/ViewManagement/index.vue'
 const CreateView = () => import('@src/views/shared/CreateView/index.vue')
 const Parameter = () => import('@src/views/parameter/index.vue') /* webpackChunkName: 'home' */
 
+
 export default [
   {
     path: '/',
