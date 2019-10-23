@@ -41,6 +41,14 @@ export default {
         }
       })
     },
+    getTree () {
+      api[urlNames['getTree']]().then(res => {
+        this.treeData = res.data
+        this.id = this.treeData[0].id
+        this.setTreeId()
+        console.log('树', res.data)
+      })
+    },
     renderContent (h, { node, data, store }) {
       console.log(87, data)
       if (data.type === 'node') {
@@ -65,18 +73,21 @@ export default {
     }
   },
   created () {
-    api[urlNames['getTree']]().then(res => {
-      this.treeData = res.data
-      this.id = this.treeData[0].id
-      this.setTreeId()
-      console.log('树', res.data)
-    })
+    this.getTree()
   },
   watch: {
     id: {
       handler (val) {
         this.setTreeId()
       }
+    },
+    $route: {
+      handler (val) {
+        if (val.query.type || val.name === 'Organization') {
+          this.getTree()
+        }
+      },
+      deep: true
     }
   }
 }

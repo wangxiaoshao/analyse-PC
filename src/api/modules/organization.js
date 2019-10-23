@@ -12,5 +12,11 @@ export default {
     url: '/work/service/getChildList',
     serve: 'workspaceManagement',
     mock: 'getChildList.json'
+  },
+  [urlNames.getPersonList]: {
+    type: 'get',
+    url: '/work/service/getPersonList',
+    serve: 'workspaceManagement',
+    mock: 'getPersonList.json'
   }
 }

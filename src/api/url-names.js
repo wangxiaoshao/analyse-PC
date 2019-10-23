@@ -26,5 +26,6 @@ export default {
   setParameter: 'setParameter',
   getParameter: 'getParameter',
   getTree: 'getTree',
-  getChildList: 'getChildList'
+  getChildList: 'getChildList',
+  getPersonList: 'getPersonList'
 }

@@ -4,11 +4,11 @@
 // import rights from './modules/rights'
 // import parameter from './modules/parameter'
 import organization from './modules/organization'
-import urlNames from './url-names';
-import application from './modules/application';
-import examine from './modules/examine';
-import logs from './modules/logs';
-import statistics from './modules/statistics';
+import urlNames from './url-names'
+import application from './modules/application'
+import examine from './modules/examine'
+import logs from './modules/logs'
+import statistics from './modules/statistics'
 
 export default {
   [urlNames.getUserInfo]: {

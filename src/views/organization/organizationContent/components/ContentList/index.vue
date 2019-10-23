@@ -1,13 +1,12 @@
 <template>
   <div class="content-list">
-    <div class="button-wrap" v-if="isShowEditFlag">
-      <el-button>添加下级</el-button>
-      <el-button @click="sortListFlag = true">调整排序</el-button>
+    <div class="button-wrap">
+      <el-button @click="sortList">调整排序</el-button>
     </div>
-    <div class="sort-do" v-if="sortListFlag">
+    <div class="sort-do" v-if="sortFlag">
       按住左键上下拖动调整排序
       <a>保存</a>
-      <a  @click="sortListFlag = false">取消</a>
+      <a  @click="cancelSort">取消</a>
     </div>
     <el-table
       v-loading="loading"
@@ -21,7 +20,7 @@
     >
       <el-table-column prop="description" label="序号" width="60">
         <template slot-scope="scope">
-          <i class="sortBtnDo menu-icon fa fa-bars"  v-if="sortListFlag" style="font-size: 25px"></i>
+          <i class="sortBtnDo menu-icon fa fa-bars"  v-if="sortFlag" style="font-size: 25px"></i>
           <span :title="scope" v-else>{{scope.$index + 1}}</span>
         </template>
       </el-table-column>
@@ -65,10 +64,10 @@ export default {
     }
   },
   props: {
-    /* sortFlag: {
+    sortFlag: {
       type: Boolean,
       request: true
-    } */
+    }
   },
   methods: {
     getGrid () {
@@ -85,6 +84,12 @@ export default {
         this.list = []
         this.page.total = 0
       })
+    },
+    cancelSort () {
+      this.$emit('cancel', false)
+    },
+    sortList () {
+      this.$emit('cancel', true)
     }
 
   },
@@ -100,7 +105,7 @@ export default {
 
   },
   watch: {
-    sortListFlag: {
+    sortFlag: {
       handler (val) {
         const tbody = document.querySelector('#contentTable tbody')
         const items = this.list
