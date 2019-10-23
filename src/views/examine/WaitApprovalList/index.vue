@@ -250,7 +250,7 @@ export default {
       this.SET_APPLICATION_PAGE(this.page)
       this.SET_APPLICATION_SEARCH_QUERY(this.searchQuery)
       this.$router.push({
-        name: 'WaitApprovalItem',
+        name: 'ExamineDetails',
         params: {
           id: 12
         }
