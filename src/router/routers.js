@@ -16,6 +16,11 @@ const UnitDetail = () => import('@src/views/organization/UnitDetail/index.vue')
 const DepartmentDetail = () => import('@src/views/organization/DepartmentDetail/index.vue')
 const PersonDetail = () => import('@src/views/organization/PersonDetail/index.vue')
 
+const Shared = () => import('@src/views/shared/index.vue') /* webpackChunkName: 'home' */
+const ViewManagement = () => import('@src/views/shared/ViewManagement/index.vue')
+const CreateView = () => import('@src/views/shared/CreateView/index.vue')
+const GroupManagement = () => import('@src/views/shared/GroupManagement/index.vue')
+
 /* 路由 */
 export default [
   {
@@ -69,6 +74,7 @@ export default [
       }
     ]
   },
+
   // 申请审核 examine
   {
     path: '/approved',
@@ -122,9 +128,9 @@ export default [
   },
   // 参数配置
   {
-    path: '/parameter',
-    name: 'Parameter',
-    component: Parameter
+    path: '/organizationDetail',
+    name: 'organizationDetail',
+    component: OrganizationContent
   },
   // 组织机构详情页
   {

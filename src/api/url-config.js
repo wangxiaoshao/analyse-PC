@@ -1,8 +1,8 @@
 /**
  * Created by luoxie on 2019-07-17.
  */
-import rights from './modules/rights'
-import parameter from './modules/parameter'
+// import rights from './modules/rights'
+// import parameter from './modules/parameter'
 import organization from './modules/organization'
 import urlNames from './url-names';
 import application from './modules/application';
@@ -32,6 +32,6 @@ export default {
   ...examine, // 申请审核
   ...logs,
   ...statistics, // 数据统计
-  ...parameter,
+  // ...parameter,
   ...organization
 }
