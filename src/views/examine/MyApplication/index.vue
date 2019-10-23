@@ -28,7 +28,9 @@
                 :operateWidth="operateWidth"
                 :operate="operate"
                 :tableData="tableData">
-      <el-button slot="operate" size="mini" type="text" @click="goConfig">查看明细</el-button>
+      <template slot-scope="{slotScope}" slot="operate">
+        <el-button slot="operate" size="mini" type="text" @click="goConfig(slotScope)">查看明细</el-button>
+      </template>
     </site-table>
     <!--分页-->
     <el-pagination
@@ -52,25 +54,18 @@
       :areaList="areaList"
       @refreshList="getGrid"
       @close="closeAddDialog"></edit-dialog>
-    <!--配置dialog-->
-    <config-dialog
-      :visible="configDialogVisible"
-      :areaList="areaList"
-      @refreshList="getGrid"
-      @close="closeConfigDialogVisible"></config-dialog>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 import EditDialog from '../components/EditDialog'
-import ConfigDialog from '../components/EditDialog'
 import handleTable from '@src/mixins/handleTable'
 import { api, urlNames } from '@src/api'
 import SiteTable from '@src/components/SiteTable/index.vue'
 import { mapState, mapMutations } from 'vuex'
 
 export default {
-  components: { EditDialog, ConfigDialog, SiteTable },
+  components: { EditDialog, SiteTable },
   mixins: [handleTable],
   data () {
     return {
@@ -85,7 +80,6 @@ export default {
       dictionaryNameList: [],
       editDialogVisible: false,
       addDialogVisible: false,
-      configDialogVisible: false,
       currentEdit: null,
       currentParent: {
         description: '',
@@ -237,7 +231,6 @@ export default {
       this.currentParent.type = row.type
       this.currentParent.description = row.description
       this.currentParent.orderNum = row.orderNum + 10
-      this.configDialogVisible = true
     },
     showEditDialog (row) {
       api[urlNames['getApplicationDetail']]({ id: row.id }).then((res) => {
@@ -247,10 +240,11 @@ export default {
       })
     },
     goConfig (row) {
+      console.log(row)
       this.SET_APPLICATION_PAGE(this.page)
       this.SET_APPLICATION_SEARCH_QUERY(this.searchQuery)
       this.$router.push({
-        name: 'WaitApprovalItem',
+        name: 'ExamineDetails',
         params: {
           id: 12
         }
@@ -264,9 +258,6 @@ export default {
     },
     closeAddDialog () {
       this.addDialogVisible = false
-    },
-    closeConfigDialogVisible () {
-      this.configDialogVisible = false
     },
     handleAction (action, row) {
       let actionName = '删除'

@@ -1,13 +1,18 @@
 const Application = () => import('@src/views/application/index.vue') /* webpackChunkName: 'home' */
 const ApplicationList = () => import('@src/views/application/ApplicationList/index.vue') /* webpackChunkName: 'home' */
 const ApplicationConfig = () => import('@src/views/application/ApplicationConfig/index.vue') /* webpackChunkName: 'home' */
+
+
+// 申请审核
 const WaitApprovalList = () => import('@src/views/examine/WaitApprovalList/index.vue') /* webpackChunkName: 'home' */
-const WaitApprovalItem = () => import('@src/views/examine/WaitApprovalItem/index.vue') /* webpackChunkName: 'home' */
+const ExamineDetails = () => import('@src/views/examine/ExamineDetails/index.vue') /* webpackChunkName: 'home' */
 const Approved = () => import('@src/views/examine/Approved/index.vue') /* webpackChunkName: 'home' */
 const MyApplication = () => import('@src/views/examine/MyApplication/index.vue') /* webpackChunkName: 'home' */
 const ConfirmInfo = () => import('@src/views/examine/ConfirmInfo/index.vue') /* webpackChunkName: 'home' */
-const Log = () => import('@src/views/log/index.vue') /* webpackChunkName: 'home' */
-const Statistics = () => import('@src/views/statistics/index.vue') /* webpackChunkName: 'home' */
+// 统计管理
+const DataStatistics = () => import('@src/views/statistics/DataStatistics/index.vue') /* webpackChunkName: 'home' */
+const DataLog = () => import('@src/views/statistics/DataLog/index.vue') /* webpackChunkName: 'home' */
+const DataQuery = () => import('@src/views/statistics/DataQuery/index.vue') /* webpackChunkName: 'home' */
 
 const Organization = () => import('@src/views/organization/index.vue')
 const OrganizationContent = () => import('@src/views/organization/organizationContent/index.vue')
@@ -93,6 +98,8 @@ export default [
     ]
   },
 
+
+
   // 申请审核 examine
   {
     path: '/approved',
@@ -105,11 +112,6 @@ export default [
     component: WaitApprovalList
   },
   {
-    path: '/waitApprovalItem',
-    name: 'WaitApprovalItem',
-    component: WaitApprovalItem
-  },
-  {
     path: '/myApplication',
     name: 'MyApplication',
     component: MyApplication
@@ -119,7 +121,13 @@ export default [
     name: 'ConfirmInfo',
     component: ConfirmInfo
   },
-  // 日志统计
+  {
+    path: '/examineDetails',
+    name: 'ExamineDetails',
+    component: ExamineDetails
+  },
+
+
 
   // 共享管理
   {
@@ -188,5 +196,26 @@ export default [
     path: '/personDetail',
     name: 'PersonDetail',
     component: PersonDetail
-  }
+  },
+
+
+
+// 统计管理
+
+  {
+    path: '/dataStatistics',
+    name: 'DataStatistics',
+    component: DataStatistics,
+  },
+  {
+    path: '/dataQuery',
+    name: 'DataQuery',
+    component: DataQuery,
+  },
+  {
+    path: '/dataLog',
+    name: 'DataLog',
+    component: DataLog,
+  },
 ]
+
