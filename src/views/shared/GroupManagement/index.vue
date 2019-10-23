@@ -47,8 +47,9 @@
           <el-table-column
             label="操作"
             align="center"
-            width="100">
+            width="140">
             <template slot-scope="scope">
+              <el-button @click="handleClick(scope.row)" type="text" size="small">查看详情</el-button>
               <el-button @click="handleClick(scope.row)" type="text" size="small">编辑</el-button>
             </template>
           </el-table-column>
@@ -121,6 +122,7 @@ export default {
       this.currentRow = val
     },
     handleClick (row) {
+      this.$router.push({ name: 'GroupDetail' })
       console.log(row)
     },
     handleSizeChange (val) {
