@@ -1,7 +1,7 @@
 <template>
 <div class="app-management">
   <div class="create-app">
-    <el-button type="primary">创建应用</el-button>
+    <el-button type="primary" @click="createApp">创建应用</el-button>
   </div>
   <div class="table">
     <el-table
@@ -96,6 +96,10 @@ export default {
     },
     handleCurrentChange (val) {
       this.currentRow = val
+    },
+    // 创建应用
+    createApp () {
+      this.$router.push({ name: 'CreateAppManagement' })
     }
   }
 }

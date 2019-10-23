@@ -22,6 +22,7 @@ const CreateView = () => import('@src/views/shared/CreateView/index.vue')
 const GroupManagement = () => import('@src/views/shared/GroupManagement/index.vue')
 const GroupDetail = () => import('@src/views/shared/GroupDetail/index.vue')
 const AppManagement = () => import('@src/views/shared/AppManagement/index.vue')
+const CreateAppManagement = () => import('@src/views/shared/CreateAppManagement/index.vue')
 /* 路由 */
 export default [
   {
@@ -134,6 +135,11 @@ export default [
         path: '/AppManagement',
         name: 'AppManagement',
         component: AppManagement
+      },
+      {
+        path: 'CreateAppManagement',
+        name: 'CreateAppManagement',
+        component: CreateAppManagement
       }
     ]
   },
