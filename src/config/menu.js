@@ -78,7 +78,7 @@ export default {
         {
           'menuId': '34',
           'name': '应用管理',
-          'path': '/log',
+          'path': '/AppManagement',
           'type': 1
         }
       ]

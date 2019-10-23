@@ -20,7 +20,9 @@ const Shared = () => import('@src/views/shared/index.vue') /* webpackChunkName: 
 const ViewManagement = () => import('@src/views/shared/ViewManagement/index.vue')
 const CreateView = () => import('@src/views/shared/CreateView/index.vue')
 const GroupManagement = () => import('@src/views/shared/GroupManagement/index.vue')
-
+const GroupDetail = () => import('@src/views/shared/GroupDetail/index.vue')
+const AppManagement = () => import('@src/views/shared/AppManagement/index.vue')
+const CreateAppManagement = () => import('@src/views/shared/CreateAppManagement/index.vue')
 /* 路由 */
 export default [
   {
@@ -117,9 +119,9 @@ export default [
     name: 'ConfirmInfo',
     component: ConfirmInfo
   },
-  // 共享管理
-
   // 日志统计
+
+  // 共享管理
   {
     path: '/shared',
     name: 'Shared',
@@ -139,6 +141,21 @@ export default [
         path: '/groupmanagement',
         name: 'GroupManagement',
         component: GroupManagement
+      },
+      {
+        path: 'groupdetail',
+        name: 'GroupDetail',
+        component: GroupDetail
+      },
+      {
+        path: '/AppManagement',
+        name: 'AppManagement',
+        component: AppManagement
+      },
+      {
+        path: 'CreateAppManagement',
+        name: 'CreateAppManagement',
+        component: CreateAppManagement
       }
     ]
   },
