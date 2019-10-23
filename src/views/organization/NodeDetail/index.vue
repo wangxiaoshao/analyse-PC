@@ -74,6 +74,15 @@ export default {
         this.disabledFlag = true
         this.breadcrumbTitle = '节点详情'
       }
+      this.pushBreadcrumb({
+        name: this.breadcrumbTitle,
+        parent: {
+          name: 'Organization',
+          query: {
+            type: 'back'
+          }
+        }
+      })
     },
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
@@ -91,15 +100,6 @@ export default {
   },
   mounted () {
     this.setBreadcrumbTitle()
-    this.pushBreadcrumb({
-      name: this.breadcrumbTitle,
-      parent: {
-        name: 'OrganizationContent',
-        query: {
-          type: 'back'
-        }
-      }
-    })
   },
   created () {
     const obj = {

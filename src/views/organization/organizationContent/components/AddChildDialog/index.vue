@@ -11,7 +11,7 @@
         <div class="add-content">
           <el-button @click="goAddNode">添加节点</el-button>
           <el-button>添加部门</el-button>
-          <el-button>添加单位</el-button>
+          <el-button @click="goAddUnit">添加单位</el-button>
         </div>
       </el-dialog>
     </div>
@@ -38,6 +38,12 @@ export default {
       this.$emit('close', false)
     },
     closeDialog () {
+      this.$emit('close', false)
+    },
+    goAddUnit () {
+      this.$router.push({
+        name: 'UnitAdd'
+      })
       this.$emit('close', false)
     }
   }

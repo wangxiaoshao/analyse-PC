@@ -9,9 +9,7 @@
       </el-col>
       <el-col :span="17">
         <transition name="fade-transform" mode="out-in">
-          <keep-alive>
-            <router-view></router-view>
-          </keep-alive>
+          <router-view></router-view>
         </transition>
       </el-col>
     </el-row>

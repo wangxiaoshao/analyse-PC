@@ -25,29 +25,29 @@ export default {
       'icon': 'fa fa-check-square-o',
       'list': [
         {
-          "menuId": '21',
-          "name": "待我审核",
-          "path": "/waitApprovalList",
-          "type": 1
+          'menuId': '21',
+          'name': '待我审核',
+          'path': '/waitApprovalList',
+          'type': 1
         },
         {
-          "menuId": '22',
-          "name": "我已审核",
-          "path": "/approved",
-          "type": 1
+          'menuId': '22',
+          'name': '我已审核',
+          'path': '/approved',
+          'type': 1
         },
         {
-          "menuId": '23',
-          "name": "我的申请",
-          "path": "/myApplication",
-          "type": 1
+          'menuId': '23',
+          'name': '我的申请',
+          'path': '/myApplication',
+          'type': 1
         },
         {
-          "menuId": '24',
-          "name": "信息确认",
-          "path": "/confirmInfo",
-          "type": 1
-        },
+          'menuId': '24',
+          'name': '信息确认',
+          'path': '/confirmInfo',
+          'type': 1
+        }
       ]
     },
     {
@@ -91,22 +91,22 @@ export default {
       'icon': 'fa fa-bar-chart-o',
       'list': [
         {
-          "menuId": '41',
-          "name": "数据统计",
-          "path": "/statistics",
-          "type": 1
+          'menuId': '41',
+          'name': '数据统计',
+          'path': '/statistics',
+          'type': 1
         },
         {
-          "menuId": '42',
-          "name": "数据查询",
-          "path": "/statistics",
-          "type": 1
+          'menuId': '42',
+          'name': '数据查询',
+          'path': '/statistics',
+          'type': 1
         },
         {
-          "menuId": '43',
-          "name": "系统日志",
-          "path": "/statistics",
-          "type": 1
+          'menuId': '43',
+          'name': '系统日志',
+          'path': '/statistics',
+          'type': 1
         }
       ]
     },
