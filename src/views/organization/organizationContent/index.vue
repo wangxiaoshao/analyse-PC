@@ -1,6 +1,6 @@
 <template>
   <div class="organization-content">
-    <!--<add-dialog></add-dialog>-->
+    <add-dialog :visible="showDialogFlag" @close="closeAddDialog"></add-dialog>
     <div class="organization-wrap">
       <div class="organization-info">
         <span class="organization-value">贵州省</span>
@@ -9,8 +9,9 @@
       <div class="list-tab">
         <el-tabs v-model="activeName">
           <el-tab-pane label="下级设置" name="childSet">
+            <el-button @click="openAddDialog" class="add-btn">添加下级</el-button>
             <!--下级列表-->
-            <content-list :sortFlag="sortShowFlag"></content-list>
+            <content-list :sortFlag="sortShowFlag" @cancel="getSortAction"></content-list>
           </el-tab-pane>
           <el-tab-pane label="设置" name="set">
             <el-button type="primary" @click.native="goEdit">设置</el-button>
@@ -25,14 +26,15 @@
 
 <script>
 import ContentList from './components/ContentList/index'
-import addDialog from './components/AddChild/index'
+import addDialog from './components/AddChildDialog/index'
 export default {
   name: 'index',
   components: {
-    ContentList , addDialog
+    ContentList, addDialog
   },
   data () {
     return {
+      showDialogFlag: false,
       activeName: 'childSet',
       sortShowFlag: false
     }
@@ -46,6 +48,16 @@ export default {
           id: this.$route.params.id
         }
       })
+    },
+    closeAddDialog (type) {
+      this.showDialogFlag = type
+    },
+    openAddDialog () {
+      this.showDialogFlag = true
+      this.sortShowFlag = false
+    },
+    getSortAction (type) {
+      this.sortShowFlag = type
     }
   },
   created () {

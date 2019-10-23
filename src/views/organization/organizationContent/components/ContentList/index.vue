@@ -1,13 +1,12 @@
 <template>
   <div class="content-list">
-    <div class="button-wrap" v-if="isShowEditFlag">
-      <el-button>添加下级</el-button>
-      <el-button @click="sortListFlag = true">调整排序</el-button>
+    <div class="button-wrap">
+      <el-button @click="sortList">调整排序</el-button>
     </div>
-    <div class="sort-do" v-if="sortListFlag">
+    <div class="sort-do" v-if="sortFlag">
       按住左键上下拖动调整排序
       <a>保存</a>
-      <a  @click="sortListFlag = false">取消</a>
+      <a  @click="cancelSort">取消</a>
     </div>
     <el-table
       v-loading="loading"
@@ -65,10 +64,10 @@ export default {
     }
   },
   props: {
-    /* sortFlag: {
+    sortFlag: {
       type: Boolean,
       request: true
-    } */
+    }
   },
   methods: {
     getGrid () {
@@ -85,6 +84,12 @@ export default {
         this.list = []
         this.page.total = 0
       })
+    },
+    cancelSort () {
+      this.$emit('cancel', false)
+    },
+    sortList () {
+      this.$emit('cancel', true)
     }
 
   },

@@ -38,11 +38,16 @@ export default {
       disabledFlag: false,
       breadcrumbTitle: '添加节点',
       submitHtml: '保存',
+      oldFrom: {},
       ruleForm: {
         name: '',
         able: false,
         parent: '',
         reason: ''
+      },
+      application: {
+        name: '',
+        able: false
       },
       rules: {
         name: [
@@ -54,25 +59,19 @@ export default {
       }
     }
   },
-  created () {
-    console.log(this.$route.name)
-    if (this.$route.name === 'NodeEdit') {
-      this.isShowEditFlag = true
-      this.disabledFlag = false
-    } else {
-      this.isShowEditFlag = false
-      this.disabledFlag = true
-    }
-  },
   methods: {
     setBreadcrumbTitle () { // 设置面包屑title
-      if (this.$route.name === 'NodeEdit') {
-        if (this.$route.params.id) {
+      if (this.$route.name === 'NodeEdit' || this.$route.name === 'NodeAdd') {
+        this.isShowEditFlag = true
+        this.disabledFlag = false
+        if (this.$route.name === 'NodeEdit') {
           this.breadcrumbTitle = '编辑节点'
         } else {
           this.breadcrumbTitle = '添加节点'
         }
       } else {
+        this.isShowEditFlag = false
+        this.disabledFlag = true
         this.breadcrumbTitle = '节点详情'
       }
     },
@@ -102,10 +101,36 @@ export default {
       }
     })
   },
+  created () {
+    const obj = {
+      able: this.ruleForm.able,
+      reason: this.ruleForm.reason
+    }
+    this.oldFrom = JSON.parse(JSON.stringify(obj))
+  },
+  computed: {
+    newValue () {
+      const obj = {
+        able: this.ruleForm.able,
+        reason: this.ruleForm.reason
+      }
+      return obj
+    }
+  },
   watch: {
     $route: {
-      handle (val) {
+      handler (val) {
         this.setBreadcrumbTitle()
+      },
+      deep: true
+    },
+    newValue: {
+      handler (val) {
+        if (val.able !== this.oldFrom.able || val.reason !== this.oldFrom.reason) {
+          this.submitHtml = '保存并提交申请'
+        } else {
+          this.submitHtml = '保存'
+        }
       },
       deep: true
     }

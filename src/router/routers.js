@@ -1,13 +1,13 @@
-const Application = () => import('@src/views/application/index.vue'); /* webpackChunkName: 'home' */
-const ApplicationList = () => import('@src/views/application/ApplicationList/index.vue'); /* webpackChunkName: 'home' */
-const ApplicationConfig = () => import('@src/views/application/ApplicationConfig/index.vue'); /* webpackChunkName: 'home' */
-const WaitApprovalList = () => import('@src/views/examine/WaitApprovalList/index.vue'); /* webpackChunkName: 'home' */
-const WaitApprovalItem = () => import('@src/views/examine/WaitApprovalItem/index.vue'); /* webpackChunkName: 'home' */
-const Approved = () => import('@src/views/examine/Approved/index.vue'); /* webpackChunkName: 'home' */
-const MyApplication = () => import('@src/views/examine/MyApplication/index.vue'); /* webpackChunkName: 'home' */
-const ConfirmInfo = () => import('@src/views/examine/ConfirmInfo/index.vue'); /* webpackChunkName: 'home' */
-const Log = () => import('@src/views/log/index.vue'); /* webpackChunkName: 'home' */
-const Statistics = () => import('@src/views/statistics/index.vue'); /* webpackChunkName: 'home' */
+const Application = () => import('@src/views/application/index.vue') /* webpackChunkName: 'home' */
+const ApplicationList = () => import('@src/views/application/ApplicationList/index.vue') /* webpackChunkName: 'home' */
+const ApplicationConfig = () => import('@src/views/application/ApplicationConfig/index.vue') /* webpackChunkName: 'home' */
+const WaitApprovalList = () => import('@src/views/examine/WaitApprovalList/index.vue') /* webpackChunkName: 'home' */
+const WaitApprovalItem = () => import('@src/views/examine/WaitApprovalItem/index.vue') /* webpackChunkName: 'home' */
+const Approved = () => import('@src/views/examine/Approved/index.vue') /* webpackChunkName: 'home' */
+const MyApplication = () => import('@src/views/examine/MyApplication/index.vue') /* webpackChunkName: 'home' */
+const ConfirmInfo = () => import('@src/views/examine/ConfirmInfo/index.vue') /* webpackChunkName: 'home' */
+const Log = () => import('@src/views/log/index.vue') /* webpackChunkName: 'home' */
+const Statistics = () => import('@src/views/statistics/index.vue') /* webpackChunkName: 'home' */
 
 const Organization = () => import('@src/views/organization/index.vue')
 const OrganizationContent = () => import('@src/views/organization/organizationContent/index.vue')
@@ -71,6 +71,22 @@ export default [
         path: 'personEdit/:id',
         name: 'PersonEdit',
         component: PersonDetail
+      }, {
+        path: 'nodeAdd',
+        name: 'NodeAdd',
+        component: NodeDetail
+      }, {
+        path: 'unitAdd',
+        name: 'UnitAdd',
+        component: UnitDetail
+      }, {
+        path: 'departmentAdd',
+        name: 'DepartmentAdd',
+        component: DepartmentDetail
+      }, {
+        path: 'personAdd',
+        name: 'PersonAdd',
+        component: PersonDetail
       }
     ]
   },
@@ -125,12 +141,6 @@ export default [
         component: GroupManagement
       }
     ]
-  },
-  // 参数配置
-  {
-    path: '/organizationDetail',
-    name: 'organizationDetail',
-    component: OrganizationContent
   },
   // 组织机构详情页
   {
