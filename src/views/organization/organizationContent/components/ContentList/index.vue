@@ -20,7 +20,7 @@
     >
       <el-table-column prop="description" label="序号" width="60">
         <template slot-scope="scope">
-          <i class="sortBtnDo menu-icon fa fa-bars"  v-if="sortListFlag" style="font-size: 25px"></i>
+          <i class="sortBtnDo menu-icon fa fa-bars"  v-if="sortFlag" style="font-size: 25px"></i>
           <span :title="scope" v-else>{{scope.$index + 1}}</span>
         </template>
       </el-table-column>
@@ -105,7 +105,7 @@ export default {
 
   },
   watch: {
-    sortListFlag: {
+    sortFlag: {
       handler (val) {
         const tbody = document.querySelector('#contentTable tbody')
         const items = this.list
