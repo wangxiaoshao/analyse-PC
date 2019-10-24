@@ -14,6 +14,8 @@ export default {
   getApplicationConfig: 'getApplicationConfig',
   editApplicationConfig: 'editApplicationConfig',
   // 申请审核 examine
+  getMyAuditList: 'getMyAuditList',
+
   getDepartmentNodes: 'getDepartmentNodes',
   geMtmemberSelector: 'geMtmemberSelector',
   geMtmemberSearch: 'geMtmemberSearch',

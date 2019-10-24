@@ -13,7 +13,7 @@
         </el-table-column>
         <template v-for="item in tableConfig">
           <el-table-column
-                        :prop="item.key"
+                        :prop="item.id"
                         v-if="!item.tooltip"
                         align="center"
                         :formatter="item.formatter"
@@ -22,6 +22,9 @@
                         :sortable="item.sortable"
                         :show-overflow-tooltip="item.showOverflowTooltip || false"
                         :min-width="item.minWidth || null">
+            <template slot-scope="scope">
+              <div>{{item.field === 'order' ? scope.$index + 1 : scope.row[item.field]}}</div>
+            </template>
         </el-table-column>
         <el-table-column v-else
                         align="center"
@@ -34,7 +37,7 @@
               <template slot-scope="scope">
                 <el-tooltip class="item" effect="dark" :content="scope.row[item.field]" placement="top">
                   <div>
-                    {{scope.row[item.field]}}
+                    {{item.field === 'order' ? scope.$index + 1 : scope.row[item.field]}}
                   </div>
                 </el-tooltip>
               </template>
@@ -98,7 +101,6 @@ export default {
     }
   },
   created () {
-    console.log(this.tableConfig)
   },
   methods: {
     // 排序

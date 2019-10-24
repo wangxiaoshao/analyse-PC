@@ -27,7 +27,7 @@ export default {
         {
           'menuId': '21',
           'name': '待我审核',
-          'path': '/waitApprovalList',
+          'path': '/wait-approval',
           'type': 1
         },
         {
@@ -39,13 +39,13 @@ export default {
         {
           'menuId': '23',
           'name': '我的申请',
-          'path': '/myApplication',
+          'path': '/my-application',
           'type': 1
         },
         {
           'menuId': '24',
           'name': '信息确认',
-          'path': '/confirmInfo',
+          'path': '/confirm-info',
           'type': 1
         }
       ]
@@ -93,19 +93,19 @@ export default {
         {
           'menuId': '41',
           'name': '数据统计',
-          'path': '/dataStatistics',
+          'path': '/data-statistics',
           'type': 1
         },
         {
           'menuId': '42',
           'name': '数据查询',
-          'path': '/dataQuery',
+          'path': '/data-query',
           'type': 1
         },
         {
           'menuId': '43',
           'name': '系统日志',
-          'path': '/dataLog',
+          'path': '/data-log',
           'type': 1
         }
       ]

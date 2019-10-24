@@ -28,7 +28,9 @@
                 :operateWidth="operateWidth"
                 :operate="operate"
                 :tableData="tableData">
-      <el-button slot="operate" size="mini" type="text" @click="goConfig">查看明细</el-button>
+          <template slot-scope="{slotScope}" slot="operate">
+            <el-button size="mini" type="text" @click="goConfig(slotScope.row)">查看明细</el-button>
+          </template>
     </site-table>
     <!--分页-->
     <el-pagination
@@ -96,68 +98,70 @@ export default {
         value: ''
       },
       tableConfig: {
-        item1: {
-          key: 1,
-          field: 'name',
-          tooltip: true,
+        order: {
+          key: 0,
+          field: 'order',
+          tooltip: false,
           formatter: this.formatter,
-          label: '姓名',
-          sortable: true,
-          showOverflowTooltip: false,
-          minWidth: 200
-        },
-        item2: {
-          key: 2,
-          field: 'age',
-          tooltip: true,
-          formatter: this.formatter,
-          label: '年龄',
+          label: '序号',
           sortable: false,
           showOverflowTooltip: false,
-          minWidth: 200
+          minWidth: 50
         },
-        item3: {
-          key: 3,
-          field: 'address',
+        name: {
+          key: 1,
+          field: 'name',
+          tooltip: false,
+          formatter: this.formatter,
+          label: '申请人',
+          sortable: false,
+          showOverflowTooltip: false,
+          minWidth: 100
+        },
+        content: {
+          key: 2,
+          field: 'content',
           tooltip: true,
           formatter: this.formatter,
-          label: '地址',
+          label: '申请内容',
+          sortable: false,
+          showOverflowTooltip: false,
+          minWidth: 100
+        },
+        time: {
+          key: 3,
+          field: 'time',
+          tooltip: false,
+          formatter: this.formatter,
+          label: '申请时间',
+          sortable: false,
+          showOverflowTooltip: false,
+          minWidth: 100
+        },
+        reason: {
+          key: 4,
+          field: 'reason',
+          tooltip: false,
+          formatter: this.formatter,
+          label: '申请原因',
+          sortable: false,
+          showOverflowTooltip: false,
+          minWidth: 100
+        },
+        auditState: {
+          key: 5,
+          field: 'auditState',
+          tooltip: false,
+          formatter: this.formatter,
+          label: '审核状态',
           sortable: true,
           showOverflowTooltip: false,
-          minWidth: 200
+          minWidth: 100
         }
       },
-      tableData: [{
-        key: 1,
-        field: 'address',
-        date: '2016-05-02',
-        name: '王',
-        age: '10',
-        address: '上海市普陀区金沙江路 1 弄'
-      },
-      {
-        key: 2,
-        date: '2016-05-04',
-        name: '张',
-        age: '20',
-        address: '上海市普陀区金沙江路 3 弄'
-      },
-      {
-        key: 3,
-        date: '2016-05-01',
-        name: '李',
-        age: '30',
-        address: '上海市普陀区金沙江路 4 弄'
-      },
-      {
-        key: 4,
-        date: '2016-05-03',
-        name: '麻',
-        age: '40',
-        address: '上海市普陀区金沙江路 2 弄'
-      }],
+      tableData: [],
       tableHeight: 200,
-      operateWidth: 300,
+      operateWidth: 100,
       tableCheckbox: true,
       operate: true
     }
@@ -176,6 +180,7 @@ export default {
     this.initQuery()
     this.getAreaList()
     this.getGrid()
+    this.getMyAuditList()
   },
   methods: {
     ...mapMutations(['SET_APPLICATION_PAGE', 'SET_APPLICATION_SEARCH_QUERY']),
@@ -194,6 +199,11 @@ export default {
     },
     trim (str) {
       return (str + '').replace(/(\s+)$/g, '').replace(/^\s+/g, '')
+    },
+    getMyAuditList () {
+      api[urlNames['getMyAuditList']]().then((res) => {
+        this.tableData = res.data
+      })
     },
     getAreaList () {
       api[urlNames['getAreaList']]().then((res) => {
@@ -247,6 +257,7 @@ export default {
       })
     },
     goConfig (row) {
+      console.log(row)
       this.SET_APPLICATION_PAGE(this.page)
       this.SET_APPLICATION_SEARCH_QUERY(this.searchQuery)
       this.$router.push({
