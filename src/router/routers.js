@@ -60,7 +60,7 @@ export default [
     component: Organization,
     children: [
       {
-        path: 'organization-content/:nodeId',
+        path: 'organization-content/:nodeId/:name/:nodeType',
         name: 'OrganizationContent',
         component: OrganizationContent
       }, {
@@ -80,7 +80,7 @@ export default [
         name: 'PersonEdit',
         component: PersonDetail
       }, {
-        path: 'nodeAdd/:parentId',
+        path: 'nodeAdd/:parentId/:name',
         name: 'NodeAdd',
         component: NodeDetail
       }, {

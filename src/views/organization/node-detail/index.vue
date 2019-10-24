@@ -10,8 +10,8 @@
       <el-form-item label="节点名称" prop="name">
         <el-input v-model="ruleForm.name" ></el-input>
       </el-form-item>
-      <el-form-item label="上级节点" prop="parent">
-        <el-input v-model="ruleForm.parent" :disabled="true"></el-input>
+      <el-form-item label="上级节点">
+        <el-input v-model="parentName" :disabled="true"></el-input>
       </el-form-item>
       <el-form-item label="是否启用" prop="enable">
         <el-switch v-model="ruleForm.enable"></el-switch>
@@ -37,16 +37,15 @@ export default {
     return {
       isShowEditFlag: true,
       disabledFlag: false,
+      current: false,
       breadcrumbTitle: '添加节点',
       submitHtml: '保存',
       oldFrom: {},
+      parentName: this.$route.params.name,
       ruleForm: {
         reason: '',
-        viewId: '',
         name: '',
-        id: '',
-        parentId: Number,
-        enable: 1
+        enable: false
       },
       rules: {
         name: [
@@ -86,11 +85,17 @@ export default {
     submitForm (ruleForm) {
       this.$refs[ruleForm].validate((valid) => {
         if (valid) {
-          api[urlNames['createViewNode']](ruleForm).then((res) => {
-            this.$message({
-              message: this.current ? '修改成功' : '添加成功',
-              type: 'success'
-            })
+          const data = {
+            reason: this.ruleForm.reason,
+            viewNode: {
+              parentId: this.$route.params.parentId,
+              name: this.ruleForm.name,
+              enable: this.ruleForm.enable
+            }
+          }
+          api[urlNames['createViewNode']](data).then((res) => {
+            this.$message.success(`添加成功`)
+            console.log(res)
           }, (error) => {
 
           })
@@ -130,7 +135,7 @@ export default {
     },
     newValue: {
       handler (val) {
-        if (val.able !== this.oldFrom.able || val.reason !== this.oldFrom.reason) {
+        if (val.enable !== this.oldFrom.enable || val.reason !== this.oldFrom.reason) {
           this.submitHtml = '保存并提交申请'
         } else {
           this.submitHtml = '保存'

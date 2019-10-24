@@ -2,12 +2,14 @@
   <div class="organization-content">
     <el-row>
       <el-col :span="7">
-        <search-result></search-result>
-        <div class="tree-content">
-          <organization-tree></organization-tree>
-        </div>
+       <div style="padding-right: 20px">
+         <search-result></search-result>
+         <div class="tree-content">
+           <organization-tree></organization-tree>
+         </div>
+       </div>
       </el-col>
-      <el-col :span="17">
+      <el-col :span="17" style="border-left: 1px solid #f2f2f2">
         <transition name="fade-transform" mode="out-in">
           <router-view></router-view>
         </transition>
@@ -18,8 +20,8 @@
 
 <script>
 import { api, urlNames } from '@src/api'
-import organizationTree from './components/Tree/index'
-import searchResult from './components/Result/index'
+import organizationTree from './components/tree/index'
+import searchResult from './components/result/index'
 export default {
   name: 'index',
   components: {

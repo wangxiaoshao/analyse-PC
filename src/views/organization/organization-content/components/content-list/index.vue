@@ -18,14 +18,14 @@
       size="medium"
       id="contentTable"
     >
-      <el-table-column prop="description" label="序号" width="60">
+      <el-table-column prop="description" label="序号" width="60" align="center">
         <template slot-scope="scope">
           <i class="sortBtnDo menu-icon fa fa-bars"  v-if="sortFlag" style="font-size: 25px"></i>
           <span :title="scope" v-else>{{scope.$index + 1}}</span>
         </template>
       </el-table-column>
       <el-table-column label="name" prop="name"></el-table-column>
-      <el-table-column prop="act" label="操作" width="100">
+      <el-table-column prop="act" label="操作" width="100" align="center">
         <template slot-scope="scope">
           <el-button
             @click.native.prevent="deleteRow(scope.$index, tableData4)"

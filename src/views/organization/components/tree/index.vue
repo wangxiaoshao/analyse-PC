@@ -26,18 +26,25 @@ export default {
         children: 'children',
         label: 'label'
       },
-      id: Number
+      id: Number,
+      label: '',
+      nodeType: ''
     }
   },
   methods: {
     selectNode (el) {
       this.id = el.id
+      this.label = el.label
+      this.nodeType = el.type
+      this.setTreeId()
     },
     setTreeId () {
       this.$router.push({
         name: 'OrganizationContent',
         params: {
-          nodeId: this.id
+          nodeId: this.id,
+          name: this.label,
+          nodeType: this.nodeType
         }
       })
     },
@@ -45,6 +52,8 @@ export default {
       api[urlNames['getTree']]().then(res => {
         this.treeData = res.data
         this.id = this.treeData[0].id
+        this.label = this.treeData[0].label
+        this.nodeType = this.treeData[0].type
         console.log('树', res.data)
         if (this.$route.name === 'Organization' || this.$route.name === 'OrganizationContent') {
           this.setTreeId()
@@ -76,18 +85,8 @@ export default {
   },
   created () {
     this.getTree()
-    if (this.$route.name === 'Organization') {
-      // this.setTreeId()
-      this.getTree()
-    }
-    // this.setTreeId()
   },
   watch: {
-    id: {
-      handler (val) {
-        // this.setTreeId()
-      }
-    },
     $route: {
       handler (val) {
         if (val.query.type || val.name === 'Organization') {
