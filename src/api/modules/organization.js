@@ -18,5 +18,15 @@ export default {
     url: '/work/service/getPersonList',
     serve: 'workspaceManagement',
     mock: 'getPersonList.json'
+  },
+  [urlNames.editApplication]: {
+    type: 'post',
+    url: '/work/service/createViewNode',
+    showLoading: true,
+    serve: 'workspaceManagement',
+    mock: 'createViewNode.json',
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
   }
 }

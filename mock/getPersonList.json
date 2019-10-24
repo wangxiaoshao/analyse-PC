@@ -3,19 +3,14 @@
   "message": "成功",
   "data": [
     {
-      "name": "程昱",
-      "user": "gzhz1",
-      "tel": "131****1251",
-      "type": "主身份",
-      "position": "111",
-      "id": "1"
-    },{
-      "name": "张三",
-      "user": "gzhz1",
-      "tel": "131****1251",
-      "type": "兼职",
-      "position": "111",
-      "id": "2"
+      "nation": "SSI",
+      "sex": 35,
+      "mobile": "WLRLoIxsaO",
+      "uid": 3632,
+      "qualification": "Iar7",
+      "removed": false,
+      "idcard": "cm6hAUap",
+      "name": 4785
     }
   ],
   "first": 1,

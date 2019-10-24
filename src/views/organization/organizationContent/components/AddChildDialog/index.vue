@@ -30,10 +30,15 @@ export default {
   computed: {
     ...mapState(['app'])
   },
+  created () {
+  },
   methods: {
     goAddNode () {
       this.$router.push({
-        name: 'NodeAdd'
+        name: 'NodeAdd',
+        params: {
+          parentId: this.$route.params.nodeId
+        }
       })
       this.$emit('close', false)
     },

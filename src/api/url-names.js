@@ -27,5 +27,7 @@ export default {
   getParameter: 'getParameter',
   getTree: 'getTree',
   getChildList: 'getChildList',
-  getPersonList: 'getPersonList'
+  getPersonList: 'getPersonList',
+  createViewNode: 'createViewNode'
+
 }

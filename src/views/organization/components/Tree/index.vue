@@ -26,7 +26,7 @@ export default {
         children: 'children',
         label: 'label'
       },
-      id: 1111
+      id: Number
     }
   },
   methods: {
@@ -37,7 +37,7 @@ export default {
       this.$router.push({
         name: 'OrganizationContent',
         params: {
-          id: this.id
+          nodeId: this.id
         }
       })
     },
@@ -45,8 +45,10 @@ export default {
       api[urlNames['getTree']]().then(res => {
         this.treeData = res.data
         this.id = this.treeData[0].id
-        this.setTreeId()
         console.log('树', res.data)
+        if (this.$route.name === 'Organization' || this.$route.name === 'OrganizationContent') {
+          this.setTreeId()
+        }
       })
     },
     renderContent (h, { node, data, store }) {
@@ -74,17 +76,23 @@ export default {
   },
   created () {
     this.getTree()
+    if (this.$route.name === 'Organization') {
+      // this.setTreeId()
+      this.getTree()
+    }
+    // this.setTreeId()
   },
   watch: {
     id: {
       handler (val) {
-        this.setTreeId()
+        // this.setTreeId()
       }
     },
     $route: {
       handler (val) {
         if (val.query.type || val.name === 'Organization') {
           this.getTree()
+          this.setTreeId()
         }
       },
       deep: true
