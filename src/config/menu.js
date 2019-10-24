@@ -72,13 +72,13 @@ export default {
         {
           'menuId': '33',
           'name': '标签管理',
-          'path': '/log',
+          'path': '/tagsmnagement',
           'type': 1
         },
         {
           'menuId': '34',
           'name': '应用管理',
-          'path': '/AppManagement',
+          'path': '/appmanagement',
           'type': 1
         }
       ]
