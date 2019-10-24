@@ -15,11 +15,11 @@ const DataLog = () => import('@src/views/statistics/DataLog/index.vue') /* webpa
 const DataQuery = () => import('@src/views/statistics/DataQuery/index.vue') /* webpackChunkName: 'home' */
 
 const Organization = () => import('@src/views/organization/index.vue')
-const OrganizationContent = () => import('@src/views/organization/organizationContent/index.vue')
-const NodeDetail = () => import('@src/views/organization/NodeDetail/index.vue')
-const UnitDetail = () => import('@src/views/organization/UnitDetail/index.vue')
-const DepartmentDetail = () => import('@src/views/organization/DepartmentDetail/index.vue')
-const PersonDetail = () => import('@src/views/organization/PersonDetail/index.vue')
+const OrganizationContent = () => import('@src/views/organization/organization-content/index.vue')
+const NodeDetail = () => import('@src/views/organization/node-detail/index.vue')
+const UnitDetail = () => import('@src/views/organization/unit-detail/index.vue')
+const DepartmentDetail = () => import('@src/views/organization/department-detail/index.vue')
+const PersonDetail = () => import('@src/views/organization/person-detail/index.vue')
 
 const Shared = () => import('@src/views/shared/index.vue') /* webpackChunkName: 'home' */
 const ViewManagement = () => import('@src/views/shared/ViewManagement/index.vue')
@@ -59,7 +59,7 @@ export default [
     component: Organization,
     children: [
       {
-        path: 'organizationContent/:nodeId',
+        path: 'organization-content/:nodeId',
         name: 'OrganizationContent',
         component: OrganizationContent
       }, {

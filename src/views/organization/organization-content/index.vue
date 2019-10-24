@@ -33,9 +33,9 @@
 </template>
 
 <script>
-import ContentList from './components/ContentList/index'
-import PersonList from './components/PersonList/index'
-import addDialog from './components/AddChildDialog/index'
+import ContentList from './components/content-list/index'
+import PersonList from './components/personlist/index'
+import addDialog from './components/add-dialog/index'
 export default {
   name: 'index',
   components: {
