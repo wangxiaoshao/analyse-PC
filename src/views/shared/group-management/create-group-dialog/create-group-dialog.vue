@@ -67,5 +67,5 @@ export default {
 </script>
 
 <style scoped lang="less">
-@import "./creategroupdialog";
+  @import "./index";
 </style>

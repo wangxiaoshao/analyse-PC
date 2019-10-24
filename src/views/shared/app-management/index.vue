@@ -91,7 +91,6 @@ export default {
   },
   methods: {
     handleClick (row) {
-      //  this.$router.push({ name: 'GroupDetail' })
       console.log(row)
     },
     handleCurrentChange (val) {

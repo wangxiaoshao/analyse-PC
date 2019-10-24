@@ -22,12 +22,13 @@ const DepartmentDetail = () => import('@src/views/organization/department-detail
 const PersonDetail = () => import('@src/views/organization/person-detail/index.vue')
 
 const Shared = () => import('@src/views/shared/index.vue') /* webpackChunkName: 'home' */
-const ViewManagement = () => import('@src/views/shared/ViewManagement/index.vue')
-const CreateView = () => import('@src/views/shared/CreateView/index.vue')
-const GroupManagement = () => import('@src/views/shared/GroupManagement/index.vue')
-const GroupDetail = () => import('@src/views/shared/GroupDetail/index.vue')
-const AppManagement = () => import('@src/views/shared/AppManagement/index.vue')
-const CreateAppManagement = () => import('@src/views/shared/CreateAppManagement/index.vue')
+const ViewManagement = () => import('@src/views/shared/view-management/index.vue')
+const CreateView = () => import('@src/views/shared/create-view/index.vue')
+const GroupManagement = () => import('@src/views/shared/group-management/index.vue')
+const GroupDetail = () => import('@src/views/shared/group-detail/index.vue')
+const AppManagement = () => import('@src/views/shared/app-management/index.vue')
+const CreateAppManagement = () => import('@src/views/shared/create-app-management/index.vue')
+const TagsManagement = () => import('@src/views/shared/tags-management/index.vue')
 /* 路由 */
 export default [
   {
@@ -156,14 +157,19 @@ export default [
         component: GroupDetail
       },
       {
-        path: '/AppManagement',
+        path: '/appmanagement',
         name: 'AppManagement',
         component: AppManagement
       },
       {
-        path: 'CreateAppManagement',
+        path: 'createappmanagement',
         name: 'CreateAppManagement',
         component: CreateAppManagement
+      },
+      {
+        path: '/tagsmnagement',
+        name: 'TagsManagement',
+        component: TagsManagement
       }
     ]
   },

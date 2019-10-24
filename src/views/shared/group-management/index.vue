@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import CreateGroupDialog from '@src/views/shared/GroupManagement/CreateGroupDialog/CreateGroupDialog'
+import CreateGroupDialog from '@src/views/shared/group-management/create-group-dialog/create-group-dialog'
 export default {
   name: 'GroupManagement',
   components: {
