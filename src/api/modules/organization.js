@@ -19,7 +19,7 @@ export default {
     serve: 'workspaceManagement',
     mock: 'getPersonList.json'
   },
-  [urlNames.editApplication]: {
+  [urlNames.createViewNode]: {
     type: 'post',
     url: '/work/service/createViewNode',
     showLoading: true,

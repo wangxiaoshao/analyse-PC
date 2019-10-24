@@ -9,9 +9,9 @@
       >
         <div class="dialog-close" @click="closeDialog"><i class="el-icon-close"></i></div>
         <div class="add-content">
-          <el-button @click="goAddNode">添加节点</el-button>
-          <el-button>添加部门</el-button>
-          <el-button @click="goAddUnit">添加单位</el-button>
+          <el-button @click="goAddNode" v-if="showAddNodeFlag">添加节点</el-button>
+          <el-button v-if="showAddDepartmentFlag">添加部门</el-button>
+          <el-button v-if="showAddUnitFlag" @click="goAddUnit">添加单位</el-button>
         </div>
       </el-dialog>
     </div>
@@ -24,20 +24,40 @@ export default {
   props: ['visible', 'close'],
   data () {
     return {
-      visibleFlag: false
+      visibleFlag: false,
+      showAddNodeFlag: false,
+      showAddDepartmentFlag: false,
+      showAddUnitFlag: false
     }
   },
   computed: {
     ...mapState(['app'])
   },
   created () {
+    this.showBtn()
   },
   methods: {
+    showBtn () {
+      if (this.$route.params.nodeType === 'node') {
+        this.showAddNodeFlag = true
+        this.showAddDepartmentFlag = false
+        this.showAddUnitFlag = true
+      } else if (this.$route.params.nodeType === 'department') {
+        this.showAddNodeFlag = false
+        this.showAddDepartmentFlag = true
+        this.showAddUnitFlag = false
+      } else if (this.$route.params.nodeType === 'unit') {
+        this.showAddNodeFlag = false
+        this.showAddDepartmentFlag = true
+        this.showAddUnitFlag = true
+      }
+    },
     goAddNode () {
       this.$router.push({
         name: 'NodeAdd',
         params: {
-          parentId: this.$route.params.nodeId
+          parentId: this.$route.params.nodeId,
+          name: this.$route.params.name
         }
       })
       this.$emit('close', false)
@@ -50,6 +70,14 @@ export default {
         name: 'UnitAdd'
       })
       this.$emit('close', false)
+    }
+  },
+  watch: {
+    '$route.params.nodeType': {
+      handler () {
+        this.showBtn()
+      },
+      deep: true
     }
   }
 }
