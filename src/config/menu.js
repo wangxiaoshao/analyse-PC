@@ -93,19 +93,19 @@ export default {
         {
           'menuId': '41',
           'name': '数据统计',
-          'path': '/statistics',
+          'path': '/dataStatistics',
           'type': 1
         },
         {
           'menuId': '42',
           'name': '数据查询',
-          'path': '/statistics',
+          'path': '/dataQuery',
           'type': 1
         },
         {
           'menuId': '43',
           'name': '系统日志',
-          'path': '/statistics',
+          'path': '/dataLog',
           'type': 1
         }
       ]

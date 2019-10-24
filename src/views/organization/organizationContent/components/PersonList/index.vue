@@ -18,18 +18,22 @@
       size="medium"
       id="personTable"
     >
-      <el-table-column prop="description" label="序号" width="60">
+      <el-table-column prop="description" label="序号" width="60" align="center">
         <template slot-scope="scope">
           <i class="sortBtnDo menu-icon fa fa-bars"  v-if="sortFlag" style="font-size: 25px"></i>
           <span :title="scope" v-else>{{scope.$index + 1}}</span>
         </template>
       </el-table-column>
       <el-table-column label="姓名" prop="name"></el-table-column>
-      <el-table-column label="登录账号" prop="user"></el-table-column>
-      <el-table-column label="职务" prop="position"></el-table-column>
-      <el-table-column label="手机号" prop="tel"></el-table-column>
-      <el-table-column label="身份类型" prop="type"></el-table-column>
-      <el-table-column prop="act" label="操作" width="100">
+      <el-table-column label="学历" prop="qualification"></el-table-column>
+      <el-table-column label="手机号" prop="mobile"></el-table-column>
+      <el-table-column label="启用状态" prop="removed" align="center">
+        <template slot-scope="scope">
+          <span class="text-able" v-show="scope.row.removed">启用</span>
+          <span class="text-disable" v-show="!scope.row.removed">停用</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="act" label="操作" width="100" align="center">
         <template slot-scope="scope">
           <el-button
             @click.native.prevent="deleteRow(scope.$index, tableData4)"

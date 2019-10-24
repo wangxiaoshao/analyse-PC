@@ -11,10 +11,10 @@
         <el-input v-model="ruleForm.name" ></el-input>
       </el-form-item>
       <el-form-item label="上级节点" prop="parent">
-        <el-input v-model="ruleForm.parent"></el-input>
+        <el-input v-model="ruleForm.parent" :disabled="true"></el-input>
       </el-form-item>
-      <el-form-item label="是否启用" prop="able">
-        <el-switch v-model="ruleForm.able"></el-switch>
+      <el-form-item label="是否启用" prop="enable">
+        <el-switch v-model="ruleForm.enable"></el-switch>
       </el-form-item>
       <el-form-item label="申请原因" prop="reason">
         <el-input type="textarea" v-model="ruleForm.reason"></el-input>
@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import { api, urlNames } from '@src/api'
 import handleBreadcrumb from '@src/mixins/handleBreadcrumb.js'
 export default {
   name: 'index',
@@ -40,14 +41,12 @@ export default {
       submitHtml: '保存',
       oldFrom: {},
       ruleForm: {
+        reason: '',
+        viewId: '',
         name: '',
-        able: false,
-        parent: '',
-        reason: ''
-      },
-      application: {
-        name: '',
-        able: false
+        id: '',
+        parentId: Number,
+        enable: 1
       },
       rules: {
         name: [
@@ -84,13 +83,17 @@ export default {
         }
       })
     },
-    submitForm (formName) {
-      this.$refs[formName].validate((valid) => {
+    submitForm (ruleForm) {
+      this.$refs[ruleForm].validate((valid) => {
         if (valid) {
-          alert('submit!')
-        } else {
-          console.log('error submit!!')
-          return false
+          api[urlNames['createViewNode']](ruleForm).then((res) => {
+            this.$message({
+              message: this.current ? '修改成功' : '添加成功',
+              type: 'success'
+            })
+          }, (error) => {
+
+          })
         }
       })
     },
@@ -103,15 +106,16 @@ export default {
   },
   created () {
     const obj = {
-      able: this.ruleForm.able,
+      enable: this.ruleForm.enable,
       reason: this.ruleForm.reason
     }
     this.oldFrom = JSON.parse(JSON.stringify(obj))
+    alert(this.ruleForm.viewNode.name)
   },
   computed: {
     newValue () {
       const obj = {
-        able: this.ruleForm.able,
+        enable: this.ruleForm.enable,
         reason: this.ruleForm.reason
       }
       return obj

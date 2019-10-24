@@ -22,14 +22,6 @@
         </el-row>
       </el-col>
     </el-row>
-    <!--表格-->
-    <site-table :tableConfig="tableConfig"
-                :tableHeight="tableHeight"
-                :operateWidth="operateWidth"
-                :operate="operate"
-                :tableData="tableData">
-      <el-button slot="operate" size="mini" type="text" @click="goConfig">查看明细</el-button>
-    </site-table>
     <!--分页-->
     <el-pagination
       @size-change="handleSizeChange"
@@ -95,71 +87,6 @@ export default {
         type: '',
         value: ''
       },
-      tableConfig: {
-        item1: {
-          key: 1,
-          field: 'name',
-          tooltip: true,
-          formatter: this.formatter,
-          label: '姓名',
-          sortable: true,
-          showOverflowTooltip: false,
-          minWidth: 200
-        },
-        item2: {
-          key: 2,
-          field: 'age',
-          tooltip: true,
-          formatter: this.formatter,
-          label: '年龄',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 200
-        },
-        item3: {
-          key: 3,
-          field: 'address',
-          tooltip: true,
-          formatter: this.formatter,
-          label: '地址',
-          sortable: true,
-          showOverflowTooltip: false,
-          minWidth: 200
-        }
-      },
-      tableData: [{
-        key: 1,
-        field: 'address',
-        date: '2016-05-02',
-        name: '王',
-        age: '10',
-        address: '上海市普陀区金沙江路 1 弄'
-      },
-      {
-        key: 2,
-        date: '2016-05-04',
-        name: '张',
-        age: '20',
-        address: '上海市普陀区金沙江路 3 弄'
-      },
-      {
-        key: 3,
-        date: '2016-05-01',
-        name: '李',
-        age: '30',
-        address: '上海市普陀区金沙江路 4 弄'
-      },
-      {
-        key: 4,
-        date: '2016-05-03',
-        name: '麻',
-        age: '40',
-        address: '上海市普陀区金沙江路 2 弄'
-      }],
-      tableHeight: 200,
-      operateWidth: 300,
-      tableCheckbox: true,
-      operate: true
     }
   },
   computed: {
