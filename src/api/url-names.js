@@ -33,6 +33,8 @@ export default {
   searchViewNode: 'searchViewNode',
   getChildList: 'getChildList',
   getPersonList: 'getPersonList',
+  // 共享视图
+  getSharedManagement: 'getSharedManagement',
   // 创建节点
   createViewNode: 'createViewNode',
   // 根据id获取详情

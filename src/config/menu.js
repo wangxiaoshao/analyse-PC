@@ -120,7 +120,7 @@ export default {
         {
           'menuId': '51',
           'name': '角色权限',
-          'path': '/parameter',
+          'path': '/rights-management',
           'type': 1
         },
         {

@@ -6,7 +6,7 @@
     <div class="table">
       <el-table
         ref="singleTable"
-        :data="tableData"
+        :data="viewList"
         highlight-current-row
         @current-change="handleCurrentChange"
         style="width: 100%">
@@ -17,34 +17,34 @@
           width="50">
         </el-table-column>
         <el-table-column
-          property="date"
+          property="name"
           label="视图名称"
           align="center"
           width="120">
         </el-table-column>
+<!--        <el-table-column-->
+<!--          property="name"-->
+<!--          label="视图ID"-->
+<!--          align="center"-->
+<!--          width="120">-->
+<!--        </el-table-column>-->
         <el-table-column
-          property="name"
-          label="视图ID"
-          align="center"
-          width="120">
-        </el-table-column>
-        <el-table-column
-          property="date"
+          property="time"
           align="center"
           label="创建时间">
         </el-table-column>
         <el-table-column
-          property="name"
+          property="viewAdmin"
           align="center"
           label="视图管理员">
         </el-table-column>
         <el-table-column
-          property="name"
+          property="stateName"
           align="center"
           label="启用状态">
         </el-table-column>
         <el-table-column
-          property="address"
+          property="remark"
           align="center"
           label="备注说明">
         </el-table-column>
@@ -54,10 +54,6 @@
               size="mini"
               type="text"
               @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-            <el-button
-              size="mini"
-              type="text"
-              @click="handleDelete(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -65,9 +61,9 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentPageChange"
         :current-page.sync="currentPage"
-        :page-size="100"
+        :page-size="10"
         layout="prev, pager, next, jumper"
-        :total="1000">
+        :total="total">
       </el-pagination>
     </div>
     <el-button @click="seleceDialog.selectMenmberFlag = true">选人组件</el-button>
@@ -77,6 +73,7 @@
 
 <script>
 import CandidateDialog from '@src/components/CandidateDialog/CandidateDialog.vue'
+import { api, urlNames } from '@src/api'
 export default {
   name: 'ViewManagement',
   components: {
@@ -84,6 +81,8 @@ export default {
   },
   data () {
     return {
+      total: 0, // 总页码
+      viewList: [],
       currentPage: 1,
       tableData: [{
         date: '2016-05-02',
@@ -104,12 +103,32 @@ export default {
       }],
       currentRow: null,
       seleceDialog: {
-        selectMenmberTitle: '选人组件',
-        selectMenmberFlag: false
+        selectMenmberTitle: '选人组件', // 选人组件标题
+        selectMenmberFlag: false, // 是否显示弹窗，
+        isSingleSelect: false // 是否为单选框  false为多选，true为单选
       }
     }
   },
+  created () {
+    this.getViewList(1, 10)
+  },
   methods: {
+    getViewList (page, limt) {
+      api[urlNames['getSharedManagement']]({
+        page: page,
+        limit: limt
+      }).then((res) => {
+        res.data.forEach(item => {
+          if (item.state === 0) {
+            item.stateName = '否'
+          } else if (item.state === 0) {
+            item.stateName = '是'
+          }
+        })
+        this.total = parseInt(res.total)
+        this.viewList = res.data
+      })
+    },
     // 跳转创建视图
     createView () {
       this.$router.push({ name: 'CreateView' })

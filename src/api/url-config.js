@@ -9,7 +9,7 @@ import application from './modules/application'
 import examine from './modules/examine'
 import logs from './modules/logs'
 import statistics from './modules/statistics'
-
+import shared from './modules/shared-management'
 export default {
   [urlNames.getUserInfo]: {
     type: 'get',
@@ -49,5 +49,6 @@ export default {
   ...logs,
   ...statistics, // 数据统计
   // ...parameter,
-  ...organization
+  ...organization,
+  ...shared // 共享视图
 }
