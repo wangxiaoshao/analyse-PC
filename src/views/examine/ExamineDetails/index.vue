@@ -3,19 +3,17 @@
     <!--操作row-->
     <el-row class="operator-row">
       <el-col :span="12">
-        <el-radio-group v-model="type" size="small" @change="typeChange">
-          <div>审批编码：2029200000009</div>
-        </el-radio-group>
+        <div style="color: #909399;padding-left: 10px;padding-top: 16px">审批编码：2029200000009</div>
       </el-col>
       <el-col :span="12" class="text-right">
-        <el-button type="danger" @click="showAddDialog">查看详情</el-button>
+        <el-button type="info" @click="showAddDialog">查看详情</el-button>
       </el-col>
     </el-row>
     <!--表格-->
     <site-table :tableConfig="tableConfig"
                 :operateWidth="operateWidth"
                 :operate="operate"
-                :tableData="tableData">
+                :tableData="tableDetailData">
       <el-button slot="operate" size="mini" type="text" >不通过</el-button>
       <el-button slot="operate" size="mini" type="text" >通过</el-button>
     </site-table>
@@ -39,6 +37,7 @@ import { api, urlNames } from '@src/api'
 import handleBreadcrumb from '@src/mixins/handleBreadcrumb.js'
 import EditDialog from '../components/EditDialog'
 import SiteTable from '@src/components/SiteTable/index.vue'
+import { mapState, mapMutations } from 'vuex'
 
 export default {
   components: { EditDialog, SiteTable },
@@ -61,57 +60,85 @@ export default {
       },
       dictionaryNameList: [],
       tableConfig: {
-        item1: {
-          key: 1,
-          field: 'name',
-          tooltip: true,
+        order: {
+          key: 0,
+          field: 'order',
+          tooltip: false,
           formatter: this.formatter,
-          label: '姓名',
-          sortable: true,
-          showOverflowTooltip: false,
-          minWidth: 200
-        },
-        item2: {
-          key: 2,
-          field: 'age',
-          tooltip: true,
-          formatter: this.formatter,
-          label: '年龄',
+          label: '序号',
           sortable: false,
           showOverflowTooltip: false,
-          minWidth: 200
+          minWidth: 50
         },
-        item3: {
-          key: 3,
-          field: 'address',
+        applyName: {
+          key: 1,
+          field: 'applyName',
+          tooltip: false,
+          formatter: this.formatter,
+          label: '申请人',
+          sortable: false,
+          showOverflowTooltip: false,
+          minWidth: 100
+        },
+        content: {
+          key: 2,
+          field: 'content',
           tooltip: true,
           formatter: this.formatter,
-          label: '地址',
+          label: '申请内容',
+          sortable: false,
+          showOverflowTooltip: false,
+          minWidth: 100
+        },
+        applyTime: {
+          key: 3,
+          field: 'applyTime',
+          tooltip: false,
+          formatter: this.formatter,
+          label: '申请时间',
+          sortable: false,
+          showOverflowTooltip: false,
+          minWidth: 100
+        },
+        reason: {
+          key: 4,
+          field: 'reason',
+          tooltip: false,
+          formatter: this.formatter,
+          label: '申请原因',
+          sortable: false,
+          showOverflowTooltip: false,
+          minWidth: 100
+        },
+        state: {
+          key: 5,
+          field: 'state',
+          tooltip: false,
+          formatter: this.formatter,
+          label: '审核状态',
           sortable: true,
           showOverflowTooltip: false,
-          minWidth: 200
+          minWidth: 100
         }
       },
-      tableData: [{
-        key: 1,
-        field: 'address',
-        date: '2016-05-02',
-        name: '王',
-        age: '10',
-        address: '上海市普陀区金沙江路 1 弄'
-      }],
-      operateWidth: 300,
+      tableDetailData: [],
+      operateWidth: 200,
       tableCheckbox: true,
       operate: true
     }
   },
   computed: {
+    ...mapState(['application', 'examine'])
+  },
+  created () {
+    console.log(this.examine.detail)
+    this.tableDetailData.push(this.examine.detail)
   },
   mounted () {
     this.pushBreadcrumb({
       name: '查看明细',
       parent: {
-        name: 'WaitApprovalList',
+        name: this.examine.backPath,
         query: {
           type: 'back'
         }
@@ -120,6 +147,7 @@ export default {
     this.getGrid()
   },
   methods: {
+    ...mapMutations(['SET_APPLICATION_PAGE', 'SET_EXAMINE_DETAIL']),
     trim (str) {
       return (str + '').replace(/(\s+)$/g, '').replace(/^\s+/g, '')
     },

@@ -11,12 +11,12 @@
       "type": 48,
       "auditResult": 3,
       "createUid": 5576,
-      "auditState": false,
+      "state": false,
       "createDepartmentId": 8308,
       "reason": "申请原因1",
-      "name": "申请人一号",
+      "applyName": "申请人一号",
       "content": "内容1",
-      "time": "2019-11-11"
+      "applyTime": "2019-11-11"
     },
     {
       "createOrgId": 5122,
@@ -26,12 +26,12 @@
       "type": 48,
       "auditResult": 3,
       "createUid": 5576,
-      "auditState": true,
+      "state": true,
       "createDepartmentId": 8308,
       "reason": "申请原因2",
-      "name": "申请人二号",
+      "applyName": "申请人二号",
       "content": "内容2",
-      "time": "2019-11-12"
+      "applyTime": "2019-11-12"
     },
     {
       "createOrgId": 5123,
@@ -41,12 +41,12 @@
       "type": 48,
       "auditResult": 3,
       "createUid": 5576,
-      "auditState": false,
+      "state": false,
       "createDepartmentId": 8308,
       "reason": "申请原因3",
-      "name": "申请人三号",
+      "applyName": "申请人三号",
       "content": "内容3",
-      "time": "2019-11-13"
+      "applyTime": "2019-11-13"
     }
   ]
 }

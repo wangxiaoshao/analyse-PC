@@ -28,6 +28,8 @@
                 :operateWidth="operateWidth"
                 :operate="operate"
                 :tableData="tableData">
+      <template slot-scope="{slotScope}" slot="status">
+      </template>
           <template slot-scope="{slotScope}" slot="operate">
             <el-button size="mini" type="text" @click="goConfig(slotScope.row)">查看明细</el-button>
           </template>
@@ -83,7 +85,23 @@ export default {
         keyword: ''
       },
       list: [],
-      areaList: [],
+      areaList: [
+        {
+          "id": 1,
+          "code": "1",
+          "name": "单位"
+        },
+        {
+          "id": 2,
+          "code": "2",
+          "name": "部门"
+        },
+        {
+          "id": 3,
+          "code": "3",
+          "name": "人员"
+        }
+      ],
       dictionaryNameList: [],
       editDialogVisible: false,
       addDialogVisible: false,
@@ -108,9 +126,9 @@ export default {
           showOverflowTooltip: false,
           minWidth: 50
         },
-        name: {
+        applyName: {
           key: 1,
-          field: 'name',
+          field: 'applyName',
           tooltip: false,
           formatter: this.formatter,
           label: '申请人',
@@ -128,9 +146,9 @@ export default {
           showOverflowTooltip: false,
           minWidth: 100
         },
-        time: {
+        applyTime: {
           key: 3,
-          field: 'time',
+          field: 'applyTime',
           tooltip: false,
           formatter: this.formatter,
           label: '申请时间',
@@ -148,9 +166,9 @@ export default {
           showOverflowTooltip: false,
           minWidth: 100
         },
-        auditState: {
+        state: {
           key: 5,
-          field: 'auditState',
+          field: 'state',
           tooltip: false,
           formatter: this.formatter,
           label: '审核状态',
@@ -167,23 +185,31 @@ export default {
     }
   },
   computed: {
-    ...mapState(['application'])
+    ...mapState(['application', 'examine'])
   },
   created () {
     if (this.$route.query.type === 'back') {
       this.page = Object.assign(this.page, this.application.page)
-      this.searchQuery = Object.assign(this.searchQuery, this.application.searchQuery)
+      this.searchQuery = Object.assign(this.searchQuery, this.examine.searchQuery)
+      this.tableData = Object.assign(this.tableData, this.examine.tableData)
     } else {
       this.SET_APPLICATION_PAGE({})
-      this.SET_APPLICATION_SEARCH_QUERY({})
+      this.SET_EXAMINE_SEARCH_QUERY({})
+      this.SET_EXAMINE_TABLEDATA({})
+      this.SET_EXAMINE_DETAIL({})
+      this.SET_EXAMINE_BACKPATH({})
     }
     this.initQuery()
-    this.getAreaList()
     this.getGrid()
     this.getMyAuditList()
   },
   methods: {
-    ...mapMutations(['SET_APPLICATION_PAGE', 'SET_APPLICATION_SEARCH_QUERY']),
+    ...mapMutations([
+      'SET_APPLICATION_PAGE',
+      'SET_EXAMINE_TABLEDATA',
+      'SET_EXAMINE_DETAIL',
+      'SET_EXAMINE_SEARCH_QUERY',
+      'SET_EXAMINE_BACKPATH']),
     initQuery () {
       let keys = Object.assign({}, this.$route.query)
       let len = keys.length
@@ -203,11 +229,6 @@ export default {
     getMyAuditList () {
       api[urlNames['getMyAuditList']]().then((res) => {
         this.tableData = res.data
-      })
-    },
-    getAreaList () {
-      api[urlNames['getAreaList']]().then((res) => {
-        this.areaList = res.data
       })
     },
     search () {
@@ -257,9 +278,11 @@ export default {
       })
     },
     goConfig (row) {
-      console.log(row)
       this.SET_APPLICATION_PAGE(this.page)
-      this.SET_APPLICATION_SEARCH_QUERY(this.searchQuery)
+      this.SET_EXAMINE_SEARCH_QUERY(this.searchQuery)
+      this.SET_EXAMINE_TABLEDATA(this.tableData) // 存储当前页面table的数据列表
+      this.SET_EXAMINE_DETAIL(row) // ExamineDetails页面需要用到的当前列表中点击项的数据
+      this.SET_EXAMINE_BACKPATH(this.$route.name) // ExamineDetails页面需要用到的当前列表中点击项的数据
       this.$router.push({
         name: 'ExamineDetails',
         params: {

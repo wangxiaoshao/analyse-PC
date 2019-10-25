@@ -4,20 +4,22 @@
     <el-row class="operator-row">
       <el-col :span="18">
         <el-row :gutter="10" type="flex">
-          <el-col :span="6">
-            <el-select v-model="searchQuery.areaId" filterable clearable @change="search" placeholder="单位">
+          <div class="block">
+            <el-date-picker
+              v-model="searchTimeValue"
+              type="month"
+              placeholder="选择月">
+            </el-date-picker>
+          </div>
+          <el-col :span="8">
+            <el-select v-model="statusValue" clearable placeholder="选择确认状态">
               <el-option
-                v-for="item in areaList"
-                :key="item.id"
-                :label="item.name"
-                :value="item.code">
+                v-for="item in statusOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
               </el-option>
             </el-select>
-          </el-col>
-          <el-col :span="8">
-            <el-input placeholder="请输入关键字搜索" v-model="searchQuery.keyword" clearable @change="getGrid">
-              <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
-            </el-input>
           </el-col>
         </el-row>
       </el-col>
@@ -28,7 +30,11 @@
                 :operateWidth="operateWidth"
                 :operate="operate"
                 :tableData="tableData">
-      <el-button slot="operate" size="mini" type="text" @click="goConfig">查看明细</el-button>
+      <template slot-scope="{slotScope}" slot="status">
+      </template>
+      <template slot-scope="{slotScope}" slot="operate">
+        <el-button size="mini" type="text" @click="goConfig(slotScope.row)">查看明细</el-button>
+      </template>
     </site-table>
     <!--分页-->
     <el-pagination
@@ -62,253 +68,292 @@
 </template>
 
 <script type="text/ecmascript-6">
-import EditDialog from '../components/EditDialog'
-import ConfigDialog from '../components/EditDialog'
-import handleTable from '@src/mixins/handleTable'
-import { api, urlNames } from '@src/api'
-import SiteTable from '@src/components/SiteTable/index.vue'
-import { mapState, mapMutations } from 'vuex'
+  import EditDialog from '../components/EditDialog'
+  import ConfigDialog from '../components/EditDialog'
+  import handleTable from '@src/mixins/handleTable'
+  import { api, urlNames } from '@src/api'
+  import SiteTable from '@src/components/SiteTable/index.vue'
+  import { mapState, mapMutations } from 'vuex'
 
-export default {
-  components: { EditDialog, ConfigDialog, SiteTable },
-  mixins: [handleTable],
-  data () {
-    return {
-      loading: true,
-      searchQuery: {
-        areaId: '',
-        status: '',
-        keyword: ''
-      },
-      list: [],
-      areaList: [],
-      dictionaryNameList: [],
-      editDialogVisible: false,
-      addDialogVisible: false,
-      configDialogVisible: false,
-      currentEdit: null,
-      currentParent: {
-        description: '',
-        label: '',
-        remarks: '',
-        orderNum: '',
-        type: '',
-        value: ''
-      },
-      tableConfig: {
-        item1: {
-          key: 1,
-          field: 'name',
-          tooltip: true,
-          formatter: this.formatter,
-          label: '姓名',
-          sortable: true,
-          showOverflowTooltip: false,
-          minWidth: 200
+  export default {
+    components: { EditDialog, ConfigDialog, SiteTable },
+    mixins: [handleTable],
+    data () {
+      return {
+        loading: true,
+        statusOptions: [{
+          value: '选项1',
+          label: '已确认'
         },
-        item2: {
-          key: 2,
-          field: 'age',
-          tooltip: true,
-          formatter: this.formatter,
-          label: '年龄',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 200
+          {
+            value: '选项2',
+            label: '未确认'
+          },
+          {
+            value: '选项3',
+            label: '待确认'
+          },],
+        statusValue: '',
+        searchTimeValue: '',
+        list: [],
+        areaList: [
+          {
+            "id": 1,
+            "code": "1",
+            "name": "单位"
+          },
+          {
+            "id": 2,
+            "code": "2",
+            "name": "部门"
+          },
+          {
+            "id": 3,
+            "code": "3",
+            "name": "人员"
+          }
+        ],
+        dictionaryNameList: [],
+        editDialogVisible: false,
+        addDialogVisible: false,
+        configDialogVisible: false,
+        currentEdit: null,
+        currentParent: {
+          description: '',
+          label: '',
+          remarks: '',
+          orderNum: '',
+          type: '',
+          value: ''
         },
-        item3: {
-          key: 3,
-          field: 'address',
-          tooltip: true,
-          formatter: this.formatter,
-          label: '地址',
-          sortable: true,
-          showOverflowTooltip: false,
-          minWidth: 200
-        }
-      },
-      tableData: [{
-        key: 1,
-        field: 'address',
-        date: '2016-05-02',
-        name: '王',
-        age: '10',
-        address: '上海市普陀区金沙江路 1 弄'
-      },
-      {
-        key: 2,
-        date: '2016-05-04',
-        name: '张',
-        age: '20',
-        address: '上海市普陀区金沙江路 3 弄'
-      },
-      {
-        key: 3,
-        date: '2016-05-01',
-        name: '李',
-        age: '30',
-        address: '上海市普陀区金沙江路 4 弄'
-      },
-      {
-        key: 4,
-        date: '2016-05-03',
-        name: '麻',
-        age: '40',
-        address: '上海市普陀区金沙江路 2 弄'
-      }],
-      tableHeight: 200,
-      operateWidth: 300,
-      tableCheckbox: true,
-      operate: true
-    }
-  },
-  computed: {
-    ...mapState(['application'])
-  },
-  created () {
-    if (this.$route.query.type === 'back') {
-      this.page = Object.assign(this.page, this.application.page)
-      this.searchQuery = Object.assign(this.searchQuery, this.application.searchQuery)
-    } else {
-      this.SET_APPLICATION_PAGE({})
-      this.SET_APPLICATION_SEARCH_QUERY({})
-    }
-    this.initQuery()
-    this.getAreaList()
-    this.getGrid()
-  },
-  methods: {
-    ...mapMutations(['SET_APPLICATION_PAGE', 'SET_APPLICATION_SEARCH_QUERY']),
-    initQuery () {
-      let keys = Object.assign({}, this.$route.query)
-      let len = keys.length
-      for (let i = 0; i < len; i++) {
-        let key = keys[i]
-        let value = this.$route.query[key]
-        if (this.page[key] !== undefined) {
-          this.page[key] = value
-        } else if (this.searchQuery[key] !== undefined) {
-          this.searchQuery[key] = value
-        }
+        tableConfig: {
+          order: {
+            key: 0,
+            field: 'order',
+            tooltip: false,
+            formatter: this.formatter,
+            label: '序号',
+            sortable: false,
+            showOverflowTooltip: false,
+            minWidth: 50
+          },
+          applyName: {
+            key: 1,
+            field: 'applyName',
+            tooltip: false,
+            formatter: this.formatter,
+            label: '申请人',
+            sortable: false,
+            showOverflowTooltip: false,
+            minWidth: 100
+          },
+          content: {
+            key: 2,
+            field: 'content',
+            tooltip: true,
+            formatter: this.formatter,
+            label: '申请内容',
+            sortable: false,
+            showOverflowTooltip: false,
+            minWidth: 100
+          },
+          applyTime: {
+            key: 3,
+            field: 'applyTime',
+            tooltip: false,
+            formatter: this.formatter,
+            label: '申请时间',
+            sortable: false,
+            showOverflowTooltip: false,
+            minWidth: 100
+          },
+          reason: {
+            key: 4,
+            field: 'reason',
+            tooltip: false,
+            formatter: this.formatter,
+            label: '申请原因',
+            sortable: false,
+            showOverflowTooltip: false,
+            minWidth: 100
+          },
+          state: {
+            key: 5,
+            field: 'state',
+            tooltip: false,
+            formatter: this.formatter,
+            label: '审核状态',
+            sortable: true,
+            showOverflowTooltip: false,
+            minWidth: 100
+          }
+        },
+        tableData: [],
+        tableHeight: 200,
+        operateWidth: 100,
+        tableCheckbox: true,
+        operate: true
       }
     },
-    trim (str) {
-      return (str + '').replace(/(\s+)$/g, '').replace(/^\s+/g, '')
+    computed: {
+      ...mapState(['application', 'examine'])
     },
-    getAreaList () {
-      api[urlNames['getAreaList']]().then((res) => {
-        this.areaList = res.data
-      })
-    },
-    search () {
-      this.$nextTick(() => {
-        this.page.current = 1
-        this.getGrid()
-      })
-    },
-    getGrid () {
-      this.loading = true
-      let data = {
-        page: this.page.current,
-        pageSize: this.page.limit
+    created () {
+      if (this.$route.query.type === 'back') {
+        this.page = Object.assign(this.page, this.application.page)
+        this.searchQuery = Object.assign(this.searchQuery, this.examine.searchQuery)
+        this.tableData = Object.assign(this.tableData, this.examine.tableData)
+      } else {
+        this.SET_APPLICATION_PAGE({})
+        this.SET_EXAMINE_SEARCH_QUERY({})
+        this.SET_EXAMINE_TABLEDATA({})
+        this.SET_EXAMINE_DETAIL({})
+        this.SET_EXAMINE_BACKPATH({})
       }
-      let keys = Object.keys(this.searchQuery)
-      let len = keys.length
-      for (let i = 0; i < len; i++) {
-        let key = keys[i]
-        let value = this.searchQuery[key]
-        if (typeof value !== 'number') {
-          if (value) { data[key] = value }
-        } else {
-          data[key] = value
-        }
-      }
-      api[urlNames['getApplicationList']](data).then((res) => {
-        this.loading = false
-        this.list = res.result.items
-        this.page.total = res.result.total_items
-      }, () => {
-        this.loading = false
-        this.list = []
-        this.page.total = 0
-      })
+      this.initQuery()
+      this.getGrid()
+      this.getMyAuditList()
     },
-    addChild (index, row) {
-      this.currentParent.type = row.type
-      this.currentParent.description = row.description
-      this.currentParent.orderNum = row.orderNum + 10
-      this.configDialogVisible = true
-    },
-    showEditDialog (row) {
-      api[urlNames['getApplicationDetail']]({ id: row.id }).then((res) => {
-        this.currentEdit = res.result[0]
-        this.currentEdit.areaId = this.currentEdit.areaId.toString().split(',')
-        this.editDialogVisible = true
-      })
-    },
-    goConfig (row) {
-      this.SET_APPLICATION_PAGE(this.page)
-      this.SET_APPLICATION_SEARCH_QUERY(this.searchQuery)
-      this.$router.push({
-        name: 'ExamineDetails',
-        params: {
-          id: 12
-        }
-      })
-    },
-    showAddDialog () {
-      this.addDialogVisible = true
-    },
-    closeEditDialog () {
-      this.editDialogVisible = false
-    },
-    closeAddDialog () {
-      this.addDialogVisible = false
-    },
-    closeConfigDialogVisible () {
-      this.configDialogVisible = false
-    },
-    handleAction (action, row) {
-      let actionName = '删除'
-      let actionUrl = 'deleteApplication'
-      let data = {
-        id: row.id,
-        type: row.type
-      }
-      if (action === 'enable') {
-        actionName = row.enable === 1 ? '停用' : '启用'
-        actionUrl = 'toggleApplication'
-        data.status = row.enable === 1 ? 0 : 1
-      }
-      this.$msgbox({
-        message: `确认${actionName}？`,
-        title: '提示',
-        showCancelButton: true,
-        type: 'warning',
-        beforeClose: (action, instance, done) => {
-          if (action === 'confirm') {
-            instance.confirmButtonLoading = true
-            instance.confirmButtonText = `${actionName}中...`
-            api[urlNames[actionUrl]](data).then((res) => {
-              instance.confirmButtonLoading = false
-              this.$message.success(`${actionName}成功`)
-              this.getGrid()
-            }, (res) => {
-              instance.confirmButtonLoading = false
-            })
-            done()
-          } else {
-            instance.confirmButtonLoading = false
-            done()
+    methods: {
+      ...mapMutations([
+        'SET_APPLICATION_PAGE',
+        'SET_EXAMINE_TABLEDATA',
+        'SET_EXAMINE_DETAIL',
+        'SET_EXAMINE_SEARCH_QUERY',
+        'SET_EXAMINE_BACKPATH']),
+      initQuery () {
+        let keys = Object.assign({}, this.$route.query)
+        let len = keys.length
+        for (let i = 0; i < len; i++) {
+          let key = keys[i]
+          let value = this.$route.query[key]
+          if (this.page[key] !== undefined) {
+            this.page[key] = value
+          } else if (this.searchQuery[key] !== undefined) {
+            this.searchQuery[key] = value
           }
         }
-      }).then(() => {
+      },
+      trim (str) {
+        return (str + '').replace(/(\s+)$/g, '').replace(/^\s+/g, '')
+      },
+      getMyAuditList () {
+        api[urlNames['getMyAuditList']]().then((res) => {
+          this.tableData = res.data
+        })
+      },
+      search () {
+        this.$nextTick(() => {
+          this.page.current = 1
+          this.getGrid()
+        })
+      },
+      getGrid () {
+        this.loading = true
+        let data = {
+          page: this.page.current,
+          pageSize: this.page.limit
+        }
+        let keys = Object.keys(this.searchQuery)
+        let len = keys.length
+        for (let i = 0; i < len; i++) {
+          let key = keys[i]
+          let value = this.searchQuery[key]
+          if (typeof value !== 'number') {
+            if (value) { data[key] = value }
+          } else {
+            data[key] = value
+          }
+        }
+        api[urlNames['getApplicationList']](data).then((res) => {
+          this.loading = false
+          this.list = res.result.items
+          this.page.total = res.result.total_items
+        }, () => {
+          this.loading = false
+          this.list = []
+          this.page.total = 0
+        })
+      },
+      addChild (index, row) {
+        this.currentParent.type = row.type
+        this.currentParent.description = row.description
+        this.currentParent.orderNum = row.orderNum + 10
+        this.configDialogVisible = true
+      },
+      showEditDialog (row) {
+        api[urlNames['getApplicationDetail']]({ id: row.id }).then((res) => {
+          this.currentEdit = res.result[0]
+          this.currentEdit.areaId = this.currentEdit.areaId.toString().split(',')
+          this.editDialogVisible = true
+        })
+      },
+      goConfig (row) {
+        this.SET_APPLICATION_PAGE(this.page)
+        this.SET_EXAMINE_SEARCH_QUERY(this.searchQuery)
+        this.SET_EXAMINE_TABLEDATA(this.tableData) // 存储当前页面table的数据列表
+        this.SET_EXAMINE_DETAIL(row) // ExamineDetails页面需要用到的当前列表中点击项的数据
+        this.SET_EXAMINE_BACKPATH(this.$route.name)
+        this.$router.push({
+          name: 'ExamineDetails',
+          params: {
+            id: 12
+          }
+        })
+      },
+      showAddDialog () {
+        this.addDialogVisible = true
+      },
+      closeEditDialog () {
+        this.editDialogVisible = false
+      },
+      closeAddDialog () {
+        this.addDialogVisible = false
+      },
+      closeConfigDialogVisible () {
+        this.configDialogVisible = false
+      },
+      handleAction (action, row) {
+        let actionName = '删除'
+        let actionUrl = 'deleteApplication'
+        let data = {
+          id: row.id,
+          type: row.type
+        }
+        if (action === 'enable') {
+          actionName = row.enable === 1 ? '停用' : '启用'
+          actionUrl = 'toggleApplication'
+          data.status = row.enable === 1 ? 0 : 1
+        }
+        this.$msgbox({
+          message: `确认${actionName}？`,
+          title: '提示',
+          showCancelButton: true,
+          type: 'warning',
+          beforeClose: (action, instance, done) => {
+            if (action === 'confirm') {
+              instance.confirmButtonLoading = true
+              instance.confirmButtonText = `${actionName}中...`
+              api[urlNames[actionUrl]](data).then((res) => {
+                instance.confirmButtonLoading = false
+                this.$message.success(`${actionName}成功`)
+                this.getGrid()
+              }, (res) => {
+                instance.confirmButtonLoading = false
+              })
+              done()
+            } else {
+              instance.confirmButtonLoading = false
+              done()
+            }
+          }
+        }).then(() => {
 
-      }).catch(() => {
-      })
+        }).catch(() => {
+        })
+      }
     }
   }
-}
 </script>
 <style lang="less">
   @import "./index";

@@ -5,6 +5,8 @@ import app from './modules/app'
 import application from './modules/application'
 import organization from './modules/organization'
 
+import examine from './modules/examine' // 申请审核
+
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
@@ -20,7 +22,9 @@ const store = new Vuex.Store({
   modules: {
     app,
     application,
-    organization
+    organization,
+    // 申请审核
+    examine,
   }
 })
 

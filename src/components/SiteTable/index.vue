@@ -23,7 +23,12 @@
                         :show-overflow-tooltip="item.showOverflowTooltip || false"
                         :min-width="item.minWidth || null">
             <template slot-scope="scope">
-              <div>{{item.field === 'order' ? scope.$index + 1 : scope.row[item.field]}}</div>
+                <div v-if="item.field === 'state'"> <!--处理接口审核状态的false和true应该显示的内容-->
+                  {{scope.row[item.field] ? '已通过' : '未通过'}}
+                </div>
+                <div v-if="item.field !== 'state'"> <!--处理序号的字段内容显示-->
+                  {{item.field === 'order' ? scope.$index + 1 : scope.row[item.field]}}
+                </div>
             </template>
         </el-table-column>
         <el-table-column v-else
@@ -34,13 +39,9 @@
                         :sortable="item.sortable"
                         :show-overflow-tooltip="item.showOverflowTooltip || false"
                         :min-width="item.minWidth || null">
-              <template slot-scope="scope">
-                <el-tooltip class="item" effect="dark" :content="scope.row[item.field]" placement="top">
-                  <div>
-                    {{item.field === 'order' ? scope.$index + 1 : scope.row[item.field]}}
-                  </div>
-                </el-tooltip>
-              </template>
+          <template slot-scope="scope">
+            <div>{{item.field === 'order' ? scope.$index + 1 : scope.row[item.field]}}</div>
+          </template>
         </el-table-column>
         </template>
 

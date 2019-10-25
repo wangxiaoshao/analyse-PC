@@ -20,8 +20,8 @@
 
 <script>
 import { api, urlNames } from '@src/api'
-import organizationTree from './components/tree/index'
-import searchResult from './components/result/index'
+// import organizationTree from './components/tree/index'
+// import searchResult from './components/result/index'
 export default {
   name: 'index',
   components: {
