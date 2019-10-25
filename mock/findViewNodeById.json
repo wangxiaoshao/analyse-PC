@@ -5,6 +5,8 @@
     "viewId": 8599,
     "name": "SOmV5",
     "id": 8532,
-    "parentId": 5336
+    "parentId": 5336,
+    "state" : 0,
+    "nodeType": "node"
   }
 }

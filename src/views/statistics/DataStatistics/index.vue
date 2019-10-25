@@ -22,7 +22,7 @@ export default {
 
   },
   methods: {
-    ...mapMutations(['SET_APPLICATION_PAGE', 'SET_APPLICATION_SEARCH_QUERY']),
+    ...mapMutations(['SET_APPLICATION_PAGE', 'SET_APPLICATION_SEARCH_QUERY'])
   }
 }
 </script>

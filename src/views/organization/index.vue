@@ -3,9 +3,9 @@
     <el-row>
       <el-col :span="7">
        <div style="padding-right: 20px">
-         <search-result></search-result>
+         <search-result :defaultNodeId="defaultNodeId"></search-result>
          <div class="tree-content">
-           <organization-tree></organization-tree>
+           <organization-tree @getDefault="getDefault"></organization-tree>
          </div>
        </div>
       </el-col>
@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import { api, urlNames } from '@src/api'
 import organizationTree from './components/tree/index'
 import searchResult from './components/result/index'
 export default {
@@ -29,12 +28,15 @@ export default {
   },
   data () {
     return {
-
+      defaultNodeId: null
     }
   },
   computed: {
   },
   methods: {
+    getDefault (val) {
+      this.defaultNodeId = val
+    }
   },
   created () {
 

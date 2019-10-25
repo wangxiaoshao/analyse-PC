@@ -1,24 +1,32 @@
 {
-  "status": 200,
+  "status": 0,
   "message": "成功",
   "data": [
     {
-      "id": 96,
-      "label": "一级 1",
-      "type": "node",
+      "viewId":3609,
+      "name":"贵州省",
+      "id":9827,
+      "nodeType":"node",
+      "parentId":null,
+      "bindId":4849,
+      "state":1,
       "children": [{
-        "id": 4,
-        "label": "二级 1-1",
-        "type": "department"
+        "viewId":3609,
+        "name":"贵州省直属单位",
+        "id":9828,
+        "nodeType":"department",
+        "parentId":9827,
+        "bindId":48,
+        "state":0
       },{
-        "id": 5,
-        "label": "二级1",
-        "type": "unit"
+        "viewId":3609,
+        "name":"遵义市",
+        "id":9829,
+        "nodeType":"unit",
+        "parentId":9827,
+        "bindId":4,
+        "state":1
       }]
-    },{
-      "id": 2,
-      "label": "二级1",
-      "type": "node"
     }
   ]
 }

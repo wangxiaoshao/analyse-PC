@@ -86,7 +86,7 @@ export default {
         orderNum: '',
         type: '',
         value: ''
-      },
+      }
     }
   },
   computed: {
