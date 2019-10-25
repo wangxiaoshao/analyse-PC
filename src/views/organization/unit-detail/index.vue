@@ -235,7 +235,7 @@ export default {
             label: 'Progress 进度条'
           }, {
             value: 'tree',
-            label: 'tree 树形控件'
+            label: 'Tree 树形控件'
           }, {
             value: 'pagination',
             label: 'Pagination 分页'
