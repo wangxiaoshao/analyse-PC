@@ -3,7 +3,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-import handleTable from '@src/mixins/handleTable'
+import handleTable from '@src/mixins/handle-table'
 import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
 
@@ -22,7 +22,7 @@ export default {
 
   },
   methods: {
-    ...mapMutations(['SET_APPLICATION_PAGE', 'SET_APPLICATION_SEARCH_QUERY']),
+    ...mapMutations(['SET_APPLICATION_PAGE', 'SET_APPLICATION_SEARCH_QUERY'])
   }
 }
 </script>

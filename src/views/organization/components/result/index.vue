@@ -7,16 +7,20 @@
     >
       <div class="result-list">
         <div class="back-btn">
-          <el-button size="mini" @click="resultFlag = false">返回</el-button>
+          <el-button size="mini" @click="goBackTree">返回</el-button>
         </div>
-        <el-table :data="gridData" :show-header="false">
-          <el-table-column property="name"></el-table-column>
+        <el-table v-loading="loadFlag" :data="gridData" :show-header="false">
+          <el-table-column property="name">
+            <template slot-scope="scope">
+              <span :title="scope.row.name" class="table-span" @click="setNodeId(scope.row)">{{scope.row.name}}</span>
+            </template>
+          </el-table-column>
         </el-table>
       </div>
     </el-popover>
     <el-row>
       <el-col :span="7">
-        <el-select v-model="value" placeholder="请选择">
+        <el-select v-model="value" placeholder="请选择" @change="getType">
           <el-option
             v-for="item in options"
             :key="item.value"
@@ -28,7 +32,7 @@
       <el-col :span="17">
         <el-input
           placeholder="搜索" suffix-icon="el-icon-search" v-model="keyWord"
-          @on-search.native="loadResult"
+          @input="onFocus"
         >
         </el-input>
       </el-col>
@@ -37,11 +41,15 @@
 </template>
 
 <script>
+import { api, urlNames } from '@src/api'
+import debounce from '@src/mixins/debounce'
 export default {
   name: 'index',
+  mixins: [ debounce ],
   data () {
     return {
       resultFlag: false,
+      loadFlag: true,
       keyWord: '',
       options: [{
         value: 'department',
@@ -54,30 +62,52 @@ export default {
         label: '人员'
       }],
       value: '部门',
-      gridData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }]
+      gridData: [],
+      type: 'department'
     }
   },
+  props: ['defaultNodeId'],
   methods: {
-    loadResult () {
+    getType (el) {
+      this.type = el
+    },
+    onFocus () {
       this.resultFlag = true
-      alert(444)
+      //this.debounce(this.getResult, 600)
+      this.getResult()
+    },
+    // 获取搜索结果
+    getResult () {
+      let data = {
+        name: this.keyWord,
+        type: this.type
+      }
+      this.loadFlag = true
+      api[urlNames['searchViewNode']](data).then(res => {
+        this.gridData = res.data
+        this.loadFlag = false
+      })
+    },
+    setNodeId (row) {
+      this.$router.push({
+        name: 'OrganizationContent',
+        params: {
+          nodeId: row.id
+        }
+      })
+    },
+    goBackTree () {
+      this.resultFlag = false
+      this.$router.push({
+        name: 'OrganizationContent',
+        params: {
+          nodeId: this.defaultNodeId
+        }
+      })
     }
+  },
+  created () {
+    // this.debouncedSearch = this.debounce(this.getResult, 5000)
   }
 }
 </script>

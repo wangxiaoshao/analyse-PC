@@ -1,5 +1,10 @@
 <template>
   <div class="candidate">
+<!--    seleceDialog: {-->
+<!--    selectMenmberTitle: '选人组件', // 选人组件标题-->
+<!--    selectMenmberFlag: false, // 是否显示弹窗，-->
+<!--    isSingleSelect: false // 是否为单选框  false为多选，true为单选-->
+<!--    }-->
     <el-dialog
       custom-class="edit-dialog"
       :title="seleceDialog.selectMenmberTitle"

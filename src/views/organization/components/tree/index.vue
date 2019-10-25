@@ -24,11 +24,9 @@ export default {
       treeData: [],
       defaultProps: {
         children: 'children',
-        label: 'label'
+        label: 'name'
       },
-      id: Number,
-      label: '',
-      nodeType: ''
+      id: Number
     }
   },
   methods: {
@@ -42,9 +40,7 @@ export default {
       this.$router.push({
         name: 'OrganizationContent',
         params: {
-          nodeId: this.id,
-          name: this.label,
-          nodeType: this.nodeType
+          nodeId: this.id
         }
       })
     },
@@ -52,8 +48,7 @@ export default {
       api[urlNames['getTree']]().then(res => {
         this.treeData = res.data
         this.id = this.treeData[0].id
-        this.label = this.treeData[0].label
-        this.nodeType = this.treeData[0].type
+        this.$emit('getDefault', this.id)
         console.log('树', res.data)
         if (this.$route.name === 'Organization' || this.$route.name === 'OrganizationContent') {
           this.setTreeId()

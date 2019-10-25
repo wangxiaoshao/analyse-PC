@@ -59,7 +59,7 @@
 
 <script>
 import Sortable from 'sortablejs'
-import handleTable from '@src/mixins/handleTable'
+import handleTable from '@src/mixins/handle-table'
 import { api, urlNames } from '@src/api'
 export default {
   mixins: [handleTable],

@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import handleBreadcrumb from '@src/mixins/handleBreadcrumb.js'
+import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
 export default {
   name: 'index',
   mixins: [ handleBreadcrumb ],

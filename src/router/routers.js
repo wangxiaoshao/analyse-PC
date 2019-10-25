@@ -5,7 +5,7 @@ const ApplicationConfig = () => import('@src/views/application/ApplicationConfig
 
 // 申请审核
 const WaitApproval = () => import('@src/views/examine/wait-approval/index.vue') /* webpackChunkName: 'home' */
-const ExamineDetails = () => import('@src/views/examine/ExamineDetails/index.vue') /* webpackChunkName: 'home' */
+const ExamineDetails = () => import('@src/views/examine/examine-details/index.vue') /* webpackChunkName: 'home' */
 const Approved = () => import('@src/views/examine/approved/index.vue') /* webpackChunkName: 'home' */
 const MyApplication = () => import('@src/views/examine/my-application/index.vue') /* webpackChunkName: 'home' */
 const ConfirmInfo = () => import('@src/views/examine/confirm-info/index.vue') /* webpackChunkName: 'home' */
@@ -29,6 +29,8 @@ const GroupDetail = () => import('@src/views/shared/group-detail/index.vue')
 const AppManagement = () => import('@src/views/shared/app-management/index.vue')
 const CreateAppManagement = () => import('@src/views/shared/create-app-management/index.vue')
 const TagsManagement = () => import('@src/views/shared/tags-management/index.vue')
+/* 权限管理 */
+const RightsManagement = () => import('@src/views/shared/rights-management/index.vue')
 /* 路由 */
 export default [
   {
@@ -60,7 +62,7 @@ export default [
     component: Organization,
     children: [
       {
-        path: 'organization-content/:nodeId/:name/:nodeType',
+        path: 'organization-content/:nodeId',
         name: 'OrganizationContent',
         component: OrganizationContent
       }, {
@@ -84,7 +86,7 @@ export default [
         name: 'NodeAdd',
         component: NodeDetail
       }, {
-        path: 'unitAdd',
+        path: 'unitAdd/:parentId/:name',
         name: 'UnitAdd',
         component: UnitDetail
       }, {
@@ -98,7 +100,6 @@ export default [
       }
     ]
   },
-
 
 
   // 申请审核 examine
@@ -129,7 +130,6 @@ export default [
   },
 
 
-
   // 共享管理
   {
     path: '/shared',
@@ -137,37 +137,37 @@ export default [
     component: Shared,
     children: [
       {
-        path: '/viewmanagement',
+        path: '/view-management',
         name: 'ViewManagement',
         component: ViewManagement
       },
       {
-        path: 'createview',
+        path: 'create-view',
         name: 'CreateView',
         component: CreateView
       },
       {
-        path: '/groupmanagement',
+        path: '/group-management',
         name: 'GroupManagement',
         component: GroupManagement
       },
       {
-        path: 'groupdetail',
+        path: 'group-detail',
         name: 'GroupDetail',
         component: GroupDetail
       },
       {
-        path: '/appmanagement',
+        path: '/app-management',
         name: 'AppManagement',
         component: AppManagement
       },
       {
-        path: 'createappmanagement',
+        path: 'create-app-management',
         name: 'CreateAppManagement',
         component: CreateAppManagement
       },
       {
-        path: '/tagsmnagement',
+        path: '/tags-mnagement',
         name: 'TagsManagement',
         component: TagsManagement
       }
@@ -203,25 +203,30 @@ export default [
     name: 'PersonDetail',
     component: PersonDetail
   },
+  // 权限管理
+  {
+    path: '/rights-management',
+    name: 'RightsManagement',
+    component: RightsManagement
+  },
 
 
-
-// 统计管理
+  // 统计管理
 
   {
     path: '/data-statistics',
     name: 'DataStatistics',
-    component: DataStatistics,
+    component: DataStatistics
   },
   {
     path: '/data-query',
     name: 'DataQuery',
-    component: DataQuery,
+    component: DataQuery
   },
   {
     path: '/data-log',
     name: 'DataLog',
-    component: DataLog,
-  },
+    component: DataLog
+  }
 ]
 

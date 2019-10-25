@@ -21,32 +21,35 @@
 import { mapState, mapMutations } from 'vuex'
 export default {
   name: 'index',
-  props: ['visible', 'close'],
+  props: ['visible', 'nodeType'],
   data () {
     return {
       visibleFlag: false,
       showAddNodeFlag: false,
       showAddDepartmentFlag: false,
-      showAddUnitFlag: false
+      showAddUnitFlag: false,
+      showBtnType: ''
     }
   },
   computed: {
     ...mapState(['app'])
   },
   created () {
+    this.showBtnType = this.nodeType
+    console.log(this.showBtnType)
     this.showBtn()
   },
   methods: {
     showBtn () {
-      if (this.$route.params.nodeType === 'node') {
+      if (this.showBtnType === 'node') {
         this.showAddNodeFlag = true
         this.showAddDepartmentFlag = false
         this.showAddUnitFlag = true
-      } else if (this.$route.params.nodeType === 'department') {
+      } else if (this.showBtnType === 'department') {
         this.showAddNodeFlag = false
         this.showAddDepartmentFlag = true
         this.showAddUnitFlag = false
-      } else if (this.$route.params.nodeType === 'unit') {
+      } else if (this.showBtnType === 'unit') {
         this.showAddNodeFlag = false
         this.showAddDepartmentFlag = true
         this.showAddUnitFlag = true
@@ -67,13 +70,17 @@ export default {
     },
     goAddUnit () {
       this.$router.push({
-        name: 'UnitAdd'
+        name: 'UnitAdd',
+        params: {
+          parentId: this.$route.params.nodeId,
+          name: this.$route.params.name
+        }
       })
       this.$emit('close', false)
     }
   },
   watch: {
-    '$route.params.nodeType': {
+    showBtnType: {
       handler () {
         this.showBtn()
       },

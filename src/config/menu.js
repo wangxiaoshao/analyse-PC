@@ -60,25 +60,25 @@ export default {
         {
           'menuId': '31',
           'name': '视图管理',
-          'path': '/viewmanagement',
+          'path': '/view-management',
           'type': 1
         },
         {
           'menuId': '32',
           'name': '分组管理',
-          'path': '/groupmanagement',
+          'path': '/group-management',
           'type': 1
         },
         {
           'menuId': '33',
           'name': '标签管理',
-          'path': '/tagsmnagement',
+          'path': '/tags-mnagement',
           'type': 1
         },
         {
           'menuId': '34',
           'name': '应用管理',
-          'path': '/appmanagement',
+          'path': '/app-management',
           'type': 1
         }
       ]
@@ -120,7 +120,7 @@ export default {
         {
           'menuId': '51',
           'name': '角色权限',
-          'path': '/parameter',
+          'path': '/rights-management',
           'type': 1
         },
         {
