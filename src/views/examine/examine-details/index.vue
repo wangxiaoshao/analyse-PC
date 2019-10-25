@@ -183,7 +183,7 @@ export default {
         this.loading = false
         this.configData = res.result
         this.list = this.configData[this.type]
-        // this.page.total = res.result.total_items
+        // this.page.total = res.Result.total_items
       }, () => {
         this.loading = false
         this.list = []
