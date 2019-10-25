@@ -32,7 +32,7 @@
       <el-col :span="17">
         <el-input
           placeholder="搜索" suffix-icon="el-icon-search" v-model="keyWord"
-          @input="getResult"
+          @input="onFocus"
         >
         </el-input>
       </el-col>
@@ -48,7 +48,6 @@ export default {
   mixins: [ debounce ],
   data () {
     return {
-      debouncedSearch: null,
       resultFlag: false,
       loadFlag: true,
       keyWord: '',
@@ -72,8 +71,10 @@ export default {
     getType (el) {
       this.type = el
     },
-    onFocus() {
-
+    onFocus () {
+      this.resultFlag = true
+      //this.debounce(this.getResult, 600)
+      this.getResult()
     },
     // 获取搜索结果
     getResult () {
@@ -82,7 +83,6 @@ export default {
         type: this.type
       }
       this.loadFlag = true
-      this.resultFlag = true
       api[urlNames['searchViewNode']](data).then(res => {
         this.gridData = res.data
         this.loadFlag = false
@@ -107,7 +107,7 @@ export default {
     }
   },
   created () {
-    this.debouncedSearch = this.debounce(this.getResult, 5000)
+    // this.debouncedSearch = this.debounce(this.getResult, 5000)
   }
 }
 </script>

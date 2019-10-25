@@ -9,7 +9,7 @@
       "nodeType":"node",
       "parentId":null,
       "bindId":4849,
-      "state":2,
+      "state":1,
       "children": [{
         "viewId":3609,
         "name":"贵州省直属单位",
@@ -17,7 +17,7 @@
         "nodeType":"department",
         "parentId":9827,
         "bindId":48,
-        "state":1
+        "state":0
       },{
         "viewId":3609,
         "name":"遵义市",

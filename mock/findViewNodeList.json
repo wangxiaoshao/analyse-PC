@@ -1,0 +1,31 @@
+{
+  "status": 0,
+  "message": "success",
+  "data": [
+    {
+      "viewId":3609,
+      "name":"gfX4lcB",
+      "id":1,
+      "nodeType":"node",
+      "parentId":6369,
+      "bindId":4849,
+      "state":0
+    },{
+      "viewId":3609,
+      "name":"贵阳111",
+      "id":2,
+      "nodeType":"department",
+      "parentId":6369,
+      "bindId":4849,
+      "state":1
+    },{
+      "viewId":3609,
+      "name":"贵阳11xsxs1",
+      "id":1,
+      "nodeType":"unit",
+      "parentId":6369,
+      "bindId":4849,
+      "state":3
+    }
+  ]
+}

@@ -27,10 +27,16 @@ export default {
   // 数据统计 statistics
   setParameter: 'setParameter',
   getParameter: 'getParameter',
+  // 获取视图
   getTree: 'getTree',
+  // 搜索视图
   searchViewNode: 'searchViewNode',
   getChildList: 'getChildList',
   getPersonList: 'getPersonList',
-  createViewNode: 'createViewNode'
-
+  // 创建节点
+  createViewNode: 'createViewNode',
+  // 根据id获取详情
+  findViewNodeById: 'findViewNodeById',
+  // 根据父级查询下级
+  findViewNodeList: 'findViewNodeList'
 }
