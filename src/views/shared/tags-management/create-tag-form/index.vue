@@ -1,11 +1,11 @@
 <template>
     <div class="create-tag-form">
       <el-dialog
-        title="创建分组"
-        custom-class="edit-dialog"
+        title="创建标签"
         :visible.sync="createTagDialogVisible"
         :fullscreen="true"
         center
+        width="35%"
         :before-close="handleClose">
         <div class="panel">
           <el-form ref="form" :model="form" label-width="80px">

@@ -4,11 +4,11 @@ const ApplicationConfig = () => import('@src/views/application/ApplicationConfig
 
 
 // 申请审核
-const WaitApprovalList = () => import('@src/views/examine/WaitApprovalList/index.vue') /* webpackChunkName: 'home' */
+const WaitApproval = () => import('@src/views/examine/wait-approval/index.vue') /* webpackChunkName: 'home' */
 const ExamineDetails = () => import('@src/views/examine/ExamineDetails/index.vue') /* webpackChunkName: 'home' */
-const Approved = () => import('@src/views/examine/Approved/index.vue') /* webpackChunkName: 'home' */
-const MyApplication = () => import('@src/views/examine/MyApplication/index.vue') /* webpackChunkName: 'home' */
-const ConfirmInfo = () => import('@src/views/examine/ConfirmInfo/index.vue') /* webpackChunkName: 'home' */
+const Approved = () => import('@src/views/examine/approved/index.vue') /* webpackChunkName: 'home' */
+const MyApplication = () => import('@src/views/examine/my-application/index.vue') /* webpackChunkName: 'home' */
+const ConfirmInfo = () => import('@src/views/examine/confirm-info/index.vue') /* webpackChunkName: 'home' */
 // 统计管理
 const DataStatistics = () => import('@src/views/statistics/DataStatistics/index.vue') /* webpackChunkName: 'home' */
 const DataLog = () => import('@src/views/statistics/DataLog/index.vue') /* webpackChunkName: 'home' */
@@ -100,7 +100,6 @@ export default [
   },
 
 
-
   // 申请审核 examine
   {
     path: '/approved',
@@ -108,17 +107,17 @@ export default [
     component: Approved
   },
   {
-    path: '/waitApprovalList',
-    name: 'WaitApprovalList',
-    component: WaitApprovalList
+    path: '/wait-approval',
+    name: 'WaitApproval',
+    component: WaitApproval
   },
   {
-    path: '/myApplication',
+    path: '/my-application',
     name: 'MyApplication',
     component: MyApplication
   },
   {
-    path: '/confirmInfo',
+    path: '/confirm-info',
     name: 'ConfirmInfo',
     component: ConfirmInfo
   },
@@ -129,7 +128,6 @@ export default [
   },
 
 
-
   // 共享管理
   {
     path: '/shared',
@@ -137,37 +135,37 @@ export default [
     component: Shared,
     children: [
       {
-        path: '/viewmanagement',
+        path: '/view-management',
         name: 'ViewManagement',
         component: ViewManagement
       },
       {
-        path: 'createview',
+        path: 'create-view',
         name: 'CreateView',
         component: CreateView
       },
       {
-        path: '/groupmanagement',
+        path: '/group-management',
         name: 'GroupManagement',
         component: GroupManagement
       },
       {
-        path: 'groupdetail',
+        path: 'group-detail',
         name: 'GroupDetail',
         component: GroupDetail
       },
       {
-        path: '/appmanagement',
+        path: '/app-management',
         name: 'AppManagement',
         component: AppManagement
       },
       {
-        path: 'createappmanagement',
+        path: 'create-app-management',
         name: 'CreateAppManagement',
         component: CreateAppManagement
       },
       {
-        path: '/tagsmnagement',
+        path: '/tags-mnagement',
         name: 'TagsManagement',
         component: TagsManagement
       }
@@ -205,21 +203,20 @@ export default [
   },
 
 
-
 // 统计管理
 
   {
-    path: '/dataStatistics',
+    path: '/data-statistics',
     name: 'DataStatistics',
     component: DataStatistics,
   },
   {
-    path: '/dataQuery',
+    path: '/data-query',
     name: 'DataQuery',
     component: DataQuery,
   },
   {
-    path: '/dataLog',
+    path: '/data-log',
     name: 'DataLog',
     component: DataLog,
   },

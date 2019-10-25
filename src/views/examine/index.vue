@@ -95,7 +95,7 @@
 
 <script type="text/ecmascript-6">
 import EditDialog from './components/EditDialog/index.vue'
-import handleTable from '@src/mixins/handleTable'
+import handleTable from '@src/mixins/handle-table'
 import { api, urlNames } from '@src/api'
 
 export default {

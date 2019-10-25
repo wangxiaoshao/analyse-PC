@@ -68,9 +68,9 @@
 </template>
 
 <script type="text/ecmascript-6">
-import handleTable from '@src/mixins/handleTable'
+import handleTable from '@src/mixins/handle-table'
 import { api, urlNames } from '@src/api'
-import handleBreadcrumb from '@src/mixins/handleBreadcrumb.js'
+import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
 import EditDialog from '../components/ConfigDialog'
 
 export default {

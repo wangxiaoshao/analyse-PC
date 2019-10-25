@@ -3,7 +3,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-import handleTable from '@src/mixins/handleTable'
+import handleTable from '@src/mixins/handle-table'
 import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
 

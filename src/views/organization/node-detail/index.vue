@@ -29,7 +29,7 @@
 
 <script>
 import { api, urlNames } from '@src/api'
-import handleBreadcrumb from '@src/mixins/handleBreadcrumb.js'
+import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
 export default {
   name: 'index',
   mixins: [ handleBreadcrumb ],

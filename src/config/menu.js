@@ -27,7 +27,7 @@ export default {
         {
           'menuId': '21',
           'name': '待我审核',
-          'path': '/waitApprovalList',
+          'path': '/wait-approval',
           'type': 1
         },
         {
@@ -39,13 +39,13 @@ export default {
         {
           'menuId': '23',
           'name': '我的申请',
-          'path': '/myApplication',
+          'path': '/my-application',
           'type': 1
         },
         {
           'menuId': '24',
           'name': '信息确认',
-          'path': '/confirmInfo',
+          'path': '/confirm-info',
           'type': 1
         }
       ]
@@ -60,25 +60,25 @@ export default {
         {
           'menuId': '31',
           'name': '视图管理',
-          'path': '/viewmanagement',
+          'path': '/view-management',
           'type': 1
         },
         {
           'menuId': '32',
           'name': '分组管理',
-          'path': '/groupmanagement',
+          'path': '/group-management',
           'type': 1
         },
         {
           'menuId': '33',
           'name': '标签管理',
-          'path': '/tagsmnagement',
+          'path': '/tags-mnagement',
           'type': 1
         },
         {
           'menuId': '34',
           'name': '应用管理',
-          'path': '/appmanagement',
+          'path': '/app-management',
           'type': 1
         }
       ]
@@ -93,19 +93,19 @@ export default {
         {
           'menuId': '41',
           'name': '数据统计',
-          'path': '/dataStatistics',
+          'path': '/data-statistics',
           'type': 1
         },
         {
           'menuId': '42',
           'name': '数据查询',
-          'path': '/dataQuery',
+          'path': '/data-query',
           'type': 1
         },
         {
           'menuId': '43',
           'name': '系统日志',
-          'path': '/dataLog',
+          'path': '/data-log',
           'type': 1
         }
       ]

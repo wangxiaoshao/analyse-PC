@@ -31,7 +31,7 @@ import sideMenu from '@src/components/SideMenu'
 import siteHead from '@src/components/SiteHead'
 import SiteBreadcrumb from '@src/components/SiteBreadcrumb.vue'
 import asideMenu from '@src/config/menu'
-import handleBreadcrumb from '@src/mixins/handleBreadcrumb'
+import handleBreadcrumb from '@src/mixins/handle-breadcrumb'
 
 export default {
   name: 'app',
