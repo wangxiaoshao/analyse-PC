@@ -1,0 +1,52 @@
+{
+  "status": 0,
+  "message": "success",
+  "total": 1234,
+  "data": [
+    {
+      "createOrgId": 5121,
+      "updatedTime": 2619758556911,
+      "subject": "审批标题1",
+      "id": 9981,
+      "type": 48,
+      "auditResult": 3,
+      "createUid": 5576,
+      "auditState": false,
+      "createDepartmentId": 8308,
+      "reason": "申请原因1",
+      "name": "申请人一号",
+      "content": "内容1",
+      "time": "2019-11-11"
+    },
+    {
+      "createOrgId": 5122,
+      "updatedTime": 2619758556912,
+      "subject": "审批标题2",
+      "id": 9982,
+      "type": 48,
+      "auditResult": 3,
+      "createUid": 5576,
+      "auditState": true,
+      "createDepartmentId": 8308,
+      "reason": "申请原因2",
+      "name": "申请人二号",
+      "content": "内容2",
+      "time": "2019-11-12"
+    },
+    {
+      "createOrgId": 5123,
+      "updatedTime": 2619758556913,
+      "subject": "审批标题3",
+      "id": 9983,
+      "type": 48,
+      "auditResult": 3,
+      "createUid": 5576,
+      "auditState": false,
+      "createDepartmentId": 8308,
+      "reason": "申请原因3",
+      "name": "申请人三号",
+      "content": "内容3",
+      "time": "2019-11-13"
+    }
+  ]
+}
