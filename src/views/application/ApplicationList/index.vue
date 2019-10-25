@@ -92,7 +92,7 @@
 <script type="text/ecmascript-6">
 import EditDialog from '../components/EditDialog'
 import ConfigDialog from '../components/ConfigDialog'
-import handleTable from '@src/mixins/handleTable'
+import handleTable from '@src/mixins/handle-table'
 import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
 

@@ -29,7 +29,7 @@
 
 <script>
 import { api, urlNames } from '@src/api'
-import handleBreadcrumb from '@src/mixins/handleBreadcrumb.js'
+import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
 export default {
   name: 'index',
   mixins: [ handleBreadcrumb ],
@@ -115,7 +115,6 @@ export default {
       reason: this.ruleForm.reason
     }
     this.oldFrom = JSON.parse(JSON.stringify(obj))
-    alert(this.ruleForm.viewNode.name)
   },
   computed: {
     newValue () {

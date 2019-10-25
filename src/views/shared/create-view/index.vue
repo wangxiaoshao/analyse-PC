@@ -89,8 +89,8 @@
 </template>
 
 <script>
-import handleTable from '@src/mixins/handleTable'
-import handleBreadcrumb from '@src/mixins/handleBreadcrumb.js'
+import handleTable from '@src/mixins/handle-table'
+import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
 
 export default {
   name: 'CreateView',

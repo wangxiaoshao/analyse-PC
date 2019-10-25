@@ -2,7 +2,6 @@
   <div class="create-group">
     <el-dialog
       title="创建分组"
-      custom-class="edit-dialog"
       :visible.sync="creategroupdialogVisible"
       :fullscreen="true"
       center

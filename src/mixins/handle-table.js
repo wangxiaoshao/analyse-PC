@@ -3,7 +3,7 @@
  * 翻页、排序、过滤、自动计算table高度
  * 获取列表方法名需要统一为 getGrid()
  */
-import pickerOptions from './pickerOptions'
+import pickerOptions from './picker-options'
 export default {
   data () {
     return {

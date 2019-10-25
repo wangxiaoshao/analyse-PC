@@ -100,7 +100,6 @@ export default [
   },
 
 
-
   // 申请审核 examine
   {
     path: '/approved',
@@ -129,7 +128,6 @@ export default [
   },
 
 
-
   // 共享管理
   {
     path: '/shared',
@@ -137,37 +135,37 @@ export default [
     component: Shared,
     children: [
       {
-        path: '/viewmanagement',
+        path: '/view-management',
         name: 'ViewManagement',
         component: ViewManagement
       },
       {
-        path: 'createview',
+        path: 'create-view',
         name: 'CreateView',
         component: CreateView
       },
       {
-        path: '/groupmanagement',
+        path: '/group-management',
         name: 'GroupManagement',
         component: GroupManagement
       },
       {
-        path: 'groupdetail',
+        path: 'group-detail',
         name: 'GroupDetail',
         component: GroupDetail
       },
       {
-        path: '/appmanagement',
+        path: '/app-management',
         name: 'AppManagement',
         component: AppManagement
       },
       {
-        path: 'createappmanagement',
+        path: 'create-app-management',
         name: 'CreateAppManagement',
         component: CreateAppManagement
       },
       {
-        path: '/tagsmnagement',
+        path: '/tags-mnagement',
         name: 'TagsManagement',
         component: TagsManagement
       }
@@ -203,7 +201,6 @@ export default [
     name: 'PersonDetail',
     component: PersonDetail
   },
-
 
 
 // 统计管理
