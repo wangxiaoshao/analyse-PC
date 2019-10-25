@@ -115,7 +115,6 @@ export default {
       reason: this.ruleForm.reason
     }
     this.oldFrom = JSON.parse(JSON.stringify(obj))
-    alert(this.ruleForm.viewNode.name)
   },
   computed: {
     newValue () {

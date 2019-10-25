@@ -25,7 +25,9 @@
             <el-button class="add-btn">添加人员</el-button>
             <person-list :sortFlag="sortShowFlag" @cancel="getSortAction"></person-list>
           </el-tab-pane>
-          <el-tab-pane label="部门领导" name="部门领导">部门领导</el-tab-pane>
+          <el-tab-pane label="部门领导" name="部门领导">
+            <leader-list></leader-list>
+          </el-tab-pane>
         </el-tabs>
       </div>
     </div>
@@ -33,13 +35,15 @@
 </template>
 
 <script>
-import ContentList from './components/content-list/index'
-import PersonList from './components/personlist/index'
-import addDialog from './components/add-dialog/index'
+import { api, urlNames } from '@src/api'
+import ContentList from './components/contentList/index'
+import PersonList from './components/personList/index'
+import leaderList from './components/leaderList/index'
+import addDialog from './components/addDialog/index'
 export default {
   name: 'index',
   components: {
-    ContentList, addDialog , PersonList
+    ContentList, addDialog, PersonList, leaderList
   },
   data () {
     return {
@@ -67,12 +71,16 @@ export default {
     },
     getSortAction (type) {
       this.sortShowFlag = type
+    },
+    getCotent () {
+
     }
   },
   created () {
     if (this.$route.query.type === 'back') {
 
     }
+    this.getCotent()
   },
   watch: {
     $route: {

@@ -67,7 +67,11 @@ export default {
     },
     goAddUnit () {
       this.$router.push({
-        name: 'UnitAdd'
+        name: 'UnitAdd',
+        params: {
+          parentId: this.$route.params.nodeId,
+          name: this.$route.params.name
+        }
       })
       this.$emit('close', false)
     }
