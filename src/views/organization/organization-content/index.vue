@@ -55,7 +55,7 @@
 <script>
 import { api, urlNames } from '@src/api'
 import ContentList from './components/contentList/index'
-import PersonList from './components/personList/index'
+// import PersonList from './components/personList/index'
 import leaderList from './components/leaderList/index'
 import addDialog from './components/addDialog/index'
 export default {
