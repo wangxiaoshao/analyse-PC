@@ -29,6 +29,8 @@ const GroupDetail = () => import('@src/views/shared/group-detail/index.vue')
 const AppManagement = () => import('@src/views/shared/app-management/index.vue')
 const CreateAppManagement = () => import('@src/views/shared/create-app-management/index.vue')
 const TagsManagement = () => import('@src/views/shared/tags-management/index.vue')
+/* 权限管理 */
+const RightsManagement = () => import('@src/views/shared/rights-management/index.vue')
 /* 路由 */
 export default [
   {
@@ -201,24 +203,30 @@ export default [
     name: 'PersonDetail',
     component: PersonDetail
   },
+  // 权限管理
+  {
+    path: '/rights-management',
+    name: 'RightsManagement',
+    component: RightsManagement
+  },
 
 
-// 统计管理
+  // 统计管理
 
   {
     path: '/data-statistics',
     name: 'DataStatistics',
-    component: DataStatistics,
+    component: DataStatistics
   },
   {
     path: '/data-query',
     name: 'DataQuery',
-    component: DataQuery,
+    component: DataQuery
   },
   {
     path: '/data-log',
     name: 'DataLog',
-    component: DataLog,
-  },
+    component: DataLog
+  }
 ]
 

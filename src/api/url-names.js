@@ -30,6 +30,8 @@ export default {
   getTree: 'getTree',
   getChildList: 'getChildList',
   getPersonList: 'getPersonList',
-  createViewNode: 'createViewNode'
+  createViewNode: 'createViewNode',
+  // 共享视图
+  getSharedManagement: 'getSharedManagement'
 
 }

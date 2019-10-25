@@ -121,7 +121,7 @@ axios.interceptors.response.use((response) => {
     if (config.keepOriginResponse) {
       return Promise.resolve(response.data)
     } else {
-      if (data.error === 0 || data.error === 200 || data.status === 200) {
+      if (data.status === 0 || data.status === 200 || data.error === 200) {
         return Promise.resolve(response.data)
       } else if (data.error === 403) {
         appLogin()
