@@ -1,67 +1,28 @@
 <template>
   <div class="dic-edit-dialog">
     <el-dialog custom-class="edit-dialog"
-               :fullscreen="true"
+               :fullscreen="false"
                :visible.sync="visible"
                :close-on-click-modal="false"
                :close-on-press-escape="false"
                :show-close="false">
       <div class="dialog-close" @click="closeDialog"><i class="el-icon-close"></i></div>
-      <el-scrollbar :style="scrollStyle">
-        <h2 class="dialog-title">权限管理</h2>
+        <h2 class="dialog-title">{{dialogTitle}}</h2>
         <!--表单-->
-        <el-form class="edit-form" :model="editForm" :rules="rules" ref="editForm">
-          <el-form-item label="地区" prop="areaId" :label-width="formLabelWidth">
-            <el-select v-model="editForm.areaId"
-                       multiple
-                       filterable
-                       clearable
-                       placeholder="请选择地区">
-              <el-option
-                v-for="item in areaList"
-                :key="item.id"
-                :label="item.name"
-                :value="item.code">
-              </el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="权限" prop="type" :label-width="formLabelWidth">
-            <el-select v-model="editForm.type"
-                       filterable
-                       clearable
-                       placeholder="请选择活动权限">
-              <el-option label="超级管理员" value="1"></el-option>
-              <el-option label="管理员" value="2"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="管理员选择" :label-width="formLabelWidth" prop="uname">
-            <el-input v-show="current" v-model="editForm.uname" disabled readonly></el-input>
-            <el-select
-              v-show="!current"
-              v-model="editForm.uid"
-              filterable
-              remote
-              :disabled="current ? true : false"
-              reserve-keyword
-              placeholder="请选择管理员"
-              :remote-method="remoteMethod"
-            >
-              <el-option
-                v-for="item in options"
-                :key="item.id"
-                :label="item.name"
-                @click.native="unameChange(item)"
-                :value="item.id">
-                <span style="float: left">{{ item.name}}</span>
-                <span style="float: right; color: #8492a6; font-size: 13px">{{ item.department}}</span>
-              </el-option>
-            </el-select>
-            </el-form-item>
-          <div class="confirm-btn">
-            <el-button type="danger" @click="submitForm('editForm')">确 定</el-button>
+      <el-input
+        type="textarea"
+        :autosize="{ minRows: 4, maxRows: 6}"
+        v-model="textareaVal"
+        :placeholder="`请输入${dialogTitle}`">
+      </el-input>
+      <el-row :gutter="20">
+        <el-col :span="12" :offset=8>
+          <div style="margin-top: 20px">
+            <el-button  @click="passExamine">确认</el-button>
+            <el-button @click="closeDialog">取消</el-button>
           </div>
-        </el-form>
-      </el-scrollbar>
+        </el-col>
+      </el-row>
     </el-dialog>
   </div>
 </template>
@@ -71,88 +32,23 @@ import { mapState, mapMutations } from 'vuex'
 import { api, urlNames } from '@src/api'
 
 export default {
-  props: ['current', 'refreshList', 'visible', 'close', 'parent'],
+  props: ['visible', 'close', 'dialogTitle'],
   components: {},
   data () {
-    var validateAreaName = (rule, value, callback) => {
-      if (value.length > 0) {
-        callback()
-      } else {
-        callback(new Error('请选择地区'))
-      }
-    }
     return {
-      formLabelWidth: '100px',
-      defaultForm: {
-        areaId: [],
-        type: '',
-        uname: '',
-        uid: ''
-      },
-      currentSelect: {},
-      rules: {
-        areaId: [
-          { validator: validateAreaName, trigger: 'blur' }
-        ],
-        type: [
-          { required: true, message: '', trigger: 'blur' },
-          { min: 1, max: 50, message: '', trigger: 'blur' }
-        ],
-        uid: [
-          { required: true, message: '', trigger: 'blur' }
-        ]
-      },
-      filterText: '',
-      areaList: [],
-      options: []
+      textareaVal: '',
     }
   },
   mounted () {
-    this.getAreaList()
   },
   computed: {
     ...mapState(['app']),
-    editForm () {
-      if (this.current) {
-        if (typeof this.current.areaId === 'string') {
-          let arr = this.current.areaId.split(',')
-          this.current['areaId'] = arr
-        }
-        return this.current
-      } else {
-        return this.defaultForm
-      }
-    },
-    scrollStyle () {
-      return {
-        height: this.$store.state.app.windowHeight - 30 + 'px'
-      }
-    }
   },
   methods: {
-    remoteMethod (query) {
-      api[urlNames['geMtmemberSearch']]({
-        'keyword': query,
-        'types': 4
-      }).then((res) => {
-        this.loading = false
-        this.options = res.result
-      }, () => {
-        this.options = []
-      })
-    },
-    unameChange (val) {
-      console.log(val)
-      // this.editForm.uname = val.name
-      this.editForm.name = val.name
-    },
-    getAreaList () {
-      api[urlNames['getAreaList']]().then((res) => {
-        this.areaList = res.data
-      })
+    passExamine () {
+      this.addDialogVisible = true
     },
     closeDialog () {
-      this.$refs.editForm.resetFields()
       this.$emit('close')
     },
     submitForm (form) {

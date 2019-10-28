@@ -5,7 +5,7 @@ const ApplicationConfig = () => import('@src/views/application/ApplicationConfig
 
 // 申请审核
 const WaitApproval = () => import('@src/views/examine/wait-approval/index.vue') /* webpackChunkName: 'home' */
-const ExamineDetails = () => import('@src/views/examine/examine-details/index.vue') /* webpackChunkName: 'home' */
+const ExamineDetails = () => import('@src/views/examine/examineDetails/index.vue') /* webpackChunkName: 'home' */
 const Approved = () => import('@src/views/examine/approved/index.vue') /* webpackChunkName: 'home' */
 const MyApplication = () => import('@src/views/examine/my-application/index.vue') /* webpackChunkName: 'home' */
 const ConfirmInfo = () => import('@src/views/examine/confirm-info/index.vue') /* webpackChunkName: 'home' */

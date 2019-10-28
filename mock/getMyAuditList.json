@@ -16,7 +16,9 @@
       "reason": "申请原因1",
       "applyName": "申请人一号",
       "content": "内容1",
-      "applyTime": "2019-11-11"
+      "applyTime": "2019-11-11",
+      "workPhone": "18922222221",
+      "workName": "单位名称1"
     },
     {
       "createOrgId": 5122,
@@ -31,7 +33,9 @@
       "reason": "申请原因2",
       "applyName": "申请人二号",
       "content": "内容2",
-      "applyTime": "2019-11-12"
+      "applyTime": "2019-11-12",
+      "workPhone": "18922222222",
+      "workName": "单位名称2"
     },
     {
       "createOrgId": 5123,
@@ -46,7 +50,9 @@
       "reason": "申请原因3",
       "applyName": "申请人三号",
       "content": "内容3",
-      "applyTime": "2019-11-13"
+      "applyTime": "2019-11-13",
+      "workPhone": "18922222223",
+      "workName": "单位名称3"
     }
   ]
 }

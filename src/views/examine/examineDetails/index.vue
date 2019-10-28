@@ -11,17 +11,27 @@
     </el-row>
     <!--表格-->
     <site-table :tableConfig="tableConfig"
-                :operateWidth="operateWidth"
                 :operate="operate"
                 :tableData="tableDetailData">
       <el-button slot="operate" size="mini" type="text" >不通过</el-button>
       <el-button slot="operate" size="mini" type="text" >通过</el-button>
     </site-table>
+
     <edit-dialog :visible="editDialogVisible"
                  :config-type="type"
                  :current="currentEdit"
+                 :dialogTitle="dialogTitle"
                  @refreshList="getGrid"
                  @close="closeEditDialog"></edit-dialog>
+    <el-row :gutter="20">
+      <el-col :span="12" :offset=20>
+        <div style="margin-top: 20px">
+          <el-button type="primary" plain @click="passExamine">通过</el-button>
+          <el-button type="info" plain @click="noPassExamine">不通过</el-button>
+        </div>
+      </el-col>
+    </el-row>
+
     <!--添加dialog-->
     <edit-dialog
       :visible="addDialogVisible"
@@ -47,6 +57,7 @@ export default {
       currentEdit: null,
       editDialogVisible: false,
       addDialogVisible: false,
+      dialogTitle: '审核意见',
       type: 'content',
       loading: true,
       searchQuery: {
@@ -60,22 +71,12 @@ export default {
       },
       dictionaryNameList: [],
       tableConfig: {
-        order: {
-          key: 0,
-          field: 'order',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '序号',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 50
-        },
-        applyName: {
+        workPhone: {
           key: 1,
-          field: 'applyName',
+          field: 'workPhone',
           tooltip: false,
           formatter: this.formatter,
-          label: '申请人',
+          label: '单位电话',
           sortable: false,
           showOverflowTooltip: false,
           minWidth: 100
@@ -85,7 +86,7 @@ export default {
           field: 'content',
           tooltip: true,
           formatter: this.formatter,
-          label: '申请内容',
+          label: '原值',
           sortable: false,
           showOverflowTooltip: false,
           minWidth: 100
@@ -95,36 +96,55 @@ export default {
           field: 'applyTime',
           tooltip: false,
           formatter: this.formatter,
-          label: '申请时间',
+          label: '变更值',
           sortable: false,
           showOverflowTooltip: false,
           minWidth: 100
         },
-        reason: {
+        empty: {
           key: 4,
-          field: 'reason',
+          field: 'empty',
           tooltip: false,
           formatter: this.formatter,
-          label: '申请原因',
+          label: '',
+          sortable: false,
+          showOverflowTooltip: false,
+          minWidth: 50
+        },
+        workName: {
+          key: 5,
+          field: 'workName',
+          tooltip: false,
+          formatter: this.formatter,
+          label: '单位名称',
           sortable: false,
           showOverflowTooltip: false,
           minWidth: 100
         },
-        state: {
-          key: 5,
-          field: 'state',
-          tooltip: false,
+        content2: {
+          key: 6,
+          field: 'content',
+          tooltip: true,
           formatter: this.formatter,
-          label: '审核状态',
-          sortable: true,
+          label: '原值',
+          sortable: false,
           showOverflowTooltip: false,
           minWidth: 100
-        }
+        },
+        applyTime2: {
+          key: 7,
+          field: 'applyTime',
+          tooltip: false,
+          formatter: this.formatter,
+          label: '变更值',
+          sortable: false,
+          showOverflowTooltip: false,
+          minWidth: 100
+        },
       },
       tableDetailData: [],
-      operateWidth: 200,
       tableCheckbox: true,
-      operate: true
+      operate: false
     }
   },
   computed: {
@@ -148,6 +168,12 @@ export default {
   },
   methods: {
     ...mapMutations(['SET_APPLICATION_PAGE', 'SET_EXAMINE_DETAIL']),
+    passExamine () {
+      this.editDialogVisible = true
+    },
+    noPassExamine () {
+      this.editDialogVisible = true
+    },
     trim (str) {
       return (str + '').replace(/(\s+)$/g, '').replace(/^\s+/g, '')
     },
