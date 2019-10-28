@@ -1,7 +1,7 @@
 <template>
     <div class="create-tag-form">
       <el-dialog
-        title="创建标签"
+        :title="flagdata.title"
         :visible.sync="createTagDialogVisible"
         :fullscreen="true"
         center
@@ -19,7 +19,7 @@
             <el-form-item label="标签名称">
               <el-input v-model="form.name"></el-input>
             </el-form-item>
-            <el-form-item label="父级标签">
+            <el-form-item v-if="flagdata.flag!==1" label="父级标签">
               <el-input disabled="" v-model="form.name"></el-input>
             </el-form-item>
           </el-form>
@@ -35,6 +35,7 @@
 <script>
 export default {
   name: 'CreateTagForm',
+  props:['createTagDialogVisible','createFlag','flagdata'],
   data () {
     return {
       form: {
@@ -49,7 +50,6 @@ export default {
       }
     }
   },
-  props: ['createTagDialogVisible'],
   methods: {
     onSubmit () {
       console.log('submit!')

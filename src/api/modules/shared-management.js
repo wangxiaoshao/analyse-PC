@@ -13,10 +13,11 @@ export default {
     serve: 'organization-manage-pc',
     mock: 'getViewList.json'
   },
-  [urlNames.getSharedManagement]: {
+  /* 獲取分組列表 */
+  [urlNames.getGroupList]: {
     type: 'get',
     url: '/api/jg_manage/view/findViewList',
     serve: 'organization-manage-pc',
-    mock: 'getViewList.json'
+    mock: 'getGroupList.json'
   }
 }

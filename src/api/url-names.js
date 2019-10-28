@@ -37,7 +37,9 @@ export default {
   getSharedManagement: 'getSharedManagement',
   // 创建节点
   createViewNode: 'createViewNode',
-  // 根据id获取详情
+  // 獲取分組
+  getGroupList: 'getGroupList',
+  // 根据id获取详情,
   findViewNodeById: 'findViewNodeById',
   // 根据父级查询下级
   findViewNodeList: 'findViewNodeList'
