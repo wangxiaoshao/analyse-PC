@@ -9,7 +9,7 @@
           :value="item.value">
         </el-option>
       </el-select>
-      <el-button type="primary" @click="createTag('')">新增一级标签</el-button>
+      <el-button type="primary" @click="createTag('',{flag:1,title:'新增一级标签'})">新增一级标签</el-button>
     </div>
      <div class="tag-panel">
        <el-tree
@@ -23,7 +23,7 @@
           <el-button
             type="text"
             size="mini"
-            @click="createTag(data),() => append(data)">
+            @click="createTag(data, {flag:0,title:node.label}),() => append(data)">
             新增
           </el-button>
           <el-button
@@ -36,7 +36,7 @@
       </span>
        </el-tree>
      </div>
-    <create-tag-form @close="close" :createFlag="createFlag" :createTagDialogVisible="createTagDialogVisible"></create-tag-form>
+    <create-tag-form @close="close" :flagdata="flagdata" :createData="createData" :createTagDialogVisible="createTagDialogVisible"></create-tag-form>
   </div>
 </template>
 
@@ -51,7 +51,8 @@ export default {
   data () {
     return {
       createTagDialogVisible: false,
-      createFlag: '',
+      createData: '',
+      flagdata: '',
       options: [{
         value: '选项1',
         label: '黄金糕'
@@ -121,9 +122,10 @@ export default {
       const index = children.findIndex(d => d.id === data.id)
       children.splice(index, 1)
     },
-    createTag (data) {
+    createTag (data, flag) {
       this.createTagDialogVisible = true
-      this.createFlag = data
+      this.createData = data
+      this.flagdata= flag
     },
     // 关闭有弹窗
     close () {

@@ -14,7 +14,7 @@
       <div class="table">
         <el-table
           ref="singleTable"
-          :data="tableData"
+          :data="groupList"
           highlight-current-row
           @current-change="handleCurrentChange"
           style="width: 100%">
@@ -25,22 +25,22 @@
             width="50">
           </el-table-column>
           <el-table-column
-            property="date"
+            property="name"
             label="分组名称"
             align="center">
           </el-table-column>
           <el-table-column
-            property="name"
+            property="remark"
             label="分组描述"
             align="center">
           </el-table-column>
           <el-table-column
-          property="address"
+          property="time"
           align="center"
           label="创建时间">
         </el-table-column>
           <el-table-column
-            property="name"
+            property="stateName"
             align="center"
             label="启用状态">
           </el-table-column>
@@ -69,6 +69,7 @@
 
 <script>
 import CreateGroupDialog from '@src/views/shared/group-management/create-group-dialog/create-group-dialog'
+import { api, urlNames } from '@src/api'
 export default {
   name: 'GroupManagement',
   components: {
@@ -76,6 +77,8 @@ export default {
   },
   data () {
     return {
+      groupList: [],
+      totale: 0,
       creategroupdialogVisible: false,
       currentPage: 1,
       options: [{
@@ -88,28 +91,30 @@ export default {
         value: '3',
         label: '个人分组'
       }],
-      tableData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      }],
       currentRow: null,
       value: ''
     }
   },
+  created () {
+    this.getGroupList()
+  },
   methods: {
+    getGroupList (page, limt) {
+      api[urlNames['getGroupList']]({
+        page: page,
+        limit: limt
+      }).then((res) => {
+        res.data.forEach(item => {
+          if (item.state === 0) {
+            item.stateName = '否'
+          } else if (item.state === 0) {
+            item.stateName = '是'
+          }
+        })
+        this.total = parseInt(res.total)
+        this.groupList = res.data
+      })
+    },
     // 关闭弹窗
     close () {
       this.creategroupdialogVisible = false
