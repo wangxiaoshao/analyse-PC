@@ -1,7 +1,7 @@
 <template>
   <div class="form-content">
     <el-form :model="ruleForm" :disabled="disabledFlag" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-      <el-collapse v-model="activeNames" @change="handleChange">
+      <el-collapse v-model="activeNames">
         <el-collapse-item title="基础信息" name="1">
           <el-form-item label="单位名称" prop="name">
             <el-input v-model="ruleForm.name"></el-input>

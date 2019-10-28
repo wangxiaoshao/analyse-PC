@@ -3,12 +3,6 @@ const ApplicationList = () => import('@src/views/application/ApplicationList/ind
 const ApplicationConfig = () => import('@src/views/application/ApplicationConfig/index.vue') /* webpackChunkName: 'home' */
 
 
-// 申请审核
-const WaitApproval = () => import('@src/views/examine/wait-approval/index.vue') /* webpackChunkName: 'home' */
-const ExamineDetails = () => import('@src/views/examine/examine-details/index.vue') /* webpackChunkName: 'home' */
-const Approved = () => import('@src/views/examine/approved/index.vue') /* webpackChunkName: 'home' */
-const MyApplication = () => import('@src/views/examine/my-application/index.vue') /* webpackChunkName: 'home' */
-const ConfirmInfo = () => import('@src/views/examine/confirm-info/index.vue') /* webpackChunkName: 'home' */
 // 统计管理
 const DataStatistics = () => import('@src/views/statistics/DataStatistics/index.vue') /* webpackChunkName: 'home' */
 const DataLog = () => import('@src/views/statistics/DataLog/index.vue') /* webpackChunkName: 'home' */
@@ -82,19 +76,19 @@ export default [
         name: 'PersonEdit',
         component: PersonDetail
       }, {
-        path: 'nodeAdd/:parentId/:name',
+        path: 'nodeAdd/:parentId',
         name: 'NodeAdd',
         component: NodeDetail
       }, {
-        path: 'unitAdd/:parentId/:name',
+        path: 'unitAdd/:parentId',
         name: 'UnitAdd',
         component: UnitDetail
       }, {
-        path: 'departmentAdd',
+        path: 'departmentAdd/:parentId',
         name: 'DepartmentAdd',
         component: DepartmentDetail
       }, {
-        path: 'personAdd',
+        path: 'personAdd/:parentId',
         name: 'PersonAdd',
         component: PersonDetail
       }

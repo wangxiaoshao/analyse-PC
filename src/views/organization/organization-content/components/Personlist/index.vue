@@ -33,6 +33,12 @@
           <span class="text-disable" v-show="!scope.row.removed">停用</span>
         </template>
       </el-table-column>
+      <el-table-column prop="state" label="审核状态" width="100" align="center">
+        <template  slot-scope="scope">
+          <span v-show="scope.row.state === 0" style="color: #F56C6C">待审核</span>
+          <span v-show="scope.row.state === 1" style="color: #67C23A">已审核</span>
+        </template>
+      </el-table-column>
       <el-table-column prop="act" label="操作" width="100" align="center">
         <template slot-scope="scope">
           <el-button
@@ -87,6 +93,7 @@ export default {
       api[urlNames['getPersonList']](data).then((res) => {
         this.loading = false
         this.list = res.data
+        console.log(3333,this.list)
       }, () => {
         this.loading = false
         this.list = []
@@ -102,7 +109,7 @@ export default {
 
   },
   created () {
-    this.getGrid()
+   // this.getGrid()
     if (this.$route.name === 'OrganizationContent') {
       this.isShowEditFlag = true
     } else {
@@ -144,6 +151,13 @@ export default {
         }
       },
       deep: true
+    },
+    '$route.params.nodeId': {
+      handler (val) {
+        this.getGrid()
+      },
+      deep: true,
+      immediate: true
     }
   }
 }
