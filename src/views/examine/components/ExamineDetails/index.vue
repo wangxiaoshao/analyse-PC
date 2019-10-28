@@ -10,12 +10,52 @@
       </el-col>
     </el-row>
     <!--表格-->
-    <site-table :tableConfig="tableConfig"
-                :operate="operate"
-                :tableData="tableDetailData">
-      <el-button slot="operate" size="mini" type="text" >不通过</el-button>
-      <el-button slot="operate" size="mini" type="text" >通过</el-button>
-    </site-table>
+    <el-table :data="gridData">
+      <template>
+        <el-table-column label="单位名称">
+          <el-table-column
+            prop="name"
+            label="原值">
+            <template slot-scope="scope">
+              <div>{{scope.row.name}}</div>
+            </template>
+          </el-table-column>
+          <el-table-column label="变更值">
+            <template slot-scope="scope">
+              <div>{{scope.row.name}}</div>
+            </template>
+          </el-table-column>
+        </el-table-column>
+        <el-table-column label="单位电话">
+          <el-table-column
+            prop="name"
+            label="原值">
+          </el-table-column>
+          <el-table-column label="变更值">
+            <template slot-scope="scope">
+              <div>{{scope.row.name}}</div>
+            </template>
+          </el-table-column>
+        </el-table-column>
+        <el-table-column
+          prop="date"
+          label="申请原因"
+          width="150">
+          <template slot-scope="scope">
+            <div>{{scope.row.name}}</div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          v-if="!isWaitApproval"
+          prop="date"
+          label="审核意见"
+          width="150">
+          <template slot-scope="scope">
+            <div>{{scope.row.name}}</div>
+          </template>
+        </el-table-column>
+      </template>
+    </el-table>
 
     <edit-dialog :visible="editDialogVisible"
                  :config-type="type"
@@ -23,10 +63,10 @@
                  :dialogTitle="dialogTitle"
                  @refreshList="getGrid"
                  @close="closeEditDialog"></edit-dialog>
-    <el-row :gutter="20">
+    <el-row :gutter="20" v-if="isWaitApproval">
       <el-col :span="12" :offset=20>
         <div style="margin-top: 20px">
-          <el-button type="primary" plain @click="passExamine">通过</el-button>
+          <el-button type="primary" plain @click="passExamine" >通过</el-button>
           <el-button type="info" plain @click="noPassExamine">不通过</el-button>
         </div>
       </el-col>
@@ -45,21 +85,26 @@
 import handleTable from '@src/mixins/handle-table'
 import { api, urlNames } from '@src/api'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
-import EditDialog from '../components/EditDialog'
+import EditDialog from '../EditDialog/index'
 import SiteTable from '@src/components/SiteTable/index.vue'
 import { mapState, mapMutations } from 'vuex'
 
 export default {
-  components: { EditDialog, SiteTable },
+  components: { EditDialog },
   mixins: [handleTable, handleBreadcrumb],
   data () {
     return {
+      gridData: [{
+        counts: '1202',
+        name: '王小虎'
+      }],
       currentEdit: null,
       editDialogVisible: false,
       addDialogVisible: false,
       dialogTitle: '审核意见',
       type: 'content',
       loading: true,
+      isWaitApproval: false,
       searchQuery: {
         type: ''
       },
@@ -151,8 +196,10 @@ export default {
     ...mapState(['application', 'examine'])
   },
   created () {
-    console.log(this.examine.detail)
     this.tableDetailData.push(this.examine.detail)
+    if (this.$route.query.WaitApproval === 1910281645) {
+      this.isWaitApproval = true
+    }
   },
   mounted () {
     this.pushBreadcrumb({
@@ -169,7 +216,6 @@ export default {
   methods: {
     ...mapMutations(['SET_APPLICATION_PAGE', 'SET_EXAMINE_DETAIL']),
     passExamine () {
-      this.editDialogVisible = true
     },
     noPassExamine () {
       this.editDialogVisible = true
@@ -254,7 +300,7 @@ export default {
 }
 </script>
 <style lang="less">
-  @import "./index";
+  @import "index";
 </style>
 
 
