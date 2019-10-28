@@ -9,7 +9,8 @@
       "nodeType":"node",
       "parentId":6369,
       "bindId":4849,
-      "state":0
+      "state":0,
+      "removed": false
     },{
       "viewId":3609,
       "name":"贵阳111",
@@ -17,7 +18,8 @@
       "nodeType":"department",
       "parentId":6369,
       "bindId":4849,
-      "state":1
+      "state":1,
+      "removed": false
     },{
       "viewId":3609,
       "name":"贵阳11xsxs1",
@@ -25,7 +27,8 @@
       "nodeType":"unit",
       "parentId":6369,
       "bindId":4849,
-      "state":3
+      "state":1,
+      "removed": true
     }
   ]
 }

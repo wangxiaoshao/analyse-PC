@@ -3,7 +3,7 @@ const ApplicationList = () => import('@src/views/application/ApplicationList/ind
 const ApplicationConfig = () => import('@src/views/application/ApplicationConfig/index.vue') /* webpackChunkName: 'home' */
 
 
-// 申请审核
+// 申请审核1
 const WaitApproval = () => import('@src/views/examine/wait-approval/index.vue') /* webpackChunkName: 'home' */
 const ExamineDetails = () => import('@src/views/examine/examineDetails/index.vue') /* webpackChunkName: 'home' */
 const Approved = () => import('@src/views/examine/approved/index.vue') /* webpackChunkName: 'home' */

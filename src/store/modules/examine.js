@@ -4,7 +4,7 @@ const app = {
   state: {
     tableData: {},
     detail: {},
-    backPath: {},
+    backPath: {}
   },
   mutations: {
     [types.SET_EXAMINE_TABLEDATA] (state, val) {

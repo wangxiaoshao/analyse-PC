@@ -24,7 +24,7 @@ const store = new Vuex.Store({
     application,
     organization,
     // 申请审核
-    examine,
+    examine
   }
 })
 
