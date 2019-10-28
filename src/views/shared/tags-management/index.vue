@@ -125,7 +125,7 @@ export default {
     createTag (data, flag) {
       this.createTagDialogVisible = true
       this.createData = data
-      this.flagdata= flag
+      this.flagdata = flag
     },
     // 关闭有弹窗
     close () {

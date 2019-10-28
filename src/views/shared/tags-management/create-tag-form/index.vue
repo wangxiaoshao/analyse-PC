@@ -35,7 +35,7 @@
 <script>
 export default {
   name: 'CreateTagForm',
-  props:['createTagDialogVisible','createFlag','flagdata'],
+  props: ['createTagDialogVisible', 'createFlag', 'flagdata'],
   data () {
     return {
       form: {

@@ -42,9 +42,9 @@
 
 <script>
 import { api, urlNames } from '@src/api'
-/*import debounce from '@src/mixins/debounce'*/
+/* import debounce from '@src/mixins/debounce' */
 export default {
-/*  mixins: [ debounce ],*/
+/*  mixins: [ debounce ], */
   data () {
     return {
       resultFlag: false,

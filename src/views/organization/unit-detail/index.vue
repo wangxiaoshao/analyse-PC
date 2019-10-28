@@ -1,67 +1,61 @@
 <template>
   <div class="form-content">
     <el-form :model="ruleForm" :disabled="disabledFlag" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-      <el-collapse v-model="activeNames">
-        <el-collapse-item title="基础信息" name="1">
-          <el-form-item label="单位名称" prop="name">
-            <el-input v-model="ruleForm.name"></el-input>
-          </el-form-item>
-          <el-form-item label="单位简称" prop="shortName">
-            <el-input v-model="ruleForm.shortName"></el-input>
-          </el-form-item>
-          <el-form-item label="单位地址" prop="addr">
-            <el-input v-model="ruleForm.addr"></el-input>
-          </el-form-item>
-          <el-form-item label="单位电话" prop="tel">
-            <el-input v-model="ruleForm.tel"></el-input>
-          </el-form-item>
-          <el-form-item label="传真号码" prop="tel">
-            <el-input v-model="ruleForm.fax"></el-input>
-          </el-form-item>
-          <el-form-item label="邮编" prop="zipCode">
-            <el-input v-model="ruleForm.zipCode"></el-input>
-          </el-form-item>
-          <el-form-item label="统一单位信用编码" prop="uiniteCode">
-            <el-input v-model="ruleForm.uniteCode" disabled="true"></el-input>
-          </el-form-item>
-          <el-form-item label="区域" prop="name">
-            <el-cascader
-              placeholder="试试搜索：指南"
-              :options="options"
-              filterable
-            ></el-cascader>
-          </el-form-item>
-          <el-form-item label=" 上级单位" prop="unitParent">
-            <el-input v-model="ruleForm.unitParent" disabled="true"></el-input>
-          </el-form-item>
-          <el-form-item label="所属系统" prop="system">
-            <el-select v-model="ruleForm.system" placeholder="请选择活动区域">
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="所属类型" prop="type">
-            <el-select v-model="ruleForm.type" placeholder="请选择活动区域">
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label=" 启用状态" prop="able">
-            <el-switch v-model="ruleForm.able"></el-switch>
-          </el-form-item>
-        </el-collapse-item>
-        <el-collapse-item title="拓展属性" name="2">
-          <el-form-item label="单位介绍" prop="instruction">
-            <el-input type="textarea" v-model="instruction"></el-input>
-          </el-form-item>
-          <el-form-item label="单位职责" prop="duties">
-            <el-input type="textarea" v-model="duties"></el-input>
-          </el-form-item>
-          <el-form-item label="申请原因" prop="reason">
-            <el-input type="textarea" v-model="reason"></el-input>
-          </el-form-item>
-        </el-collapse-item>
-      </el-collapse>
+      <el-form-item label="单位名称" prop="name">
+        <el-input v-model="ruleForm.name"></el-input>
+      </el-form-item>
+      <el-form-item label="单位简称" prop="shortName">
+        <el-input v-model="ruleForm.shortName"></el-input>
+      </el-form-item>
+      <el-form-item label="单位地址" prop="addr">
+        <el-input v-model="ruleForm.addr"></el-input>
+      </el-form-item>
+      <el-form-item label="单位电话" prop="tel">
+        <el-input v-model="ruleForm.tel"></el-input>
+      </el-form-item>
+      <el-form-item label="传真号码" prop="tel">
+        <el-input v-model="ruleForm.fax"></el-input>
+      </el-form-item>
+      <el-form-item label="邮编" prop="zipCode">
+        <el-input v-model="ruleForm.zipCode"></el-input>
+      </el-form-item>
+      <el-form-item label="统一单位信用编码" prop="uiniteCode">
+        <el-input v-model="ruleForm.uniteCode" disabled="true"></el-input>
+      </el-form-item>
+      <el-form-item label="区域" prop="name">
+        <el-cascader
+          placeholder="试试搜索：指南"
+          :options="options"
+          filterable
+        ></el-cascader>
+      </el-form-item>
+      <el-form-item label=" 上级单位" prop="unitParent">
+        <el-input v-model="ruleForm.unitParent" disabled="true"></el-input>
+      </el-form-item>
+      <el-form-item label="所属系统" prop="system">
+        <el-select v-model="ruleForm.system" placeholder="请选择活动区域">
+          <el-option label="区域一" value="shanghai"></el-option>
+          <el-option label="区域二" value="beijing"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="所属类型" prop="type">
+        <el-select v-model="ruleForm.type" placeholder="请选择活动区域">
+          <el-option label="区域一" value="shanghai"></el-option>
+          <el-option label="区域二" value="beijing"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label=" 启用状态" prop="able">
+        <el-switch v-model="ruleForm.able"></el-switch>
+      </el-form-item>
+      <el-form-item label="单位介绍" prop="instruction">
+        <el-input type="textarea" v-model="instruction"></el-input>
+      </el-form-item>
+      <el-form-item label="单位职责" prop="duties">
+        <el-input type="textarea" v-model="duties"></el-input>
+      </el-form-item>
+      <el-form-item label="申请原因" prop="reason">
+        <el-input type="textarea" v-model="reason"></el-input>
+      </el-form-item>
       <el-form-item v-show="isShowEditFlag">
         <el-button type="primary" @click="submitForm('ruleForm')">{{submitHtml}}</el-button>
         <el-button @click="resetForm('ruleForm')">取消</el-button>
