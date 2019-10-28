@@ -172,7 +172,7 @@ export default {
     allowDrop (draggingNode, dropNode, type) {
     },
     handleDragOver (draggingNode, dropNode, ev) {
-      console.log('tree drag over: ', dropNode.label)
+      console.log('Tree drag over: ', dropNode.label)
     },
     // 拖拽结束时触发的事件
     nodedragend (Node, lastNode, lastTree, e) {

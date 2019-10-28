@@ -151,7 +151,7 @@
               <el-button @click="choseParentDialogVisible = false">取 消</el-button>
               <el-button type="danger" @click="confirmChose" :disabled="!this.currentChoseNode">确 定</el-button>
             </div>
-            <!--            <el-tree class="parent-tree"-->
+            <!--            <el-Tree class="parent-Tree"-->
             <!--                     :data="orgList"-->
             <!--                     node-key="menuId"-->
             <!--                     :props="defaultProps"-->
@@ -159,11 +159,11 @@
             <!--                     default-expand-all-->
             <!--                     ref="editParentTree"-->
             <!--                     :expand-on-click-node="false">-->
-            <!--              <el-row class="custom-tree-node" slot-scope="{ node, data }">-->
+            <!--              <el-row class="custom-Tree-node" slot-scope="{ node, data }">-->
             <!--                <span v-if="data.type!==1 && data.type!==2">{{data.name}}<span class="menu-type text-blue">目录</span></span>-->
             <!--                <span v-if="data.type===1">{{data.name}}<span class="menu-type text-green">菜单</span></span>-->
             <!--              </el-row>-->
-            <!--            </el-tree>-->
+            <!--            </el-Tree>-->
           </div>
         </el-scrollbar>
       </el-dialog>

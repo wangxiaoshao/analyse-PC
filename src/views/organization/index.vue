@@ -19,8 +19,8 @@
 </template>
 
 <script>
-import organizationTree from './components/tree/index'
-import searchResult from './components/result/index'
+import organizationTree from './components/Tree/index'
+import searchResult from './components/Result/index'
 import { api, urlNames } from '@src/api'
 export default {
   name: 'index',

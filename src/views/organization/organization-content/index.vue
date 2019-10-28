@@ -54,10 +54,10 @@
 
 <script>
 import { api, urlNames } from '@src/api'
-import ContentList from './components/contentList/index'
-import PersonList from './components/personList/index'
-import leaderList from './components/leaderList/index'
-import addDialog from './components/addDialog/index'
+import ContentList from './components/ContentList/index'
+import PersonList from './components/Personlist/index'
+import leaderList from './components/LeaderList/index'
+import addDialog from './components/AddDialog/index'
 export default {
   name: 'index',
   components: {

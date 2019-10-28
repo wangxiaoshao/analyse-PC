@@ -73,7 +73,7 @@ export default {
     },
     onFocus () {
       this.resultFlag = true
-      //this.debounce(this.getResult, 600)
+      // this.debounce(this.getResult, 600)
       this.getResult()
     },
     // 获取搜索结果
