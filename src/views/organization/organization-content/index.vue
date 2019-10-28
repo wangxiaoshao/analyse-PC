@@ -74,7 +74,7 @@
 <script>
 import { api, urlNames } from '@src/api'
 import ContentList from './components/ContentList/index'
-import PersonList from './components/Personlist/index'
+import PersonList from './components/PersonList/index'
 import leaderList from './components/LeaderList/index'
 export default {
   components: {

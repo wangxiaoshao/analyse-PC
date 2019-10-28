@@ -70,7 +70,7 @@
 <script type="text/ecmascript-6">
 import EditDialog from '../components/EditDialog'
 import ConfigDialog from '../components/EditDialog'
-import handleTable from '@src/mixins/handleTable'
+import handleTable from '@src/mixins/handle-table'
 import { api, urlNames } from '@src/api'
 import SiteTable from '@src/components/SiteTable/index.vue'
 import { mapState, mapMutations } from 'vuex'
