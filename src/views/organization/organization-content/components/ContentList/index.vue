@@ -14,7 +14,6 @@
       stripe
       border
       highlight-current-row
-      row-key="id"
       size="medium"
       id="contentTable"
     >
@@ -25,10 +24,21 @@
         </template>
       </el-table-column>
       <el-table-column label="name" prop="name"></el-table-column>
-      <el-table-column prop="act" label="操作" width="100" align="center">
+      <el-table-column label="启用状态" prop="removed" align="center">
         <template slot-scope="scope">
+          <span class="text-able" v-show="scope.row.removed">启用</span>
+          <span class="text-disable" v-show="!scope.row.removed">停用</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="state" label="审核状态" width="100" align="center">
+        <template  slot-scope="scope">
+          <span v-show="scope.row.state === 0" style="color: #F56C6C">待审核</span>
+          <span v-show="scope.row.state === 1" style="color: #67C23A">已审核</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="act" label="操作" width="100" align="center">
+        <template>
           <el-button
-            @click.native.prevent="deleteRow(scope.$index, tableData4)"
             type="text"
             size="small">
             修改
@@ -73,10 +83,11 @@ export default {
     getGrid () {
       let data = {
         page: this.page.current,
-        pageSize: this.page.limit
+        pageSize: this.page.limit,
+        parentId: this.$route.params.nodeId
       }
       this.loading = true
-      api[urlNames['getChildList']](data).then((res) => {
+      api[urlNames['findViewNodeList']](data).then((res) => {
         this.loading = false
         this.list = res.data
       }, () => {
@@ -94,15 +105,12 @@ export default {
 
   },
   created () {
-    this.getGrid()
+    //this.getGrid()
     if (this.$route.name === 'OrganizationContent') {
       this.isShowEditFlag = true
     } else {
       this.isShowEditFlag = false
     }
-  },
-  mounted () {
-
   },
   watch: {
     sortFlag: {
@@ -136,6 +144,13 @@ export default {
         }
       },
       deep: true
+    },
+    '$route.params.nodeId': {
+      handler (val) {
+        this.getGrid()
+      },
+      deep: true,
+      immediate: true
     }
   }
 }

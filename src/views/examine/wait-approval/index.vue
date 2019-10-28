@@ -87,19 +87,19 @@ export default {
       list: [],
       areaList: [
         {
-          "id": 1,
-          "code": "1",
-          "name": "单位"
+          'id': 1,
+          'code': '1',
+          'name': '单位'
         },
         {
-          "id": 2,
-          "code": "2",
-          "name": "部门"
+          'id': 2,
+          'code': '2',
+          'name': '部门'
         },
         {
-          "id": 3,
-          "code": "3",
-          "name": "人员"
+          'id': 3,
+          'code': '3',
+          'name': '人员'
         }
       ],
       dictionaryNameList: [],
