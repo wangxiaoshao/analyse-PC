@@ -82,19 +82,19 @@ export default [
         name: 'PersonEdit',
         component: PersonDetail
       }, {
-        path: 'nodeAdd/:parentId/:name',
+        path: 'nodeAdd/:parentId',
         name: 'NodeAdd',
         component: NodeDetail
       }, {
-        path: 'unitAdd/:parentId/:name',
+        path: 'unitAdd/:parentId',
         name: 'UnitAdd',
         component: UnitDetail
       }, {
-        path: 'departmentAdd',
+        path: 'departmentAdd/:parentId',
         name: 'DepartmentAdd',
         component: DepartmentDetail
       }, {
-        path: 'personAdd',
+        path: 'personAdd/:parentId',
         name: 'PersonAdd',
         component: PersonDetail
       }
@@ -181,25 +181,25 @@ export default [
   },
   // 节点详情
   {
-    path: '/nodeDetail',
+    path: '/nodeDetail/:id',
     name: 'NodeDetail',
     component: NodeDetail
   },
   // 单位详情
   {
-    path: '/unitDetail',
+    path: '/unitDetail/:id',
     name: 'UnitDetail',
     component: UnitDetail
   },
   // 部门详情
   {
-    path: '/departmentDetail',
+    path: '/departmentDetail/:id',
     name: 'DepartmentDetail',
     component: DepartmentDetail
   },
   // 人员详情
   {
-    path: '/personDetail',
+    path: '/personDetail/:id',
     name: 'PersonDetail',
     component: PersonDetail
   },
