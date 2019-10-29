@@ -11,7 +11,7 @@ export default {
     type: 'get',
     url: '/work/option/get',
     keepOriginResponse: true,
-    serve: 'workspaceManagement',
+    serve: 'organizationManagePC',
     mock: 'getParameter.json'
   },
   [urlNames.setParameter]: {
@@ -19,7 +19,7 @@ export default {
     url: '/work/option/set',
     keepOriginResponse: true,
     showLoading: true,
-    serve: 'workspaceManagement',
+    serve: 'organizationManagePC',
     mock: 'setParameter.json',
     headers: {
       'Content-Type': 'application/json'

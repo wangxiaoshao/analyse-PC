@@ -12,7 +12,7 @@ export default {
     url: '/api/converter/queryOrgDataTree',
     keepOriginResponse: true,
     showLoading: true,
-    serve: 'personnelManagement'
+    serve: 'organizationManagePC'
   },
   /**
    * 获取部门人员列表
@@ -22,7 +22,7 @@ export default {
     url: '/api/converter/deptuser_list',
     keepOriginResponse: true,
     showLoading: true,
-    serve: 'personnelManagement'
+    serve: 'organizationManagePC'
   },
   /*
    * 获取组织人员列表
@@ -32,7 +32,7 @@ export default {
     url: '/api/converter/user_list',
     keepOriginResponse: true,
     showLoading: true,
-    serve: 'personnelManagement'
+    serve: 'organizationManagePC'
   },
   /*
    * 获取组织人员列表
@@ -45,7 +45,7 @@ export default {
     },
     keepOriginResponse: true,
     showLoading: true,
-    serve: 'personnelManagement'
+    serve: 'organizationManagePC'
   },
   /*
    * 获取组织人员列表
@@ -58,7 +58,7 @@ export default {
     },
     keepOriginResponse: true,
     showLoading: true,
-    serve: 'personnelManagement'
+    serve: 'organizationManagePC'
   },
   /**
    * 获取单位信息
@@ -68,7 +68,7 @@ export default {
     url: '/api/converter/orgdata',
     keepOriginResponse: true,
     showLoading: true,
-    serve: 'personnelManagement'
+    serve: 'organizationManagePC'
   },
   /*
    * 获取职务列表
@@ -78,7 +78,7 @@ export default {
     url: '/api/converter/add_department',
     keepOriginResponse: true,
     showLoading: true,
-    serve: 'personnelManagement'
+    serve: 'organizationManagePC'
   },
   /*
    * 获取职务级别列表
@@ -88,7 +88,7 @@ export default {
     url: '/api/converter/getParamAllData',
     keepOriginResponse: true,
     showLoading: true,
-    serve: 'personnelManagement'
+    serve: 'organizationManagePC'
   },
   /*
    * 获取职务列表
@@ -98,6 +98,6 @@ export default {
     url: '/api/converter/getDutyInfo',
     keepOriginResponse: true,
     showLoading: true,
-    serve: 'personnelManagement'
+    serve: 'organizationManagePC'
   }
 }

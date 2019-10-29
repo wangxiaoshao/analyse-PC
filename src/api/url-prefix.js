@@ -5,16 +5,16 @@
 // 后端服务配置
 const Serve = {
   development: {
-    workspaceManagement: '//gzt.mh.gz.cegn.cn', // 没有配置mock数据，默认发送的服务器
-    applicationCenter: '//59.215.226.21'
+    organizationManagePC: 'http://192.168.0.105:8080', // 没有配置mock数据，默认发送的服务器
+    applicationCenter: 'http://192.168.0.105'
   },
   test: {
-    workspaceManagement: '//gzt.mh.gz.cegn.cn',
-    applicationCenter: '//59.215.226.21'
+    organizationManagePC: 'http://192.168.0.105:8080',
+    applicationCenter: 'http://192.168.0.105'
   },
   production: {
-    workspaceManagement: '//gzt.mh.gz.cegn.cn',
-    applicationCenter: '//59.215.226.21'
+    organizationManagePC: 'http://192.168.0.105:8080',
+    applicationCenter: 'http://192.168.0.105'
   }
 }
 
@@ -27,7 +27,7 @@ if (process.env.NODE_ENV === 'development') {
 } else if (process.env.NODE_ENV === 'test') {
   prefix = Serve.test
 } else {
-  if (host.includes('59.215.222.122')) {
+  if (host.includes('192.168.0.105')) {
     // 测试环境
     prefix = Serve.test
   } else {
