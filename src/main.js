@@ -10,9 +10,11 @@ import elementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import '@src/common/style/index.less'
 import './ext/font-awesome-4.7.0/css/font-awesome.css'
+import echarts from 'echarts'
 
 
 Vue.use(elementUI, { size: 'medium' })
+Vue.prototype.$echarts = echarts
 
 new Vue({
   router,
