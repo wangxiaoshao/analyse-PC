@@ -5,15 +5,15 @@
 // 后端服务配置
 const Serve = {
   development: {
-    organizationManagePC: 'http://192.168.0.105:8080', // 没有配置mock数据，默认发送的服务器
+    organizationManagePC: 'http://192.168.0.104:8080', // 没有配置mock数据，默认发送的服务器
     applicationCenter: 'http://192.168.0.105'
   },
   test: {
-    organizationManagePC: 'http://192.168.0.105:8080',
+    organizationManagePC: 'http://192.168.0.104:8080',
     applicationCenter: 'http://192.168.0.105'
   },
   production: {
-    organizationManagePC: 'http://192.168.0.105:8080',
+    organizationManagePC: 'http://192.168.0.104:8080',
     applicationCenter: 'http://192.168.0.105'
   }
 }
@@ -27,7 +27,7 @@ if (process.env.NODE_ENV === 'development') {
 } else if (process.env.NODE_ENV === 'test') {
   prefix = Serve.test
 } else {
-  if (host.includes('192.168.0.105')) {
+  if (host.includes('192.168.0.104')) {
     // 测试环境
     prefix = Serve.test
   } else {
