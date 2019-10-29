@@ -31,14 +31,30 @@
         </template>
       </el-table-column>
       <el-table-column prop="state" label="审核状态" width="100" align="center">
-        <template  slot-scope="scope">
+        <template slot-scope="scope">
           <span v-show="scope.row.state === 0" style="color: #F56C6C">待审核</span>
           <span v-show="scope.row.state === 1" style="color: #67C23A">已审核</span>
         </template>
       </el-table-column>
       <el-table-column prop="act" label="操作" width="100" align="center">
-        <template>
+        <template slot-scope="scope">
           <el-button
+            v-show="scope.row.nodeType === 'node'"
+            @click.native="openEditNode(scope.row)"
+            type="text"
+            size="small">
+            修改
+          </el-button>
+          <el-button
+            v-show="scope.row.nodeType === 'department'"
+            @click.native="openDepartmentEdit(scope.row)"
+            type="text"
+            size="small">
+            修改
+          </el-button>
+          <el-button
+            v-show="scope.row.nodeType === 'unit'"
+            @click.native="openEditUnit(scope.row)"
             type="text"
             size="small">
             修改
@@ -101,6 +117,33 @@ export default {
     },
     sortList () {
       this.$emit('cancel', true)
+    },
+    // 打开编辑节点
+    openEditNode (row) {
+      this.$router.push({
+        name: 'NodeEdit',
+        params: {
+          id: row.id
+        }
+      })
+    },
+    // 打开编辑单位
+    openEditUnit (row) {
+      this.$router.push({
+        name: 'UnitEdit',
+        params: {
+          id: row.id
+        }
+      })
+    },
+    // 打开编辑部门
+    openDepartmentEdit (row) {
+      this.$router.push({
+        name: 'DepartmentEdit',
+        params: {
+          id: row.id
+        }
+      })
     }
 
   },

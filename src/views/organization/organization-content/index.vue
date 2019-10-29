@@ -7,20 +7,20 @@
       :center="true">
       <div class="add-content">
         <el-button @click="goAddNode" v-if="showAddNodeFlag">添加节点</el-button>
-        <el-button v-if="showAddDepartmentFlag">添加部门</el-button>
+        <el-button v-if="showAddDepartmentFlag" @click="goAddDepartment">添加部门</el-button>
         <el-button v-if="showAddUnitFlag" @click="goAddUnit">添加单位</el-button>
       </div>
     </el-dialog>
     <div class="organization-wrap">
-      <div class="organization-info">
+      <div class="organization-info" v-if="content[0]">
+        <i v-if="content[0].nodeType === 'department'" class="menu-icon fa fa-user-o big-icon" style="margin: 0px 5px;"></i>
+        <i v-if="content[0].nodeType === 'node'" class="menu-icon fa fa-sitemap big-icon" style="margin: 0px 5px;"></i>
         <span class="organization-value" v-html="content[0].name"></span>
         <el-button>日志</el-button>
       </div>
       <div class="list-tab">
         <el-tabs v-model="activeName">
           <div class="content-title">
-            <i v-if="activeName === '部门领导'" class="menu-icon fa fa-user-o" style="margin: 0px 5px;"></i>
-            <i v-else class="menu-icon fa fa-sitemap" style="margin: 0px 5px;"></i>
             {{activeName}}
           </div>
           <el-tab-pane label="下级设置" name="下级设置">
@@ -28,7 +28,7 @@
             <!--下级列表-->
             <content-list v-if="activeName === '下级设置'" :sortFlag="sortShowFlag" @cancel="getSortAction"></content-list>
           </el-tab-pane>
-          <el-tab-pane  :label="nodeTitle" :name="nodeTitle">
+          <el-tab-pane  :label="nodeTitle" :name="nodeTitle" v-if="content[0]">
             <el-table
               :data="content"
               border
@@ -115,6 +115,14 @@ export default {
     goAddNode () {
       this.$router.push({
         name: 'NodeAdd',
+        params: {
+          parentId: this.$route.params.nodeId
+        }
+      })
+    },
+    goAddDepartment () {
+      this.$router.push({
+        name: 'DepartmentAdd',
         params: {
           parentId: this.$route.params.nodeId
         }

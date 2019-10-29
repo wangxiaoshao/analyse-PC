@@ -5,7 +5,7 @@ const ApplicationConfig = () => import('@src/views/application/ApplicationConfig
 
 // 申请审核1
 const WaitApproval = () => import('@src/views/examine/wait-approval/index.vue') /* webpackChunkName: 'home' */
-const ExamineDetails = () => import('@src/views/examine/examineDetails/index.vue') /* webpackChunkName: 'home' */
+const ExamineDetails = () => import('@src/views/examine/components/ExamineDetails/index.vue') /* webpackChunkName: 'home' */
 const Approved = () => import('@src/views/examine/approved/index.vue') /* webpackChunkName: 'home' */
 const MyApplication = () => import('@src/views/examine/my-application/index.vue') /* webpackChunkName: 'home' */
 const ConfirmInfo = () => import('@src/views/examine/confirm-info/index.vue') /* webpackChunkName: 'home' */
@@ -82,19 +82,19 @@ export default [
         name: 'PersonEdit',
         component: PersonDetail
       }, {
-        path: 'nodeAdd/:parentId/:name',
+        path: 'nodeAdd/:parentId',
         name: 'NodeAdd',
         component: NodeDetail
       }, {
-        path: 'unitAdd/:parentId/:name',
+        path: 'unitAdd/:parentId',
         name: 'UnitAdd',
         component: UnitDetail
       }, {
-        path: 'departmentAdd',
+        path: 'departmentAdd/:parentId',
         name: 'DepartmentAdd',
         component: DepartmentDetail
       }, {
-        path: 'personAdd',
+        path: 'personAdd/:parentId',
         name: 'PersonAdd',
         component: PersonDetail
       }
@@ -124,7 +124,7 @@ export default [
     component: ConfirmInfo
   },
   {
-    path: '/examineDetails',
+    path: '/ExamineDetails',
     name: 'ExamineDetails',
     component: ExamineDetails
   },
@@ -181,25 +181,25 @@ export default [
   },
   // 节点详情
   {
-    path: '/nodeDetail',
+    path: '/nodeDetail/:id',
     name: 'NodeDetail',
     component: NodeDetail
   },
   // 单位详情
   {
-    path: '/unitDetail',
+    path: '/unitDetail/:id',
     name: 'UnitDetail',
     component: UnitDetail
   },
   // 部门详情
   {
-    path: '/departmentDetail',
+    path: '/departmentDetail/:id',
     name: 'DepartmentDetail',
     component: DepartmentDetail
   },
   // 人员详情
   {
-    path: '/personDetail',
+    path: '/personDetail/:id',
     name: 'PersonDetail',
     component: PersonDetail
   },
