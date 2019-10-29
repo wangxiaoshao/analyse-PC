@@ -7,7 +7,7 @@ export default {
     type: 'get',
     url: '/work/logger/adminLog',
     keepOriginResponse: true,
-    serve: 'workspaceManagement',
+    serve: 'organizationManagePC',
     mock: 'getAdminLog.json'
   }
 }

@@ -2,6 +2,7 @@
     <div class="create-tag-form">
       <el-dialog
         :title="flagdata.title"
+        custom-class="right-dialog"
         :visible.sync="createTagDialogVisible"
         :fullscreen="true"
         center

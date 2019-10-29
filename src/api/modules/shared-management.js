@@ -10,13 +10,30 @@ export default {
   [urlNames.getSharedManagement]: {
     type: 'get',
     url: '/api/jg_manage/view/findViewList',
-    serve: 'organization-manage-pc',
-    mock: 'getViewList.json'
+    serve: 'organizationManagePC'
   },
-  [urlNames.getSharedManagement]: {
+  /**
+   * 获取应用列表
+   */
+  [urlNames.getAppList]: {
     type: 'get',
-    url: '/api/jg_manage/view/findViewList',
-    serve: 'organization-manage-pc',
-    mock: 'getViewList.json'
+    url: '/api/jg_share/app/checkApps',
+    serve: 'organizationManagePC'
+  },
+  /**
+  创建应用
+  */
+  [urlNames.createApp]: {
+    type: 'post',
+    url: '/api/jg_share/app/create',
+    serve: 'organizationManagePC'
+  },
+  /**
+  创建应用
+  */
+  [urlNames.getAppDetail]: {
+    type: 'get',
+    url: '/api/jg_share/app/checkAppDetail',
+    serve: 'organizationManagePC'
   }
 }

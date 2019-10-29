@@ -6,7 +6,7 @@
 <!--    isSingleSelect: false // 是否为单选框  false为多选，true为单选-->
 <!--    }-->
     <el-dialog
-      custom-class="edit-dialog"
+      custom-class="right-dialog edit-dialog"
       :title="seleceDialog.selectMenmberTitle"
       :visible.sync="seleceDialog.selectMenmberFlag"
       :fullscreen="true"

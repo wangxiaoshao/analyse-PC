@@ -12,7 +12,7 @@ export default {
     url: '/api/jg_manage/viewNode/findViewNodeById',
     keepOriginResponse: true, // 是否保留后端返回数据格式
     showLoading: false, // 该请求发送时，是否显示全局loading
-    serve: 'workspaceManagement',
+    serve: 'organizationManagePC',
     mock: '/findViewNodeById.json' // development模式下，本地mock数据
   },
   /**
@@ -21,7 +21,7 @@ export default {
   [urlNames.getPersonList]: {
     type: 'get',
     url: '/work/service/getPersonList',
-    serve: 'workspaceManagement',
+    serve: 'organizationManagePC',
     mock: 'getPersonList.json'
   },
   /**
@@ -31,7 +31,7 @@ export default {
     type: 'post',
     url: '/api/jg_manage/viewNode/createViewNode',
     showLoading: true,
-    serve: 'workspaceManagement',
+    serve: 'organizationManagePC',
     mock: 'createViewNode.json',
     headers: {
       'Content-Type': 'multipart/form-data'
@@ -45,7 +45,7 @@ export default {
     url: '/api/jg_manage/viewNode/findViewNodeList',
     keepOriginResponse: true, // 是否保留后端返回数据格式
     showLoading: false, // 该请求发送时，是否显示全局loading
-    serve: 'workspaceManagement',
+    serve: 'organizationManagePC',
     mock: '/findViewNodeList.json' // development模式下，本地mock数据
   },
   /**
@@ -67,7 +67,7 @@ export default {
     url: '/api/jg_manage/department/createDepartment',
     keepOriginResponse: true, // 是否保留后端返回数据格式
     showLoading: false, // 该请求发送时，是否显示全局loading
-    serve: 'workspaceManagement',
+    serve: 'organizationManagePC',
     mock: '/createDepartment.json' // development模式下，本地mock数据
   }
 }
