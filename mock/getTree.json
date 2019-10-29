@@ -1,32 +1,20 @@
 {
+  "message": "success",
+  "data": [{
+    "id": "214269906223366144",
+    "viewId": "-1",
+    "parentId": "-1",
+    "name": "贵州省",
+    "nodeType": 1,
+    "state": 0
+  },{
+    "id": "2142666144",
+    "viewId": "-1",
+    "parentId": "-1",
+    "name": "遵义市",
+    "nodeType": 2,
+    "state": 1
+  }],
   "status": 0,
-  "message": "成功",
-  "data": [
-    {
-      "viewId":3609,
-      "name":"贵州省",
-      "id":9827,
-      "nodeType":"node",
-      "parentId":null,
-      "bindId":4849,
-      "state":1,
-      "children": [{
-        "viewId":3609,
-        "name":"贵州省直属单位",
-        "id":9828,
-        "nodeType":"department",
-        "parentId":9827,
-        "bindId":48,
-        "state":0
-      },{
-        "viewId":3609,
-        "name":"遵义市",
-        "id":9829,
-        "nodeType":"unit",
-        "parentId":9827,
-        "bindId":4,
-        "state":1
-      }]
-    }
-  ]
+  "timestamp": "2019-10-28 17:47:27"
 }
