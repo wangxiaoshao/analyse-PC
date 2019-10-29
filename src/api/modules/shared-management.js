@@ -19,7 +19,8 @@ export default {
   [urlNames.getAppList]: {
     type: 'get',
     url: '/api/jg_share/app/checkApps',
-    serve: 'organizationManagePC'
+    serve: 'organizationManagePC',
+    mock: 'getAppList.json'
   },
   /**
   创建应用
@@ -35,6 +36,7 @@ export default {
   [urlNames.getAppDetail]: {
     type: 'get',
     url: '/api/jg_share/app/checkAppDetail',
-    serve: 'organizationManagePC'
+    serve: 'organizationManagePC',
+    mock: 'getAppDetail.json'
   }
 }
