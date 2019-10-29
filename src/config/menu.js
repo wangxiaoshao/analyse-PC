@@ -138,7 +138,7 @@ export default {
         {
           'menuId': '54',
           'name': '系统设置',
-          'path': '/parameter',
+          'path': '/parameter-setting',
           'type': 1
         }
       ]

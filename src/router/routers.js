@@ -31,6 +31,11 @@ const CreateAppManagement = () => import('@src/views/shared/create-app-managemen
 const TagsManagement = () => import('@src/views/shared/tags-management/index.vue')
 /* 权限管理 */
 const RightsManagement = () => import('@src/views/shared/rights-management/index.vue')
+
+
+/* 系统设置 */
+const SystemSetting = () => import('@src/views/system-setting/index.vue')
+const ParameterSetting = () => import('@src/views/system-setting/parameter-setting/index.vue')
 /* 路由 */
 export default [
   {
@@ -227,6 +232,20 @@ export default [
     path: '/data-log',
     name: 'DataLog',
     component: DataLog
+  },
+
+  // 系统设置
+  {
+    path: '/system-setting',
+    name: 'SystemSetting',
+    component: SystemSetting,
+    children: [
+      {
+        path: '/parameter-setting',
+        name: 'ParameterSetting',
+        component: ParameterSetting
+      }
+    ]
   }
 ]
 

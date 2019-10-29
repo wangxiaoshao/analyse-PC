@@ -122,6 +122,20 @@ export default {
         this.total = parseInt(res.total)
         this.appList = res.data
       })
+      api[urlNames['getAppList']]({
+        page: page,
+        limit: limt
+      }).then((res) => {
+        res.data.forEach(item => {
+          if (item.removed === 0) {
+            item.stateName = '否'
+          } else if (item.removed === 1) {
+            item.stateName = '是'
+          }
+        })
+        this.total = parseInt(res.total)
+        this.appList = res.data
+      })
     },
     handleClick (row) {
       this.$router.push({ name: 'CreateAppManagement', query: { id: row.id } })
