@@ -43,7 +43,7 @@ module.exports = function (options) {
         "/api/": {
           target: "http://192.168.0.104:8080",
           // pathRewrite: {
-          //   "/org/": ""
+          //   "/api/": ""
           // }
         },
         '!**/*.json': {
