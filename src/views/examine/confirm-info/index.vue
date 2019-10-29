@@ -167,53 +167,63 @@ export default {
           showOverflowTooltip: false,
           minWidth: 50
         },
-        applyName: {
+        workName: {
           key: 1,
-          field: 'applyName',
+          field: 'workName',
           tooltip: false,
           formatter: this.formatter,
-          label: '申请人',
+          label: '单位名称',
           sortable: false,
           showOverflowTooltip: false,
           minWidth: 100
         },
-        content: {
+        unitLeader: {
           key: 2,
-          field: 'content',
+          field: 'unitLeader',
           tooltip: true,
           formatter: this.formatter,
-          label: '申请内容',
+          label: '单位主要领导',
           sortable: false,
           showOverflowTooltip: false,
           minWidth: 100
         },
-        applyTime: {
+        confirmMonth: {
           key: 3,
-          field: 'applyTime',
+          field: 'confirmMonth',
           tooltip: false,
           formatter: this.formatter,
-          label: '申请时间',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        },
-        reason: {
-          key: 4,
-          field: 'reason',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '申请原因',
+          label: '确认月份',
           sortable: false,
           showOverflowTooltip: false,
           minWidth: 100
         },
         state: {
-          key: 5,
+          key: 4,
           field: 'state',
           tooltip: false,
           formatter: this.formatter,
-          label: '审核状态',
-          sortable: true,
+          label: '确认状态',
+          sortable: false,
+          showOverflowTooltip: false,
+          minWidth: 100
+        },
+        confirmTime: {
+          key: 5,
+          field: 'confirmTime',
+          tooltip: false,
+          formatter: this.formatter,
+          label: '确认时间',
+          sortable: false,
+          showOverflowTooltip: false,
+          minWidth: 100
+        },
+        confirmStaff: {
+          key: 6,
+          field: 'confirmStaff',
+          tooltip: false,
+          formatter: this.formatter,
+          label: '确认人员',
+          sortable: false,
           showOverflowTooltip: false,
           minWidth: 100
         }

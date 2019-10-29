@@ -285,7 +285,7 @@ export default {
       this.SET_EXAMINE_BACKPATH(this.$route.name) // ExamineDetails页面需要用到的当前列表中点击项的数据
       this.$router.push({
         name: 'ExamineDetails',
-        query: { WaitApproval: 1910281645 }
+        params: { parentCode: 1910281645 }
       })
     },
     showAddDialog () {

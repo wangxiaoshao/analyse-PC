@@ -10,9 +10,9 @@ const Approved = () => import('@src/views/examine/approved/index.vue') /* webpac
 const MyApplication = () => import('@src/views/examine/my-application/index.vue') /* webpackChunkName: 'home' */
 const ConfirmInfo = () => import('@src/views/examine/confirm-info/index.vue') /* webpackChunkName: 'home' */
 // 统计管理
-const DataStatistics = () => import('@src/views/statistics/DataStatistics/index.vue') /* webpackChunkName: 'home' */
-const DataLog = () => import('@src/views/statistics/DataLog/index.vue') /* webpackChunkName: 'home' */
-const DataQuery = () => import('@src/views/statistics/DataQuery/index.vue') /* webpackChunkName: 'home' */
+const DataStatistics = () => import('@src/views/statistics/data-statistics/index.vue') /* webpackChunkName: 'home' */
+const DataLog = () => import('@src/views/statistics/data-log/index.vue') /* webpackChunkName: 'home' */
+const DataQuery = () => import('@src/views/statistics/data-query/index.vue') /* webpackChunkName: 'home' */
 
 const Organization = () => import('@src/views/organization/index.vue')
 const OrganizationContent = () => import('@src/views/organization/organization-content/index.vue')

@@ -6,38 +6,41 @@
         <div style="color: #909399;padding-left: 10px;padding-top: 16px">审批编码：2029200000009</div>
       </el-col>
       <el-col :span="12" class="text-right">
-        <el-button type="info" @click="showAddDialog">查看详情</el-button>
+        <el-button type="info" @click="jumpDetailPage">查看详情</el-button>
       </el-col>
     </el-row>
     <!--表格-->
     <el-table :data="gridData">
       <template>
-        <el-table-column label="单位名称">
+        <el-table-column label="单位名称"  align="center">
           <el-table-column
+            align="center"
             prop="name"
             label="原值">
             <template slot-scope="scope">
               <div>{{scope.row.name}}</div>
             </template>
           </el-table-column>
-          <el-table-column label="变更值">
+          <el-table-column label="变更值"  align="center">
             <template slot-scope="scope">
               <div>{{scope.row.name}}</div>
             </template>
           </el-table-column>
         </el-table-column>
-        <el-table-column label="单位电话">
+        <el-table-column label="单位电话"  align="center">
           <el-table-column
+            align="center"
             prop="name"
             label="原值">
           </el-table-column>
-          <el-table-column label="变更值">
+          <el-table-column label="变更值"  align="center">
             <template slot-scope="scope">
               <div>{{scope.row.name}}</div>
             </template>
           </el-table-column>
         </el-table-column>
         <el-table-column
+          align="center"
           prop="date"
           label="申请原因"
           width="150">
@@ -47,6 +50,7 @@
         </el-table-column>
         <el-table-column
           v-if="!isWaitApproval"
+          align="center"
           prop="date"
           label="审核意见"
           width="150">
@@ -197,13 +201,13 @@ export default {
   },
   created () {
     this.tableDetailData.push(this.examine.detail)
-    if (this.$route.query.WaitApproval === 1910281645) {
+    if (this.$route.params.parentCode === 1910281645) {
       this.isWaitApproval = true
     }
   },
   mounted () {
     this.pushBreadcrumb({
-      name: '查看明细',
+      name: this.isWaitApproval ? '去审核' : '查看明细',
       parent: {
         name: this.examine.backPath,
         query: {
@@ -216,6 +220,7 @@ export default {
   methods: {
     ...mapMutations(['SET_APPLICATION_PAGE', 'SET_EXAMINE_DETAIL']),
     passExamine () {
+      this.editDialogVisible = true
     },
     noPassExamine () {
       this.editDialogVisible = true
@@ -236,8 +241,11 @@ export default {
         // this.getGrid()
       })
     },
-    showAddDialog () {
-      this.addDialogVisible = true
+    jumpDetailPage () {
+      this.$router.push({
+        name: 'DepartmentDetail',
+        params: { id: 1910291139 }
+      })
     },
     showEditDialog (row) {
       this.currentEdit = JSON.parse(JSON.stringify(row))

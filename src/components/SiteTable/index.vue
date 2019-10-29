@@ -24,7 +24,7 @@
                         :min-width="item.minWidth || null">
             <template slot-scope="scope">
                 <div v-if="item.field === 'state'"> <!--处理接口审核状态的false和true应该显示的内容-->
-                  {{scope.row[item.field] ? '已通过' : '未通过'}}
+                  {{scope.row[item.field] ? '已确认' : '待确认'}}
                 </div>
                 <div v-if="item.field !== 'state'"> <!--处理序号的字段内容显示-->
                   {{item.field === 'order' ? scope.$index + 1 : scope.row[item.field]}}
