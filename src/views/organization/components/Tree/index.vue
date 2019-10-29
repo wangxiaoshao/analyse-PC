@@ -44,7 +44,11 @@ export default {
       })
     },
     getTree () {
-      api[urlNames['getTree']]().then(res => {
+      const data = {
+        parentId: -1,
+        viewId: -1
+      }
+      api[urlNames['getTree']](data).then(res => {
         this.treeData = res.data
         this.id = this.treeData[0].id
         this.$emit('getDefault', this.id)

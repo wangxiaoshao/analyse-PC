@@ -42,8 +42,8 @@
          <el-form-item label="统一部门信用编码" prop="uiniteCode">
            <el-input v-model="ruleForm.uniteCode" :disabled="true"></el-input>
          </el-form-item>
-         <el-form-item label=" 上级部门" prop="unitParent">
-           <el-input v-model="ruleForm.unitParent" :disabled="true"></el-input>
+         <el-form-item label=" 所属单位" prop="parent">
+           <el-input v-model="ruleForm.parent" :disabled="true"></el-input>
          </el-form-item>
          <el-form-item label="所属类型" prop="type">
            <el-select v-model="ruleForm.type" placeholder="请选择所属类型">
@@ -119,6 +119,7 @@
 </template>
 
 <script>
+import { api, urlNames } from '@src/api'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
 export default {
   name: 'index',
@@ -143,7 +144,7 @@ export default {
         fax: '',
         zipCode: '',
         uniteCode: '',
-        unitParent: '',
+        parent: '',
         system: '',
         type: '',
         able: false,
@@ -154,7 +155,7 @@ export default {
       rules: {
         name: [
           { required: true, message: '请输入部门名称', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          { min: 3, max: 5, message: '长度在 1 到 5 个字符', trigger: 'blur' }
         ]
       },
       options: []
@@ -199,12 +200,29 @@ export default {
     getCheckTags () {
       this.openAddTagFlag = false
       this.tags = this.checkTagGroup
+    },
+    getDepartmentDetail () {
+      const data = {
+        id: this.$route.params.id
+      }
+      api[urlNames['findDepartmentById']](data).then((res) => {
+        this.ruleForm.name = res.data.name
+        this.ruleForm.parent = res.data.orgName
+        this.ruleForm.tel = res.data.phone
+        this.ruleForm.duties = res.data.duty
+        this.ruleForm.instruction = res.data.description
+      }, (error) => {
+        this.$message.error(`没有内容`)
+      })
     }
   },
   mounted () {
     this.setBreadcrumbTitle()
   },
   created () {
+    if (this.$route.params.id) {
+      this.getDepartmentDetail()
+    }
   },
   computed: {
   },
@@ -212,6 +230,9 @@ export default {
     $route: {
       handler (val) {
         this.setBreadcrumbTitle()
+        if (val.params.id) {
+          this.getDepartmentDetail()
+        }
       },
       deep: true
     }

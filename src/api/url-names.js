@@ -40,5 +40,11 @@ export default {
   // 根据id获取详情
   findViewNodeById: 'findViewNodeById',
   // 根据父级查询下级
-  findViewNodeList: 'findViewNodeList'
+  findViewNodeList: 'findViewNodeList',
+  // 下级排序
+  setViewNodeSort: 'setViewNodeSort',
+  // 根据id查询部门
+  findDepartmentById: 'findDepartmentById',
+  // 创建部门
+  createDepartment: 'createDepartment'
 }

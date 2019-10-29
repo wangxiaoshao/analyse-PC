@@ -13,8 +13,9 @@
     </el-dialog>
     <div class="organization-wrap">
       <div class="organization-info" v-if="content[0]">
-        <i v-if="content[0].nodeType === 'department'" class="menu-icon fa fa-user-o big-icon" style="margin: 0px 5px;"></i>
-        <i v-if="content[0].nodeType === 'node'" class="menu-icon fa fa-sitemap big-icon" style="margin: 0px 5px;"></i>
+        <i v-if="content[0].nodeType === 1" class="menu-icon fa fa-user-o big-icon" style="margin: 0px 5px;"></i>
+        <i v-if="content[0].nodeType === 2" class="menu-icon fa fa-sitemap big-icon" style="margin: 0px 5px;"></i>
+        <i v-if="content[0].nodeType === 3" class="menu-icon fa fa-sitemap big-icon" style="margin: 0px 5px;"></i>
         <span class="organization-value" v-html="content[0].name"></span>
         <el-button>日志</el-button>
       </div>
@@ -62,7 +63,7 @@
             <el-button class="add-btn">添加人员</el-button>
             <person-list v-if="activeName === '人员管理'" :sortFlag="sortShowFlag" @cancel="getSortAction"></person-list>
           </el-tab-pane>
-          <el-tab-pane label="部门领导" name="部门领导">
+          <el-tab-pane label="部门领导" name="单位主要领导">
             <leader-list></leader-list>
           </el-tab-pane>
         </el-tabs>
@@ -83,9 +84,8 @@ export default {
   data () {
     return {
       showDialogFlag: false,
-      activeName: '下级设置',
+      activeName: '',
       nodeTitle: '',
-      nodeType: '',
       sortShowFlag: false,
       content: [],
       selectType: '',
@@ -97,20 +97,8 @@ export default {
     }
   },
   methods: {
-    showBtn () {
-      if (this.nodeType === 'node') {
-        this.showAddNodeFlag = true
-        this.showAddDepartmentFlag = false
-        this.showAddUnitFlag = true
-      } else if (this.nodeType === 'department') {
-        this.showAddNodeFlag = false
-        this.showAddDepartmentFlag = true
-        this.showAddUnitFlag = false
-      } else if (this.nodeType === 'unit') {
-        this.showAddNodeFlag = false
-        this.showAddDepartmentFlag = true
-        this.showAddUnitFlag = true
-      }
+    closeDialog () {
+      this.visible = false
     },
     goAddNode () {
       this.$router.push({
@@ -127,9 +115,6 @@ export default {
           parentId: this.$route.params.nodeId
         }
       })
-    },
-    closeDialog () {
-      this.visible = false
     },
     goAddUnit () {
       this.$router.push({
@@ -152,20 +137,32 @@ export default {
       this.sortShowFlag = type
     },
     getContent () {
-      let data = this.$route.params.nodeId
+      const data = {
+        id: this.$route.params.nodeId
+      }
       api[urlNames['findViewNodeById']](data).then((res) => {
         this.content[0] = res.data
         this.nodeType = res.data.nodeType
-        this.showBtn()
         this.selectType = this.content.nodeType
-        if (this.content[0].nodeType === 'node') {
+        this.activeName = '下级设置'
+        // 1:分类结点、2:部门结点、3:单位结点
+        if (this.content[0].nodeType === 1) {
           this.nodeTitle = '节点信息'
+          this.showAddNodeFlag = true
+          this.showAddDepartmentFlag = false
+          this.showAddUnitFlag = true
         }
-        if (this.content[0].nodeType === 'department') {
+        if (this.content[0].nodeType === 2) {
           this.nodeTitle = '部门信息'
+          this.showAddNodeFlag = false
+          this.showAddDepartmentFlag = true
+          this.showAddUnitFlag = false
         }
-        if (this.content[0].nodeType === 'unit') {
+        if (this.content[0].nodeType === 3) {
           this.nodeTitle = '单位信息'
+          this.showAddNodeFlag = false
+          this.showAddDepartmentFlag = true
+          this.showAddUnitFlag = true
         }
       }, (error) => {
         this.$message.error(`没有内容`)
