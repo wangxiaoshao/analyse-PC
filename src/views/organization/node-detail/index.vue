@@ -103,6 +103,16 @@ export default {
     },
     resetForm (formName) {
       this.$refs[formName].resetFields()
+    },
+    getNodeDetail () {
+      let data = {
+        id: this.$route.params.id
+      }
+      api[urlNames['findViewNodeById']](data).then((res) => {
+        console.log(res.data)
+      }, (error) => {
+        this.$message.error(`没有内容`)
+      })
     }
   },
   mounted () {
@@ -114,6 +124,9 @@ export default {
       reason: this.ruleForm.reason
     }
     this.oldFrom = JSON.parse(JSON.stringify(obj))
+    if (this.$route.params.id) {
+      this.getNodeDetail()
+    }
   },
   computed: {
     newValue () {

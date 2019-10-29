@@ -10,9 +10,13 @@ vue + element UI + webpack + vuex + less
 npm install
 ```
 
-### 本地启动项目
+### 本地启动项目（本地mock数据）
 ```
 npm run serve
+```
+### 本地启动项目（本地链接测试环境）
+```
+npm run test
 ```
 
 ### 打包项目

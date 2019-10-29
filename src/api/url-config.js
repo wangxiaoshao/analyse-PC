@@ -21,7 +21,7 @@ export default {
   },
   [urlNames.getTree]: {
     type: 'get',
-    url: '/work/user/getTree',
+    url: '/api/jg_manage/viewNode/findNodeTree',
     keepOriginResponse: true, // 是否保留后端返回数据格式
     showLoading: false, // 该请求发送时，是否显示全局loading
     serve: 'organizationManagePC',
