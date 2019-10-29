@@ -10,21 +10,21 @@ export default {
   [urlNames.getApplicationList]: {
     type: 'get',
     url: '/work/service/list',
-    serve: 'workspaceManagement',
+    serve: 'organizationManagePC',
     mock: 'applicationList.json'
   },
   [urlNames.toggleApplication]: {
     type: 'get',
     url: '/work/service/set',
     showLoading: true,
-    serve: 'workspaceManagement',
+    serve: 'organizationManagePC',
     mock: 'handleAction.json'
   },
   [urlNames.deleteApplication]: {
     type: 'get',
     url: '/work/service/remove',
     showLoading: true,
-    serve: 'workspaceManagement',
+    serve: 'organizationManagePC',
     mock: 'handleAction.json'
   },
   [urlNames.getAreaList]: {
@@ -36,14 +36,14 @@ export default {
   [urlNames.getApplicationDetail]: {
     type: 'get',
     url: '/work/service/info',
-    serve: 'workspaceManagement',
+    serve: 'organizationManagePC',
     mock: 'applicationDetail.json'
   },
   [urlNames.editApplication]: {
     type: 'post',
     url: '/work/service/edit',
     showLoading: true,
-    serve: 'workspaceManagement',
+    serve: 'organizationManagePC',
     mock: 'applicationEdit.json',
     headers: {
       'Content-Type': 'multipart/form-data'
@@ -52,14 +52,14 @@ export default {
   [urlNames.getApplicationConfig]: {
     type: 'get',
     url: '/work/service/getAllServiceOption',
-    serve: 'workspaceManagement',
+    serve: 'organizationManagePC',
     mock: 'applicationConfig.json'
   },
   [urlNames.editApplicationConfig]: {
     type: 'post',
     url: '/work/service/editServiceOption',
     showLoading: true,
-    serve: 'workspaceManagement',
+    serve: 'organizationManagePC',
     mock: 'handleAction.json',
     headers: {
       'Content-Type': 'multipart/form-data'

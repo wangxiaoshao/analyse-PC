@@ -30,8 +30,6 @@
                 :operateWidth="operateWidth"
                 :operate="operate"
                 :tableData="tableData">
-      <template slot-scope="{slotScope}" slot="status">
-      </template>
       <template slot-scope="{slotScope}" slot="operate">
         <el-button size="mini" type="text" @click="goConfig(slotScope.row)">查看明细</el-button>
       </template>
@@ -184,6 +182,26 @@ export default {
           formatter: this.formatter,
           label: '审核状态',
           sortable: true,
+          showOverflowTooltip: false,
+          minWidth: 100
+        },
+        reviewTime: {
+          key: 6,
+          field: 'reviewTime',
+          tooltip: false,
+          formatter: this.formatter,
+          label: '审核时间',
+          sortable: false,
+          showOverflowTooltip: false,
+          minWidth: 100
+        },
+        reviewSuggest: {
+          key: 7,
+          field: 'reviewSuggest',
+          tooltip: false,
+          formatter: this.formatter,
+          label: '审核意见',
+          sortable: false,
           showOverflowTooltip: false,
           minWidth: 100
         }

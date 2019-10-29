@@ -18,7 +18,7 @@
       <el-row :gutter="20">
         <el-col :span="12" :offset=8>
           <div style="margin-top: 20px">
-            <el-button  @click="passExamine">确认</el-button>
+            <el-button  type="primary" @click="passExamine">确认</el-button>
             <el-button @click="closeDialog">取消</el-button>
           </div>
         </el-col>

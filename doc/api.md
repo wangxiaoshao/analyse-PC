@@ -39,7 +39,7 @@ export default {
     url: '/api/converter/queryOrgDataTree',   // 请求地址
     keepOriginResponse: true,                 // 返回数据是否保留后端response数据格式
     showLoading: true,                        // 该请求是否需要全局loading
-    serve: 'personnelManagement'              // 该请求对应服务端，服务端名字在url-prefix中配置
+    serve: 'organizationManagePC'              // 该请求对应服务端，服务端名字在url-prefix中配置
     mock: '/getUserInfo.json'                 // development模式下，本地mock数据地址
   },
 };
@@ -78,7 +78,7 @@ export default {
     url: '/api/converter/user/profile',
     keepOriginResponse: true, // 是否保留后端返回数据格式
     showLoading: false, // 该请求发送时，是否显示全局loading
-    serve: 'personnelManagement'
+    serve: 'organizationManagePC'
   },
   // 人员管理
   ...department

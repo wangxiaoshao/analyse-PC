@@ -21,7 +21,6 @@
       </el-form-item>
       <el-form-item v-if="isShowEditFlag">
         <el-button type="primary" @click="submitForm('ruleForm')">{{submitHtml}}</el-button>
-        <el-button>取消</el-button>
       </el-form-item>
     </el-form>
   </div>

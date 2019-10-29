@@ -33,7 +33,7 @@
       <template slot-scope="{slotScope}" slot="status">
       </template>
       <template slot-scope="{slotScope}" slot="operate">
-        <el-button size="mini" type="text" @click="goConfig(slotScope.row)">查看明细</el-button>
+        <el-button size="mini" type="text" @click="goConfig(slotScope.row)">人员明细</el-button>
       </template>
     </site-table>
     <!--分页-->
@@ -47,23 +47,51 @@
       :total="page.total">
     </el-pagination>
     <!--编辑dialog-->
-    <edit-dialog :visible="editDialogVisible"
-                 :current="currentEdit"
-                 :areaList="areaList"
-                 @refreshList="getGrid"
-                 @close="closeEditDialog"></edit-dialog>
-    <!--添加dialog-->
-    <edit-dialog
-      :visible="addDialogVisible"
-      :areaList="areaList"
-      @refreshList="getGrid"
-      @close="closeAddDialog"></edit-dialog>
-    <!--配置dialog-->
-    <config-dialog
-      :visible="configDialogVisible"
-      :areaList="areaList"
-      @refreshList="getGrid"
-      @close="closeConfigDialogVisible"></config-dialog>
+    <el-dialog
+      title="确认机构人员信息"
+      :visible.sync="dialogVisible"
+      width="50%"
+      center
+      :before-close="handleClose">
+      <el-table :data="gridData"  height="250">
+        <el-table-column
+          width="120"
+          property="name"
+          align="center"
+          label="单位主要领导">
+        </el-table-column>
+        <el-table-column
+          width="120"
+          property="counts"
+          align="center"
+          label="单位主要人数">
+        </el-table-column>
+        <el-table-column
+          width="120"
+          property="counts"
+          align="center"
+          label="单位在职人数">
+        </el-table-column>
+        <el-table-column
+          width="120"
+          property="counts"
+          align="center"
+          label="单位兼职人数">
+        </el-table-column>
+        <el-table-column
+          width="120"
+          property="counts"
+          align="center"
+          label="单位挂职人数">
+        </el-table-column>
+        <el-table-column
+          width="120"
+          property="counts"
+          align="center"
+          label="单位调出人数">
+        </el-table-column>
+      </el-table>
+    </el-dialog>
   </div>
 </template>
 
@@ -80,6 +108,10 @@ export default {
   mixins: [handleTable],
   data () {
     return {
+      gridData: [{
+        counts: '1202',
+        name: '王小虎'
+      }],
       loading: true,
       statusOptions: [{
         value: '选项1',
@@ -114,9 +146,7 @@ export default {
         }
       ],
       dictionaryNameList: [],
-      editDialogVisible: false,
-      addDialogVisible: false,
-      configDialogVisible: false,
+      dialogVisible: false,
       currentEdit: null,
       currentParent: {
         description: '',
@@ -221,6 +251,11 @@ export default {
       'SET_EXAMINE_DETAIL',
       'SET_EXAMINE_SEARCH_QUERY',
       'SET_EXAMINE_BACKPATH']),
+    scrollStyle () {
+      return {
+        height: this.$store.state.app.windowHeight - 30 + 'px'
+      }
+    },
     initQuery () {
       let keys = Object.assign({}, this.$route.query)
       let len = keys.length
@@ -289,29 +324,13 @@ export default {
       })
     },
     goConfig (row) {
-      this.SET_APPLICATION_PAGE(this.page)
-      this.SET_EXAMINE_SEARCH_QUERY(this.searchQuery)
-      this.SET_EXAMINE_TABLEDATA(this.tableData) // 存储当前页面table的数据列表
-      this.SET_EXAMINE_DETAIL(row) // ExamineDetails页面需要用到的当前列表中点击项的数据
-      this.SET_EXAMINE_BACKPATH(this.$route.name)
-      this.$router.push({
-        name: 'ExamineDetails',
-        params: {
-          id: 12
-        }
-      })
+      this.dialogVisible = true
     },
     showAddDialog () {
       this.addDialogVisible = true
     },
-    closeEditDialog () {
-      this.editDialogVisible = false
-    },
-    closeAddDialog () {
-      this.addDialogVisible = false
-    },
-    closeConfigDialogVisible () {
-      this.configDialogVisible = false
+    handleClose () {
+      this.dialogVisible = false
     },
     handleAction (action, row) {
       let actionName = '删除'

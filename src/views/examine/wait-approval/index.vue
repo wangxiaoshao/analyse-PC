@@ -31,7 +31,7 @@
       <template slot-scope="{slotScope}" slot="status">
       </template>
           <template slot-scope="{slotScope}" slot="operate">
-            <el-button size="mini" type="text" @click="goConfig(slotScope.row)">查看明细</el-button>
+            <el-button size="mini" type="text" @click="goConfig(slotScope.row)">去审核</el-button>
           </template>
     </site-table>
     <!--分页-->
@@ -285,9 +285,7 @@ export default {
       this.SET_EXAMINE_BACKPATH(this.$route.name) // ExamineDetails页面需要用到的当前列表中点击项的数据
       this.$router.push({
         name: 'ExamineDetails',
-        params: {
-          id: 12
-        }
+        query: { WaitApproval: 1910281645 }
       })
     },
     showAddDialog () {

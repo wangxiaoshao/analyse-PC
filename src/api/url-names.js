@@ -35,6 +35,9 @@ export default {
   getPersonList: 'getPersonList',
   // 共享视图
   getSharedManagement: 'getSharedManagement',
+  getAppList: 'getAppList', // 应用列表
+  createApp: 'createApp', // 创建应用
+  getAppDetail: 'getAppDetail', // 获取应用详情
   // 创建节点
   createViewNode: 'createViewNode',
   // 根据id获取详情
