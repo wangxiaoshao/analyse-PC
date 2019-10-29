@@ -9,7 +9,7 @@ const Serve = {
     applicationCenter: 'http://192.168.0.105'
   },
   test: {
-    organizationManagePC: 'http://192.168.0.105:8080',
+    organizationManagePC: '',
     applicationCenter: 'http://192.168.0.105'
   },
   production: {
