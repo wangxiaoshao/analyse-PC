@@ -6,7 +6,12 @@
         <el-col :span="18">
           <el-row :gutter="10" type="flex">
             <el-col :span="6">
-              <el-select v-model="searchQuery.areaId" filterable clearable @change="search" placeholder="单位">
+              <el-select
+                v-model="searchQuery.areaId"
+                filterable
+                clearable
+                @change="search"
+                placeholder="今天">
                 <el-option
                   v-for="item in areaList"
                   :key="item.id"
@@ -14,11 +19,6 @@
                   :value="item.code">
                 </el-option>
               </el-select>
-            </el-col>
-            <el-col :span="8">
-              <el-input placeholder="请输入关键字搜索" v-model="searchQuery.keyword" clearable @change="getGrid">
-                <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
-              </el-input>
             </el-col>
           </el-row>
         </el-col>
@@ -63,33 +63,42 @@
       <el-tab-pane label="各市州新增人员占比" name="member">各市州新增人员占比</el-tab-pane>
     </el-tabs>
     <el-row>
-      <el-col :span="12" :style="{padding: '48px 40px', paddingRight: '140px'}">
+      <el-col :span="12" :style="{padding: '10px 40px', paddingRight: '140px'}">
         <!--<div :style="{width: '100%', height: '500px', backgroundColor: 'red'}"></div>-->
         <el-row>
-          <el-col :span="24"><div class="template-btn unit-query">单位查询</div></el-col>
+          <el-col :span="24">
+            <div class="template-btn unit-query" @click="jumpQuery('Unit')">单位查询</div>
+          </el-col>
         </el-row>
         <el-row>
-          <el-col :span="24"><div class="template-btn depart-query">部门查询</div></el-col>
+          <el-col :span="24">
+            <div class="template-btn depart-query" @click="jumpQuery('Department')">部门查询</div>
+          </el-col>
         </el-row>
         <el-row>
-          <el-col :span="24"><div class="template-btn member-query">人员查询</div></el-col>
+          <el-col :span="24">
+            <div class="template-btn member-query" @click="jumpQuery('Member')">人员查询</div>
+          </el-col>
         </el-row>
       </el-col>
-      <el-col :span="12">
-        <div class="news">
-          <div class="news-title-left">最新动态</div>
-          <div class="news-title-right">查看更多》</div>
-          <!--<div class="block">-->
-            <!--<el-timeline :reverse="reverse">-->
-              <!--<el-timeline-item-->
-                <!--v-for="(activity, index) in activities"-->
-                <!--:key="index"-->
-                <!--:timestamp="activity.timestamp">-->
-                <!--{{activity.content}}-->
-              <!--</el-timeline-item>-->
-            <!--</el-timeline>-->
-          <!--</div>-->
-        </div>
+      <el-col :span="12" :style="{paddingRight: '30px'}">
+        <el-card class="box-card" shadow="hover" :style="{height:'300px'}">
+          <div slot="header" class="clearfix">
+            <span>最新动态</span>
+            <el-button style="float: right; padding: 3px 0" type="text">查看更多</el-button>
+          </div>
+          <div class="timeLine">
+          <el-timeline :reverse="reverse">
+          <el-timeline-item
+          v-for="(activity, index) in activities"
+          :key="index"
+          placement="top"
+          :timestamp="activity.timestamp">
+          {{activity.content}}
+          </el-timeline-item>
+          </el-timeline>
+          </div>
+        </el-card>
       </el-col>
     </el-row>
   </div>
@@ -108,17 +117,30 @@ export default {
     return {
       reverse: true,
       activities: [{
-        content: '活动按期开始',
+        content: '陈宇 修改了 贵州省人力资源管理局 的单',
         timestamp: '2018-04-15'
-      }, {
-        content: '通过审核',
+      },
+      {
+        content: '陈宇 修改了 贵州省人力资源管理局 的单',
         timestamp: '2018-04-13'
-      }, {
-        content: '创建成功',
+      },
+      {
+        content: '陈宇 修改了 贵州省人力资源管理局 的单',
+        timestamp: '2018-04-13'
+      },
+      {
+        content: '陈宇 修改了 贵州省人力资源管理局 的单',
+        timestamp: '2018-04-13'
+      },
+      {
+        content: '陈宇 登陆系统备份 4',
         timestamp: '2018-04-11'
       }],
       areaList: [
-        { id: 1, name: 999, code: 1910291113 }
+        { id: 1, name: '今天', code: 1910291111 },
+        { id: 2, name: '昨天', code: 1910291112 },
+        { id: 3, name: '一周', code: 1910291113 },
+        { id: 4, name: '一月', code: 1910291114 }
       ],
       searchQuery: {
         areaId: '',
@@ -138,6 +160,11 @@ export default {
     search () {},
     getGrid () {},
     handleClick () {},
+    jumpQuery (routerParams) { // routerParams === Unit|Department|Member
+      this.$router.push({
+        name: routerParams + 'Query'
+      })
+    },
   }
 }
 </script>

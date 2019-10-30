@@ -24,6 +24,7 @@
       "reviewTime": "2019-10-10",
       "reviewSuggest": "同意",
       "confirmMonth": "1月",
+      "parentId": "启用",
       "confirmStaff": "人员变动"
     },
     {
@@ -47,6 +48,7 @@
       "reviewTime": "2019-10-11",
       "reviewSuggest": "不同意",
       "confirmMonth": "2月",
+      "parentId": "禁用",
       "confirmStaff": "机构新增"
     },
     {
@@ -70,6 +72,7 @@
       "reviewTime": "2019-10-13",
       "reviewSuggest": "同意",
       "confirmMonth": "3月",
+      "parentId": "启用",
       "confirmStaff": "人员变动"
     }
   ]

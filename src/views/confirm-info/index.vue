@@ -4,25 +4,22 @@
     <el-row class="operator-row">
       <el-col :span="18">
         <el-row :gutter="10" type="flex">
-          <el-col :span="6">
-            <el-select
-              v-model="searchQuery.areaId"
-              filterable
-              clearable
-              @change="search"
-              placeholder="单位名称">
+          <div class="block">
+            <el-date-picker
+              v-model="searchTimeValue"
+              type="month"
+              placeholder="选择月">
+            </el-date-picker>
+          </div>
+          <el-col :span="8">
+            <el-select v-model="statusValue" clearable placeholder="选择确认状态">
               <el-option
-                v-for="item in areaList"
-                :key="item.id"
-                :label="item.name"
-                :value="item.code">
+                v-for="item in statusOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
               </el-option>
             </el-select>
-          </el-col>
-          <el-col :span="8">
-            <el-input placeholder="请输入关键字搜索" v-model="searchQuery.keyword" clearable @change="getGrid">
-              <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
-            </el-input>
           </el-col>
         </el-row>
       </el-col>
@@ -33,7 +30,11 @@
                 :operateWidth="operateWidth"
                 :operate="operate"
                 :tableData="tableData">
-      <el-button slot="operate" size="mini" type="text" @click="goConfig">查看明细</el-button>
+      <template slot-scope="{slotScope}" slot="status">
+      </template>
+      <template slot-scope="{slotScope}" slot="operate">
+        <el-button size="mini" type="text" @click="goConfig(slotScope.row)">人员明细</el-button>
+      </template>
     </site-table>
     <!--分页-->
     <el-pagination
@@ -46,29 +47,57 @@
       :total="page.total">
     </el-pagination>
     <!--编辑dialog-->
-    <edit-dialog :visible="editDialogVisible"
-                 :current="currentEdit"
-                 :areaList="areaList"
-                 @refreshList="getGrid"
-                 @close="closeEditDialog"></edit-dialog>
-    <!--添加dialog-->
-    <edit-dialog
-      :visible="addDialogVisible"
-      :areaList="areaList"
-      @refreshList="getGrid"
-      @close="closeAddDialog"></edit-dialog>
-    <!--配置dialog-->
-    <config-dialog
-      :visible="configDialogVisible"
-      :areaList="areaList"
-      @refreshList="getGrid"
-      @close="closeConfigDialogVisible"></config-dialog>
+    <el-dialog
+      title="确认机构人员信息"
+      :visible.sync="dialogVisible"
+      width="50%"
+      center
+      :before-close="handleClose">
+      <el-table :data="gridData"  height="250">
+        <el-table-column
+          width="120"
+          property="name"
+          align="center"
+          label="单位主要领导">
+        </el-table-column>
+        <el-table-column
+          width="120"
+          property="counts"
+          align="center"
+          label="单位主要人数">
+        </el-table-column>
+        <el-table-column
+          width="120"
+          property="counts"
+          align="center"
+          label="单位在职人数">
+        </el-table-column>
+        <el-table-column
+          width="120"
+          property="counts"
+          align="center"
+          label="单位兼职人数">
+        </el-table-column>
+        <el-table-column
+          width="120"
+          property="counts"
+          align="center"
+          label="单位挂职人数">
+        </el-table-column>
+        <el-table-column
+          width="120"
+          property="counts"
+          align="center"
+          label="单位调出人数">
+        </el-table-column>
+      </el-table>
+    </el-dialog>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-import EditDialog from '../components/EditDialog'
-import ConfigDialog from '../components/EditDialog'
+import EditDialog from '../examine-details/components/EditDialog'
+import ConfigDialog from '../examine-details/components/EditDialog'
 import handleTable from '@src/mixins/handle-table'
 import { api, urlNames } from '@src/api'
 import SiteTable from '@src/components/SiteTable/index.vue'
@@ -79,18 +108,45 @@ export default {
   mixins: [handleTable],
   data () {
     return {
+      gridData: [{
+        counts: '1202',
+        name: '王小虎'
+      }],
       loading: true,
-      searchQuery: {
-        areaId: '',
-        status: '',
-        keyword: ''
+      statusOptions: [{
+        value: '选项1',
+        label: '已确认'
       },
+      {
+        value: '选项2',
+        label: '未确认'
+      },
+      {
+        value: '选项3',
+        label: '待确认'
+      }],
+      statusValue: '',
+      searchTimeValue: '',
       list: [],
-      areaList: [],
+      areaList: [
+        {
+          'id': 1,
+          'code': '1',
+          'name': '单位'
+        },
+        {
+          'id': 2,
+          'code': '2',
+          'name': '部门'
+        },
+        {
+          'id': 3,
+          'code': '3',
+          'name': '人员'
+        }
+      ],
       dictionaryNameList: [],
-      editDialogVisible: false,
-      addDialogVisible: false,
-      configDialogVisible: false,
+      dialogVisible: false,
       currentEdit: null,
       currentParent: {
         description: '',
@@ -101,89 +157,115 @@ export default {
         value: ''
       },
       tableConfig: {
-        item1: {
-          key: 1,
-          field: 'name',
-          tooltip: true,
+        order: {
+          key: 0,
+          field: 'order',
+          tooltip: false,
           formatter: this.formatter,
-          label: '姓名',
-          sortable: true,
-          showOverflowTooltip: false,
-          minWidth: 200
-        },
-        item2: {
-          key: 2,
-          field: 'age',
-          tooltip: true,
-          formatter: this.formatter,
-          label: '年龄',
+          label: '序号',
           sortable: false,
           showOverflowTooltip: false,
-          minWidth: 200
+          minWidth: 50
         },
-        item3: {
-          key: 3,
-          field: 'address',
+        workName: {
+          key: 1,
+          field: 'workName',
+          tooltip: false,
+          formatter: this.formatter,
+          label: '单位名称',
+          sortable: false,
+          showOverflowTooltip: false,
+          minWidth: 100
+        },
+        unitLeader: {
+          key: 2,
+          field: 'unitLeader',
           tooltip: true,
           formatter: this.formatter,
-          label: '地址',
-          sortable: true,
+          label: '单位主要领导',
+          sortable: false,
           showOverflowTooltip: false,
-          minWidth: 200
+          minWidth: 100
+        },
+        confirmMonth: {
+          key: 3,
+          field: 'confirmMonth',
+          tooltip: false,
+          formatter: this.formatter,
+          label: '确认月份',
+          sortable: false,
+          showOverflowTooltip: false,
+          minWidth: 100
+        },
+        state: {
+          key: 4,
+          field: 'state',
+          tooltip: false,
+          formatter: this.formatter,
+          label: '确认状态',
+          sortable: false,
+          showOverflowTooltip: false,
+          minWidth: 100
+        },
+        confirmTime: {
+          key: 5,
+          field: 'confirmTime',
+          tooltip: false,
+          formatter: this.formatter,
+          label: '确认时间',
+          sortable: false,
+          showOverflowTooltip: false,
+          minWidth: 100
+        },
+        confirmStaff: {
+          key: 6,
+          field: 'confirmStaff',
+          tooltip: false,
+          formatter: this.formatter,
+          label: '确认人员',
+          sortable: false,
+          showOverflowTooltip: false,
+          minWidth: 100
         }
       },
-      tableData: [{
-        key: 1,
-        field: 'address',
-        date: '2016-05-02',
-        name: '王',
-        age: '10',
-        address: '上海市普陀区金沙江路 1 弄'
-      },
-      {
-        key: 2,
-        date: '2016-05-04',
-        name: '张',
-        age: '20',
-        address: '上海市普陀区金沙江路 3 弄'
-      },
-      {
-        key: 3,
-        date: '2016-05-01',
-        name: '李',
-        age: '30',
-        address: '上海市普陀区金沙江路 4 弄'
-      },
-      {
-        key: 4,
-        date: '2016-05-03',
-        name: '麻',
-        age: '40',
-        address: '上海市普陀区金沙江路 2 弄'
-      }],
+      tableData: [],
       tableHeight: 200,
-      operateWidth: 300,
+      operateWidth: 100,
       tableCheckbox: true,
       operate: true
     }
   },
   computed: {
-    ...mapState(['application'])
+    ...mapState(['application', 'examine'])
   },
   created () {
     if (this.$route.query.type === 'back') {
       this.page = Object.assign(this.page, this.application.page)
-      this.searchQuery = Object.assign(this.searchQuery, this.application.searchQuery)
+      this.searchQuery = Object.assign(this.searchQuery, this.examine.searchQuery)
+      this.tableData = Object.assign(this.tableData, this.examine.tableData)
     } else {
       this.SET_APPLICATION_PAGE({})
-      this.SET_APPLICATION_SEARCH_QUERY({})
+      this.SET_EXAMINE_SEARCH_QUERY({})
+      this.SET_EXAMINE_TABLEDATA({})
+      this.SET_EXAMINE_DETAIL({})
+      this.SET_EXAMINE_BACKPATH({})
     }
     this.initQuery()
-    this.getAreaList()
     this.getGrid()
+    this.getMyAuditList()
   },
   methods: {
-    ...mapMutations(['SET_APPLICATION_PAGE', 'SET_APPLICATION_SEARCH_QUERY']),
+    ...mapMutations([
+      'SET_APPLICATION_PAGE',
+      'SET_EXAMINE_TABLEDATA',
+      'SET_EXAMINE_DETAIL',
+      'SET_EXAMINE_SEARCH_QUERY',
+      'SET_EXAMINE_BACKPATH']),
+    scrollStyle () {
+      return {
+        height: this.$store.state.app.windowHeight - 30 + 'px'
+      }
+    },
     initQuery () {
       let keys = Object.assign({}, this.$route.query)
       let len = keys.length
@@ -200,9 +282,9 @@ export default {
     trim (str) {
       return (str + '').replace(/(\s+)$/g, '').replace(/^\s+/g, '')
     },
-    getAreaList () {
-      api[urlNames['getAreaList']]().then((res) => {
-        this.areaList = res.data
+    getMyAuditList () {
+      api[urlNames['getMyAuditList']]().then((res) => {
+        this.tableData = res.data
       })
     },
     search () {
@@ -252,26 +334,13 @@ export default {
       })
     },
     goConfig (row) {
-      this.SET_APPLICATION_PAGE(this.page)
-      this.SET_APPLICATION_SEARCH_QUERY(this.searchQuery)
-      this.$router.push({
-        name: 'ExamineDetails',
-        params: {
-          id: 12
-        }
-      })
+      this.dialogVisible = true
     },
     showAddDialog () {
       this.addDialogVisible = true
     },
-    closeEditDialog () {
-      this.editDialogVisible = false
-    },
-    closeAddDialog () {
-      this.addDialogVisible = false
-    },
-    closeConfigDialogVisible () {
-      this.configDialogVisible = false
+    handleClose () {
+      this.dialogVisible = false
     },
     handleAction (action, row) {
       let actionName = '删除'
@@ -316,7 +385,7 @@ export default {
 }
 </script>
 <style lang="less">
-  @import "./index";
+  @import "index";
 </style>
 
 

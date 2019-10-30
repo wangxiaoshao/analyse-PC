@@ -48,6 +48,7 @@ export default {
   },
   watch: {
     asideMenu (newVal) {
+      console.log(newVal)
       if (newVal) {
         this.asideMenuList = newVal.list
       }
