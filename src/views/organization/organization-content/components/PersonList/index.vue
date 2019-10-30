@@ -1,5 +1,25 @@
 <template>
   <div class="content-list">
+    <el-dialog
+      title="填写解除挂职说明"
+      :visible.sync="removeFlag"
+      width="40%">
+      <span class="remove-des">您确定解除该人员在本单位的挂职身份？解除之后该人员将无法使用该身份下的账号使用应用系统。</span>
+      <el-form
+        :model="ruleForm"
+        :rules="rules"
+        ref="ruleForm"
+        label-width="100px"
+        class="demo-ruleForm">
+        <el-form-item label="申请原因" prop="reason">
+          <el-input type="textarea" v-model="ruleForm.reason"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button @click="removeFlag = false">取 消</el-button>
+          <el-button type="primary" @click="submitForm('ruleForm')">确定</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
     <div class="button-wrap">
       <el-button @click="sortList">调整排序</el-button>
     </div>
@@ -33,13 +53,25 @@
           <span class="text-disable" v-show="!scope.row.removed">停用</span>
         </template>
       </el-table-column>
-      <el-table-column prop="act" label="操作" width="100" align="center">
+      <el-table-column prop="act" label="操作" width="200" align="center">
         <template slot-scope="scope">
           <el-button
             @click.native.prevent="deleteRow(scope.$index, tableData4)"
             type="text"
             size="small">
             修改
+          </el-button>
+          <el-button
+            @click.native.prevent="deleteRow(scope.$index, tableData4)"
+            type="text"
+            size="small">
+            调出
+          </el-button>
+          <el-button
+            @click.native.prevent="removePerson(scope.row)"
+            type="text"
+            size="small">
+            解除兼职
           </el-button>
         </template>
       </el-table-column>
@@ -68,7 +100,16 @@ export default {
       loading: true,
       list: [],
       sortListFlag: false,
-      isShowEditFlag: true
+      isShowEditFlag: true,
+      removeFlag: false,
+      ruleForm: {
+        reason: ''
+      },
+      rules: {
+        reason: [
+          { required: true, message: '请填写申请原因', trigger: 'blur' }
+        ]
+      }
     }
   },
   props: {
@@ -98,8 +139,32 @@ export default {
     },
     sortList () {
       this.$emit('cancel', true)
-    }
+    },
+    removePerson (row) {
+      this.removeFlag = true
+      // 当前row.id
+    },
+    // 提交调出人员
+    submitForm (ruleForm) {
+      this.$refs[ruleForm].validate((valid) => {
+        if (valid) {
+          const data = {
+            reason: this.ruleForm.reason,
+            viewNode: {
+              parentId: this.$route.params.parentId,
+              name: this.ruleForm.name,
+              enable: this.ruleForm.enable
+            }
+          }
+          api[urlNames['createViewNode']](data).then((res) => {
+            this.$message.success(`添加成功`)
+            console.log(res)
+          }, (error) => {
 
+          })
+        }
+      })
+    }
   },
   created () {
     this.getGrid()
