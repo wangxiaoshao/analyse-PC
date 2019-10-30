@@ -46,21 +46,21 @@ module.exports = function (options) {
           //   "/api/": ""
           // }
         },
-        '!**/*.json': {
-          target: "http://127.0.0.1:8080",
+        // '!**/*.json': {
+        //   target: "http://127.0.0.1:8080",
           // target: "http://aedutest.17win.com",
-          changeOrigin: true,
-          bypass(req, res) {
-            const urlObject = URL.parse(req.url);
-            if (options.mock) {
-              const mockPath = mockMap(urlObject.pathname);
-              if (mockPath) {
-                req.method = 'GET';
-                return mockPath;
-              }
-            }
-          }
-        }
+          // changeOrigin: true,
+          // bypass(req, res) {
+          //   const urlObject = URL.parse(req.url);
+          //   if (options.mock) {
+          //     const mockPath = mockMap(urlObject.pathname);
+          //     if (mockPath) {
+          //       req.method = 'GET';
+          //       return mockPath;
+          //     }
+          //   }
+          // }
+        // }
       }
     }
   }
