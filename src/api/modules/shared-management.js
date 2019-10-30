@@ -7,7 +7,7 @@ export default {
   /**
    * 获取视图列表
    */
-  [urlNames.getSharedManagement]: {
+  [urlNames.getViewList]: {
     type: 'get',
     url: '/api/jg_manage/view/findViewList',
     serve: 'organizationManagePC',

@@ -17,6 +17,7 @@ export default {
   getMyAuditList: 'getMyAuditList',
 
   getDepartmentNodes: 'getDepartmentNodes',
+  findDepartmentList: 'findDepartmentList',
   geMtmemberSelector: 'geMtmemberSelector',
   geMtmemberSearch: 'geMtmemberSearch',
   getUserRightsList: 'getUserRightsList',
@@ -34,7 +35,7 @@ export default {
   getChildList: 'getChildList',
   getPersonList: 'getPersonList',
   // 共享视图
-  getSharedManagement: 'getSharedManagement',
+  getViewList: 'getViewList', // 视图列表
   getAppList: 'getAppList', // 应用列表
   createApp: 'createApp', // 创建应用
   getAppDetail: 'getAppDetail', // 获取应用详情

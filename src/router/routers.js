@@ -147,7 +147,7 @@ export default [
         component: ViewManagement
       },
       {
-        path: 'create-view',
+        path: '/view-management/create-view',
         name: 'CreateView',
         component: CreateView
       },
@@ -157,7 +157,7 @@ export default [
         component: GroupManagement
       },
       {
-        path: 'group-detail',
+        path: '/group-management/group-detail',
         name: 'GroupDetail',
         component: GroupDetail
       },
@@ -167,7 +167,7 @@ export default [
         component: AppManagement
       },
       {
-        path: 'create-app-management',
+        path: '/app-management/create-app-management',
         name: 'CreateAppManagement',
         component: CreateAppManagement
       },

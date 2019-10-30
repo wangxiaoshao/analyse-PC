@@ -1,90 +1,104 @@
 <template>
   <div class="create-view">
-    <div class="from">
-      <el-form ref="form" :model="form" label-width="100px">
-        <el-row>
-          <el-col :span="12">
-            <div class="grid-content bg-purple">
-              <el-form-item label="视图名称">
-                <el-input v-model="form.name"></el-input>
-              </el-form-item>
-            </div>
-          </el-col>
-          <el-col :span="12">
-            <div class="grid-content bg-purple-light">
-              <el-form-item label="使用对象">
-                <el-select v-model="form.region" placeholder="请选择活动区域">
-                  <el-option label="区域一" value="shanghai"></el-option>
-                  <el-option label="区域二" value="beijing"></el-option>
-                </el-select>
-              </el-form-item>
-            </div>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="12">
-            <div class="grid-content bg-purple">
-              <el-form-item label="视图管理员">
-                <el-select v-model="form.region" placeholder="请选择活动区域">
-                  <el-option label="区域一" value="shanghai"></el-option>
-                  <el-option label="区域二" value="beijing"></el-option>
-                </el-select>
-              </el-form-item>
-            </div>
-          </el-col>
-          <el-col :span="12">
-            <div class="grid-content bg-purple-light">
-              <el-form-item label="启用状态">
-                <el-switch v-model="form.delivery"></el-switch>
-              </el-form-item>
-            </div>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10">
-          <el-col :span="7">
-            <div class="grid-content bg-purple">
-              <el-form-item label="选择组织机构">
-                <div class="select-org">
-                  <el-tree
-                    :data="data"
-                    show-checkbox
-                    node-key="id"
-                    draggable
-                    @check-change="currentchange"
-                    :check-strictly="true"
-                    :allow-drop="allowDrop"
-                    @node-drag-end="nodedragend"
-                    @node-drag-over="handleDragOver"
-                    :expand-on-click-node="false">
-                  </el-tree>
+    <el-tabs v-model="activeName" @tab-click="handleClick">
+      <el-tab-pane label="视图基本信息" name="first">
+        <div class="from">
+          <el-form ref="form" :model="form" label-width="100px">
+            <el-row>
+              <el-col :span="12">
+                <div class="grid-content bg-purple">
+                  <el-form-item label="视图名称">
+                    <el-input v-model="form.name"></el-input>
+                  </el-form-item>
                 </div>
-              </el-form-item>
-            </div>
-          </el-col>
-          <el-col :span="7" :offset="2">
-            <div class="grid-content bg-purple-light">
-              <el-form-item label="视图组织机构">
-                <div class="select-org">
-                  <el-tree
-                    :data="data2"
-                    show-checkbox
-                    node-key="id"
-                    draggable
-                    :check-strictly="true"
-                    @node-drag-enter="handleDragEnter"
-                    :expand-on-click-node="false">
-                  </el-tree>
+              </el-col>
+              <el-col :span="12">
+                <div class="grid-content bg-purple-light">
+                  <el-form-item label="使用对象">
+                    <el-select v-model="form.region" placeholder="请选择活动区域">
+                      <el-option label="区域一" value="shanghai"></el-option>
+                      <el-option label="区域二" value="beijing"></el-option>
+                    </el-select>
+                  </el-form-item>
                 </div>
-              </el-form-item>
-            </div>
-          </el-col>
-        </el-row>
-        <el-form-item>
-          <el-button type="primary" @click="onSubmit">保存</el-button>
-          <el-button>取消</el-button>
-        </el-form-item>
-      </el-form>
-    </div>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">
+                <div class="grid-content bg-purple">
+                  <el-form-item label="视图管理员">
+                    <el-select v-model="form.region" placeholder="请选择活动区域">
+                      <el-option label="区域一" value="shanghai"></el-option>
+                      <el-option label="区域二" value="beijing"></el-option>
+                    </el-select>
+                  </el-form-item>
+                </div>
+              </el-col>
+              <el-col :span="12">
+                <div class="grid-content bg-purple-light">
+                  <el-form-item label="启用状态">
+                    <el-switch v-model="form.delivery"></el-switch>
+                  </el-form-item>
+                </div>
+              </el-col>
+            </el-row>
+            <el-form-item>
+              <el-button type="primary" @click="onSubmit">保存</el-button>
+              <el-button>取消</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-tab-pane>
+      <el-tab-pane label="视图组织机构" name="second">
+        <div class="from">
+          <el-form ref="form" :model="form" label-width="100px">
+            <el-row :gutter="10">
+              <el-col :span="7">
+                <div class="grid-content bg-purple">
+                  <el-form-item label="选择组织机构">
+                    <div class="select-org">
+                      <el-tree
+                        :data="data"
+                        show-checkbox
+                        node-key="id"
+                        draggable
+                        @check-change="currentchange"
+                        :check-strictly="true"
+                        :allow-drop="allowDrop"
+                        @node-drag-end="nodedragend"
+                        @node-drag-over="handleDragOver"
+                        :expand-on-click-node="false">
+                      </el-tree>
+                    </div>
+                  </el-form-item>
+                </div>
+              </el-col>
+              <el-col :span="7" :offset="2">
+                <div class="grid-content bg-purple-light">
+                  <el-form-item label="视图组织机构">
+                    <div class="select-org">
+                      <el-tree
+                        :data="data2"
+                        show-checkbox
+                        node-key="id"
+                        draggable
+                        :check-strictly="true"
+                        @node-drag-enter="handleDragEnter"
+                        :expand-on-click-node="false">
+                      </el-tree>
+                    </div>
+                  </el-form-item>
+                </div>
+              </el-col>
+            </el-row>
+            <el-form-item>
+              <el-button type="primary" @click="onSubmit">保存</el-button>
+              <el-button>取消</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 
@@ -143,6 +157,7 @@ export default {
       }]
     }]
     return {
+      activeName: 'first',
       data: JSON.parse(JSON.stringify(data)),
       data2: JSON.parse(JSON.stringify(data)),
       form: {

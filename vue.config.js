@@ -38,30 +38,37 @@ module.exports = function (options) {
       contentBase: ['dist', 'mock'],
       disableHostCheck: true,
       host: '0.0.0.0',
-      port: '8080',
-      proxy: {
-        "/api/": {
-          target: "http://192.168.0.104:8080",
-          // pathRewrite: {
-          //   "/api/": ""
-          // }
-        },
-        '!**/*.json': {
-          target: "http://127.0.0.1:8080",
-          // target: "http://aedutest.17win.com",
-          changeOrigin: true,
-          bypass(req, res) {
-            const urlObject = URL.parse(req.url);
-            if (options.mock) {
-              const mockPath = mockMap(urlObject.pathname);
-              if (mockPath) {
-                req.method = 'GET';
-                return mockPath;
-              }
-            }
-          }
-        }
-      }
+      port: '8080'
     }
+    // devServer: {
+    //   //publicPath: publicPath,
+    //   contentBase: ['dist', 'mock'],
+    //   disableHostCheck: true,
+    //   host: '0.0.0.0',
+    //   port: '8080',
+    //   proxy: {
+    //     "/api/": {
+    //       target: "http://192.168.0.104:8080",
+    //       // pathRewrite: {
+    //       //   "/api/": ""
+    //       // }
+    //     },
+    //     '!**/*.json': {
+    //       target: "http://127.0.0.1:8080",
+    //       // target: "http://aedutest.17win.com",
+    //       changeOrigin: true,
+    //       bypass(req, res) {
+    //         const urlObject = URL.parse(req.url);
+    //         if (options.mock) {
+    //           const mockPath = mockMap(urlObject.pathname);
+    //           if (mockPath) {
+    //             req.method = 'GET';
+    //             return mockPath;
+    //           }
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
   }
 }

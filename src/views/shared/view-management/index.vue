@@ -60,11 +60,12 @@
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentPageChange"
-        :current-page.sync="currentPage"
+        :current-page="currentPage"
+        :page-sizes="[10, 30, 50, 100]"
         :page-size="10"
-        layout="prev, pager, next, jumper"
+        layout="total, sizes, prev, pager, next, jumper"
         :total="total">
-      </el-pagination>
+      </el-pagination>>
     </div>
     <el-button @click="seleceDialog.selectMenmberFlag = true">选人组件</el-button>
     <candidate-dialog @closeselectMenmber="closeselectMenmber" :seleceDialog="seleceDialog"></candidate-dialog>
@@ -97,7 +98,7 @@ export default {
   },
   methods: {
     getViewList (page, limt) {
-      api[urlNames['getSharedManagement']]({
+      api[urlNames['getViewList']]({
         page: page,
         limit: limt
       }).then((res) => {

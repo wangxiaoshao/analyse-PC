@@ -47,10 +47,11 @@
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentPageChange"
-        :current-page.sync="currentPage"
-        :page-size="100"
-        layout="prev, pager, next, jumper"
-        :total="1000">
+        :current-page="currentPage"
+        :page-sizes="[10, 30, 50, 100]"
+        :page-size="10"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total">
       </el-pagination>
       <candidate-dialog @closeselectMenmber="closeselectMenmber" :seleceDialog="seleceDialog"></candidate-dialog>
     </div>
@@ -66,6 +67,7 @@ export default {
   data () {
     return {
       currentPage: 1,
+      total: 0,
       tableData: [{
         date: '2016-05-02',
         name: '王小虎',

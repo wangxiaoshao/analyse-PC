@@ -10,6 +10,7 @@
           </el-option>
         </el-select>
         <el-button type="primary" @click="openDialog">创建分组</el-button>
+        <el-button @click="handleClick()" type="text" size="small">编辑</el-button>
       </div>
       <div class="table">
         <el-table
@@ -57,10 +58,11 @@
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentPageChange"
-          :current-page.sync="currentPage"
-          :page-size="100"
-          layout="prev, pager, next, jumper"
-          :total="1000">
+          :current-page="currentPage"
+          :page-sizes="[10, 30, 50, 100]"
+          :page-size="10"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total">
         </el-pagination>
       </div>
       <create-group-dialog @close="close" :creategroupdialogVisible="creategroupdialogVisible"></create-group-dialog>
@@ -78,7 +80,7 @@ export default {
   data () {
     return {
       groupList: [],
-      totale: 0,
+      total: 0,
       creategroupdialogVisible: false,
       currentPage: 1,
       options: [{
