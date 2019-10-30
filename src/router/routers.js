@@ -10,9 +10,9 @@ const Approved = () => import('@src/views/examine/approved/index.vue') /* webpac
 const MyApplication = () => import('@src/views/examine/my-application/index.vue') /* webpackChunkName: 'home' */
 const ConfirmInfo = () => import('@src/views/examine/confirm-info/index.vue') /* webpackChunkName: 'home' */
 // 统计管理
-const DataStatistics = () => import('@src/views/statistics/DataStatistics/index.vue') /* webpackChunkName: 'home' */
-const DataLog = () => import('@src/views/statistics/DataLog/index.vue') /* webpackChunkName: 'home' */
-const DataQuery = () => import('@src/views/statistics/DataQuery/index.vue') /* webpackChunkName: 'home' */
+const DataStatistics = () => import('@src/views/statistics/data-statistics/index.vue') /* webpackChunkName: 'home' */
+const DataLog = () => import('@src/views/statistics/data-log/index.vue') /* webpackChunkName: 'home' */
+const DataQuery = () => import('@src/views/statistics/data-query/index.vue') /* webpackChunkName: 'home' */
 
 const Organization = () => import('@src/views/organization/index.vue')
 const OrganizationContent = () => import('@src/views/organization/organization-content/index.vue')
@@ -31,6 +31,11 @@ const CreateAppManagement = () => import('@src/views/shared/create-app-managemen
 const TagsManagement = () => import('@src/views/shared/tags-management/index.vue')
 /* 权限管理 */
 const RightsManagement = () => import('@src/views/shared/rights-management/index.vue')
+
+
+/* 系统设置 */
+const SystemSetting = () => import('@src/views/system-setting/index.vue')
+const ParameterSetting = () => import('@src/views/system-setting/parameter-setting/index.vue')
 /* 路由 */
 export default [
   {
@@ -227,6 +232,20 @@ export default [
     path: '/data-log',
     name: 'DataLog',
     component: DataLog
+  },
+
+  // 系统设置
+  {
+    path: '/system-setting',
+    name: 'SystemSetting',
+    component: SystemSetting,
+    children: [
+      {
+        path: '/parameter-setting',
+        name: 'ParameterSetting',
+        component: ParameterSetting
+      }
+    ]
   }
 ]
 

@@ -17,10 +17,14 @@
       "applyName": "申请人一号",
       "content": "内容1",
       "applyTime": "2019-11-11",
+      "confirmTime": "2019-11-11",
       "workPhone": "18922222221",
       "workName": "单位名称1",
+      "unitLeader": "单位主要领导1",
       "reviewTime": "2019-10-10",
-      "reviewSuggest": "同意"
+      "reviewSuggest": "同意",
+      "confirmMonth": "1月",
+      "confirmStaff": "人员变动"
     },
     {
       "createOrgId": 5122,
@@ -36,10 +40,14 @@
       "applyName": "申请人二号",
       "content": "内容2",
       "applyTime": "2019-11-12",
+      "confirmTime": "2019-11-12",
       "workPhone": "18922222222",
       "workName": "单位名称2",
+      "unitLeader": "单位主要领导2",
       "reviewTime": "2019-10-11",
-      "reviewSuggest": "不同意"
+      "reviewSuggest": "不同意",
+      "confirmMonth": "2月",
+      "confirmStaff": "机构新增"
     },
     {
       "createOrgId": 5123,
@@ -55,10 +63,14 @@
       "applyName": "申请人三号",
       "content": "内容3",
       "applyTime": "2019-11-13",
+      "confirmTime": "2019-11-13",
       "workPhone": "18922222223",
       "workName": "单位名称3",
+      "unitLeader": "单位主要领导3",
       "reviewTime": "2019-10-13",
-      "reviewSuggest": "同意"
+      "reviewSuggest": "同意",
+      "confirmMonth": "3月",
+      "confirmStaff": "人员变动"
     }
   ]
 }
