@@ -85,7 +85,7 @@ export default {
     return {
       showDialogFlag: false,
       activeName: '',
-      nodeTitle: '',
+      nodeTitle: '节点信息',
       sortShowFlag: false,
       content: [],
       selectType: '',

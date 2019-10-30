@@ -40,7 +40,7 @@ export default {
           scale: true,
           max: 8,
           min: 0,
-          splitNumber: 10,
+          splitNumber: 10
         } ],
         series: [
           {
@@ -59,8 +59,6 @@ export default {
           }
         ]
       })
-
-
     }
   }
 }

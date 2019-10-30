@@ -137,7 +137,7 @@ export default {
     ...mapMutations(['SET_APPLICATION_PAGE', 'SET_APPLICATION_SEARCH_QUERY']),
     search () {},
     getGrid () {},
-    handleClick () {},
+    handleClick () {}
   }
 }
 </script>

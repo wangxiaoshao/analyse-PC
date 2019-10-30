@@ -88,8 +88,8 @@ export default {
     getGrid () {
       let data = {
         page: this.page.current,
-        pageSize: this.page.limit,
-        parentId: this.$route.params.nodeId
+        parentId: this.$route.params.nodeId,
+        limit: this.page.limit
       }
       this.loading = true
       api[urlNames['findViewNodeList']](data).then((res) => {

@@ -189,7 +189,7 @@ export default {
           sortable: false,
           showOverflowTooltip: false,
           minWidth: 100
-        },
+        }
       },
       tableDetailData: [],
       tableCheckbox: true,

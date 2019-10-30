@@ -78,8 +78,7 @@ export default {
     // 获取搜索结果
     getResult () {
       let data = {
-        name: this.keyWord,
-        type: this.type
+        name: this.keyWord
       }
       this.loadFlag = true
       api[urlNames['searchViewNode']](data).then(res => {
