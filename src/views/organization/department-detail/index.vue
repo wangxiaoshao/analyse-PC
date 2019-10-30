@@ -180,7 +180,7 @@ export default {
       this.pushBreadcrumb({
         name: this.breadcrumbTitle,
         parent: {
-          name: 'Organization',
+          name: 'OrganizationContent',
           query: {
             type: 'back'
           }

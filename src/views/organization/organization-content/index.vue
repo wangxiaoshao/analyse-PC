@@ -60,7 +60,7 @@
             </el-table>
           </el-tab-pane>
           <el-tab-pane label="人员管理" name="人员管理">
-            <el-button class="add-btn">添加人员</el-button>
+            <el-button class="add-btn" @click="openAddPerson">添加人员</el-button>
             <person-list v-if="activeName === '人员管理'" :sortFlag="sortShowFlag" @cancel="getSortAction"></person-list>
           </el-tab-pane>
           <el-tab-pane label="部门领导" name="单位主要领导">
@@ -99,6 +99,14 @@ export default {
   methods: {
     closeDialog () {
       this.visible = false
+    },
+    openAddPerson () {
+      this.$router.push({
+        name: 'PersonAdd',
+        params: {
+          parentId: this.$route.params.nodeId
+        }
+      })
     },
     goAddNode () {
       this.$router.push({

@@ -1,11 +1,11 @@
 <template>
   <div class="content-list">
     <div class="button-wrap">
-      <el-button @click="sortList">调整排序</el-button>
+      <el-button @click="sortBtnFlag">调整排序</el-button>
     </div>
     <div class="sort-do" v-if="sortFlag">
       按住左键上下拖动调整排序
-      <a>保存</a>
+      <a @click="sublimeSort">保存</a>
       <a  @click="cancelSort">取消</a>
     </div>
     <el-table
@@ -38,25 +38,13 @@
       </el-table-column>
       <el-table-column prop="act" label="操作" width="100" align="center">
         <template slot-scope="scope">
-          <el-button
-            v-show="scope.row.nodeType === 1"
-            @click.native="openEditNode(scope.row)"
-            type="text"
-            size="small">
+          <el-button v-show="scope.row.nodeType === 1" @click.native="openEditNode(scope.row)" type="text" size="small">
             修改
           </el-button>
-          <el-button
-            v-show="scope.row.nodeType === 2"
-            @click.native="openDepartmentEdit(scope.row)"
-            type="text"
-            size="small">
+          <el-button v-show="scope.row.nodeType === 2" @click.native="openDepartmentEdit(scope.row)" type="text" size="small">
             修改
           </el-button>
-          <el-button
-            v-show="scope.row.nodeType === 3"
-            @click.native="openEditUnit(scope.row)"
-            type="text"
-            size="small">
+          <el-button v-show="scope.row.nodeType === 3" @click.native="openEditUnit(scope.row)" type="text" size="small">
             修改
           </el-button>
         </template>
@@ -86,7 +74,8 @@ export default {
       loading: true,
       list: [],
       sortListFlag: false,
-      isShowEditFlag: true
+      isShowEditFlag: true,
+      sortList: []
     }
   },
   props: {
@@ -115,7 +104,7 @@ export default {
     cancelSort () {
       this.$emit('cancel', false)
     },
-    sortList () {
+    sortBtnFlag () {
       this.$emit('cancel', true)
     },
     // 打开编辑节点
@@ -143,6 +132,23 @@ export default {
         params: {
           id: row.id
         }
+      })
+    },
+    // 保存排序
+    sublimeSort () {
+      let data = []
+      this.list.forEach((item, index) => {
+        const sortObj = {
+          id: item.id,
+          sort: index
+        }
+        data.push(sortObj)
+      })
+      api[urlNames['setViewNodeSort']](data).then((res) => {
+        this.$message.success(`保存成功`)
+        this.cancelSort()
+      }, () => {
+        this.$message.error(`保存失败，请重试`)
       })
     }
 
@@ -178,7 +184,6 @@ export default {
               const item = items.splice(oldIndex, 1)
               items.splice(newIndex, 0, item[0])
               this.list = items // 排序后列表
-              console.log(this.list)
             }
           })
         } else {
