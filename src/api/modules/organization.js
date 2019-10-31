@@ -34,7 +34,7 @@ export default {
     serve: 'organizationManagePC',
     mock: 'createViewNode.json',
     headers: {
-      'Content-Type': 'multipart/form-data'
+      'Content-Type': 'application/json'
     }
   },
   /**
@@ -57,7 +57,10 @@ export default {
     keepOriginResponse: true, // 是否保留后端返回数据格式
     showLoading: false, // 该请求发送时，是否显示全局loading
     serve: 'organizationManagePC',
-    mock: '/setViewNodeSort.json' // development模式下，本地mock数据
+    mock: '/setViewNodeSort.json', // development模式下，本地mock数据
+    headers: {
+      'Content-Type': 'application/json'
+    }
   },
   /**
    * 根据ID查询部门详情
