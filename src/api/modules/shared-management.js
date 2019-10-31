@@ -69,5 +69,18 @@ export default {
       'Content-Type': 'application/json'
     },
     showLoading: true
+  },
+  /**
+   删除标签
+   */
+  [urlNames.deleteLabel]: {
+    type: 'post',
+    url: '/api/jg_manage/label/deleteLabel',
+    serve: 'organizationManagePC',
+    keepOriginResponse: false,
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    showLoading: true
   }
 }
