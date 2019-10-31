@@ -8,7 +8,6 @@
       ref="singleTable"
       :data="appList"
       highlight-current-row
-      @current-change="handleCurrentChange"
       style="width: 100%">
       <el-table-column
         type="index"
@@ -46,12 +45,12 @@
         label="应用接口密码"
         align="center">
       </el-table-column>
-      <el-table-column
-      property="stateName"
-      label="启用状态"
-      width="80"
-      align="center">
-    </el-table-column>
+      <el-table-column label="启用状态" prop="removed" width="80" align="center">
+        <template slot-scope="scope">
+          <span class="text-able" v-show="scope.row.removed">启用</span>
+          <span class="text-disable" v-show="!scope.row.removed">停用</span>
+        </template>
+      </el-table-column>
       <el-table-column
         label="操作"
         align="center"
@@ -65,9 +64,10 @@
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentPageChange"
-      :current-page.sync="currentPage"
+      :current-page="currentPage"
+      :page-sizes="[10, 30, 50, 100]"
       :page-size="10"
-      layout="prev, pager, next, jumper"
+      layout="total, sizes, prev, pager, next, jumper"
       :total="total">
     </el-pagination>
   </div>
@@ -83,42 +83,19 @@ export default {
       appList: [],
       total: 0,
       currentPage: 1,
-      tableData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      }],
-      currentRow: null
+      pageSize: 10
     }
   },
   created () {
     this.getAppList(1, 10)
   },
   methods: {
+    //  获取应用
     getAppList (page, limt) {
       api[urlNames['getAppList']]({
         page: page,
         limit: limt
       }).then((res) => {
-        res.data.forEach(item => {
-          if (item.removed === 0) {
-            item.stateName = '否'
-          } else if (item.removed === 1) {
-            item.stateName = '是'
-          }
-        })
         this.total = parseInt(res.total)
         this.appList = res.data
       })
@@ -126,18 +103,19 @@ export default {
     handleClick (row) {
       this.$router.push({ name: 'CreateAppManagement', query: { id: row.id } })
     },
-    handleCurrentChange (val) {
-      this.currentRow = val
-    },
     // 创建应用
     createApp () {
       this.$router.push({ name: 'CreateAppManagement' })
     },
+    // 每一页请求条数
     handleSizeChange (val) {
-      console.log(`每页 ${val} 条`)
+      this.pageSize = val
+      this.getAppList(this.currentPage, val)
     },
+    // 分页
     handleCurrentPageChange (val) {
-      console.log(`当前页: ${val}`)
+      this.currentPage = val
+      this.getAppList(val, this.pageSize)
     }
   }
 }

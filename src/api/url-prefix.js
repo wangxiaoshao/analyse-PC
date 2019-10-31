@@ -27,7 +27,7 @@ if (process.env.NODE_ENV === 'development') {
 } else if (process.env.NODE_ENV === 'test') {
   prefix = Serve.test
 } else {
-  if (host.includes('192.168.0.100')) {
+  if (host.includes('192.168.0.103')) {
     // 测试环境
     prefix = Serve.test
   } else {

@@ -2,22 +2,30 @@
   <div class="site-module mod-dictionary">
     <!--操作row-->
     <el-row class="operator-row">
-      <el-col :span="18">
+      <el-col :span="24">
         <el-row :gutter="10" type="flex">
-          <el-col :span="6">
-            <el-select v-model="searchQuery.areaId" filterable clearable @change="search" placeholder="单位">
-              <el-option
-                v-for="item in areaList"
-                :key="item.id"
-                :label="item.name"
-                :value="item.code">
-              </el-option>
-            </el-select>
-          </el-col>
-          <el-col :span="8">
-            <el-input placeholder="请输入关键字搜索" v-model="searchQuery.keyword" clearable @change="getGrid">
-              <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
+          <el-col :span="4">
+            <el-input placeholder="单位名称" v-model="searchQuery.keyword" clearable @change="getGrid">
             </el-input>
+          </el-col>
+          <el-col :span="4">
+            <el-input placeholder="单位ID" v-model="searchQuery.keyword" clearable @change="getGrid">
+            </el-input>
+          </el-col>
+          <el-col :span="4">
+            <el-input placeholder="上级名称" v-model="searchQuery.keyword" clearable @change="getGrid">
+            </el-input>
+          </el-col>
+          <el-col :span="4">
+            <el-input placeholder="上级ID" v-model="searchQuery.keyword" clearable @change="getGrid">
+            </el-input>
+          </el-col>
+          <el-col :span="4">
+            <el-input placeholder="标签" v-model="searchQuery.keyword" clearable @change="getGrid">
+            </el-input>
+          </el-col>
+          <el-col :span="4" class="text-right">
+            <el-button type="primary" plain>查询</el-button>
           </el-col>
         </el-row>
       </el-col>
@@ -31,7 +39,7 @@
       <template slot-scope="{slotScope}" slot="status">
       </template>
           <template slot-scope="{slotScope}" slot="operate">
-            <el-button size="mini" type="text" @click="goConfig(slotScope.row)">去审核</el-button>
+            <el-button size="mini" type="text" @click="goConfig(slotScope.row)">查看明细</el-button>
           </template>
     </site-table>
     <!--分页-->
@@ -66,8 +74,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-import EditDialog from '../components/EditDialog'
-import ConfigDialog from '../components/EditDialog'
+import EditDialog from '../../components/EditDialog'
+import ConfigDialog from '../../components/EditDialog'
 import handleTable from '@src/mixins/handle-table'
 import { api, urlNames } from '@src/api'
 import SiteTable from '@src/components/SiteTable/index.vue'
@@ -131,7 +139,7 @@ export default {
           field: 'applyName',
           tooltip: false,
           formatter: this.formatter,
-          label: '申请人',
+          label: '单位名称',
           sortable: false,
           showOverflowTooltip: false,
           minWidth: 100
@@ -141,7 +149,7 @@ export default {
           field: 'content',
           tooltip: true,
           formatter: this.formatter,
-          label: '申请内容',
+          label: '单位ID',
           sortable: false,
           showOverflowTooltip: false,
           minWidth: 100
@@ -151,7 +159,7 @@ export default {
           field: 'applyTime',
           tooltip: false,
           formatter: this.formatter,
-          label: '申请时间',
+          label: '统一单位编码',
           sortable: false,
           showOverflowTooltip: false,
           minWidth: 100
@@ -161,7 +169,7 @@ export default {
           field: 'reason',
           tooltip: false,
           formatter: this.formatter,
-          label: '申请原因',
+          label: '单位管理员',
           sortable: false,
           showOverflowTooltip: false,
           minWidth: 100
@@ -171,7 +179,17 @@ export default {
           field: 'state',
           tooltip: false,
           formatter: this.formatter,
-          label: '审核状态',
+          label: '上级单位',
+          sortable: true,
+          showOverflowTooltip: false,
+          minWidth: 100
+        },
+        parentId: {
+          key:6,
+          field: 'parentId',
+          tooltip: false,
+          formatter: this.formatter,
+          label: '上级ID',
           sortable: true,
           showOverflowTooltip: false,
           minWidth: 100

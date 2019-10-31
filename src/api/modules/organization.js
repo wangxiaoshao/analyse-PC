@@ -83,5 +83,16 @@ export default {
     showLoading: false, // 该请求发送时，是否显示全局loading
     serve: 'organizationManagePC',
     mock: '/createDepartment.json' // development模式下，本地mock数据
+  },
+  /**
+   * 获取机构树
+   */
+  [urlNames.findDepartmentList]: {
+    type: 'get',
+    url: '/api/jg_manage/department/findDepartmentList',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    showLoading: false, // 该请求发送时，是否显示全局loading
+    serve: 'organizationManagePC',
+    mock: '/findDepartmentList.json' // development模式下，本地mock数据
   }
 }

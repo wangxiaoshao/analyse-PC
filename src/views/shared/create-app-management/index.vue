@@ -14,10 +14,10 @@
         </el-col>
         <el-col :span="12">
           <div class="grid-content bg-purple-light">
-            <el-form-item label="绑定视图">
-              <el-select  v-model="appFrom.viewId" placeholder="请选择视图" prop="viewId">
-                <el-option label="区域一" value="shanghai"></el-option>
-                <el-option label="区域二" value="beijing"></el-option>
+            <el-form-item label="绑定视图" prop="viewId">
+              <el-select  v-model="appFrom.viewId" placeholder="请选择视图">
+                <el-option label="视图1" value="1">视图1</el-option>
+                <el-option label="视图1" value="1">视图2</el-option>
               </el-select>
             </el-form-item>
           </div>
@@ -134,6 +134,7 @@ export default {
   },
   methods: {
     onSubmit () {
+      console.log(JSON.parse(JSON.stringify(this.appFrom)), 'this.appFrom')
       api[urlNames['createApp']]({
         id: this.appFrom.id,
         name: this.appFrom.name,
@@ -158,7 +159,6 @@ export default {
         id: id
       }).then((res) => {
         this.appFrom = res.data
-        console.log(res, 'res')
       })
     }
   }

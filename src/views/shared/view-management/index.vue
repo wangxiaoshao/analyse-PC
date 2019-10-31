@@ -38,10 +38,11 @@
           align="center"
           label="视图管理员">
         </el-table-column>
-        <el-table-column
-          property="stateName"
-          align="center"
-          label="启用状态">
+        <el-table-column label="启用状态" prop="removed" width="80" align="center">
+          <template slot-scope="scope">
+            <span class="text-able" v-show="scope.row.removed">启用</span>
+            <span class="text-disable" v-show="!scope.row.removed">停用</span>
+          </template>
         </el-table-column>
         <el-table-column
           property="remark"
@@ -60,9 +61,10 @@
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentPageChange"
-        :current-page.sync="currentPage"
+        :current-page="currentPage"
+        :page-sizes="[10, 30, 50, 100]"
         :page-size="10"
-        layout="prev, pager, next, jumper"
+        layout="total, sizes, prev, pager, next, jumper"
         :total="total">
       </el-pagination>
     </div>
@@ -97,17 +99,10 @@ export default {
   },
   methods: {
     getViewList (page, limt) {
-      api[urlNames['getSharedManagement']]({
+      api[urlNames['getViewList']]({
         page: page,
         limit: limt
       }).then((res) => {
-        res.data.forEach(item => {
-          if (item.state === 0) {
-            item.stateName = '否'
-          } else if (item.state === 0) {
-            item.stateName = '是'
-          }
-        })
         this.total = parseInt(res.total)
         this.viewList = res.data
       })

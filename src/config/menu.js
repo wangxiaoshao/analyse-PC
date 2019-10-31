@@ -100,7 +100,26 @@ export default {
           'menuId': '42',
           'name': '数据查询',
           'path': '/data-query',
-          'type': 1
+          'list': [
+            {
+              'menuId': '421',
+              'name': '单位查询',
+              'path': '/unit-query',
+              'type': 1
+            },
+            {
+              'menuId': '422',
+              'name': '部门查询',
+              'path': '/department-query',
+              'type': 1
+            },
+            {
+              'menuId': '423',
+              'name': '人员查询',
+              'path': '/member-query',
+              'type': 1
+            },
+          ]
         },
         {
           'menuId': '43',

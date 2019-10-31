@@ -2,24 +2,26 @@
   <div class="site-module mod-dictionary">
     <!--操作row-->
     <el-row class="operator-row">
-      <el-col :span="18">
+      <el-col :span="24">
         <el-row :gutter="10" type="flex">
-          <div class="block">
-            <el-date-picker
-              v-model="searchTimeValue"
-              type="month"
-              placeholder="选择月">
-            </el-date-picker>
-          </div>
-          <el-col :span="8">
-            <el-select v-model="statusValue" clearable placeholder="选择确认状态">
-              <el-option
-                v-for="item in statusOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-select>
+          <el-col :span="5">
+            <el-input placeholder="部门名称" v-model="searchQuery.keyword" clearable @change="getGrid">
+            </el-input>
+          </el-col>
+          <el-col :span="5">
+            <el-input placeholder="部门ID" v-model="searchQuery.keyword" clearable @change="getGrid">
+            </el-input>
+          </el-col>
+          <el-col :span="5">
+            <el-input placeholder="所属单位" v-model="searchQuery.keyword" clearable @change="getGrid">
+            </el-input>
+          </el-col>
+          <el-col :span="5">
+            <el-input placeholder="标签" v-model="searchQuery.keyword" clearable @change="getGrid">
+            </el-input>
+          </el-col>
+          <el-col :span="5" class="text-right">
+            <el-button type="primary" plain>查询</el-button>
           </el-col>
         </el-row>
       </el-col>
@@ -32,9 +34,9 @@
                 :tableData="tableData">
       <template slot-scope="{slotScope}" slot="status">
       </template>
-      <template slot-scope="{slotScope}" slot="operate">
-        <el-button size="mini" type="text" @click="goConfig(slotScope.row)">查看明细</el-button>
-      </template>
+          <template slot-scope="{slotScope}" slot="operate">
+            <el-button size="mini" type="text" @click="goConfig(slotScope.row)">查看明细</el-button>
+          </template>
     </site-table>
     <!--分页-->
     <el-pagination
@@ -68,8 +70,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-import EditDialog from '../components/EditDialog'
-import ConfigDialog from '../components/EditDialog'
+import EditDialog from '../../components/EditDialog'
+import ConfigDialog from '../../components/EditDialog'
 import handleTable from '@src/mixins/handle-table'
 import { api, urlNames } from '@src/api'
 import SiteTable from '@src/components/SiteTable/index.vue'
@@ -81,20 +83,11 @@ export default {
   data () {
     return {
       loading: true,
-      statusOptions: [{
-        value: '选项1',
-        label: '已确认'
+      searchQuery: {
+        areaId: '',
+        status: '',
+        keyword: ''
       },
-      {
-        value: '选项2',
-        label: '未确认'
-      },
-      {
-        value: '选项3',
-        label: '待确认'
-      }],
-      statusValue: '',
-      searchTimeValue: '',
       list: [],
       areaList: [
         {
@@ -137,12 +130,12 @@ export default {
           showOverflowTooltip: false,
           minWidth: 50
         },
-        name: {
+        applyName: {
           key: 1,
-          field: 'name',
+          field: 'applyName',
           tooltip: false,
           formatter: this.formatter,
-          label: '申请人',
+          label: '部门名称',
           sortable: false,
           showOverflowTooltip: false,
           minWidth: 100
@@ -152,17 +145,17 @@ export default {
           field: 'content',
           tooltip: true,
           formatter: this.formatter,
-          label: '申请内容',
+          label: '部门ID',
           sortable: false,
           showOverflowTooltip: false,
           minWidth: 100
         },
-        time: {
+        applyTime: {
           key: 3,
-          field: 'time',
+          field: 'applyTime',
           tooltip: false,
           formatter: this.formatter,
-          label: '申请时间',
+          label: '所属单位',
           sortable: false,
           showOverflowTooltip: false,
           minWidth: 100
@@ -172,18 +165,8 @@ export default {
           field: 'reason',
           tooltip: false,
           formatter: this.formatter,
-          label: '申请原因',
+          label: '单位管理员',
           sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        },
-        auditState: {
-          key: 5,
-          field: 'auditState',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '审核状态',
-          sortable: true,
           showOverflowTooltip: false,
           minWidth: 100
         }
@@ -293,12 +276,10 @@ export default {
       this.SET_EXAMINE_SEARCH_QUERY(this.searchQuery)
       this.SET_EXAMINE_TABLEDATA(this.tableData) // 存储当前页面table的数据列表
       this.SET_EXAMINE_DETAIL(row) // ExamineDetails页面需要用到的当前列表中点击项的数据
-      this.SET_EXAMINE_BACKPATH(this.$route.name)
+      this.SET_EXAMINE_BACKPATH(this.$route.name) // ExamineDetails页面需要用到的当前列表中点击项的数据
       this.$router.push({
         name: 'ExamineDetails',
-        params: {
-          id: 12
-        }
+        params: { parentCode: 1910281645 }
       })
     },
     showAddDialog () {

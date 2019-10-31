@@ -4,22 +4,20 @@
     <el-row class="operator-row">
       <el-col :span="18">
         <el-row :gutter="10" type="flex">
-          <div class="block">
-            <el-date-picker
-              v-model="searchTimeValue"
-              type="month"
-              placeholder="选择月">
-            </el-date-picker>
-          </div>
-          <el-col :span="8">
-            <el-select v-model="statusValue" clearable placeholder="选择确认状态">
+          <el-col :span="6">
+            <el-select v-model="searchQuery.areaId" filterable clearable @change="search" placeholder="单位">
               <el-option
-                v-for="item in statusOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
+                v-for="item in areaList"
+                :key="item.id"
+                :label="item.name"
+                :value="item.code">
               </el-option>
             </el-select>
+          </el-col>
+          <el-col :span="8">
+            <el-input placeholder="请输入关键字搜索" v-model="searchQuery.keyword" clearable @change="getGrid">
+              <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
+            </el-input>
           </el-col>
         </el-row>
       </el-col>
@@ -32,9 +30,9 @@
                 :tableData="tableData">
       <template slot-scope="{slotScope}" slot="status">
       </template>
-      <template slot-scope="{slotScope}" slot="operate">
-        <el-button size="mini" type="text" @click="goConfig(slotScope.row)">查看明细</el-button>
-      </template>
+          <template slot-scope="{slotScope}" slot="operate">
+            <el-button size="mini" type="text" @click="goConfig(slotScope.row)">去审核</el-button>
+          </template>
     </site-table>
     <!--分页-->
     <el-pagination
@@ -68,8 +66,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-import EditDialog from '../components/EditDialog'
-import ConfigDialog from '../components/EditDialog'
+import EditDialog from '../../examine-details/components/EditDialog/index'
+import ConfigDialog from '../../examine-details/components/EditDialog/index'
 import handleTable from '@src/mixins/handle-table'
 import { api, urlNames } from '@src/api'
 import SiteTable from '@src/components/SiteTable/index.vue'
@@ -81,20 +79,11 @@ export default {
   data () {
     return {
       loading: true,
-      statusOptions: [{
-        value: '选项1',
-        label: '已确认'
+      searchQuery: {
+        areaId: '',
+        status: '',
+        keyword: ''
       },
-      {
-        value: '选项2',
-        label: '未确认'
-      },
-      {
-        value: '选项3',
-        label: '待确认'
-      }],
-      statusValue: '',
-      searchTimeValue: '',
       list: [],
       areaList: [
         {
@@ -289,16 +278,15 @@ export default {
       })
     },
     goConfig (row) {
+      console.log(this.$router)
       this.SET_APPLICATION_PAGE(this.page)
       this.SET_EXAMINE_SEARCH_QUERY(this.searchQuery)
       this.SET_EXAMINE_TABLEDATA(this.tableData) // 存储当前页面table的数据列表
       this.SET_EXAMINE_DETAIL(row) // ExamineDetails页面需要用到的当前列表中点击项的数据
-      this.SET_EXAMINE_BACKPATH(this.$route.name)
+      this.SET_EXAMINE_BACKPATH(this.$route.name) // ExamineDetails页面需要用到的当前列表中点击项的数据
       this.$router.push({
-        name: 'ExamineDetails',
-        params: {
-          id: 12
-        }
+        name: 'WaitApprovalDetail',
+        params: { parentCode: 1910281645 }
       })
     },
     showAddDialog () {
@@ -356,7 +344,7 @@ export default {
 }
 </script>
 <style lang="less">
-  @import "./index";
+  @import "index";
 </style>
 
 
