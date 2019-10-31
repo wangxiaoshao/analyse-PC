@@ -1,6 +1,5 @@
 <template>
   <div class="site-module mod-application-config">
-    <!--操作row-->
     <el-row class="operator-row">
       <el-col :span="12">
         <div style="color: #909399;padding-left: 10px;padding-top: 16px">审批编码：2029200000009</div>
