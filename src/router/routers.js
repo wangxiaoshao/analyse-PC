@@ -1,18 +1,26 @@
-const Application = () => import('@src/views/application/index.vue') /* webpackChunkName: 'home' */
-const ApplicationList = () => import('@src/views/application/ApplicationList/index.vue') /* webpackChunkName: 'home' */
-const ApplicationConfig = () => import('@src/views/application/ApplicationConfig/index.vue') /* webpackChunkName: 'home' */
+const Application = () => import('@src/views/application/index.vue')
+const ApplicationList = () => import('@src/views/application/ApplicationList/index.vue')
+const ApplicationConfig = () => import('@src/views/application/ApplicationConfig/index.vue')
 
 
-// 申请审核1
-const WaitApproval = () => import('@src/views/examine/wait-approval/index.vue') /* webpackChunkName: 'home' */
-const ExamineDetails = () => import('@src/views/examine/components/ExamineDetails/index.vue') /* webpackChunkName: 'home' */
-const Approved = () => import('@src/views/examine/approved/index.vue') /* webpackChunkName: 'home' */
-const MyApplication = () => import('@src/views/examine/my-application/index.vue') /* webpackChunkName: 'home' */
-const ConfirmInfo = () => import('@src/views/examine/confirm-info/index.vue') /* webpackChunkName: 'home' */
+// 申请审核
+const WaitApproval = () => import('@src/views/wait-approval/index.vue')
+const WaitApprovalList = () => import('@src/views/wait-approval/WaitApprovalList/index.vue')
+const WaitApprovalDetail = () => import('@src/views/wait-approval/WaitApprovalDetail/index.vue')
+const Approved = () => import('@src/views/approved/index.vue')
+const ApprovedList = () => import('@src/views/approved/ApprovedList/index.vue')
+const ApprovedDetail = () => import('@src/views/approved/ApprovedDetail/index.vue')
+const MyApplication = () => import('@src/views/my-application/index.vue')
+const MyApplicationList = () => import('@src/views/my-application/MyApplicationList/index.vue')
+const MyApplicationDetail = () => import('@src/views/my-application/MyApplicationDetail/index.vue')
+const ConfirmInfo = () => import('@src/views/confirm-info/index.vue')
 // 统计管理
-const DataStatistics = () => import('@src/views/statistics/data-statistics/index.vue') /* webpackChunkName: 'home' */
-const DataLog = () => import('@src/views/statistics/data-log/index.vue') /* webpackChunkName: 'home' */
-const DataQuery = () => import('@src/views/statistics/data-query/index.vue') /* webpackChunkName: 'home' */
+const DataStatistics = () => import('@src/views/statistics/data-statistics/index.vue')
+const DataLog = () => import('@src/views/statistics/data-log/index.vue')
+const DataQuery = () => import('@src/views/statistics/data-query/index.vue')
+const UnitQuery = () => import('@src/views/statistics/data-query/unit-query/index.vue')
+const DepartmentQuery = () => import('@src/views/statistics/data-query/department-query/index.vue')
+const MemberQuery = () => import('@src/views/statistics/data-query/member-query/index.vue')
 
 const Organization = () => import('@src/views/organization/index.vue')
 const OrganizationContent = () => import('@src/views/organization/organization-content/index.vue')
@@ -21,7 +29,7 @@ const UnitDetail = () => import('@src/views/organization/unit-detail/index.vue')
 const DepartmentDetail = () => import('@src/views/organization/department-detail/index.vue')
 const PersonDetail = () => import('@src/views/organization/person-detail/index.vue')
 
-const Shared = () => import('@src/views/shared/index.vue') /* webpackChunkName: 'home' */
+const Shared = () => import('@src/views/shared/index.vue')
 const ViewManagement = () => import('@src/views/shared/view-management/index.vue')
 const CreateView = () => import('@src/views/shared/create-view/index.vue')
 const GroupManagement = () => import('@src/views/shared/group-management/index.vue')
@@ -107,31 +115,65 @@ export default [
   },
 
 
-  // 申请审核 examine
-  {
-    path: '/approved',
-    name: 'Approved',
-    component: Approved
-  },
-  {
+  /*
+  申请审核（包含 待我审核、我已审核、我的申请、信息确认）
+  * */
+  { // 待我审核
     path: '/wait-approval',
     name: 'WaitApproval',
-    component: WaitApproval
+    component: WaitApproval,
+    children: [
+      {
+        path: '/',
+        name: 'WaitApprovalList',
+        component: WaitApprovalList
+      },
+      {
+        path: 'detail',
+        name: 'WaitApprovalDetail',
+        component: WaitApprovalDetail
+      }
+    ]
+
   },
-  {
+  { // 我已审核
+    path: '/approved',
+    name: 'Approved',
+    component: Approved,
+    children: [
+      {
+        path: '/',
+        name: 'ApprovedList',
+        component: ApprovedList
+      },
+      {
+        path: 'detail',
+        name: 'ApprovedDetail',
+        component: ApprovedDetail
+      }
+    ]
+  },
+  { // 我的申请
     path: '/my-application',
     name: 'MyApplication',
-    component: MyApplication
+    component: MyApplication,
+    children: [
+      {
+        path: '/',
+        name: 'MyApplicationList',
+        component: MyApplicationList
+      },
+      {
+        path: 'detail',
+        name: 'MyApplicationDetail',
+        component: MyApplicationDetail
+      }
+    ]
   },
-  {
+  { // 信息确认
     path: '/confirm-info',
     name: 'ConfirmInfo',
     component: ConfirmInfo
-  },
-  {
-    path: '/ExamineDetails',
-    name: 'ExamineDetails',
-    component: ExamineDetails
   },
 
 
@@ -215,20 +257,30 @@ export default [
     component: RightsManagement
   },
 
-
-  // 统计管理
-
-  {
+  /*
+  统计管理 （包含 数据统计、单位查询、部门查询、人员查询、系统日志）
+  * */
+  { // 数据统计
     path: '/data-statistics',
     name: 'DataStatistics',
     component: DataStatistics
   },
-  {
-    path: '/data-query',
-    name: 'DataQuery',
-    component: DataQuery
+  { // 单位查询
+    path: '/unit-query',
+    name: 'UnitQuery',
+    component: UnitQuery
   },
-  {
+  { // 部门查询
+    path: '/department-query',
+    name: 'DepartmentQuery',
+    component: DepartmentQuery
+  },
+  { // 人员查询
+    path: '/member-query',
+    name: 'MemberQuery',
+    component: MemberQuery
+  },
+  { // 系统日志
     path: '/data-log',
     name: 'DataLog',
     component: DataLog

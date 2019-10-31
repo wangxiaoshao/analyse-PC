@@ -1,27 +1,50 @@
 <template>
-  <div class="site-module mod-dictionary">
-    <!--操作row-->
-    <el-row class="operator-row">
-      <el-col :span="18">
-        <el-row :gutter="10" type="flex">
-          <el-col :span="6">
-            <el-select v-model="searchQuery.areaId" filterable clearable @change="search" placeholder="单位">
-              <el-option
-                v-for="item in areaList"
-                :key="item.id"
-                :label="item.name"
-                :value="item.code">
-              </el-option>
-            </el-select>
-          </el-col>
-          <el-col :span="8">
-            <el-input placeholder="请输入关键字搜索" v-model="searchQuery.keyword" clearable @change="getGrid">
-              <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
-            </el-input>
-          </el-col>
-        </el-row>
+  <div class="data-log">
+    <!--时间轴-->
+    <el-row :gutter="20">
+      <el-col :span="10" :offset="12">
+        <div class="block">
+          <el-select v-model="select" slot="prepend" align="center" placeholder="请选择">
+            <el-option label="今天" value="1"></el-option>
+            <el-option label="昨天" value="2"></el-option>
+            <el-option label="选择周" value="3"></el-option>
+            <el-option label="选择月" value="4"></el-option>
+          </el-select>
+          <el-date-picker
+            v-model="currentDateVal"
+            type="week"
+            format="yyyy 第 WW 周"
+            placeholder="选择周">
+          </el-date-picker>
+
+          <!--<el-input placeholder="请输入内容" v-model="currentDateVal" class="input-with-select">-->
+            <!--<el-date-picker-->
+              <!--v-model="currentDateVal"-->
+              <!--align="center"-->
+              <!--type="date"-->
+              <!--placeholder="选择日期"-->
+              <!--:picker-options="pickerOptions">-->
+            <!--</el-date-picker>-->
+          <!--</el-input>-->
+        </div>
       </el-col>
     </el-row>
+    <el-row>
+      <el-col :span="14" :style="{marginLeft: '60px', marginTop: '20px'}">
+        <div class="timeLine">
+          <el-timeline :reverse="reverse">
+            <el-timeline-item
+              v-for="(activity, index) in activities"
+              :key="index"
+              placement="top"
+              :timestamp="activity.timestamp">
+              {{activity.content}}
+            </el-timeline-item>
+          </el-timeline>
+        </div>
+      </el-col>
+    </el-row>
+
     <!--分页-->
     <el-pagination
       @size-change="handleSizeChange"
@@ -86,7 +109,56 @@ export default {
         orderNum: '',
         type: '',
         value: ''
-      }
+      },
+      reverse: true,
+      activities: [{
+        content: '陈宇 修改了 贵州省人力资源管理局 的单',
+        timestamp: '2018-04-15'
+      },
+      {
+        content: '陈宇 修改了 贵州省人力资源管理局 的单',
+        timestamp: '2018-04-13'
+      },
+      {
+        content: '陈宇 修改了 贵州省人力资源管理局 的单',
+        timestamp: '2018-04-13'
+      },
+      {
+        content: '陈宇 修改了 贵州省人力资源管理局 的单',
+        timestamp: '2018-04-13'
+      },
+      {
+        content: '陈宇 登陆系统备份 4',
+        timestamp: '2018-04-11'
+      }],
+      currentDateVal: '',
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() > Date.now();
+        },
+        shortcuts: [{
+          text: '今天',
+          onClick(picker) {
+            picker.$emit('pick', new Date());
+          }
+        }, {
+          text: '昨天',
+          onClick(picker) {
+            const date = new Date();
+            date.setTime(date.getTime() - 3600 * 1000 * 24);
+            picker.$emit('pick', date);
+          }
+        }, {
+          text: '一周前',
+          onClick(picker) {
+            const date = new Date();
+            date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+            picker.$emit('pick', date);
+          }
+        }],
+      },
+      select: '',
+      defaultDate: new Date()
     }
   },
   computed: {

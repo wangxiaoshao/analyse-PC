@@ -36,13 +36,13 @@ export default {
   components: {},
   data () {
     return {
-      textareaVal: '',
+      textareaVal: ''
     }
   },
   mounted () {
   },
   computed: {
-    ...mapState(['app']),
+    ...mapState(['app'])
   },
   methods: {
     passExamine () {

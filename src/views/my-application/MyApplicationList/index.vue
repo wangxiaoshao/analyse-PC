@@ -30,6 +30,8 @@
                 :operateWidth="operateWidth"
                 :operate="operate"
                 :tableData="tableData">
+      <template slot-scope="{slotScope}" slot="status">
+      </template>
       <template slot-scope="{slotScope}" slot="operate">
         <el-button size="mini" type="text" @click="goConfig(slotScope.row)">查看明细</el-button>
       </template>
@@ -66,8 +68,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-import EditDialog from '../components/EditDialog'
-import ConfigDialog from '../components/EditDialog'
+import EditDialog from '../../examine-details/components/EditDialog/index'
+import ConfigDialog from '../../examine-details/components/EditDialog/index'
 import handleTable from '@src/mixins/handle-table'
 import { api, urlNames } from '@src/api'
 import SiteTable from '@src/components/SiteTable/index.vue'
@@ -184,26 +186,6 @@ export default {
           sortable: true,
           showOverflowTooltip: false,
           minWidth: 100
-        },
-        reviewTime: {
-          key: 6,
-          field: 'reviewTime',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '审核时间',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        },
-        reviewSuggest: {
-          key: 7,
-          field: 'reviewSuggest',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '审核意见',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
         }
       },
       tableData: [],
@@ -313,7 +295,7 @@ export default {
       this.SET_EXAMINE_DETAIL(row) // ExamineDetails页面需要用到的当前列表中点击项的数据
       this.SET_EXAMINE_BACKPATH(this.$route.name)
       this.$router.push({
-        name: 'ExamineDetails',
+        name: 'MyApplicationDetail',
         params: {
           id: 12
         }
@@ -374,7 +356,7 @@ export default {
 }
 </script>
 <style lang="less">
-  @import "./index";
+  @import "index";
 </style>
 
 

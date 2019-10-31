@@ -10,8 +10,8 @@
       <el-form-item label="节点名称" prop="name">
         <el-input v-model="ruleForm.name" ></el-input>
       </el-form-item>
-      <el-form-item label="上级节点">
-        <el-input v-model="parentName" :disabled="true"></el-input>
+      <el-form-item label="上级节点" prop="parentName">
+        <el-input v-model="ruleForm.parentName" :disabled="true"></el-input>
       </el-form-item>
       <el-form-item label="是否启用" prop="enable">
         <el-switch v-model="ruleForm.enable"></el-switch>
@@ -40,18 +40,16 @@ export default {
       breadcrumbTitle: '添加节点',
       submitHtml: '保存',
       oldFrom: {},
-      parentName: this.$route.params.name,
+      parentId: '',
       ruleForm: {
         reason: '',
         name: '',
-        enable: false
+        enable: false,
+        parentName: ''
       },
       rules: {
         name: [
           { required: true, message: '请输入节点名称', trigger: 'blur' }
-        ],
-        reason: [
-          { required: true, message: '请填写申请原因', trigger: 'blur' }
         ]
       }
     }
@@ -74,7 +72,7 @@ export default {
       this.pushBreadcrumb({
         name: this.breadcrumbTitle,
         parent: {
-          name: 'Organization',
+          name: 'OrganizationContent',
           query: {
             type: 'back'
           }
@@ -87,9 +85,10 @@ export default {
           const data = {
             reason: this.ruleForm.reason,
             viewNode: {
-              parentId: this.$route.params.parentId,
+              id: this.$route.params.parentId,
+              parentId: this.parentId,
               name: this.ruleForm.name,
-              enable: this.ruleForm.enable
+              enable: true
             }
           }
           api[urlNames['createViewNode']](data).then((res) => {
@@ -110,6 +109,9 @@ export default {
       }
       api[urlNames['findViewNodeById']](data).then((res) => {
         console.log(res.data)
+        this.ruleForm.name = res.data.name
+        this.ruleForm.parentName = res.data.parentName
+        this.ruleForm.parentId = res.data.parentId
       }, (error) => {
         this.$message.error(`没有内容`)
       })
