@@ -11,6 +11,8 @@ export default {
     type: 'get',
     url: '/api/jg_manage/view/findViewList',
     serve: 'organizationManagePC',
+    keepOriginResponse: false,
+    showLoading: true,
     mock: 'getViewList.json'
   },
   /**
@@ -20,6 +22,8 @@ export default {
     type: 'get',
     url: '/api/jg_share/app/checkApps',
     serve: 'organizationManagePC',
+    keepOriginResponse: false,
+    showLoading: true,
     mock: 'getAppList.json'
   },
   /**
@@ -28,6 +32,8 @@ export default {
   [urlNames.createApp]: {
     type: 'post',
     url: '/api/jg_share/app/create',
+    keepOriginResponse: false,
+    showLoading: true,
     serve: 'organizationManagePC'
   },
   /**
@@ -37,6 +43,31 @@ export default {
     type: 'get',
     url: '/api/jg_share/app/checkAppDetail',
     serve: 'organizationManagePC',
+    keepOriginResponse: false,
+    showLoading: true,
     mock: 'getAppDetail.json'
+  },
+  /**
+   标签列表
+   */
+  [urlNames.findLabelList]: {
+    type: 'get',
+    url: '/api/jg_manage/label/findLabelList',
+    serve: 'organizationManagePC',
+    keepOriginResponse: false,
+    showLoading: true
+  },
+  /**
+   创建标签
+   */
+  [urlNames.createLabel]: {
+    type: 'post',
+    url: '/api/jg_manage/label/createLabel',
+    serve: 'organizationManagePC',
+    keepOriginResponse: false,
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    showLoading: true
   }
 }

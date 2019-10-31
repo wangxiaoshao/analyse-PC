@@ -38,10 +38,11 @@
           align="center"
           label="视图管理员">
         </el-table-column>
-        <el-table-column
-          property="stateName"
-          align="center"
-          label="启用状态">
+        <el-table-column label="启用状态" prop="removed" width="80" align="center">
+          <template slot-scope="scope">
+            <span class="text-able" v-show="scope.row.removed">启用</span>
+            <span class="text-disable" v-show="!scope.row.removed">停用</span>
+          </template>
         </el-table-column>
         <el-table-column
           property="remark"
@@ -65,7 +66,7 @@
         :page-size="10"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total">
-      </el-pagination>>
+      </el-pagination>
     </div>
     <el-button @click="seleceDialog.selectMenmberFlag = true">选人组件</el-button>
     <candidate-dialog @closeselectMenmber="closeselectMenmber" :seleceDialog="seleceDialog"></candidate-dialog>
@@ -102,13 +103,6 @@ export default {
         page: page,
         limit: limt
       }).then((res) => {
-        res.data.forEach(item => {
-          if (item.state === 0) {
-            item.stateName = '否'
-          } else if (item.state === 0) {
-            item.stateName = '是'
-          }
-        })
         this.total = parseInt(res.total)
         this.viewList = res.data
       })

@@ -39,6 +39,11 @@ export default {
   getAppList: 'getAppList', // 应用列表
   createApp: 'createApp', // 创建应用
   getAppDetail: 'getAppDetail', // 获取应用详情
+  findLabelList: 'findLabelList', // 标签列表
+  createLabel: 'createLabel', //  创建标签
+  createDeptLabel: 'createDeptLabel', // 创建部门标签
+  createOrganLabel: 'createOrganLabel', // 加单位标签
+  createUserLabel: 'createUserLabel', // 创建用户标签
   // 创建节点
   createViewNode: 'createViewNode',
   // 根据id获取详情

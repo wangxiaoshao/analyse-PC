@@ -42,6 +42,7 @@
 
 <script>
 import CreateTagForm from '@src/views/shared/tags-management/create-tag-form/index'
+import { api, urlNames } from '@src/api'
 let id = 1000
 export default {
   name: 'TagsManagement',
@@ -53,6 +54,7 @@ export default {
       createTagDialogVisible: false,
       createData: '',
       flagdata: '',
+      labelList: [],
       options: [{
         value: '选项1',
         label: '黄金糕'
@@ -108,6 +110,12 @@ export default {
     }
   },
   methods: {
+    findLabelList () {
+      api[urlNames['getViewList']]({}).then((res) => {
+        this.total = parseInt(res.total)
+        this.labelList = res.data
+      })
+    },
     append (data) {
       const newChild = { id: id++, label: 'testtest', children: [] }
       if (!data.children) {
