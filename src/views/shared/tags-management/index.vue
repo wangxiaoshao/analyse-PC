@@ -13,30 +13,33 @@
     </div>
      <div class="tag-panel">
        <el-tree
-         :data="data"
+         :data="labelList"
          node-key="id"
-         default-expand-all
+         :props="defaultProps"
+         lazy
+         :load="loadNode"
          :expand-on-click-node="false">
       <span class="custom-tree-node" slot-scope="{ node, data }">
         <span>{{ node.label }}</span>
-        <span>
+        <span class="custom-tree-float">
           <el-button
             type="text"
             size="mini"
-            @click="createTag(data, {flag:0,title:node.label}),() => append(data)">
+            @click.prevent="createTag(data, {flag:0,title:node.label}),() => append(data)">
             新增
           </el-button>
           <el-button
             type="text"
             size="mini"
-            @click="() => remove(node, data)">
-            Delete
+            class="delete"
+            @click.prevent="() => remove(node, data)">
+            删除
           </el-button>
         </span>
       </span>
        </el-tree>
      </div>
-    <create-tag-form @close="close" :flagdata="flagdata" :createData="createData" :createTagDialogVisible="createTagDialogVisible"></create-tag-form>
+    <create-tag-form @updateLabelLiat="updateLabelLiat" @close="close" :flagdata="flagdata" :createData="createData" :createTagDialogVisible="createTagDialogVisible"></create-tag-form>
   </div>
 </template>
 
@@ -55,6 +58,12 @@ export default {
       createData: '',
       flagdata: '',
       labelList: [],
+      labelSonList: [],
+      defaultProps: {
+        children: 'children',
+        label: 'name',
+        id: ''
+      },
       options: [{
         value: '选项1',
         label: '黄金糕'
@@ -109,13 +118,44 @@ export default {
       }]
     }
   },
+  created () {
+    this.findLabelList('-1')
+  },
   methods: {
-    findLabelList () {
-      api[urlNames['getViewList']]({}).then((res) => {
+    // 获取标签列表
+    findLabelList (parentId) {
+      api[urlNames['findLabelList']]({
+        parentId: parentId
+      }).then((res) => {
+        console.log(this.labelList, 'this.labelList')
         this.total = parseInt(res.total)
         this.labelList = res.data
       })
     },
+    // 获取子节点
+    findLabelSonList (parentId) {
+      api[urlNames['findLabelList']]({
+        parentId: parentId
+      }).then((res) => {
+        this.labelSonList = res.data
+      })
+    },
+    // 点击节点加载子节点
+    handleNodeClick (node) {
+      this.findLabelSonList(node.id)
+    },
+    // 追加子节点
+    loadNode (node, resolve) {
+      if (node.level === 0) {
+        return resolve(this.labelList)
+      }
+      this.findLabelSonList(node.data.id)
+      setTimeout(() => {
+        resolve(this.labelSonList)
+      }, 500)
+      this.labelSonList = []
+    },
+    // 添加子节点
     append (data) {
       const newChild = { id: id++, label: 'testtest', children: [] }
       if (!data.children) {
@@ -123,7 +163,10 @@ export default {
       }
       data.children.push(newChild)
     },
-
+    // 添加成功之后更新
+    updateLabelLiat () {
+      this.findLabelList('-1')
+    },
     remove (node, data) {
       const parent = node.parent
       const children = parent.data.children || parent.data
@@ -132,6 +175,7 @@ export default {
     },
     createTag (data, flag) {
       this.createTagDialogVisible = true
+      console.log(JSON.parse(JSON.stringify(data)))
       this.createData = data
       this.flagdata = flag
     },
