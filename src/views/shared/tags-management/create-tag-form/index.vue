@@ -21,7 +21,7 @@
               <el-input v-model="labelForm.name"></el-input>
             </el-form-item>
             <el-form-item v-if="flagdata.flag!==1" label="父级标签">
-              <el-input disabled="" v-model="labelForm.name"></el-input>
+              <el-input disabled="" v-model="flagdata.title"></el-input>
             </el-form-item>
           </el-form>
         </div>
@@ -37,7 +37,7 @@
 import { api, urlNames } from '@src/api'
 export default {
   name: 'CreateTagForm',
-  props: ['createTagDialogVisible', 'createFlag', 'flagdata'],
+  props: ['createTagDialogVisible', 'createData', 'flagdata'],
   data () {
     return {
       labelForm: {
@@ -58,14 +58,18 @@ export default {
     }
   },
   methods: {
+    // 创建标签
     onSubmit () {
       api[urlNames['createLabel']]({
         name: this.labelForm.name,
         type: this.labelForm.type,
-        parentId: this.labelForm.parentId
+        parentId: this.createData.id
       }).then((res) => {
         if (res.status === 0) {
           this.$message.success('创建成功')
+          this.$emit('close')
+          this.$emit('updateLabelLiat')
+          this.labelForm.name = ''
         }
       })
     },
