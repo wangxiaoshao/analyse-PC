@@ -9,27 +9,30 @@
           align="center"
           placeholder="今天"
           @change="selectChange(selectValue)">
-          <el-option label="今天" value="today"></el-option>
-          <el-option label="昨天" value="yesterday"></el-option>
-          <el-option label="周" value="week"></el-option>
-          <el-option label="选择日期" value="date"></el-option>
+          <el-option label="今天" :value="['today']"></el-option>
+          <el-option label="昨天" :value="['yesterday']"></el-option>
+          <el-option label="周" :value="['week', '周', 'yyyy 第 WW 周']"></el-option>
+            <el-option label="月" :value="['month', '月', 'yyyy-DD']"></el-option>
+          <el-option label="选择日期" :value="['date', '日期', 'yyyy-MM-DD']"></el-option>
           </el-select>
         </div>
       </el-col>
       <el-col :span="6" :style="{width: '220px'}">
-        <div class="block" v-if="selectValue === 'week' || selectValue === 'date'">
+        <div v-if="selectValue[0] === 'today' || selectValue[0] === 'yesterday'">
+          <el-input v-model="inputValue" :placeholder="date" :disabled="true">
+            <i slot="prefix" class="el-input__icon el-icon-date"></i>
+          </el-input>
+        </div>
+        <div class="block" v-else>
           <el-date-picker
             slot="append"
             v-model="currentDateVal"
             :type="dateType"
-            :format="dateType === 'date' ? 'yyyy-MM-DD':'yyyy 第 WW 周'"
-            :placeholder="`选择${selectValue === 'week' ? '周':'日期'}`" @change="dateChange">
+            :default-value="weekstart"
+            :format="format"
+            :placeholder="'选择'+value"
+            @change="dateChange">
           </el-date-picker>
-        </div>
-        <div v-else>
-          <el-input v-model="inputValue" :placeholder="date" :disabled="true">
-            <i slot="prefix" class="el-input__icon el-icon-date"></i>
-          </el-input>
         </div>
       </el-col>
     </el-row>
@@ -101,6 +104,7 @@ export default {
         keyword: ''
       },
       list: [],
+      weekstart: '',
       areaList: [],
       dictionaryNameList: [],
       editDialogVisible: false,
@@ -137,35 +141,12 @@ export default {
         timestamp: '2018-04-11'
       }],
       currentDateVal: '',
-      pickerOptions: {
-        disabledDate(time) {
-          return time.getTime() > Date.now();
-        },
-        shortcuts: [{
-          text: '今天',
-          onClick(picker) {
-            picker.$emit('pick', new Date());
-          }
-        }, {
-          text: '昨天',
-          onClick(picker) {
-            const date = new Date();
-            date.setTime(date.getTime() - 3600 * 1000 * 24);
-            picker.$emit('pick', date);
-          }
-        }, {
-          text: '一周前',
-          onClick(picker) {
-            const date = new Date();
-            date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-            picker.$emit('pick', date);
-          }
-        }],
-      },
-      selectValue: 'today',
+      selectValue: ['today'],
       date: '',
       inputValue: '',
       dateType: '',
+      format: '',
+      value: '',
     }
   },
   computed: {
@@ -173,6 +154,7 @@ export default {
   },
   created () {
     this.date = dateTransform(new Date())
+    this.weekstart = dateTransform(new Date())
     if (this.$route.query.type === 'back') {
       this.page = Object.assign(this.page, this.application.page)
       this.searchQuery = Object.assign(this.searchQuery, this.application.searchQuery)
@@ -187,12 +169,13 @@ export default {
   methods: {
     ...mapMutations(['SET_APPLICATION_PAGE', 'SET_APPLICATION_SEARCH_QUERY']),
     selectChange (val) {
-      if (val === 'week' || val === 'date') {
-        this.dateType = val // 显示 选择周 日期选择器
-        return false
-      }
       let todayDate = new Date()
-      if (val === 'yesterday') {
+      if (val && val.length > 1) {
+        this.dateType = val[0]
+        this.value = val[1]
+        this.format = val[2]
+        return false
+      } else {
         todayDate = new Date(todayDate.setDate(todayDate.getDate() - 1))
       }
       this.date = dateTransform(todayDate)

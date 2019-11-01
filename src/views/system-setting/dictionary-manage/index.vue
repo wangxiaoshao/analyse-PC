@@ -2,7 +2,7 @@
   <div class="site-module mod-dictionary">
     <el-row class="operator-row" :gutter="24">
       <el-col :span="24" class="text-right">
-        <el-button type="primary" @click="addDictionary">添加字典</el-button>
+        <el-button type="primary" @click="addDictionary">创建字典</el-button>
       </el-col>
     </el-row>
     <!--表格-->
@@ -31,15 +31,38 @@
     </el-pagination>
 
     <!--添加dialog-->
+    <!--<el-dialog title="创建字典" :visible.sync="dialogVisible">-->
+      <!--<el-form :model="form">-->
+        <!--<el-form-item label="字段名称" :label-width="formLabelWidth">-->
+          <!--<el-input v-model="form.name" autocomplete="off"></el-input>-->
+        <!--</el-form-item>-->
+        <!--<el-form-item label="字段描述" :label-width="formLabelWidth">-->
+          <!--<el-input v-model="form.desc" autocomplete="off"></el-input>-->
+        <!--</el-form-item>-->
+        <!--<el-form-item label="启用状态" :label-width="formLabelWidth">-->
+          <!--<el-switch-->
+            <!--v-model="stateValue"-->
+            <!--active-color="#13ce66"-->
+            <!--inactive-color="#ff4949">-->
+          <!--</el-switch>-->
+        <!--</el-form-item>-->
+      <!--</el-form>-->
+      <!--<div slot="footer" class="dialog-footer">-->
+        <!--<el-button @click="dialogFormVisible = false">取 消</el-button>-->
+        <!--<el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>-->
+      <!--</div>-->
+    <!--</el-dialog>-->
     <edit-dialog
       :visible="dialogVisible"
       :config-type="type"
-      @close="handleClose"></edit-dialog>
+      :dialogTitle="title"
+      @refreshList="getGrid"
+      @close="closeAddDialog"></edit-dialog>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-import EditDialog from '../../examine-details/components/EditDialog'
+import EditDialog from '../components/EditDialog/index'
 import ConfigDialog from '../../examine-details/components/EditDialog'
 import handleTable from '@src/mixins/handle-table'
 import { api, urlNames } from '@src/api'
@@ -156,7 +179,8 @@ export default {
       tableHeight: 200,
       operateWidth: 200,
       tableCheckbox: true,
-      operate: true
+      operate: true,
+      title: '创建字典',
     }
   },
   computed: {
@@ -266,7 +290,8 @@ export default {
     showAddDialog () {
       this.addDialogVisible = true
     },
-    handleClose () {
+    closeAddDialog () {
+      console.log(9999)
       this.dialogVisible = false
     },
     handleAction (action, row) {
