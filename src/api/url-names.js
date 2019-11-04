@@ -63,5 +63,8 @@ export default {
   // 根据id查人员详情
   findUserById: 'findUserById',
   // 查询领导信息
-  findLeaderList: 'findLeaderList'
+  findLeaderList: 'findLeaderList',
+  // 角色列表
+  roleList: 'roleList',
+  findPerson: 'findPerson'
 }

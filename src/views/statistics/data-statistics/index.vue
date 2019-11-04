@@ -164,7 +164,7 @@ export default {
       this.$router.push({
         name: routerParams + 'Query'
       })
-    },
+    }
   }
 }
 </script>

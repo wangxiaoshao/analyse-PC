@@ -180,7 +180,7 @@ export default {
       operateWidth: 200,
       tableCheckbox: true,
       operate: true,
-      title: '创建字典',
+      title: '创建字典'
     }
   },
   computed: {

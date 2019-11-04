@@ -189,7 +189,7 @@ export default {
           })
         } else {
           this.sortListFlag = false
-          //this.getGrid()
+          // this.getGrid()
         }
       },
       deep: true
