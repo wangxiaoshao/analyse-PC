@@ -3,7 +3,7 @@
     <div class="to-log">
       <el-button type="primary">查看数据推送日志</el-button>
     </div>
-    <el-form ref="form" :rules="rules" :model="appFrom" label-width="100px">
+    <el-form ref="ruleForm"   :rules="rules" :model="appFrom" label-width="120px">
       <el-row :gutter="80">
         <el-col :span="12">
           <div class="grid-content bg-purple">
@@ -15,10 +15,16 @@
         <el-col :span="12">
           <div class="grid-content bg-purple-light">
             <el-form-item label="绑定视图" prop="viewId">
-              <el-select  v-model="appFrom.viewId" placeholder="请选择视图">
-                <el-option label="视图1" value="1">视图1</el-option>
-                <el-option label="视图1" value="1">视图2</el-option>
-              </el-select>
+              <el-autocomplete
+                v-model="appFrom.viewId"
+                placeholder="请输入内容"
+                @select="handleSelect"
+                width="100%"
+              ></el-autocomplete>
+<!--              <el-select  v-model="appFrom.viewId" placeholder="请搜索选择视图">-->
+<!--                <el-option label="视图1" value="1">视图1</el-option>-->
+<!--                <el-option label="视图1" value="1">视图2</el-option>-->
+<!--              </el-select>-->
             </el-form-item>
           </div>
         </el-col>
@@ -27,14 +33,14 @@
         <el-col :span="12">
           <div class="grid-content bg-purple">
             <el-form-item label="应用接口账号">
-              <el-input placeholder="请输入应用接口账号" v-model="appFrom.apiAccount"></el-input>
+              <el-input placeholder="请输入应用接口账号" style="ime-mode:disabled;" v-model="appFrom.apiAccount"></el-input>
             </el-form-item>
           </div>
         </el-col>
         <el-col :span="12">
           <div class="grid-content bg-purple-light">
-            <el-form-item label="接口账号密码">
-              <el-input placeholder="请输入接口账号密码" v-model="appFrom.apiPassword"></el-input>
+            <el-form-item label="接口账号密码" prop="apiPassword">
+              <el-input maxlength="18"  minlength="6" placeholder="请输入接口账号6-18位密码" v-model="appFrom.apiPassword" show-password></el-input>
             </el-form-item>
           </div>
         </el-col>
@@ -59,7 +65,7 @@
         <el-col :span="12">
           <div class="grid-content bg-purple">
             <el-form-item label="应用访问地址">
-              <el-input placeholder="请输入应用访问地址"  v-model="appFrom.url"></el-input>
+              <el-input placeholder="请输入应用访问地址"  v-model="appFrom.apiUrl"></el-input>
             </el-form-item>
           </div>
         </el-col>
@@ -78,7 +84,8 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item align="center">
-        <el-button type="primary" @click="onSubmit">立即创建</el-button>
+        <el-button v-if="$route.query.id=== undefined" type="primary" @click="onSubmit('ruleForm')">立即创建</el-button>
+        <el-button v-if="$route.query.id!== undefined" type="primary" @click="onSubmit('ruleForm')">修改</el-button>
         <el-button>取消</el-button>
       </el-form-item>
     </el-form>
@@ -104,7 +111,23 @@ export default {
     })
   },
   data () {
+    var appNmae = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入应用名称'))
+      } else {
+        callback()
+      }
+    }
+    // 验证密码
+    let validatePass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入密码'))
+      } else {
+        callback()
+      }
+    }
     return {
+      viewList: [],
       appFrom: {
         id: '',
         name: '',
@@ -113,13 +136,19 @@ export default {
         apiPassword: '',
         concatUser: '',
         concatPhone: '',
-        url: '',
+        apiUrl: '',
         description: '',
         removed: 0
       },
       rules: {
         name: [
           { required: true, message: '请输入应用名称', trigger: 'blur' }
+        ],
+        apiAccount: [
+          { required: true, message: '请输填写应用接口账号', trigger: 'blur' }
+        ],
+        apiPassword: [
+          { required: true, validator: validatePass, message: '请输填写应用接口账号', trigger: 'blur' }
         ],
         viewId: [
           { required: true, message: '请选择视图ID', trigger: 'change' }
@@ -133,23 +162,61 @@ export default {
     }
   },
   methods: {
-    onSubmit () {
+    getViewList (page, limt) {
+      api[urlNames['getViewList']]({
+        page: page,
+        limit: limt
+      }).then((res) => {
+        this.viewList = res.data
+      })
+    },
+    onSubmit (ref) {
+      // this.$refs[ref].validate((valid) => {
+      //   if (valid) {
+      //     alert('submit!')
+      //   } else {
+      //     console.log('error submit!!')
+      //     return false
+      //   }
+      // })
       console.log(JSON.parse(JSON.stringify(this.appFrom)), 'this.appFrom')
+      if (this.$route.query.id === undefined) {
+        this.createApp()
+      } else if (this.$route.query.id !== undefined) {
+        this.updateApp()
+      }
+    },
+    createApp () {
       api[urlNames['createApp']]({
-        id: this.appFrom.id,
         name: this.appFrom.name,
-        viewId: this.appFrom.viewId,
+        viewId: 1,
         apiAccount: this.appFrom.apiAccount,
         apiPassword: this.appFrom.apiPassword,
         concatUser: this.appFrom.concatUser,
         concatPhone: this.appFrom.concatPhone,
-        url: this.appFrom.url,
+        apiUrl: this.appFrom.apiUrl,
         description: this.appFrom.description,
         removed: this.appFrom.removed
       }).then((res) => {
         if (res.status === 0 && this.$route.query.id === undefined) {
           this.$message.success('创建成功')
-        } else if (res.status === 0 && this.$route.query.id !== undefined) {
+        }
+      })
+    },
+    updateApp () {
+      api[urlNames['updateApp']]({
+        id: this.appFrom.id,
+        name: this.appFrom.name,
+        viewId: 1,
+        apiAccount: this.appFrom.apiAccount,
+        apiPassword: this.appFrom.apiPassword,
+        concatUser: this.appFrom.concatUser,
+        concatPhone: this.appFrom.concatPhone,
+        apiUrl: this.appFrom.apiUrl,
+        description: this.appFrom.description,
+        removed: this.appFrom.removed
+      }).then((res) => {
+        if (res.status === 0) {
           this.$message.success('修改成功')
         }
       })
@@ -160,6 +227,10 @@ export default {
       }).then((res) => {
         this.appFrom = res.data
       })
+    },
+    // 搜索选择
+    handleSelect (item) {
+      console.log(item)
     }
   }
 }

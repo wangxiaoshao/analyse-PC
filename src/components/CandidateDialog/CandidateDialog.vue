@@ -60,6 +60,7 @@ export default {
       checkedCities: ['上海', '北京'],
       cities: cityOptions,
       isIndeterminate: true,
+      MembersInfo: {},
       data: [{
         label: '一级 1',
         children: [{
@@ -136,6 +137,8 @@ export default {
     },
     // 关闭选人弹窗组件
     handleClose () {
+      // 返回人员信息
+      this.$emit('dialogReturnMembersInfo', this.MembersInfo)
       this.$emit('closeselectMenmber')
     },
     // 查询部门下的所有人员

@@ -30,8 +30,6 @@ export default {
   getParameter: 'getParameter',
   // 获取视图--机构树
   getTree: 'getTree',
-  findOrganizationMembers: 'findOrganizationMembers', // 查询单位下的所有人员
-  findDepartmentMembers: 'findDepartmentMembers', // 查询部门下的所有人员
   // 搜索视图
   searchViewNode: 'searchViewNode',
   getChildList: 'getChildList',
@@ -40,6 +38,7 @@ export default {
   getViewList: 'getViewList', // 视图列表
   getAppList: 'getAppList', // 应用列表
   createApp: 'createApp', // 创建应用
+  updateApp: 'updateApp', // 修改应用
   getAppDetail: 'getAppDetail', // 获取应用详情
   findLabelList: 'findLabelList', // 标签列表
   createLabel: 'createLabel', //  创建标签
