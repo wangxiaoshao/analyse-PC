@@ -44,6 +44,8 @@ const RightsManagement = () => import('@src/views/shared/rights-management/index
 /* 系统设置 */
 const SystemSetting = () => import('@src/views/system-setting/index.vue')
 const ParameterSetting = () => import('@src/views/system-setting/parameter-setting/index.vue')
+// 字典管理
+const DictionaryManage = () => import('@src/views/system-setting/dictionary-manage/index.vue')
 /* 路由 */
 export default [
   {
@@ -296,6 +298,11 @@ export default [
         path: '/parameter-setting',
         name: 'ParameterSetting',
         component: ParameterSetting
+      },
+      {
+        path: '/dictionary-manage',
+        name: 'DictionaryManage',
+        component: DictionaryManage
       }
     ]
   }

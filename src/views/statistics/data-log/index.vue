@@ -1,36 +1,43 @@
 <template>
   <div class="data-log">
     <!--时间轴-->
-    <el-row :gutter="20">
-      <el-col :span="10" :offset="12">
+    <el-row :style="{paddingLeft: '60px'}">
+      <el-col :span="4">
         <div class="block">
-          <el-select v-model="select" slot="prepend" align="center" placeholder="请选择">
-            <el-option label="今天" value="1"></el-option>
-            <el-option label="昨天" value="2"></el-option>
-            <el-option label="选择周" value="3"></el-option>
-            <el-option label="选择月" value="4"></el-option>
+          <el-select v-model="selectValue"
+          slot="prepend"
+          align="center"
+          placeholder="今天"
+          @change="selectChange(selectValue)">
+          <el-option label="今天" :value="['today']"></el-option>
+          <el-option label="昨天" :value="['yesterday']"></el-option>
+          <el-option label="周" :value="['week', '周', 'yyyy 第 WW 周']"></el-option>
+            <el-option label="月" :value="['month', '月', 'yyyy-DD']"></el-option>
+          <el-option label="选择日期" :value="['date', '日期', 'yyyy-MM-DD']"></el-option>
           </el-select>
+        </div>
+      </el-col>
+      <el-col :span="6" :style="{width: '220px'}">
+        <div v-if="selectValue[0] === 'today' || selectValue[0] === 'yesterday'">
+          <el-input v-model="inputValue" :placeholder="date" :disabled="true">
+            <i slot="prefix" class="el-input__icon el-icon-date"></i>
+          </el-input>
+        </div>
+        <div class="block" v-else>
           <el-date-picker
+            slot="append"
             v-model="currentDateVal"
-            type="week"
-            format="yyyy 第 WW 周"
-            placeholder="选择周">
+            :type="dateType"
+            :default-value="weekstart"
+            :format="format"
+            :placeholder="'选择'+value"
+            @change="dateChange">
           </el-date-picker>
-
-          <!--<el-input placeholder="请输入内容" v-model="currentDateVal" class="input-with-select">-->
-            <!--<el-date-picker-->
-              <!--v-model="currentDateVal"-->
-              <!--align="center"-->
-              <!--type="date"-->
-              <!--placeholder="选择日期"-->
-              <!--:picker-options="pickerOptions">-->
-            <!--</el-date-picker>-->
-          <!--</el-input>-->
         </div>
       </el-col>
     </el-row>
     <el-row>
-      <el-col :span="14" :style="{marginLeft: '60px', marginTop: '20px'}">
+      <el-col :span="14" :style="{ marginLeft: '80px', marginTop: '20px'}">
         <div class="timeLine">
           <el-timeline :reverse="reverse">
             <el-timeline-item
@@ -81,11 +88,12 @@ import EditDialog from '../components/EditDialog'
 import ConfigDialog from '../components/EditDialog'
 import handleTable from '@src/mixins/handle-table'
 import { api, urlNames } from '@src/api'
-import SiteTable from '@src/components/SiteTable/index.vue'
+import filters from '@src/filters'
+import { dateTransform } from '@src/filters/dateTransform.js'
 import { mapState, mapMutations } from 'vuex'
 
 export default {
-  components: { EditDialog, ConfigDialog, SiteTable },
+  components: { EditDialog, ConfigDialog, filters},
   mixins: [handleTable],
   data () {
     return {
@@ -96,6 +104,7 @@ export default {
         keyword: ''
       },
       list: [],
+      weekstart: '',
       areaList: [],
       dictionaryNameList: [],
       editDialogVisible: false,
@@ -132,39 +141,20 @@ export default {
         timestamp: '2018-04-11'
       }],
       currentDateVal: '',
-      pickerOptions: {
-        disabledDate(time) {
-          return time.getTime() > Date.now();
-        },
-        shortcuts: [{
-          text: '今天',
-          onClick(picker) {
-            picker.$emit('pick', new Date());
-          }
-        }, {
-          text: '昨天',
-          onClick(picker) {
-            const date = new Date();
-            date.setTime(date.getTime() - 3600 * 1000 * 24);
-            picker.$emit('pick', date);
-          }
-        }, {
-          text: '一周前',
-          onClick(picker) {
-            const date = new Date();
-            date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-            picker.$emit('pick', date);
-          }
-        }],
-      },
-      select: '',
-      defaultDate: new Date()
+      selectValue: ['today'],
+      date: '',
+      inputValue: '',
+      dateType: '',
+      format: '',
+      value: '',
     }
   },
   computed: {
     ...mapState(['application'])
   },
   created () {
+    this.date = dateTransform(new Date())
+    this.weekstart = dateTransform(new Date())
     if (this.$route.query.type === 'back') {
       this.page = Object.assign(this.page, this.application.page)
       this.searchQuery = Object.assign(this.searchQuery, this.application.searchQuery)
@@ -178,6 +168,21 @@ export default {
   },
   methods: {
     ...mapMutations(['SET_APPLICATION_PAGE', 'SET_APPLICATION_SEARCH_QUERY']),
+    selectChange (val) {
+      let todayDate = new Date()
+      if (val && val.length > 1) {
+        this.dateType = val[0]
+        this.value = val[1]
+        this.format = val[2]
+        return false
+      } else {
+        todayDate = new Date(todayDate.setDate(todayDate.getDate() - 1))
+      }
+      this.date = dateTransform(todayDate)
+    },
+    dateChange (val) {
+      console.log(val)
+    },
     initQuery () {
       let keys = Object.assign({}, this.$route.query)
       let len = keys.length
