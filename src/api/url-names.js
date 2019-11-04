@@ -28,8 +28,10 @@ export default {
   // 数据统计 statistics
   setParameter: 'setParameter',
   getParameter: 'getParameter',
-  // 获取视图
+  // 获取视图--机构树
   getTree: 'getTree',
+  findOrganizationMembers: 'findOrganizationMembers', // 查询单位下的所有人员
+  findDepartmentMembers: 'findDepartmentMembers', // 查询部门下的所有人员
   // 搜索视图
   searchViewNode: 'searchViewNode',
   getChildList: 'getChildList',
