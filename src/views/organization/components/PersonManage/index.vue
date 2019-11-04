@@ -1,11 +1,12 @@
 <template>
   <div class="person-manage-content">
+    <add-tags :tagsFlag="openAddTagFlag" @getFlag="getFlag"></add-tags>
     <!--人员管理-->
     <el-form :model="personFrom" :disabled="disabledFlag" :rules="rules" ref="personFrom" label-width="100px" class="demo-personFrom" style="width: 100%">
       <el-menu class="el-menu-demo" mode="horizontal">
         <el-menu-item>基础信息</el-menu-item>
       </el-menu>
-      <el-row>
+      <el-row class="row-item">
         <el-col :span="12">
           <el-form-item label="姓名" prop="name">
             <el-input v-model="personFrom.name"></el-input>
@@ -32,10 +33,11 @@
       <el-menu class="el-menu-demo" mode="horizontal">
         <el-menu-item>完善其他信息</el-menu-item>
       </el-menu>
-      <el-row>
+      <el-row class="row-item">
         <el-col :span="12">
           <el-form-item label="头像">
             <el-upload
+              :disabled="disabledFlag"
               class="avatar-uploader"
               action="https://jsonplaceholder.typicode.com/posts/"
               :show-file-list="false"
@@ -74,6 +76,7 @@
           <el-form-item label="证件照">
             <el-upload
               class="avatar-uploader"
+              :disabled="disabledFlag"
               action="https://jsonplaceholder.typicode.com/posts/"
               :show-file-list="false"
               :on-success="handleAvatarSuccess"
@@ -84,7 +87,7 @@
           </el-form-item>
           <el-form-item label="身份证号" prop="idcard">
             <el-input placeholder="请输入内容" v-model="personFrom.idcard">
-              <el-button slot="append" type="success" class="form-btn">点击实名认证</el-button>
+              <el-button slot="append" v-if="!disabledFlag" type="success" class="form-btn">点击实名认证</el-button>
             </el-input>
           </el-form-item>
           <el-form-item label="学历" prop="qualification">
@@ -124,12 +127,12 @@
           >
             {{tag.name}}
           </el-tag>
-          <el-tag class="add-tag-btn" @click="openAddTagFlag =  true">
+          <el-tag class="add-tag-btn" v-if="!disabledFlag" @click="openAddTagFlag =  true">
             <i class="el-icon-plus"></i>添加标签
           </el-tag>
         </el-form-item>
       </el-row>
-      <el-row>
+      <el-row class="row-item">
         <el-col :span="12">
           <el-form-item label="人员介绍" prop="instruction">
             <el-input type="textarea" v-model="personFrom.instruction"></el-input>
@@ -146,10 +149,15 @@
 </template>
 
 <script>
+import addTags from '../AddTags/index'
 export default {
+  props: ['disabledFlag', 'isShowEditFlag'],
+  components: {
+    addTags
+  },
   data () {
     return {
-      disabledFlag: false,
+      openAddTagFlag: false,
       personFrom: {
         name: '',
         dutyName: '',
@@ -191,11 +199,14 @@ export default {
         this.$message.error('上传头像图片大小不能超过 2MB!')
       }
       return isJPG && isLt2M
+    },
+    getFlag (val) {
+      this.openAddTagFlag = val
     }
   }
 }
 </script>
 
-<style scoped>
-
+<style lang="less">
+  @import "index";
 </style>

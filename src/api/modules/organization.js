@@ -94,5 +94,51 @@ export default {
     showLoading: false, // 该请求发送时，是否显示全局loading
     serve: 'organizationManagePC',
     mock: '/findDepartmentList.json' // development模式下，本地mock数据
+  },
+  // 添加人员
+  [urlNames.createUser]: {
+    type: 'post',
+    url: '/api/jg_manage/user/createUser',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    showLoading: false, // 该请求发送时，是否显示全局loading
+    serve: 'organizationManagePC',
+    mock: '/createUser.json', // development模式下，本地mock数据
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  },
+  // 查询部门下的所有人员
+  [urlNames.findDepartmentMembers]: {
+    type: 'get',
+    url: '/api/jg_manage/user/findDepartmentMembers',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    showLoading: false, // 该请求发送时，是否显示全局loading
+    serve: 'organizationManagePC',
+    mock: '/findDepartmentMembers.json' // development模式下，本地mock数据
+  },
+  // 查询单位下的所有人员
+  [urlNames.findOrganizationMembers]: {
+    type: 'get',
+    url: '/api/jg_manage/user/findOrganizationMembers',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    showLoading: false, // 该请求发送时，是否显示全局loading
+    serve: 'organizationManagePC',
+    mock: '/findOrganizationMembers.json' // development模式下，本地mock数据
+  },
+  [urlNames.findUserById]: {
+    type: 'get',
+    url: '/api/jg_manage/user/findUserById',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    showLoading: false, // 该请求发送时，是否显示全局loading
+    serve: 'organizationManagePC',
+    mock: '/findUserById.json' // development模式下，本地mock数据
+  },
+  [urlNames.findLeaderList]: {
+    type: 'get',
+    url: '/api/jg_manage/user/findLeaderList',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    showLoading: false, // 该请求发送时，是否显示全局loading
+    serve: 'organizationManagePC',
+    mock: '/findLeaderList.json' // development模式下，本地mock数据
   }
 }
