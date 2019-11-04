@@ -13,8 +13,8 @@
         </el-table-column>
         <template v-for="item in tableConfig">
           <el-table-column
-                        :prop="item.id"
                         v-if="!item.tooltip"
+                        :prop="item.id"
                         align="center"
                         :formatter="item.formatter"
                         :label="item.label"
@@ -40,7 +40,9 @@
                         :show-overflow-tooltip="item.showOverflowTooltip || false"
                         :min-width="item.minWidth || null">
           <template slot-scope="scope">
+            <el-tooltip :content="scope.row[item.field]" placement="top">
             <div>{{item.field === 'order' ? scope.$index + 1 : scope.row[item.field]}}</div>
+            </el-tooltip>
           </template>
         </el-table-column>
         </template>
