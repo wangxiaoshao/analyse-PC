@@ -145,7 +145,7 @@ export default {
         {
           'menuId': '52',
           'name': '字典管理',
-          'path': '/parameter',
+          'path': '/dictionary-manage',
           'type': 1
         },
         {

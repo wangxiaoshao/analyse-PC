@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <el-form
       :model="ruleForm"
       :rules="rules"
@@ -34,6 +34,7 @@ export default {
   mixins: [ handleBreadcrumb ],
   data () {
     return {
+      loading: false,
       isShowEditFlag: true,
       disabledFlag: false,
       current: false,
@@ -107,7 +108,9 @@ export default {
       let data = {
         id: this.$route.params.id
       }
+      this.loading = true
       api[urlNames['findViewNodeById']](data).then((res) => {
+        this.loading = false
         console.log(res.data)
         this.ruleForm.name = res.data.name
         this.ruleForm.parentName = res.data.parentName

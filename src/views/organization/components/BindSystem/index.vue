@@ -1,6 +1,6 @@
 <template>
   <div class="choose-content">
-    <el-button v-popover:popover class="choose-btn">选择关联系统</el-button>
+    <el-button v-popover:popover class="choose-btn" v-if="!disabledFlag">选择关联系统</el-button>
     <el-popover
       ref="popover"
       placement="bottom"
@@ -23,12 +23,12 @@
       @close="handleClose(tag)">
       {{tag}}
     </el-tag>
-    <div class="password-content">密码：115145</div>
   </div>
 </template>
 
 <script>
 export default {
+  props: ['disabledFlag'],
   data () {
     return {
       checkSystem: ['上海'],

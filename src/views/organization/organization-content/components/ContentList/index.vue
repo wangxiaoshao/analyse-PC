@@ -144,6 +144,7 @@ export default {
         }
         data.push(sortObj)
       })
+      console.log(9999, data)
       api[urlNames['setViewNodeSort']](data).then((res) => {
         this.$message.success(`保存成功`)
         this.cancelSort()
@@ -188,7 +189,7 @@ export default {
           })
         } else {
           this.sortListFlag = false
-          this.getGrid()
+          //this.getGrid()
         }
       },
       deep: true
