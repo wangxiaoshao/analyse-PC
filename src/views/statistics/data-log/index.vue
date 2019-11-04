@@ -93,7 +93,7 @@ import { dateTransform } from '@src/filters/dateTransform.js'
 import { mapState, mapMutations } from 'vuex'
 
 export default {
-  components: { EditDialog, ConfigDialog, filters},
+  components: { EditDialog, ConfigDialog, filters },
   mixins: [handleTable],
   data () {
     return {
@@ -146,7 +146,7 @@ export default {
       inputValue: '',
       dateType: '',
       format: '',
-      value: '',
+      value: ''
     }
   },
   computed: {

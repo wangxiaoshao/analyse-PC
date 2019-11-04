@@ -185,7 +185,7 @@ export default {
           minWidth: 100
         },
         parentId: {
-          key:6,
+          key: 6,
           field: 'parentId',
           tooltip: false,
           formatter: this.formatter,

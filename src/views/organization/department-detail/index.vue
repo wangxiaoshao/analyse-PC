@@ -1,5 +1,5 @@
 <template>
-  <div class="form-content">
+  <div class="form-content" v-loading="loading">
     <el-dialog title="选择标签" :visible.sync="openAddTagFlag">
       <el-input placeholder="请输入内容" v-model="tagKeyWord" class="input-with-select">
         <el-button slot="append" icon="el-icon-search"></el-button>
@@ -126,6 +126,7 @@ export default {
   mixins: [ handleBreadcrumb ],
   data () {
     return {
+      loading: false,
       isShowEditFlag: true,
       disabledFlag: false,
       breadcrumbTitle: '添加节点',
@@ -205,7 +206,9 @@ export default {
       const data = {
         id: this.$route.params.id
       }
+      this.loading = true
       api[urlNames['findDepartmentById']](data).then((res) => {
+        this.loading = false
         this.ruleForm.name = res.data.name
         this.ruleForm.parent = res.data.orgName
         this.ruleForm.tel = res.data.phone

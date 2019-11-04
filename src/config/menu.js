@@ -118,7 +118,7 @@ export default {
               'name': '人员查询',
               'path': '/member-query',
               'type': 1
-            },
+            }
           ]
         },
         {
@@ -139,7 +139,7 @@ export default {
         {
           'menuId': '51',
           'name': '角色权限',
-          'path': '/rights-management',
+          'path': '/role-manage',
           'type': 1
         },
         {

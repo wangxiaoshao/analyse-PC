@@ -1,5 +1,5 @@
 <template>
-  <div class="organization-content">
+  <div class="organization-content" v-loading="loading">
     <el-dialog
       title="添加下级"
       :visible.sync="visible"
@@ -83,6 +83,8 @@ export default {
   },
   data () {
     return {
+      loading: true,
+      fullscreenLoading: true,
       showDialogFlag: false,
       activeName: '',
       nodeTitle: '节点信息',
@@ -145,6 +147,7 @@ export default {
       this.sortShowFlag = type
     },
     getContent () {
+      this.loading = true
       const data = {
         id: this.$route.params.nodeId
       }
@@ -153,6 +156,7 @@ export default {
         this.nodeType = res.data.nodeType
         this.selectType = this.content.nodeType
         this.activeName = '下级设置'
+        this.loading = false
         // 1:分类结点、2:部门结点、3:单位结点
         if (this.content[0].nodeType === 1) {
           this.nodeTitle = '节点信息'

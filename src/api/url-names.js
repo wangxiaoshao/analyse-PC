@@ -55,5 +55,18 @@ export default {
   // 根据id查询部门
   findDepartmentById: 'findDepartmentById',
   // 创建部门
-  createDepartment: 'createDepartment'
+  createDepartment: 'createDepartment',
+  // 添加人员
+  createUser: 'createUser',
+  // 查询部门下的所有人员
+  findDepartmentMembers: 'findDepartmentMembers',
+  // 查询单位下的所有人员
+  findOrganizationMembers: 'findOrganizationMembers',
+  // 根据id查人员详情
+  findUserById: 'findUserById',
+  // 查询领导信息
+  findLeaderList: 'findLeaderList',
+  // 角色列表
+  roleList: 'roleList',
+  findPerson: 'findPerson'
 }
