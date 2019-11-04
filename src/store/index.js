@@ -6,6 +6,7 @@ import application from './modules/application'
 import organization from './modules/organization'
 
 import examine from './modules/examine' // 申请审核
+import roleManage from './modules/role-manage'
 
 Vue.use(Vuex)
 
@@ -24,7 +25,8 @@ const store = new Vuex.Store({
     application,
     organization,
     // 申请审核
-    examine
+    examine,
+    roleManage
   }
 })
 

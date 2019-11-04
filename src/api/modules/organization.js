@@ -140,5 +140,21 @@ export default {
     showLoading: false, // 该请求发送时，是否显示全局loading
     serve: 'organizationManagePC',
     mock: '/findLeaderList.json' // development模式下，本地mock数据
+  },
+  [urlNames.roleList]: {
+    type: 'get',
+    url: '/api/jg_manage/user/roleList',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    showLoading: false, // 该请求发送时，是否显示全局loading
+    serve: 'organizationManagePC',
+    mock: '/roleList.json' // development模式下，本地mock数据
+  },
+  [urlNames.findPerson]: {
+    type: 'get',
+    url: '/api/jg_manage/user/lookPerson',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    showLoading: false, // 该请求发送时，是否显示全局loading
+    serve: 'organizationManagePC',
+    mock: '/findPerson.json' // development模式下，本地mock数据
   }
 }

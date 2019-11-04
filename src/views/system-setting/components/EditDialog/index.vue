@@ -46,7 +46,7 @@ export default {
         desc: ''
       },
       formLabelWidth: '120px',
-      stateValue: '',
+      stateValue: ''
     }
   },
   mounted () {

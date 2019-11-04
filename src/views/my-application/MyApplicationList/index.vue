@@ -170,7 +170,7 @@ export default {
         reason: {
           key: 4,
           field: 'reason',
-          tooltip: false,
+          tooltip: true,
           formatter: this.formatter,
           label: '申请原因',
           sortable: false,
@@ -238,7 +238,7 @@ export default {
       return (str + '').replace(/(\s+)$/g, '').replace(/^\s+/g, '')
     },
     getMyAuditList () {
-      api[urlNames['getMyAuditList']]().then((res) => {
+      api[urlNames['getAuditList']]().then((res) => {
         this.tableData = res.data
       })
     },
@@ -296,9 +296,7 @@ export default {
       this.SET_EXAMINE_BACKPATH(this.$route.name)
       this.$router.push({
         name: 'MyApplicationDetail',
-        params: {
-          id: 12
-        }
+        query: { id: row.id }
       })
     },
     showAddDialog () {

@@ -14,6 +14,8 @@ const MyApplication = () => import('@src/views/my-application/index.vue')
 const MyApplicationList = () => import('@src/views/my-application/MyApplicationList/index.vue')
 const MyApplicationDetail = () => import('@src/views/my-application/MyApplicationDetail/index.vue')
 const ConfirmInfo = () => import('@src/views/confirm-info/index.vue')
+const ConfirmInfoList = () => import('@src/views/confirm-info/ConfirmInfoList/index.vue')
+const ConfirmInfoDetail = () => import('@src/views/confirm-info/ConfirmInfoDetail/index.vue')
 // 统计管理
 const DataStatistics = () => import('@src/views/statistics/data-statistics/index.vue')
 const DataLog = () => import('@src/views/statistics/data-log/index.vue')
@@ -44,6 +46,12 @@ const RightsManagement = () => import('@src/views/shared/rights-management/index
 /* 系统设置 */
 const SystemSetting = () => import('@src/views/system-setting/index.vue')
 const ParameterSetting = () => import('@src/views/system-setting/parameter-setting/index.vue')
+
+/* 角色权限 */
+const RoleManage = () => import('@src/views/role-manage/index.vue')
+const RoleList = () => import('@src/views/role-manage/role-list/index.vue')
+const lookPersonPermission = () => import('@src/views/role-manage/look-person-permission/index.vue')
+
 // 字典管理
 const DictionaryManage = () => import('@src/views/system-setting/dictionary-manage/index.vue')
 /* 路由 */
@@ -53,20 +61,21 @@ export default [
     name: 'default',
     redirect: '/organization'
   },
+  // 角色管理
   {
-    path: '/application',
-    name: 'Application',
-    component: Application,
+    path: '/role-manage',
+    name: 'RoleManage',
+    component: RoleManage,
     children: [
       {
-        path: '/',
-        name: 'ApplicationList',
-        component: ApplicationList
+        path: '',
+        name: 'RoleList',
+        component: RoleList
       },
       {
-        path: 'config/:id',
-        name: 'ApplicationConfig',
-        component: ApplicationConfig
+        path: 'look-person-permission/:id',
+        name: 'lookPersonPermission',
+        component: lookPersonPermission
       }
     ]
   },
@@ -77,7 +86,7 @@ export default [
     component: Organization,
     children: [
       {
-        path: 'organization-content/:nodeId',
+        path: '/:nodeId',
         name: 'OrganizationContent',
         component: OrganizationContent
       }, {
@@ -175,7 +184,19 @@ export default [
   { // 信息确认
     path: '/confirm-info',
     name: 'ConfirmInfo',
-    component: ConfirmInfo
+    component: ConfirmInfo,
+    children: [
+      {
+        path: '/',
+        name: 'ConfirmInfoList',
+        component: ConfirmInfoList
+      },
+      {
+        path: 'detail',
+        name: 'ConfirmInfoDetail',
+        component: ConfirmInfoDetail
+      }
+    ]
   },
 
 
@@ -287,18 +308,12 @@ export default [
     name: 'DataLog',
     component: DataLog
   },
-
   // 系统设置
   {
     path: '/system-setting',
     name: 'SystemSetting',
     component: SystemSetting,
     children: [
-      {
-        path: '/parameter-setting',
-        name: 'ParameterSetting',
-        component: ParameterSetting
-      },
       {
         path: '/dictionary-manage',
         name: 'DictionaryManage',

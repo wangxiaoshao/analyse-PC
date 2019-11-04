@@ -14,7 +14,9 @@ export default {
   getApplicationConfig: 'getApplicationConfig',
   editApplicationConfig: 'editApplicationConfig',
   // 申请审核 examine
-  getMyAuditList: 'getMyAuditList',
+  getAuditList: 'getAuditList', // 待我审核 、 我的申请 、 我已审核
+  getInfoConfirmList: 'getInfoConfirmList', // 信息确认
+  getAuditDetailsById: 'getAuditDetailsById', // 审批详情
 
   getDepartmentNodes: 'getDepartmentNodes',
   findDepartmentList: 'findDepartmentList',
@@ -26,7 +28,7 @@ export default {
   sendEditRightsInfo: 'sendEditRightsInfo',
   getUserRemoveRight: 'getUserRemoveRight',
   // 数据统计 statistics
-  setParameter: 'setParameter',
+  getStatistiscManageDto: 'getStatistiscManageDto',
   getParameter: 'getParameter',
   // 获取视图--机构树
   getTree: 'getTree',
@@ -64,5 +66,8 @@ export default {
   // 根据id查人员详情
   findUserById: 'findUserById',
   // 查询领导信息
-  findLeaderList: 'findLeaderList'
+  findLeaderList: 'findLeaderList',
+  // 角色列表
+  roleList: 'roleList',
+  findPerson: 'findPerson'
 }

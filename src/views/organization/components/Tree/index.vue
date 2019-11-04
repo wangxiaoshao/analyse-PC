@@ -89,7 +89,7 @@ export default {
       handler (val) {
         if (val.query.type || val.name === 'Organization') {
           this.getTree()
-          this.setTreeId()
+         // this.setTreeId()
         }
       },
       deep: true

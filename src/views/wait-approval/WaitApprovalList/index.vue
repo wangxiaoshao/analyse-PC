@@ -159,7 +159,7 @@ export default {
         reason: {
           key: 4,
           field: 'reason',
-          tooltip: false,
+          tooltip: true,
           formatter: this.formatter,
           label: '申请原因',
           sortable: false,
@@ -227,7 +227,7 @@ export default {
       return (str + '').replace(/(\s+)$/g, '').replace(/^\s+/g, '')
     },
     getMyAuditList () {
-      api[urlNames['getMyAuditList']]().then((res) => {
+      api[urlNames['getAuditList']]().then((res) => {
         this.tableData = res.data
       })
     },
@@ -278,7 +278,6 @@ export default {
       })
     },
     goConfig (row) {
-      console.log(this.$router)
       this.SET_APPLICATION_PAGE(this.page)
       this.SET_EXAMINE_SEARCH_QUERY(this.searchQuery)
       this.SET_EXAMINE_TABLEDATA(this.tableData) // 存储当前页面table的数据列表
@@ -286,7 +285,7 @@ export default {
       this.SET_EXAMINE_BACKPATH(this.$route.name) // ExamineDetails页面需要用到的当前列表中点击项的数据
       this.$router.push({
         name: 'WaitApprovalDetail',
-        params: { parentCode: 1910281645 }
+        query: { id: row.id }
       })
     },
     showAddDialog () {

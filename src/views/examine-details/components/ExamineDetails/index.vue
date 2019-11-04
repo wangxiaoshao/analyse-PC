@@ -17,12 +17,12 @@
             prop="name"
             label="原值">
             <template slot-scope="scope">
-              <div>{{scope.row.name}}</div>
+              <div>{{scope.row.name.beforeChangeValue}}</div>
             </template>
           </el-table-column>
           <el-table-column label="变更值"  align="center">
             <template slot-scope="scope">
-              <div>{{scope.row.name}}</div>
+              <div>{{scope.row.name.afterChangeValue}}</div>
             </template>
           </el-table-column>
         </el-table-column>
@@ -31,10 +31,13 @@
             align="center"
             prop="name"
             label="原值">
+            <template slot-scope="scope">
+              <div>{{scope.row.phone.beforeChangeValue}}</div>
+            </template>
           </el-table-column>
           <el-table-column label="变更值"  align="center">
             <template slot-scope="scope">
-              <div>{{scope.row.name}}</div>
+              <div>{{scope.row.phone.afterChangeValue}}</div>
             </template>
           </el-table-column>
         </el-table-column>
@@ -44,7 +47,7 @@
           label="申请原因"
           width="150">
           <template slot-scope="scope">
-            <div>{{scope.row.name}}</div>
+            <div>{{scope.row.reason}}</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -54,7 +57,7 @@
           label="审核意见"
           width="150">
           <template slot-scope="scope">
-            <div>{{scope.row.name}}</div>
+            <div>{{scope.row.message}}</div>
           </template>
         </el-table-column>
       </template>
@@ -67,20 +70,13 @@
                  @refreshList="getGrid"
                  @close="closeEditDialog"></edit-dialog>
     <el-row :gutter="20" v-if="isWaitApproval">
-      <el-col :span="12" :offset=20>
-        <div style="margin-top: 20px">
+      <el-col :span="12" :offset=19>
+        <div style="margin-top: 40px">
           <el-button type="primary" plain @click="passExamine" >通过</el-button>
-          <el-button type="info" plain @click="noPassExamine">不通过</el-button>
+          <el-button type="info" plain @click="noPassExamine"  style="margin-left: 40px">不通过</el-button>
         </div>
       </el-col>
     </el-row>
-
-    <!--添加dialog-->
-    <edit-dialog
-      :visible="addDialogVisible"
-      :config-type="type"
-      @refreshList="getGrid"
-      @close="closeAddDialog"></edit-dialog>
   </div>
 </template>
 
@@ -97,13 +93,9 @@ export default {
   mixins: [handleTable, handleBreadcrumb],
   data () {
     return {
-      gridData: [{
-        counts: '1202',
-        name: '王小虎'
-      }],
+      gridData: [],
       currentEdit: null,
       editDialogVisible: false,
-      addDialogVisible: false,
       dialogTitle: '审核意见',
       type: 'content',
       loading: true,
@@ -118,89 +110,14 @@ export default {
         todo: []
       },
       dictionaryNameList: [],
-      tableConfig: {
-        workPhone: {
-          key: 1,
-          field: 'workPhone',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '单位电话',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        },
-        content: {
-          key: 2,
-          field: 'content',
-          tooltip: true,
-          formatter: this.formatter,
-          label: '原值',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        },
-        applyTime: {
-          key: 3,
-          field: 'applyTime',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '变更值',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        },
-        empty: {
-          key: 4,
-          field: 'empty',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 50
-        },
-        workName: {
-          key: 5,
-          field: 'workName',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '单位名称',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        },
-        content2: {
-          key: 6,
-          field: 'content',
-          tooltip: true,
-          formatter: this.formatter,
-          label: '原值',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        },
-        applyTime2: {
-          key: 7,
-          field: 'applyTime',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '变更值',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        }
-      },
-      tableDetailData: [],
-      tableCheckbox: true,
-      operate: false
     }
   },
   computed: {
     ...mapState(['application', 'examine'])
   },
   created () {
-    this.tableDetailData.push(this.examine.detail)
-    if (this.$route.params.parentCode === 1910281645) {
+    this.getAuditDetails()
+    if (this.$route.name === 'WaitApprovalDetail') {
       this.isWaitApproval = true
     }
   },
@@ -218,6 +135,26 @@ export default {
   },
   methods: {
     ...mapMutations(['SET_APPLICATION_PAGE', 'SET_EXAMINE_DETAIL']),
+    getAuditDetails () {
+      api[urlNames['getAuditDetailsById']]({
+        id: this.$route.id
+      }).then((res) => {
+        let obj = {
+          name: res.data[0],
+          phone: res.data[1]
+        }
+        console.log(obj)
+        this.gridData.push(obj)
+        this.loading = false
+        // this.configData = res.result
+        // this.list = this.configData[this.type]
+        // this.page.total = res.Result.total_items
+      }, () => {
+        this.loading = false
+        this.list = []
+        // this.page.total = 0
+      })
+    },
     passExamine () {
       this.editDialogVisible = true
     },
@@ -229,9 +166,6 @@ export default {
     },
     closeEditDialog () {
       this.editDialogVisible = false
-    },
-    closeAddDialog () {
-      this.addDialogVisible = false
     },
     typeChange () {
       // this.page.current = 1
