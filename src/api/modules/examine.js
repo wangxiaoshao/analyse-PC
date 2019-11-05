@@ -6,7 +6,7 @@ export default {
 
   [urlNames.getAuditList]: { // 待我审核 我的审核列表 我已审核
     type: 'get',
-    url: '/api/jg_manage/audit/findMyAuditList',
+    url: '/api/jg_manage/audit/findAuditList',
     keepOriginResponse: true,
     serve: 'organizationManagePC',
     mock: 'examine/getAuditList.json'

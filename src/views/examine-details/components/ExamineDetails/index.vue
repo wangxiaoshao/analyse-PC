@@ -139,12 +139,22 @@ export default {
       api[urlNames['getAuditDetailsById']]({
         id: this.$route.id
       }).then((res) => {
-        let obj = {
-          name: res.data[0],
-          phone: res.data[1]
+        // let obj = {
+        //   name: res.data.changeFields[0],
+        //   phone: res.data.changeFields[1]
+        // }
+        let arr = res.data.changeFields
+        for (let i = 0; i < arr.length; i++) {
+          if (Object.keys(arr[i]).indexOf('fileName')) {
+            let key = Object.keys(arr[i])
+            let obj = {
+              key: res.data.changeFields[i]
+            }
+          }
         }
+
         console.log(obj)
-        this.gridData.push(obj)
+        // this.gridData.push(obj)
         this.loading = false
         // this.configData = res.result
         // this.list = this.configData[this.type]

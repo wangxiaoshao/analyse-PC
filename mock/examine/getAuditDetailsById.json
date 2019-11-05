@@ -1,21 +1,21 @@
 {
   "message": "success",
-  "data": [
-    {
+  "data": {
+    "changeFields": [
+      {
       "fieldName": "name",
       "beforeChangeValue": "单位名称",
-      "afterChangeValue": "单位名称2",
-      "reason": "呵呵呵",
-      "message": "同意"
-    },
-    {
+      "afterChangeValue": "单位名称2"
+      },
+      {
       "fieldName": "phone",
       "beforeChangeValue": "123456789",
-      "afterChangeValue": "987654321",
-      "reason": "呵呵呵",
-      "message": "同意"
-    }
-  ],
+      "afterChangeValue": "987654321"
+      }
+    ],
+    "reason": "45645",
+    "message": "同意"
+  },
   "status": 0,
-  "timestamp": "2019-10-30 16:12:19"
+  "timestamp": "2019-11-05 10:29:08"
 }
