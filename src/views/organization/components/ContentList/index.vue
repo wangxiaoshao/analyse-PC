@@ -78,18 +78,13 @@ export default {
       sortList: []
     }
   },
-  props: {
-    sortFlag: {
-      type: Boolean,
-      request: true
-    }
-  },
+  props: ['sortFlag', 'contentPage'],
   methods: {
     getGrid () {
       let data = {
-        page: this.page.current,
+        page: this.contentPage.current,
         parentId: this.$route.params.nodeId,
-        limit: this.page.limit
+        limit: this.contentPage.limit
       }
       this.loading = true
       api[urlNames['findViewNodeList']](data).then((res) => {
@@ -98,7 +93,7 @@ export default {
       }, () => {
         this.loading = false
         this.list = []
-        this.page.total = 0
+        this.contentPage.total = 0
       })
     },
     cancelSort () {

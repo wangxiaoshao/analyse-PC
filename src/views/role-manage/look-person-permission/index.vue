@@ -1,6 +1,6 @@
 <template>
     <div class="look-person">
-      <add-person :seleceDialog="selectDialog"></add-person>
+      <add-person :seleceDialog="selectDialog" @closeselectMenmber="closeselectMenmber"></add-person>
       <permission-set :setFlag="setFlag" @getSetFlag="getSetFlag"></permission-set>
       <div class="button-wrap">
         <el-button type="primary" @click="selectDialog.selectMenmberFlag = true">添加人员</el-button>
@@ -102,6 +102,9 @@ export default {
     },
     getSetFlag (val) {
       this.setFlag = val
+    },
+    closeselectMenmber(val) {
+      this.selectDialog.selectMenmberFlag = val
     }
   },
   created () {
