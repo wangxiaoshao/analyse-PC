@@ -2,7 +2,7 @@
   <div class="site-module mod-dictionary">
     <!--操作row-->
     <el-row class="operator-row">
-      <el-button size="small" type="primary">确认机构人员信息</el-button>
+      <el-button size="small" type="primary" @click="dialogVisible = true">确认机构人员信息</el-button>
     </el-row>
     <el-row class="operator-row">
       <el-col :span="18">
@@ -337,7 +337,13 @@ export default {
       })
     },
     goConfig (row) {
-      this.dialogVisible = true
+      this.SET_EXAMINE_BACKPATH(this.$route.name)
+      console.log('999',this.examine.backPath)
+
+      this.$router.push({
+        name: 'ConfirmInfoDetail',
+        query: { id: row.id }
+      })
     },
     showAddDialog () {
       this.addDialogVisible = true

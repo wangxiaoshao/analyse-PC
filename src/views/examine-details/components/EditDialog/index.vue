@@ -59,7 +59,7 @@ export default {
   },
   methods: {
     closeDialog (form) {
-      this.$refs[form].resetFields();
+      this.$refs[form].resetFields()
       this.$emit('close')
     },
     passExamine (form) {
@@ -80,7 +80,7 @@ export default {
               })
             }
           }, (error) => {
-            this.$message.success('审批失败，请稍后重试')
+            this.$message.error('审批失败，请稍后重试')
           })
         }
       })

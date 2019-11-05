@@ -112,6 +112,7 @@ export default {
     }
   },
   mounted () {
+    console.log('exD', this.examine.backPath)
     this.pushBreadcrumb({
       name: this.isWaitApproval ? '去审核' : '查看明细',
       parent: {
