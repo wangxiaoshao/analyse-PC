@@ -9,20 +9,25 @@
       <div class="dialog-close" @click="closeDialog"><i class="el-icon-close"></i></div>
         <h2 class="dialog-title">{{dialogTitle}}</h2>
         <!--表单-->
-      <el-input
-        type="textarea"
-        :autosize="{ minRows: 4, maxRows: 6}"
-        v-model="textareaVal"
-        :placeholder="`请输入${dialogTitle}`">
-      </el-input>
-      <el-row :gutter="20">
-        <el-col :span="12" :offset=8>
-          <div style="margin-top: 20px">
-            <el-button  type="primary" @click="passExamine">确认</el-button>
-            <el-button @click="closeDialog">取消</el-button>
-          </div>
-        </el-col>
-      </el-row>
+
+      <el-form ref="form" :model="form" :rules="rules">
+        <el-form-item prop="desc">
+          <el-input
+            type="textarea"
+            :autosize="{ minRows: 4, maxRows: 6}"
+            v-model="form.desc"
+            :placeholder="`请输入${dialogTitle}`">
+          </el-input>
+        </el-form-item>
+        <el-form-item >
+          <el-row :gutter="20">
+          <el-col :span="12" :offset=8>
+            <el-button  type="primary" @click="passExamine('form')">确认</el-button>
+            <el-button @click="closeDialog('form')">取消</el-button>
+          </el-col>
+          </el-row>
+        </el-form-item>
+      </el-form>
     </el-dialog>
   </div>
 </template>
@@ -36,7 +41,15 @@ export default {
   components: {},
   data () {
     return {
-      textareaVal: ''
+      rules: {
+        desc: [
+          { required: true, message: `请输入${this.dialogTitle}`, trigger: 'blur' }
+        ]
+      },
+      textareaVal: '',
+      form: {
+        desc: ''
+      }
     }
   },
   mounted () {
@@ -45,28 +58,31 @@ export default {
     ...mapState(['app'])
   },
   methods: {
-    closeDialog () {
+    closeDialog (form) {
+      this.$refs[form].resetFields();
       this.$emit('close')
     },
-    passExamine () {
-      let obj = {
-        message: this.textareaVal,
-        auditResult: 0,
-        id: this.$route.query.id
-      };
-      this.$router.push({
-        name: 'ApprovedDetail',
-        query: { id: obj.id }
-      })
-      this.$emit('close')
-      api[urlNames['sendEditRightsInfo']](obj).then((res) => {
-        // this.$emit('refreshList')
-        this.$router.push({
-          name: 'ApprovedDetail',
-          query: { id: obj.id }
-        })
-      }, (error) => {
-
+    passExamine (form) {
+      this.$refs[form].validate((valid) => {
+        if (valid) {
+          let obj = {
+            message: this.form.desc,
+            auditResult: 0,
+            id: this.$route.query.id
+          };
+          this.$emit('close')
+          api[urlNames['saveAudit']](obj).then((res) => {
+            if (res && res.message === 'success') {
+              // this.$emit('refreshList')
+              this.$router.push({
+                name: 'ApprovedDetail',
+                query: { id: obj.id }
+              })
+            }
+          }, (error) => {
+            this.$message.success('审批失败，请稍后重试')
+          })
+        }
       })
     }
   }

@@ -17,6 +17,7 @@ export default {
   getAuditList: 'getAuditList', // 待我审核 、 我的申请 、 我已审核
   getInfoConfirmList: 'getInfoConfirmList', // 信息确认
   getAuditDetailsById: 'getAuditDetailsById', // 审批详情
+  saveAudit: 'saveAudit', // 保存审批
 
   getDepartmentNodes: 'getDepartmentNodes',
   findDepartmentList: 'findDepartmentList',

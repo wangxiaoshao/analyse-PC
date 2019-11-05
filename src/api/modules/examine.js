@@ -25,4 +25,11 @@ export default {
     serve: 'organizationManagePC',
     mock: 'examine/getAuditDetailsById.json'
   },
+  [urlNames.saveAudit]: { // 保存审批
+    type: 'get',
+    url: '/api/jg_manage/audit/saveAudit',
+    keepOriginResponse: true,
+    serve: 'organizationManagePC',
+    mock: 'examine/saveAudit.json'
+  },
 }

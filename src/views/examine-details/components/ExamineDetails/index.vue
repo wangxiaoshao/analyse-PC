@@ -17,12 +17,12 @@
             prop="name"
             label="原值">
             <template slot-scope="scope">
-              <div>{{scope.row.name.beforeChangeValue}}</div>
+              <div>{{scope.row.changeFields.name.beforeChangeValue}}</div>
             </template>
           </el-table-column>
           <el-table-column label="变更值"  align="center">
             <template slot-scope="scope">
-              <div>{{scope.row.name.afterChangeValue}}</div>
+              <div>{{scope.row.changeFields.name.afterChangeValue}}</div>
             </template>
           </el-table-column>
         </el-table-column>
@@ -32,12 +32,12 @@
             prop="name"
             label="原值">
             <template slot-scope="scope">
-              <div>{{scope.row.phone.beforeChangeValue}}</div>
+              <div>{{scope.row.changeFields.phone.beforeChangeValue}}</div>
             </template>
           </el-table-column>
           <el-table-column label="变更值"  align="center">
             <template slot-scope="scope">
-              <div>{{scope.row.phone.afterChangeValue}}</div>
+              <div>{{scope.row.changeFields.phone.afterChangeValue}}</div>
             </template>
           </el-table-column>
         </el-table-column>
@@ -47,7 +47,9 @@
           label="申请原因"
           width="150">
           <template slot-scope="scope">
-            <div>{{scope.row.reason}}</div>
+            <el-tooltip :content="scope.row.reason" placement="top">
+              <div>{{scope.row.reason}}</div>
+            </el-tooltip>
           </template>
         </el-table-column>
         <el-table-column
@@ -82,10 +84,9 @@
 
 <script type="text/ecmascript-6">
 import handleTable from '@src/mixins/handle-table'
-import { api, urlNames } from '@src/api'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
+import { api, urlNames } from '@src/api'
 import EditDialog from '../EditDialog/index'
-import SiteTable from '@src/components/SiteTable/index.vue'
 import { mapState, mapMutations } from 'vuex'
 
 export default {
@@ -100,23 +101,12 @@ export default {
       type: 'content',
       loading: true,
       isWaitApproval: false,
-      searchQuery: {
-        type: ''
-      },
-      list: [],
-      configData: {
-        content: [],
-        'quick-link': [],
-        todo: []
-      },
-      dictionaryNameList: [],
     }
   },
   computed: {
     ...mapState(['application', 'examine'])
   },
   created () {
-    this.getAuditDetails()
     if (this.$route.name === 'WaitApprovalDetail') {
       this.isWaitApproval = true
     }
@@ -135,36 +125,6 @@ export default {
   },
   methods: {
     ...mapMutations(['SET_APPLICATION_PAGE', 'SET_EXAMINE_DETAIL']),
-    getAuditDetails () {
-      api[urlNames['getAuditDetailsById']]({
-        id: this.$route.id
-      }).then((res) => {
-        // let obj = {
-        //   name: res.data.changeFields[0],
-        //   phone: res.data.changeFields[1]
-        // }
-        let arr = res.data.changeFields
-        for (let i = 0; i < arr.length; i++) {
-          if (Object.keys(arr[i]).indexOf('fileName')) {
-            let key = Object.keys(arr[i])
-            let obj = {
-              key: res.data.changeFields[i]
-            }
-          }
-        }
-
-        console.log(obj)
-        // this.gridData.push(obj)
-        this.loading = false
-        // this.configData = res.result
-        // this.list = this.configData[this.type]
-        // this.page.total = res.Result.total_items
-      }, () => {
-        this.loading = false
-        this.list = []
-        // this.page.total = 0
-      })
-    },
     passExamine () {
       this.editDialogVisible = true
     },
@@ -178,10 +138,8 @@ export default {
       this.editDialogVisible = false
     },
     typeChange () {
-      // this.page.current = 1
       this.$nextTick(() => {
-        this.list = this.configData[this.type]
-        // this.getGrid()
+        this.getGrid()
       })
     },
     jumpDetailPage () {
@@ -190,63 +148,23 @@ export default {
         params: { id: 1910291139 }
       })
     },
-    showEditDialog (row) {
-      this.currentEdit = JSON.parse(JSON.stringify(row))
-      this.editDialogVisible = true
-    },
     getGrid () {
-      this.loading = true
-      let data = {
-        // page: this.page.current,
-        // pageSize: this.page.limit,
-        parentApp: this.$route.params.id,
-        type: this.type
-      }
-      api[urlNames['getApplicationConfig']](data).then((res) => {
-        this.loading = false
-        this.configData = res.result
-        this.list = this.configData[this.type]
-        // this.page.total = res.Result.total_items
+      api[urlNames['getAuditDetailsById']]({
+        id: this.$route.id
+      }).then((res) => {
+        let arrLen = res.data.changeFields.length,
+          obj = {}
+        for (let i = 0; i < arrLen; i++) {
+          let key = res.data.changeFields[i].fieldName,
+            val = res.data.changeFields[i]
+          obj[key] = val
+        }
+        res.data.changeFields = obj
+        this.gridData.push(res.data)
       }, () => {
-        this.loading = false
-        this.list = []
-        // this.page.total = 0
+        this.gridData = []
       })
     },
-    handleAction (action, row) {
-      let actionName = '删除'
-      let actionUrl = 'deleteApplication'
-      let data = {
-        id: row.id,
-        type: this.type
-      }
-      this.$msgbox({
-        message: `确认${actionName}？`,
-        title: '提示',
-        showCancelButton: true,
-        type: 'warning',
-        beforeClose: (action, instance, done) => {
-          if (action === 'confirm') {
-            instance.confirmButtonLoading = true
-            instance.confirmButtonText = `${actionName}中...`
-            api[urlNames[actionUrl]](data).then((res) => {
-              instance.confirmButtonLoading = false
-              this.$message.success(`${actionName}成功`)
-              this.getGrid()
-            }, (res) => {
-              instance.confirmButtonLoading = false
-            })
-            done()
-          } else {
-            instance.confirmButtonLoading = false
-            done()
-          }
-        }
-      }).then(() => {
-
-      }).catch(() => {
-      })
-    }
   }
 }
 </script>
