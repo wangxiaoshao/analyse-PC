@@ -69,7 +69,7 @@
       </el-pagination>
     </div>
     <el-button @click="seleceDialog.selectMenmberFlag = true">选人组件</el-button>
-    <candidate-dialog @closeselectMenmber="closeselectMenmber" :seleceDialog="seleceDialog"></candidate-dialog>
+    <candidate-dialog @dialogReturnMembersInfo="dialogReturnMembersInfo" @closeselectMenmber="closeselectMenmber" :seleceDialog="seleceDialog"></candidate-dialog>
   </div>
 </template>
 
@@ -89,7 +89,7 @@ export default {
       currentRow: null,
       seleceDialog: {
         selectMenmberTitle: '选人组件', // 选人组件标题
-        selectMenmberFlag: false, // 是否显示弹窗，
+        selectMenmberFlag: false, // 显示弹窗，
         isSingleSelect: false // 是否为单选框  false为多选，true为单选
       }
     }
@@ -111,8 +111,13 @@ export default {
     createView () {
       this.$router.push({ name: 'CreateView' })
     },
+    // 关闭选人弹窗
     closeselectMenmber () {
       this.seleceDialog.selectMenmberFlag = false
+    },
+    // 选人弹窗组件返回的人员信息
+    dialogReturnMembersInfo (data) {
+      console.log(data)
     },
     handleCurrentChange (val) {
       this.currentRow = val

@@ -1,0 +1,31 @@
+{
+  "message": "success",
+  "data": {
+    "typeList": [
+      {
+        "total": "2",
+        "text": "在职"
+      },
+      {
+        "total": "1",
+        "text": "挂职"
+      },
+      {
+        "total": "1",
+        "text": "兼职"
+      },
+      {
+        "total": "1",
+        "text": "调出"
+      }
+    ],
+    "confirmationOrgDto": {
+      "id": 1,
+      "orgName": "单位名称2",
+      "mainLeader": "渣渣辉",
+      "leaderNumber": 2
+    }
+  },
+  "status": 0,
+  "timestamp": "2019-10-30 16:09:47"
+}

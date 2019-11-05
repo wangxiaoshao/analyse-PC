@@ -45,36 +45,28 @@ export default {
     ...mapState(['app'])
   },
   methods: {
-    passExamine () {
-      this.addDialogVisible = true
-    },
     closeDialog () {
       this.$emit('close')
     },
-    submitForm (form) {
-      this.$refs[form].validate((valid) => {
-        if (valid) {
-          let data = new FormData()
-          let keys = Object.keys(this.editForm)
-          let len = keys.length
-          for (let i = 0; i < len; i++) {
-            let key = keys[i]
-            let value = this.editForm[key]
-            if (value) {
-              data.append(key, value)
-            }
-          }
-          api[urlNames['sendEditRightsInfo']](data).then((res) => {
-            this.$message({
-              message: this.current ? '修改成功' : '添加成功',
-              type: 'success'
-            })
-            this.$emit('refreshList')
-            this.closeDialog()
-          }, (error) => {
+    passExamine () {
+      let obj = {
+        message: this.textareaVal,
+        auditResult: 0,
+        id: this.$route.query.id
+      };
+      this.$router.push({
+        name: 'ApprovedDetail',
+        query: { id: obj.id }
+      })
+      this.$emit('close')
+      api[urlNames['sendEditRightsInfo']](obj).then((res) => {
+        // this.$emit('refreshList')
+        this.$router.push({
+          name: 'ApprovedDetail',
+          query: { id: obj.id }
+        })
+      }, (error) => {
 
-          })
-        }
       })
     }
   }

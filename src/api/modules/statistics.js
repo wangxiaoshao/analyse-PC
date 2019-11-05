@@ -7,22 +7,11 @@ export default {
   /**
    * 获取应用列表
    */
-  [urlNames.getParameter]: {
+  [urlNames.getStatistiscManageDto]: {
     type: 'get',
-    url: '/work/option/get',
+    url: '/api/jg_manage/statistics/getStatistiscManageDto',
     keepOriginResponse: true,
     serve: 'organizationManagePC',
-    mock: 'getParameter.json'
+    mock: 'statistics/getStatistiscManageDto.json'
   },
-  [urlNames.setParameter]: {
-    type: 'post',
-    url: '/work/option/set',
-    keepOriginResponse: true,
-    showLoading: true,
-    serve: 'organizationManagePC',
-    mock: 'setParameter.json',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  }
 }

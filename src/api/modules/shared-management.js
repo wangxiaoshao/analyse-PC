@@ -32,6 +32,22 @@ export default {
   [urlNames.createApp]: {
     type: 'post',
     url: '/api/jg_share/app/create',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    keepOriginResponse: false,
+    showLoading: true,
+    serve: 'organizationManagePC'
+  },
+  /**
+   修改应用
+   */
+  [urlNames.updateApp]: {
+    type: 'post',
+    url: '/api/jg_share/app/updateApp',
+    headers: {
+      'Content-Type': 'application/json'
+    },
     keepOriginResponse: false,
     showLoading: true,
     serve: 'organizationManagePC'

@@ -2,6 +2,9 @@
   <div class="site-module mod-dictionary">
     <!--操作row-->
     <el-row class="operator-row">
+      <el-button size="small" type="primary">确认机构人员信息</el-button>
+    </el-row>
+    <el-row class="operator-row">
       <el-col :span="18">
         <el-row :gutter="10" type="flex">
           <div class="block">
@@ -30,8 +33,10 @@
                 :operateWidth="operateWidth"
                 :operate="operate"
                 :tableData="tableData">
+      <template slot-scope="{slotScope}" slot="status">
+      </template>
       <template slot-scope="{slotScope}" slot="operate">
-        <el-button size="mini" type="text" @click="goConfig(slotScope.row)">查看明细</el-button>
+        <el-button size="mini" type="text" @click="goConfig(slotScope.row)">人员明细</el-button>
       </template>
     </site-table>
     <!--分页-->
@@ -45,29 +50,57 @@
       :total="page.total">
     </el-pagination>
     <!--编辑dialog-->
-    <edit-dialog :visible="editDialogVisible"
-                 :current="currentEdit"
-                 :areaList="areaList"
-                 @refreshList="getGrid"
-                 @close="closeEditDialog"></edit-dialog>
-    <!--添加dialog-->
-    <edit-dialog
-      :visible="addDialogVisible"
-      :areaList="areaList"
-      @refreshList="getGrid"
-      @close="closeAddDialog"></edit-dialog>
-    <!--配置dialog-->
-    <config-dialog
-      :visible="configDialogVisible"
-      :areaList="areaList"
-      @refreshList="getGrid"
-      @close="closeConfigDialogVisible"></config-dialog>
+    <el-dialog
+      title="确认机构人员信息"
+      :visible.sync="dialogVisible"
+      width="50%"
+      center
+      :before-close="handleClose">
+      <el-table :data="gridData"  height="250">
+        <el-table-column
+          width="120"
+          property="name"
+          align="center"
+          label="单位主要领导">
+        </el-table-column>
+        <el-table-column
+          width="120"
+          property="counts"
+          align="center"
+          label="单位主要人数">
+        </el-table-column>
+        <el-table-column
+          width="120"
+          property="counts"
+          align="center"
+          label="单位在职人数">
+        </el-table-column>
+        <el-table-column
+          width="120"
+          property="counts"
+          align="center"
+          label="单位兼职人数">
+        </el-table-column>
+        <el-table-column
+          width="120"
+          property="counts"
+          align="center"
+          label="单位挂职人数">
+        </el-table-column>
+        <el-table-column
+          width="120"
+          property="counts"
+          align="center"
+          label="单位调出人数">
+        </el-table-column>
+      </el-table>
+    </el-dialog>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-import EditDialog from '../../examine-details/components/EditDialog/index'
-import ConfigDialog from '../../examine-details/components/EditDialog/index'
+import EditDialog from '../../examine-details/components/EditDialog'
+import ConfigDialog from '../../examine-details/components/EditDialog'
 import handleTable from '@src/mixins/handle-table'
 import { api, urlNames } from '@src/api'
 import SiteTable from '@src/components/SiteTable/index.vue'
@@ -78,19 +111,23 @@ export default {
   mixins: [handleTable],
   data () {
     return {
+      gridData: [{
+        counts: '1202',
+        name: '王小虎'
+      }],
       loading: true,
       statusOptions: [{
         value: '选项1',
         label: '已确认'
       },
-      {
-        value: '选项2',
-        label: '未确认'
-      },
-      {
-        value: '选项3',
-        label: '待确认'
-      }],
+        {
+          value: '选项2',
+          label: '未确认'
+        },
+        {
+          value: '选项3',
+          label: '待确认'
+        }],
       statusValue: '',
       searchTimeValue: '',
       list: [],
@@ -112,9 +149,7 @@ export default {
         }
       ],
       dictionaryNameList: [],
-      editDialogVisible: false,
-      addDialogVisible: false,
-      configDialogVisible: false,
+      dialogVisible: false,
       currentEdit: null,
       currentParent: {
         description: '',
@@ -135,72 +170,62 @@ export default {
           showOverflowTooltip: false,
           minWidth: 50
         },
-        applyName: {
+        orgName: {
           key: 1,
-          field: 'applyName',
+          field: 'orgName',
           tooltip: false,
           formatter: this.formatter,
-          label: '申请人',
+          label: '单位名称',
           sortable: false,
           showOverflowTooltip: false,
           minWidth: 100
         },
-        content: {
+        mainLeader: {
           key: 2,
-          field: 'content',
+          field: 'mainLeader',
           tooltip: true,
           formatter: this.formatter,
-          label: '申请内容',
+          label: '单位主要领导',
           sortable: false,
           showOverflowTooltip: false,
           minWidth: 100
         },
-        applyTime: {
+        confirmMonth: {
           key: 3,
-          field: 'applyTime',
+          field: 'confirmMonth',
           tooltip: false,
           formatter: this.formatter,
-          label: '申请时间',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        },
-        reason: {
-          key: 4,
-          field: 'reason',
-          tooltip: true,
-          formatter: this.formatter,
-          label: '申请原因',
+          label: '确认月份',
           sortable: false,
           showOverflowTooltip: false,
           minWidth: 100
         },
         state: {
-          key: 5,
+          key: 4,
           field: 'state',
           tooltip: false,
           formatter: this.formatter,
-          label: '审核状态',
-          sortable: true,
-          showOverflowTooltip: false,
-          minWidth: 100
-        },
-        auditTime: {
-          key: 6,
-          field: 'auditTime',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '审核时间',
+          label: '确认状态',
           sortable: false,
           showOverflowTooltip: false,
           minWidth: 100
         },
-        auditOpinion: {
-          key: 7,
-          field: 'auditOpinion',
+        confirmTime: {
+          key: 5,
+          field: 'confirmTime',
           tooltip: false,
           formatter: this.formatter,
-          label: '审核意见',
+          label: '确认时间',
+          sortable: false,
+          showOverflowTooltip: false,
+          minWidth: 100
+        },
+        confirmStaff: {
+          key: 6,
+          field: 'confirmStaff',
+          tooltip: false,
+          formatter: this.formatter,
+          label: '确认人员',
           sortable: false,
           showOverflowTooltip: false,
           minWidth: 100
@@ -239,6 +264,11 @@ export default {
       'SET_EXAMINE_DETAIL',
       'SET_EXAMINE_SEARCH_QUERY',
       'SET_EXAMINE_BACKPATH']),
+    scrollStyle () {
+      return {
+        height: this.$store.state.app.windowHeight - 30 + 'px'
+      }
+    },
     initQuery () {
       let keys = Object.assign({}, this.$route.query)
       let len = keys.length
@@ -256,8 +286,8 @@ export default {
       return (str + '').replace(/(\s+)$/g, '').replace(/^\s+/g, '')
     },
     getMyAuditList () {
-      api[urlNames['getAuditList']]().then((res) => {
-        this.tableData = res.data
+      api[urlNames['getInfoConfirmList']]().then((res) => {
+        this.tableData.push(res.data.confirmationOrgDto)
       })
     },
     search () {
@@ -307,27 +337,13 @@ export default {
       })
     },
     goConfig (row) {
-      this.SET_APPLICATION_PAGE(this.page)
-      this.SET_EXAMINE_SEARCH_QUERY(this.searchQuery)
-      this.SET_EXAMINE_TABLEDATA(this.tableData) // 存储当前页面table的数据列表
-      this.SET_EXAMINE_DETAIL(row) // ExamineDetails页面需要用到的当前列表中点击项的数据
-      this.SET_EXAMINE_BACKPATH(this.$route.name)
-      this.$router.push({
-        name: 'ApprovedDetail',
-        query: { id: row.id }
-      })
+      this.dialogVisible = true
     },
     showAddDialog () {
       this.addDialogVisible = true
     },
-    closeEditDialog () {
-      this.editDialogVisible = false
-    },
-    closeAddDialog () {
-      this.addDialogVisible = false
-    },
-    closeConfigDialogVisible () {
-      this.configDialogVisible = false
+    handleClose () {
+      this.dialogVisible = false
     },
     handleAction (action, row) {
       let actionName = '删除'

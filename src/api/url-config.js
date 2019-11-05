@@ -43,6 +43,27 @@ export default {
     serve: 'organizationManagePC',
     mock: '/findViewNodeById.json' // development模式下，本地mock数据
   },
+
+  /*
+  * 查询部门下的所有人员
+  * */
+  [urlNames.findDepartmentMembers]: {
+    type: 'get',
+    url: '/api/jg_manage/user/findDepartmentMembers',
+    keepOriginResponse: true,
+    showLoading: true,
+    serve: 'organizationManagePC'
+  },
+  /*
+  * 查询单位下的所有人员
+  * */
+  [urlNames.findOrganizationMembers]: {
+    type: 'get',
+    url: '/api/jg_manage/user/findDepartmentMembers',
+    keepOriginResponse: true,
+    showLoading: true,
+    serve: 'organizationManagePC'
+  },
   // 应用管理
   ...application,
   ...examine, // 申请审核

@@ -14,6 +14,8 @@ const MyApplication = () => import('@src/views/my-application/index.vue')
 const MyApplicationList = () => import('@src/views/my-application/MyApplicationList/index.vue')
 const MyApplicationDetail = () => import('@src/views/my-application/MyApplicationDetail/index.vue')
 const ConfirmInfo = () => import('@src/views/confirm-info/index.vue')
+const ConfirmInfoList = () => import('@src/views/confirm-info/ConfirmInfoList/index.vue')
+const ConfirmInfoDetail = () => import('@src/views/confirm-info/ConfirmInfoDetail/index.vue')
 // 统计管理
 const DataStatistics = () => import('@src/views/statistics/data-statistics/index.vue')
 const DataLog = () => import('@src/views/statistics/data-log/index.vue')
@@ -135,7 +137,19 @@ export default [
   { // 信息确认
     path: '/confirm-info',
     name: 'ConfirmInfo',
-    component: ConfirmInfo
+    component: ConfirmInfo,
+    children: [
+      {
+        path: '/',
+        name: 'ConfirmInfoList',
+        component: ConfirmInfoList
+      },
+      {
+        path: 'detail',
+        name: 'ConfirmInfoDetail',
+        component: ConfirmInfoDetail
+      }
+    ]
   },
 
 

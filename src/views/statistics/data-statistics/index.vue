@@ -30,28 +30,28 @@
         <div style="position: absolute" class="register">
           <div>//截止今天</div>
           <div>机构人员注册总数</div>
-          <div>203350人</div>
+          <div>{{countData.organizationCount}}</div>
         </div>
       </span>
       <span class="template-two light-purple">
         <div style="position: absolute" class="add-unit">
           <div>//今天</div>
           <div>新增单位</div>
-           <div>20</div>
+          <div>{{countData.userCount}}</div>
         </div>
       </span>
       <span class="template-two light-blue">
         <div style="position: absolute" class="add-depart">
           <div>//今天</div>
           <div>新增部门</div>
-          <div>20</div>
+          <div>{{countData.deptCount}}</div>
         </div>
       </span>
       <span class="template-two light-orange">
         <div style="position: absolute" class="add-member">
           <div>//今天</div>
           <div>新增人员</div>
-          <div>20</div>
+          <div>{{countData.organCount}}</div>
         </div>
       </span>
     </div>
@@ -146,19 +146,24 @@ export default {
         areaId: '',
         keyword: ''
       },
-      activeName: 'unit'
+      activeName: 'unit',
+      countData: []
     }
   },
   computed: {
     ...mapState(['application'])
   },
   created () {
-
+    this.initDataStatistics()
   },
   methods: {
     ...mapMutations(['SET_APPLICATION_PAGE', 'SET_APPLICATION_SEARCH_QUERY']),
     search () {},
-    getGrid () {},
+    initDataStatistics () {
+      api[urlNames['getStatistiscManageDto']]().then((res) => {
+        this.countData = res.data
+      })
+    },
     handleClick () {},
     jumpQuery (routerParams) { // routerParams === Unit|Department|Member
       this.$router.push({
