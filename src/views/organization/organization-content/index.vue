@@ -27,7 +27,13 @@
           <el-tab-pane label="下级设置" name="下级设置">
             <el-button @click="openAddDialog" class="add-btn">添加下级</el-button>
             <!--下级列表-->
-            <content-list v-if="activeName === '下级设置'" :sortFlag="sortShowFlag" @cancel="getSortAction"></content-list>
+            <content-list
+              v-if="activeName === '下级设置'"
+              :sortFlag="sortShowFlag"
+              @cancel="getSortAction"
+              @getPage="getPage"
+              :contentPage="page"
+            ></content-list>
           </el-tab-pane>
           <el-tab-pane  :label="nodeTitle" :name="nodeTitle" v-if="content[0]">
             <el-table
@@ -64,7 +70,7 @@
             <person-list v-if="activeName === '人员管理'" :sortFlag="sortShowFlag" @cancel="getSortAction"></person-list>
           </el-tab-pane>
           <el-tab-pane label="部门领导" name="单位主要领导">
-            <leader-list></leader-list>
+            <leader-list v-if="activeName === '单位主要领导'"></leader-list>
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -74,9 +80,10 @@
 
 <script>
 import { api, urlNames } from '@src/api'
-import ContentList from './components/ContentList/index'
-import PersonList from './components/PersonList/index'
-import leaderList from './components/LeaderList/index'
+import ContentList from '../components/ContentList/index'
+import PersonList from '../components/PersonList/index'
+import leaderList from '../components/LeaderList/index'
+import { mapState, mapMutations } from 'vuex'
 export default {
   components: {
     ContentList, PersonList, leaderList
@@ -86,7 +93,7 @@ export default {
       loading: true,
       fullscreenLoading: true,
       showDialogFlag: false,
-      activeName: '',
+      activeName: '下级设置',
       nodeTitle: '节点信息',
       sortShowFlag: false,
       content: [],
@@ -95,14 +102,44 @@ export default {
       visibleFlag: false,
       showAddNodeFlag: false,
       showAddDepartmentFlag: false,
-      showAddUnitFlag: false
+      showAddUnitFlag: false,
+      page: {
+        limit: 10,
+        current: 1,
+        total: 0
+      }
     }
   },
+  computed: {
+    ...mapState(['organization'])
+  },
+  created () {
+    debugger
+    if (this.$route.query.type === 'back') {
+      this.page = Object.assign(this.page, this.organization.page)
+      this.activeName = Object.assign(this.activeName, this.organization.tabActive)
+    } else {
+      this.SET_ORGANIZATION_PAGE({})
+      this.SET_ORGANIZATION_TAB_ACTIVE({})
+    }
+    this.getContent()
+  },
   methods: {
+    ...mapMutations(['SET_ORGANIZATION_PAGE', 'SET_ORGANIZATION_TAB_ACTIVE']),
+    getPage (val) {
+      this.page = val
+    },
+    setStore () {
+      this.SET_ORGANIZATION_PAGE(this.page)
+      this.SET_ORGANIZATION_TAB_ACTIVE(this.activeName)
+      console.log(this.organization.page)
+      console.log(this.organization.tabActive)
+    },
     closeDialog () {
       this.visible = false
     },
     openAddPerson () {
+      this.setStore()
       this.$router.push({
         name: 'PersonAdd',
         params: {
@@ -111,6 +148,7 @@ export default {
       })
     },
     goAddNode () {
+      this.setStore()
       this.$router.push({
         name: 'NodeAdd',
         params: {
@@ -119,6 +157,7 @@ export default {
       })
     },
     goAddDepartment () {
+      this.setStore()
       this.$router.push({
         name: 'DepartmentAdd',
         params: {
@@ -127,6 +166,7 @@ export default {
       })
     },
     goAddUnit () {
+      this.setStore()
       this.$router.push({
         name: 'UnitAdd',
         params: {
@@ -155,7 +195,7 @@ export default {
         this.content[0] = res.data
         this.nodeType = res.data.nodeType
         this.selectType = this.content.nodeType
-        this.activeName = '下级设置'
+        // this.activeName = '下级设置'
         this.loading = false
         // 1:分类结点、2:部门结点、3:单位结点
         if (this.content[0].nodeType === 1) {
@@ -180,9 +220,6 @@ export default {
         this.$message.error(`没有内容`)
       })
     }
-  },
-  created () {
-    this.getContent()
   },
   watch: {
     '$route.params.nodeId': {

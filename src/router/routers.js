@@ -79,53 +79,6 @@ export default [
       }
     ]
   },
-  // 组织机构管理
-  {
-    path: '/organization',
-    name: 'Organization',
-    component: Organization,
-    children: [
-      {
-        path: '/:nodeId',
-        name: 'OrganizationContent',
-        component: OrganizationContent
-      }, {
-        path: 'nodeEdit/:id',
-        name: 'NodeEdit',
-        component: NodeDetail
-      }, {
-        path: 'unitEdit/:id',
-        name: 'UnitEdit',
-        component: UnitDetail
-      }, {
-        path: 'departmentEdit/:id',
-        name: 'DepartmentEdit',
-        component: DepartmentDetail
-      }, {
-        path: 'personEdit/:id',
-        name: 'PersonEdit',
-        component: PersonDetail
-      }, {
-        path: 'nodeAdd/:parentId',
-        name: 'NodeAdd',
-        component: NodeDetail
-      }, {
-        path: 'unitAdd/:parentId',
-        name: 'UnitAdd',
-        component: UnitDetail
-      }, {
-        path: 'departmentAdd/:parentId',
-        name: 'DepartmentAdd',
-        component: DepartmentDetail
-      }, {
-        path: 'personAdd/:parentId',
-        name: 'PersonAdd',
-        component: PersonDetail
-      }
-    ]
-  },
-
-
   /*
   申请审核（包含 待我审核、我已审核、我的申请、信息确认）
   * */
@@ -318,6 +271,51 @@ export default [
         path: '/dictionary-manage',
         name: 'DictionaryManage',
         component: DictionaryManage
+      }
+    ]
+  },
+  // 组织机构管理
+  {
+    path: '/organization',
+    name: 'Organization',
+    component: Organization,
+    children: [
+      {
+        path: '/:nodeId',
+        name: 'OrganizationContent',
+        component: OrganizationContent
+      }, {
+        path: 'nodeEdit/:id',
+        name: 'NodeEdit',
+        component: NodeDetail
+      }, {
+        path: 'unitEdit/:id',
+        name: 'UnitEdit',
+        component: UnitDetail
+      }, {
+        path: 'departmentEdit/:id',
+        name: 'DepartmentEdit',
+        component: DepartmentDetail
+      }, {
+        path: 'personEdit/:id',
+        name: 'PersonEdit',
+        component: PersonDetail
+      }, {
+        path: 'nodeAdd/:parentId',
+        name: 'NodeAdd',
+        component: NodeDetail
+      }, {
+        path: 'unitAdd/:parentId',
+        name: 'UnitAdd',
+        component: UnitDetail
+      }, {
+        path: 'departmentAdd/:parentId',
+        name: 'DepartmentAdd',
+        component: DepartmentDetail
+      }, {
+        path: 'personAdd/:parentId',
+        name: 'PersonAdd',
+        component: PersonDetail
       }
     ]
   }

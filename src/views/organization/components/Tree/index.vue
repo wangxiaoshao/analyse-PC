@@ -52,10 +52,6 @@ export default {
         this.treeData = res.data
         this.id = this.treeData[0].id
         this.$emit('getDefault', this.id)
-        console.log('树', res.data)
-        if (this.$route.name === 'Organization' || this.$route.name === 'OrganizationContent') {
-          this.setTreeId()
-        }
       })
     },
     renderContent (h, { node, data, store }) {
@@ -89,7 +85,7 @@ export default {
       handler (val) {
         if (val.query.type || val.name === 'Organization') {
           this.getTree()
-         // this.setTreeId()
+          this.setTreeId()
         }
       },
       deep: true
