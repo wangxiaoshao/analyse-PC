@@ -74,8 +74,8 @@
              <el-option label="区域二" value="beijing"></el-option>
            </el-select>
          </el-form-item>
-         <el-form-item label=" 启用状态" prop="able">
-           <el-switch v-model="ruleForm.able"></el-switch>
+         <el-form-item label=" 启用状态" prop="enable">
+           <el-switch v-model="ruleForm.enable"></el-switch>
          </el-form-item>
        </el-col>
      </el-row>
@@ -98,16 +98,16 @@
       </el-menu>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="单位介绍" prop="instruction">
-            <el-input type="textarea" v-model="ruleForm.instruction"></el-input>
+          <el-form-item label="单位介绍" prop="ext01">
+            <el-input type="textarea" v-model="ruleForm.ext01"></el-input>
           </el-form-item>
           <el-form-item label="申请原因" prop="reason">
             <el-input type="textarea" v-model="ruleForm.reason"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="单位职责" prop="duties">
-            <el-input type="textarea" v-model="ruleForm.duties"></el-input>
+          <el-form-item label="单位职责" prop="ext02">
+            <el-input type="textarea" v-model="ruleForm.ext02"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -119,6 +119,7 @@
 </template>
 
 <script>
+import { api, urlNames } from '@src/api'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
 export default {
   name: 'index',
@@ -144,18 +145,24 @@ export default {
         fax: '',
         zipCode: '',
         uniteCode: '',
-        unitParent: '',
+        unitParent: '111',
         system: '',
         type: '',
-        able: false,
-        instruction: '',
-        duties: '',
-        reason: ''
+        enable: false,
+        ext01: '',
+        ext02: '',
+        reason: '',
+        uiniteCode: ''
       },
       rules: {
         name: [
-          { required: true, message: '请输入单位名称', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          { required: true, message: '请输入单位名称', trigger: 'blur' }
+        ],
+        enable: [
+          { required: true, message: '请选中启用状态', trigger: 'blur' }
+        ],
+        unitParent: [
+          { required: true, message: '上级单位不能为空', trigger: 'blur' }
         ]
       },
       options: []
@@ -181,19 +188,45 @@ export default {
         name: this.breadcrumbTitle,
         parent: {
           name: 'OrganizationContent',
-          query: {
+          params: {
             type: 'back'
           }
         }
       })
     },
-    submitForm (formName) {
-      this.$refs[formName].validate((valid) => {
+    submitForm (ruleForm) {
+      this.$refs[ruleForm].validate((valid) => {
         if (valid) {
-          alert('submit!')
-        } else {
-          console.log('error submit!!')
-          return false
+          const data = {
+            reason: this.ruleForm.reason,
+            nodeId: this.ruleForm.parentId,
+            areaId: '2400',
+            labelId: [],
+            organization: {
+              nodeType: 3,
+              zipCode: this.ruleForm.zipCode, // 邮编
+              address: this.ruleForm.addr,
+              ext01: this.ruleForm.ext01,
+              ext02: this.ruleForm.ext02,
+              type: 1,
+              creditId: this.ruleForm.uiniteCode,
+              removed: this.ruleForm.enable,
+              phone: this.ruleForm.tel,
+              systemType: this.ruleForm.system,
+              id: this.$route.params.id,
+              parentId: this.ruleForm.parentId || this.$route.params.parentId,
+              name: this.ruleForm.name,
+              otherName: this.ruleForm.shortName,
+              enable: true,
+              fax: this.ruleForm.fax
+            }
+          }
+          api[urlNames['createOrganization']](data).then((res) => {
+            this.$message.success(`添加成功`)
+            console.log(res)
+          }, (error) => {
+
+          })
         }
       })
     },

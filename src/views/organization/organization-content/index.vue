@@ -1,14 +1,15 @@
 <template>
   <div class="organization-content" v-loading="loading">
+    <node-detail :nodeInfo="nodeInfo" @closeNode="closeNodeEdit"></node-detail>
     <el-dialog
       title="添加下级"
       :visible.sync="visible"
       width="30%"
       :center="true">
       <div class="add-content">
-        <el-button @click="goAddNode" v-if="showAddNodeFlag">添加节点</el-button>
-        <el-button v-if="showAddDepartmentFlag" @click="goAddDepartment">添加部门</el-button>
-        <el-button v-if="showAddUnitFlag" @click="goAddUnit">添加单位</el-button>
+        <el-button @click="openAddNode" v-if="showAddNodeFlag">添加节点</el-button>
+        <el-button v-if="showAddDepartmentFlag">添加部门</el-button>
+        <el-button v-if="showAddUnitFlag">添加单位</el-button>
       </div>
     </el-dialog>
     <div class="organization-wrap">
@@ -44,8 +45,8 @@
               <el-table-column label="name" prop="name"></el-table-column>
               <el-table-column label="启用状态" prop="removed" align="center">
                 <template slot-scope="scope">
-                  <span class="text-able" v-show="scope.row.removed">启用</span>
-                  <span class="text-disable" v-show="!scope.row.removed">停用</span>
+                  <span class="text-able" v-show="scope.row.removed === 0">启用</span>
+                  <span class="text-disable" v-show="scope.row.removed === 1">停用</span>
                 </template>
               </el-table-column>
               <el-table-column prop="state" label="审核状态" width="100" align="center">
@@ -55,10 +56,14 @@
                 </template>
               </el-table-column>
               <el-table-column prop="act" label="操作" width="100" align="center">
-                <template>
-                  <el-button
-                    type="text"
-                    size="small">
+                <template slot-scope="scope">
+                  <el-button v-show="scope.row.nodeType === 1" @click.native="openEditNode(scope.row)" type="text" size="small">
+                    修改
+                  </el-button>
+                  <el-button v-show="scope.row.nodeType === 2" @click.native="openDepartmentEdit(scope.row)" type="text" size="small">
+                    修改
+                  </el-button>
+                  <el-button v-show="scope.row.nodeType === 3" @click.native="openEditUnit(scope.row)" type="text" size="small">
                     修改
                   </el-button>
                 </template>
@@ -67,10 +72,21 @@
           </el-tab-pane>
           <el-tab-pane label="人员管理" name="人员管理">
             <el-button class="add-btn" @click="openAddPerson">添加人员</el-button>
-            <person-list v-if="activeName === '人员管理'" :sortFlag="sortShowFlag" @cancel="getSortAction"></person-list>
+            <person-list
+              v-if="activeName === '人员管理'"
+              :sortFlag="sortShowFlag"
+              @getPage="getPage"
+              :contentPage="page"
+              @cancel="getSortAction"
+            ></person-list>
           </el-tab-pane>
           <el-tab-pane label="部门领导" name="单位主要领导">
-            <leader-list v-if="activeName === '单位主要领导'"></leader-list>
+            <leader-list
+              v-if="activeName === '单位主要领导'"
+              @getPage="getPage"
+              :contentPage="page"
+              :nodeInfo="nodeInfo"
+            ></leader-list>
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -79,17 +95,21 @@
 </template>
 
 <script>
+import organizationEdit from '@src/mixins/organization-edit'
 import { api, urlNames } from '@src/api'
 import ContentList from '../components/ContentList/index'
 import PersonList from '../components/PersonList/index'
 import leaderList from '../components/LeaderList/index'
+import nodeDetail from '../../../components/NodeDetail/index'
 import { mapState, mapMutations } from 'vuex'
 export default {
+  mixins: [ organizationEdit],
   components: {
-    ContentList, PersonList, leaderList
+    ContentList, PersonList, leaderList, nodeDetail
   },
   data () {
     return {
+      contentId: this.$route.params.nodeId,
       loading: true,
       fullscreenLoading: true,
       showDialogFlag: false,
@@ -103,6 +123,14 @@ export default {
       showAddNodeFlag: false,
       showAddDepartmentFlag: false,
       showAddUnitFlag: false,
+      nodeInfo: {
+        title: '',
+        openNodeFlag: false,
+        nodeType: 1,
+        parentId: '',
+        id: '',
+        infoFlag: false
+      },
       page: {
         limit: 10,
         current: 1,
@@ -114,26 +142,21 @@ export default {
     ...mapState(['organization'])
   },
   created () {
-    debugger
-    if (this.$route.query.type === 'back') {
-      this.page = Object.assign(this.page, this.organization.page)
-      this.activeName = Object.assign(this.activeName, this.organization.tabActive)
-    } else {
-      this.SET_ORGANIZATION_PAGE({})
-      this.SET_ORGANIZATION_TAB_ACTIVE({})
-    }
     this.getContent()
   },
   methods: {
-    ...mapMutations(['SET_ORGANIZATION_PAGE', 'SET_ORGANIZATION_TAB_ACTIVE']),
+    ...mapMutations(['SET_ORGANIZATION_PAGE', 'SET_ORGANIZATION_TAB_ACTIVE', 'SET_ORGANIZATION_NODEID']),
+    openAddNode () {
+      this.nodeInfo.title = '添加节点'
+      this.nodeInfo.openNodeFlag = true
+      this.nodeInfo.infoFlag = false
+      this.visible = false
+    },
+    closeNodeEdit (val) {
+      this.nodeInfo.openNodeFlag = val
+    },
     getPage (val) {
       this.page = val
-    },
-    setStore () {
-      this.SET_ORGANIZATION_PAGE(this.page)
-      this.SET_ORGANIZATION_TAB_ACTIVE(this.activeName)
-      console.log(this.organization.page)
-      console.log(this.organization.tabActive)
     },
     closeDialog () {
       this.visible = false
@@ -147,7 +170,7 @@ export default {
         }
       })
     },
-    goAddNode () {
+   /* goAddNode () {
       this.setStore()
       this.$router.push({
         name: 'NodeAdd',
@@ -174,7 +197,7 @@ export default {
         }
       })
       this.visible = false
-    },
+    }, */
     closeAddDialog (type) {
       this.showDialogFlag = type
     },
@@ -189,12 +212,15 @@ export default {
     getContent () {
       this.loading = true
       const data = {
-        id: this.$route.params.nodeId
+        id: this.contentId
       }
       api[urlNames['findViewNodeById']](data).then((res) => {
         this.content[0] = res.data
         this.nodeType = res.data.nodeType
         this.selectType = this.content.nodeType
+        console.log(this.content[0])
+        this.nodeInfo.nodeType = res.data.nodeType
+        this.nodeInfo.parentId = res.data.id
         // this.activeName = '下级设置'
         this.loading = false
         // 1:分类结点、2:部门结点、3:单位结点
@@ -224,6 +250,7 @@ export default {
   watch: {
     '$route.params.nodeId': {
       handler (val) {
+        this.contentId = val
         this.getContent()
       }
     },

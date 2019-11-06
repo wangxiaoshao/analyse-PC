@@ -69,5 +69,7 @@ export default {
   findLeaderList: 'findLeaderList',
   // 角色列表
   roleList: 'roleList',
-  findPerson: 'findPerson'
+  findPerson: 'findPerson',
+  // 创建单位
+  createOrganization: 'createOrganization'
 }

@@ -64,11 +64,12 @@
 </template>
 
 <script>
+import organizationEdit from '@src/mixins/organization-edit'
 import Sortable from 'sortablejs'
 import handleTable from '@src/mixins/handle-table'
 import { api, urlNames } from '@src/api'
 export default {
-  mixins: [handleTable],
+  mixins: [handleTable, organizationEdit],
   data () {
     return {
       loading: true,
@@ -80,8 +81,18 @@ export default {
   },
   props: ['sortFlag', 'contentPage'],
   methods: {
+    handleSizeChange (val) {
+      this.contentPage.current = 1
+      this.contentPage.limit = val
+      this.getGrid()
+    },
+    handleCurrentChange (val) {
+      this.contentPage.current = val
+      this.getGrid()
+    },
     getGrid () {
       let data = {
+        viewId: -1,
         page: this.contentPage.current,
         parentId: this.$route.params.nodeId,
         limit: this.contentPage.limit
@@ -102,43 +113,21 @@ export default {
     sortBtnFlag () {
       this.$emit('cancel', true)
     },
-    // 打开编辑节点
-    openEditNode (row) {
-      this.$router.push({
-        name: 'NodeEdit',
-        params: {
-          id: row.id
-        }
-      })
-    },
-    // 打开编辑单位
-    openEditUnit (row) {
-      this.$router.push({
-        name: 'UnitEdit',
-        params: {
-          id: row.id
-        }
-      })
-    },
-    // 打开编辑部门
-    openDepartmentEdit (row) {
-      this.$router.push({
-        name: 'DepartmentEdit',
-        params: {
-          id: row.id
-        }
-      })
-    },
     // 保存排序
     sublimeSort () {
-      let data = []
+      let sortList = []
       this.list.forEach((item, index) => {
         const sortObj = {
           id: item.id,
           sort: index
         }
-        data.push(sortObj)
+        sortList.push(sortObj)
       })
+      let data = {
+        page: this.contentPage.current,
+        limit: this.contentPage.limit,
+        sortList
+      }
       console.log(9999, data)
       api[urlNames['setViewNodeSort']](data).then((res) => {
         this.$message.success(`保存成功`)
@@ -150,7 +139,7 @@ export default {
 
   },
   created () {
-    // this.getGrid()
+    this.getGrid()
     if (this.$route.name === 'OrganizationContent') {
       this.isShowEditFlag = true
     } else {

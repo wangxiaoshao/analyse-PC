@@ -281,7 +281,7 @@ export default [
     component: Organization,
     children: [
       {
-        path: '/:nodeId',
+        path: 'organization-content/:nodeId',
         name: 'OrganizationContent',
         component: OrganizationContent
       }, {

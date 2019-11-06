@@ -13,7 +13,7 @@ export default {
       'list': [{
         'menuId': '11',
         'name': '组织机构管理',
-        'path': '/',
+        'path': '/organization',
         'type': 1
       }]
     },
