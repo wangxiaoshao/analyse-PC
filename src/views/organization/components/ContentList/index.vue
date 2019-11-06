@@ -79,7 +79,7 @@ export default {
       sortList: []
     }
   },
-  props: ['sortFlag', 'contentPage'],
+  props: ['sortFlag', 'contentPage', 'succese'],
   methods: {
     handleSizeChange (val) {
       this.contentPage.current = 1
@@ -140,6 +140,9 @@ export default {
   },
   created () {
     this.getGrid()
+    if (this.succese) {
+      this.getGrid()
+    }
     if (this.$route.name === 'OrganizationContent') {
       this.isShowEditFlag = true
     } else {
@@ -181,6 +184,15 @@ export default {
     '$route.params.nodeId': {
       handler (val) {
         this.getGrid()
+      },
+      deep: true,
+      immediate: true
+    },
+    succese: {
+      handler (val) {
+        if (val === true) {
+          this.getGrid()
+        }
       },
       deep: true,
       immediate: true
