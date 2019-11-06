@@ -14,7 +14,7 @@
       <template slot-scope="{slotScope}" slot="status">
       </template>
       <template slot-scope="{slotScope}" slot="operate">
-        <el-button size="mini" type="text" @click="goConfig(slotScope.row)">查看</el-button>
+        <el-button size="mini" type="text" @click="goConfig(slotScope.row)">详情</el-button>
         <el-button size="mini" type="text" @click="goConfig(slotScope.row)">编辑</el-button>
         <el-button size="mini" type="text" @click="goConfig(slotScope.row)">删除</el-button>
       </template>
@@ -29,48 +29,31 @@
       layout="total, sizes, prev, pager, next, jumper"
       :total="page.total">
     </el-pagination>
-
-    <!--添加dialog-->
-    <!--<el-dialog title="创建字典" :visible.sync="dialogVisible">-->
-      <!--<el-form :model="form">-->
-        <!--<el-form-item label="字段名称" :label-width="formLabelWidth">-->
-          <!--<el-input v-model="form.name" autocomplete="off"></el-input>-->
-        <!--</el-form-item>-->
-        <!--<el-form-item label="字段描述" :label-width="formLabelWidth">-->
-          <!--<el-input v-model="form.desc" autocomplete="off"></el-input>-->
-        <!--</el-form-item>-->
-        <!--<el-form-item label="启用状态" :label-width="formLabelWidth">-->
-          <!--<el-switch-->
-            <!--v-model="stateValue"-->
-            <!--active-color="#13ce66"-->
-            <!--inactive-color="#ff4949">-->
-          <!--</el-switch>-->
-        <!--</el-form-item>-->
-      <!--</el-form>-->
-      <!--<div slot="footer" class="dialog-footer">-->
-        <!--<el-button @click="dialogFormVisible = false">取 消</el-button>-->
-        <!--<el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>-->
-      <!--</div>-->
-    <!--</el-dialog>-->
     <edit-dialog
       :visible="dialogVisible"
       :config-type="type"
       :dialogTitle="title"
       @refreshList="getGrid"
       @close="closeAddDialog"></edit-dialog>
+    <dictionary-list
+      :visible="dicDialogVisible"
+      :config-type="type"
+      :dialogTitle="dicTitle"
+      @refreshList="getGrid"
+      @close="closeAddDialog"></dictionary-list>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 import EditDialog from '../components/EditDialog/index'
-import ConfigDialog from '../../examine-details/components/EditDialog'
+import DictionaryList from '../components/DictionaryList/index'
 import handleTable from '@src/mixins/handle-table'
 import { api, urlNames } from '@src/api'
 import SiteTable from '@src/components/SiteTable/index.vue'
 import { mapState, mapMutations } from 'vuex'
 
 export default {
-  components: { EditDialog, ConfigDialog, SiteTable },
+  components: { EditDialog, DictionaryList, SiteTable },
   mixins: [handleTable],
   data () {
     return {
@@ -93,26 +76,9 @@ export default {
       }],
       statusValue: '',
       searchTimeValue: '',
-      list: [],
-      areaList: [
-        {
-          'id': 1,
-          'code': '1',
-          'name': '单位'
-        },
-        {
-          'id': 2,
-          'code': '2',
-          'name': '部门'
-        },
-        {
-          'id': 3,
-          'code': '3',
-          'name': '人员'
-        }
-      ],
       dictionaryNameList: [],
       dialogVisible: false,
+      dicDialogVisible: false,
       type: '',
       currentEdit: null,
       currentParent: {
@@ -180,7 +146,8 @@ export default {
       operateWidth: 200,
       tableCheckbox: true,
       operate: true,
-      title: '创建字典'
+      title: '创建字典',
+      dicTitle: '职级字段列表',
     }
   },
   computed: {
@@ -209,7 +176,7 @@ export default {
       'SET_EXAMINE_SEARCH_QUERY',
       'SET_EXAMINE_BACKPATH']),
     addDictionary () {
-
+      this.dialogVisible = true
     },
     scrollStyle () {
       return {
@@ -260,7 +227,6 @@ export default {
         this.page.total = res.total
       }, () => {
         this.loading = false
-        this.list = []
         this.page.total = 0
       })
     },
@@ -274,13 +240,13 @@ export default {
 
     },
     goConfig (row) {
-      this.dialogVisible = true
+      this.dicDialogVisible = true
     },
     showAddDialog () {
       this.addDialogVisible = true
     },
-    closeAddDialog () {
-      this.dialogVisible = false
+    closeAddDialog (val) {
+      this[val] = false
     },
     handleAction (action, row) {
       let actionName = '删除'
