@@ -22,31 +22,30 @@
             :props="defaultProps"
             @node-click="handleNodeClick"></el-tree>
         </div>
-        <div class="transfer">
-          <el-transfer
-            filterable
-            height="360px"
-            filter-placeholder="请输入名字"
-            v-model="selectedMenbers"
-            :props="{key: 'uid',label: 'name'}"
-            :titles="['选择', '已选']"
-            :data="memberList">
-          </el-transfer>
+<!--        <div class="transfer">-->
+<!--          <el-transfer-->
+<!--            filterable-->
+<!--            height="360px"-->
+<!--            filter-placeholder="请输入名字"-->
+<!--            v-model="selectedMenbers"-->
+<!--            :props="{key: 'uid',label: 'name'}"-->
+<!--            :titles="['选择', '已选']"-->
+<!--            :data="memberList">-->
+<!--          </el-transfer>-->
+<!--        </div>-->
+        <div class="member-list">
+          <el-checkbox :indeterminate="isIndeterminate" v-model="checkAllMember" @change="handleCheckAllMemberChange">选择
+          </el-checkbox>
+          <el-checkbox-group v-model="checkedMemberList" @change="handleCheckedMemberChange">
+            <el-checkbox v-for="item in memberList" :label="item.uid" :key="item.uid">{{item.name}}</el-checkbox>
+          </el-checkbox-group>
         </div>
-<!--        <div class="member-list">-->
-<!--          <el-checkbox :indeterminate="isIndeterminate" v-model="checkAllMember" @change="handleCheckAllMemberChange">选择-->
-<!--          </el-checkbox>-->
-<!--          <el-checkbox-group v-model="checkedMemberList" @change="handleCheckedMemberChange">-->
-<!--            <el-checkbox v-for="item in memberList" :label="item.uid" :key="item.uid">{{item.name}}</el-checkbox>-->
-<!--          </el-checkbox-group>-->
-<!--        </div>-->
-<!--        <div class="select-member">-->
-<!--          <el-checkbox :indeterminate="isIndeterminates" v-model="checkAll" @change="handleCheckAllChange">已选-->
-<!--          </el-checkbox>-->
-<!--          <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">-->
-<!--            <el-checkbox v-for="item in selectedMenbers" :label="item.uid" :key="item.uid">{{item.name}}</el-checkbox>-->
-<!--          </el-checkbox-group>-->
-<!--        </div>-->
+        <div class="select-member">
+          <p>已选:</p>
+          <el-checkbox-group v-model="selectedMenbersID" @change="handleCheckedSelectChange">
+            <el-checkbox v-for="item in selectedMenbers" :label="item.uid" :key="item.uid">{{item.name}}</el-checkbox>
+          </el-checkbox-group>
+        </div>
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleClose">取 消</el-button>
@@ -71,6 +70,8 @@ export default {
       selectedMenbers: [],
       memberData: [], // 返回给调用者数据
       MembersInfo: {},
+      selectedMenbersID: [],
+      isIndeterminate: false,
       defaultProps: {
         children: 'children',
         label: 'name',
@@ -85,18 +86,14 @@ export default {
     // 确定获取数据
     submit () {
       if (this.seleceDialog.isAllData) {
-        this.selectedMenbers.forEach(item => {
-          let arr = this.memberList.filter(function (x) {
-            return x.uid === item
-          })
-          this.memberData = [...this.memberData, arr]
-        })
-      } else {
         this.memberData = this.selectedMenbers
+      } else {
+        this.memberData = this.selectedMenbersID
       }
       this.$emit('dialogReturnMembersInfo', this.memberData)
       this.$emit('closeselectMenmber')
-      this.selectedMenbers = this.memberData = []
+      this.checkedMemberList = this.selectedMenbers = this.memberData = []
+      this.isIndeterminate = this.checkAllMember = false
     },
     // 获取机构树--初始化
     findNodeTree (parentId) {
@@ -156,44 +153,38 @@ export default {
       } else if (node.nodeType === 3) {
         this.findOrganizationMembers(node.bindId)
       }
+    },
+    // 选择框全选--到达已选框k
+    handleCheckAllMemberChange (val) {
+      let ids = []
+      this.memberList.forEach(item => {
+        ids.push(item.uid)
+      })
+      this.checkedMemberList = this.selectedMenbersID = val ? ids : []
+      this.selectedMenbers = val ? this.memberList : []
+      this.isIndeterminate = false
+    },
+    // 选择框单选--到达已选框
+    handleCheckedMemberChange (val) {
+      this.selectedMenbers = this.selectedMenbersID = []
+      val.forEach(item => {
+        let list = this.memberList.filter(function (x) {
+          return x.uid === item
+        })
+        this.selectedMenbers = this.selectedMenbers.concat(list)
+      })
+      this.selectedMenbersID = val
+      if (val.length === 0) {
+        this.selectedMenbers = []
+      }
+      let checkedCount = val.length
+      this.checkAllMember = checkedCount === this.memberList.length
+      this.isIndeterminate = checkedCount > 0 && checkedCount < this.memberList.length
+    },
+    // 已选-状态改变
+    handleCheckedSelectChange (value) {
+      console.log(value, '-------------')
     }
-    // 一下方法暂时不删除
-    // handleCheckAllMemberChange (val) {
-    //   let ids = []
-    //   this.memberList.forEach(item => {
-    //     ids.push(item.uid)
-    //   })
-    //   this.checkedMemberList = val ? ids : []
-    //   this.selectedMenbers = val ? this.memberList : []
-    //   this.isIndeterminate = false
-    // },
-    // handleCheckedMemberChange (val) {
-    //   console.log(val, '-')
-    //   this.selectedMenbers = []
-    //   val.forEach(item => {
-    //     console.log(item, 'item')
-    //     let list = this.memberList.filter(function (x) {
-    //       return x.uid === item
-    //     })
-    //     this.selectedMenbers.concat(list)
-    //   })
-    //   console.log(JSON.parse(JSON.stringify(this.selectedMenbers)), '---------')
-    //   if (val.length === 0) {
-    //     this.selectedMenbers = []
-    //   }
-    //   let checkedCount = val.length
-    //   this.checkAllMember = checkedCount === this.memberList.length
-    //   this.isIndeterminate = checkedCount > 0 && checkedCount < this.memberList.length
-    // },
-    // handleCheckAllChange (val) {
-    //   this.checkedCities = val ? cityOptions : []
-    //   this.isIndeterminate = false
-    // },
-    // handleCheckedCitiesChange (value) {
-    //   let checkedCount = value.length
-    //   this.checkAll = checkedCount === this.cities.length
-    //   this.isIndeterminates = checkedCount > 0 && checkedCount < this.cities.length
-    // }
   }
 }
 </script>
