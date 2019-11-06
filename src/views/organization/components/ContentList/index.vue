@@ -86,10 +86,12 @@ export default {
       this.contentPage.current = 1
       this.contentPage.limit = val
       this.getGrid()
+      this.$emit('getPage', this.contentPage)
     },
     handleCurrentChange (val) {
       this.contentPage.current = val
       this.getGrid()
+      this.$emit('getPage', this.contentPage)
     },
     getGrid () {
       let data = {

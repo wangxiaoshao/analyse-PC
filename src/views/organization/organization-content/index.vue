@@ -1,6 +1,5 @@
 <template>
   <div class="organization-content" v-loading="loading">
-    <node-detail :nodeInfo="nodeInfo" @closeNode="closeNodeEdit" @succese="succese"></node-detail>
     <el-dialog
       title="添加下级"
       :visible.sync="visible"
@@ -33,11 +32,10 @@
               :sortFlag="sortShowFlag"
               @cancel="getSortAction"
               @getPage="getPage"
-              :contentPage="page"
-              :succese="this.nodeInfo.succese"
+              :contentPage="currentPage"
             ></content-list>
           </el-tab-pane>
-          <el-tab-pane  :label="nodeTitle" :name="nodeTitle" v-if="content[0]">
+          <el-tab-pane label="详细信息" name="详细信息" v-if="content[0]">
             <el-table
               :data="content"
               border
@@ -101,12 +99,11 @@ import { api, urlNames } from '@src/api'
 import ContentList from '../components/ContentList/index'
 import PersonList from '../components/PersonList/index'
 import leaderList from '../components/LeaderList/index'
-import nodeDetail from '../../../components/NodeDetail/index'
 import { mapState, mapMutations } from 'vuex'
 export default {
   mixins: [ organizationEdit],
   components: {
-    ContentList, PersonList, leaderList, nodeDetail
+    ContentList, PersonList, leaderList
   },
   data () {
     return {
@@ -115,7 +112,6 @@ export default {
       fullscreenLoading: true,
       showDialogFlag: false,
       activeName: '下级设置',
-      nodeTitle: '节点信息',
       sortShowFlag: false,
       content: [],
       selectType: '',
@@ -133,52 +129,46 @@ export default {
         infoFlag: false,
         succese: false
       },
-      page: {
+      currentPage: {
         limit: 10,
         current: 1,
         total: 0
+      },
+      backInfo: {
+        backId: '',
+        backActive: ''
       }
     }
   },
   computed: {
+    isSort () {
+      return this.activeName
+    },
     ...mapState(['organization'])
   },
   created () {
     if (this.$route.query.type === 'back') {
-      this.page = Object.assign(this.page, this.organization.page)
-      this.activeName = Object.assign(this.activeName, this.organization.tabActive)
-      this.contentId = Object.assign(this.contentId, this.organization.treeId)
+      this.currentPage = Object.assign(this.currentPage, this.organization.page)
+      this.backInfo = Object.assign(this.backInfo, this.organization.backInfo)
     } else {
       this.SET_ORGANIZATION_PAGE({})
-      this.SET_ORGANIZATION_TAB_ACTIVE({})
-      this.SET_ORGANIZATION_NODEID({})
+      this.SET_ORGANIZATION_BACK_INFO({})
     }
     this.getContent()
   },
   methods: {
-    ...mapMutations(['SET_ORGANIZATION_PAGE', 'SET_ORGANIZATION_TAB_ACTIVE', 'SET_ORGANIZATION_NODEID']),
-    succese (val) { // 保存成功
-      this.nodeInfo.succese = val
-    },
+    ...mapMutations(['SET_ORGANIZATION_PAGE', 'SET_ORGANIZATION_BACK_INFO']),
     setStore () {
-      this.SET_ORGANIZATION_PAGE(this.page)
-      this.SET_ORGANIZATION_TAB_ACTIVE(this.activeName)
-      this.SET_ORGANIZATION_NODEID(this.$route.params.nodeId)
-      console.log(this.organization.page)
-      console.log(this.organization.tabActive)
-      console.log(this.organization.treeId)
-    },
-    openAddNode () {
-      this.nodeInfo.title = '添加节点'
-      this.nodeInfo.openNodeFlag = true
-      this.nodeInfo.infoFlag = false
-      this.visible = false
-    },
-    closeNodeEdit (val) {
-      this.nodeInfo.openNodeFlag = val
+      this.backInfo = {
+        backId: this.$route.params.nodeId,
+        backActive: this.activeName
+      }
+      this.SET_ORGANIZATION_PAGE(this.currentPage)
+      this.SET_ORGANIZATION_BACK_INFO(this.backInfo)
     },
     getPage (val) {
-      this.page = val
+      this.currentPage = val
+      this.SET_ORGANIZATION_PAGE(this.currentPage)
     },
     closeDialog () {
       this.visible = false
@@ -239,7 +229,6 @@ export default {
         this.content[0] = res.data
         this.nodeType = res.data.nodeType
         this.selectType = this.content.nodeType
-        console.log(this.content[0])
         this.nodeInfo.nodeType = res.data.nodeType
         this.nodeInfo.parentId = res.data.id
         // this.activeName = '下级设置'
@@ -268,27 +257,12 @@ export default {
       })
     }
   },
+  beforeRouteUpdate (to, from, next) {
+    this.contentId = to.params.nodeId
+    this.getContent()
+  },
   watch: {
-    '$route.params.nodeId': {
-      handler (val) {
-        this.contentId = val
-        this.getContent()
-      }
-    },
-    $route: {
-      handler (val) {
-        if (val.name === 'Organization' || val.query.type) {
-          alert(val.name)
-          this.$router.push({
-            name: 'OrganizationContent',
-            params: {
-              parentId: this.contentId
-            }
-          })
-        }
-      }
-    },
-    activeName: {
+    isSort: {
       handler () {
         this.sortShowFlag = false
       }

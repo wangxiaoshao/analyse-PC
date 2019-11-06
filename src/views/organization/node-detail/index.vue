@@ -47,8 +47,8 @@ export default {
         name: '',
         enable: false,
         parentName: '',
-        id: null,
-        parentId: null
+        id: '',
+        parentId: ''
       },
       rules: {
         name: [
@@ -72,18 +72,6 @@ export default {
         this.disabledFlag = true
         this.breadcrumbTitle = '节点详情'
       }
-      this.pushBreadcrumb({
-        name: this.breadcrumbTitle,
-        parent: {
-          name: 'OrganizationContent',
-          params: {
-            nodeId: this.ruleForm.parentId || this.ruleForm.parentId
-          },
-          query: {
-            type: 'back'
-          }
-        }
-      })
     },
     submitForm (ruleForm) {
       this.$refs[ruleForm].validate((valid) => {
@@ -126,6 +114,18 @@ export default {
           this.ruleForm.name = res.data.name
           this.ruleForm.id = res.data.id
         }
+        this.pushBreadcrumb({
+          name: this.breadcrumbTitle,
+          parent: {
+            name: 'OrganizationContent',
+            params: {
+              nodeId: this.ruleForm.parentId
+            },
+            query: {
+              type: 'back'
+            }
+          }
+        })
         console.log(res.data)
       }, (error) => {
         this.$message.error(`没有内容`)
