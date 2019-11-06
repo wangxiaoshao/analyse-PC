@@ -134,9 +134,9 @@ export default {
           showOverflowTooltip: false,
           minWidth: 50
         },
-        workName: {
+        dictName: {
           key: 1,
-          field: 'workName',
+          field: 'dictName',
           tooltip: false,
           formatter: this.formatter,
           label: '字典名称',
@@ -144,29 +144,29 @@ export default {
           showOverflowTooltip: false,
           minWidth: 100
         },
-        unitLeader: {
+        dictId: {
           key: 2,
-          field: 'unitLeader',
-          tooltip: true,
+          field: 'dictId',
+          tooltip: false,
           formatter: this.formatter,
           label: '字典ID',
           sortable: false,
           showOverflowTooltip: false,
           minWidth: 100
         },
-        confirmMonth: {
+        dictDescribe: {
           key: 3,
-          field: 'confirmMonth',
-          tooltip: false,
+          field: 'dictDescribe',
+          tooltip: true,
           formatter: this.formatter,
           label: '字典描述',
           sortable: false,
           showOverflowTooltip: false,
           minWidth: 100
         },
-        state: {
+        isEnable: {
           key: 4,
-          field: 'state',
+          field: 'isEnable',
           tooltip: false,
           formatter: this.formatter,
           label: '启用状态',
@@ -200,7 +200,6 @@ export default {
     }
     this.initQuery()
     this.getGrid()
-    this.getMyAuditList()
   },
   methods: {
     ...mapMutations([
@@ -233,11 +232,6 @@ export default {
     trim (str) {
       return (str + '').replace(/(\s+)$/g, '').replace(/^\s+/g, '')
     },
-    getMyAuditList () {
-      api[urlNames['getMyAuditList']]().then((res) => {
-        this.tableData = res.data
-      })
-    },
     search () {
       this.$nextTick(() => {
         this.page.current = 1
@@ -245,7 +239,6 @@ export default {
       })
     },
     getGrid () {
-      this.loading = true
       let data = {
         page: this.page.current,
         pageSize: this.page.limit
@@ -261,10 +254,10 @@ export default {
           data[key] = value
         }
       }
-      api[urlNames['getApplicationList']](data).then((res) => {
+      api[urlNames['dictionaryList']](data).then((res) => {
         this.loading = false
-        this.list = res.result.items
-        this.page.total = res.result.total_items
+        this.tableData = res.data
+        this.page.total = res.total
       }, () => {
         this.loading = false
         this.list = []
@@ -278,11 +271,7 @@ export default {
       this.configDialogVisible = true
     },
     showEditDialog (row) {
-      api[urlNames['getApplicationDetail']]({ id: row.id }).then((res) => {
-        this.currentEdit = res.result[0]
-        this.currentEdit.areaId = this.currentEdit.areaId.toString().split(',')
-        this.editDialogVisible = true
-      })
+
     },
     goConfig (row) {
       this.dialogVisible = true
@@ -291,7 +280,6 @@ export default {
       this.addDialogVisible = true
     },
     closeAddDialog () {
-      console.log(9999)
       this.dialogVisible = false
     },
     handleAction (action, row) {

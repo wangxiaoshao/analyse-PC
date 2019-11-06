@@ -1,5 +1,14 @@
 <template>
-  <div v-loading="loading">
+  <div class="node-edit">
+    <el-dialog
+    :title="nodeInfo.title"
+    :visible.sync="nodeInfo.openNodeFlag"
+    :close-on-click-modal="false"
+    :close-on-press-escape="false"
+    :modal="false"
+  >
+    <div class="dialog-close" @click="close"><i class="el-icon-close"></i></div>
+    <div v-loading="loading">
     <el-form
       :model="ruleForm"
       :rules="rules"
@@ -19,10 +28,13 @@
       <el-form-item label="申请原因" prop="reason">
         <el-input type="textarea" v-model="ruleForm.reason"></el-input>
       </el-form-item>
-      <el-form-item v-if="isShowEditFlag">
-        <el-button type="primary" @click="submitForm('ruleForm')">{{submitHtml}}</el-button>
-      </el-form-item>
     </el-form>
+  </div>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="close">取 消</el-button>
+      <el-button type="primary" v-if="isShowEditFlag" @click="submitForm('ruleForm')">{{submitHtml}}</el-button>
+    </div>
+  </el-dialog>
   </div>
 </template>
 
@@ -31,6 +43,7 @@ import { api, urlNames } from '@src/api'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
 export default {
   name: 'index',
+  props: ['nodeInfo'],
   mixins: [ handleBreadcrumb ],
   data () {
     return {
@@ -56,29 +69,8 @@ export default {
     }
   },
   methods: {
-    setBreadcrumbTitle () { // 设置面包屑title
-      if (this.$route.name === 'NodeEdit' || this.$route.name === 'NodeAdd') {
-        this.isShowEditFlag = true
-        this.disabledFlag = false
-        if (this.$route.name === 'NodeEdit') {
-          this.breadcrumbTitle = '编辑节点'
-        } else {
-          this.breadcrumbTitle = '添加节点'
-        }
-      } else {
-        this.isShowEditFlag = false
-        this.disabledFlag = true
-        this.breadcrumbTitle = '节点详情'
-      }
-      this.pushBreadcrumb({
-        name: this.breadcrumbTitle,
-        parent: {
-          name: 'OrganizationContent',
-          query: {
-            type: 'back'
-          }
-        }
-      })
+    close () {
+      this.$emit('closeNode', false)
     },
     submitForm (ruleForm) {
       this.$refs[ruleForm].validate((valid) => {
@@ -87,13 +79,15 @@ export default {
             reason: this.ruleForm.reason,
             viewNode: {
               nodeType: 1,
-              id: this.$route.params.id,
-              parentId: this.ruleForm.parentId || this.$route.params.parentId,
+              id: this.nodeInfo.id,
+              parentId: this.nodeInfo.parentId,
               name: this.ruleForm.name,
-              enable: true
+              enable: this.ruleForm.enable
             }
           }
           api[urlNames['createViewNode']](data).then((res) => {
+            this.$emit('closeNode', false)
+            this.$emit('succese', true)
             this.$message.success(`添加成功`)
             console.log(res)
           }, (error) => {
@@ -125,16 +119,16 @@ export default {
       })
     }
   },
-  mounted () {
-    this.setBreadcrumbTitle()
-  },
   created () {
+    console.log(this.nodeInfo)
     const obj = {
       enable: this.ruleForm.enable,
       reason: this.ruleForm.reason
     }
     this.oldFrom = JSON.parse(JSON.stringify(obj))
-    this.getNodeDetail()
+    /* if (this.nodeInfo.infoFlag) {
+      this.getNodeDetail()
+    } */
   },
   computed: {
     newValue () {
@@ -167,5 +161,5 @@ export default {
 </script>
 
 <style lang="less">
-
+  @import "index";
 </style>

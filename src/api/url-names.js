@@ -16,7 +16,9 @@ export default {
   // 申请审核 examine
   getAuditList: 'getAuditList', // 待我审核 、 我的申请 、 我已审核
   getInfoConfirmList: 'getInfoConfirmList', // 信息确认
+  getConfirmMemberList: 'getConfirmMemberList', // 信息确认 - 人员明细
   getAuditDetailsById: 'getAuditDetailsById', // 审批详情
+  saveAudit: 'saveAudit', // 保存审批
 
   getDepartmentNodes: 'getDepartmentNodes',
   findDepartmentList: 'findDepartmentList',
@@ -72,5 +74,9 @@ export default {
   findLeaderList: 'findLeaderList',
   // 角色列表
   roleList: 'roleList',
-  findPerson: 'findPerson'
+  findPerson: 'findPerson',
+  // 创建单位
+  createOrganization: 'createOrganization',
+  // 系统设置
+  dictionaryList: 'dictionaryList',
 }

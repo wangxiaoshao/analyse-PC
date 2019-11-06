@@ -1,31 +1,24 @@
 {
+  "total": 2,
   "message": "success",
-  "data": {
-    "typeList": [
-      {
-        "total": "2",
-        "text": "在职"
-      },
-      {
-        "total": "1",
-        "text": "挂职"
-      },
-      {
-        "total": "1",
-        "text": "兼职"
-      },
-      {
-        "total": "1",
-        "text": "调出"
-      }
-    ],
-    "confirmationOrgDto": {
+  "data": [
+    {
       "id": 1,
-      "orgName": "单位名称2",
-      "mainLeader": "渣渣辉",
-      "leaderNumber": 2
+      "orgName": "开发部",
+      "leaderName": "刘德华",
+      "month": 201908,
+      "confirmTime": "2019-10-29",
+      "confirmName": "渣渣辉"
+    },
+    {
+      "id": 2,
+      "orgName": "开发部",
+      "leaderName": "张学友",
+      "month": 201909,
+      "confirmTime": "2019-10-29",
+      "confirmName": "渣渣辉"
     }
-  },
+  ],
   "status": 0,
-  "timestamp": "2019-10-30 16:09:47"
+  "timestamp": "2019-10-30 09:52:42"
 }
