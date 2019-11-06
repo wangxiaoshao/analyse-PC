@@ -120,14 +120,14 @@ export default {
         value: '选项1',
         label: '已确认'
       },
-        {
-          value: '选项2',
-          label: '未确认'
-        },
-        {
-          value: '选项3',
-          label: '待确认'
-        }],
+      {
+        value: '选项2',
+        label: '未确认'
+      },
+      {
+        value: '选项3',
+        label: '待确认'
+      }],
       statusValue: '',
       searchTimeValue: '',
       list: [],
@@ -180,9 +180,9 @@ export default {
           showOverflowTooltip: false,
           minWidth: 100
         },
-        mainLeader: {
+        leaderName: {
           key: 2,
-          field: 'mainLeader',
+          field: 'leaderName',
           tooltip: true,
           formatter: this.formatter,
           label: '单位主要领导',
@@ -190,9 +190,9 @@ export default {
           showOverflowTooltip: false,
           minWidth: 100
         },
-        confirmMonth: {
+        month: {
           key: 3,
-          field: 'confirmMonth',
+          field: 'month',
           tooltip: false,
           formatter: this.formatter,
           label: '确认月份',
@@ -220,9 +220,9 @@ export default {
           showOverflowTooltip: false,
           minWidth: 100
         },
-        confirmStaff: {
+        confirmName: {
           key: 6,
-          field: 'confirmStaff',
+          field: 'confirmName',
           tooltip: false,
           formatter: this.formatter,
           label: '确认人员',
@@ -232,7 +232,7 @@ export default {
         }
       },
       tableData: [],
-      tableHeight: 200,
+      tableHeight: null,
       operateWidth: 100,
       tableCheckbox: true,
       operate: true
@@ -255,7 +255,6 @@ export default {
     }
     this.initQuery()
     this.getGrid()
-    this.getMyAuditList()
   },
   methods: {
     ...mapMutations([
@@ -285,11 +284,6 @@ export default {
     trim (str) {
       return (str + '').replace(/(\s+)$/g, '').replace(/^\s+/g, '')
     },
-    getMyAuditList () {
-      api[urlNames['getInfoConfirmList']]().then((res) => {
-        this.tableData.push(res.data.confirmationOrgDto)
-      })
-    },
     search () {
       this.$nextTick(() => {
         this.page.current = 1
@@ -300,7 +294,7 @@ export default {
       this.loading = true
       let data = {
         page: this.page.current,
-        pageSize: this.page.limit
+        limit: this.page.limit
       }
       let keys = Object.keys(this.searchQuery)
       let len = keys.length
@@ -313,9 +307,9 @@ export default {
           data[key] = value
         }
       }
-      api[urlNames['getApplicationList']](data).then((res) => {
+      api[urlNames['getInfoConfirmList']](data).then((res) => {
         this.loading = false
-        this.list = res.result.items
+        this.tableData = res.data
         this.page.total = res.result.total_items
       }, () => {
         this.loading = false

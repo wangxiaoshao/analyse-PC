@@ -33,14 +33,14 @@ export default {
         value: '选项1',
         label: '已确认'
       },
-        {
-          value: '选项2',
-          label: '未确认'
-        },
-        {
-          value: '选项3',
-          label: '待确认'
-        }],
+      {
+        value: '选项2',
+        label: '未确认'
+      },
+      {
+        value: '选项3',
+        label: '待确认'
+      }],
       tableConfig: {
         order: {
           key: 0,
@@ -72,9 +72,9 @@ export default {
           showOverflowTooltip: false,
           minWidth: 100
         },
-        confirmMonth: {
+        month: {
           key: 3,
-          field: 'confirmMonth',
+          field: 'month',
           tooltip: false,
           formatter: this.formatter,
           label: '确认月份',
@@ -127,7 +127,6 @@ export default {
   created () {
     this.initQuery()
     this.getGrid()
-    this.getMyAuditList()
   },
   mounted () {
     this.pushBreadcrumb({
@@ -168,11 +167,6 @@ export default {
     trim (str) {
       return (str + '').replace(/(\s+)$/g, '').replace(/^\s+/g, '')
     },
-    getMyAuditList () {
-      api[urlNames['getInfoConfirmList']]().then((res) => {
-        this.tableData.push(res.data.confirmationOrgDto)
-      })
-    },
     search () {
       this.$nextTick(() => {
         this.page.current = 1
@@ -196,11 +190,10 @@ export default {
           data[key] = value
         }
       }
-      api[urlNames['getApplicationList']](data).then((res) => {
+      api[urlNames['getConfirmMemberList']](data).then((res) => {
         this.loading = false
-        this.list = res.result.items
-        this.page.total = res.result.total_items
-      }, () => {
+        this.tableData = res.data
+        this.page.total = res.total
         this.loading = false
         this.list = []
         this.page.total = 0

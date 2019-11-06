@@ -16,12 +16,12 @@
             align="center"
             prop="name"
             label="原值">
-            <template slot-scope="scope">
+            <template slot-scope="scope" v-if="scope.row.changeFields.name">
               <div>{{scope.row.changeFields.name.beforeChangeValue}}</div>
             </template>
           </el-table-column>
           <el-table-column label="变更值"  align="center">
-            <template slot-scope="scope">
+            <template slot-scope="scope" v-if="scope.row.changeFields.name">
               <div>{{scope.row.changeFields.name.afterChangeValue}}</div>
             </template>
           </el-table-column>
@@ -31,12 +31,14 @@
             align="center"
             prop="name"
             label="原值">
-            <template slot-scope="scope">
+            <template slot-scope="scope" v-if="scope.row.changeFields.phone">
               <div>{{scope.row.changeFields.phone.beforeChangeValue}}</div>
             </template>
           </el-table-column>
-          <el-table-column label="变更值"  align="center">
-            <template slot-scope="scope">
+          <el-table-column
+            label="变更值"
+            align="center">
+            <template slot-scope="scope" v-if="scope.row.changeFields.phone">
               <div>{{scope.row.changeFields.phone.afterChangeValue}}</div>
             </template>
           </el-table-column>
@@ -112,7 +114,6 @@ export default {
     }
   },
   mounted () {
-    console.log('exD', this.examine.backPath)
     this.pushBreadcrumb({
       name: this.isWaitApproval ? '去审核' : '查看明细',
       parent: {
@@ -126,6 +127,24 @@ export default {
   },
   methods: {
     ...mapMutations(['SET_APPLICATION_PAGE', 'SET_EXAMINE_DETAIL']),
+    getGrid () {
+      api[urlNames['getAuditDetailsById']]({
+        id: this.$route.query.id,
+        type: this.$route.query.type
+      }).then((res) => {
+        let arrLen = res.data.changeFields.length,
+          obj = {}
+        for (let i = 0; i < arrLen; i++) {
+          let key = res.data.changeFields[i].fieldName,
+            val = res.data.changeFields[i]
+          obj[key] = val
+        }
+        res.data.changeFields = obj
+        this.gridData.push(res.data)
+      }, () => {
+        this.gridData = []
+      })
+    },
     passExamine () {
       this.editDialogVisible = true
     },
@@ -146,26 +165,12 @@ export default {
     jumpDetailPage () {
       this.$router.push({
         name: 'DepartmentDetail',
-        params: { id: 1910291139 }
-      })
-    },
-    getGrid () {
-      api[urlNames['getAuditDetailsById']]({
-        id: this.$route.id
-      }).then((res) => {
-        let arrLen = res.data.changeFields.length,
-          obj = {}
-        for (let i = 0; i < arrLen; i++) {
-          let key = res.data.changeFields[i].fieldName,
-            val = res.data.changeFields[i]
-          obj[key] = val
+        params: {
+          id: this.$route.query.id,
+          type: this.$route.query.type
         }
-        res.data.changeFields = obj
-        this.gridData.push(res.data)
-      }, () => {
-        this.gridData = []
       })
-    },
+    }
   }
 }
 </script>

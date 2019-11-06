@@ -13,10 +13,17 @@ export default {
   },
   [urlNames.getInfoConfirmList]: { // 信息确认
     type: 'get',
-    url: '/api/jg_manage/confirmation/confirm',
+    url: '/api/jg_manage/confirmation/findConfirmationList',
     keepOriginResponse: true,
     serve: 'organizationManagePC',
     mock: 'examine/getInfoConfirmList.json'
+  },
+  [urlNames.getConfirmMemberList]: { // 信息确认-人员明细
+    type: 'get',
+    url: '/api/jg_manage/confirmation/findConfirmationMember',
+    keepOriginResponse: true,
+    serve: 'organizationManagePC',
+    mock: 'examine/getConfirmMemberList.json'
   },
   [urlNames.getAuditDetailsById]: { // 审批详情
     type: 'get',

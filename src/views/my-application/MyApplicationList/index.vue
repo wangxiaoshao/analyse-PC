@@ -165,7 +165,7 @@ export default {
         }
       },
       tableData: [],
-      tableHeight: 200,
+      tableHeight: null,
       operateWidth: 100,
       tableCheckbox: true,
       operate: true
@@ -222,7 +222,7 @@ export default {
       this.loading = true
       let data = {
         page: this.page.current,
-        pageSize: this.page.limit
+        limit: this.page.limit
       }
       let keys = Object.keys(this.searchQuery)
       let len = keys.length
@@ -253,7 +253,10 @@ export default {
       this.SET_EXAMINE_BACKPATH(this.$route.name) // ExamineDetails页面需要用到的当前列表中点击项的数据
       this.$router.push({
         name: 'MyApplicationDetail',
-        query: { id: row.id }
+        query: {
+          id: row.id,
+          type: row.type
+        }
       })
     },
   }

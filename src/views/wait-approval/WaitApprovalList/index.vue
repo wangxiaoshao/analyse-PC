@@ -145,7 +145,7 @@ export default {
         }
       },
       tableData: [],
-      tableHeight: 200,
+      tableHeight: null,
       operateWidth: 100,
       tableCheckbox: true,
       operate: true
@@ -195,14 +195,14 @@ export default {
     search () {
       this.$nextTick(() => {
         this.page.current = 1
-        this.getGrid()
+        // this.getGrid()
       })
     },
     getGrid () {
       this.loading = true
       let data = {
         page: this.page.current,
-        pageSize: this.page.limit
+        limit: this.page.limit
       }
       let keys = Object.keys(this.searchQuery)
       let len = keys.length
@@ -233,7 +233,10 @@ export default {
       this.SET_EXAMINE_BACKPATH(this.$route.name)
       this.$router.push({
         name: 'WaitApprovalDetail',
-        query: { id: row.id }
+        query: {
+          id: row.id,
+          type: row.type
+        }
       })
     },
   }

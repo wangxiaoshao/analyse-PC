@@ -76,11 +76,14 @@ export default {
               // this.$emit('refreshList')
               this.$router.push({
                 name: 'ApprovedDetail',
-                query: { id: obj.id }
+                query: {
+                  id: this.$route.query.id,
+                  type: this.$route.query.type
+                }
               })
             }
           }, (error) => {
-            this.$message.error('审批失败，请稍后重试')
+
           })
         }
       })
