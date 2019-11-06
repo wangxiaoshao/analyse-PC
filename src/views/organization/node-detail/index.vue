@@ -114,12 +114,18 @@ export default {
           this.ruleForm.name = res.data.name
           this.ruleForm.id = res.data.id
         }
+        let backId = ''
+        if (this.ruleForm.parentId === '-1') {
+          backId = this.ruleForm.id
+        } else {
+          backId = this.ruleForm.parentId
+        }
         this.pushBreadcrumb({
           name: this.breadcrumbTitle,
           parent: {
             name: 'OrganizationContent',
             params: {
-              nodeId: this.ruleForm.parentId
+              nodeId: backId
             },
             query: {
               type: 'back'

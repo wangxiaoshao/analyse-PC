@@ -98,6 +98,9 @@ export default {
   },
   created () {
     this.findLabelList(-1)
+  },
+  beforeRouteUpdate (to, from, next) {
+    this.findLabelList(-1)
   }
 }
 </script>
