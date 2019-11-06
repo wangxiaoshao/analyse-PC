@@ -5,7 +5,7 @@
         <div style="color: #909399;padding-left: 10px;padding-top: 16px">审批编码：2029200000009</div>
       </el-col>
       <el-col :span="12" class="text-right">
-        <el-button type="info" @click="jumpDetailPage">查看详情</el-button>
+        <el-button type="info" @click="jumpDetailPage($route.query.type)">查看详情</el-button>
       </el-col>
     </el-row>
     <!--表格-->
@@ -162,9 +162,26 @@ export default {
         this.getGrid()
       })
     },
-    jumpDetailPage () {
+    jumpDetailPage (type) { // type = 1 || 3 || 4
+      let name = ''
+      switch (type) {
+        case 1:
+          name = 'PersonDetail'
+          break
+        case 3:
+          name = 'DepartmentDetail'
+          break
+        case 4:
+          name = 'UnitDetail'
+          break
+        default :
+          break;
+      }
+      switch (type) {
+
+      }
       this.$router.push({
-        name: 'DepartmentDetail',
+        name: name,
         params: {
           id: this.$route.query.id,
           type: this.$route.query.type

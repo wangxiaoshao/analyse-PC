@@ -7,26 +7,26 @@
                :close-on-press-escape="false"
                :show-close="false">
       <div class="dialog-close" @click="closeDialog"><i class="el-icon-close"></i></div>
-        <!--表单-->
-      <el-form :model="form">
-        <el-form-item label="字段名称" :label-width="formLabelWidth">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="字段描述" :label-width="formLabelWidth">
-          <el-input v-model="form.desc" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="启用状态" :label-width="formLabelWidth">
-          <el-switch
-            v-model="stateValue"
-            active-color="#13ce66"
-            inactive-color="#ff4949">
-          </el-switch>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="closeDialog">取 消</el-button>
-        <el-button type="primary" @click="passExamine = false">确 定</el-button>
-      </div>
+      <el-scrollbar :style="scrollStyle">
+        <el-input
+          class="input-new-tag"
+          v-if="inputVisible"
+          v-model="inputValue"
+          ref="saveTagInput"
+          size="small"
+          @keyup.enter.native="handleInputConfirm"
+          @blur="handleInputConfirm"
+        >
+        </el-input>
+        <el-button v-else class="button-new-tag" size="small" @click="showInput">+ 请输入名称</el-button>
+        <el-tag
+          :key="index"
+          v-for="(tag, index) in dynamicTags"
+          :disable-transitions="false">
+          <span :style="{marginRight: '15px', color: '#95c9ff'}">{{index + 1}}</span>
+          <span>{{tag}}</span>
+        </el-tag>
+      </el-scrollbar>
     </el-dialog>
   </div>
 </template>
@@ -40,11 +40,9 @@ export default {
   components: {},
   data () {
     return {
-      form: {
-        name: '',
-        state: false,
-        desc: ''
-      },
+      dynamicTags: ['正厅级', '副厅级'],
+      inputVisible: false,
+      inputValue: '',
       formLabelWidth: '120px',
       stateValue: ''
     }
@@ -52,14 +50,38 @@ export default {
   mounted () {
   },
   computed: {
-    ...mapState(['app'])
+    ...mapState(['app']),
+    scrollStyle () {
+      return {
+        maxHeight: this.$store.state.app.windowHeight / 2 + 'px'
+      }
+    }
   },
   methods: {
+    handleClose (tag) {
+      this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1)
+    },
+
+    showInput () {
+      this.inputVisible = true
+      this.$nextTick(_ => {
+        this.$refs.saveTagInput.$refs.input.focus()
+      });
+    },
+
+    handleInputConfirm () {
+      let inputValue = this.inputValue
+      if (inputValue) {
+        this.dynamicTags.push(inputValue)
+      }
+      this.inputVisible = false
+      this.inputValue = ''
+    },
     passExamine () {
       this.dialogVisible = true
     },
     closeDialog () {
-      this.$emit('close', 'dialogVisible')
+      this.$emit('close', 'dicDialogVisible')
     },
     submitForm (form) {
       this.$refs[form].validate((valid) => {
@@ -90,3 +112,6 @@ export default {
   }
 }
 </script>
+<style lang="less">
+  @import "index";
+</style>
