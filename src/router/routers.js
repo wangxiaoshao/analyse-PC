@@ -1,7 +1,4 @@
-const Application = () => import('@src/views/application/index.vue')
-const ApplicationList = () => import('@src/views/application/ApplicationList/index.vue')
-const ApplicationConfig = () => import('@src/views/application/ApplicationConfig/index.vue')
-
+import organization from './modules/organization'
 
 // 申请审核
 const WaitApproval = () => import('@src/views/wait-approval/index.vue')
@@ -23,13 +20,6 @@ const DataQuery = () => import('@src/views/statistics/data-query/index.vue')
 const UnitQuery = () => import('@src/views/statistics/data-query/unit-query/index.vue')
 const DepartmentQuery = () => import('@src/views/statistics/data-query/department-query/index.vue')
 const MemberQuery = () => import('@src/views/statistics/data-query/member-query/index.vue')
-
-const Organization = () => import('@src/views/organization/index.vue')
-const OrganizationContent = () => import('@src/views/organization/organization-content/index.vue')
-const NodeDetail = () => import('@src/views/organization/node-detail/index.vue')
-const UnitDetail = () => import('@src/views/organization/unit-detail/index.vue')
-const DepartmentDetail = () => import('@src/views/organization/department-detail/index.vue')
-const PersonDetail = () => import('@src/views/organization/person-detail/index.vue')
 
 const Shared = () => import('@src/views/shared/index.vue')
 const ViewManagement = () => import('@src/views/shared/view-management/index.vue')
@@ -56,11 +46,7 @@ const RightsManagement = () => import('@src/views/shared/rights-management/index
 const DictionaryManage = () => import('@src/views/system-setting/dictionary-manage/index.vue')
 /* 路由 */
 export default [
-  {
-    path: '/',
-    name: 'default',
-    redirect: '/organization'
-  },
+  ...organization,
   // 角色管理
   {
     path: '/role-manage',
@@ -196,36 +182,6 @@ export default [
       }
     ]
   },
-  // 组织机构详情页
-  {
-    path: '/organizationDetail',
-    name: 'OrganizationDetail',
-    component: OrganizationContent
-  },
-  // 节点详情
-  {
-    path: '/nodeDetail/:id',
-    name: 'NodeDetail',
-    component: NodeDetail
-  },
-  // 单位详情
-  {
-    path: '/unitDetail/:id',
-    name: 'UnitDetail',
-    component: UnitDetail
-  },
-  // 部门详情
-  {
-    path: '/departmentDetail/:id',
-    name: 'DepartmentDetail',
-    component: DepartmentDetail
-  },
-  // 人员详情
-  {
-    path: '/personDetail/:id',
-    name: 'PersonDetail',
-    component: PersonDetail
-  },
   // 权限管理
   {
     path: '/rights-management',
@@ -271,51 +227,6 @@ export default [
         path: '/dictionary-manage',
         name: 'DictionaryManage',
         component: DictionaryManage
-      }
-    ]
-  },
-  // 组织机构管理
-  {
-    path: '/organization',
-    name: 'Organization',
-    component: Organization,
-    children: [
-      {
-        path: 'organization-content/:nodeId',
-        name: 'OrganizationContent',
-        component: OrganizationContent
-      }, {
-        path: 'nodeEdit/:id',
-        name: 'NodeEdit',
-        component: NodeDetail
-      }, {
-        path: 'unitEdit/:id',
-        name: 'UnitEdit',
-        component: UnitDetail
-      }, {
-        path: 'departmentEdit/:id',
-        name: 'DepartmentEdit',
-        component: DepartmentDetail
-      }, {
-        path: 'personEdit/:id',
-        name: 'PersonEdit',
-        component: PersonDetail
-      }, {
-        path: 'nodeAdd/:parentId',
-        name: 'NodeAdd',
-        component: NodeDetail
-      }, {
-        path: 'unitAdd/:parentId',
-        name: 'UnitAdd',
-        component: UnitDetail
-      }, {
-        path: 'departmentAdd/:parentId',
-        name: 'DepartmentAdd',
-        component: DepartmentDetail
-      }, {
-        path: 'personAdd/:parentId',
-        name: 'PersonAdd',
-        component: PersonDetail
       }
     ]
   }
