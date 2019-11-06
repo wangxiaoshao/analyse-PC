@@ -54,11 +54,11 @@
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      :current-page="page.current"
+      :current-page="contentPage.current"
       :page-sizes="[10, 30, 50, 100]"
-      :page-size="page.limit"
+      :page-size="contentPage.limit"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="page.total">
+      :total="contentPage.total">
     </el-pagination>
   </div>
 </template>
@@ -76,7 +76,8 @@ export default {
       list: [],
       sortListFlag: false,
       isShowEditFlag: true,
-      sortList: []
+      sortList: [],
+      nodeId: this.$route.params.nodeId
     }
   },
   props: ['sortFlag', 'contentPage', 'succese'],
@@ -85,22 +86,25 @@ export default {
       this.contentPage.current = 1
       this.contentPage.limit = val
       this.getGrid()
+      this.$emit('getPage', this.contentPage)
     },
     handleCurrentChange (val) {
       this.contentPage.current = val
       this.getGrid()
+      this.$emit('getPage', this.contentPage)
     },
     getGrid () {
       let data = {
         viewId: -1,
         page: this.contentPage.current,
-        parentId: this.$route.params.nodeId,
+        parentId: this.nodeId,
         limit: this.contentPage.limit
       }
       this.loading = true
       api[urlNames['findViewNodeList']](data).then((res) => {
         this.loading = false
         this.list = res.data
+        this.contentPage.total = res.total
       }, () => {
         this.loading = false
         this.list = []
@@ -183,19 +187,10 @@ export default {
     },
     '$route.params.nodeId': {
       handler (val) {
+        this.nodeId = val
         this.getGrid()
       },
-      deep: true,
-      immediate: true
-    },
-    succese: {
-      handler (val) {
-        if (val === true) {
-          this.getGrid()
-        }
-      },
-      deep: true,
-      immediate: true
+      deep: true
     }
   }
 }
