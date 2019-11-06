@@ -156,5 +156,17 @@ export default {
     showLoading: false, // 该请求发送时，是否显示全局loading
     serve: 'organizationManagePC',
     mock: '/findPerson.json' // development模式下，本地mock数据
+  },
+  // 创建单位
+  [urlNames.createOrganization]: {
+    type: 'post',
+    url: '/api/jg_manage/organ/createOrganization',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    showLoading: false, // 该请求发送时，是否显示全局loading
+    serve: 'organizationManagePC',
+    mock: '/createOrganization.json', // development模式下，本地mock数据
+    headers: {
+      'Content-Type': 'application/json'
+    }
   }
 }

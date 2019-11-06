@@ -77,6 +77,7 @@ import handleTable from '@src/mixins/handle-table'
 import { api, urlNames } from '@src/api'
 export default {
   mixins: [handleTable],
+  props: ['nodeInfo', 'contentPage'],
   data () {
     return {
       sortFlag: false,
@@ -87,8 +88,8 @@ export default {
   methods: {
     getGrid () {
       let data = {
-        page: this.page.current,
-        pageSize: this.page.limit
+        nodeType: '1',
+        nodeId: this.nodeInfo.nodeId
       }
       this.loading = true
       api[urlNames['findLeaderList']](data).then((res) => {

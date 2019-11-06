@@ -72,6 +72,8 @@ export default {
   // 角色列表
   roleList: 'roleList',
   findPerson: 'findPerson',
+  // 创建单位
+  createOrganization: 'createOrganization',
   // 系统设置
   dictionaryList: 'dictionaryList',
 }
