@@ -1,4 +1,4 @@
-
+// TODO 所有的url路径，单词与单词之间，用断线链接，不采用驼峰式
 const Organization = () => import('@src/views/organization/index.vue')
 const OrganizationContent = () => import('@src/views/organization/organization-content/index.vue')
 const NodeDetail = () => import('@src/views/organization/node-detail/index.vue')

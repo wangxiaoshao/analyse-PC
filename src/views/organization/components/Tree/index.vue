@@ -96,6 +96,7 @@ export default {
   created () {
     this.findLabelList(-1)
   },
+  // TODO，采用beforeRouteUpdate函数代替
   watch: {
     $route: {
       handler (val) {
