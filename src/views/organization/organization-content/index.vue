@@ -1,6 +1,6 @@
 <template>
   <div class="organization-content" v-loading="loading">
-    <node-detail :nodeInfo="nodeInfo" @closeNode="closeNodeEdit"></node-detail>
+    <node-detail :nodeInfo="nodeInfo" @closeNode="closeNodeEdit" @succese="succese"></node-detail>
     <el-dialog
       title="添加下级"
       :visible.sync="visible"
@@ -34,6 +34,7 @@
               @cancel="getSortAction"
               @getPage="getPage"
               :contentPage="page"
+              :succese="this.nodeInfo.succese"
             ></content-list>
           </el-tab-pane>
           <el-tab-pane  :label="nodeTitle" :name="nodeTitle" v-if="content[0]">
@@ -129,7 +130,8 @@ export default {
         nodeType: 1,
         parentId: '',
         id: '',
-        infoFlag: false
+        infoFlag: false,
+        succese: false
       },
       page: {
         limit: 10,
@@ -146,6 +148,9 @@ export default {
   },
   methods: {
     ...mapMutations(['SET_ORGANIZATION_PAGE', 'SET_ORGANIZATION_TAB_ACTIVE', 'SET_ORGANIZATION_NODEID']),
+    succese (val) { // 保存成功
+      this.nodeInfo.succese = val
+    },
     openAddNode () {
       this.nodeInfo.title = '添加节点'
       this.nodeInfo.openNodeFlag = true
@@ -170,7 +175,7 @@ export default {
         }
       })
     },
-   /* goAddNode () {
+    /* goAddNode () {
       this.setStore()
       this.$router.push({
         name: 'NodeAdd',

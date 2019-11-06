@@ -87,6 +87,7 @@ export default {
           }
           api[urlNames['createViewNode']](data).then((res) => {
             this.$emit('closeNode', false)
+            this.$emit('succese', true)
             this.$message.success(`添加成功`)
             console.log(res)
           }, (error) => {
@@ -119,15 +120,15 @@ export default {
     }
   },
   created () {
-    console.log(this.nodeInfo);
+    console.log(this.nodeInfo)
     const obj = {
       enable: this.ruleForm.enable,
       reason: this.ruleForm.reason
     }
     this.oldFrom = JSON.parse(JSON.stringify(obj))
-   /* if (this.nodeInfo.infoFlag) {
+    /* if (this.nodeInfo.infoFlag) {
       this.getNodeDetail()
-    }*/
+    } */
   },
   computed: {
     newValue () {
