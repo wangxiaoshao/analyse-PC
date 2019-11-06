@@ -77,6 +77,9 @@ export default {
       }).then((res) => {
         this.total = parseInt(res.total)
         this.labelList = res.data
+        this.id = res.data[0].id
+        this.setTreeId()
+        this.$emit('getDefault', this.id)
       })
     },
     // 获取子节点
@@ -95,16 +98,6 @@ export default {
   },
   created () {
     this.findLabelList(-1)
-  },
-  watch: {
-    $route: {
-      handler (val) {
-        if (val.name === 'Organization' || val.query.type === 'back') {
-          this.getTree()
-        }
-      },
-      deep: true
-    }
   }
 }
 </script>

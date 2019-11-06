@@ -7,9 +7,9 @@
       width="30%"
       :center="true">
       <div class="add-content">
-        <el-button @click="openAddNode" v-if="showAddNodeFlag">添加节点</el-button>
-        <el-button v-if="showAddDepartmentFlag">添加部门</el-button>
-        <el-button v-if="showAddUnitFlag">添加单位</el-button>
+        <el-button @click="goAddNode" v-if="showAddNodeFlag">添加节点</el-button>
+        <el-button v-if="showAddDepartmentFlag" @click="goAddDepartment">添加部门</el-button>
+        <el-button v-if="showAddUnitFlag" @click="goAddUnit">添加单位</el-button>
       </div>
     </el-dialog>
     <div class="organization-wrap">
@@ -144,12 +144,29 @@ export default {
     ...mapState(['organization'])
   },
   created () {
+    if (this.$route.query.type === 'back') {
+      this.page = Object.assign(this.page, this.organization.page)
+      this.activeName = Object.assign(this.activeName, this.organization.tabActive)
+      this.contentId = Object.assign(this.contentId, this.organization.treeId)
+    } else {
+      this.SET_ORGANIZATION_PAGE({})
+      this.SET_ORGANIZATION_TAB_ACTIVE({})
+      this.SET_ORGANIZATION_NODEID({})
+    }
     this.getContent()
   },
   methods: {
     ...mapMutations(['SET_ORGANIZATION_PAGE', 'SET_ORGANIZATION_TAB_ACTIVE', 'SET_ORGANIZATION_NODEID']),
     succese (val) { // 保存成功
       this.nodeInfo.succese = val
+    },
+    setStore () {
+      this.SET_ORGANIZATION_PAGE(this.page)
+      this.SET_ORGANIZATION_TAB_ACTIVE(this.activeName)
+      this.SET_ORGANIZATION_NODEID(this.$route.params.nodeId)
+      console.log(this.organization.page)
+      console.log(this.organization.tabActive)
+      console.log(this.organization.treeId)
     },
     openAddNode () {
       this.nodeInfo.title = '添加节点'
@@ -175,7 +192,7 @@ export default {
         }
       })
     },
-    /* goAddNode () {
+    goAddNode () {
       this.setStore()
       this.$router.push({
         name: 'NodeAdd',
@@ -202,7 +219,7 @@ export default {
         }
       })
       this.visible = false
-    }, */
+    },
     closeAddDialog (type) {
       this.showDialogFlag = type
     },
@@ -216,10 +233,9 @@ export default {
     },
     getContent () {
       this.loading = true
-      const data = {
+      api[urlNames['findViewNodeById']]({
         id: this.contentId
-      }
-      api[urlNames['findViewNodeById']](data).then((res) => {
+      }).then((res) => {
         this.content[0] = res.data
         this.nodeType = res.data.nodeType
         this.selectType = this.content.nodeType
@@ -257,6 +273,19 @@ export default {
       handler (val) {
         this.contentId = val
         this.getContent()
+      }
+    },
+    $route: {
+      handler (val) {
+        if (val.name === 'Organization' || val.query.type) {
+          alert(val.name)
+          this.$router.push({
+            name: 'OrganizationContent',
+            params: {
+              parentId: this.contentId
+            }
+          })
+        }
       }
     },
     activeName: {
