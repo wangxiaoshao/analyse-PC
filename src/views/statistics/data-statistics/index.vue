@@ -7,16 +7,16 @@
           <el-row :gutter="10" type="flex">
             <el-col :span="6">
               <el-select
-                v-model="searchQuery.areaId"
+                v-model="selected.type"
                 filterable
                 clearable
                 @change="search"
                 placeholder="今天">
                 <el-option
-                  v-for="item in areaList"
+                  v-for="item in dataList"
                   :key="item.id"
                   :label="item.name"
-                  :value="item.code">
+                  :value="item.type">
                 </el-option>
               </el-select>
             </el-col>
@@ -136,15 +136,14 @@ export default {
         content: '陈宇 登陆系统备份 4',
         timestamp: '2018-04-11'
       }],
-      areaList: [
-        { id: 1, name: '今天', code: 1910291111 },
-        { id: 2, name: '昨天', code: 1910291112 },
-        { id: 3, name: '一周', code: 1910291113 },
-        { id: 4, name: '一月', code: 1910291114 }
+      dataList: [
+        { id: 1, name: '今天', type: 0 },
+        { id: 2, name: '昨天', type: 1 },
+        { id: 3, name: '一周', type: 2 },
+        { id: 4, name: '一月', type: 3 }
       ],
-      searchQuery: {
-        areaId: '',
-        keyword: ''
+      selected: {
+        type: 0
       },
       activeName: 'unit',
       countData: []
@@ -158,9 +157,13 @@ export default {
   },
   methods: {
     ...mapMutations(['SET_APPLICATION_PAGE', 'SET_APPLICATION_SEARCH_QUERY']),
-    search () {},
+    search () {
+      this.initDataStatistics()
+    },
     initDataStatistics () {
-      api[urlNames['getStatistiscManageDto']]().then((res) => {
+      api[urlNames['getStatistiscManageDto']]({
+        type: this.selected.type
+      }).then((res) => {
         this.countData = res.data
       })
     },

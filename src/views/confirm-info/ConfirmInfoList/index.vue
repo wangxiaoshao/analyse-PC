@@ -2,7 +2,7 @@
   <div class="site-module mod-dictionary">
     <!--操作row-->
     <el-row class="operator-row">
-      <el-button size="small" type="primary">确认机构人员信息</el-button>
+      <el-button size="small" type="primary" @click="dialogVisible = true">确认机构人员信息</el-button>
     </el-row>
     <el-row class="operator-row">
       <el-col :span="18">
@@ -120,14 +120,14 @@ export default {
         value: '选项1',
         label: '已确认'
       },
-        {
-          value: '选项2',
-          label: '未确认'
-        },
-        {
-          value: '选项3',
-          label: '待确认'
-        }],
+      {
+        value: '选项2',
+        label: '未确认'
+      },
+      {
+        value: '选项3',
+        label: '待确认'
+      }],
       statusValue: '',
       searchTimeValue: '',
       list: [],
@@ -180,9 +180,9 @@ export default {
           showOverflowTooltip: false,
           minWidth: 100
         },
-        mainLeader: {
+        leaderName: {
           key: 2,
-          field: 'mainLeader',
+          field: 'leaderName',
           tooltip: true,
           formatter: this.formatter,
           label: '单位主要领导',
@@ -190,9 +190,9 @@ export default {
           showOverflowTooltip: false,
           minWidth: 100
         },
-        confirmMonth: {
+        month: {
           key: 3,
-          field: 'confirmMonth',
+          field: 'month',
           tooltip: false,
           formatter: this.formatter,
           label: '确认月份',
@@ -220,9 +220,9 @@ export default {
           showOverflowTooltip: false,
           minWidth: 100
         },
-        confirmStaff: {
+        confirmName: {
           key: 6,
-          field: 'confirmStaff',
+          field: 'confirmName',
           tooltip: false,
           formatter: this.formatter,
           label: '确认人员',
@@ -232,7 +232,7 @@ export default {
         }
       },
       tableData: [],
-      tableHeight: 200,
+      tableHeight: null,
       operateWidth: 100,
       tableCheckbox: true,
       operate: true
@@ -255,7 +255,6 @@ export default {
     }
     this.initQuery()
     this.getGrid()
-    this.getMyAuditList()
   },
   methods: {
     ...mapMutations([
@@ -285,11 +284,6 @@ export default {
     trim (str) {
       return (str + '').replace(/(\s+)$/g, '').replace(/^\s+/g, '')
     },
-    getMyAuditList () {
-      api[urlNames['getInfoConfirmList']]().then((res) => {
-        this.tableData.push(res.data.confirmationOrgDto)
-      })
-    },
     search () {
       this.$nextTick(() => {
         this.page.current = 1
@@ -300,7 +294,7 @@ export default {
       this.loading = true
       let data = {
         page: this.page.current,
-        pageSize: this.page.limit
+        limit: this.page.limit
       }
       let keys = Object.keys(this.searchQuery)
       let len = keys.length
@@ -313,9 +307,9 @@ export default {
           data[key] = value
         }
       }
-      api[urlNames['getApplicationList']](data).then((res) => {
+      api[urlNames['getInfoConfirmList']](data).then((res) => {
         this.loading = false
-        this.list = res.result.items
+        this.tableData = res.data
         this.page.total = res.result.total_items
       }, () => {
         this.loading = false
@@ -337,7 +331,13 @@ export default {
       })
     },
     goConfig (row) {
-      this.dialogVisible = true
+      this.SET_EXAMINE_BACKPATH(this.$route.name)
+      console.log('999',this.examine.backPath)
+
+      this.$router.push({
+        name: 'ConfirmInfoDetail',
+        query: { id: row.id }
+      })
     },
     showAddDialog () {
       this.addDialogVisible = true

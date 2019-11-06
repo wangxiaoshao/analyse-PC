@@ -4,22 +4,20 @@
     <el-row class="operator-row">
       <el-col :span="18">
         <el-row :gutter="10" type="flex">
-          <div class="block">
-            <el-date-picker
-              v-model="searchTimeValue"
-              type="month"
-              placeholder="选择月">
-            </el-date-picker>
-          </div>
+          <!--<el-col :span="6">-->
+          <!--<el-select v-model="searchQuery.id" filterable clearable @change="search" placeholder="单位">-->
+          <!--<el-option-->
+          <!--v-for="item in areaList"-->
+          <!--:key="item.id"-->
+          <!--:label="item.name"-->
+          <!--:value="item.code">-->
+          <!--</el-option>-->
+          <!--</el-select>-->
+          <!--</el-col>-->
           <el-col :span="8">
-            <el-select v-model="statusValue" clearable placeholder="选择确认状态">
-              <el-option
-                v-for="item in statusOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-select>
+            <el-input placeholder="请输入关键字搜索" v-model="searchQuery.keyword" clearable @change="getGrid">
+              <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
+            </el-input>
           </el-col>
         </el-row>
       </el-col>
@@ -30,8 +28,10 @@
                 :operateWidth="operateWidth"
                 :operate="operate"
                 :tableData="tableData">
+      <template slot-scope="{slotScope}" slot="status">
+      </template>
       <template slot-scope="{slotScope}" slot="operate">
-        <el-button size="mini" type="text" @click="goConfig(slotScope.row)">查看明细</el-button>
+        <el-button size="mini" type="text" @click="goConfig(slotScope.row)">去审核</el-button>
       </template>
     </site-table>
     <!--分页-->
@@ -44,55 +44,26 @@
       layout="total, sizes, prev, pager, next, jumper"
       :total="page.total">
     </el-pagination>
-    <!--编辑dialog-->
-    <edit-dialog :visible="editDialogVisible"
-                 :current="currentEdit"
-                 :areaList="areaList"
-                 @refreshList="getGrid"
-                 @close="closeEditDialog"></edit-dialog>
-    <!--添加dialog-->
-    <edit-dialog
-      :visible="addDialogVisible"
-      :areaList="areaList"
-      @refreshList="getGrid"
-      @close="closeAddDialog"></edit-dialog>
-    <!--配置dialog-->
-    <config-dialog
-      :visible="configDialogVisible"
-      :areaList="areaList"
-      @refreshList="getGrid"
-      @close="closeConfigDialogVisible"></config-dialog>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-import EditDialog from '../../examine-details/components/EditDialog/index'
-import ConfigDialog from '../../examine-details/components/EditDialog/index'
 import handleTable from '@src/mixins/handle-table'
-import { api, urlNames } from '@src/api'
 import SiteTable from '@src/components/SiteTable/index.vue'
+import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
 
 export default {
-  components: { EditDialog, ConfigDialog, SiteTable },
+  components: { SiteTable },
   mixins: [handleTable],
   data () {
     return {
       loading: true,
-      statusOptions: [{
-        value: '选项1',
-        label: '已确认'
+      searchQuery: {
+        id: '',
+        status: '',
+        keyword: ''
       },
-      {
-        value: '选项2',
-        label: '未确认'
-      },
-      {
-        value: '选项3',
-        label: '待确认'
-      }],
-      statusValue: '',
-      searchTimeValue: '',
       list: [],
       areaList: [
         {
@@ -111,19 +82,6 @@ export default {
           'name': '人员'
         }
       ],
-      dictionaryNameList: [],
-      editDialogVisible: false,
-      addDialogVisible: false,
-      configDialogVisible: false,
-      currentEdit: null,
-      currentParent: {
-        description: '',
-        label: '',
-        remarks: '',
-        orderNum: '',
-        type: '',
-        value: ''
-      },
       tableConfig: {
         order: {
           key: 0,
@@ -207,7 +165,7 @@ export default {
         }
       },
       tableData: [],
-      tableHeight: 200,
+      tableHeight: null,
       operateWidth: 100,
       tableCheckbox: true,
       operate: true
@@ -230,7 +188,6 @@ export default {
     }
     this.initQuery()
     this.getGrid()
-    this.getMyAuditList()
   },
   methods: {
     ...mapMutations([
@@ -255,11 +212,6 @@ export default {
     trim (str) {
       return (str + '').replace(/(\s+)$/g, '').replace(/^\s+/g, '')
     },
-    getMyAuditList () {
-      api[urlNames['getAuditList']]().then((res) => {
-        this.tableData = res.data
-      })
-    },
     search () {
       this.$nextTick(() => {
         this.page.current = 1
@@ -270,7 +222,7 @@ export default {
       this.loading = true
       let data = {
         page: this.page.current,
-        pageSize: this.page.limit
+        limit: this.page.limit
       }
       let keys = Object.keys(this.searchQuery)
       let len = keys.length
@@ -283,27 +235,14 @@ export default {
           data[key] = value
         }
       }
-      api[urlNames['getApplicationList']](data).then((res) => {
+      api[urlNames['getAuditList']](data).then((res) => {
         this.loading = false
-        this.list = res.result.items
-        this.page.total = res.result.total_items
+        this.tableData = res.data
+        this.page.total = res.total
       }, () => {
         this.loading = false
-        this.list = []
+        this.tableData = []
         this.page.total = 0
-      })
-    },
-    addChild (index, row) {
-      this.currentParent.type = row.type
-      this.currentParent.description = row.description
-      this.currentParent.orderNum = row.orderNum + 10
-      this.configDialogVisible = true
-    },
-    showEditDialog (row) {
-      api[urlNames['getApplicationDetail']]({ id: row.id }).then((res) => {
-        this.currentEdit = res.result[0]
-        this.currentEdit.areaId = this.currentEdit.areaId.toString().split(',')
-        this.editDialogVisible = true
       })
     },
     goConfig (row) {
@@ -311,63 +250,15 @@ export default {
       this.SET_EXAMINE_SEARCH_QUERY(this.searchQuery)
       this.SET_EXAMINE_TABLEDATA(this.tableData) // 存储当前页面table的数据列表
       this.SET_EXAMINE_DETAIL(row) // ExamineDetails页面需要用到的当前列表中点击项的数据
-      this.SET_EXAMINE_BACKPATH(this.$route.name)
+      this.SET_EXAMINE_BACKPATH(this.$route.name) // ExamineDetails页面需要用到的当前列表中点击项的数据
       this.$router.push({
         name: 'ApprovedDetail',
-        query: { id: row.id }
-      })
-    },
-    showAddDialog () {
-      this.addDialogVisible = true
-    },
-    closeEditDialog () {
-      this.editDialogVisible = false
-    },
-    closeAddDialog () {
-      this.addDialogVisible = false
-    },
-    closeConfigDialogVisible () {
-      this.configDialogVisible = false
-    },
-    handleAction (action, row) {
-      let actionName = '删除'
-      let actionUrl = 'deleteApplication'
-      let data = {
-        id: row.id,
-        type: row.type
-      }
-      if (action === 'enable') {
-        actionName = row.enable === 1 ? '停用' : '启用'
-        actionUrl = 'toggleApplication'
-        data.status = row.enable === 1 ? 0 : 1
-      }
-      this.$msgbox({
-        message: `确认${actionName}？`,
-        title: '提示',
-        showCancelButton: true,
-        type: 'warning',
-        beforeClose: (action, instance, done) => {
-          if (action === 'confirm') {
-            instance.confirmButtonLoading = true
-            instance.confirmButtonText = `${actionName}中...`
-            api[urlNames[actionUrl]](data).then((res) => {
-              instance.confirmButtonLoading = false
-              this.$message.success(`${actionName}成功`)
-              this.getGrid()
-            }, (res) => {
-              instance.confirmButtonLoading = false
-            })
-            done()
-          } else {
-            instance.confirmButtonLoading = false
-            done()
-          }
+        query: {
+          id: row.id,
+          type: row.type
         }
-      }).then(() => {
-
-      }).catch(() => {
       })
-    }
+    },
   }
 }
 </script>
