@@ -74,7 +74,7 @@
 </template>
 
 <script>
-import CandidateDialog from '@src/components/CandidateDialog/CandidateDialog.vue'
+import CandidateDialog from '@src/components/CandidateDialog/index.vue'
 import { api, urlNames } from '@src/api'
 export default {
   name: 'ViewManagement',
@@ -90,7 +90,8 @@ export default {
       seleceDialog: {
         selectMenmberTitle: '选人组件', // 选人组件标题
         selectMenmberFlag: false, // 显示弹窗，
-        isSingleSelect: false // 是否为单选框  false为多选，true为单选
+        isAllData: false, // 是否需完整数据-默认为不需要（false，只包含用户id）
+        isSingleSelect: false // 是否为单选框  false为多选（默认），true为单选
       }
     }
   },

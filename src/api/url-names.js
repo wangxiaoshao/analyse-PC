@@ -38,6 +38,7 @@ export default {
   getPersonList: 'getPersonList',
   // 共享视图
   getViewList: 'getViewList', // 视图列表
+  createView: 'createView', // 创建视图
   getAppList: 'getAppList', // 应用列表
   createApp: 'createApp', // 创建应用
   updateApp: 'updateApp', // 修改应用
@@ -45,6 +46,8 @@ export default {
   findLabelList: 'findLabelList', // 标签列表
   createLabel: 'createLabel', //  创建标签
   deleteLabel: 'deleteLabel', // 删除标签
+  getGroupList: 'getGroupList', // 获取分组列表
+  createGroup: 'createGroup', // 创建分组
   // 创建节点
   createViewNode: 'createViewNode',
   // 根据id获取详情

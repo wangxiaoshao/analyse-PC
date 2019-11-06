@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import CandidateDialog from '@src/components/CandidateDialog/CandidateDialog.vue'
+import CandidateDialog from '@src/components/CandidateDialog/index.vue'
 export default {
   name: 'GroupDetail',
   components: {

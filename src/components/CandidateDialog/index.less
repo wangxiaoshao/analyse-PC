@@ -1,18 +1,29 @@
 .candidate {
-  .el-dialog{
+  .el-dialog {
     .panel {
       border: 1px solid #BBBBBB;
       margin: 20px;
       padding: 5px;
       display: flex;
+
       .select-member, .select-tree, .member-list {
         flex: 1;
         max-height: 350px;
-        height: 350px;
+        height: 360px;
         overflow-y: scroll;
         overflow-x: hidden;
-        border: 1px solid #BBBBBB;
+        border: 1px solid #EBEEF5;
+        border-radius: 4px;
         padding: 5px;
+      }
+
+      .transfer {
+        padding-left: 50px;
+        flex: 2;
+        /deep/.el-transfer-panel{
+          width: 40%;
+          height: 350px;
+        }
       }
 
       .select-tree {
@@ -23,39 +34,47 @@
         margin-right: 5px;
       }
 
-      .el-checkbox{
+      .el-checkbox {
         display: block;
       }
     }
   }
 }
-.edit-dialog{
-  max-width: calc( ~ '100% - 210px');
 
-  .el-input-number{
+.edit-dialog {
+  max-width: calc(~ '100% - 210px');
+
+  .el-input-number {
     width: 100%;
   }
-  .el-form-item__error{
+
+  .el-form-item__error {
     display: none;
   }
-  .is-success .el-input__inner{
+
+  .is-success .el-input__inner {
     border-color: #dcdfe6;
   }
-  .el-form-item__label{
+
+  .el-form-item__label {
     padding-right: 12px;
   }
-  .el-dialog__body{
+
+  .el-dialog__body {
     padding-bottom: 10px;
   }
-  .el-select{
+
+  .el-select {
     width: 100%;
   }
-  .multiple-select{
-    .el-input--suffix .el-input__inner{
+
+  .multiple-select {
+    .el-input--suffix .el-input__inner {
       max-height: 100px;
       overflow: auto;
     }
-    .el-select__tags{
+
+    .el-select__tags {
       max-height: 90px;
       overflow-y: auto;
     }

@@ -40,10 +40,11 @@
           align="center"
           label="创建时间">
         </el-table-column>
-          <el-table-column
-            property="stateName"
-            align="center"
-            label="启用状态">
+          <el-table-column label="启用状态" prop="removed" width="80" align="center">
+            <template slot-scope="scope">
+              <span class="text-able" v-show="scope.row.removed">启用</span>
+              <span class="text-disable" v-show="!scope.row.removed">停用</span>
+            </template>
           </el-table-column>
           <el-table-column
             label="操作"
@@ -98,21 +99,15 @@ export default {
     }
   },
   created () {
-    this.getGroupList()
+    this.getGroupList(1, 10, 1)
   },
   methods: {
-    getGroupList (page, limt) {
+    getGroupList (page, limt, type) {
       api[urlNames['getGroupList']]({
         page: page,
-        limit: limt
+        limit: limt,
+        type: type
       }).then((res) => {
-        res.data.forEach(item => {
-          if (item.state === 0) {
-            item.stateName = '否'
-          } else if (item.state === 0) {
-            item.stateName = '是'
-          }
-        })
         this.total = parseInt(res.total)
         this.groupList = res.data
       })
