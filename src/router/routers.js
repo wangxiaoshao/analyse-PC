@@ -39,8 +39,6 @@ const GroupDetail = () => import('@src/views/shared/group-detail/index.vue')
 const AppManagement = () => import('@src/views/shared/app-management/index.vue')
 const CreateAppManagement = () => import('@src/views/shared/create-app-management/index.vue')
 const TagsManagement = () => import('@src/views/shared/tags-management/index.vue')
-/* 权限管理 */
-const RightsManagement = () => import('@src/views/shared/rights-management/index.vue')
 
 
 /* 系统设置 */
@@ -51,6 +49,8 @@ const ParameterSetting = () => import('@src/views/system-setting/parameter-setti
 const RoleManage = () => import('@src/views/role-manage/index.vue')
 const RoleList = () => import('@src/views/role-manage/role-list/index.vue')
 const lookPersonPermission = () => import('@src/views/role-manage/look-person-permission/index.vue')
+/* 权限配置 */
+const RightsManagement = () => import('@src/views/shared/rights-management/index.vue')
 
 // 字典管理
 const DictionaryManage = () => import('@src/views/system-setting/dictionary-manage/index.vue')
