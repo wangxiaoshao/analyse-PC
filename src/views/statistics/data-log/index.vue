@@ -11,7 +11,7 @@
           @change="selectChange(selectValue)">
           <el-option label="今天" :value="['today']"></el-option>
           <el-option label="昨天" :value="['yesterday']"></el-option>
-          <el-option label="周" :value="['week', '周', 'yyyy 第 WW 周']"></el-option>
+          <!--<el-option label="周" :value="['week', '周', 'yyyy 第 WW 周']"></el-option>-->
             <el-option label="月" :value="['month', '月', 'yyyy-DD']"></el-option>
           <el-option label="选择日期" :value="['date', '日期', 'yyyy-MM-DD']"></el-option>
           </el-select>
@@ -147,6 +147,7 @@ export default {
       this.date = dateTransform(todayDate)
     },
     dateChange (val) {
+      console.log(9999)
       console.log(val)
     },
     initQuery () {

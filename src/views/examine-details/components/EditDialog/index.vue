@@ -37,7 +37,7 @@ import { mapState, mapMutations } from 'vuex'
 import { api, urlNames } from '@src/api'
 
 export default {
-  props: ['visible', 'close', 'dialogTitle'],
+  props: ['visible', 'close', 'dialogTitle', 'auditResult'],
   components: {},
   data () {
     return {
@@ -67,7 +67,7 @@ export default {
         if (valid) {
           let obj = {
             message: this.form.desc,
-            auditResult: 0,
+            auditResult: this.auditResult,
             id: this.$route.query.id
           };
           this.$emit('close')

@@ -71,13 +71,14 @@
                  :config-type="type"
                  :current="currentEdit"
                  :dialogTitle="dialogTitle"
+                 :auditResult="auditResult"
                  @refreshList="getGrid"
                  @close="closeEditDialog"></edit-dialog>
     <el-row :gutter="20" v-if="isWaitApproval">
       <el-col :span="12" :offset=19>
         <div style="margin-top: 40px">
-          <el-button type="primary" plain @click="passExamine" >通过</el-button>
-          <el-button type="info" plain @click="noPassExamine"  style="margin-left: 40px">不通过</el-button>
+          <el-button type="primary" plain @click="openExamineDialog(1)" >通过</el-button>
+          <el-button type="info" plain @click="openExamineDialog(0)"  style="margin-left: 40px">不通过</el-button>
         </div>
       </el-col>
     </el-row>
@@ -103,6 +104,7 @@ export default {
       type: 'content',
       loading: true,
       isWaitApproval: false,
+      auditResult: false
     }
   },
   computed: {
@@ -145,10 +147,8 @@ export default {
         this.gridData = []
       })
     },
-    passExamine () {
-      this.editDialogVisible = true
-    },
-    noPassExamine () {
+    openExamineDialog (val) {
+      this.auditResult = val
       this.editDialogVisible = true
     },
     trim (str) {

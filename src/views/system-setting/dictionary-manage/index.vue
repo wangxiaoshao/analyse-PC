@@ -14,7 +14,6 @@
       <template slot-scope="{slotScope}" slot="status">
       </template>
       <template slot-scope="{slotScope}" slot="operate">
-        <el-button size="mini" type="text" @click="openDialog(slotScope.row)">详情</el-button>
         <el-button size="mini" type="text" @click="openDialog(slotScope.row)">编辑</el-button>
         <el-button size="mini" type="text" @click="openDialog(slotScope.row)">删除</el-button>
       </template>
