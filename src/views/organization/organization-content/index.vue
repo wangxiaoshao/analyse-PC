@@ -232,6 +232,21 @@ export default {
         this.nodeInfo.nodeType = res.data.nodeType
         this.nodeInfo.parentId = res.data.id
         this.loading = false
+        if (this.content[0].nodeType === 1) {
+          this.showAddNodeFlag = true
+          this.showAddDepartmentFlag = false
+          this.showAddUnitFlag = true
+        }
+        if (this.content[0].nodeType === 2) {
+          this.showAddNodeFlag = false
+          this.showAddDepartmentFlag = true
+          this.showAddUnitFlag = false
+        }
+        if (this.content[0].nodeType === 3) {
+          this.showAddNodeFlag = false
+          this.showAddDepartmentFlag = true
+          this.showAddUnitFlag = true
+        }
       }, (error) => {
         this.$message.error(`没有内容`)
       })

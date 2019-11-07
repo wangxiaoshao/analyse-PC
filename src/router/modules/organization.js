@@ -50,7 +50,7 @@ export default [
     component: Organization,
     children: [
       {
-        path: 'organization-content/:nodeId',
+        path: 'organizationContent/:nodeId',
         name: 'OrganizationContent',
         component: OrganizationContent
       }, {
