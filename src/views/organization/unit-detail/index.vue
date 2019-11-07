@@ -1,26 +1,6 @@
 <template>
   <div class="form-content" v-loading="loading">
-    <el-dialog title="选择标签" :visible.sync="openAddTagFlag">
-      <el-input placeholder="请输入内容" v-model="tagKeyWord" class="input-with-select">
-        <el-button slot="append" icon="el-icon-search"></el-button>
-      </el-input>
-      <div class="tag-content">
-        <el-checkbox-group
-          v-model="checkTagGroup">
-          <el-checkbox
-            v-for="item in searchTags"
-            border
-            :label="item.name"
-            :title="item.name"
-            :key="item.name"
-          >{{item.name}}</el-checkbox>
-        </el-checkbox-group>
-      </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="openAddTagFlag = false">取 消</el-button>
-        <el-button type="primary" @click="getCheckTags">确 定</el-button>
-      </span>
-    </el-dialog>
+    <search-lable :addInfo="addInfo" @getAddInfo="getAddInfo"></search-lable>
     <el-form :model="ruleForm" :disabled="disabledFlag" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
       <div class="detail-title">
         <i class="menu-icon fa fa-sitemap" style="margin: 0px 5px;"></i>单位信息
@@ -62,11 +42,9 @@
          <el-form-item label="邮编" prop="zipCode">
            <el-input v-model="ruleForm.zipCode"></el-input>
          </el-form-item>
-         <el-form-item label="区域" prop="name">
-           <el-cascader
-             :options="options"
-             filterable
-           ></el-cascader>
+         <el-form-item label="区域">
+            <!--选择区域组件-->
+           <area-list></area-list>
          </el-form-item>
          <el-form-item label="所属系统" prop="system">
            <el-select v-model="ruleForm.system" placeholder="请选择所属系统">
@@ -90,7 +68,7 @@
           >
             {{tag.name}}
           </el-tag>
-          <el-tag class="add-tag-btn" @click="openAddTagFlag =  true"><i class="el-icon-plus"></i>添加标签</el-tag>
+          <el-tag class="add-tag-btn" @click="openAddTagDialog"><i class="el-icon-plus"></i>添加标签</el-tag>
         </el-form-item>
       </el-row>
       <el-menu class="el-menu-demo" mode="horizontal">
@@ -121,11 +99,18 @@
 <script>
 import { api, urlNames } from '@src/api'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
+import searchLable from '../components/AddTags/index'
+import areaList from '../components/AreaList/index'
 export default {
   name: 'index',
   mixins: [ handleBreadcrumb ],
+  components: { areaList, searchLable },
   data () {
     return {
+      addInfo: {
+        searchFlag: false,
+        id: this.$route.params.parentId || this.$route.params.id
+      },
       loading: false,
       isShowEditFlag: true,
       disabledFlag: false,
@@ -169,6 +154,12 @@ export default {
     }
   },
   methods: {
+    openAddTagDialog () {
+      this.addInfo = {
+        searchFlag: true,
+        id: this.$route.params.parentId || this.$route.params.id
+      }
+    },
     setBreadcrumbTitle () { // 设置面包屑title
       if (this.$route.name === 'UnitEdit' || this.$route.name === 'UnitAdd') {
         this.isShowEditFlag = true
@@ -233,6 +224,10 @@ export default {
     getCheckTags () {
       this.openAddTagFlag = false
       this.tags = this.checkTagGroup
+    },
+    getAddInfo (val) {
+      this.addInfo.searchFlag = val
+      console.log(val)
     }
   },
   mounted () {

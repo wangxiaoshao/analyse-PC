@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="选择标签" :visible.sync="tagsFlag" :showClose="false">
+  <el-dialog title="选择标签" :visible.sync="addInfo.searchFlag" :showClose="false">
     <i class="el-icon-close tag-close" @click="close"></i>
     <el-input placeholder="请输入内容" v-model="tagKeyWord" class="input-with-select">
       <el-button slot="append" icon="el-icon-search"></el-button>
@@ -24,8 +24,9 @@
 </template>
 
 <script>
+import { api, urlNames } from '@src/api'
 export default {
-  props: ['tagsFlag'],
+  props: ['addInfo'],
   data () {
     return {
       tagKeyWord: '',
@@ -34,9 +35,12 @@ export default {
       getCheckTags: []
     }
   },
+  created () {
+    console.log(this.addInfo)
+  },
   methods: {
     close () {
-      this.$emit('getFlag', false)
+      this.$emit('addInfo.searchFlag', false)
     }
   }
 }

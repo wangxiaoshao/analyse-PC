@@ -64,6 +64,19 @@ export default {
     showLoading: true,
     serve: 'organizationManagePC'
   },
+  /* 选择区域 */
+  [urlNames.getAreaList]: {
+    type: 'get',
+    url: '/api/jg_manage/organ/findAreaList',
+    serve: 'organizationManagePC',
+    mock: 'area.json'
+  },
+  [urlNames.findOrgLabelList]: {
+    type: 'get',
+    url: '/api/jg_manage/label/findOrgLabelList',
+    serve: 'organizationManagePC',
+    mock: 'findOrgLabelList.json'
+  },
   // 应用管理
   ...application,
   ...examine, // 申请审核

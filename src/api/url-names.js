@@ -47,6 +47,7 @@ export default {
   findLabelList: 'findLabelList', // 标签列表
   createLabel: 'createLabel', //  创建标签
   deleteLabel: 'deleteLabel', // 删除标签
+  findOrgLabelList: 'findOrgLabelList', // 根据单位id获取标签
   // 创建节点
   createViewNode: 'createViewNode',
   // 根据id获取详情
@@ -75,5 +76,5 @@ export default {
   // 创建单位
   createOrganization: 'createOrganization',
   // 系统设置
-  dictionaryList: 'dictionaryList',
+  dictionaryList: 'dictionaryList'
 }
