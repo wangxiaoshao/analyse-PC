@@ -10,6 +10,7 @@
     :props="defaultProps"
     @node-click="selectNode"
   >
+
   </el-tree>
 </template>
 
