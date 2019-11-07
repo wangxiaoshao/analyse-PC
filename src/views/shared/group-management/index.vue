@@ -52,7 +52,7 @@
             width="140">
             <template slot-scope="scope">
               <el-button @click="handleClick(scope.row)" type="text" size="small">查看详情</el-button>
-              <el-button @click="handleClick(scope.row)" type="text" size="small">编辑</el-button>
+              <el-button @click="handleClickToDetail(scope.row)" type="text" size="small">编辑</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -126,6 +126,9 @@ export default {
     handleClick (row) {
       this.$router.push({ name: 'GroupDetail' })
       console.log(row)
+    },
+    handleClickToDetail (row) {
+      this.$router.push({ name: 'GroupDetail', params: { groupId: row.id } })
     },
     handleSizeChange (val) {
       console.log(`每页 ${val} 条`)

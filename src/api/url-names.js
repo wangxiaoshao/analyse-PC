@@ -50,6 +50,7 @@ export default {
   deleteLabel: 'deleteLabel', // 删除标签
   getGroupList: 'getGroupList', // 获取分组列表
   createGroup: 'createGroup', // 创建分组
+  getGroupUsers: 'getGroupUsers', // 分组成员
   // 创建节点
   createViewNode: 'createViewNode',
   // 根据id获取详情
@@ -78,5 +79,5 @@ export default {
   // 创建单位
   createOrganization: 'createOrganization',
   // 系统设置
-  dictionaryList: 'dictionaryList',
+  dictionaryList: 'dictionaryList'
 }

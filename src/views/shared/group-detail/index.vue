@@ -59,6 +59,7 @@
 
 <script>
 import CandidateDialog from '@src/components/CandidateDialog/index.vue'
+import { api, urlNames } from '@src/api'
 export default {
   name: 'GroupDetail',
   components: {
@@ -68,6 +69,7 @@ export default {
     return {
       currentPage: 1,
       total: 0,
+      groupId: this.$route.query.groupId,
       tableData: [{
         date: '2016-05-02',
         name: '王小虎',
@@ -93,6 +95,17 @@ export default {
     }
   },
   methods: {
+    // 获取成员列表
+    getGroupUsers (groupId, page, limt) {
+      api[urlNames['getGroupUsers']]({
+        groupId: groupId,
+        page: page,
+        limit: limt
+      }).then((res) => {
+        this.total = parseInt(res.total)
+        this.viewList = res.data
+      })
+    },
     // 关闭选人弹窗
     closeselectMenmber () {
       this.seleceDialog.selectMenmberFlag = false

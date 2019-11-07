@@ -52,16 +52,6 @@ export default {
         description: '',
         removed: 1
       },
-      form: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
-      },
       rules: {
         name: [
           { required: true, message: '请输入分组名称', trigger: 'blur' }
@@ -81,7 +71,7 @@ export default {
         ownerType: this.groupFrom.ownerType, // 1用户、2部门、3单位
         name: this.groupFrom.name,
         description: this.groupFrom.description,
-        removed: true
+        removed: this.groupFrom.removed
       }).then((res) => {
         if (res.status === 0) {
           this.$message.success('创建分组成功')
@@ -90,8 +80,6 @@ export default {
     },
     colseDialog () {
       this.$emit('close')
-    },
-    handleClose (done) {
     }
   }
 }

@@ -12,7 +12,6 @@ export default {
     url: '/api/jg_manage/view/findViewList',
     serve: 'organizationManagePC',
     keepOriginResponse: false,
-    showLoading: true,
     mock: 'getViewList.json'
   },
   /**
@@ -25,8 +24,7 @@ export default {
     headers: {
       'Content-Type': 'application/json'
     },
-    keepOriginResponse: false,
-    showLoading: true
+    keepOriginResponse: false
   },
   /**
    * 获取应用列表
@@ -36,7 +34,6 @@ export default {
     url: '/api/jg_share/app/checkApps',
     serve: 'organizationManagePC',
     keepOriginResponse: false,
-    showLoading: true,
     mock: 'getAppList.json'
   },
   /**
@@ -49,7 +46,6 @@ export default {
       'Content-Type': 'application/json'
     },
     keepOriginResponse: false,
-    showLoading: true,
     serve: 'organizationManagePC'
   },
   /**
@@ -62,7 +58,6 @@ export default {
       'Content-Type': 'application/json'
     },
     keepOriginResponse: false,
-    showLoading: true,
     serve: 'organizationManagePC'
   },
   /**
@@ -73,7 +68,6 @@ export default {
     url: '/api/jg_share/app/checkAppDetail',
     serve: 'organizationManagePC',
     keepOriginResponse: false,
-    showLoading: true,
     mock: 'getAppDetail.json'
   },
   /**
@@ -83,8 +77,7 @@ export default {
     type: 'get',
     url: '/api/jg_manage/label/findLabelList',
     serve: 'organizationManagePC',
-    keepOriginResponse: false,
-    showLoading: true
+    keepOriginResponse: false
   },
   /**
    创建标签
@@ -96,8 +89,7 @@ export default {
     keepOriginResponse: false,
     headers: {
       'Content-Type': 'application/json'
-    },
-    showLoading: true
+    }
   },
   /**
    删除标签
@@ -109,8 +101,7 @@ export default {
     keepOriginResponse: false,
     headers: {
       'Content-Type': 'application/json'
-    },
-    showLoading: true
+    }
   },
   /**
    获取分组
@@ -119,8 +110,7 @@ export default {
     type: 'get',
     url: 'api/group/getUserGroups',
     serve: 'organizationManagePC',
-    keepOriginResponse: false,
-    showLoading: true
+    keepOriginResponse: false
   },
   /**
    创建分组
@@ -132,7 +122,15 @@ export default {
     headers: {
       'Content-Type': 'application/json'
     },
-    keepOriginResponse: false,
-    showLoading: true
+    keepOriginResponse: false
+  },
+  /**
+   创建分组
+   */
+  [urlNames.getGroupUsers]: {
+    type: 'get',
+    url: '/api/member/groupMembers',
+    serve: 'organizationManagePC',
+    keepOriginResponse: false
   }
 }
