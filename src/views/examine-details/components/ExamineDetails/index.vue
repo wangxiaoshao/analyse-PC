@@ -5,7 +5,7 @@
         <div style="color: #909399;padding-left: 10px;padding-top: 16px">审批编码：2029200000009</div>
       </el-col>
       <el-col :span="12" class="text-right">
-        <el-button type="info" @click="jumpDetailPage">查看详情</el-button>
+        <el-button type="info" @click="jumpDetailPage($route.query.type)">查看详情</el-button>
       </el-col>
     </el-row>
     <!--表格-->
@@ -16,13 +16,13 @@
             align="center"
             prop="name"
             label="原值">
-            <template slot-scope="scope">
-              <div>{{scope.row.name}}</div>
+            <template slot-scope="scope" v-if="scope.row.changeFields.name">
+              <div>{{scope.row.changeFields.name.beforeChangeValue}}</div>
             </template>
           </el-table-column>
           <el-table-column label="变更值"  align="center">
-            <template slot-scope="scope">
-              <div>{{scope.row.name}}</div>
+            <template slot-scope="scope" v-if="scope.row.changeFields.name">
+              <div>{{scope.row.changeFields.name.afterChangeValue}}</div>
             </template>
           </el-table-column>
         </el-table-column>
@@ -31,10 +31,15 @@
             align="center"
             prop="name"
             label="原值">
+            <template slot-scope="scope" v-if="scope.row.changeFields.phone">
+              <div>{{scope.row.changeFields.phone.beforeChangeValue}}</div>
+            </template>
           </el-table-column>
-          <el-table-column label="变更值"  align="center">
-            <template slot-scope="scope">
-              <div>{{scope.row.name}}</div>
+          <el-table-column
+            label="变更值"
+            align="center">
+            <template slot-scope="scope" v-if="scope.row.changeFields.phone">
+              <div>{{scope.row.changeFields.phone.afterChangeValue}}</div>
             </template>
           </el-table-column>
         </el-table-column>
@@ -44,7 +49,9 @@
           label="申请原因"
           width="150">
           <template slot-scope="scope">
-            <div>{{scope.row.name}}</div>
+            <el-tooltip :content="scope.row.reason" placement="top">
+              <div>{{scope.row.reason}}</div>
+            </el-tooltip>
           </template>
         </el-table-column>
         <el-table-column
@@ -54,7 +61,7 @@
           label="审核意见"
           width="150">
           <template slot-scope="scope">
-            <div>{{scope.row.name}}</div>
+            <div>{{scope.row.message}}</div>
           </template>
         </el-table-column>
       </template>
@@ -64,32 +71,25 @@
                  :config-type="type"
                  :current="currentEdit"
                  :dialogTitle="dialogTitle"
+                 :auditResult="auditResult"
                  @refreshList="getGrid"
                  @close="closeEditDialog"></edit-dialog>
     <el-row :gutter="20" v-if="isWaitApproval">
-      <el-col :span="12" :offset=20>
-        <div style="margin-top: 20px">
-          <el-button type="primary" plain @click="passExamine" >通过</el-button>
-          <el-button type="info" plain @click="noPassExamine">不通过</el-button>
+      <el-col :span="12" :offset=19>
+        <div style="margin-top: 40px">
+          <el-button type="primary" plain @click="openExamineDialog(1)" >通过</el-button>
+          <el-button type="info" plain @click="openExamineDialog(0)"  style="margin-left: 40px">不通过</el-button>
         </div>
       </el-col>
     </el-row>
-
-    <!--添加dialog-->
-    <edit-dialog
-      :visible="addDialogVisible"
-      :config-type="type"
-      @refreshList="getGrid"
-      @close="closeAddDialog"></edit-dialog>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 import handleTable from '@src/mixins/handle-table'
-import { api, urlNames } from '@src/api'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
+import { api, urlNames } from '@src/api'
 import EditDialog from '../EditDialog/index'
-import SiteTable from '@src/components/SiteTable/index.vue'
 import { mapState, mapMutations } from 'vuex'
 
 export default {
@@ -97,110 +97,21 @@ export default {
   mixins: [handleTable, handleBreadcrumb],
   data () {
     return {
-      gridData: [{
-        counts: '1202',
-        name: '王小虎'
-      }],
+      gridData: [],
       currentEdit: null,
       editDialogVisible: false,
-      addDialogVisible: false,
       dialogTitle: '审核意见',
       type: 'content',
       loading: true,
       isWaitApproval: false,
-      searchQuery: {
-        type: ''
-      },
-      list: [],
-      configData: {
-        content: [],
-        'quick-link': [],
-        todo: []
-      },
-      dictionaryNameList: [],
-      tableConfig: {
-        workPhone: {
-          key: 1,
-          field: 'workPhone',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '单位电话',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        },
-        content: {
-          key: 2,
-          field: 'content',
-          tooltip: true,
-          formatter: this.formatter,
-          label: '原值',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        },
-        applyTime: {
-          key: 3,
-          field: 'applyTime',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '变更值',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        },
-        empty: {
-          key: 4,
-          field: 'empty',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 50
-        },
-        workName: {
-          key: 5,
-          field: 'workName',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '单位名称',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        },
-        content2: {
-          key: 6,
-          field: 'content',
-          tooltip: true,
-          formatter: this.formatter,
-          label: '原值',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        },
-        applyTime2: {
-          key: 7,
-          field: 'applyTime',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '变更值',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        }
-      },
-      tableDetailData: [],
-      tableCheckbox: true,
-      operate: false
+      auditResult: false
     }
   },
   computed: {
     ...mapState(['application', 'examine'])
   },
   created () {
-    this.tableDetailData.push(this.examine.detail)
-    if (this.$route.params.parentCode === 1910281645) {
+    if (this.$route.name === 'WaitApprovalDetail') {
       this.isWaitApproval = true
     }
   },
@@ -218,10 +129,26 @@ export default {
   },
   methods: {
     ...mapMutations(['SET_APPLICATION_PAGE', 'SET_EXAMINE_DETAIL']),
-    passExamine () {
-      this.editDialogVisible = true
+    getGrid () {
+      api[urlNames['getAuditDetailsById']]({
+        id: this.$route.query.id,
+        type: this.$route.query.type
+      }).then((res) => {
+        let arrLen = res.data.changeFields.length,
+          obj = {}
+        for (let i = 0; i < arrLen; i++) {
+          let key = res.data.changeFields[i].fieldName,
+            val = res.data.changeFields[i]
+          obj[key] = val
+        }
+        res.data.changeFields = obj
+        this.gridData.push(res.data)
+      }, () => {
+        this.gridData = []
+      })
     },
-    noPassExamine () {
+    openExamineDialog (val) {
+      this.auditResult = val
       this.editDialogVisible = true
     },
     trim (str) {
@@ -230,77 +157,35 @@ export default {
     closeEditDialog () {
       this.editDialogVisible = false
     },
-    closeAddDialog () {
-      this.addDialogVisible = false
-    },
     typeChange () {
-      // this.page.current = 1
       this.$nextTick(() => {
-        this.list = this.configData[this.type]
-        // this.getGrid()
+        this.getGrid()
       })
     },
-    jumpDetailPage () {
-      this.$router.push({
-        name: 'DepartmentDetail',
-        params: { id: 1910291139 }
-      })
-    },
-    showEditDialog (row) {
-      this.currentEdit = JSON.parse(JSON.stringify(row))
-      this.editDialogVisible = true
-    },
-    getGrid () {
-      this.loading = true
-      let data = {
-        // page: this.page.current,
-        // pageSize: this.page.limit,
-        parentApp: this.$route.params.id,
-        type: this.type
+    jumpDetailPage (type) { // type = 1 || 3 || 4
+      let name = ''
+      switch (type) {
+        case 1:
+          name = 'PersonDetail'
+          break
+        case 3:
+          name = 'DepartmentDetail'
+          break
+        case 4:
+          name = 'UnitDetail'
+          break
+        default :
+          break;
       }
-      api[urlNames['getApplicationConfig']](data).then((res) => {
-        this.loading = false
-        this.configData = res.result
-        this.list = this.configData[this.type]
-        // this.page.total = res.Result.total_items
-      }, () => {
-        this.loading = false
-        this.list = []
-        // this.page.total = 0
-      })
-    },
-    handleAction (action, row) {
-      let actionName = '删除'
-      let actionUrl = 'deleteApplication'
-      let data = {
-        id: row.id,
-        type: this.type
-      }
-      this.$msgbox({
-        message: `确认${actionName}？`,
-        title: '提示',
-        showCancelButton: true,
-        type: 'warning',
-        beforeClose: (action, instance, done) => {
-          if (action === 'confirm') {
-            instance.confirmButtonLoading = true
-            instance.confirmButtonText = `${actionName}中...`
-            api[urlNames[actionUrl]](data).then((res) => {
-              instance.confirmButtonLoading = false
-              this.$message.success(`${actionName}成功`)
-              this.getGrid()
-            }, (res) => {
-              instance.confirmButtonLoading = false
-            })
-            done()
-          } else {
-            instance.confirmButtonLoading = false
-            done()
-          }
-        }
-      }).then(() => {
+      switch (type) {
 
-      }).catch(() => {
+      }
+      this.$router.push({
+        name: name,
+        params: {
+          id: this.$route.query.id,
+          type: this.$route.query.type
+        }
       })
     }
   }

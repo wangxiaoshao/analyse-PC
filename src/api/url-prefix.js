@@ -5,16 +5,13 @@
 // 后端服务配置
 const Serve = {
   development: {
-    organizationManagePC: '', // 没有配置mock数据，默认发送的服务器
-    applicationCenter: 'http://192.168.0.103'
+    organizationManagePC: '' // 没有配置mock数据，默认发送的服务器
   },
   test: {
-    organizationManagePC: '',
-    applicationCenter: 'http://192.168.0.103'
+    organizationManagePC: ''
   },
   production: {
-    organizationManagePC: 'http://192.168.0.103:8080',
-    applicationCenter: 'http://192.168.0.103'
+    organizationManagePC: 'http://jg-dev.lonmo.com'
   }
 }
 
@@ -27,7 +24,7 @@ if (process.env.NODE_ENV === 'development') {
 } else if (process.env.NODE_ENV === 'test') {
   prefix = Serve.test
 } else {
-  if (host.includes('192.168.0.103')) {
+  if (host.includes('jg-dev.lonmo.com')) {
     // 测试环境
     prefix = Serve.test
   } else {

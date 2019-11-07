@@ -73,7 +73,12 @@ axios.interceptors.request.use((config) => {
     config.url = config.mock
     config.method = 'get'
   } else {
-    config.url = urlPrefix[config.serve] + config.url
+    // TODO 后端跳过单点登录，需要加上DEBUG_USER参数，正式环境需要去掉
+    if (config.url.indexOf('?') > -1) {
+      config.url = urlPrefix[config.serve] + config.url + '&DEBUG_USER'
+    } else {
+      config.url = urlPrefix[config.serve] + config.url + '?DEBUG_USER'
+    }
   }
   // 显示loading
   if (config.showLoading) {

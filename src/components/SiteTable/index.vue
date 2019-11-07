@@ -13,8 +13,8 @@
         </el-table-column>
         <template v-for="item in tableConfig">
           <el-table-column
-                        :prop="item.id"
                         v-if="!item.tooltip"
+                        :prop="item.id"
                         align="center"
                         :formatter="item.formatter"
                         :label="item.label"
@@ -23,12 +23,13 @@
                         :show-overflow-tooltip="item.showOverflowTooltip || false"
                         :min-width="item.minWidth || null">
             <template slot-scope="scope">
-                <div v-if="item.field === 'state'"> <!--处理接口审核状态的false和true应该显示的内容-->
-                  {{scope.row[item.field] ? '已确认' : '待确认'}}
-                </div>
-                <div v-if="item.field !== 'state'"> <!--处理序号的字段内容显示-->
-                  {{item.field === 'order' ? scope.$index + 1 : scope.row[item.field]}}
-                </div>
+              <div v-if="item.field === 'state' || item.field === 'isEnable'"
+                   :class="scope.row[item.field] ? 'text-green':'text-red'">
+                {{scope.row[item.field] ? '已确认' : '待确认'}}
+              </div>
+              <div v-if="item.field !== 'state' && item.field !== 'isEnable'">
+                {{item.field === 'order' ? scope.$index + 1 : scope.row[item.field]}}
+              </div>
             </template>
         </el-table-column>
         <el-table-column v-else
@@ -40,7 +41,9 @@
                         :show-overflow-tooltip="item.showOverflowTooltip || false"
                         :min-width="item.minWidth || null">
           <template slot-scope="scope">
+            <el-tooltip :content="scope.row[item.field]" placement="top">
             <div>{{item.field === 'order' ? scope.$index + 1 : scope.row[item.field]}}</div>
+            </el-tooltip>
           </template>
         </el-table-column>
         </template>

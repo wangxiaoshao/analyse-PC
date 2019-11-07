@@ -1,0 +1,44 @@
+{
+  "total": 2,
+  "message": "success",
+  "data": [
+    {
+      "id": 1,
+      "applyName": "渣渣辉",
+      "type": 1,
+      "content": "呵呵呵",
+      "applyTime": "2019-10-25",
+      "reason": "呵呵呵",
+      "auditState": 1,
+      "state": 0,
+      "auditOpinion": "同意",
+      "auditTime": "2019-10-26"
+    },
+    {
+      "id": 2,
+      "applyName": "渣渣辉",
+      "type": 3,
+      "content": "呵呵呵",
+      "applyTime": "2019-10-25",
+      "reason": "呵呵呵",
+      "auditState": 1,
+      "state": 0,
+      "auditOpinion": "同意",
+      "auditTime": "2019-10-26"
+    },
+    {
+      "id": 4,
+      "applyName": "渣渣辉",
+      "type": 4,
+      "content": "这里 resultType 指的是 select 返回的每一条记录 的类型，而不是所有记录组成的类型",
+      "applyTime": "2019-10-25",
+      "reason": "这里 resultType 指的是 select 返回的每一条记录 的类型，而不是所有记录组成的类型",
+      "auditState": 0,
+      "state": 0,
+      "auditTime": "2019-10-26",
+      "auditOpinion": "同意"
+    }
+  ],
+  "status": 0,
+  "timestamp": "2019-10-30 16:13:01"
+}

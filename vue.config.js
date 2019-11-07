@@ -41,7 +41,7 @@ module.exports = function (options) {
       port: '8080',
       proxy: {
         "/api/": {
-          target: "http://192.168.0.103:8080",
+          target: "http://jg-dev.lonmo.com",
           // pathRewrite: {
           //   "/api/": ""
           // }

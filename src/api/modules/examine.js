@@ -4,67 +4,46 @@ import urlNames from '../url-names'
 
 export default {
 
-  [urlNames.getMyAuditList]: { // 待我审核 我的审核列表
+  [urlNames.getAuditList]: { // 待我审核 我已审核
     type: 'get',
-    url: '/api/jg_manage/audit/findMyAuditList',
+    url: '/api/jg_manage/audit/findAuditList',
     keepOriginResponse: true,
     serve: 'organizationManagePC',
-    mock: 'getMyAuditList.json'
+    mock: 'examine/getAuditList.json'
   },
-
-
-  [urlNames.getDepartmentNodes]: {
+  [urlNames.getMyApplyAuditList]: { // 我的申请
     type: 'get',
-    url: '/common/member_selector/getDepartmentNodes',
+    url: '/api/jg_manage/audit/findApplyAuditList',
     keepOriginResponse: true,
     serve: 'organizationManagePC',
-    mock: 'getDepartmentNodes.json'
+    mock: 'examine/getMyApplyAuditList.json'
   },
-  [urlNames.geMtmemberSelector]: {
+  [urlNames.getInfoConfirmList]: { // 信息确认
     type: 'get',
-    url: '/common/member_selector/getDepartmentUsers',
-    keepOriginResponse: false,
+    url: '/api/jg_manage/confirmation/findConfirmationList',
+    keepOriginResponse: true,
     serve: 'organizationManagePC',
-    mock: 'geMtmemberSelector.json'
+    mock: 'examine/getInfoConfirmList.json'
   },
-  [urlNames.geMtmemberSearch]: {
+  [urlNames.getConfirmMemberList]: { // 信息确认-人员明细
     type: 'get',
-    url: '/common/member_selector/search',
-    keepOriginResponse: false,
+    url: '/api/jg_manage/confirmation/findConfirmationMember',
+    keepOriginResponse: true,
     serve: 'organizationManagePC',
-    mock: 'geMtmemberSelector.json'
+    mock: 'examine/getConfirmMemberList.json'
   },
-  [urlNames.getUserRightsList]: {
+  [urlNames.getAuditDetailsById]: { // 审批详情
     type: 'get',
-    url: '/work/user_area/list',
-    keepOriginResponse: false,
+    url: '/api/jg_manage/audit/findAuditById',
+    keepOriginResponse: true,
     serve: 'organizationManagePC',
-    mock: 'getUserRightsList.json'
+    mock: 'examine/getAuditDetailsById.json'
   },
-  [urlNames.getEditRightsInfo]: {
+  [urlNames.saveAudit]: { // 保存审批
     type: 'get',
-    url: '/work/user_area/info',
-    keepOriginResponse: false,
-    showLoading: true,
+    url: '/api/jg_manage/audit/saveAudit',
+    keepOriginResponse: true,
     serve: 'organizationManagePC',
-    mock: 'getEditRightsInfo.json'
+    mock: 'examine/saveAudit.json'
   },
-  [urlNames.sendEditRightsInfo]: {
-    type: 'post',
-    url: '/work/user_area/edit',
-    headers: {
-      'Content-Type': 'multipart/form-data'
-    },
-    keepOriginResponse: false,
-    showLoading: true,
-    serve: 'organizationManagePC',
-    mock: 'applicationEdit.json'
-  },
-  [urlNames.getUserRemoveRight]: {
-    type: 'get',
-    url: '/work/user_area/remove',
-    keepOriginResponse: false,
-    serve: 'organizationManagePC',
-    mock: 'applicationEdit.json'
-  }
 }

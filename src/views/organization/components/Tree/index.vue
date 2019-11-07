@@ -1,16 +1,30 @@
 <template>
   <el-tree
-    :data="treeData"
-    :show-checkbox="showCheckboxFlag"
-    highlight-curren="true"
-    default-expand-all
+    :data="treeList"
     node-key="id"
-    ref="tree"
-    highlight-current
     :props="defaultProps"
-    :render-content="renderContent"
-    @node-click="selectNode"
-  >
+    lazy
+    :load="loadNode"
+   >
+      <span class="custom-tree-node" slot-scope="{ node, data }">
+        <i class="imenu-icon fa fa-sitemap" v-if="node.nodeType"></i>
+        <span>{{ node.label }}</span>
+        <!--<span class="custom-tree-float">
+          <el-button
+            type="text"
+            size="mini"
+            @click="createTag(data, {flag:0,title:node.label})">
+            新增
+          </el-button>
+          <el-button
+            type="text"
+            size="mini"
+            class="delete"
+            @click="deleteLabel(node.id)">
+            删除
+          </el-button>
+        </span>-->
+      </span>
   </el-tree>
 </template>
 
@@ -20,21 +34,17 @@ export default {
   data () {
     return {
       showCheckboxFlag: false,
-      treeData: [],
+      treeList: [],
+      teeeSonList: [],
       defaultProps: {
         children: 'children',
         label: 'name'
       },
-      id: Number
+      id: '',
+      parentId: -1
     }
   },
   methods: {
-    selectNode (el) {
-      this.id = el.id
-      this.label = el.label
-      this.nodeType = el.type
-      this.setTreeId()
-    },
     setTreeId () {
       this.$router.push({
         name: 'OrganizationContent',
@@ -43,57 +53,52 @@ export default {
         }
       })
     },
-    getTree () {
-      const data = {
-        parentId: -1,
-        viewId: -1
+    // 追加子节点
+    loadNode (node, resolve) {
+      if (node.level === 0) {
+        return resolve(this.treeList)
       }
-      api[urlNames['getTree']](data).then(res => {
-        this.treeData = res.data
-        this.id = this.treeData[0].id
+      this.findTreeSonList(node.data.id)
+      this.id = node.data.id
+
+      setTimeout(() => {
+        resolve(this.teeeSonList)
+      }, 500)
+      this.teeeSonList = []
+    },
+    findTreeList (parentId) {
+      api[urlNames['getTree']]({
+        parentId: parentId,
+        viewId: -1
+      }).then((res) => {
+        this.total = parseInt(res.total)
+        this.treeList = res.data
+        this.id = res.data[0].id
+        this.setTreeId()
         this.$emit('getDefault', this.id)
-        console.log('树', res.data)
-        if (this.$route.name === 'Organization' || this.$route.name === 'OrganizationContent') {
-          this.setTreeId()
-        }
       })
     },
-    renderContent (h, { node, data, store }) {
-      console.log(87, data)
-      if (data.type === 'node') {
-        return (
-          <span>
-            <i class="menu-icon fa fa-sitemap" style="margin: 0 5px;"></i>
-            <span>{node.label}</span>
-          </span>)
-      } else if (data.type === 'department') {
-        return (
-          <span>
-            <i class="menu-icon fa fa-sitemap" style="margin: 0 5px;"></i>
-            <span>{node.label}</span>
-          </span>)
-      } else {
-        return (
-          <span>
-            <i class="menu-icon fa fa-sitemap" style="margin: 0 5px;"></i>
-            <span>{node.label}</span>
-          </span>)
-      }
+    // 获取子节点
+    findTreeSonList (parentId) {
+      api[urlNames['getTree']]({
+        parentId: parentId,
+        viewId: -1
+      }).then((res) => {
+        this.teeeSonList = res.data
+        this.id = parentId
+        this.setTreeId()
+      })
+    },
+    // 点击节点加载子节点
+    handleNodeClick (node) {
+      this.findTreeSonList(node.id)
     }
   },
   created () {
-    this.getTree()
+    this.findTreeList(-1)
   },
-  watch: {
-    $route: {
-      handler (val) {
-        if (val.query.type || val.name === 'Organization') {
-          this.getTree()
-          this.setTreeId()
-        }
-      },
-      deep: true
-    }
+  beforeRouteUpdate (to, from, next) {
+    //this.findTreeList(-1)
   }
 }
 </script>

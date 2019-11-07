@@ -21,6 +21,7 @@
       </el-form-item>
       <el-form-item v-if="isShowEditFlag">
         <el-button type="primary" @click="submitForm('ruleForm')">{{submitHtml}}</el-button>
+        <el-button @click="goBack">取消</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -41,18 +42,20 @@ export default {
       breadcrumbTitle: '添加节点',
       submitHtml: '保存',
       oldFrom: {},
-      parentId: '',
       ruleForm: {
         reason: '',
         name: '',
         enable: false,
-        parentName: ''
+        parentName: '',
+        id: '',
+        parentId: ''
       },
       rules: {
         name: [
           { required: true, message: '请输入节点名称', trigger: 'blur' }
         ]
-      }
+      },
+      backId: ''
     }
   },
   methods: {
@@ -70,15 +73,6 @@ export default {
         this.disabledFlag = true
         this.breadcrumbTitle = '节点详情'
       }
-      this.pushBreadcrumb({
-        name: this.breadcrumbTitle,
-        parent: {
-          name: 'OrganizationContent',
-          query: {
-            type: 'back'
-          }
-        }
-      })
     },
     submitForm (ruleForm) {
       this.$refs[ruleForm].validate((valid) => {
@@ -86,14 +80,16 @@ export default {
           const data = {
             reason: this.ruleForm.reason,
             viewNode: {
-              id: this.$route.params.parentId,
-              parentId: this.parentId,
+              nodeType: 1,
+              id: this.$route.params.id,
+              parentId: this.ruleForm.parentId || this.$route.params.parentId,
               name: this.ruleForm.name,
               enable: true
             }
           }
           api[urlNames['createViewNode']](data).then((res) => {
             this.$message.success(`添加成功`)
+            this.goBack()
             console.log(res)
           }, (error) => {
 
@@ -106,18 +102,50 @@ export default {
     },
     getNodeDetail () {
       let data = {
-        id: this.$route.params.id
+        id: this.$route.params.id || this.$route.params.parentId
       }
       this.loading = true
       api[urlNames['findViewNodeById']](data).then((res) => {
         this.loading = false
-        console.log(res.data)
-        this.ruleForm.name = res.data.name
-        this.ruleForm.parentName = res.data.parentName
-        this.ruleForm.parentId = res.data.parentId
+        if (this.$route.name === 'NodeAdd') {
+          this.ruleForm.parentName = res.data.name
+          this.ruleForm.parentId = res.data.id
+        } else {
+          this.ruleForm.parentName = res.data.parentName
+          this.ruleForm.parentId = res.data.parentId
+          this.ruleForm.name = res.data.name
+          this.ruleForm.id = res.data.id
+        }
+        if (this.ruleForm.parentId === '-1') {
+          this.backId = this.ruleForm.id
+        } else {
+          this.backId = this.ruleForm.parentId
+        }
+        this.pushBreadcrumb({
+          name: this.breadcrumbTitle,
+          parent: {
+            name: 'OrganizationContent',
+            params: {
+              nodeId: this.backId
+            },
+            query: {
+              type: 'back'
+            }
+          }
+        })
       }, (error) => {
         this.$message.error(`没有内容`)
       })
+    },
+    /*
+    * 返回上一页
+    * */
+    goBack () {
+      let breadcrumb = [...this.app.pageBreadcrumb]
+      let currentPage = breadcrumb[breadcrumb.length - 1]
+      breadcrumb.splice(-1, 1)
+      this.SET_PAGE_BREADCRUMB(breadcrumb)
+      this.$router.push(currentPage.parent)
     }
   },
   mounted () {
@@ -129,9 +157,7 @@ export default {
       reason: this.ruleForm.reason
     }
     this.oldFrom = JSON.parse(JSON.stringify(obj))
-    if (this.$route.params.id) {
-      this.getNodeDetail()
-    }
+    this.getNodeDetail()
   },
   computed: {
     newValue () {

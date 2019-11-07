@@ -1,0 +1,10 @@
+{
+  "status": 0,
+  "message": "success",
+  "data": {
+    "userCount": 3915,
+    "deptCount": 8681,
+    "organizationCount": 3938,
+    "organCount": 9258
+  }
+}

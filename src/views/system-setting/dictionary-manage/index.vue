@@ -14,9 +14,8 @@
       <template slot-scope="{slotScope}" slot="status">
       </template>
       <template slot-scope="{slotScope}" slot="operate">
-        <el-button size="mini" type="text" @click="goConfig(slotScope.row)">查看</el-button>
-        <el-button size="mini" type="text" @click="goConfig(slotScope.row)">编辑</el-button>
-        <el-button size="mini" type="text" @click="goConfig(slotScope.row)">删除</el-button>
+        <el-button size="mini" type="text" @click="openDialog(slotScope.row)">编辑</el-button>
+        <el-button size="mini" type="text" @click="openDialog(slotScope.row)">删除</el-button>
       </template>
     </site-table>
     <!--分页-->
@@ -29,48 +28,31 @@
       layout="total, sizes, prev, pager, next, jumper"
       :total="page.total">
     </el-pagination>
-
-    <!--添加dialog-->
-    <!--<el-dialog title="创建字典" :visible.sync="dialogVisible">-->
-      <!--<el-form :model="form">-->
-        <!--<el-form-item label="字段名称" :label-width="formLabelWidth">-->
-          <!--<el-input v-model="form.name" autocomplete="off"></el-input>-->
-        <!--</el-form-item>-->
-        <!--<el-form-item label="字段描述" :label-width="formLabelWidth">-->
-          <!--<el-input v-model="form.desc" autocomplete="off"></el-input>-->
-        <!--</el-form-item>-->
-        <!--<el-form-item label="启用状态" :label-width="formLabelWidth">-->
-          <!--<el-switch-->
-            <!--v-model="stateValue"-->
-            <!--active-color="#13ce66"-->
-            <!--inactive-color="#ff4949">-->
-          <!--</el-switch>-->
-        <!--</el-form-item>-->
-      <!--</el-form>-->
-      <!--<div slot="footer" class="dialog-footer">-->
-        <!--<el-button @click="dialogFormVisible = false">取 消</el-button>-->
-        <!--<el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>-->
-      <!--</div>-->
-    <!--</el-dialog>-->
     <edit-dialog
       :visible="dialogVisible"
       :config-type="type"
       :dialogTitle="title"
       @refreshList="getGrid"
       @close="closeAddDialog"></edit-dialog>
+    <dictionary-list
+      :visible="dicDialogVisible"
+      :config-type="type"
+      :dialogTitle="dicTitle"
+      @refreshList="getGrid"
+      @close="closeAddDialog"></dictionary-list>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 import EditDialog from '../components/EditDialog/index'
-import ConfigDialog from '../../examine-details/components/EditDialog'
+import DictionaryList from '../components/DictionaryList/index'
 import handleTable from '@src/mixins/handle-table'
 import { api, urlNames } from '@src/api'
 import SiteTable from '@src/components/SiteTable/index.vue'
 import { mapState, mapMutations } from 'vuex'
 
 export default {
-  components: { EditDialog, ConfigDialog, SiteTable },
+  components: { EditDialog, DictionaryList, SiteTable },
   mixins: [handleTable],
   data () {
     return {
@@ -93,26 +75,9 @@ export default {
       }],
       statusValue: '',
       searchTimeValue: '',
-      list: [],
-      areaList: [
-        {
-          'id': 1,
-          'code': '1',
-          'name': '单位'
-        },
-        {
-          'id': 2,
-          'code': '2',
-          'name': '部门'
-        },
-        {
-          'id': 3,
-          'code': '3',
-          'name': '人员'
-        }
-      ],
       dictionaryNameList: [],
       dialogVisible: false,
+      dicDialogVisible: false,
       type: '',
       currentEdit: null,
       currentParent: {
@@ -134,9 +99,9 @@ export default {
           showOverflowTooltip: false,
           minWidth: 50
         },
-        workName: {
+        dictName: {
           key: 1,
-          field: 'workName',
+          field: 'dictName',
           tooltip: false,
           formatter: this.formatter,
           label: '字典名称',
@@ -144,29 +109,29 @@ export default {
           showOverflowTooltip: false,
           minWidth: 100
         },
-        unitLeader: {
+        dictId: {
           key: 2,
-          field: 'unitLeader',
-          tooltip: true,
+          field: 'dictId',
+          tooltip: false,
           formatter: this.formatter,
           label: '字典ID',
           sortable: false,
           showOverflowTooltip: false,
           minWidth: 100
         },
-        confirmMonth: {
+        dictDescribe: {
           key: 3,
-          field: 'confirmMonth',
-          tooltip: false,
+          field: 'dictDescribe',
+          tooltip: true,
           formatter: this.formatter,
           label: '字典描述',
           sortable: false,
           showOverflowTooltip: false,
           minWidth: 100
         },
-        state: {
+        isEnable: {
           key: 4,
-          field: 'state',
+          field: 'isEnable',
           tooltip: false,
           formatter: this.formatter,
           label: '启用状态',
@@ -176,11 +141,12 @@ export default {
         }
       },
       tableData: [],
-      tableHeight: 200,
+      tableHeight: null,
       operateWidth: 200,
       tableCheckbox: true,
       operate: true,
       title: '创建字典',
+      dicTitle: '职级字段列表',
     }
   },
   computed: {
@@ -200,7 +166,6 @@ export default {
     }
     this.initQuery()
     this.getGrid()
-    this.getMyAuditList()
   },
   methods: {
     ...mapMutations([
@@ -210,7 +175,7 @@ export default {
       'SET_EXAMINE_SEARCH_QUERY',
       'SET_EXAMINE_BACKPATH']),
     addDictionary () {
-
+      this.dialogVisible = true
     },
     scrollStyle () {
       return {
@@ -233,11 +198,6 @@ export default {
     trim (str) {
       return (str + '').replace(/(\s+)$/g, '').replace(/^\s+/g, '')
     },
-    getMyAuditList () {
-      api[urlNames['getMyAuditList']]().then((res) => {
-        this.tableData = res.data
-      })
-    },
     search () {
       this.$nextTick(() => {
         this.page.current = 1
@@ -245,7 +205,6 @@ export default {
       })
     },
     getGrid () {
-      this.loading = true
       let data = {
         page: this.page.current,
         pageSize: this.page.limit
@@ -261,78 +220,21 @@ export default {
           data[key] = value
         }
       }
-      api[urlNames['getApplicationList']](data).then((res) => {
+      api[urlNames['dictionaryList']](data).then((res) => {
         this.loading = false
-        this.list = res.result.items
-        this.page.total = res.result.total_items
+        this.tableData = res.data
+        this.page.total = res.total
       }, () => {
         this.loading = false
-        this.list = []
         this.page.total = 0
       })
     },
-    addChild (index, row) {
-      this.currentParent.type = row.type
-      this.currentParent.description = row.description
-      this.currentParent.orderNum = row.orderNum + 10
-      this.configDialogVisible = true
+    openDialog (row) {
+      this.dicDialogVisible = true
     },
-    showEditDialog (row) {
-      api[urlNames['getApplicationDetail']]({ id: row.id }).then((res) => {
-        this.currentEdit = res.result[0]
-        this.currentEdit.areaId = this.currentEdit.areaId.toString().split(',')
-        this.editDialogVisible = true
-      })
+    closeAddDialog (val) {
+      this[val] = false
     },
-    goConfig (row) {
-      this.dialogVisible = true
-    },
-    showAddDialog () {
-      this.addDialogVisible = true
-    },
-    closeAddDialog () {
-      console.log(9999)
-      this.dialogVisible = false
-    },
-    handleAction (action, row) {
-      let actionName = '删除'
-      let actionUrl = 'deleteApplication'
-      let data = {
-        id: row.id,
-        type: row.type
-      }
-      if (action === 'enable') {
-        actionName = row.enable === 1 ? '停用' : '启用'
-        actionUrl = 'toggleApplication'
-        data.status = row.enable === 1 ? 0 : 1
-      }
-      this.$msgbox({
-        message: `确认${actionName}？`,
-        title: '提示',
-        showCancelButton: true,
-        type: 'warning',
-        beforeClose: (action, instance, done) => {
-          if (action === 'confirm') {
-            instance.confirmButtonLoading = true
-            instance.confirmButtonText = `${actionName}中...`
-            api[urlNames[actionUrl]](data).then((res) => {
-              instance.confirmButtonLoading = false
-              this.$message.success(`${actionName}成功`)
-              this.getGrid()
-            }, (res) => {
-              instance.confirmButtonLoading = false
-            })
-            done()
-          } else {
-            instance.confirmButtonLoading = false
-            done()
-          }
-        }
-      }).then(() => {
-
-      }).catch(() => {
-      })
-    }
   }
 }
 </script>

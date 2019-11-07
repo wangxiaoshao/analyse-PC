@@ -46,7 +46,7 @@ export default {
         desc: ''
       },
       formLabelWidth: '120px',
-      stateValue: '',
+      stateValue: ''
     }
   },
   mounted () {
@@ -59,7 +59,7 @@ export default {
       this.dialogVisible = true
     },
     closeDialog () {
-      this.$emit('close')
+      this.$emit('close', 'dialogVisible')
     },
     submitForm (form) {
       this.$refs[form].validate((valid) => {

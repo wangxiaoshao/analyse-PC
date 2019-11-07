@@ -5,6 +5,11 @@ const ApplicationList = () =>
 const ApplicationConfig = () =>
     import ('@src/views/application/ApplicationConfig/index.vue')
 
+import organization from './modules/organization'
+import examine from './modules/examine'
+import share from './modules/share'
+import statistics from './modules/statistics'
+import system from './modules/system'
 
 // 申请审核
 const WaitApproval = () =>

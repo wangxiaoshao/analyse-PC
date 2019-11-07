@@ -136,7 +136,7 @@ export default {
       this.SET_APPLICATION_SEARCH_QUERY({})
     }
     this.initQuery()
-    this.getAreaList()
+    // this.getAreaList()
     this.getGrid()
   },
   methods: {
@@ -172,7 +172,7 @@ export default {
       this.loading = true
       let data = {
         page: this.page.current,
-        pageSize: this.page.limit
+        limit: this.page.limit
       }
       let keys = Object.keys(this.searchQuery)
       let len = keys.length

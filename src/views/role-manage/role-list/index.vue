@@ -1,0 +1,107 @@
+<template>
+  <div>
+    <!--表格-->
+    <el-table v-loading="loading" :data="list" :max-height="tableMaxHeight" border style="width: 100%">
+      <el-table-column prop="description" label="序号" width="60" align="center">
+        <template slot-scope="scope">
+          <span :title="scope">{{scope.$index + 1}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="name" label="角色名称">
+      </el-table-column>
+      <el-table-column prop="dec" label="角色描述">
+      </el-table-column>
+      <el-table-column prop="creatTime" label="创建时间">
+      </el-table-column>
+      <el-table-column prop="value" label="启用状态">
+        <template slot-scope="scope">
+          <span class="text-green" v-show="scope.row.enable === 1">启用</span>
+          <span class="text-red" v-show="scope.row.enable === 0">停用</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" min-width="180">
+        <template slot-scope="scope">
+          <el-button size="mini" type="text" @click="goLookPerson(scope.row)">查看成员及权限</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <!--分页-->
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="page.current"
+      :page-sizes="[10, 30, 50, 100]"
+      :page-size="page.limit"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="page.total">
+    </el-pagination>
+  </div>
+</template>
+
+<script>
+import handleTable from '@src/mixins/handle-table'
+import { api, urlNames } from '@src/api'
+import { mapState, mapMutations } from 'vuex'
+
+export default {
+  mixins: [handleTable],
+  data () {
+    return {
+      list: [],
+      loading: true
+    }
+  },
+  computed: {
+    ...mapState(['roleManage'])
+  },
+  methods: {
+    ...mapMutations(['SET_ROLEMANAGE_PAGE', 'LIST_ID']),
+    getGrid () {
+      let data = {
+        page: this.page.current,
+        parentId: this.$route.params.nodeId,
+        limit: this.page.limit
+      }
+      this.loading = true
+      api[urlNames['roleList']](data).then((res) => {
+        this.loading = false
+        this.list = res.data
+      }, () => {
+        this.loading = false
+        this.list = []
+        this.page.total = 0
+      })
+    },
+    goLookPerson (row) {
+      this.SET_ROLEMANAGE_PAGE(this.page)
+      this.LIST_ID(this.$route.params.id)
+      this.$router.push({
+        name: 'lookPersonPermission',
+        params: {
+          id: row.id
+        }
+      })
+    }
+  },
+  created () {
+    if (this.$route.query.type === 'back') {
+      this.page = Object.assign(this.page, this.roleManage.page)
+      this.$router.push({
+        name: 'RoleList',
+        params: {
+          type: 'back',
+          id: this.roleManage.listId
+        }
+      })
+    } else {
+      this.SET_ROLEMANAGE_PAGE({})
+      this.LIST_ID({})
+    }
+    this.getGrid()
+  }
+}
+</script>
+
+<style scoped>
+
+</style>

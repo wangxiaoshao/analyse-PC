@@ -84,17 +84,6 @@ export default {
     serve: 'organizationManagePC',
     mock: '/createDepartment.json' // development模式下，本地mock数据
   },
-  /**
-   * 获取机构树
-   */
-  [urlNames.findDepartmentList]: {
-    type: 'get',
-    url: '/api/jg_manage/department/findDepartmentList',
-    keepOriginResponse: true, // 是否保留后端返回数据格式
-    showLoading: false, // 该请求发送时，是否显示全局loading
-    serve: 'organizationManagePC',
-    mock: '/findDepartmentList.json' // development模式下，本地mock数据
-  },
   // 添加人员
   [urlNames.createUser]: {
     type: 'post',
@@ -140,5 +129,33 @@ export default {
     showLoading: false, // 该请求发送时，是否显示全局loading
     serve: 'organizationManagePC',
     mock: '/findLeaderList.json' // development模式下，本地mock数据
+  },
+  [urlNames.roleList]: {
+    type: 'get',
+    url: '/api/jg_manage/user/roleList',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    showLoading: false, // 该请求发送时，是否显示全局loading
+    serve: 'organizationManagePC',
+    mock: '/roleList.json' // development模式下，本地mock数据
+  },
+  [urlNames.findPerson]: {
+    type: 'get',
+    url: '/api/jg_manage/user/lookPerson',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    showLoading: false, // 该请求发送时，是否显示全局loading
+    serve: 'organizationManagePC',
+    mock: '/findPerson.json' // development模式下，本地mock数据
+  },
+  // 创建单位
+  [urlNames.createOrganization]: {
+    type: 'post',
+    url: '/api/jg_manage/organ/createOrganization',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    showLoading: false, // 该请求发送时，是否显示全局loading
+    serve: 'organizationManagePC',
+    mock: '/createOrganization.json', // development模式下，本地mock数据
+    headers: {
+      'Content-Type': 'application/json'
+    }
   }
 }

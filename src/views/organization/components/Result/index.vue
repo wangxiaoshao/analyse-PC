@@ -19,50 +19,37 @@
       </div>
     </el-popover>
     <el-row>
-      <el-col :span="8">
-        <el-select v-model="value" placeholder="请选择" @change="getType">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
+      <el-input
+        placeholder="请输入内容"
+        v-model="keyWord"
+        @change="getResult"
+        class="input-with-select">
+        <el-select v-model="value" style="width: 80px" @change="getType" slot="prepend" placeholder="请选择">
+          <el-option label="节点" value="1"></el-option>
+          <el-option label="部门" value="2"></el-option>
+          <el-option label="单位" value="3"></el-option>
         </el-select>
-      </el-col>
-      <el-col :span="16">
-        <el-input
-          placeholder="搜索" suffix-icon="el-icon-search" v-model="keyWord"
-          @input="onFocus"
-        >
-        </el-input>
-      </el-col>
+        <el-button slot="append" icon="el-icon-search"></el-button>
+      </el-input>
     </el-row>
   </div>
 </template>
 
 <script>
 import { api, urlNames } from '@src/api'
-/* import debounce from '@src/mixins/debounce' */
+import debounce from '@src/mixins/debounce'
 export default {
-/*  mixins: [ debounce ], */
+  mixins: [ debounce ],
   data () {
     return {
+      debouncedSearch: null,
       resultFlag: false,
       loadFlag: true,
       keyWord: '',
-      options: [{
-        value: 'department',
-        label: '部门'
-      }, {
-        value: 'unit',
-        label: '单位'
-      }, {
-        value: 'person',
-        label: '人员'
-      }],
       value: '部门',
       gridData: [],
-      type: 'department'
+      type: '1',
+      restaurants: []
     }
   },
   props: ['defaultNodeId'],
@@ -72,13 +59,19 @@ export default {
     },
     onFocus () {
       this.resultFlag = true
-      // this.debounce(this.getResult, 600)
-      this.getResult()
+    },
+    onBlur () {
+      this.resultFlag = false
+    },
+    onChange () {
+      this.debouncedSearch()
     },
     // 获取搜索结果
     getResult () {
+      this.resultFlag = true
       let data = {
-        name: this.keyWord
+        name: this.keyWord,
+        nodeType: this.type,
       }
       this.loadFlag = true
       api[urlNames['searchViewNode']](data).then(res => {
@@ -105,7 +98,20 @@ export default {
     }
   },
   created () {
+    this.debouncedSearch = this.debounce(this.getResult, 600)
+    // this.getResult()
     // this.debouncedSearch = this.debounce(this.getResult, 5000)
+  },
+  watch: {
+    keyWord: {
+      handler (val) {
+        if (val !== '') {
+          // this.debouncedSearch = this.debounce(this.getResult, 500)
+          // this.getResult
+        }
+      },
+      deep: true
+    }
   }
 }
 </script>

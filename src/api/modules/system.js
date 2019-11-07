@@ -3,11 +3,11 @@
 import urlNames from '../url-names'
 
 export default {
-  [urlNames.getAdminLog]: {
+  [urlNames.dictionaryList]: {
     type: 'get',
-    url: '/work/logger/adminLog',
+    url: '/api/jg_manage/system/checkDict',
     keepOriginResponse: true,
     serve: 'organizationManagePC',
-    mock: 'getAdminLog.json'
+    mock: 'system-setting/dictionaryList.json'
   }
 }

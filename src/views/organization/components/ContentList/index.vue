@@ -54,51 +54,61 @@
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      :current-page="page.current"
+      :current-page="contentPage.current"
       :page-sizes="[10, 30, 50, 100]"
-      :page-size="page.limit"
+      :page-size="contentPage.limit"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="page.total">
+      :total="contentPage.total">
     </el-pagination>
   </div>
 </template>
 
 <script>
+import organizationEdit from '@src/mixins/organization-edit'
 import Sortable from 'sortablejs'
 import handleTable from '@src/mixins/handle-table'
 import { api, urlNames } from '@src/api'
 export default {
-  mixins: [handleTable],
+  mixins: [handleTable, organizationEdit],
   data () {
     return {
       loading: true,
       list: [],
       sortListFlag: false,
       isShowEditFlag: true,
-      sortList: []
+      sortList: [],
+      nodeId: this.$route.params.nodeId
     }
   },
-  props: {
-    sortFlag: {
-      type: Boolean,
-      request: true
-    }
-  },
+  props: ['sortFlag', 'contentPage', 'succese'],
   methods: {
+    handleSizeChange (val) {
+      this.contentPage.current = 1
+      this.contentPage.limit = val
+      this.getGrid()
+      this.$emit('getPage', this.contentPage)
+    },
+    handleCurrentChange (val) {
+      this.contentPage.current = val
+      this.getGrid()
+      this.$emit('getPage', this.contentPage)
+    },
     getGrid () {
       let data = {
-        page: this.page.current,
-        parentId: this.$route.params.nodeId,
-        limit: this.page.limit
+        viewId: -1,
+        page: this.contentPage.current,
+        parentId: this.nodeId,
+        limit: this.contentPage.limit
       }
       this.loading = true
       api[urlNames['findViewNodeList']](data).then((res) => {
         this.loading = false
         this.list = res.data
+        this.contentPage.total = res.total
       }, () => {
         this.loading = false
         this.list = []
-        this.page.total = 0
+        this.contentPage.total = 0
       })
     },
     cancelSort () {
@@ -107,43 +117,21 @@ export default {
     sortBtnFlag () {
       this.$emit('cancel', true)
     },
-    // 打开编辑节点
-    openEditNode (row) {
-      this.$router.push({
-        name: 'NodeEdit',
-        params: {
-          id: row.id
-        }
-      })
-    },
-    // 打开编辑单位
-    openEditUnit (row) {
-      this.$router.push({
-        name: 'UnitEdit',
-        params: {
-          id: row.id
-        }
-      })
-    },
-    // 打开编辑部门
-    openDepartmentEdit (row) {
-      this.$router.push({
-        name: 'DepartmentEdit',
-        params: {
-          id: row.id
-        }
-      })
-    },
     // 保存排序
     sublimeSort () {
-      let data = []
+      let sortList = []
       this.list.forEach((item, index) => {
         const sortObj = {
           id: item.id,
           sort: index
         }
-        data.push(sortObj)
+        sortList.push(sortObj)
       })
+      let data = {
+        page: this.contentPage.current,
+        limit: this.contentPage.limit,
+        sortList
+      }
       console.log(9999, data)
       api[urlNames['setViewNodeSort']](data).then((res) => {
         this.$message.success(`保存成功`)
@@ -155,7 +143,10 @@ export default {
 
   },
   created () {
-    // this.getGrid()
+    this.getGrid()
+    if (this.succese) {
+      this.getGrid()
+    }
     if (this.$route.name === 'OrganizationContent') {
       this.isShowEditFlag = true
     } else {
@@ -189,18 +180,15 @@ export default {
           })
         } else {
           this.sortListFlag = false
-          //this.getGrid()
+          // this.getGrid()
         }
       },
       deep: true
-    },
-    '$route.params.nodeId': {
-      handler (val) {
-        this.getGrid()
-      },
-      deep: true,
-      immediate: true
     }
+  },
+  beforeRouteUpdate (to, from, next) {
+    this.nodeId = to.params.nodeId
+    this.getGrid()
   }
 }
 </script>

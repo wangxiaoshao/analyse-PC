@@ -9,20 +9,25 @@
       <div class="dialog-close" @click="closeDialog"><i class="el-icon-close"></i></div>
         <h2 class="dialog-title">{{dialogTitle}}</h2>
         <!--表单-->
-      <el-input
-        type="textarea"
-        :autosize="{ minRows: 4, maxRows: 6}"
-        v-model="textareaVal"
-        :placeholder="`请输入${dialogTitle}`">
-      </el-input>
-      <el-row :gutter="20">
-        <el-col :span="12" :offset=8>
-          <div style="margin-top: 20px">
-            <el-button  type="primary" @click="passExamine">确认</el-button>
-            <el-button @click="closeDialog">取消</el-button>
-          </div>
-        </el-col>
-      </el-row>
+
+      <el-form ref="form" :model="form" :rules="rules">
+        <el-form-item prop="desc">
+          <el-input
+            type="textarea"
+            :autosize="{ minRows: 4, maxRows: 6}"
+            v-model="form.desc"
+            :placeholder="`请输入${dialogTitle}`">
+          </el-input>
+        </el-form-item>
+        <el-form-item >
+          <el-row :gutter="20">
+          <el-col :span="12" :offset=8>
+            <el-button  type="primary" @click="passExamine('form')">确认</el-button>
+            <el-button @click="closeDialog('form')">取消</el-button>
+          </el-col>
+          </el-row>
+        </el-form-item>
+      </el-form>
     </el-dialog>
   </div>
 </template>
@@ -32,11 +37,19 @@ import { mapState, mapMutations } from 'vuex'
 import { api, urlNames } from '@src/api'
 
 export default {
-  props: ['visible', 'close', 'dialogTitle'],
+  props: ['visible', 'close', 'dialogTitle', 'auditResult'],
   components: {},
   data () {
     return {
-      textareaVal: ''
+      rules: {
+        desc: [
+          { required: true, message: `请输入${this.dialogTitle}`, trigger: 'blur' }
+        ]
+      },
+      textareaVal: '',
+      form: {
+        desc: ''
+      }
     }
   },
   mounted () {
@@ -45,32 +58,30 @@ export default {
     ...mapState(['app'])
   },
   methods: {
-    passExamine () {
-      this.addDialogVisible = true
-    },
-    closeDialog () {
+    closeDialog (form) {
+      this.$refs[form].resetFields()
       this.$emit('close')
     },
-    submitForm (form) {
+    passExamine (form) {
       this.$refs[form].validate((valid) => {
         if (valid) {
-          let data = new FormData()
-          let keys = Object.keys(this.editForm)
-          let len = keys.length
-          for (let i = 0; i < len; i++) {
-            let key = keys[i]
-            let value = this.editForm[key]
-            if (value) {
-              data.append(key, value)
+          let obj = {
+            message: this.form.desc,
+            auditResult: this.auditResult,
+            id: this.$route.query.id
+          };
+          this.$emit('close')
+          api[urlNames['saveAudit']](obj).then((res) => {
+            if (res && res.message === 'success') {
+              // this.$emit('refreshList')
+              this.$router.push({
+                name: 'ApprovedDetail',
+                query: {
+                  id: this.$route.query.id,
+                  type: this.$route.query.type
+                }
+              })
             }
-          }
-          api[urlNames['sendEditRightsInfo']](data).then((res) => {
-            this.$message({
-              message: this.current ? '修改成功' : '添加成功',
-              type: 'success'
-            })
-            this.$emit('refreshList')
-            this.closeDialog()
           }, (error) => {
 
           })

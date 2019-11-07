@@ -85,15 +85,15 @@ export default {
         data.startTime = this.dataValue[0]
         data.endTime = this.dataValue[1]
       }
-      api[urlNames['getAdminLog']](data).then((res) => {
-        this.loading = false
-        this.list = res.result.items
-        this.page.total = res.result.total_items
-      }, () => {
-        this.loading = false
-        this.list = []
-        this.page.total = 0
-      })
+      // api[urlNames['dictionaryList']](data).then((res) => {
+      //   this.loading = false
+      //   // this.list = res.result.items
+      //   // this.page.total = res.total
+      // }, () => {
+      //   this.loading = false
+      //   this.list = []
+      //   this.page.total = 0
+      // })
     }
   }
 }

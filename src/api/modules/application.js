@@ -30,7 +30,7 @@ export default {
   [urlNames.getAreaList]: {
     type: 'get',
     url: '/api/applycenter/area/all',
-    serve: 'applicationCenter',
+    serve: 'organizationManagePC',
     mock: 'area.json'
   },
   [urlNames.getApplicationDetail]: {

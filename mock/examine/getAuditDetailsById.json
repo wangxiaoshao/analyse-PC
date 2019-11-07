@@ -1,0 +1,20 @@
+{
+  "data": {
+    "changeFields": [
+      {
+      "fieldName": "name",
+      "beforeChangeValue": "单位名称",
+      "afterChangeValue": "单位名称2"
+      },
+      {
+      "fieldName": "phone",
+      "beforeChangeValue": "123456789",
+      "afterChangeValue": "987654321"
+      }
+    ],
+    "reason": "45645",
+    "message": "同意"
+  },
+  "status": 0,
+  "timestamp": "2019-11-05 10:29:08"
+}

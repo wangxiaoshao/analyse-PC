@@ -1,0 +1,16 @@
+{
+  "total": 8,
+  "message": "success",
+  "data": [
+    {
+      "uid": "1",
+      "name": "渣渣辉",
+      "orgName": "单位名称2,爱上会",
+      "account": "1,0",
+      "deptName": "开发部,研发部",
+      "labelName": "人员标签"
+    }
+  ],
+  "status": 0,
+  "timestamp": "2019-11-07 10:23:15"
+}

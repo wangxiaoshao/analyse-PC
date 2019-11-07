@@ -3,14 +3,18 @@ import * as types from '../mutation-types'
 const app = {
   state: {
     page: {},
-    searchQuery: {}
+    backInfo: {},
+    treeId: null
   },
   mutations: {
-    [types.SET_APPLICATION_PAGE] (state, val) {
+    [types.SET_ORGANIZATION_PAGE] (state, val) {
       state.page = val
     },
-    [types.SET_APPLICATION_SEARCH_QUERY] (state, val) {
-      state.searchQuery = val
+    [types.SET_ORGANIZATION_BACK_INFO] (state, name) {
+      state.backInfo = name
+    },
+    [types.SET_ORGANIZATION_NODEID] (state, val) {
+      state.treeId = val
     }
   }
 }

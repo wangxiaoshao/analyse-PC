@@ -14,10 +14,21 @@ export default {
   getApplicationConfig: 'getApplicationConfig',
   editApplicationConfig: 'editApplicationConfig',
   // 申请审核 examine
-  getMyAuditList: 'getMyAuditList',
+  getAuditList: 'getAuditList', // 待我审核 、 我已审核
+  getMyApplyAuditList: 'getMyApplyAuditList', // 我的申请
+  getInfoConfirmList: 'getInfoConfirmList', // 信息确认
+  getConfirmMemberList: 'getConfirmMemberList', // 信息确认 - 人员明细
+  getAuditDetailsById: 'getAuditDetailsById', // 审批详情
+  saveAudit: 'saveAudit', // 保存审批
 
-  getDepartmentNodes: 'getDepartmentNodes',
+
+  // 部门查询
   findDepartmentList: 'findDepartmentList',
+  // 单位查询
+  findOrganizationList: 'findOrganizationList',
+  // 人员查询
+  findMemberList: 'findMemberList',
+  getDepartmentNodes: 'getDepartmentNodes',
   geMtmemberSelector: 'geMtmemberSelector',
   geMtmemberSearch: 'geMtmemberSearch',
   getUserRightsList: 'getUserRightsList',
@@ -26,9 +37,9 @@ export default {
   sendEditRightsInfo: 'sendEditRightsInfo',
   getUserRemoveRight: 'getUserRemoveRight',
   // 数据统计 statistics
-  setParameter: 'setParameter',
+  getStatistiscManageDto: 'getStatistiscManageDto',
   getParameter: 'getParameter',
-  // 获取视图
+  // 获取视图--机构树
   getTree: 'getTree',
   // 搜索视图
   searchViewNode: 'searchViewNode',
@@ -38,6 +49,7 @@ export default {
   getViewList: 'getViewList', // 视图列表
   getAppList: 'getAppList', // 应用列表
   createApp: 'createApp', // 创建应用
+  updateApp: 'updateApp', // 修改应用
   getAppDetail: 'getAppDetail', // 获取应用详情
   findLabelList: 'findLabelList', // 标签列表
   createLabel: 'createLabel', //  创建标签
@@ -63,5 +75,12 @@ export default {
   // 根据id查人员详情
   findUserById: 'findUserById',
   // 查询领导信息
-  findLeaderList: 'findLeaderList'
+  findLeaderList: 'findLeaderList',
+  // 角色列表
+  roleList: 'roleList',
+  findPerson: 'findPerson',
+  // 创建单位
+  createOrganization: 'createOrganization',
+  // 系统设置
+  dictionaryList: 'dictionaryList',
 }

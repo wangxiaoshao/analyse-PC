@@ -7,16 +7,16 @@
           <el-row :gutter="10" type="flex">
             <el-col :span="6">
               <el-select
-                v-model="searchQuery.areaId"
+                v-model="selected.type"
                 filterable
                 clearable
                 @change="search"
                 placeholder="今天">
                 <el-option
-                  v-for="item in areaList"
+                  v-for="item in dataList"
                   :key="item.id"
                   :label="item.name"
-                  :value="item.code">
+                  :value="item.type">
                 </el-option>
               </el-select>
             </el-col>
@@ -30,28 +30,28 @@
         <div style="position: absolute" class="register">
           <div>//截止今天</div>
           <div>机构人员注册总数</div>
-          <div>203350人</div>
+          <div>{{countData.organizationCount}}</div>
         </div>
       </span>
       <span class="template-two light-purple">
         <div style="position: absolute" class="add-unit">
           <div>//今天</div>
           <div>新增单位</div>
-           <div>20</div>
+          <div>{{countData.userCount}}</div>
         </div>
       </span>
       <span class="template-two light-blue">
         <div style="position: absolute" class="add-depart">
           <div>//今天</div>
           <div>新增部门</div>
-          <div>20</div>
+          <div>{{countData.deptCount}}</div>
         </div>
       </span>
       <span class="template-two light-orange">
         <div style="position: absolute" class="add-member">
           <div>//今天</div>
           <div>新增人员</div>
-          <div>20</div>
+          <div>{{countData.organCount}}</div>
         </div>
       </span>
     </div>
@@ -136,35 +136,43 @@ export default {
         content: '陈宇 登陆系统备份 4',
         timestamp: '2018-04-11'
       }],
-      areaList: [
-        { id: 1, name: '今天', code: 1910291111 },
-        { id: 2, name: '昨天', code: 1910291112 },
-        { id: 3, name: '一周', code: 1910291113 },
-        { id: 4, name: '一月', code: 1910291114 }
+      dataList: [
+        { id: 1, name: '今天', type: 1 },
+        { id: 2, name: '昨天', type: 2 },
+        { id: 3, name: '一周', type: 3 },
+        { id: 4, name: '一月', type: 4 }
       ],
-      searchQuery: {
-        areaId: '',
-        keyword: ''
+      selected: {
+        type: 1
       },
-      activeName: 'unit'
+      activeName: 'unit',
+      countData: []
     }
   },
   computed: {
     ...mapState(['application'])
   },
   created () {
-
+    this.initDataStatistics()
   },
   methods: {
     ...mapMutations(['SET_APPLICATION_PAGE', 'SET_APPLICATION_SEARCH_QUERY']),
-    search () {},
-    getGrid () {},
+    search () {
+      this.initDataStatistics()
+    },
+    initDataStatistics () {
+      api[urlNames['getStatistiscManageDto']]({
+        type: this.selected.type
+      }).then((res) => {
+        this.countData = res.data
+      })
+    },
     handleClick () {},
     jumpQuery (routerParams) { // routerParams === Unit|Department|Member
       this.$router.push({
         name: routerParams + 'Query'
       })
-    },
+    }
   }
 }
 </script>
