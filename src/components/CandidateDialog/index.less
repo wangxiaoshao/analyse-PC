@@ -6,10 +6,25 @@
       padding: 5px;
       display: flex;
 
-      .select-member, .select-tree, .member-list {
+      .select-member {
         flex: 1;
-        max-height: 350px;
-        height: 360px;
+        min-height: 350px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        border: 1px solid #EBEEF5;
+        border-radius: 4px;
+        padding:0 0 0 5px;
+        .member-panel,.dep-panel{
+          overflow-y: scroll;
+          overflow-x: hidden;
+        }
+      }
+
+      .select-tree {
+        height: 400px;
+        margin-right: 5px;
+        flex: 1;
+        min-height: 350px;
         overflow-y: scroll;
         overflow-x: hidden;
         border: 1px solid #EBEEF5;
@@ -17,21 +32,18 @@
         padding: 5px;
       }
 
-      .transfer {
-        padding-left: 50px;
-        flex: 2;
-        /deep/.el-transfer-panel{
-          width: 40%;
-          height: 350px;
-        }
-      }
-
-      .select-tree {
-        margin-right: 5px;
-      }
-
       .member-list {
+        flex: 1;
+        min-height: 350px;
+        border: 1px solid #EBEEF5;
+        border-radius: 4px;
+        padding:0 0 0 5px;
         margin-right: 5px;
+        .member-panel,.dep-panel{
+          overflow-y: scroll;
+          overflow-x: hidden;
+        }
+
       }
 
       .el-checkbox {

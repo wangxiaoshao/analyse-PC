@@ -98,7 +98,7 @@ export default {
     this.findTreeList(-1)
   },
   beforeRouteUpdate (to, from, next) {
-    //this.findTreeList(-1)
+    //zthis.findTreeList(-1)
   }
 }
 </script>

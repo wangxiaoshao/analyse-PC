@@ -129,7 +129,7 @@ export default {
    */
   [urlNames.getGroupUsers]: {
     type: 'get',
-    url: '/api/member/groupMembers',
+    url: '/api/group/member/groupMembers',
     serve: 'organizationManagePC',
     keepOriginResponse: false
   }

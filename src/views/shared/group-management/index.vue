@@ -128,7 +128,7 @@ export default {
       console.log(row)
     },
     handleClickToDetail (row) {
-      this.$router.push({ name: 'GroupDetail', params: { groupId: row.id } })
+      this.$router.push({ path: `/group-management/group-detail/${row.id}` })
     },
     handleSizeChange (val) {
       console.log(`每页 ${val} 条`)
