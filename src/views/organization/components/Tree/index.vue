@@ -1,11 +1,11 @@
 <template>
   <el-tree
-    :data="labelList"
+    :data="treeList"
     node-key="id"
     :props="defaultProps"
     lazy
     :load="loadNode"
-    @node-click="selectNode">
+   >
       <span class="custom-tree-node" slot-scope="{ node, data }">
         <i class="imenu-icon fa fa-sitemap" v-if="node.nodeType"></i>
         <span>{{ node.label }}</span>
@@ -34,23 +34,17 @@ export default {
   data () {
     return {
       showCheckboxFlag: false,
-      labelList: [],
-      labelSonList: [],
+      treeList: [],
+      teeeSonList: [],
       defaultProps: {
         children: 'children',
         label: 'name'
       },
-      id: Number,
+      id: '',
       parentId: -1
     }
   },
   methods: {
-    selectNode (el) {
-      this.id = el.id
-      this.label = el.label
-      this.nodeType = el.type
-      this.setTreeId()
-    },
     setTreeId () {
       this.$router.push({
         name: 'OrganizationContent',
@@ -62,42 +56,49 @@ export default {
     // 追加子节点
     loadNode (node, resolve) {
       if (node.level === 0) {
-        return resolve(this.labelList)
+        return resolve(this.treeList)
       }
-      this.findLabelSonList(node.data.id)
+      this.findTreeSonList(node.data.id)
+      this.id = node.data.id
+
       setTimeout(() => {
-        resolve(this.labelSonList)
+        resolve(this.teeeSonList)
       }, 500)
-      this.labelSonList = []
+      this.teeeSonList = []
     },
-    findLabelList (parentId) {
+    findTreeList (parentId) {
       api[urlNames['getTree']]({
         parentId: parentId,
         viewId: -1
       }).then((res) => {
         this.total = parseInt(res.total)
-        this.labelList = res.data
+        this.treeList = res.data
         this.id = res.data[0].id
         this.setTreeId()
         this.$emit('getDefault', this.id)
       })
     },
     // 获取子节点
-    findLabelSonList (parentId) {
+    findTreeSonList (parentId) {
       api[urlNames['getTree']]({
         parentId: parentId,
         viewId: -1
       }).then((res) => {
-        this.labelSonList = res.data
+        this.teeeSonList = res.data
+        this.id = parentId
+        this.setTreeId()
       })
     },
     // 点击节点加载子节点
     handleNodeClick (node) {
-      this.findLabelSonList(node.id)
+      this.findTreeSonList(node.id)
     }
   },
   created () {
-    this.findLabelList(-1)
+    this.findTreeList(-1)
+  },
+  beforeRouteUpdate (to, from, next) {
+    //this.findTreeList(-1)
   }
 }
 </script>

@@ -21,6 +21,7 @@
       </el-form-item>
       <el-form-item v-if="isShowEditFlag">
         <el-button type="primary" @click="submitForm('ruleForm')">{{submitHtml}}</el-button>
+        <el-button @click="goBack">取消</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -41,7 +42,6 @@ export default {
       breadcrumbTitle: '添加节点',
       submitHtml: '保存',
       oldFrom: {},
-      parentId: '',
       ruleForm: {
         reason: '',
         name: '',
@@ -54,7 +54,8 @@ export default {
         name: [
           { required: true, message: '请输入节点名称', trigger: 'blur' }
         ]
-      }
+      },
+      backId: ''
     }
   },
   methods: {
@@ -88,6 +89,7 @@ export default {
           }
           api[urlNames['createViewNode']](data).then((res) => {
             this.$message.success(`添加成功`)
+            this.goBack()
             console.log(res)
           }, (error) => {
 
@@ -114,22 +116,36 @@ export default {
           this.ruleForm.name = res.data.name
           this.ruleForm.id = res.data.id
         }
+        if (this.ruleForm.parentId === '-1') {
+          this.backId = this.ruleForm.id
+        } else {
+          this.backId = this.ruleForm.parentId
+        }
         this.pushBreadcrumb({
           name: this.breadcrumbTitle,
           parent: {
             name: 'OrganizationContent',
             params: {
-              nodeId: this.ruleForm.parentId
+              nodeId: this.backId
             },
             query: {
               type: 'back'
             }
           }
         })
-        console.log(res.data)
       }, (error) => {
         this.$message.error(`没有内容`)
       })
+    },
+    /*
+    * 返回上一页
+    * */
+    goBack () {
+      let breadcrumb = [...this.app.pageBreadcrumb]
+      let currentPage = breadcrumb[breadcrumb.length - 1]
+      breadcrumb.splice(-1, 1)
+      this.SET_PAGE_BREADCRUMB(breadcrumb)
+      this.$router.push(currentPage.parent)
     }
   },
   mounted () {

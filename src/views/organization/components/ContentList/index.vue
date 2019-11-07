@@ -184,14 +184,11 @@ export default {
         }
       },
       deep: true
-    },
-    '$route.params.nodeId': {
-      handler (val) {
-        this.nodeId = val
-        this.getGrid()
-      },
-      deep: true
     }
+  },
+  beforeRouteUpdate (to, from, next) {
+    this.nodeId = to.params.nodeId
+    this.getGrid()
   }
 }
 </script>

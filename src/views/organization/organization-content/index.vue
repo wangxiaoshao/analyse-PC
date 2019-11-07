@@ -231,23 +231,18 @@ export default {
         this.selectType = this.content.nodeType
         this.nodeInfo.nodeType = res.data.nodeType
         this.nodeInfo.parentId = res.data.id
-        // this.activeName = '下级设置'
         this.loading = false
-        // 1:分类结点、2:部门结点、3:单位结点
         if (this.content[0].nodeType === 1) {
-          this.nodeTitle = '节点信息'
           this.showAddNodeFlag = true
           this.showAddDepartmentFlag = false
           this.showAddUnitFlag = true
         }
         if (this.content[0].nodeType === 2) {
-          this.nodeTitle = '部门信息'
           this.showAddNodeFlag = false
           this.showAddDepartmentFlag = true
           this.showAddUnitFlag = false
         }
         if (this.content[0].nodeType === 3) {
-          this.nodeTitle = '单位信息'
           this.showAddNodeFlag = false
           this.showAddDepartmentFlag = true
           this.showAddUnitFlag = true
