@@ -136,7 +136,7 @@ export default {
       this.SET_APPLICATION_SEARCH_QUERY({})
     }
     this.initQuery()
-    this.getAreaList()
+    // this.getAreaList()
     this.getGrid()
   },
   methods: {

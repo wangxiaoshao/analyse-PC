@@ -1,6 +1,15 @@
 {
-  "status": 0,
+  "total": 3,
   "message": "success",
   "data": [
-  ]
+    {
+      "id": "1",
+      "name": "开发部",
+      "removed": false,
+      "orgName": "单位名称2",
+      "orgAdministrator": "fsdf,渣渣辉"
+    }
+  ],
+  "status": 0,
+  "timestamp": "2019-11-07 09:40:14"
 }

@@ -15,9 +15,9 @@
             <!--</el-select>-->
           <!--</el-col>-->
           <el-col :span="8">
-            <el-input placeholder="请输入关键字搜索" v-model="searchQuery.keyword" clearable @change="getGrid">
-              <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
-            </el-input>
+            <!--<el-input placeholder="请输入关键字搜索" v-model="searchQuery.keyword" clearable @change="getGrid">-->
+              <!--<el-button slot="append" icon="el-icon-search" @click="search"></el-button>-->
+            <!--</el-input>-->
           </el-col>
         </el-row>
       </el-col>
@@ -201,6 +201,7 @@ export default {
     getGrid () {
       this.loading = true
       let data = {
+        type: 0,
         page: this.page.current,
         limit: this.page.limit
       }

@@ -14,14 +14,21 @@ export default {
   getApplicationConfig: 'getApplicationConfig',
   editApplicationConfig: 'editApplicationConfig',
   // 申请审核 examine
-  getAuditList: 'getAuditList', // 待我审核 、 我的申请 、 我已审核
+  getAuditList: 'getAuditList', // 待我审核 、 我已审核
+  getMyApplyAuditList: 'getMyApplyAuditList', // 我的申请
   getInfoConfirmList: 'getInfoConfirmList', // 信息确认
   getConfirmMemberList: 'getConfirmMemberList', // 信息确认 - 人员明细
   getAuditDetailsById: 'getAuditDetailsById', // 审批详情
   saveAudit: 'saveAudit', // 保存审批
 
-  getDepartmentNodes: 'getDepartmentNodes',
+
+  // 部门查询
   findDepartmentList: 'findDepartmentList',
+  // 单位查询
+  findOrganizationList: 'findOrganizationList',
+  // 人员查询
+  findMemberList: 'findMemberList',
+  getDepartmentNodes: 'getDepartmentNodes',
   geMtmemberSelector: 'geMtmemberSelector',
   geMtmemberSearch: 'geMtmemberSearch',
   getUserRightsList: 'getUserRightsList',

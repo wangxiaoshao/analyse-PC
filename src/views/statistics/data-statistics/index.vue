@@ -137,13 +137,13 @@ export default {
         timestamp: '2018-04-11'
       }],
       dataList: [
-        { id: 1, name: '今天', type: 0 },
-        { id: 2, name: '昨天', type: 1 },
-        { id: 3, name: '一周', type: 2 },
-        { id: 4, name: '一月', type: 3 }
+        { id: 1, name: '今天', type: 1 },
+        { id: 2, name: '昨天', type: 2 },
+        { id: 3, name: '一周', type: 3 },
+        { id: 4, name: '一月', type: 4 }
       ],
       selected: {
-        type: 0
+        type: 1
       },
       activeName: 'unit',
       countData: []

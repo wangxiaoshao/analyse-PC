@@ -64,6 +64,41 @@ export default {
     showLoading: true,
     serve: 'organizationManagePC'
   },
+  /*
+ * 单位查询
+ * */
+  [urlNames.findOrganizationList]: {
+    type: 'post',
+    url: '/api/jg_manage/organ/findOrganizationList',
+    keepOriginResponse: true,
+    showLoading: true,
+    serve: 'organizationManagePC',
+    mock: 'findOrganizationList.json'
+  },
+  /*
+ * 部门查询
+ * */
+  [urlNames.findDepartmentList]: {
+    type: 'get',
+    url: '/api/jg_manage/department/findDepartmentList',
+    keepOriginResponse: true,
+    showLoading: false,
+    serve: 'organizationManagePC',
+    mock: '/findDepartmentList.json'
+  },
+  /*
+ * 部门查询
+ * */
+  [urlNames.findMemberList]: {
+    type: 'get',
+    url: '/api/jg_manage/user/findUserByOrgAndDeptAndLabelAndUserName',
+    keepOriginResponse: true,
+    showLoading: false,
+    serve: 'organizationManagePC',
+    mock: '/findMemberList.json'
+  },
+
+
   // 应用管理
   ...application,
   ...examine, // 申请审核

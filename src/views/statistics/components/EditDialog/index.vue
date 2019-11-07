@@ -108,7 +108,7 @@ export default {
     }
   },
   mounted () {
-    this.getAreaList()
+    // this.getAreaList()
   },
   computed: {
     ...mapState(['app']),
