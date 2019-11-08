@@ -1,0 +1,354 @@
+[{
+        "type": "GET",
+        "url": "/txl/departmentTxl",
+        "title": "showDepartmentTxl",
+        "description": "<p>查询部门下人员通讯信息</p>",
+        "version": "1.0.0",
+        "group": "TxlController",
+        "name": "showDepartmentTxl",
+        "parameter": {
+            "fields": {
+                "请求参数": [{
+                        "group": "请求参数",
+                        "type": "Number",
+                        "optional": false,
+                        "field": "page",
+                        "description": ""
+                    },
+                    {
+                        "group": "请求参数",
+                        "type": "Number",
+                        "optional": false,
+                        "field": "limit",
+                        "description": ""
+                    },
+                    {
+                        "group": "请求参数",
+                        "type": "Number",
+                        "optional": false,
+                        "field": "departmentId",
+                        "description": "<p>部门id</p>"
+                    }
+                ]
+            },
+            "examples": [{
+                "title": "请求参数示例",
+                "content": "departmentId=4461&limit=30&page=2",
+                "type": "json"
+            }]
+        },
+        "success": {
+            "fields": {
+                "响应结果": [{
+                        "group": "响应结果",
+                        "type": "Number",
+                        "optional": false,
+                        "field": "status",
+                        "description": "<p>错误码</p>"
+                    },
+                    {
+                        "group": "响应结果",
+                        "type": "String",
+                        "optional": false,
+                        "field": "message",
+                        "description": "<p>状态信息描述</p>"
+                    },
+                    {
+                        "group": "响应结果",
+                        "type": "String",
+                        "optional": false,
+                        "field": "total",
+                        "description": "<p>总记录数</p>"
+                    },
+                    {
+                        "group": "响应结果",
+                        "type": "Array",
+                        "optional": false,
+                        "field": "response",
+                        "description": ""
+                    },
+                    {
+                        "group": "响应结果",
+                        "type": "String",
+                        "optional": false,
+                        "field": "response.name",
+                        "description": "<p>用户姓名</p>"
+                    },
+                    {
+                        "group": "响应结果",
+                        "type": "String",
+                        "optional": false,
+                        "field": "response.dutyName",
+                        "description": "<p>职务</p>"
+                    },
+                    {
+                        "group": "响应结果",
+                        "type": "String",
+                        "optional": false,
+                        "field": "response.mobile",
+                        "description": "<p>电话（加密后）</p>"
+                    },
+                    {
+                        "group": "响应结果",
+                        "type": "String",
+                        "optional": false,
+                        "field": "response.portraitUrl",
+                        "description": "<p>头像地址，绝对的地址</p>"
+                    }
+                ]
+            },
+            "examples": [{
+                "title": "响应结果示例",
+                "content": "{\n    \"status\":0,\n     \"message\":\"success\",\n     \"total\":123,\n     \"data\":[{\"portraitUrl\":\"Hf0xqJRHl\",\"name\":\"KsbrcvqQ\",\"mobile\":\"136****2446\",\"dutyName\":\"hgPeUlM7\"}]\n}",
+                "type": "json"
+            }]
+        },
+        "filename": "src/main/java/com/ourhz/product/jg/txl/controller/TxlController.java",
+        "groupTitle": "TxlController"
+    },
+    {
+        "type": "GET",
+        "url": "/txl/orgDepartmentTxl",
+        "title": "showOrgDepartmentTxl",
+        "description": "<p>查询单位下部门通讯信息</p>",
+        "version": "1.0.0",
+        "group": "TxlController",
+        "name": "showOrgDepartmentTxl",
+        "parameter": {
+            "fields": {
+                "请求参数": [{
+                        "group": "请求参数",
+                        "type": "Number",
+                        "optional": false,
+                        "field": "page",
+                        "description": ""
+                    },
+                    {
+                        "group": "请求参数",
+                        "type": "Number",
+                        "optional": false,
+                        "field": "limit",
+                        "description": ""
+                    },
+                    {
+                        "group": "请求参数",
+                        "type": "Number",
+                        "optional": false,
+                        "field": "orgId",
+                        "description": "<p>单位id</p>"
+                    }
+                ]
+            },
+            "examples": [{
+                "title": "请求参数示例",
+                "content": "limit=5136&page=2635&orgId=2611",
+                "type": "json"
+            }]
+        },
+        "success": {
+            "fields": {
+                "响应结果": [{
+                        "group": "响应结果",
+                        "type": "Number",
+                        "optional": false,
+                        "field": "status",
+                        "description": "<p>错误码</p>"
+                    },
+                    {
+                        "group": "响应结果",
+                        "type": "String",
+                        "optional": false,
+                        "field": "message",
+                        "description": "<p>状态信息描述</p>"
+                    },
+                    {
+                        "group": "响应结果",
+                        "type": "String",
+                        "optional": false,
+                        "field": "total",
+                        "description": "<p>总记录数</p>"
+                    },
+                    {
+                        "group": "响应结果",
+                        "type": "Array",
+                        "optional": false,
+                        "field": "response",
+                        "description": ""
+                    },
+                    {
+                        "group": "响应结果",
+                        "type": "String",
+                        "optional": false,
+                        "field": "response.name",
+                        "description": "<p>部门名称</p>"
+                    },
+                    {
+                        "group": "响应结果",
+                        "type": "String",
+                        "optional": false,
+                        "field": "response.phone",
+                        "description": "<p>部门电话</p>"
+                    }
+                ]
+            },
+            "examples": [{
+                "title": "响应结果示例",
+                "content": "{\n       \"status\":0,\n       \"message\":\"success\",\n       \"total\":123,\n       \"data\":[{\"phone\":\"tx\",\"name\":\"t8cJdMR\"}]\n}",
+                "type": "json"
+            }]
+        },
+        "filename": "src/main/java/com/ourhz/product/jg/txl/controller/TxlController.java",
+        "groupTitle": "TxlController"
+    },
+    {
+        "type": "GET",
+        "url": "/txl/orgUserTxl",
+        "title": "showOrgUserTxl",
+        "description": "<p>查询单位下人员通讯信息</p>",
+        "version": "1.0.0",
+        "group": "TxlController",
+        "name": "showOrgUserTxl",
+        "parameter": {
+            "fields": {
+                "请求参数": [{
+                        "group": "请求参数",
+                        "type": "Number",
+                        "optional": false,
+                        "field": "page",
+                        "description": ""
+                    },
+                    {
+                        "group": "请求参数",
+                        "type": "Number",
+                        "optional": false,
+                        "field": "limit",
+                        "description": ""
+                    },
+                    {
+                        "group": "请求参数",
+                        "type": "Number",
+                        "optional": false,
+                        "field": "orgId",
+                        "description": ""
+                    }
+                ]
+            },
+            "examples": [{
+                "title": "请求参数示例",
+                "content": "limit=9502&page=7389&orgId=2072",
+                "type": "json"
+            }]
+        },
+        "success": {
+            "fields": {
+                "响应结果": [{
+                        "group": "响应结果",
+                        "type": "Number",
+                        "optional": false,
+                        "field": "status",
+                        "description": "<p>错误码</p>"
+                    },
+                    {
+                        "group": "响应结果",
+                        "type": "String",
+                        "optional": false,
+                        "field": "message",
+                        "description": "<p>状态信息描述</p>"
+                    },
+                    {
+                        "group": "响应结果",
+                        "type": "String",
+                        "optional": false,
+                        "field": "total",
+                        "description": "<p>总记录数</p>"
+                    },
+                    {
+                        "group": "响应结果",
+                        "type": "Array",
+                        "optional": false,
+                        "field": "response",
+                        "description": ""
+                    },
+                    {
+                        "group": "响应结果",
+                        "type": "String",
+                        "optional": false,
+                        "field": "response.name",
+                        "description": "<p>用户姓名</p>"
+                    },
+                    {
+                        "group": "响应结果",
+                        "type": "String",
+                        "optional": false,
+                        "field": "response.dutyName",
+                        "description": "<p>职务</p>"
+                    },
+                    {
+                        "group": "响应结果",
+                        "type": "String",
+                        "optional": false,
+                        "field": "response.mobile",
+                        "description": "<p>电话（加密后）</p>"
+                    },
+                    {
+                        "group": "响应结果",
+                        "type": "String",
+                        "optional": false,
+                        "field": "response.portraitUrl",
+                        "description": "<p>头像地址，绝对的地址</p>"
+                    }
+                ]
+            },
+            "examples": [{
+                "title": "响应结果示例",
+                "content": "{\n     \"status\":0,\n     \"message\":\"success\",\n     \"total\":123,\n     \"data\":[{\"portraitUrl\":\"04VkctS\",\"name\":\"V0ycv\",\"mobile\":\"2Sh8\",\"dutyName\":\"ZkOXDq\"}]\n}",
+                "type": "json"
+            }]
+        },
+        "filename": "src/main/java/com/ourhz/product/jg/txl/controller/TxlController.java",
+        "groupTitle": "TxlController"
+    },
+    {
+        "type": "GET",
+        "url": "/txl/userTxlDetail",
+        "title": "showUserTxlDetail",
+        "description": "<p>查询个人电话详情</p>",
+        "version": "1.0.0",
+        "group": "TxlController",
+        "name": "showUserTxlDetail",
+        "parameter": {
+            "fields": {
+                "请求参数": [{
+                    "group": "请求参数",
+                    "type": "Number",
+                    "optional": false,
+                    "field": "uid",
+                    "description": "<p>用户id</p>"
+                }]
+            },
+            "examples": [{
+                "title": "请求参数示例",
+                "content": "uid=2426",
+                "type": "json"
+            }]
+        },
+        "success": {
+            "fields": {
+                "响应结果": [{
+                    "group": "响应结果",
+                    "type": "String",
+                    "optional": false,
+                    "field": "response",
+                    "description": "<p>用户电话（未加密）</p>"
+                }]
+            },
+            "examples": [{
+                "title": "响应结果示例",
+                "content": "\"RePE1zPD\"",
+                "type": "json"
+            }]
+        },
+        "filename": "src/main/java/com/ourhz/product/jg/txl/controller/TxlController.java",
+        "groupTitle": "TxlController"
+    }
+]

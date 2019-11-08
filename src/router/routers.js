@@ -5,6 +5,7 @@ const ApplicationList = () =>
 const ApplicationConfig = () =>
     import ('@src/views/application/ApplicationConfig/index.vue')
 
+import addressbook from './modules/addressbook'
 import organization from './modules/organization'
 import examine from './modules/examine'
 import share from './modules/share'
@@ -174,25 +175,7 @@ export default [{
         ]
     },
 
-    /**通讯录 */
-    {
-        path: "/address-book",
-        name: 'AddressBook',
-        component: AddressBook,
-        // redircet: '/address-book/unit-address-book/',
-        children: [{
-                path: '/',
-                name: 'UnitAddressBook',
-                component: UnitAddressBook,
-            },
-            {
-                path: '/member-list',
-                name: 'MemberList',
-                component: MemberList
-            }
 
-        ]
-    },
 
     /*
     申请审核（包含 待我审核、我已审核、我的申请、信息确认）

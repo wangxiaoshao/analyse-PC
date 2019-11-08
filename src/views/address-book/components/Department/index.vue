@@ -48,6 +48,7 @@
 </template>
 <script>
 import memberTable from '../Member/index'
+import { api, urlNames } from '@src/api'
 export default {
     data(){
          return {
@@ -71,6 +72,18 @@ export default {
         }
     },
 methods:{
+   getAddressBook(){
+          api[urlNames['getAddressBoookList']]({
+        name: '',
+          phone:''  
+        // departmentId: departmentId,
+        // getDataType: 2 //1:只查人员，2:查人员和部门
+
+
+      }).then(res => {
+        // success callback（）
+      })
+    },
 toMemberList(){
   // console.log("11111111111111")
 this.$router.push({

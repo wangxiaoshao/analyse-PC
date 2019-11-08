@@ -5,9 +5,13 @@
     <el-row style="height: 100%;width: 100%">
       <el-col :span="6" style="height: 100%">
         <el-radio-group v-model="tabPosition" style="margin-bottom: 30px;">
-       <el-radio-button label="本单位通讯录" @click="toUnit">本单位通讯录</el-radio-button>
+       <el-radio-button label="本单位通讯录" @click="toUnit(unit)" autofocus="true">本单位通讯录</el-radio-button>
        <el-radio-button label="其他单位通讯录" @click="toOtherUnit">其他单位通讯录</el-radio-button>
     </el-radio-group>
+    <!-- <el-tabs v-model="activeTab" @tab-click="tabClick">
+    <el-tab-pane label="本单位通讯录" name="first">我爱你</el-tab-pane>
+    <el-tab-pane label="其他单位通讯录" name="yanggb2">我好爱你</el-tab-pane>
+  </el-tabs> -->
        <div class="site-scroll" style="padding-right: 10px;margin-top:-20px;">
          <search-choose :defaultNodeId="defaultNodeId"></search-choose>
          <div class="tree-content">
@@ -58,6 +62,15 @@ addressBookTree,searchChoose
     getDefault (val) {
       this.defaultNodeId = val
     },
+    // getAddressBook(){
+    //       api[urlNames['getAddressBoookList']]({
+    //     parentId: parentId,
+    //     getDataType: 2 //1:只查人员，2:查人员和部门
+    //   }).then(res => {
+    //     // success callback（）
+    //   })
+    // },
+
     toUnit(){
       alert(1)
 this.$router.push({
@@ -74,6 +87,8 @@ this.$router.push({
   created () {
 
   }
+  
+  
 }
 </script>
 
