@@ -134,11 +134,11 @@ export default {
         id: this.$route.query.id,
         type: this.$route.query.type
       }).then((res) => {
-        let arrLen = res.data.changeFields.length,
-          obj = {}
+        let arrLen = res.data.changeFields.length
+        let obj = {}
         for (let i = 0; i < arrLen; i++) {
-          let key = res.data.changeFields[i].fieldName,
-            val = res.data.changeFields[i]
+          let key = res.data.changeFields[i].fieldName
+          let val = res.data.changeFields[i]
           obj[key] = val
         }
         res.data.changeFields = obj
@@ -175,7 +175,7 @@ export default {
           name = 'UnitDetail'
           break
         default :
-          break;
+          break
       }
       switch (type) {
 

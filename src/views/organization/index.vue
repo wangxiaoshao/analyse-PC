@@ -5,7 +5,7 @@
        <div class="site-scroll" style="padding-right: 20px;">
          <search-result :defaultNodeId="defaultNodeId"></search-result>
          <div class="tree-content">
-           <organization-tree @getDefault="getDefault"></organization-tree>
+           <organization-tree @handle-node-click="handleNodeClick"></organization-tree>
          </div>
        </div>
       </el-col>
@@ -35,7 +35,6 @@ export default {
     }
   },
   computed: {
-
     scrollStyle () {
       return {
         height: (this.app.windowHeight - 123) + 'px',
@@ -44,8 +43,15 @@ export default {
     }
   },
   methods: {
-    getDefault (val) {
-      this.defaultNodeId = val
+    // 点击节点加载子节点
+    handleNodeClick (nodeId) {
+      this.defaultNodeId = nodeId
+      this.$router.push({
+        name: 'OrganizationContent',
+        params: {
+          nodeId: nodeId
+        }
+      })
     }
   },
   created () {

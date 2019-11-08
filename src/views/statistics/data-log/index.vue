@@ -209,7 +209,7 @@ export default {
           id: 12
         }
       })
-    },
+    }
   }
 }
 </script>

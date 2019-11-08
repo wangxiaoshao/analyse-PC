@@ -146,7 +146,7 @@ export default {
       tableCheckbox: true,
       operate: true,
       title: '创建字典',
-      dicTitle: '职级字段列表',
+      dicTitle: '职级字段列表'
     }
   },
   computed: {
@@ -234,7 +234,7 @@ export default {
     },
     closeAddDialog (val) {
       this[val] = false
-    },
+    }
   }
 }
 </script>

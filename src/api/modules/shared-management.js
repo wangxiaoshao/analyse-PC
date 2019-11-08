@@ -12,8 +12,19 @@ export default {
     url: '/api/jg_manage/view/findViewList',
     serve: 'organizationManagePC',
     keepOriginResponse: false,
-    showLoading: true,
     mock: 'getViewList.json'
+  },
+  /**
+   * 创建视图
+   */
+  [urlNames.createView]: {
+    type: 'post',
+    url: '/api/jg_manage/view/createView',
+    serve: 'organizationManagePC',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    keepOriginResponse: false
   },
   /**
    * 获取应用列表
@@ -23,12 +34,11 @@ export default {
     url: '/api/jg_share/app/checkApps',
     serve: 'organizationManagePC',
     keepOriginResponse: false,
-    showLoading: true,
     mock: 'getAppList.json'
   },
   /**
-  创建应用
-  */
+   创建应用
+   */
   [urlNames.createApp]: {
     type: 'post',
     url: '/api/jg_share/app/create',
@@ -36,7 +46,6 @@ export default {
       'Content-Type': 'application/json'
     },
     keepOriginResponse: false,
-    showLoading: true,
     serve: 'organizationManagePC'
   },
   /**
@@ -49,18 +58,16 @@ export default {
       'Content-Type': 'application/json'
     },
     keepOriginResponse: false,
-    showLoading: true,
     serve: 'organizationManagePC'
   },
   /**
-  应用详情
-  */
+   应用详情
+   */
   [urlNames.getAppDetail]: {
     type: 'get',
     url: '/api/jg_share/app/checkAppDetail',
     serve: 'organizationManagePC',
     keepOriginResponse: false,
-    showLoading: true,
     mock: 'getAppDetail.json'
   },
   /**
@@ -70,8 +77,7 @@ export default {
     type: 'get',
     url: '/api/jg_manage/label/findLabelList',
     serve: 'organizationManagePC',
-    keepOriginResponse: false,
-    showLoading: true
+    keepOriginResponse: false
   },
   /**
    创建标签
@@ -83,20 +89,48 @@ export default {
     keepOriginResponse: false,
     headers: {
       'Content-Type': 'application/json'
-    },
-    showLoading: true
+    }
   },
   /**
    删除标签
    */
   [urlNames.deleteLabel]: {
-    type: 'post',
+    type: 'get',
     url: '/api/jg_manage/label/deleteLabel',
     serve: 'organizationManagePC',
     keepOriginResponse: false,
     headers: {
       'Content-Type': 'application/json'
+    }
+  },
+  /**
+   获取分组
+   */
+  [urlNames.getGroupList]: {
+    type: 'get',
+    url: 'api/group/getUserGroups',
+    serve: 'organizationManagePC',
+    keepOriginResponse: false
+  },
+  /**
+   创建分组
+   */
+  [urlNames.createGroup]: {
+    type: 'post',
+    url: '/api/group/createGroup',
+    serve: 'organizationManagePC',
+    headers: {
+      'Content-Type': 'application/json'
     },
-    showLoading: true
+    keepOriginResponse: false
+  },
+  /**
+   创建分组
+   */
+  [urlNames.getGroupUsers]: {
+    type: 'get',
+    url: '/api/group/member/groupMembers',
+    serve: 'organizationManagePC',
+    keepOriginResponse: false
   }
 }

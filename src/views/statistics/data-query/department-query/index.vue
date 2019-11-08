@@ -219,7 +219,7 @@ export default {
         name: 'ExamineDetails',
         params: { parentCode: 1910281645 }
       })
-    },
+    }
   }
 }
 </script>

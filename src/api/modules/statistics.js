@@ -13,5 +13,5 @@ export default {
     keepOriginResponse: true,
     serve: 'organizationManagePC',
     mock: 'statistics/getStatistiscManageDto.json'
-  },
+  }
 }

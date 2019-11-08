@@ -195,6 +195,7 @@ export default {
         concatUser: this.appFrom.concatUser,
         concatPhone: this.appFrom.concatPhone,
         apiUrl: this.appFrom.apiUrl,
+        url: this.appFrom.apiUrl,
         description: this.appFrom.description,
         removed: this.appFrom.removed
       }).then((res) => {
@@ -213,6 +214,7 @@ export default {
         concatUser: this.appFrom.concatUser,
         concatPhone: this.appFrom.concatPhone,
         apiUrl: this.appFrom.apiUrl,
+        url: this.appFrom.apiUrl,
         description: this.appFrom.description,
         removed: this.appFrom.removed
       }).then((res) => {

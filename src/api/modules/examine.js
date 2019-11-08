@@ -45,5 +45,5 @@ export default {
     keepOriginResponse: true,
     serve: 'organizationManagePC',
     mock: 'examine/saveAudit.json'
-  },
+  }
 }
