@@ -47,6 +47,7 @@ export default {
   getPersonList: 'getPersonList',
   // 共享视图
   getViewList: 'getViewList', // 视图列表
+  createView: 'createView', // 创建视图
   getAppList: 'getAppList', // 应用列表
   createApp: 'createApp', // 创建应用
   updateApp: 'updateApp', // 修改应用
@@ -54,7 +55,10 @@ export default {
   findLabelList: 'findLabelList', // 标签列表
   createLabel: 'createLabel', //  创建标签
   deleteLabel: 'deleteLabel', // 删除标签
-  getGroupList: 'getGroupList', // 获取分组
+  findOrgLabelList: 'findOrgLabelList', // 根据单位id获取标签
+  getGroupList: 'getGroupList', // 获取分组列表
+  createGroup: 'createGroup', // 创建分组
+  getGroupUsers: 'getGroupUsers', // 分组成员
   addGroupUsers: 'addGroupUsers', // 添加成员
   // 创建节点
   createViewNode: 'createViewNode',
@@ -74,21 +78,37 @@ export default {
   findDepartmentMembers: 'findDepartmentMembers',
   // 查询单位下的所有人员
   findOrganizationMembers: 'findOrganizationMembers',
-  // 根据id查人员详情
-  findUserById: 'findUserById',
+  // 人员调出
+  calloutUser: 'calloutUser',
+  // 解除职务关系
+  removeDuty: 'removeDuty',
+  // 选择领导
+  createLeader: 'createLeader',
   // 查询领导信息
   findLeaderList: 'findLeaderList',
+  // 根据id查人员详情
+  findUserById: 'findUserById',
+  // 人员列表排序
+  setUserSort: 'setUserSort',
   // 角色列表
   roleList: 'roleList',
+  // 通过姓名查询用户基本信息
+  findUserByParams: 'findUserByParams',
+  // 根据userId查询用户身份
+  findUserIdentityByUid: 'findUserIdentityByUid',
+  // 更新用户基本信息
+  updateUser: 'updateUser',
+  // 更新用户账号开通相关信息
+  updateUserCount: 'updateUserCount',
+  // 绑定身份类型
+  updateUserIdentity: 'updateUserIdentity',
   findPerson: 'findPerson',
   // 创建单位
   createOrganization: 'createOrganization',
   // 系统设置
   dictionaryList: 'dictionaryList',
-
+  // 标签查询
+  findLabelByType: 'findLabelByType',
   // 通讯录
   getAddressBookList: 'getAddressBookList'
-  // 其他部门通讯录
-  // getMainViewList:'getMainViewList'
-
 }

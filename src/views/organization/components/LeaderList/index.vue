@@ -1,5 +1,13 @@
 <template>
   <div class="leader-list-content">
+    <candidate-dialog
+      :seleceDialog="selectDialog"
+      @dialogReturnMembersInfo="dialogReturnMembersInfo"
+      @closeselectMenmber="closeselectMenmber">
+    </candidate-dialog>
+    <div class="button-wrap">
+      <el-button type="primary" v-if="mainList" @click="addMainLeader(true,true)">添加主要领导</el-button>
+    </div>
     <div class="list-ground">
       <el-table
         :data="mainList"
@@ -18,6 +26,16 @@
           prop="address"
           label="地址">
         </el-table-column>
+        <el-table-column prop="act" label="操作" width="100" align="center">
+          <template slot-scope="scope">
+            <el-button @click.native="openEditNode(scope.row)" type="text" size="small">
+              修改
+            </el-button>
+            <el-button @click.native="openEditNode(scope.row)" type="text" size="small">
+              删除
+            </el-button>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
     <div class="content-title">
@@ -25,7 +43,7 @@
     </div>
     <div class="list-ground">
       <div class="button-wrap">
-        <el-button type="primary">添加领导</el-button>
+        <el-button type="primary" @click="addMainLeader(false,true)">添加领导</el-button>
         <el-button @click="sortFlag = true">调整排序</el-button>
       </div>
       <div class="sort-do" v-if="sortFlag">
@@ -48,7 +66,7 @@
             <span :title="scope" v-else>{{scope.$index + 1}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="name" prop="name"></el-table-column>
+        <el-table-column label="姓名" prop="name"></el-table-column>
         <el-table-column prop="act" label="操作" width="100" align="center">
           <template slot-scope="scope">
             <el-button @click.native="openEditNode(scope.row)" type="text" size="small">
@@ -58,7 +76,7 @@
         </el-table-column>
       </el-table>
       <!--分页-->
-      <el-pagination
+      <!--<el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="page.current"
@@ -66,30 +84,43 @@
         :page-size="page.limit"
         layout="total, sizes, prev, pager, next, jumper"
         :total="page.total">
-      </el-pagination>
+      </el-pagination>-->
     </div>
   </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
+import CandidateDialog from '@src/components/CandidateDialog/index'
 import Sortable from 'sortablejs'
 import handleTable from '@src/mixins/handle-table'
 import { api, urlNames } from '@src/api'
 export default {
   mixins: [handleTable],
-  props: ['nodeInfo', 'contentPage'],
+  props: ['nodeInfo', 'contentId'],
+  components: { CandidateDialog },
   data () {
     return {
       sortFlag: false,
       mainList: [],
-      list: []
+      list: [],
+      personList: [],
+      selectDialog: {
+        selectMenmberTitle: '选人组件', // 选人组件标题
+        selectMenmberFlag: false, // 显示弹窗，
+        isAllData: true, // 是否需完整数据-默认为不需要（false，只包含用户id）
+        notOnlyPerson: false, // 是否只选人，默认为false（只选人），true可以选择单位和部门
+        isSingleSelect: false // 是否为单选框  false为多选（默认），true为单选
+      }
     }
+  },
+  created () {
+    this.getGrid()
   },
   methods: {
     getGrid () {
       let data = {
-        nodeType: '1',
-        nodeId: this.nodeInfo.nodeId
+        nodeType: this.nodeInfo.nodeType,
+        nodeId: this.contentId
       }
       this.loading = true
       api[urlNames['findLeaderList']](data).then((res) => {
@@ -99,12 +130,52 @@ export default {
       }, () => {
         this.loading = false
         this.list = []
-        this.page.total = 0
       })
+    },
+    // 选人弹窗组件返回的人员信息
+    dialogReturnMembersInfo (data) {
+      console.log(JSON.parse(JSON.stringify(data)))
+      if (!JSON.parse(JSON.stringify(data)).length) {
+        let obj = {
+          uid: JSON.parse(JSON.stringify(data)).uid,
+          leaderType: JSON.parse(JSON.stringify(data)).duty
+        }
+        this.personList.push(obj)
+      } else {
+        JSON.parse(JSON.stringify(data)).forEach((item) => {
+          let obj = {
+            uid: item.uid,
+            leaderType: item.duty
+          }
+          this.personList.push(obj)
+        })
+      }
+      // 保存
+      if (JSON.parse(JSON.stringify(data)) !== []) {
+        api[urlNames['createLeader']]({
+          nodeId: this.contentId,
+          nodeType: this.nodeInfo.nodeType,
+          calloutUser: this.personList
+        }).then((res) => {
+          this.$message.success(`添加成功`)
+          this.getGrid()
+          console.log(res)
+        }, (error) => {
+          this.$message.error(`保存失败，请重试`)
+        })
+      }
+    },
+    // 关闭选人弹窗
+    closeselectMenmber () {
+      this.selectDialog.selectMenmberFlag = false
+    },
+    // 打开选人组件
+    addMainLeader (single, all) {
+      this.selectDialog.selectMenmberFlag = true
+      this.selectDialog.isSingleSelect = single
+      this.selectDialog.notOnlyPerson = false
+      this.selectDialog.isAllData = all
     }
-  },
-  created () {
-    this.getGrid()
   },
   watch: {
     sortFlag: {
@@ -137,13 +208,6 @@ export default {
         }
       },
       deep: true
-    },
-    '$route.params.nodeId': {
-      handler (val) {
-        this.getGrid()
-      },
-      deep: true,
-      immediate: true
     }
   }
 }

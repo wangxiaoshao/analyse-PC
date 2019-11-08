@@ -1,5 +1,6 @@
 <template>
   <div class="content-list">
+    <!--解除兼职-->
     <el-dialog
       title="填写解除挂职说明"
       :visible.sync="removeFlag"
@@ -16,17 +17,43 @@
         </el-form-item>
         <el-form-item>
           <el-button @click="removeFlag = false">取 消</el-button>
-          <el-button type="primary" @click="submitForm('ruleForm')">确定</el-button>
+          <el-button type="primary" @click="submitRemoveDuty(ruleForm)">确定</el-button>
         </el-form-item>
       </el-form>
+    </el-dialog>
+    <!--人员调出弹窗-->
+    <el-dialog
+      title="填写调出说明"
+      :visible.sync="calloutFlag"
+      width="50%"
+      :before-close="handleClose">
+      <el-form :inline="true" :model="formCallout" :rules="rulesCallou" ref="formCallout" class="demo-form-inline">
+        <el-form-item label="调出单位">
+          <el-select v-model="formCallout.orgId" placeholder="请选择调出单位">
+            <el-option label="区域一" value="shanghai"></el-option>
+            <el-option label="区域二" value="beijing"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="调出部门">
+          <el-select v-model="formCallout.deptId" placeholder="请选择调出部门">
+            <el-option label="区域一" value="shanghai"></el-option>
+            <el-option label="区域二" value="beijing"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="调出原因" prop="formInline.reason">
+          <el-input type="textarea" v-model="formCallout.reason"></el-input>
+        </el-form-item>
+      </el-form>
+    <el-button @click="calloutFlag = false">取 消</el-button>
+    <el-button type="primary" @click="submitCalloutForm(rulesCallou)">确 定</el-button>
     </el-dialog>
     <div class="button-wrap">
       <el-button @click="sortList">调整排序</el-button>
     </div>
     <div class="sort-do" v-if="sortFlag">
       按住左键上下拖动调整排序
-      <a>保存</a>
-      <a  @click="cancelSort">取消</a>
+      <a @click="sublimeSort">保存</a>
+      <a @click="cancelSort">取消</a>
     </div>
     <el-table
       v-loading="loading"
@@ -62,16 +89,22 @@
             修改
           </el-button>
           <el-button
-            @click.native.prevent="deleteRow(scope.$index, tableData4)"
+            @click.native.prevent="calloutDialog(scope.row)"
             type="text"
             size="small">
             调出
           </el-button>
           <el-button
-            @click.native.prevent="removePerson(scope.row)"
+            @click.native.prevent="removeDuty(scope.row)"
             type="text"
             size="small">
             解除兼职
+          </el-button>
+          <el-button
+            @click.native.prevent="removePerson(scope.row)"
+            type="text"
+            size="small">
+            解除挂职
           </el-button>
         </template>
       </el-table-column>
@@ -103,8 +136,31 @@ export default {
       sortListFlag: false,
       isShowEditFlag: true,
       removeFlag: false,
+      calloutFlag: false,
       ruleForm: {
+        uid: '',
+        type: '',
         reason: ''
+      },
+      // 人员调出表单
+      formCallout: {
+        uid: '',
+        deptId: '',
+        orgId: '',
+        reason: ''
+      },
+      rulesCallou: {
+        rules: {
+          reason: [
+            { required: true, message: '请填写申请原因', trigger: 'blur' }
+          ],
+          deptId: [
+            { required: true, message: '请选择调出部门', trigger: 'blur' }
+          ],
+          orgId: [
+            { required: true, message: '请选择调出单位', trigger: 'blur' }
+          ]
+        }
       },
       rules: {
         reason: [
@@ -113,12 +169,21 @@ export default {
       }
     }
   },
+  created () {
+    this.getGrid()
+    if (this.$route.name === 'OrganizationContent') {
+      this.isShowEditFlag = true
+    } else {
+      this.isShowEditFlag = false
+    }
+  },
   methods: {
     getGrid () {
       this.loading = true
-      if (this.type === 2) {
+      let bindId = this.$route.params.bindId
+      if (this.type === 3) {
         let data = {
-          deptId: this.id,
+          deptId: bindId,
           page: this.contentPage.current,
           pageSize: this.contentPage.limit
         }
@@ -131,9 +196,9 @@ export default {
           this.contentPage.total = 0
         })
       }
-      if (this.type === 3) {
+      if (this.type === 2) {
         let data = {
-          orgId: this.id,
+          orgId: bindId,
           page: this.contentPage.current,
           pageSize: this.contentPage.limit
         }
@@ -152,7 +217,7 @@ export default {
       let sortList = []
       this.list.forEach((item, index) => {
         const sortObj = {
-          id: item.id,
+          id: item.uid,
           sort: index
         }
         sortList.push(sortObj)
@@ -186,24 +251,40 @@ export default {
     sortList () {
       this.$emit('cancel', true)
     },
+    calloutDialog (row) {
+      this.calloutFlag = true
+    },
     removePerson (row) {
       this.removeFlag = true
+      this.formCallout.uid = row.id
       // 当前row.id
     },
+    removeDuty (row) {
+      this.removeFlag = true
+      this.ruleForm.uid = row.id
+      this.ruleForm.type = row.type
+    },
     // 提交调出人员
-    submitForm (ruleForm) {
+    submitCalloutForm (rulesCallou) {
+      this.$refs[rulesCallou].validate((valid) => {
+        if (valid) {
+          api[urlNames['calloutUser']](this.formCallout).then((res) => {
+            this.$message.success(`调出成功`)
+            this.calloutFlag = false
+            console.log(res)
+          }, (error) => {
+
+          })
+        }
+      })
+    },
+    // 解除兼职
+    submitRemoveDuty (ruleForm) {
       this.$refs[ruleForm].validate((valid) => {
         if (valid) {
-          const data = {
-            reason: this.ruleForm.reason,
-            viewNode: {
-              parentId: this.$route.params.parentId,
-              name: this.ruleForm.name,
-              enable: this.ruleForm.enable
-            }
-          }
-          api[urlNames['createViewNode']](data).then((res) => {
-            this.$message.success(`添加成功`)
+          api[urlNames['removeDuty']](this.formCallout).then((res) => {
+            this.$message.success(`解除成功`)
+            this.calloutFlag = false
             console.log(res)
           }, (error) => {
 
@@ -211,17 +292,6 @@ export default {
         }
       })
     }
-  },
-  created () {
-    this.getGrid()
-    if (this.$route.name === 'OrganizationContent') {
-      this.isShowEditFlag = true
-    } else {
-      this.isShowEditFlag = false
-    }
-  },
-  mounted () {
-
   },
   watch: {
     sortFlag: {

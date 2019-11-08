@@ -140,7 +140,7 @@ export default {
     'list': [{
       'menuId': '51',
       'name': '角色权限',
-      'path': '/rights-management',
+      'path': '/role-manage',
       'type': 1
     },
     {

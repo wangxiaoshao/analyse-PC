@@ -3,6 +3,7 @@ import examine from './modules/examine'
 import share from './modules/share'
 import statistics from './modules/statistics'
 import system from './modules/system'
+import roleManage from './modules/role-manage'
 import addressbook from './modules/addressbook'
 
 
@@ -13,5 +14,6 @@ export default [
     ...statistics,
     ...system,
     ...share,
-    ...addressbook
+    ...addressbook,
+    ...roleManage
 ]
