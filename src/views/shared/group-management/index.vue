@@ -1,7 +1,7 @@
 <template>
     <div class="group-management">
       <div class="group-operation">
-        <el-select v-model="value" placeholder="请选择">
+        <el-select v-model="type" placeholder="请选择" @change="typeChange">
           <el-option
             v-for="item in options"
             :key="item.value"
@@ -10,7 +10,6 @@
           </el-option>
         </el-select>
         <el-button type="primary" @click="openDialog">创建分组</el-button>
-        <el-button @click="handleClick()" type="text" size="small">编辑</el-button>
       </div>
       <div class="table">
         <el-table
@@ -31,7 +30,7 @@
             align="center">
           </el-table-column>
           <el-table-column
-            property="remark"
+            property="description"
             label="分组描述"
             align="center">
           </el-table-column>
@@ -51,7 +50,6 @@
             align="center"
             width="140">
             <template slot-scope="scope">
-              <el-button @click="handleClick(scope.row)" type="text" size="small">查看详情</el-button>
               <el-button @click="handleClickToDetail(scope.row)" type="text" size="small">编辑</el-button>
             </template>
           </el-table-column>
@@ -84,6 +82,8 @@ export default {
       total: 0,
       creategroupdialogVisible: false,
       currentPage: 1,
+      pageSize: 10,
+      type: '',
       options: [{
         value: '1',
         label: '单位分组'
@@ -94,12 +94,11 @@ export default {
         value: '3',
         label: '个人分组'
       }],
-      currentRow: null,
-      value: ''
+      currentRow: null
     }
   },
   created () {
-    this.getGroupList(1, 10, 1)
+    this.getGroupList(1, 10, '')
   },
   methods: {
     getGroupList (page, limt, type) {
@@ -114,6 +113,7 @@ export default {
     },
     // 关闭弹窗
     close () {
+      this.getGroupList(this.currentPage, this.pageSize, this.type)
       this.creategroupdialogVisible = false
     },
     // 打开创建弹窗
@@ -130,11 +130,20 @@ export default {
     handleClickToDetail (row) {
       this.$router.push({ path: `/group-management/group-detail/${row.id}` })
     },
-    handleSizeChange (val) {
-      console.log(`每页 ${val} 条`)
+    // typeChange
+    // 单位部门
+    typeChange () {
+      this.getGroupList(this.currentPage, this.pageSize, this.type)
     },
+    // 每一页请求条数
+    handleSizeChange (val) {
+      this.pageSize = val
+      this.getGroupList(this.currentPage, val, this.type)
+    },
+    // 分页
     handleCurrentPageChange (val) {
-      console.log(`当前页: ${val}`)
+      this.currentPage = val
+      this.getGroupList(val, this.pageSize, this.type)
     }
   }
 }

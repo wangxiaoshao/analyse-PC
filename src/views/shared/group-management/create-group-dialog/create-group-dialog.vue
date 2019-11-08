@@ -17,9 +17,9 @@
           </el-form-item>
           <el-form-item label="选择单位">
             <el-select v-model="groupFrom.ownerType" placeholder="请选类型">
-              <el-option label="单位" :value="3"></el-option>
+              <el-option label="单位" :value="1"></el-option>
               <el-option label="部门" :value="2"></el-option>
-              <el-option label="用户" :value="1"></el-option>
+              <el-option label="用户" :value="3"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="是否启用">
@@ -44,7 +44,7 @@ export default {
   data () {
     return {
       groupFrom: {
-        ownerType: 3, // 1用户、2部门、3单位
+        ownerType: 1, // 1用户、2部门、3单位
         name: '',
         description: '',
         removed: true
@@ -71,7 +71,9 @@ export default {
         removed: this.groupFrom.removed
       }).then((res) => {
         if (res.status === 0) {
+          this.colseDialog()
           this.$message.success('创建分组成功')
+          this.groupFrom.name = this.groupFrom.description = ''
         }
       })
     },
