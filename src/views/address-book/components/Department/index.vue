@@ -48,39 +48,52 @@
 </template>
 <script>
 import memberTable from '../Member/index'
+import { api, urlNames } from '@src/api'
 export default {
-  data () {
-    return {
-      tableData: [{
-        department: '人事部',
-        tel: '',
-        next: '下级'
-      }, {
-        department: '人事部',
-        tel: '部门电话：13412341234',
-        next: '下级'
-      }, {
-        department: '人事部',
-        tel: '电话：13412341234',
-        next: '下级'
-      }, {
-        department: '人事部',
-        tel: '电话：13412341234',
-        next: '下级'
-      }]
-    }
-  },
-  methods: {
-    toMemberList () {
-      // console.log("11111111111111")
-      this.$router.push({
-        name: 'MemberList'
-      })
-    }
+    data(){
+         return {
+          tableData: [{
+            department: '人事部',
+            tel: '',
+            next: '下级'
+          }, {
+           department: '人事部',
+            tel: '部门电话：13412341234',
+            next: '下级'
+          }, {
+            department: '人事部',
+            tel: '电话：13412341234',
+            next: '下级'
+          }, {
+            department: '人事部',
+            tel: '电话：13412341234',
+            next: '下级'
+          }]
+        }
+    },
+methods:{
+   getAddressBook(){
+          api[urlNames['getAddressBoookList']]({
+        name: '',
+          phone:''  
+        // departmentId: departmentId,
+        // getDataType: 2 //1:只查人员，2:查人员和部门
 
-  },
-  components: {
-    memberTable
+
+      }).then(res => {
+        // success callback（）
+      })
+    },
+toMemberList(){
+  // console.log("11111111111111")
+this.$router.push({
+  name:'MemberList'
+})
+},
+ 
+} ,
+components: {
+memberTable,
   }
 }
 </script>
