@@ -27,12 +27,12 @@ export default {
     serve: 'organizationManagePC',
     mock: 'handleAction.json'
   },
-  /*[urlNames.getAreaList]: {
+  /* [urlNames.getAreaList]: {
     type: 'get',
     url: '/api/applycenter/area/all',
     serve: 'organizationManagePC',
     mock: 'area.json'
-  },*/
+  }, */
   [urlNames.getApplicationDetail]: {
     type: 'get',
     url: '/work/service/info',

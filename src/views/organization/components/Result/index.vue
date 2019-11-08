@@ -71,7 +71,7 @@ export default {
       this.resultFlag = true
       let data = {
         name: this.keyWord,
-        nodeType: this.type,
+        nodeType: this.type
       }
       this.loadFlag = true
       api[urlNames['searchViewNode']](data).then(res => {

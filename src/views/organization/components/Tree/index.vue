@@ -38,7 +38,7 @@ export default {
     return {
       showCheckboxFlag: false,
       treeList: [],
-      teeeSonList: [],
+      treeSonList: [],
       defaultProps: {
         children: 'children',
         label: 'name'
@@ -47,15 +47,10 @@ export default {
       parentId: -1
     }
   },
+  mounted () {
+    this.findTreeList(-1)
+  },
   methods: {
-    setTreeId (val) {
-      this.$router.push({
-        name: 'OrganizationContent',
-        params: {
-          nodeId: val
-        }
-      })
-    },
     // 追加子节点
     loadNode (node, resolve) {
       if (node.level === 0) {
@@ -65,9 +60,9 @@ export default {
       this.id = node.data.id
 
       setTimeout(() => {
-        resolve(this.teeeSonList)
+        resolve(this.treeSonList)
       }, 500)
-      this.teeeSonList = []
+      this.treeSonList = []
     },
     findTreeList (parentId) {
       api[urlNames['getTree']]({
@@ -76,10 +71,10 @@ export default {
       }).then((res) => {
         this.total = parseInt(res.total)
         this.treeList = res.data
-        if (this.$route.name === 'Organization') {
-          this.setTreeId(res.data[0].id)
-        }
-        this.$emit('getDefault', res.data[0].id)
+        this.handleNodeClick(res.data[0])
+        // if (this.$route.name === 'Organization') {
+        //   this.handleNodeClick(res.data[0])
+        // }
       })
     },
     // 获取子节点
@@ -88,22 +83,12 @@ export default {
         parentId: parentId,
         viewId: -1
       }).then((res) => {
-        this.teeeSonList = res.data
+        this.treeSonList = res.data
       })
     },
-    // 点击节点加载子节点
     handleNodeClick (node) {
-      this.findTreeSonList(node.id)
-      this.$nextTick(() => {
-        this.setTreeId(node.id)
-      })
+      this.$emit('handle-node-click', node.id)
     }
-  },
-  mounted () {
-    this.findTreeList(-1)
-  },
-  beforeRouteUpdate (to, from, next) {
-
   }
 }
 </script>

@@ -71,13 +71,14 @@
                  :config-type="type"
                  :current="currentEdit"
                  :dialogTitle="dialogTitle"
+                 :auditResult="auditResult"
                  @refreshList="getGrid"
                  @close="closeEditDialog"></edit-dialog>
     <el-row :gutter="20" v-if="isWaitApproval">
       <el-col :span="12" :offset=19>
         <div style="margin-top: 40px">
-          <el-button type="primary" plain @click="passExamine" >通过</el-button>
-          <el-button type="info" plain @click="noPassExamine"  style="margin-left: 40px">不通过</el-button>
+          <el-button type="primary" plain @click="openExamineDialog(1)" >通过</el-button>
+          <el-button type="info" plain @click="openExamineDialog(0)"  style="margin-left: 40px">不通过</el-button>
         </div>
       </el-col>
     </el-row>
@@ -103,6 +104,7 @@ export default {
       type: 'content',
       loading: true,
       isWaitApproval: false,
+      auditResult: false
     }
   },
   computed: {
@@ -132,11 +134,11 @@ export default {
         id: this.$route.query.id,
         type: this.$route.query.type
       }).then((res) => {
-        let arrLen = res.data.changeFields.length,
-          obj = {}
+        let arrLen = res.data.changeFields.length
+        let obj = {}
         for (let i = 0; i < arrLen; i++) {
-          let key = res.data.changeFields[i].fieldName,
-            val = res.data.changeFields[i]
+          let key = res.data.changeFields[i].fieldName
+          let val = res.data.changeFields[i]
           obj[key] = val
         }
         res.data.changeFields = obj
@@ -145,10 +147,8 @@ export default {
         this.gridData = []
       })
     },
-    passExamine () {
-      this.editDialogVisible = true
-    },
-    noPassExamine () {
+    openExamineDialog (val) {
+      this.auditResult = val
       this.editDialogVisible = true
     },
     trim (str) {
@@ -175,7 +175,7 @@ export default {
           name = 'UnitDetail'
           break
         default :
-          break;
+          break
       }
       switch (type) {
 

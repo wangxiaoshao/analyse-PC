@@ -1,6 +1,11 @@
 <template>
   <div class="form-content" v-loading="loading">
-    <search-lable :addInfo="addInfo" @getAddInfo="getAddInfo"></search-lable>
+    <search-lable
+      :openSearchFlag="openSearchFlag"
+      :addInfo="addInfo"
+      @close="getClose"
+      @getTag="getTag"
+    ></search-lable>
     <el-form :model="ruleForm" :disabled="disabledFlag" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
       <div class="detail-title">
         <i class="menu-icon fa fa-sitemap" style="margin: 0px 5px;"></i>单位信息
@@ -22,8 +27,8 @@
          <el-form-item label="统一单位信用编码" prop="uiniteCode">
            <el-input v-model="ruleForm.uniteCode" :disabled="true"></el-input>
          </el-form-item>
-         <el-form-item label=" 上级单位" prop="unitParent">
-           <el-input v-model="ruleForm.unitParent" :disabled="true"></el-input>
+         <el-form-item label=" 上级单位" prop="parentName">
+           <el-input v-model="ruleForm.parentName" :disabled="true"></el-input>
          </el-form-item>
          <el-form-item label="所属类型" prop="type">
            <el-select v-model="ruleForm.type" placeholder="请选择所属类型">
@@ -68,7 +73,7 @@
           >
             {{tag.name}}
           </el-tag>
-          <el-tag class="add-tag-btn" @click="openAddTagDialog"><i class="el-icon-plus"></i>添加标签</el-tag>
+          <el-tag class="add-tag-btn" @click="openSearchFlag = true"><i class="el-icon-plus"></i>添加标签</el-tag>
         </el-form-item>
       </el-row>
       <el-menu class="el-menu-demo" mode="horizontal">
@@ -107,9 +112,10 @@ export default {
   components: { areaList, searchLable },
   data () {
     return {
+      openSearchFlag: false,
       addInfo: {
         searchFlag: false,
-        id: this.$route.params.parentId || this.$route.params.id
+        type: 3
       },
       loading: false,
       isShowEditFlag: true,
@@ -117,10 +123,7 @@ export default {
       breadcrumbTitle: '添加节点',
       submitHtml: '保存',
       oldFrom: {},
-      openAddTagFlag: false,
       tagKeyWord: '',
-      searchTags: [], // 搜索标签结果
-      checkTagGroup: [], // 选中的标签
       tags: [], // 提交的标签
       ruleForm: {
         name: '',
@@ -130,7 +133,8 @@ export default {
         fax: '',
         zipCode: '',
         uniteCode: '',
-        unitParent: '111',
+        parentName: '',
+        parentId: '',
         system: '',
         type: '',
         enable: false,
@@ -153,12 +157,64 @@ export default {
       options: []
     }
   },
+  mounted () {
+    this.setBreadcrumbTitle()
+  },
+  created () {
+    this.getDetail()
+  },
+  beforeRouteUpdate (to, from, next) {
+    next()
+    this.setBreadcrumbTitle()
+  },
   methods: {
-    openAddTagDialog () {
-      this.addInfo = {
-        searchFlag: true,
-        id: this.$route.params.parentId || this.$route.params.id
+    getDetail () {
+      let data = {
+        id: this.$route.params.id || this.$route.params.parentId
       }
+      this.loading = true
+      api[urlNames['findViewNodeById']](data).then((res) => {
+        console.log(999999, res.data)
+        this.loading = false
+        let backId = ''
+        if (this.$route.name === 'UnitAdd') {
+          this.ruleForm.parentName = res.data.name
+          backId = res.data.id
+        } else {
+          this.ruleForm.name = res.data.name
+          this.ruleForm.parentName = res.data.parentName
+          this.ruleForm.enable = res.data.removed
+          backId = res.data.parentId
+        }
+        /* if (this.ruleForm.parentId === '-1') {
+          this.backId = this.ruleForm.id
+        } else {
+          this.backId = this.ruleForm.parentId
+        } */
+        this.pushBreadcrumb({
+          name: this.breadcrumbTitle,
+          parent: {
+            name: 'OrganizationContent',
+            params: {
+              nodeId: backId
+            },
+            query: {
+              type: 'back'
+            }
+          }
+        })
+      }, (error) => {
+        this.$message.error(`没有内容`)
+      })
+    },
+    getClose (val) {
+      this.openSearchFlag = val
+    },
+    // 获取选中的标签
+    getTag (val) {
+      val.forEach((item) => {
+        this.tags.push(item)
+      })
     },
     setBreadcrumbTitle () { // 设置面包屑title
       if (this.$route.name === 'UnitEdit' || this.$route.name === 'UnitAdd') {
@@ -174,16 +230,6 @@ export default {
         this.disabledFlag = true
         this.breadcrumbTitle = '单位详情'
       }
-      // 设置返回路由
-      this.pushBreadcrumb({
-        name: this.breadcrumbTitle,
-        parent: {
-          name: 'OrganizationContent',
-          params: {
-            type: 'back'
-          }
-        }
-      })
     },
     submitForm (ruleForm) {
       this.$refs[ruleForm].validate((valid) => {
@@ -220,29 +266,6 @@ export default {
           })
         }
       })
-    },
-    getCheckTags () {
-      this.openAddTagFlag = false
-      this.tags = this.checkTagGroup
-    },
-    getAddInfo (val) {
-      this.addInfo.searchFlag = val
-      console.log(val)
-    }
-  },
-  mounted () {
-    this.setBreadcrumbTitle()
-  },
-  created () {
-  },
-  computed: {
-  },
-  watch: {
-    $route: {
-      handler (val) {
-        this.setBreadcrumbTitle()
-      },
-      deep: true
     }
   }
 }

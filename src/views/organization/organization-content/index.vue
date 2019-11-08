@@ -29,6 +29,7 @@
             <!--下级列表-->
             <content-list
               v-if="activeName === '下级设置'"
+              :content-id="contentId"
               :sortFlag="sortShowFlag"
               @cancel="getSortAction"
               @getPage="getPage"
@@ -41,7 +42,7 @@
               border
               size="medium"
             >
-              <el-table-column label="name" prop="name"></el-table-column>
+              <el-table-column label="名称" prop="name"></el-table-column>
               <el-table-column label="启用状态" prop="removed" align="center">
                 <template slot-scope="scope">
                   <span class="text-able" v-show="scope.row.removed === 0">启用</span>
@@ -69,13 +70,15 @@
               </el-table-column>
             </el-table>
           </el-tab-pane>
-          <el-tab-pane label="人员管理" name="人员管理">
+          <el-tab-pane label="人员管理" name="人员管理" v-if="content[0].nodeType !== 1">
             <el-button class="add-btn" @click="openAddPerson">添加人员</el-button>
             <person-list
               v-if="activeName === '人员管理'"
               :sortFlag="sortShowFlag"
               @getPage="getPage"
-              :contentPage="page"
+              :contentPage="currentPage"
+              :id="content[0].id"
+              :type="content[0].nodeType"
               @cancel="getSortAction"
             ></person-list>
           </el-tab-pane>
@@ -94,14 +97,14 @@
 </template>
 
 <script>
-import organizationEdit from '@src/mixins/organization-edit'
+import organizationEdit from '@src/mixins/organization'
 import { api, urlNames } from '@src/api'
 import ContentList from '../components/ContentList/index'
 import PersonList from '../components/PersonList/index'
 import leaderList from '../components/LeaderList/index'
 import { mapState, mapMutations } from 'vuex'
 export default {
-  mixins: [ organizationEdit],
+  mixins: [organizationEdit],
   components: {
     ContentList, PersonList, leaderList
   },
@@ -146,18 +149,26 @@ export default {
     },
     ...mapState(['organization'])
   },
+  beforeRouteUpdate (to, from, next) {
+    this.contentId = to.params.nodeId
+    next()
+    this.init(to.query.type)
+  },
   created () {
-    if (this.$route.query.type === 'back') {
-      this.currentPage = Object.assign(this.currentPage, this.organization.page)
-      this.backInfo = Object.assign(this.backInfo, this.organization.backInfo)
-    } else {
-      this.SET_ORGANIZATION_PAGE({})
-      this.SET_ORGANIZATION_BACK_INFO({})
-    }
-    this.getContent()
+    this.init(this.$route.query.type)
   },
   methods: {
     ...mapMutations(['SET_ORGANIZATION_PAGE', 'SET_ORGANIZATION_BACK_INFO']),
+    init (type) {
+      if (type === 'back') {
+        this.currentPage = Object.assign(this.currentPage, this.organization.page)
+        this.backInfo = Object.assign(this.backInfo, this.organization.backInfo)
+      } else {
+        this.SET_ORGANIZATION_PAGE({})
+        this.SET_ORGANIZATION_BACK_INFO({})
+      }
+      this.getContent()
+    },
     setStore () {
       this.backInfo = {
         backId: this.$route.params.nodeId,
@@ -253,6 +264,7 @@ export default {
     }
   },
   beforeRouteUpdate (to, from, next) {
+    next()
     this.contentId = to.params.nodeId
     this.getContent()
   },

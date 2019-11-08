@@ -116,7 +116,7 @@ export default {
 
       tableData: [],
       operateWidth: 100,
-      tableHeight: 200,
+      tableHeight: null,
       tableCheckbox: true,
       operate: false
     }
@@ -191,25 +191,11 @@ export default {
         }
       }
       api[urlNames['getConfirmMemberList']](data).then((res) => {
-        this.loading = false
         this.tableData = res.data
         this.page.total = res.total
-        this.loading = false
-        this.list = []
+      }, () => {
+        this.tableData = []
         this.page.total = 0
-      })
-    },
-    addChild (index, row) {
-      this.currentParent.type = row.type
-      this.currentParent.description = row.description
-      this.currentParent.orderNum = row.orderNum + 10
-      this.configDialogVisible = true
-    },
-    showEditDialog (row) {
-      api[urlNames['getApplicationDetail']]({ id: row.id }).then((res) => {
-        this.currentEdit = res.result[0]
-        this.currentEdit.areaId = this.currentEdit.areaId.toString().split(',')
-        this.editDialogVisible = true
       })
     },
     goConfig (row) {
@@ -218,50 +204,8 @@ export default {
         query: { id: row.id }
       })
     },
-    showAddDialog () {
-      this.addDialogVisible = true
-    },
     handleClose () {
       this.dialogVisible = false
-    },
-    handleAction (action, row) {
-      let actionName = '删除'
-      let actionUrl = 'deleteApplication'
-      let data = {
-        id: row.id,
-        type: row.type
-      }
-      if (action === 'enable') {
-        actionName = row.enable === 1 ? '停用' : '启用'
-        actionUrl = 'toggleApplication'
-        data.status = row.enable === 1 ? 0 : 1
-      }
-      this.$msgbox({
-        message: `确认${actionName}？`,
-        title: '提示',
-        showCancelButton: true,
-        type: 'warning',
-        beforeClose: (action, instance, done) => {
-          if (action === 'confirm') {
-            instance.confirmButtonLoading = true
-            instance.confirmButtonText = `${actionName}中...`
-            api[urlNames[actionUrl]](data).then((res) => {
-              instance.confirmButtonLoading = false
-              this.$message.success(`${actionName}成功`)
-              this.getGrid()
-            }, (res) => {
-              instance.confirmButtonLoading = false
-            })
-            done()
-          } else {
-            instance.confirmButtonLoading = false
-            done()
-          }
-        }
-      }).then(() => {
-
-      }).catch(() => {
-      })
     }
   }
 }

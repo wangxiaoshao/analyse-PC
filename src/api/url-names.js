@@ -14,14 +14,21 @@ export default {
   getApplicationConfig: 'getApplicationConfig',
   editApplicationConfig: 'editApplicationConfig',
   // 申请审核 examine
-  getAuditList: 'getAuditList', // 待我审核 、 我的申请 、 我已审核
+  getAuditList: 'getAuditList', // 待我审核 、 我已审核
+  getMyApplyAuditList: 'getMyApplyAuditList', // 我的申请
   getInfoConfirmList: 'getInfoConfirmList', // 信息确认
   getConfirmMemberList: 'getConfirmMemberList', // 信息确认 - 人员明细
   getAuditDetailsById: 'getAuditDetailsById', // 审批详情
   saveAudit: 'saveAudit', // 保存审批
 
-  getDepartmentNodes: 'getDepartmentNodes',
+
+  // 部门查询
   findDepartmentList: 'findDepartmentList',
+  // 单位查询
+  findOrganizationList: 'findOrganizationList',
+  // 人员查询
+  findMemberList: 'findMemberList',
+  getDepartmentNodes: 'getDepartmentNodes',
   geMtmemberSelector: 'geMtmemberSelector',
   geMtmemberSearch: 'geMtmemberSearch',
   getUserRightsList: 'getUserRightsList',
@@ -66,6 +73,7 @@ export default {
   findDepartmentMembers: 'findDepartmentMembers',
   // 查询单位下的所有人员
   findOrganizationMembers: 'findOrganizationMembers',
+  setUserSort: 'setUserSort',
   // 根据id查人员详情
   findUserById: 'findUserById',
   // 查询领导信息
@@ -76,5 +84,9 @@ export default {
   // 创建单位
   createOrganization: 'createOrganization',
   // 系统设置
-  dictionaryList: 'dictionaryList'
+  dictionaryList: 'dictionaryList',
+  // 标签查询
+  findLabelByType: 'findLabelByType',
+  calloutUser: 'calloutUser',
+  removeDuty: 'removeDuty'
 }

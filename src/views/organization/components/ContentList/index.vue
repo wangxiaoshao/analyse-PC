@@ -23,7 +23,7 @@
           <span :title="scope" v-else>{{scope.$index + 1}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="name" prop="name"></el-table-column>
+      <el-table-column label="名称" prop="name"></el-table-column>
       <el-table-column label="启用状态" prop="removed" align="center">
         <template slot-scope="scope">
           <span class="text-able" v-show="scope.row.removed">启用</span>
@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import organizationEdit from '@src/mixins/organization-edit'
+import organizationEdit from '@src/mixins/organization'
 import Sortable from 'sortablejs'
 import handleTable from '@src/mixins/handle-table'
 import { api, urlNames } from '@src/api'
@@ -80,8 +80,62 @@ export default {
       nodeId: this.$route.params.nodeId
     }
   },
-  props: ['sortFlag', 'contentPage', 'succese'],
+  props: ['sortFlag', 'contentPage', 'succese', 'contentId'],
+  created () {
+    this.init()
+  },
+  watch: {
+    contentId (newVal) {
+      this.nodeId = newVal
+      this.init()
+    },
+    sortFlag: {
+      handler (val) {
+        const tbody = document.querySelector('#contentTable tbody')
+        const items = this.list
+        if (val) {
+          Sortable.create(tbody, {
+            handle: '.sortBtnDo',
+            animation: 150,
+            onUpdate: function (evt) {
+              const newIndex = evt.newIndex
+              const oldIndex = evt.oldIndex
+              const $li = tbody.children[newIndex]
+              const $oldLi = tbody.children[oldIndex]
+              if (newIndex > oldIndex) {
+                tbody.insertBefore($li, $oldLi)
+              } else {
+                tbody.insertBefore($li, $oldLi.nextSibling)
+              }
+              const item = items.splice(oldIndex, 1)
+              items.splice(newIndex, 0, item[0])
+              this.list = items // 排序后列表
+            }
+          })
+        } else {
+          this.sortListFlag = false
+        }
+      },
+      deep: true
+    }
+  },
+  beforeRouteUpdate (to, from, next) {
+    next()
+    this.nodeId = to.params.nodeId
+    this.getGrid()
+  },
   methods: {
+    init () {
+      this.getGrid()
+      if (this.succese) {
+        this.getGrid()
+      }
+      if (this.$route.name === 'OrganizationContent') {
+        this.isShowEditFlag = true
+      } else {
+        this.isShowEditFlag = false
+      }
+    },
     handleSizeChange (val) {
       this.contentPage.current = 1
       this.contentPage.limit = val
@@ -132,7 +186,6 @@ export default {
         limit: this.contentPage.limit,
         sortList
       }
-      console.log(9999, data)
       api[urlNames['setViewNodeSort']](data).then((res) => {
         this.$message.success(`保存成功`)
         this.cancelSort()
@@ -140,55 +193,6 @@ export default {
         this.$message.error(`保存失败，请重试`)
       })
     }
-
-  },
-  created () {
-    this.getGrid()
-    if (this.succese) {
-      this.getGrid()
-    }
-    if (this.$route.name === 'OrganizationContent') {
-      this.isShowEditFlag = true
-    } else {
-      this.isShowEditFlag = false
-    }
-  },
-  watch: {
-    sortFlag: {
-      handler (val) {
-        const tbody = document.querySelector('#contentTable tbody')
-        const items = this.list
-        if (val) {
-          Sortable.create(tbody, {
-            handle: '.sortBtnDo',
-            animation: 150,
-            onUpdate: function (evt) {
-              console.log('onUpdate.foo:', [evt])
-              const newIndex = evt.newIndex
-              const oldIndex = evt.oldIndex
-              const $li = tbody.children[newIndex]
-              const $oldLi = tbody.children[oldIndex]
-              if (newIndex > oldIndex) {
-                tbody.insertBefore($li, $oldLi)
-              } else {
-                tbody.insertBefore($li, $oldLi.nextSibling)
-              }
-              const item = items.splice(oldIndex, 1)
-              items.splice(newIndex, 0, item[0])
-              this.list = items // 排序后列表
-            }
-          })
-        } else {
-          this.sortListFlag = false
-          // this.getGrid()
-        }
-      },
-      deep: true
-    }
-  },
-  beforeRouteUpdate (to, from, next) {
-    this.nodeId = to.params.nodeId
-    this.getGrid()
   }
 }
 </script>

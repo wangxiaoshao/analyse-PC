@@ -5,19 +5,19 @@
       <el-col :span="24">
         <el-row :gutter="10" type="flex">
           <el-col :span="7">
-            <el-input placeholder="人员名称" v-model="searchQuery.keyword" clearable @change="getGrid">
+            <el-input placeholder="人员名称" v-model="searchQuery.name" clearable>
             </el-input>
           </el-col>
           <el-col :span="7">
-            <el-input placeholder="人员ID" v-model="searchQuery.keyword" clearable @change="getGrid">
+            <el-input placeholder="人员ID" v-model="searchQuery.uid" clearable>
             </el-input>
           </el-col>
           <el-col :span="7">
-            <el-input placeholder="登陆账号" v-model="searchQuery.keyword" clearable @change="getGrid">
+            <el-input placeholder="登陆账号" v-model="searchQuery.account" clearable>
             </el-input>
           </el-col>
           <el-col :span="3" class="text-right">
-            <el-button type="primary" plain>查询</el-button>
+            <el-button type="primary" plain @click="getGrid">查询</el-button>
           </el-col>
         </el-row>
       </el-col>
@@ -26,15 +26,15 @@
       <el-col :span="24">
         <el-row :gutter="10" type="flex">
           <el-col :span="7">
-            <el-input placeholder="所属单位" v-model="searchQuery.keyword" clearable @change="getGrid">
+            <el-input placeholder="所属单位" v-model="searchQuery.orgName" clearable>
             </el-input>
           </el-col>
           <el-col :span="7">
-            <el-input placeholder="所属部门" v-model="searchQuery.keyword" clearable @change="getGrid">
+            <el-input placeholder="所属部门" v-model="searchQuery.deptName" clearable>
             </el-input>
           </el-col>
           <el-col :span="7">
-            <el-input placeholder="标签" v-model="searchQuery.keyword" clearable @change="getGrid">
+            <el-input placeholder="标签" v-model="searchQuery.labelName" clearable>
             </el-input>
           </el-col>
         </el-row>
@@ -49,7 +49,7 @@
       <template slot-scope="{slotScope}" slot="status">
       </template>
           <template slot-scope="{slotScope}" slot="operate">
-            <el-button size="mini" type="text" @click="goConfig(slotScope.row)">查看明细</el-button>
+            <el-button size="mini" type="text" @click="goDetails(slotScope.row)">查看明细</el-button>
           </template>
     </site-table>
     <!--分页-->
@@ -62,76 +62,27 @@
       layout="total, sizes, prev, pager, next, jumper"
       :total="page.total">
     </el-pagination>
-    <!--编辑dialog-->
-    <edit-dialog :visible="editDialogVisible"
-                 :current="currentEdit"
-                 :areaList="areaList"
-                 @refreshList="getGrid"
-                 @close="closeEditDialog"></edit-dialog>
-    <!--添加dialog-->
-    <edit-dialog
-      :visible="addDialogVisible"
-      :areaList="areaList"
-      @refreshList="getGrid"
-      @close="closeAddDialog"></edit-dialog>
-    <!--配置dialog-->
-    <config-dialog
-      :visible="configDialogVisible"
-      :areaList="areaList"
-      @refreshList="getGrid"
-      @close="closeConfigDialogVisible"></config-dialog>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-import EditDialog from '../../components/EditDialog'
-import ConfigDialog from '../../components/EditDialog'
 import handleTable from '@src/mixins/handle-table'
-import { api, urlNames } from '@src/api'
 import SiteTable from '@src/components/SiteTable/index.vue'
+import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
 
 export default {
-  components: { EditDialog, ConfigDialog, SiteTable },
+  components: { SiteTable },
   mixins: [handleTable],
   data () {
     return {
-      loading: true,
       searchQuery: {
-        areaId: '',
-        status: '',
-        keyword: ''
-      },
-      list: [],
-      areaList: [
-        {
-          'id': 1,
-          'code': '1',
-          'name': '单位'
-        },
-        {
-          'id': 2,
-          'code': '2',
-          'name': '部门'
-        },
-        {
-          'id': 3,
-          'code': '3',
-          'name': '人员'
-        }
-      ],
-      dictionaryNameList: [],
-      editDialogVisible: false,
-      addDialogVisible: false,
-      configDialogVisible: false,
-      currentEdit: null,
-      currentParent: {
-        description: '',
-        label: '',
-        remarks: '',
-        orderNum: '',
-        type: '',
-        value: ''
+        name: '',
+        uid: '',
+        account: '',
+        orgName: '',
+        deptName: '',
+        labelName: ''
       },
       tableConfig: {
         order: {
@@ -144,9 +95,9 @@ export default {
           showOverflowTooltip: false,
           minWidth: 50
         },
-        applyName: {
+        name: {
           key: 1,
-          field: 'applyName',
+          field: 'name',
           tooltip: false,
           formatter: this.formatter,
           label: '人员名称',
@@ -154,9 +105,9 @@ export default {
           showOverflowTooltip: false,
           minWidth: 100
         },
-        content: {
+        uid: {
           key: 2,
-          field: 'content',
+          field: 'uid',
           tooltip: true,
           formatter: this.formatter,
           label: '人员ID',
@@ -164,9 +115,9 @@ export default {
           showOverflowTooltip: false,
           minWidth: 100
         },
-        applyTime: {
+        account: {
           key: 3,
-          field: 'applyTime',
+          field: 'account',
           tooltip: false,
           formatter: this.formatter,
           label: '登陆账号',
@@ -174,9 +125,9 @@ export default {
           showOverflowTooltip: false,
           minWidth: 100
         },
-        reason: {
+        orgName: {
           key: 4,
-          field: 'reason',
+          field: 'orgName',
           tooltip: false,
           formatter: this.formatter,
           label: '所属单位',
@@ -184,19 +135,29 @@ export default {
           showOverflowTooltip: false,
           minWidth: 100
         },
-        state: {
+        deptName: {
           key: 5,
-          field: 'state',
+          field: 'deptName',
           tooltip: false,
           formatter: this.formatter,
           label: '所属部门',
           sortable: true,
           showOverflowTooltip: false,
           minWidth: 100
+        },
+        labelName: {
+          key: 6,
+          field: 'labelName',
+          tooltip: false,
+          formatter: this.formatter,
+          label: '标签',
+          sortable: true,
+          showOverflowTooltip: false,
+          minWidth: 100
         }
       },
       tableData: [],
-      tableHeight: 200,
+      tableHeight: null,
       operateWidth: 100,
       tableCheckbox: true,
       operate: true
@@ -219,7 +180,6 @@ export default {
     }
     this.initQuery()
     this.getGrid()
-    this.getMyAuditList()
   },
   methods: {
     ...mapMutations([
@@ -244,11 +204,6 @@ export default {
     trim (str) {
       return (str + '').replace(/(\s+)$/g, '').replace(/^\s+/g, '')
     },
-    getMyAuditList () {
-      api[urlNames['getMyAuditList']]().then((res) => {
-        this.tableData = res.data
-      })
-    },
     search () {
       this.$nextTick(() => {
         this.page.current = 1
@@ -256,7 +211,6 @@ export default {
       })
     },
     getGrid () {
-      this.loading = true
       let data = {
         page: this.page.current,
         pageSize: this.page.limit
@@ -272,30 +226,15 @@ export default {
           data[key] = value
         }
       }
-      api[urlNames['getApplicationList']](data).then((res) => {
-        this.loading = false
-        this.list = res.result.items
-        this.page.total = res.result.total_items
+      api[urlNames['findMemberList']](data).then((res) => {
+        this.tableData = res.data
+        this.page.total = res.total
       }, () => {
-        this.loading = false
-        this.list = []
+        this.tableData = []
         this.page.total = 0
       })
     },
-    addChild (index, row) {
-      this.currentParent.type = row.type
-      this.currentParent.description = row.description
-      this.currentParent.orderNum = row.orderNum + 10
-      this.configDialogVisible = true
-    },
-    showEditDialog (row) {
-      api[urlNames['getApplicationDetail']]({ id: row.id }).then((res) => {
-        this.currentEdit = res.result[0]
-        this.currentEdit.areaId = this.currentEdit.areaId.toString().split(',')
-        this.editDialogVisible = true
-      })
-    },
-    goConfig (row) {
+    goDetails (row) {
       this.SET_APPLICATION_PAGE(this.page)
       this.SET_EXAMINE_SEARCH_QUERY(this.searchQuery)
       this.SET_EXAMINE_TABLEDATA(this.tableData) // 存储当前页面table的数据列表
@@ -304,57 +243,6 @@ export default {
       this.$router.push({
         name: 'ExamineDetails',
         params: { parentCode: 1910281645 }
-      })
-    },
-    showAddDialog () {
-      this.addDialogVisible = true
-    },
-    closeEditDialog () {
-      this.editDialogVisible = false
-    },
-    closeAddDialog () {
-      this.addDialogVisible = false
-    },
-    closeConfigDialogVisible () {
-      this.configDialogVisible = false
-    },
-    handleAction (action, row) {
-      let actionName = '删除'
-      let actionUrl = 'deleteApplication'
-      let data = {
-        id: row.id,
-        type: row.type
-      }
-      if (action === 'enable') {
-        actionName = row.enable === 1 ? '停用' : '启用'
-        actionUrl = 'toggleApplication'
-        data.status = row.enable === 1 ? 0 : 1
-      }
-      this.$msgbox({
-        message: `确认${actionName}？`,
-        title: '提示',
-        showCancelButton: true,
-        type: 'warning',
-        beforeClose: (action, instance, done) => {
-          if (action === 'confirm') {
-            instance.confirmButtonLoading = true
-            instance.confirmButtonText = `${actionName}中...`
-            api[urlNames[actionUrl]](data).then((res) => {
-              instance.confirmButtonLoading = false
-              this.$message.success(`${actionName}成功`)
-              this.getGrid()
-            }, (res) => {
-              instance.confirmButtonLoading = false
-            })
-            done()
-          } else {
-            instance.confirmButtonLoading = false
-            done()
-          }
-        }
-      }).then(() => {
-
-      }).catch(() => {
       })
     }
   }

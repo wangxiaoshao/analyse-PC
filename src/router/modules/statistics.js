@@ -31,6 +31,6 @@ export default [
     path: '/data-log',
     name: 'DataLog',
     component: DataLog
-  },
+  }
 ]
 

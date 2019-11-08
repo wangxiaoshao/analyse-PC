@@ -14,9 +14,8 @@
       <template slot-scope="{slotScope}" slot="status">
       </template>
       <template slot-scope="{slotScope}" slot="operate">
-        <el-button size="mini" type="text" @click="goConfig(slotScope.row)">详情</el-button>
-        <el-button size="mini" type="text" @click="goConfig(slotScope.row)">编辑</el-button>
-        <el-button size="mini" type="text" @click="goConfig(slotScope.row)">删除</el-button>
+        <el-button size="mini" type="text" @click="openDialog(slotScope.row)">编辑</el-button>
+        <el-button size="mini" type="text" @click="openDialog(slotScope.row)">删除</el-button>
       </template>
     </site-table>
     <!--分页-->
@@ -142,12 +141,12 @@ export default {
         }
       },
       tableData: [],
-      tableHeight: 200,
+      tableHeight: null,
       operateWidth: 200,
       tableCheckbox: true,
       operate: true,
       title: '创建字典',
-      dicTitle: '职级字段列表',
+      dicTitle: '职级字段列表'
     }
   },
   computed: {
@@ -230,62 +229,11 @@ export default {
         this.page.total = 0
       })
     },
-    addChild (index, row) {
-      this.currentParent.type = row.type
-      this.currentParent.description = row.description
-      this.currentParent.orderNum = row.orderNum + 10
-      this.configDialogVisible = true
-    },
-    showEditDialog (row) {
-
-    },
-    goConfig (row) {
+    openDialog (row) {
       this.dicDialogVisible = true
-    },
-    showAddDialog () {
-      this.addDialogVisible = true
     },
     closeAddDialog (val) {
       this[val] = false
-    },
-    handleAction (action, row) {
-      let actionName = '删除'
-      let actionUrl = 'deleteApplication'
-      let data = {
-        id: row.id,
-        type: row.type
-      }
-      if (action === 'enable') {
-        actionName = row.enable === 1 ? '停用' : '启用'
-        actionUrl = 'toggleApplication'
-        data.status = row.enable === 1 ? 0 : 1
-      }
-      this.$msgbox({
-        message: `确认${actionName}？`,
-        title: '提示',
-        showCancelButton: true,
-        type: 'warning',
-        beforeClose: (action, instance, done) => {
-          if (action === 'confirm') {
-            instance.confirmButtonLoading = true
-            instance.confirmButtonText = `${actionName}中...`
-            api[urlNames[actionUrl]](data).then((res) => {
-              instance.confirmButtonLoading = false
-              this.$message.success(`${actionName}成功`)
-              this.getGrid()
-            }, (res) => {
-              instance.confirmButtonLoading = false
-            })
-            done()
-          } else {
-            instance.confirmButtonLoading = false
-            done()
-          }
-        }
-      }).then(() => {
-
-      }).catch(() => {
-      })
     }
   }
 }
