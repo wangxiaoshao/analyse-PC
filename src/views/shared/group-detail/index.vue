@@ -62,15 +62,16 @@ export default {
       currentPage: 1,
       pageSize: 1,
       total: 0,
-      groupId: this.$route.params.id,
       memberList: [],
+      groupId: this.$route.params.id,
       seleceDialog: {
         selectMenmberTitle: '分组成员添加', // 选人组件标题
         selectMenmberFlag: false, // 显示弹窗，
         isAllData: true, // 是否需完整数据-默认为不需要（false，只包含用户id）
-        notOnlyPerson: false, // 是否只选人，默认为false（只选人），true可以选择单位和部门
-        isSingleSelect: true // 是否为单选框  false为多选（默认），true为单选
-      }
+        notOnlyPerson: true, // 是否只选人，默认为false（只选人），true可以选择单位和部门
+        isSingleSelect: false // 是否为单选框  false为多选（默认），true为单选
+      },
+      groupMemberInfo: []
     }
   },
   created () {
@@ -94,8 +95,32 @@ export default {
     closeselectMenmber () {
       this.seleceDialog.selectMenmberFlag = false
     },
-    dialogReturnMembersInfo (data) {
-      console.log(JSON.parse(JSON.stringify(data)), '------------')
+    dialogReturnMembersInfo (memberData, orgdData) {
+      console.log(JSON.parse(JSON.stringify(orgdData)), 'this.$route.params.id')
+      memberData.forEach(item => {
+        let listMember = {
+          memberId: item.uid,
+          memberType: 3,
+          groupId: this.groupId
+        }
+        this.groupMemberInfo.push(listMember)
+      })
+      orgdData.forEach(item => {
+        let listOrg = {
+          memberId: item.id,
+          memberType: item.nodeType,
+          groupId: this.groupId
+        }
+        this.groupMemberInfo.push(listOrg)
+      })
+      this.addGroupUsers(this.groupMemberInfo)
+      this.groupMemberInfo = []
+    },
+    // 添加成员
+    addGroupUsers (data) {
+      api[urlNames['addGroupUsers']]({ data }).then((res) => {
+        console.log('-------------')
+      })
     },
     handleClick (row) {
       console.log(row)

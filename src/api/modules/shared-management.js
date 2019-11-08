@@ -132,5 +132,18 @@ export default {
     url: '/api/group/member/groupMembers',
     serve: 'organizationManagePC',
     keepOriginResponse: false
+  },
+  /**
+   创建分组
+   */
+  [urlNames.addGroupUsers]: {
+    type: 'post',
+    url: '/api/group/member/setGroupUsers',
+    serve: 'organizationManagePC',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    showLoading: true,
+    keepOriginResponse: false
   }
 }
