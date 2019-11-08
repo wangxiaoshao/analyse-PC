@@ -4,7 +4,8 @@ const app = {
   state: {
     page: {},
     backInfo: {},
-    treeId: null
+    treeId: null,
+    tree: {}
   },
   mutations: {
     [types.SET_ORGANIZATION_PAGE] (state, val) {
@@ -13,8 +14,8 @@ const app = {
     [types.SET_ORGANIZATION_BACK_INFO] (state, name) {
       state.backInfo = name
     },
-    [types.SET_ORGANIZATION_NODEID] (state, val) {
-      state.treeId = val
+    [types.SET_TREE_ID] (state, val) {
+      state.tree = val
     }
   }
 }

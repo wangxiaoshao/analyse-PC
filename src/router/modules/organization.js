@@ -50,39 +50,39 @@ export default [
     component: Organization,
     children: [
       {
-        path: 'organizationContent/:nodeId',
+        path: 'organization-content/:nodeId',
         name: 'OrganizationContent',
         component: OrganizationContent
       }, {
-        path: 'nodeEdit/:id',
+        path: 'node-edit/:id',
         name: 'NodeEdit',
         component: NodeDetail
       }, {
-        path: 'unitEdit/:id',
+        path: 'unit-edit/:id',
         name: 'UnitEdit',
         component: UnitDetail
       }, {
-        path: 'departmentEdit/:id',
+        path: 'department-edit/:id',
         name: 'DepartmentEdit',
         component: DepartmentDetail
       }, {
-        path: 'personEdit/:id',
+        path: 'person-edit/:id',
         name: 'PersonEdit',
         component: PersonDetail
       }, {
-        path: 'nodeAdd/:parentId',
+        path: 'node-add/:parentId',
         name: 'NodeAdd',
         component: NodeDetail
       }, {
-        path: 'unitAdd/:parentId',
+        path: 'unit-add/:parentId',
         name: 'UnitAdd',
         component: UnitDetail
       }, {
-        path: 'departmentAdd/:parentId',
+        path: 'department-add/:parentId',
         name: 'DepartmentAdd',
         component: DepartmentDetail
       }, {
-        path: 'personAdd/:parentId',
+        path: 'person-add/:parentId',
         name: 'PersonAdd',
         component: PersonDetail
       }

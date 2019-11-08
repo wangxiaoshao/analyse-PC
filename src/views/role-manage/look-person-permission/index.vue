@@ -54,7 +54,7 @@ import { mapState, mapMutations } from 'vuex'
 
 export default {
   mixins: [handleTable, handleBreadcrumb],
-  components: { permissionSet , addPerson },
+  components: { permissionSet, addPerson },
   data () {
     return {
       list: [],
@@ -103,7 +103,7 @@ export default {
     getSetFlag (val) {
       this.setFlag = val
     },
-    closeselectMenmber(val) {
+    closeselectMenmber (val) {
       this.selectDialog.selectMenmberFlag = val
     }
   },

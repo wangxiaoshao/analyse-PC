@@ -1,26 +1,11 @@
 <template>
   <div class="form-content" v-loading="loading">
-    <el-dialog title="选择标签" :visible.sync="openAddTagFlag">
-      <el-input placeholder="请输入内容" v-model="tagKeyWord" class="input-with-select">
-        <el-button slot="append" icon="el-icon-search"></el-button>
-      </el-input>
-      <div class="tag-content">
-        <el-checkbox-group
-          v-model="checkTagGroup">
-          <el-checkbox
-            v-for="item in searchTags"
-            border
-            :label="item.name"
-            :title="item.name"
-            :key="item.name"
-          >{{item.name}}</el-checkbox>
-        </el-checkbox-group>
-      </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="openAddTagFlag = false">取 消</el-button>
-        <el-button type="primary" @click="getCheckTags">确 定</el-button>
-      </span>
-    </el-dialog>
+    <search-lable
+      :openSearchFlag="openSearchFlag"
+      :addInfo="addInfo"
+      @close="getClose"
+      @getTag="getTag"
+    ></search-lable>
     <el-form :model="ruleForm" :disabled="disabledFlag" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
       <div class="detail-title">
         <i class="menu-icon fa fa-sitemap" style="margin: 0px 5px;"></i>单位信息
@@ -42,8 +27,8 @@
          <el-form-item label="统一单位信用编码" prop="uiniteCode">
            <el-input v-model="ruleForm.uniteCode" :disabled="true"></el-input>
          </el-form-item>
-         <el-form-item label=" 上级单位" prop="unitParent">
-           <el-input v-model="ruleForm.unitParent" :disabled="true"></el-input>
+         <el-form-item label=" 上级单位" prop="parentName">
+           <el-input v-model="ruleForm.parentName" :disabled="true"></el-input>
          </el-form-item>
          <el-form-item label="所属类型" prop="type">
            <el-select v-model="ruleForm.type" placeholder="请选择所属类型">
@@ -62,11 +47,9 @@
          <el-form-item label="邮编" prop="zipCode">
            <el-input v-model="ruleForm.zipCode"></el-input>
          </el-form-item>
-         <el-form-item label="区域" prop="name">
-           <el-cascader
-             :options="options"
-             filterable
-           ></el-cascader>
+         <el-form-item label="区域">
+            <!--选择区域组件-->
+           <area-list></area-list>
          </el-form-item>
          <el-form-item label="所属系统" prop="system">
            <el-select v-model="ruleForm.system" placeholder="请选择所属系统">
@@ -90,7 +73,7 @@
           >
             {{tag.name}}
           </el-tag>
-          <el-tag class="add-tag-btn" @click="openAddTagFlag =  true"><i class="el-icon-plus"></i>添加标签</el-tag>
+          <el-tag class="add-tag-btn" @click="openSearchFlag = true"><i class="el-icon-plus"></i>添加标签</el-tag>
         </el-form-item>
       </el-row>
       <el-menu class="el-menu-demo" mode="horizontal">
@@ -121,21 +104,26 @@
 <script>
 import { api, urlNames } from '@src/api'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
+import searchLable from '../components/AddTags/index'
+import areaList from '../components/AreaList/index'
 export default {
   name: 'index',
   mixins: [ handleBreadcrumb ],
+  components: { areaList, searchLable },
   data () {
     return {
+      openSearchFlag: false,
+      addInfo: {
+        searchFlag: false,
+        type: 3
+      },
       loading: false,
       isShowEditFlag: true,
       disabledFlag: false,
       breadcrumbTitle: '添加节点',
       submitHtml: '保存',
       oldFrom: {},
-      openAddTagFlag: false,
       tagKeyWord: '',
-      searchTags: [], // 搜索标签结果
-      checkTagGroup: [], // 选中的标签
       tags: [], // 提交的标签
       ruleForm: {
         name: '',
@@ -145,7 +133,8 @@ export default {
         fax: '',
         zipCode: '',
         uniteCode: '',
-        unitParent: '111',
+        parentName: '',
+        parentId: '',
         system: '',
         type: '',
         enable: false,
@@ -168,7 +157,65 @@ export default {
       options: []
     }
   },
+  mounted () {
+    this.setBreadcrumbTitle()
+  },
+  created () {
+    this.getDetail()
+  },
+  beforeRouteUpdate (to, from, next) {
+    next()
+    this.setBreadcrumbTitle()
+  },
   methods: {
+    getDetail () {
+      let data = {
+        id: this.$route.params.id || this.$route.params.parentId
+      }
+      this.loading = true
+      api[urlNames['findViewNodeById']](data).then((res) => {
+        console.log(999999, res.data)
+        this.loading = false
+        let backId = ''
+        if (this.$route.name === 'UnitAdd') {
+          this.ruleForm.parentName = res.data.name
+          backId = res.data.id
+        } else {
+          this.ruleForm.name = res.data.name
+          this.ruleForm.parentName = res.data.parentName
+          this.ruleForm.enable = res.data.removed
+          backId = res.data.parentId
+        }
+        /* if (this.ruleForm.parentId === '-1') {
+          this.backId = this.ruleForm.id
+        } else {
+          this.backId = this.ruleForm.parentId
+        } */
+        this.pushBreadcrumb({
+          name: this.breadcrumbTitle,
+          parent: {
+            name: 'OrganizationContent',
+            params: {
+              nodeId: backId
+            },
+            query: {
+              type: 'back'
+            }
+          }
+        })
+      }, (error) => {
+        this.$message.error(`没有内容`)
+      })
+    },
+    getClose (val) {
+      this.openSearchFlag = val
+    },
+    // 获取选中的标签
+    getTag (val) {
+      val.forEach((item) => {
+        this.tags.push(item)
+      })
+    },
     setBreadcrumbTitle () { // 设置面包屑title
       if (this.$route.name === 'UnitEdit' || this.$route.name === 'UnitAdd') {
         this.isShowEditFlag = true
@@ -183,16 +230,6 @@ export default {
         this.disabledFlag = true
         this.breadcrumbTitle = '单位详情'
       }
-      // 设置返回路由
-      this.pushBreadcrumb({
-        name: this.breadcrumbTitle,
-        parent: {
-          name: 'OrganizationContent',
-          params: {
-            type: 'back'
-          }
-        }
-      })
     },
     submitForm (ruleForm) {
       this.$refs[ruleForm].validate((valid) => {
@@ -229,25 +266,6 @@ export default {
           })
         }
       })
-    },
-    getCheckTags () {
-      this.openAddTagFlag = false
-      this.tags = this.checkTagGroup
-    }
-  },
-  mounted () {
-    this.setBreadcrumbTitle()
-  },
-  created () {
-  },
-  computed: {
-  },
-  watch: {
-    $route: {
-      handler (val) {
-        this.setBreadcrumbTitle()
-      },
-      deep: true
     }
   }
 }

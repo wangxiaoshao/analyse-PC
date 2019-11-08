@@ -3,8 +3,11 @@
     :data="treeList"
     node-key="id"
     :props="defaultProps"
+    :highlight-current="true"
     lazy
+    ref="treeList"
     :load="loadNode"
+    @node-click="handleNodeClick"
    >
       <span class="custom-tree-node" slot-scope="{ node, data }">
         <i class="imenu-icon fa fa-sitemap" v-if="node.nodeType"></i>
@@ -44,15 +47,10 @@ export default {
       parentId: -1
     }
   },
+  mounted () {
+    this.findTreeList(-1)
+  },
   methods: {
-    setTreeId () {
-      this.$router.push({
-        name: 'OrganizationContent',
-        params: {
-          nodeId: this.id
-        }
-      })
-    },
     // 追加子节点
     loadNode (node, resolve) {
       if (node.level === 0) {
@@ -62,9 +60,9 @@ export default {
       this.id = node.data.id
 
       setTimeout(() => {
-        resolve(this.teeeSonList)
+        resolve(this.treeSonList)
       }, 500)
-      this.teeeSonList = []
+      this.treeSonList = []
     },
     findTreeList (parentId) {
       api[urlNames['getTree']]({
@@ -73,9 +71,10 @@ export default {
       }).then((res) => {
         this.total = parseInt(res.total)
         this.treeList = res.data
-        this.id = res.data[0].id
-        this.setTreeId()
-        this.$emit('getDefault', this.id)
+        this.handleNodeClick(res.data[0])
+        // if (this.$route.name === 'Organization') {
+        //   this.handleNodeClick(res.data[0])
+        // }
       })
     },
     // 获取子节点
@@ -84,21 +83,12 @@ export default {
         parentId: parentId,
         viewId: -1
       }).then((res) => {
-        this.teeeSonList = res.data
-        this.id = parentId
-        this.setTreeId()
+        this.treeSonList = res.data
       })
     },
-    // 点击节点加载子节点
     handleNodeClick (node) {
-      this.findTreeSonList(node.id)
+      this.$emit('handle-node-click', node.id)
     }
-  },
-  created () {
-    this.findTreeList(-1)
-  },
-  beforeRouteUpdate (to, from, next) {
-    //zthis.findTreeList(-1)
   }
 }
 </script>

@@ -72,7 +72,7 @@ export default {
   },
   mounted () {
     this.addEventListenForResize()
-    this.getUserInfo()
+    // this.getUserInfo()
   },
   methods: {
     ...mapMutations(['SET_USER_INFO', 'SET_WINDOWHEIGHT', 'SET_WINDOWWIDTH', 'SET_PAGE_BREADCRUMB']),

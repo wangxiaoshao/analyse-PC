@@ -39,7 +39,6 @@ export default {
     type: 'get',
     url: '/work/user/findViewNodeById',
     keepOriginResponse: true, // 是否保留后端返回数据格式
-    showLoading: false, // 该请求发送时，是否显示全局loading
     serve: 'organizationManagePC',
     mock: '/findViewNodeById.json' // development模式下，本地mock数据
   },
@@ -63,6 +62,56 @@ export default {
     keepOriginResponse: true,
     showLoading: true,
     serve: 'organizationManagePC'
+  },
+  /* 选择区域 */
+  [urlNames.getAreaList]: {
+    type: 'get',
+    url: '/api/jg_manage/organ/findAreaList',
+    serve: 'organizationManagePC',
+    mock: 'area.json'
+  },
+  [urlNames.findOrgLabelList]: {
+    type: 'get',
+    url: '/api/jg_manage/label/findOrgLabelList',
+    serve: 'organizationManagePC',
+    mock: 'findOrgLabelList.json'
+  },
+  [urlNames.findLabelByType]: {
+    type: 'get',
+    url: '/api/jg_manage/label/findLabelByType',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    serve: 'organizationManagePC',
+    mock: '/findLabelByType.json' // development模式下，本地mock数据
+  },
+  /*
+ * 单位查询
+ * */
+  [urlNames.findOrganizationList]: {
+    type: 'post',
+    url: '/api/jg_manage/organ/findOrganizationList',
+    keepOriginResponse: true,
+    serve: 'organizationManagePC',
+    mock: 'findOrganizationList.json'
+  },
+  /*
+ * 部门查询
+ * */
+  [urlNames.findDepartmentList]: {
+    type: 'get',
+    url: '/api/jg_manage/department/findDepartmentList',
+    keepOriginResponse: true,
+    serve: 'organizationManagePC',
+    mock: '/findDepartmentList.json'
+  },
+  /*
+ * 部门查询
+ * */
+  [urlNames.findMemberList]: {
+    type: 'get',
+    url: '/api/jg_manage/user/findUserByOrgAndDeptAndLabelAndUserName',
+    keepOriginResponse: true,
+    serve: 'organizationManagePC',
+    mock: '/findMemberList.json'
   },
   // 应用管理
   ...application,

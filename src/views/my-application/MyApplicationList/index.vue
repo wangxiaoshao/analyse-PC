@@ -15,9 +15,9 @@
           <!--</el-select>-->
           <!--</el-col>-->
           <el-col :span="8">
-            <el-input placeholder="请输入关键字搜索" v-model="searchQuery.keyword" clearable @change="getGrid">
-              <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
-            </el-input>
+            <!--<el-input placeholder="请输入关键字搜索" v-model="searchQuery.keyword" clearable @change="getGrid">-->
+              <!--<el-button slot="append" icon="el-icon-search" @click="search"></el-button>-->
+            <!--</el-input>-->
           </el-col>
         </el-row>
       </el-col>
@@ -31,7 +31,7 @@
       <template slot-scope="{slotScope}" slot="status">
       </template>
       <template slot-scope="{slotScope}" slot="operate">
-        <el-button size="mini" type="text" @click="goConfig(slotScope.row)">去审核</el-button>
+        <el-button size="mini" type="text" @click="goConfig(slotScope.row)">查看明细</el-button>
       </template>
     </site-table>
     <!--分页-->
@@ -139,7 +139,7 @@ export default {
           tooltip: false,
           formatter: this.formatter,
           label: '审核状态',
-          sortable: true,
+          sortable: false,
           showOverflowTooltip: false,
           minWidth: 100
         },
@@ -235,7 +235,7 @@ export default {
           data[key] = value
         }
       }
-      api[urlNames['getAuditList']](data).then((res) => {
+      api[urlNames['getMyApplyAuditList']](data).then((res) => {
         this.loading = false
         this.tableData = res.data
         this.page.total = res.total
@@ -258,7 +258,7 @@ export default {
           type: row.type
         }
       })
-    },
+    }
   }
 }
 </script>

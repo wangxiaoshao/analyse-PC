@@ -16,7 +16,7 @@
         :props="defaultProps"
         lazy
         :load="loadNode"
-        :expand-on-click-node="false">
+      >
       <span class="custom-tree-node" slot-scope="{ node, data }">
         <span>{{ node.label }}</span>
         <span class="custom-tree-float">
