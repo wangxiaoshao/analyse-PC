@@ -47,7 +47,7 @@ export default {
     }
   },
   created () {
-    this.getArea(-1)
+    this.getArea()
   }
 }
 </script>

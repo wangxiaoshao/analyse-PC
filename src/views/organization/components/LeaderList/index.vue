@@ -1,5 +1,8 @@
 <template>
   <div class="leader-list-content">
+    <div class="button-wrap">
+      <el-button type="primary" v-if="mainList">添加主要领导</el-button>
+    </div>
     <div class="list-ground">
       <el-table
         :data="mainList"
@@ -17,6 +20,16 @@
         <el-table-column
           prop="address"
           label="地址">
+        </el-table-column>
+        <el-table-column prop="act" label="操作" width="100" align="center">
+          <template slot-scope="scope">
+            <el-button @click.native="openEditNode(scope.row)" type="text" size="small">
+              修改
+            </el-button>
+            <el-button @click.native="openEditNode(scope.row)" type="text" size="small">
+              删除
+            </el-button>
+          </template>
         </el-table-column>
       </el-table>
     </div>
@@ -48,7 +61,7 @@
             <span :title="scope" v-else>{{scope.$index + 1}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="name" prop="name"></el-table-column>
+        <el-table-column label="姓名" prop="name"></el-table-column>
         <el-table-column prop="act" label="操作" width="100" align="center">
           <template slot-scope="scope">
             <el-button @click.native="openEditNode(scope.row)" type="text" size="small">
@@ -77,7 +90,7 @@ import handleTable from '@src/mixins/handle-table'
 import { api, urlNames } from '@src/api'
 export default {
   mixins: [handleTable],
-  props: ['nodeInfo', 'contentPage'],
+  props: ['nodeInfo', 'contentPage', 'contentId'],
   data () {
     return {
       sortFlag: false,
@@ -88,9 +101,11 @@ export default {
   methods: {
     getGrid () {
       let data = {
-        nodeType: '1',
-        nodeId: this.nodeInfo.nodeId
+        nodeType: this.nodeInfo.nodeType,
+        nodeId: this.contentId
       }
+      alert(this.nodeInfo.nodeType)
+      alert(this.nodeInfo.nodeId)
       this.loading = true
       api[urlNames['findLeaderList']](data).then((res) => {
         this.loading = false

@@ -113,6 +113,14 @@ export default {
       }
     }
   },
+  created () {
+    this.getGrid()
+    if (this.$route.name === 'OrganizationContent') {
+      this.isShowEditFlag = true
+    } else {
+      this.isShowEditFlag = false
+    }
+  },
   methods: {
     getGrid () {
       this.loading = true
@@ -168,7 +176,7 @@ export default {
       }, () => {
         this.$message.error(`保存失败，请重试`)
       })
-    }
+    },
     handleSizeChange (val) {
       this.contentPage.current = 1
       this.contentPage.limit = val
@@ -211,17 +219,6 @@ export default {
         }
       })
     }
-  },
-  created () {
-    this.getGrid()
-    if (this.$route.name === 'OrganizationContent') {
-      this.isShowEditFlag = true
-    } else {
-      this.isShowEditFlag = false
-    }
-  },
-  mounted () {
-
   },
   watch: {
     sortFlag: {
