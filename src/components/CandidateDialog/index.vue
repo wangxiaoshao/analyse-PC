@@ -35,7 +35,7 @@
         <!--          </el-transfer>-->
         <!--        </div>-->
         <div class="member-list">
-          <div class="member-panel" :class="seleceDialog.notOnlyPerson?memberstyle:noorgstyle">
+          <div v-if="!seleceDialog.isSingleSelect" class="member-panel" :class="seleceDialog.notOnlyPerson?memberstyle:noorgstyle">
             <el-checkbox :indeterminate="isIndeterminate" v-model="checkAllMember" @change="handleCheckAllMemberChange">
               选择人员
             </el-checkbox>
@@ -43,9 +43,15 @@
               <el-checkbox v-for="item in memberList" :label="item.uid" :key="item.uid">{{item.name}}</el-checkbox>
             </el-checkbox-group>
           </div>
+          <div class="member-panel" v-if="seleceDialog.isSingleSelect">
+            <p>选择人员</p>
+            <el-radio-group @change="singleChecked" :class="seleceDialog.notOnlyPerson?memberstyle:singlecheck"  v-model="checkedMemberList">
+              <el-radio :key="item.uid" v-for="item in memberList" :label="item.uid">{{item.name}}</el-radio>
+            </el-radio-group>
+          </div>
           <div class="dep-panel" v-if="seleceDialog.notOnlyPerson" :class="{orgstyle:seleceDialog.notOnlyPerson}">
             <el-checkbox :indeterminate="isIndeterminateOrg" v-model="checkAllOrg" @change="handleCheckAllOrgChange">
-              选择人员
+              选择单位/部门
             </el-checkbox>
             <el-checkbox-group v-model="checkedOrgList" @change="handleCheckedOrgChange">
               <el-checkbox v-for="item in orgList" :label="item.id" :key="item.id">{{item.name}}</el-checkbox>
@@ -56,7 +62,7 @@
           <div class="member-panel" :class="seleceDialog.notOnlyPerson?memberstyle:noorgstyle">
             <p>已选人员:</p>
             <el-checkbox-group v-model="selectedMenbersID" @change="handleCheckedSelectChange">
-              <el-checkbox v-for="item in selectedMenbers" :label="item.uid" :key="item.uid">{{item.name}}</el-checkbox>
+              <el-checkbox  v-for="item in selectedMenbers" :label="item.uid" :key="item.uid">{{item.name}}</el-checkbox>
             </el-checkbox-group>
           </div>
           <div class="dep-panel" v-if="seleceDialog.notOnlyPerson" :class="{orgstyle:seleceDialog.notOnlyPerson}">
@@ -104,9 +110,11 @@ export default {
       selectedOrg: [], // 右边列表
       selectedOrgID: [], // 已选择的人员ID -- 用于右边
       checkedOrgList: [], // 已选部门--左边选中-checkedMemberList
+      singleFlag: false,
       memberstyle: 'memberstyle',
       noorgstyle: 'no-orgstyle',
-      orgstyle: 'orgstyle'
+      orgstyle: 'orgstyle',
+      singlecheck: 'singlecheck'
     }
   },
   created () {
@@ -262,6 +270,16 @@ export default {
     },
     handleCheckedSelectOrgChange (value) {
       // this.selectedOrg = this.selectedOrg.filter(item => value.indexOf(item.id) > -1)
+    },
+    // 单选时的操作
+    singleChecked () {
+      let that = this
+      that.selectedMenbers = that.selectedMenbersID = []
+      that.selectedMenbersID[0] = that.checkedMemberList
+      let list = that.memberList.filter(function (x) {
+        return x.uid === that.selectedMenbersID[0]
+      })
+      that.selectedMenbers = { ...list }
     }
   }
 }
@@ -283,5 +301,9 @@ export default {
   .orgstyle {
     height: 200px;
     margin-top: 5px
+  }
+  //是否单选
+  .singlecheck{
+    height: 380px;
   }
 </style>

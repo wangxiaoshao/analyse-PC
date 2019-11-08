@@ -42,7 +42,7 @@
         layout="total, sizes, prev, pager, next, jumper"
         :total="total">
       </el-pagination>
-      <candidate-dialog @closeselectMenmber="closeselectMenmber" :seleceDialog="seleceDialog"></candidate-dialog>
+      <candidate-dialog @dialogReturnMembersInfo="dialogReturnMembersInfo" @closeselectMenmber="closeselectMenmber" :seleceDialog="seleceDialog"></candidate-dialog>
     </div>
 </template>
 
@@ -60,16 +60,16 @@ export default {
   data () {
     return {
       currentPage: 1,
-      pageSize:1,
+      pageSize: 1,
       total: 0,
       groupId: this.$route.params.id,
       memberList: [],
       seleceDialog: {
-        selectMenmberTitle: '选人组件', // 选人组件标题
+        selectMenmberTitle: '分组成员添加', // 选人组件标题
         selectMenmberFlag: false, // 显示弹窗，
         isAllData: true, // 是否需完整数据-默认为不需要（false，只包含用户id）
         notOnlyPerson: false, // 是否只选人，默认为false（只选人），true可以选择单位和部门
-        isSingleSelect: false // 是否为单选框  false为多选（默认），true为单选
+        isSingleSelect: true // 是否为单选框  false为多选（默认），true为单选
       }
     }
   },
@@ -93,6 +93,9 @@ export default {
     // 关闭选人弹窗
     closeselectMenmber () {
       this.seleceDialog.selectMenmberFlag = false
+    },
+    dialogReturnMembersInfo (data) {
+      console.log(JSON.parse(JSON.stringify(data)), '------------')
     },
     handleClick (row) {
       console.log(row)

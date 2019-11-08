@@ -9,8 +9,6 @@
       .select-member {
         flex: 1;
         min-height: 350px;
-        overflow-y: scroll;
-        overflow-x: hidden;
         border: 1px solid #EBEEF5;
         border-radius: 4px;
         padding:0 0 0 5px;
@@ -46,8 +44,15 @@
 
       }
 
-      .el-checkbox {
+      .el-checkbox{
         display: block;
+      }
+      .el-radio-group{
+        width: 100%;
+        .el-radio{
+          display: block;
+          padding: 2px 0;
+        }
       }
     }
   }

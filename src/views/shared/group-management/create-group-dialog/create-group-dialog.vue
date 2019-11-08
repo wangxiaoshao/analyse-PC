@@ -23,10 +23,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="是否启用">
-            <el-radio-group v-model="groupFrom.removed">
-              <el-radio :label="0">禁用</el-radio>
-              <el-radio :label="1">启用</el-radio>
-            </el-radio-group>
+              <el-switch v-model="groupFrom.removed"></el-switch>
           </el-form-item>
         </el-form>
       </div>
@@ -50,7 +47,7 @@ export default {
         ownerType: 3, // 1用户、2部门、3单位
         name: '',
         description: '',
-        removed: 1
+        removed: true
       },
       rules: {
         name: [

@@ -106,7 +106,7 @@ export default {
       api[urlNames['getGroupList']]({
         page: page,
         limit: limt,
-        type: type
+        ownerType: type
       }).then((res) => {
         this.total = parseInt(res.total)
         this.groupList = res.data
