@@ -50,6 +50,7 @@
 <script type="text/ecmascript-6">
 import handleTable from '@src/mixins/handle-table'
 import SiteTable from '@src/components/SiteTable/index.vue'
+import tableConfig from './tableConfig'
 import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
 
@@ -58,6 +59,7 @@ export default {
   mixins: [handleTable],
   data () {
     return {
+      ...tableConfig,
       loading: true,
       searchQuery: {
         id: '',
@@ -82,88 +84,6 @@ export default {
           'name': '人员'
         }
       ],
-      tableConfig: {
-        order: {
-          key: 0,
-          field: 'order',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '序号',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 50
-        },
-        applyName: {
-          key: 1,
-          field: 'applyName',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '申请人',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        },
-        content: {
-          key: 2,
-          field: 'content',
-          tooltip: true,
-          formatter: this.formatter,
-          label: '申请内容',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        },
-        applyTime: {
-          key: 3,
-          field: 'applyTime',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '申请时间',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        },
-        reason: {
-          key: 4,
-          field: 'reason',
-          tooltip: true,
-          formatter: this.formatter,
-          label: '申请原因',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        },
-        state: {
-          key: 5,
-          field: 'state',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '审核状态',
-          sortable: true,
-          showOverflowTooltip: false,
-          minWidth: 100
-        },
-        auditTime: {
-          key: 6,
-          field: 'auditTime',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '审核时间',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        },
-        auditOpinion: {
-          key: 7,
-          field: 'auditOpinion',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '审核意见',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        }
-      },
       tableData: [],
       tableHeight: null,
       operateWidth: 100,

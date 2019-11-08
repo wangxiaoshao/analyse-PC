@@ -8,25 +8,50 @@
                :show-close="false">
       <div class="dialog-close" @click="closeDialog"><i class="el-icon-close"></i></div>
       <el-scrollbar :style="scrollStyle">
-        <el-input
-          class="input-new-tag"
-          v-if="inputVisible"
-          v-model="inputValue"
-          ref="saveTagInput"
-          size="small"
-          @keyup.enter.native="handleInputConfirm"
-          @blur="handleInputConfirm"
-        >
-        </el-input>
-        <el-button v-else class="button-new-tag" size="small" @click="showInput">+ 请输入名称</el-button>
-        <el-tag
-          :key="index"
-          v-for="(tag, index) in dynamicTags"
-          :disable-transitions="false">
-          <span :style="{marginRight: '15px', color: '#95c9ff'}">{{index + 1}}</span>
-          <span>{{tag}}</span>
-        </el-tag>
+        <div>
+          <el-form :inline="true" :model="form" class="demo-form-inline">
+            <el-form-item label="名称">
+              <el-input v-model="form.name" placeholder="请输入名称"></el-input>
+            </el-form-item>
+            <el-form-item label="值">
+              <el-input v-model="form.value" placeholder="请输入字典值"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="addDic">创建</el-button>
+            </el-form-item>
+          </el-form>
+          <template>
+            <el-table
+              :data="tableData"
+              height="200"
+              style="width: 100%">
+              <el-table-column
+                fixed
+                type="index"
+                :index="indexMethod">
+              </el-table-column>
+              <el-table-column
+                fixed
+                prop="name"
+                label="名称"
+                width="180">
+              </el-table-column>
+              <el-table-column
+                fixed
+                prop="value"
+                label="值"
+                width="180">
+              </el-table-column>
+            </el-table>
+          </template>
+        </div>
       </el-scrollbar>
+      <el-row :gutter="20" :style="{marginTop: '20px'}">
+        <el-col :span="12" :offset="8">
+          <el-button type="primary" >批量添加</el-button>
+          <el-button >取消</el-button>
+        </el-col>
+      </el-row>
     </el-dialog>
   </div>
 </template>
@@ -43,8 +68,20 @@ export default {
       dynamicTags: ['正厅级', '副厅级'],
       inputVisible: false,
       inputValue: '',
+      stateValue: '',
+      form: {
+        name: '',
+        value: ''
+      },
+      isShow: false,
       formLabelWidth: '120px',
-      stateValue: ''
+      tableData: [
+        {
+          name: '字典名称1',
+          value: '值1'
+        }
+
+      ]
     }
   },
   mounted () {
@@ -58,24 +95,15 @@ export default {
     }
   },
   methods: {
+    addDic () {
+      let addObj = JSON.parse(JSON.stringify(this.form))
+      this.tableData.push(addObj)
+    },
+    indexMethod (index) {
+      return index + 1;
+    },
     handleClose (tag) {
       this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1)
-    },
-
-    showInput () {
-      this.inputVisible = true
-      this.$nextTick(_ => {
-        this.$refs.saveTagInput.$refs.input.focus()
-      });
-    },
-
-    handleInputConfirm () {
-      let inputValue = this.inputValue
-      if (inputValue) {
-        this.dynamicTags.push(inputValue)
-      }
-      this.inputVisible = false
-      this.inputValue = ''
     },
     passExamine () {
       this.dialogVisible = true
