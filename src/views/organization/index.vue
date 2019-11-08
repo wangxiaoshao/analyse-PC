@@ -31,7 +31,7 @@ export default {
   },
   data () {
     return {
-      defaultNodeId: null
+      defaultNodeId: ''
     }
   },
   computed: {
@@ -44,12 +44,16 @@ export default {
   },
   methods: {
     // 点击节点加载子节点
-    handleNodeClick (nodeId) {
-      this.defaultNodeId = nodeId
+    handleNodeClick (node) {
+      let id = ''
+      id = node.id
+      this.defaultNodeId = node.id
+      let bindId = node.bindId || ''
       this.$router.push({
         name: 'OrganizationContent',
         params: {
-          nodeId: nodeId
+          nodeId: id,
+          bindId: bindId
         }
       })
     }

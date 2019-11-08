@@ -17,6 +17,7 @@
         <i v-if="content[0].nodeType === 2" class="menu-icon fa fa-sitemap big-icon" style="margin: 0px 5px;"></i>
         <i v-if="content[0].nodeType === 3" class="menu-icon fa fa-sitemap big-icon" style="margin: 0px 5px;"></i>
         <span class="organization-value" v-html="content[0].name"></span>
+        {{content[0].bindId}}
         <el-button>日志</el-button>
       </div>
       <div class="list-tab">
@@ -77,7 +78,7 @@
               :sortFlag="sortShowFlag"
               @getPage="getPage"
               :contentPage="currentPage"
-              :id="content[0].id"
+              :id="content[0].bindId"
               :type="content[0].nodeType"
               @cancel="getSortAction"
             ></person-list>
@@ -87,7 +88,6 @@
               v-if="activeName === '单位主要领导'"
               :content-id="contentId"
               @getPage="getPage"
-              :contentPage="page"
               :nodeInfo="nodeInfo"
             ></leader-list>
           </el-tab-pane>
@@ -249,12 +249,12 @@ export default {
           this.showAddDepartmentFlag = false
           this.showAddUnitFlag = true
         }
-        if (this.content[0].nodeType === 2) {
+        if (this.content[0].nodeType === 3) {
           this.showAddNodeFlag = false
           this.showAddDepartmentFlag = true
           this.showAddUnitFlag = false
         }
-        if (this.content[0].nodeType === 3) {
+        if (this.content[0].nodeType === 2) {
           this.showAddNodeFlag = false
           this.showAddDepartmentFlag = true
           this.showAddUnitFlag = true
