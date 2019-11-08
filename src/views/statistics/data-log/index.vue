@@ -68,11 +68,11 @@
 <script type="text/ecmascript-6">
 import handleTable from '@src/mixins/handle-table'
 import { api, urlNames } from '@src/api'
-import { dateTransform } from '@src/filters/dateTransform.js'
+import { filters } from '@src/filters'
 import { mapState, mapMutations } from 'vuex'
 
 export default {
-  components: { },
+  components: { filters },
   mixins: [handleTable],
   data () {
     return {
@@ -117,9 +117,9 @@ export default {
     ...mapState(['application'])
   },
   created () {
-    this.date = dateTransform(new Date())
-    this.weekstart = dateTransform(new Date())
-    this.selectChange(['today'])
+    let datefilters = this.$options.filters['date'](new Date().getTime(), 'yyyy-MM-dd')
+    this.date = datefilters
+    this.weekstart = datefilters
     if (this.$route.query.type === 'back') {
       this.page = Object.assign(this.page, this.application.page)
       this.searchQuery = Object.assign(this.searchQuery, this.application.searchQuery)
@@ -144,10 +144,9 @@ export default {
       } else if (val && val[0] === 'yesterday') {
         todayDate = new Date(todayDate.setDate(todayDate.getDate() - 1))
       }
-      this.date = dateTransform(todayDate)
+      this.date = this.$options.filters['date'](todayDate.getTime(), 'yyyy-MM-dd')
     },
     dateChange (val) {
-      console.log(9999)
       console.log(val)
     },
     initQuery () {
@@ -178,7 +177,6 @@ export default {
       })
     },
     getGrid () {
-      this.loading = true
       let data = {
         page: this.page.current,
         pageSize: this.page.limit
@@ -195,11 +193,9 @@ export default {
         }
       }
       api[urlNames['getApplicationList']](data).then((res) => {
-        this.loading = false
-        this.list = res.result.items
-        this.page.total = res.result.total_items
+        this.list = res.data
+        this.page.total = res.total
       }, () => {
-        this.loading = false
         this.list = []
         this.page.total = 0
       })
