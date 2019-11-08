@@ -1,7 +1,7 @@
 <template>
 
   <el-container class="organization-content">
-    
+
     <el-row style="height: 100%;width: 100%">
       <el-col :span="6" style="height: 100%">
         <el-radio-group v-model="tabPosition" style="margin-bottom: 30px;">
@@ -31,19 +31,18 @@ import handleTable from '@src/mixins/handle-table'
 import organizationTree from '../address-book/components/Tree/index'
 import searchResult from 'address-book/components/Result/index'
 export default {
-  name:'AddressBook',
+  name: 'AddressBook',
   mixins: [ handleTable ],
   components: {
     // organizationTree, searchResult
-    
+
   },
   data () {
     return {
       defaultNodeId: null,
-        tabPosition: 'top'
-      
+      tabPosition: 'top'
+
     }
-    
   },
   computed: {
 

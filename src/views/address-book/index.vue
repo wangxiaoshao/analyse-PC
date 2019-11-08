@@ -1,7 +1,7 @@
 <template>
 
   <el-container class="organization-content">
-    
+
     <el-row style="height: 100%;width: 100%">
       <el-col :span="6" style="height: 100%">
         <el-radio-group v-model="tabPosition" style="margin-bottom: 30px;">
@@ -35,19 +35,18 @@ import handleTable from '@src/mixins/handle-table'
 import addressBookTree from './components/Tree/index'
 import searchChoose from './components/Choose/index'
 export default {
-  name:'AddressBook',
+  name: 'AddressBook',
   mixins: [ handleTable ],
   components: {
     // organizationTree, searchResult
-addressBookTree,searchChoose
+    addressBookTree, searchChoose
   },
   data () {
     return {
       defaultNodeId: null,
-        tabPosition: 'top'
-      
+      tabPosition: 'top'
+
     }
-    
   },
   computed: {
 
@@ -73,15 +72,15 @@ addressBookTree,searchChoose
 
     toUnit(){
       alert(1)
-this.$router.push({
-  name:'UnitAddressBook'
-})
+      this.$router.push({
+        name: 'UnitAddressBook'
+      })
     },
-    toOtherUnit(){
+    toOtherUnit () {
       alert(2)
-this.$router.push({
-  name:'UnitAddressBook'
-})
+      this.$router.push({
+        name: 'UnitAddressBook'
+      })
     }
   },
   created () {

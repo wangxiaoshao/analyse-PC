@@ -4,7 +4,7 @@
        <el-breadcrumb separator="/" style="background:#F5F6F8;padding:20px;">
   <el-breadcrumb-item :to="{ path: '/' }">本单位名称</el-breadcrumb-item>
   <el-breadcrumb-item><a href="/">部门</a></el-breadcrumb-item>
-  
+
 </el-breadcrumb>
     </div>
   <div>
@@ -40,35 +40,35 @@
     </el-table>
   </div>
 </div>
-   
+
   </template>
-  <script>
+<script>
 // import depart_icon from '../../../../common/images/examine/depart_icon.png';
-  
-    export default {
-      data() {
-        return {
-          tableData: [{
-            img: '2016-05-02',
-            name: '王小虎',
-            tel: '电话：13412341234'
-          }, {
-             img: '2016-05-02',
-            name: '王小虎',
-            tel: '电话：13412341234'
-          }, {
-             img: '2016-05-02',
-            name: '王小虎',
-            tel: '电话：13412341234'
-          }, {
-             img: '2016-05-02',
-            name: '王小虎',
-            tel: '电话：13412341234'
-          }]
-        }
-      }
+
+export default {
+  data () {
+    return {
+      tableData: [{
+        img: '2016-05-02',
+        name: '王小虎',
+        tel: '电话：13412341234'
+      }, {
+        img: '2016-05-02',
+        name: '王小虎',
+        tel: '电话：13412341234'
+      }, {
+        img: '2016-05-02',
+        name: '王小虎',
+        tel: '电话：13412341234'
+      }, {
+        img: '2016-05-02',
+        name: '王小虎',
+        tel: '电话：13412341234'
+      }]
     }
-  </script>
+  }
+}
+</script>
 <style lang="less">
   @import "index";
 // import depart_icon from '../../../../common/images/examine/depart_icon.png';

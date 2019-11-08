@@ -5,7 +5,7 @@
 // import { api, urlNames } from '@src/api'
 
 export default {
-    
+
 }
 </script>
 <style lang="less">

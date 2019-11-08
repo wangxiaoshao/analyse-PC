@@ -30,33 +30,33 @@
       </el-table-column>
     </el-table>
   </template>
-  <script>
+<script>
 // import depart_icon from '../../../../common/images/examine/depart_icon.png';
-  
-    export default {
-      data() {
-        return {
-          tableData: [{
-            img: '2016-05-02',
-            name: '王小虎',
-            tel: '电话：13412341234'
-          }, {
-             img: '2016-05-02',
-            name: '王小虎',
-            tel: '电话：13412341234'
-          }, {
-             img: '2016-05-02',
-            name: '王小虎',
-            tel: '电话：13412341234'
-          }, {
-             img: '2016-05-02',
-            name: '王小虎',
-            tel: '电话：13412341234'
-          }]
-        }
-      }
+
+export default {
+  data () {
+    return {
+      tableData: [{
+        img: '2016-05-02',
+        name: '王小虎',
+        tel: '电话：13412341234'
+      }, {
+        img: '2016-05-02',
+        name: '王小虎',
+        tel: '电话：13412341234'
+      }, {
+        img: '2016-05-02',
+        name: '王小虎',
+        tel: '电话：13412341234'
+      }, {
+        img: '2016-05-02',
+        name: '王小虎',
+        tel: '电话：13412341234'
+      }]
     }
-  </script>
+  }
+}
+</script>
 <style lang="less">
   @import "index";
 // import depart_icon from '../../../../common/images/examine/depart_icon.png';

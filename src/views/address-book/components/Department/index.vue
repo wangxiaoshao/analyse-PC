@@ -16,14 +16,14 @@
       <el-table-column
         prop="tel"
         label=""
-        
+
        >
       </el-table-column>
       <el-table-column
         label="下级"
         align="right"
         width=""
-        
+
         class-name="next-btn"
         >
         <template slot-scope="scope" >
@@ -44,7 +44,7 @@
     <member-table></member-table>
   </div>
 </div>
-   
+
 </template>
 <script>
 import memberTable from '../Member/index'

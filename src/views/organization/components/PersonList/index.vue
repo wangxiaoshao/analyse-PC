@@ -80,11 +80,11 @@
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      :current-page="page.current"
+      :current-page="contentPage.current"
       :page-sizes="[10, 30, 50, 100]"
       :page-size="page.limit"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="page.total">
+      :total="contentPage.total">
     </el-pagination>
   </div>
 </template>
@@ -95,6 +95,7 @@ import handleTable from '@src/mixins/handle-table'
 import { api, urlNames } from '@src/api'
 export default {
   mixins: [handleTable],
+  props: ['contentPage', 'id', 'sortFlag', 'type'],
   data () {
     return {
       loading: true,
@@ -112,27 +113,72 @@ export default {
       }
     }
   },
-  props: {
-    sortFlag: {
-      type: Boolean,
-      request: true
-    }
-  },
   methods: {
     getGrid () {
-      let data = {
-        page: this.page.current,
-        pageSize: this.page.limit
-      }
       this.loading = true
-      api[urlNames['getPersonList']](data).then((res) => {
-        this.loading = false
-        this.list = res.data
-      }, () => {
-        this.loading = false
-        this.list = []
-        this.page.total = 0
+      if (this.type === 2) {
+        let data = {
+          deptId: this.id,
+          page: this.contentPage.current,
+          pageSize: this.contentPage.limit
+        }
+        api[urlNames['findDepartmentMembers']](data).then((res) => {
+          this.loading = false
+          this.list = res.data
+        }, () => {
+          this.loading = false
+          this.list = []
+          this.contentPage.total = 0
+        })
+      }
+      if (this.type === 3) {
+        let data = {
+          orgId: this.id,
+          page: this.contentPage.current,
+          pageSize: this.contentPage.limit
+        }
+        api[urlNames['findOrganizationMembers']](data).then((res) => {
+          this.loading = false
+          this.list = res.data
+        }, () => {
+          this.loading = false
+          this.list = []
+          this.contentPage.total = 0
+        })
+      }
+    },
+    // 保存排序
+    sublimeSort () {
+      let sortList = []
+      this.list.forEach((item, index) => {
+        const sortObj = {
+          id: item.id,
+          sort: index
+        }
+        sortList.push(sortObj)
       })
+      let data = {
+        page: this.contentPage.current,
+        limit: this.contentPage.limit,
+        sortList
+      }
+      api[urlNames['setUserSort']](data).then((res) => {
+        this.$message.success(`保存成功`)
+        this.cancelSort()
+      }, () => {
+        this.$message.error(`保存失败，请重试`)
+      })
+    },
+    handleSizeChange (val) {
+      this.contentPage.current = 1
+      this.contentPage.limit = val
+      this.getGrid()
+      this.$emit('getPage', this.contentPage)
+    },
+    handleCurrentChange (val) {
+      this.contentPage.current = val
+      this.getGrid()
+      this.$emit('getPage', this.contentPage)
     },
     cancelSort () {
       this.$emit('cancel', false)
@@ -187,7 +233,6 @@ export default {
             handle: '.sortBtnDo',
             animation: 150,
             onUpdate: function (evt) {
-              console.log('onUpdate.foo:', [evt])
               const newIndex = evt.newIndex
               const oldIndex = evt.oldIndex
               const $li = tbody.children[newIndex]
@@ -200,7 +245,6 @@ export default {
               const item = items.splice(oldIndex, 1)
               items.splice(newIndex, 0, item[0])
               this.list = items // 排序后列表
-              console.log(this.list)
             }
           })
         } else {

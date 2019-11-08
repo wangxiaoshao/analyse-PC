@@ -58,7 +58,55 @@ export default {
       backId: ''
     }
   },
+  mounted () {
+    this.setBreadcrumbTitle()
+  },
+  created () {
+    const obj = {
+      enable: this.ruleForm.enable,
+      reason: this.ruleForm.reason
+    }
+    this.oldFrom = JSON.parse(JSON.stringify(obj))
+    this.getNodeDetail()
+  },
   methods: {
+    getNodeDetail () {
+      let data = {
+        id: this.$route.params.id || this.$route.params.parentId
+      }
+      this.loading = true
+      api[urlNames['findViewNodeById']](data).then((res) => {
+        this.loading = false
+        if (this.$route.name === 'NodeAdd') {
+          this.ruleForm.parentName = res.data.name
+          this.ruleForm.parentId = res.data.id
+        } else {
+          this.ruleForm.parentName = res.data.parentName
+          this.ruleForm.parentId = res.data.parentId
+          this.ruleForm.name = res.data.name
+          this.ruleForm.id = res.data.id
+        }
+        if (this.ruleForm.parentId === '-1') {
+          this.backId = this.ruleForm.id
+        } else {
+          this.backId = this.ruleForm.parentId
+        }
+        this.pushBreadcrumb({
+          name: this.breadcrumbTitle,
+          parent: {
+            name: 'OrganizationContent',
+            params: {
+              nodeId: this.backId
+            },
+            query: {
+              type: 'back'
+            }
+          }
+        })
+      }, (error) => {
+        this.$message.error(`没有内容`)
+      })
+    },
     setBreadcrumbTitle () { // 设置面包屑title
       if (this.$route.name === 'NodeEdit' || this.$route.name === 'NodeAdd') {
         this.isShowEditFlag = true
@@ -100,43 +148,6 @@ export default {
     resetForm (formName) {
       this.$refs[formName].resetFields()
     },
-    getNodeDetail () {
-      let data = {
-        id: this.$route.params.id || this.$route.params.parentId
-      }
-      this.loading = true
-      api[urlNames['findViewNodeById']](data).then((res) => {
-        this.loading = false
-        if (this.$route.name === 'NodeAdd') {
-          this.ruleForm.parentName = res.data.name
-          this.ruleForm.parentId = res.data.id
-        } else {
-          this.ruleForm.parentName = res.data.parentName
-          this.ruleForm.parentId = res.data.parentId
-          this.ruleForm.name = res.data.name
-          this.ruleForm.id = res.data.id
-        }
-        if (this.ruleForm.parentId === '-1') {
-          this.backId = this.ruleForm.id
-        } else {
-          this.backId = this.ruleForm.parentId
-        }
-        this.pushBreadcrumb({
-          name: this.breadcrumbTitle,
-          parent: {
-            name: 'OrganizationContent',
-            params: {
-              nodeId: this.backId
-            },
-            query: {
-              type: 'back'
-            }
-          }
-        })
-      }, (error) => {
-        this.$message.error(`没有内容`)
-      })
-    },
     /*
     * 返回上一页
     * */
@@ -148,17 +159,6 @@ export default {
       this.$router.push(currentPage.parent)
     }
   },
-  mounted () {
-    this.setBreadcrumbTitle()
-  },
-  created () {
-    const obj = {
-      enable: this.ruleForm.enable,
-      reason: this.ruleForm.reason
-    }
-    this.oldFrom = JSON.parse(JSON.stringify(obj))
-    this.getNodeDetail()
-  },
   computed: {
     newValue () {
       const obj = {
@@ -168,13 +168,11 @@ export default {
       return obj
     }
   },
+  beforeRouteUpdate (to, from, next) {
+    next()
+    this.setBreadcrumbTitle()
+  },
   watch: {
-    $route: {
-      handler (val) {
-        this.setBreadcrumbTitle()
-      },
-      deep: true
-    },
     newValue: {
       handler (val) {
         if (val.enable !== this.oldFrom.enable || val.reason !== this.oldFrom.reason) {

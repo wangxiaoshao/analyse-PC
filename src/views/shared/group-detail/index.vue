@@ -5,9 +5,8 @@
       </div>
       <el-table
         ref="singleTable"
-        :data="tableData"
+        :data="memberList"
         highlight-current-row
-        @current-change="handleCurrentChange"
         style="width: 100%">
         <el-table-column
           label="序号"
@@ -22,18 +21,8 @@
         </el-table-column>
         <el-table-column
           property="name"
-          label="单位"
+          label="成员ID"
           align="center">
-        </el-table-column>
-        <el-table-column
-          property="address"
-          align="center"
-          label="部门">
-        </el-table-column>
-        <el-table-column
-          property="name"
-          align="center"
-          label="电话">
         </el-table-column>
         <el-table-column
           label="操作"
@@ -53,62 +42,85 @@
         layout="total, sizes, prev, pager, next, jumper"
         :total="total">
       </el-pagination>
-      <candidate-dialog @closeselectMenmber="closeselectMenmber" :seleceDialog="seleceDialog"></candidate-dialog>
+      <candidate-dialog @dialogReturnMembersInfo="dialogReturnMembersInfo" @closeselectMenmber="closeselectMenmber" :seleceDialog="seleceDialog"></candidate-dialog>
     </div>
 </template>
 
 <script>
-import CandidateDialog from '@src/components/CandidateDialog/CandidateDialog.vue'
+import CandidateDialog from '@src/components/CandidateDialog/index.vue'
+import { api, urlNames } from '@src/api'
+import handleTable from '@src/mixins/handle-table'
+import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
 export default {
   name: 'GroupDetail',
+  mixins: [handleTable, handleBreadcrumb],
   components: {
     CandidateDialog
   },
   data () {
     return {
       currentPage: 1,
+      pageSize: 1,
       total: 0,
-      tableData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      }],
-      currentRow: null,
+      groupId: this.$route.params.id,
+      memberList: [],
       seleceDialog: {
-        selectMenmberTitle: '选人组件',
-        selectMenmberFlag: false
+        selectMenmberTitle: '分组成员添加', // 选人组件标题
+        selectMenmberFlag: false, // 显示弹窗，
+        isAllData: true, // 是否需完整数据-默认为不需要（false，只包含用户id）
+        notOnlyPerson: false, // 是否只选人，默认为false（只选人），true可以选择单位和部门
+        isSingleSelect: true // 是否为单选框  false为多选（默认），true为单选
       }
     }
   },
+  created () {
+    this.getGroupUsers(1, 10)
+  },
   methods: {
+    // 获取成员列表
+    getGroupUsers (page, limt) {
+      api[urlNames['getGroupUsers']]({
+        groupId: this.groupId,
+        page: page,
+        limit: limt
+      }).then((res) => {
+        if (res.status === 0) {
+          this.total = res.total
+          this.memberList = res.data
+        }
+      })
+    },
     // 关闭选人弹窗
     closeselectMenmber () {
       this.seleceDialog.selectMenmberFlag = false
     },
-    handleCurrentChange (val) {
-      this.currentRow = val
+    dialogReturnMembersInfo (data) {
+      console.log(JSON.parse(JSON.stringify(data)), '------------')
     },
     handleClick (row) {
       console.log(row)
     },
+    // 每一页请求条数
     handleSizeChange (val) {
-      console.log(`每页 ${val} 条`)
+      this.pageSize = val
+      this.getGroupUsers(this.currentPage, val)
     },
+    // 分页
     handleCurrentPageChange (val) {
-      console.log(`当前页: ${val}`)
+      this.currentPage = val
+      this.getGroupUsers(val, this.pageSize)
     }
+  },
+  mounted () {
+    this.pushBreadcrumb({
+      name: '分组成员列表',
+      parent: {
+        name: 'GroupManagement',
+        query: {
+          type: 'back'
+        }
+      }
+    })
   }
 }
 </script>

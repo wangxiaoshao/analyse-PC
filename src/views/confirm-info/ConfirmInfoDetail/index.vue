@@ -206,7 +206,7 @@ export default {
     },
     handleClose () {
       this.dialogVisible = false
-    },
+    }
   }
 }
 </script>

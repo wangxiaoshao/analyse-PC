@@ -116,7 +116,6 @@ export default {
     ...application,
     ...examine, // 申请审核
     ...statistics, // 数据统计
-    // ...parameter,
     ...organization,
     ...shared, // 共享视图
     ...system, // 系统管理

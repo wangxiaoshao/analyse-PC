@@ -11,7 +11,6 @@ export default {
     type: 'get',
     url: '/api/jg_manage/viewNode/findViewNodeById',
     keepOriginResponse: true, // 是否保留后端返回数据格式
-    showLoading: false, // 该请求发送时，是否显示全局loading
     serve: 'organizationManagePC',
     mock: '/findViewNodeById.json' // development模式下，本地mock数据
   },
@@ -44,7 +43,6 @@ export default {
     type: 'get',
     url: '/api/jg_manage/viewNode/findViewNodeList',
     keepOriginResponse: true, // 是否保留后端返回数据格式
-    showLoading: false, // 该请求发送时，是否显示全局loading
     serve: 'organizationManagePC',
     mock: '/findViewNodeList.json' // development模式下，本地mock数据
   },
@@ -69,7 +67,6 @@ export default {
     type: 'get',
     url: '/api/jg_manage/department/findDepartmentById',
     keepOriginResponse: true, // 是否保留后端返回数据格式
-    showLoading: false, // 该请求发送时，是否显示全局loading
     serve: 'workspaceManagement',
     mock: '/findDepartmentById.json' // development模式下，本地mock数据
   },
@@ -80,7 +77,6 @@ export default {
     type: 'post',
     url: '/api/jg_manage/department/createDepartment',
     keepOriginResponse: true, // 是否保留后端返回数据格式
-    showLoading: false, // 该请求发送时，是否显示全局loading
     serve: 'organizationManagePC',
     mock: '/createDepartment.json' // development模式下，本地mock数据
   },
@@ -101,7 +97,6 @@ export default {
     type: 'get',
     url: '/api/jg_manage/user/findDepartmentMembers',
     keepOriginResponse: true, // 是否保留后端返回数据格式
-    showLoading: false, // 该请求发送时，是否显示全局loading
     serve: 'organizationManagePC',
     mock: '/findDepartmentMembers.json' // development模式下，本地mock数据
   },
@@ -110,15 +105,24 @@ export default {
     type: 'get',
     url: '/api/jg_manage/user/findOrganizationMembers',
     keepOriginResponse: true, // 是否保留后端返回数据格式
-    showLoading: false, // 该请求发送时，是否显示全局loading
     serve: 'organizationManagePC',
     mock: '/findOrganizationMembers.json' // development模式下，本地mock数据
+  },
+  [urlNames.setUserSort]: {
+    type: 'post',
+    url: '/api/jg_manage/user/setUserSort',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    showLoading: false, // 该请求发送时，是否显示全局loading
+    serve: 'organizationManagePC',
+    mock: '/setUserSort.json', // development模式下，本地mock数据
+    headers: {
+      'Content-Type': 'application/json'
+    }
   },
   [urlNames.findUserById]: {
     type: 'get',
     url: '/api/jg_manage/user/findUserById',
     keepOriginResponse: true, // 是否保留后端返回数据格式
-    showLoading: false, // 该请求发送时，是否显示全局loading
     serve: 'organizationManagePC',
     mock: '/findUserById.json' // development模式下，本地mock数据
   },
@@ -126,7 +130,6 @@ export default {
     type: 'get',
     url: '/api/jg_manage/user/findLeaderList',
     keepOriginResponse: true, // 是否保留后端返回数据格式
-    showLoading: false, // 该请求发送时，是否显示全局loading
     serve: 'organizationManagePC',
     mock: '/findLeaderList.json' // development模式下，本地mock数据
   },
@@ -134,7 +137,6 @@ export default {
     type: 'get',
     url: '/api/jg_manage/user/roleList',
     keepOriginResponse: true, // 是否保留后端返回数据格式
-    showLoading: false, // 该请求发送时，是否显示全局loading
     serve: 'organizationManagePC',
     mock: '/roleList.json' // development模式下，本地mock数据
   },
@@ -142,7 +144,6 @@ export default {
     type: 'get',
     url: '/api/jg_manage/user/lookPerson',
     keepOriginResponse: true, // 是否保留后端返回数据格式
-    showLoading: false, // 该请求发送时，是否显示全局loading
     serve: 'organizationManagePC',
     mock: '/findPerson.json' // development模式下，本地mock数据
   },
@@ -154,6 +155,18 @@ export default {
     showLoading: false, // 该请求发送时，是否显示全局loading
     serve: 'organizationManagePC',
     mock: '/createOrganization.json', // development模式下，本地mock数据
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  },
+  /* 人员调出 */
+  [urlNames.calloutUser]: {
+    type: 'post',
+    url: '/api/jg_manage/user/calloutUser',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    showLoading: false, // 该请求发送时，是否显示全局loading
+    serve: 'organizationManagePC',
+    mock: '/calloutUser.json', // development模式下，本地mock数据
     headers: {
       'Content-Type': 'application/json'
     }

@@ -239,7 +239,7 @@ export default {
           type: row.type
         }
       })
-    },
+    }
   }
 }
 </script>

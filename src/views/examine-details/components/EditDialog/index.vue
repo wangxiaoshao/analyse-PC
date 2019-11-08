@@ -69,7 +69,7 @@ export default {
             message: this.form.desc,
             auditResult: this.auditResult,
             id: this.$route.query.id
-          };
+          }
           this.$emit('close')
           api[urlNames['saveAudit']](obj).then((res) => {
             if (res && res.message === 'success') {
