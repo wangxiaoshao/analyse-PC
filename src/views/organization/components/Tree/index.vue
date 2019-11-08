@@ -38,7 +38,7 @@ export default {
     return {
       showCheckboxFlag: false,
       treeList: [],
-      treeSonList: [],
+      teeeSonList: [],
       defaultProps: {
         children: 'children',
         label: 'name'

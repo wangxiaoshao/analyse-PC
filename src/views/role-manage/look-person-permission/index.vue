@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import addPerson from '../../../components/CandidateDialog/CandidateDialog'
+import addPerson from '../../../components/CandidateDialog/index'
 import permissionSet from '../components/PermissionSet/index'
 import handleTable from '@src/mixins/handle-table'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'

@@ -3,19 +3,19 @@
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="视图基本信息" name="first">
         <div class="from">
-          <el-form ref="form" :model="form" label-width="100px">
+          <el-form ref="form" :model="ViewFrom" label-width="100px">
             <el-row>
               <el-col :span="12">
                 <div class="grid-content bg-purple">
                   <el-form-item label="视图名称">
-                    <el-input v-model="form.name"></el-input>
+                    <el-input v-model="ViewFrom.name"></el-input>
                   </el-form-item>
                 </div>
               </el-col>
               <el-col :span="12">
                 <div class="grid-content bg-purple-light">
-                  <el-form-item label="使用对象">
-                    <el-select v-model="form.region" placeholder="请选择活动区域">
+                  <el-form-item label="视图管理员">
+                    <el-select v-model="ViewFrom.roleBindUserId" placeholder="请选择活动区域">
                       <el-option label="区域一" value="shanghai"></el-option>
                       <el-option label="区域二" value="beijing"></el-option>
                     </el-select>
@@ -26,24 +26,21 @@
             <el-row>
               <el-col :span="12">
                 <div class="grid-content bg-purple">
-                  <el-form-item label="视图管理员">
-                    <el-select v-model="form.region" placeholder="请选择活动区域">
-                      <el-option label="区域一" value="shanghai"></el-option>
-                      <el-option label="区域二" value="beijing"></el-option>
-                    </el-select>
+                  <el-form-item label="备注">
+                    <el-input v-model="ViewFrom.remark"></el-input>
                   </el-form-item>
                 </div>
               </el-col>
               <el-col :span="12">
                 <div class="grid-content bg-purple-light">
                   <el-form-item label="启用状态">
-                    <el-switch v-model="form.delivery"></el-switch>
+                    <el-switch v-model="ViewFrom.removed"></el-switch>
                   </el-form-item>
                 </div>
               </el-col>
             </el-row>
             <el-form-item>
-              <el-button type="primary" @click="onSubmit">保存</el-button>
+              <el-button type="primary" @click="createView">保存</el-button>
               <el-button>取消</el-button>
             </el-form-item>
           </el-form>
@@ -105,7 +102,7 @@
 <script>
 import handleTable from '@src/mixins/handle-table'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
-
+import { api, urlNames } from '@src/api'
 export default {
   name: 'CreateView',
   mixins: [handleTable, handleBreadcrumb],
@@ -160,6 +157,12 @@ export default {
       activeName: 'first',
       data: JSON.parse(JSON.stringify(data)),
       data2: JSON.parse(JSON.stringify(data)),
+      ViewFrom: {
+        name: '',
+        remark: '',
+        removed: '',
+        roleBindUserId: ''
+      },
       form: {
         name: '',
         region: '',
@@ -184,6 +187,17 @@ export default {
     })
   },
   methods: {
+    createView () {
+      console.log(JSON.parse(JSON.stringify(this.ViewFrom)), '--------------')
+      api[urlNames['createView']]({
+        name: this.ViewFrom.name,
+        remark: this.ViewFrom.remark,
+        removed: 0,
+        roleBindUserId: 1
+      }).then((res) => {
+        console.log(res, '--------------')
+      })
+    },
     allowDrop (draggingNode, dropNode, type) {
     },
     handleDragOver (draggingNode, dropNode, ev) {
