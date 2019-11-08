@@ -168,7 +168,7 @@ export default {
       }, () => {
         this.$message.error(`保存失败，请重试`)
       })
-    }
+    },
     handleSizeChange (val) {
       this.contentPage.current = 1
       this.contentPage.limit = val
