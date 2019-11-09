@@ -1,5 +1,11 @@
 <template>
   <div class="content-list">
+    <!--选择单位/部门-->
+    <candidate-dialog
+      :seleceDialog="selectDialog"
+      @dialogReturnMembersInfo="dialogReturnMembersInfo"
+      @closeselectMenmber="closeselectMenmber">
+    </candidate-dialog>
     <!--解除兼职-->
     <el-dialog
       title="填写解除挂职说明"
@@ -25,21 +31,15 @@
     <el-dialog
       title="填写调出说明"
       :visible.sync="calloutFlag"
-      width="50%"
-      :before-close="handleClose">
+      width="50%">
       <el-form :inline="true" :model="formCallout" :rules="rulesCallou" ref="formCallout" class="demo-form-inline">
         <el-form-item label="调出单位">
-          <el-select v-model="formCallout.orgId" placeholder="请选择调出单位">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
-          </el-select>
+          <span></span>
+          <el-button @click="addMainLeader(true)">选择调出单位</el-button>
         </el-form-item>
-        <el-form-item label="调出部门">
-          <el-select v-model="formCallout.deptId" placeholder="请选择调出部门">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
-          </el-select>
-        </el-form-item>
+      <!--  <el-form-item label="调出部门">
+          <el-button @click="addMainLeader(true,true)">选择调出部门</el-button>
+        </el-form-item>-->
         <el-form-item label="调出原因" prop="formInline.reason">
           <el-input type="textarea" v-model="formCallout.reason"></el-input>
         </el-form-item>
@@ -123,12 +123,14 @@
 </template>
 
 <script>
+import CandidateDialog from '@src/components/CandidateDialog/index'
 import Sortable from 'sortablejs'
 import handleTable from '@src/mixins/handle-table'
 import { api, urlNames } from '@src/api'
 export default {
   mixins: [handleTable],
   props: ['contentPage', 'id', 'sortFlag', 'type'],
+  components: { CandidateDialog },
   data () {
     return {
       loading: true,
@@ -166,6 +168,13 @@ export default {
         reason: [
           { required: true, message: '请填写申请原因', trigger: 'blur' }
         ]
+      },
+      selectDialog: {
+        selectMenmberTitle: '选人组件', // 选人组件标题
+        selectMenmberFlag: false, // 显示弹窗，
+        isAllData: true, // 是否需完整数据-默认为不需要（false，只包含用户id）
+        notOnlyPerson: true, // 是否只选人，默认为false（只选人），true可以选择单位和部门
+        isSingleSelect: false // 是否为单选框  false为多选（默认），true为单选
       }
     }
   },
@@ -180,10 +189,10 @@ export default {
   methods: {
     getGrid () {
       this.loading = true
-      let bindId = this.$route.params.bindId
-      if (this.type === 3) {
+      // let bindId = this.$route.params.bindId
+      if (this.type === 2) {
         let data = {
-          deptId: bindId,
+          deptId: this.id,
           page: this.contentPage.current,
           pageSize: this.contentPage.limit
         }
@@ -196,9 +205,9 @@ export default {
           this.contentPage.total = 0
         })
       }
-      if (this.type === 2) {
+      if (this.type === 3) {
         let data = {
-          orgId: bindId,
+          orgId: this.id,
           page: this.contentPage.current,
           pageSize: this.contentPage.limit
         }
@@ -267,6 +276,7 @@ export default {
     // 提交调出人员
     submitCalloutForm (rulesCallou) {
       this.$refs[rulesCallou].validate((valid) => {
+        alert(44444)
         if (valid) {
           api[urlNames['calloutUser']](this.formCallout).then((res) => {
             this.$message.success(`调出成功`)
@@ -291,6 +301,53 @@ export default {
           })
         }
       })
+    },
+    // 选人弹窗组件返回的人员信息
+    dialogReturnMembersInfo (data, id) {
+      // console.log(JSON.parse(JSON.stringify(id)))
+      console.log(564854, id)
+
+
+      /* if (!JSON.parse(JSON.stringify(data)).length) {
+        let obj = {
+          uid: JSON.parse(JSON.stringify(data)).uid,
+          leaderType: JSON.parse(JSON.stringify(data)).duty
+        }
+        this.personList.push(obj)
+      } else {
+        JSON.parse(JSON.stringify(data)).forEach((item) => {
+          let obj = {
+            uid: item.uid,
+            leaderType: item.duty
+          }
+          this.personList.push(obj)
+        })
+      } */
+      // 保存
+      /* if (JSON.parse(JSON.stringify(data)) !== []) {
+        api[urlNames['createLeader']]({
+          nodeId: this.contentId,
+          nodeType: this.nodeInfo.nodeType,
+          calloutUser: this.personList
+        }).then((res) => {
+          this.$message.success(`添加成功`)
+          this.getGrid()
+          console.log(res)
+        }, (error) => {
+          this.$message.error(`保存失败，请重试`)
+        })
+      } */
+    },
+    // 关闭选人弹窗
+    closeselectMenmber () {
+      this.selectDialog.selectMenmberFlag = false
+    },
+    // 打开选人组件
+    addMainLeader (single) {
+      this.selectDialog.selectMenmberFlag = true
+      this.selectDialog.isSingleSelect = single
+      this.selectDialog.notOnlyPerson = true
+      this.selectDialog.isAllData = true
     }
   },
   watch: {

@@ -8,7 +8,6 @@ export default {
   getApplicationList: 'getApplicationList',
   toggleApplication: 'toggleApplication',
   deleteApplication: 'deleteApplication',
-  getAreaList: 'getAreaList',
   getApplicationDetail: 'getApplicationDetail',
   editApplication: 'editApplication',
   getApplicationConfig: 'getApplicationConfig',
@@ -107,5 +106,6 @@ export default {
   // 系统设置
   dictionaryList: 'dictionaryList',
   // 标签查询
-  findLabelByType: 'findLabelByType'
+  findLabelByType: 'findLabelByType',
+  getAreaList: 'findAreaList'
 }

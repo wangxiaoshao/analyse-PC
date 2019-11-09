@@ -151,6 +151,7 @@ export default {
     ...mapState(['organization'])
   },
   beforeRouteUpdate (to, from, next) {
+    this.activeName = '下级设置'
     this.contentId = to.params.nodeId
     next()
     this.init(to.query.type)

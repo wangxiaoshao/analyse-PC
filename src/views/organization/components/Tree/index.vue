@@ -56,13 +56,8 @@ export default {
       if (node.level === 0) {
         return resolve(this.treeList)
       }
-      if (node.data.bindId) {
-        this.findTreeSonList(node.data.bindId)
-      } else {
-        this.findTreeSonList(node.data.id)
-      }
+      this.findTreeSonList(node.data.id)
       this.id = node.data.id
-
       setTimeout(() => {
         resolve(this.treeSonList)
       }, 500)
@@ -75,7 +70,9 @@ export default {
       }).then((res) => {
         this.total = parseInt(res.total)
         this.treeList = res.data
-        this.handleNodeClick(res.data[0])
+        if (this.$route.name === 'Organization') {
+          this.handleNodeClick(res.data[0])
+        }
         // if (this.$route.name === 'Organization') {
         //   this.handleNodeClick(res.data[0])
         // }
@@ -92,11 +89,11 @@ export default {
     },
     handleNodeClick (node) {
       this.$emit('handle-node-click', node)
-     /* if (node) {
+      /* if (node) {
         this.$emit('handle-node-click', node.bindId)
       } else {
         this.$emit('handle-node-click', node.id)
-      }*/
+      } */
     }
   }
 }

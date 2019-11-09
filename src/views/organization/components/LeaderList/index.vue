@@ -105,10 +105,10 @@ export default {
       list: [],
       personList: [],
       selectDialog: {
-        selectMenmberTitle: '选人组件', // 选人组件标题
+        selectMenmberTitle: '选择单位', // 选人组件标题
         selectMenmberFlag: false, // 显示弹窗，
         isAllData: true, // 是否需完整数据-默认为不需要（false，只包含用户id）
-        notOnlyPerson: false, // 是否只选人，默认为false（只选人），true可以选择单位和部门
+        notOnlyPerson: true, // 是否只选人，默认为false（只选人），true可以选择单位和部门
         isSingleSelect: false // 是否为单选框  false为多选（默认），true为单选
       }
     }
@@ -120,7 +120,7 @@ export default {
     getGrid () {
       let data = {
         nodeType: this.nodeInfo.nodeType,
-        nodeId: this.contentId
+        nodeId: this.$route.params.bindId
       }
       this.loading = true
       api[urlNames['findLeaderList']](data).then((res) => {
@@ -173,7 +173,7 @@ export default {
     addMainLeader (single, all) {
       this.selectDialog.selectMenmberFlag = true
       this.selectDialog.isSingleSelect = single
-      this.selectDialog.notOnlyPerson = false
+      this.selectDialog.notOnlyPerson = true
       this.selectDialog.isAllData = all
     }
   },
