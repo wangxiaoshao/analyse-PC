@@ -40,20 +40,19 @@ import { api, urlNames } from '@src/api'
 
 export default {
   name: 'CreateGroupDialog',
-  props: ['creategroupdialogVisible'],
+  props: ['creategroupdialogVisible', 'groupFrom'],
   data () {
     return {
-      groupFrom: {
-        ownerType: 1, // 1用户、2部门、3单位
-        name: '',
-        description: '',
-        removed: true
-      },
       rules: {
         name: [
           { required: true, message: '请输入分组名称', trigger: 'blur' }
         ]
       }
+    }
+  },
+  created () {
+    if (this.groupId !== '') {
+      this.findGroupDetail(this.groupId)
     }
   },
   methods: {
@@ -74,6 +73,21 @@ export default {
           this.colseDialog()
           this.$message.success('创建分组成功')
           this.groupFrom.name = this.groupFrom.description = ''
+        }
+      })
+    },
+    // 获取分组详情
+    findGroupDetail (id) {
+      console.log('111111111111111111111111')
+      api[urlNames['findGroupById']]({
+        id: id
+      }).then((res) => {
+        if (res.status === 0) {
+          this.groupDetail.ownerType = 2
+          this.groupDetail.name = '点击'
+          this.groupDetail.description = '加载'
+          this.groupDetail.removed = false
+          this.groupDetail = res.data
         }
       })
     },

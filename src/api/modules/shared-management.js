@@ -155,7 +155,19 @@ export default {
     keepOriginResponse: false
   },
   /**
-   创建分组
+   分组详情
+   */
+  [urlNames.findGroupById]: {
+    type: 'post',
+    url: '/api/group/findGroupById',
+    serve: 'organizationManagePC',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    keepOriginResponse: false
+  },
+  /**
+   获取分组成员
    */
   [urlNames.getGroupUsers]: {
     type: 'get',
@@ -164,11 +176,24 @@ export default {
     keepOriginResponse: false
   },
   /**
-   创建分组
+   添加分组成员
    */
   [urlNames.addGroupUsers]: {
     type: 'post',
     url: '/api/group/member/setGroupUsers',
+    serve: 'organizationManagePC',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    showLoading: true,
+    keepOriginResponse: false
+  },
+  /**
+   删除分组成员
+   */
+  [urlNames.deleteGroupMembers]: {
+    type: 'post',
+    url: '/api/group/member/removeMembers',
     serve: 'organizationManagePC',
     headers: {
       'Content-Type': 'application/json'

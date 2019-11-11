@@ -1,49 +1,51 @@
 <template>
-    <div class="group-detail">
-      <div class="add-member">
-        <el-button type="primary" @click="seleceDialog.selectMenmberFlag = true">添加成员</el-button>
-      </div>
-      <el-table
-        ref="singleTable"
-        :data="memberList"
-        highlight-current-row
-        style="width: 100%">
-        <el-table-column
-          label="序号"
-          type="index"
-          align="center"
-          width="50">
-        </el-table-column>
-        <el-table-column
-          property="name"
-          label="名称"
-          align="center">
-        </el-table-column>
-        <el-table-column
-          property="name"
-          label="成员ID"
-          align="center">
-        </el-table-column>
-        <el-table-column
-          label="操作"
-          align="center"
-          width="140">
-          <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentPageChange"
-        :current-page="currentPage"
-        :page-sizes="[10, 30, 50, 100]"
-        :page-size="10"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total">
-      </el-pagination>
-      <candidate-dialog @dialogReturnMembersInfo="dialogReturnMembersInfo" @closeselectMenmber="closeselectMenmber" :seleceDialog="seleceDialog"></candidate-dialog>
+  <div class="group-detail">
+    <div class="add-member">
+      <el-button type="primary" @click="seleceDialog.selectMenmberFlag = true">添加成员</el-button>
     </div>
+    <el-table
+      ref="singleTable"
+      :data="memberList"
+      border
+      highlight-current-row
+      style="width: 100%">
+      <el-table-column
+        label="序号"
+        type="index"
+        align="center"
+        width="50">
+      </el-table-column>
+      <el-table-column
+        property="name"
+        label="名称"
+        align="center">
+      </el-table-column>
+      <el-table-column
+        property="memberId"
+        label="成员ID"
+        align="center">
+      </el-table-column>
+      <el-table-column
+        label="操作"
+        align="center"
+        width="140">
+        <template slot-scope="scope">
+          <el-button @click="deleteGroupMembers(scope.row)" type="text" size="small">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentPageChange"
+      :current-page="currentPage"
+      :page-sizes="[10, 30, 50, 100]"
+      :page-size="10"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total">
+    </el-pagination>
+    <candidate-dialog @dialogReturnMembersInfo="dialogReturnMembersInfo" @closeselectMenmber="closeselectMenmber"
+                      :seleceDialog="seleceDialog"></candidate-dialog>
+  </div>
 </template>
 
 <script>
@@ -51,6 +53,7 @@ import CandidateDialog from '@src/components/CandidateDialog/index.vue'
 import { api, urlNames } from '@src/api'
 import handleTable from '@src/mixins/handle-table'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
+
 export default {
   name: 'GroupDetail',
   mixins: [handleTable, handleBreadcrumb],
@@ -91,6 +94,29 @@ export default {
         }
       })
     },
+    // 删除成员
+    deleteGroupMembers (row) {
+      this.$confirm('此操作将永久删除成员, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        api[urlNames['deleteGroupMembers']]({
+          groupId: this.groupId,
+          memberId: row.memberId
+        }).then((res) => {
+          if (res.status === 0) {
+            this.$message.success('删除成功')
+            this.getGroupUsers(this.currentPage, this.pageSize)
+          }
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
     // 关闭选人弹窗
     closeselectMenmber () {
       this.seleceDialog.selectMenmberFlag = false
@@ -120,9 +146,6 @@ export default {
         console.log('-------------')
       })
     },
-    handleClick (row) {
-      console.log(row)
-    },
     // 每一页请求条数
     handleSizeChange (val) {
       this.pageSize = val
@@ -149,5 +172,5 @@ export default {
 </script>
 
 <style scoped lang="less">
-@import "./index";
+  @import "./index";
 </style>
