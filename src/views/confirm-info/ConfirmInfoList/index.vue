@@ -2,7 +2,7 @@
   <div class="site-module mod-dictionary">
     <!--操作row-->
     <el-row class="operator-row">
-      <el-button size="small" type="primary" @click="dialogVisible = true">确认机构人员信息</el-button>
+      <el-button size="small" type="primary" @click="getConfirmMemberList">确认机构人员信息</el-button>
     </el-row>
     <el-row class="operator-row">
       <el-col :span="18">
@@ -30,6 +30,8 @@
     <!--表格-->
     <site-table :tableConfig="tableConfig"
                 :tableHeight="tableHeight"
+                :tableIndex="tableIndex"
+                :pageConfig="pageConfig"
                 :operateWidth="operateWidth"
                 :operate="operate"
                 :tableData="tableData">
@@ -56,44 +58,13 @@
       width="50%"
       center
       :before-close="handleClose">
-      <el-table :data="gridData"  height="250">
-        <el-table-column
-          width="120"
-          property="name"
-          align="center"
-          label="单位主要领导">
-        </el-table-column>
-        <el-table-column
-          width="120"
-          property="counts"
-          align="center"
-          label="单位主要人数">
-        </el-table-column>
-        <el-table-column
-          width="120"
-          property="counts"
-          align="center"
-          label="单位在职人数">
-        </el-table-column>
-        <el-table-column
-          width="120"
-          property="counts"
-          align="center"
-          label="单位兼职人数">
-        </el-table-column>
-        <el-table-column
-          width="120"
-          property="counts"
-          align="center"
-          label="单位挂职人数">
-        </el-table-column>
-        <el-table-column
-          width="120"
-          property="counts"
-          align="center"
-          label="单位调出人数">
-        </el-table-column>
-      </el-table>
+      <!--表格-->
+      <site-table :tableConfig="dialogTableConfig"
+                  :tableHeight="tableHeight"
+                  :operateWidth="operateWidth"
+                  :operate="operate"
+                  :tableData="tableData">
+      </site-table>
     </el-dialog>
   </div>
 </template>
@@ -112,7 +83,7 @@ export default {
   mixins: [handleTable],
   data () {
     return {
-      ...tableConfig,
+      tableConfig,
       gridData: [{
         counts: '1202',
         name: '王小虎'
@@ -161,11 +132,34 @@ export default {
         type: '',
         value: ''
       },
+      dialogTableConfig: {
+        text: {
+          key: 0,
+          field: 'text',
+          tooltip: false,
+          label: '名称',
+          sortable: false,
+          showOverflowTooltip: false,
+          minWidth: 50
+        },
+        total: {
+          key: 1,
+          field: 'total',
+          tooltip: false,
+          label: '值',
+          sortable: false,
+          showOverflowTooltip: false,
+          minWidth: 100
+        },
+      },
       tableData: [],
       tableHeight: null,
+      tableIndex: true,
+      pageConfig: {},
+      mergeConfig: null,
       operateWidth: 100,
       tableCheckbox: true,
-      operate: true
+      operate: false
     }
   },
   computed: {
@@ -193,6 +187,15 @@ export default {
       'SET_EXAMINE_DETAIL',
       'SET_EXAMINE_SEARCH_QUERY',
       'SET_EXAMINE_BACKPATH']),
+    getConfirmMemberList () {
+      api[urlNames['getConfirmMemberList']]().then((res) => {
+        this.tableData = res.data
+        this.dialogVisible = true
+      }, () => {
+        this.tableData = []
+        this.page.total = 0
+      })
+    },
     scrollStyle () {
       return {
         height: this.$store.state.app.windowHeight - 30 + 'px'
@@ -226,6 +229,7 @@ export default {
         page: this.page.current,
         limit: this.page.limit
       }
+      this.pageConfig = data
       let keys = Object.keys(this.searchQuery)
       let len = keys.length
       for (let i = 0; i < len; i++) {
