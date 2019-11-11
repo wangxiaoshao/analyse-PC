@@ -3,11 +3,11 @@
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="视图基本信息" name="first">
         <div class="from">
-          <el-form ref="form" :model="ViewFrom" label-width="100px">
+          <el-form ref="form" :rules="rules" :model="ViewFrom" label-width="100px">
             <el-row>
               <el-col :span="12">
                 <div class="grid-content bg-purple">
-                  <el-form-item label="视图名称">
+                  <el-form-item label="视图名称" prop="name">
                     <el-input v-model="ViewFrom.name"></el-input>
                   </el-form-item>
                 </div>
@@ -15,9 +15,13 @@
               <el-col :span="12">
                 <div class="grid-content bg-purple-light">
                   <el-form-item label="视图管理员">
-                    <el-select v-model="ViewFrom.roleBindUserId" placeholder="请选择活动区域">
-                      <el-option label="区域一" value="shanghai"></el-option>
-                      <el-option label="区域二" value="beijing"></el-option>
+                    <el-select v-model="ViewFrom.roleBindUserIds" multiple placeholder="请选择">
+                      <el-option
+                        v-for="item in adminList"
+                        :key="item.uid"
+                        :label="item.name"
+                        :value="item.uid">
+                      </el-option>
                     </el-select>
                   </el-form-item>
                 </div>
@@ -55,10 +59,13 @@
                   <el-form-item label="选择组织机构">
                     <div class="select-org">
                       <el-tree
-                        :data="data"
+                        :data="nodeTree"
                         show-checkbox
                         node-key="id"
                         draggable
+                        lazy
+                        :props="defaultProps"
+                        :load="loadNode"
                         @check-change="currentchange"
                         :check-strictly="true"
                         :allow-drop="allowDrop"
@@ -75,10 +82,12 @@
                   <el-form-item label="视图组织机构">
                     <div class="select-org">
                       <el-tree
-                        :data="data2"
+                        :data="viewNodeTree"
                         show-checkbox
                         node-key="id"
                         draggable
+                        lazy
+                        :props="defaultProps"
                         :check-strictly="true"
                         @node-drag-enter="handleDragEnter"
                         :expand-on-click-node="false">
@@ -107,71 +116,50 @@ export default {
   name: 'CreateView',
   mixins: [handleTable, handleBreadcrumb],
   data () {
-    const data = [{
-      id: 1,
-      label: '一级 1',
-      children: [{
-        id: 4,
-        label: '二级 1-1',
-        children: [{
-          id: 9,
-          label: '三级 1-1-1'
-        }, {
-          id: 10,
-          label: '三级 1-1-2'
-        }]
-      }]
-    }, {
-      id: 2,
-      label: '一级 2',
-      children: [{
-        id: 5,
-        label: '二级 2-1'
-      }, {
-        id: 6,
-        label: '二级 2-2'
-      }]
-    }, {
-      id: 3,
-      label: '一级 3',
-      children: [{
-        id: 7,
-        label: '二级 3-1'
-      }, {
-        id: 8,
-        label: '二级 3-2'
-      }]
-    },
-    {
-      id: 4,
-      label: '一级 3',
-      children: [{
-        id: 9,
-        label: '二级 3-1'
-      }, {
-        id: 10,
-        label: '二级 3-2'
-      }]
-    }]
     return {
       activeName: 'first',
-      data: JSON.parse(JSON.stringify(data)),
-      data2: JSON.parse(JSON.stringify(data)),
+      adminList: [{
+        uid: '156156516',
+        type: '选项1',
+        name: '黄金糕'
+      }, {
+        uid: '1561256516',
+        type: '选项1',
+        name: '黄金糕2'
+      },
+      {
+        uid: '1561536516',
+        type: '选项1',
+        name: '黄金糕1'
+      }],
       ViewFrom: {
         name: '',
         remark: '',
-        removed: '',
-        roleBindUserId: ''
+        removed: true,
+        roleBindUserIds: []
       },
-      form: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
+      returnViewId: null,
+      form: {},
+      rules: {
+        name: [
+          { required: true, message: '请输入视图名称', trigger: 'blur' }
+        ]
+      },
+      nodeTree: [], // 树节点
+      nodeSonTree: [], // 子节点
+      defaultProps: {
+        children: 'children',
+        label: 'name',
+        id: ''
+      }, // 树形渲染规则
+      nodeDraftTree: [], // 机构草噶
+      tempNode: [], // 拖拽节点中间变量
+      viewNodeTree: [], // 右边草稿树节点
+      for: {
+        id: '',
+        parentId: '',
+        viewId: '',
+        name: ''
       }
     }
   },
@@ -186,27 +174,106 @@ export default {
       }
     })
   },
+  created () {
+    this.findViewAdmin()
+    this.findNodeTree('-1')
+    if (this.$route.params.id !== undefined) {
+      this.findNodeDraftList(this.$route.params.id)
+    }
+  },
   methods: {
+    // 创建视图基本信息
     createView () {
-      console.log(JSON.parse(JSON.stringify(this.ViewFrom)), '--------------')
+      if (this.ViewFrom.name.trim().length === 0) {
+        this.$message.warning('请填写视图名称')
+        return false
+      }
+      if (this.ViewFrom.roleBindUserIds.length === 0) {
+        this.$message.warning('请选择视图管理员')
+        return false
+      }
       api[urlNames['createView']]({
         name: this.ViewFrom.name,
         remark: this.ViewFrom.remark,
-        removed: 0,
-        roleBindUserId: 1
+        removed: this.ViewFrom.removed,
+        roleBindUserId: this.ViewFrom.roleBindUserIds
       }).then((res) => {
-        console.log(res, '--------------')
+        if (res.status === 0) {
+          this.returnViewId = res.data
+          this.activeName = 'second'
+          this.$message.success('基本信息保存成功')
+          console.log(res)
+        }
       })
     },
+    // 获取管理员列表
+    findViewAdmin () {
+      api[urlNames['findViewAdmin']]({}).then((res) => {
+        if (res.status === 0) {
+          // this.adminList = res.data
+        }
+      })
+    },
+    // 获取机构树--初始化
+    findNodeTree (parentId) {
+      api[urlNames['getTree']]({
+        parentId: parentId,
+        viewId: -1
+      }).then((res) => {
+        this.nodeTree = res.data
+      })
+    },
+    // 获取视图草稿
+    findNodeDraftList (parentId) {
+      api[urlNames['findNodeDraftList']]({
+        parentId: parentId,
+        viewId: -1
+      }).then((res) => {
+        this.nodeTree = res.data
+      })
+    },
+    // 创建视图草稿
+    createNodeDraft (parentId) {
+      api[urlNames['findNodeDraftList']]({
+        parentId: parentId,
+        viewId: this.returnViewId ? this.returnViewId : this.$route.params.id
+      }).then((res) => {
+        this.nodeTree = res.data
+      })
+    },
+    // 获取机构树--加载子节点
+    findSonNodeTree (parentId) {
+      api[urlNames['getTree']]({
+        parentId: parentId,
+        viewId: -1
+      }).then((res) => {
+        this.nodeSonTree = res.data
+      })
+    },
+    // 追加子节点
+    loadNode (node, resolve) {
+      if (node.level === 0) {
+        return resolve(this.nodeTree)
+      }
+      this.findSonNodeTree(node.data.id)
+      setTimeout(() => {
+        resolve(this.nodeSonTree)
+      }, 500)
+      this.nodeSonTree = []
+    },
+    // tab点击切换
+    handleClick () {},
     allowDrop (draggingNode, dropNode, type) {
     },
+    // 拖拽--暂时无用
     handleDragOver (draggingNode, dropNode, ev) {
-      console.log('Tree drag over: ', dropNode.label)
+      this.tempNode = draggingNode
+      // console.log('Tree drag over: ', draggingNode.label, dropNode, ev.screenX)
     },
-    // 拖拽结束时触发的事件
+    // 拖拽结束时触发的事件--原来机构树
     nodedragend (Node, lastNode, lastTree, e) {
       if (e.screenX > 1020 && e.screenX < 1330 && e.screenY > 425 && e.screenY < 725) {
-        console.log('111111')
+        this.viewNodeTree.push(Node.data)
       }
       // console.log(e.screenX, '1020----------1330')
       // console.log(e.screenY, '425----------725')

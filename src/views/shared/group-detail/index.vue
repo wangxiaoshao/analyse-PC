@@ -98,20 +98,18 @@ export default {
     dialogReturnMembersInfo (memberData, orgdData) {
       console.log(JSON.parse(JSON.stringify(orgdData)), 'this.$route.params.id')
       memberData.forEach(item => {
-        let listMember = {
+        this.groupMemberInfo.push({
           memberId: item.uid,
           memberType: 3,
           groupId: this.groupId
-        }
-        this.groupMemberInfo.push(listMember)
+        })
       })
       orgdData.forEach(item => {
-        let listOrg = {
-          memberId: item.id,
+        this.groupMemberInfo.push({
+          memberId: item.bindId,
           memberType: item.nodeType,
           groupId: this.groupId
-        }
-        this.groupMemberInfo.push(listOrg)
+        })
       })
       this.addGroupUsers(this.groupMemberInfo)
       this.groupMemberInfo = []

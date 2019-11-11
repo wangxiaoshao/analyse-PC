@@ -47,7 +47,10 @@ export default {
   // 共享视图
   getViewList: 'getViewList', // 视图列表
   createView: 'createView', // 创建视图
+  findViewAdmin: 'findViewAdmin', // 视图管理员
   getAppList: 'getAppList', // 应用列表
+  findNodeDraftList: 'findNodeDraftList', // 获取视图草稿
+  createNodeDraft: 'createNodeDraft', // 创建视图节点
   createApp: 'createApp', // 创建应用
   updateApp: 'updateApp', // 修改应用
   getAppDetail: 'getAppDetail', // 获取应用详情
