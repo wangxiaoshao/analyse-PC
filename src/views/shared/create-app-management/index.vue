@@ -1,7 +1,7 @@
 <template>
   <div class="create-app-management">
     <div class="to-log">
-      <el-button type="primary">查看数据推送日志</el-button>
+      <el-button type="primary" @click="toDataLog">查看数据推送日志</el-button>
     </div>
     <el-form ref="ruleForm"   :rules="rules" :model="appFrom" label-width="120px">
       <el-row :gutter="80">
@@ -15,16 +15,15 @@
         <el-col :span="12">
           <div class="grid-content bg-purple-light">
             <el-form-item label="绑定视图" prop="viewId">
-              <el-autocomplete
-                v-model="appFrom.viewId"
-                placeholder="请输入内容"
-                @select="handleSelect"
-                width="100%"
-              ></el-autocomplete>
-<!--              <el-select  v-model="appFrom.viewId" placeholder="请搜索选择视图">-->
-<!--                <el-option label="视图1" value="1">视图1</el-option>-->
-<!--                <el-option label="视图1" value="1">视图2</el-option>-->
-<!--              </el-select>-->
+<!--              <el-autocomplete-->
+<!--                v-model="appFrom.viewId"-->
+<!--                placeholder="请输入内容"-->
+<!--                @select="handleSelect"-->
+<!--                width="100%"-->
+<!--              ></el-autocomplete>-->
+              <el-select  v-model="appFrom.viewId" placeholder="请选择视图">
+                <el-option label="视图1" :value="1">视图1</el-option>
+              </el-select>
             </el-form-item>
           </div>
         </el-col>
@@ -55,7 +54,7 @@
         </el-col>
         <el-col :span="12">
           <div class="grid-content bg-purple-light">
-            <el-form-item label="联系电话" prop="phone">
+            <el-form-item label="联系电话">
               <el-input placeholder="请输入联系电话" v-model="appFrom.concatPhone"></el-input>
             </el-form-item>
           </div>
@@ -111,13 +110,6 @@ export default {
     })
   },
   data () {
-    var appNmae = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请输入应用名称'))
-      } else {
-        callback()
-      }
-    }
     // 验证密码
     let validatePass = (rule, value, callback) => {
       if (value === '') {
@@ -141,7 +133,7 @@ export default {
       appFrom: {
         id: '',
         name: '',
-        viewId: '',
+        viewId: 1,
         apiAccount: '',
         apiPassword: '',
         concatUser: '',
@@ -160,9 +152,6 @@ export default {
         apiPassword: [
           { required: true, validator: validatePass, message: '请输填写应用接口账号', trigger: 'blur' }
         ],
-        phone: [
-          { required: true, trigger: 'blur', validator: validPhone }
-        ],
         viewId: [
           { required: true, message: '请选择视图ID', trigger: 'change' }
         ]
@@ -175,6 +164,9 @@ export default {
     }
   },
   methods: {
+    toDataLog () {
+      this.$router.push({ path: '/data-log' })
+    },
     getViewList (page, limt) {
       api[urlNames['getViewList']]({
         page: page,
