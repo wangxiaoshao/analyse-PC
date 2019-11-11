@@ -190,9 +190,9 @@ export default {
       api[urlNames['findViewNodeById']]({
         id: this.$route.params.parentId || this.$route.params.id
       }).then((res) => {
-        this.ruleForm.nodeId = res.data.id
         this.bindId = res.data.bindId
         this.ruleForm.organization.parentId = res.data.bindId
+        this.ruleForm.nodeId = res.data.id
         if (res.data.bindId) {
           this.getDetail()
         }

@@ -5,8 +5,8 @@
       @dialogReturnMembersInfo="dialogReturnMembersInfo"
       @closeselectMenmber="closeselectMenmber">
     </candidate-dialog>
-    <div class="button-wrap">
-      <el-button type="primary" v-if="mainLeaderList.length === 0" @click="addMainLeader(true,true,1)">添加主要领导</el-button>
+    <div class="button-wrap" v-if="mainLeaderList.length === 0">
+      <el-button type="primary" @click="addMainLeader(true,true,1)">添加主要领导</el-button>
     </div>
     <div class="list-ground">
       <el-table
