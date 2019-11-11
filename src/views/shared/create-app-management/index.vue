@@ -32,7 +32,7 @@
       <el-row :gutter="80">
         <el-col :span="12">
           <div class="grid-content bg-purple">
-            <el-form-item label="应用接口账号">
+            <el-form-item label="应用接口账号" prop="apiAccount">
               <el-input placeholder="请输入应用接口账号" style="ime-mode:disabled;" v-model="appFrom.apiAccount"></el-input>
             </el-form-item>
           </div>
@@ -55,7 +55,7 @@
         </el-col>
         <el-col :span="12">
           <div class="grid-content bg-purple-light">
-            <el-form-item label="联系电话">
+            <el-form-item label="联系电话" prop="phone">
               <el-input placeholder="请输入联系电话" v-model="appFrom.concatPhone"></el-input>
             </el-form-item>
           </div>
@@ -126,6 +126,16 @@ export default {
         callback()
       }
     }
+    var validPhone = (rule, value, callback) => {
+      let reg = '/^1[3|4|5|7|8][0-9]\\d{8}$/'
+      if (!value) {
+        callback(new Error('请输入电话号码'))
+      } else if (!reg.test(value)) {
+        callback(new Error('请输入正确的11位手机号码'))
+      } else {
+        callback()
+      }
+    }
     return {
       viewList: [],
       appFrom: {
@@ -149,6 +159,9 @@ export default {
         ],
         apiPassword: [
           { required: true, validator: validatePass, message: '请输填写应用接口账号', trigger: 'blur' }
+        ],
+        phone: [
+          { required: true, trigger: 'blur', validator: validPhone }
         ],
         viewId: [
           { required: true, message: '请选择视图ID', trigger: 'change' }

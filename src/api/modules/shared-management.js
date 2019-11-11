@@ -27,6 +27,36 @@ export default {
     keepOriginResponse: false
   },
   /**
+   * 创建视图
+   */
+  [urlNames.findViewAdmin]: {
+    type: 'get',
+    url: '/api/jg_manage/view/findViewAdmin',
+    serve: 'organizationManagePC',
+    keepOriginResponse: false
+  },
+  /**
+   * 获取视图草稿
+   */
+  [urlNames.findNodeDraftList]: {
+    type: 'get',
+    url: '/api/jg_manage/view/findNodeDraftList',
+    serve: 'organizationManagePC',
+    keepOriginResponse: false
+  },
+  /**
+   * 获取视图草稿
+   */
+  [urlNames.createNodeDraft]: {
+    type: 'post',
+    url: '/api/jg_manage/view/createNodeDraft',
+    serve: 'organizationManagePC',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    keepOriginResponse: false
+  },
+  /**
    * 获取应用列表
    */
   [urlNames.getAppList]: {
