@@ -19,6 +19,9 @@
         <span class="organization-value" v-html="content[0].name"></span>
         <el-button>日志</el-button>
       </div>
+      <div class="label-content">
+        <span v-for="item in labelList" :key="item.id">{{item.label}}</span>
+      </div>
       <div class="list-tab">
         <el-tabs v-model="activeName">
           <div class="content-title">
@@ -123,6 +126,7 @@ export default {
       showAddNodeFlag: false,
       showAddDepartmentFlag: false,
       showAddUnitFlag: false,
+      labelList: [],
       nodeInfo: {
         title: '',
         openNodeFlag: false,
@@ -244,6 +248,9 @@ export default {
         this.nodeInfo.nodeType = res.data.nodeType
         this.nodeInfo.parentId = res.data.id
         this.loading = false
+        if (this.content[0].bindId && this.content[0].nodeType === 2) {
+          this.findOrgLabelList()
+        }
         if (this.content[0].nodeType === 1) {
           this.showAddNodeFlag = true
           this.showAddDepartmentFlag = false
@@ -261,6 +268,15 @@ export default {
         }
       }, (error) => {
         this.$message.error(`没有内容`)
+      })
+    },
+    findOrgLabelList () {
+      api[urlNames['findOrgLabelList']]({
+        orgId: this.content[0].bindId
+      }).then((res) => {
+        this.labelList = res.data
+        console.log(res.data)
+      }, (error) => {
       })
     }
   },
