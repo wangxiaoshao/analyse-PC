@@ -106,6 +106,8 @@ export default {
   // 系统设置
   dictionaryList: 'dictionaryList',
   // 标签查询
+  // 通讯录
+  getAddressBookList: 'getAddressBookList',
   findLabelByType: 'findLabelByType',
   getAreaList: 'findAreaList'
 }

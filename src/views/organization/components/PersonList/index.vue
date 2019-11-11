@@ -23,7 +23,7 @@
         </el-form-item>
         <el-form-item>
           <el-button @click="removeFlag = false">取 消</el-button>
-          <el-button type="primary" @click="submitRemoveDuty(ruleForm)">确定</el-button>
+          <el-button type="primary" @click="submitRemoveDuty('ruleForm')">确定</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -32,20 +32,24 @@
       title="填写调出说明"
       :visible.sync="calloutFlag"
       width="50%">
-      <el-form :inline="true" :model="formCallout" :rules="rulesCallou" ref="formCallout" class="demo-form-inline">
+      <el-form
+        :model="formCallout"
+        :rules="rulesCallou"
+        ref="formCallout"
+        label-width="100px"
+        class="demo-ruleForm">
         <el-form-item label="调出单位">
-          <span></span>
-          <el-button @click="addMainLeader(true)">选择调出单位</el-button>
+          <span class="name-span">{{orgName}}</span>
+          <el-button @click="addMainLeader">选择调出单位</el-button>
         </el-form-item>
-      <!--  <el-form-item label="调出部门">
-          <el-button @click="addMainLeader(true,true)">选择调出部门</el-button>
-        </el-form-item>-->
-        <el-form-item label="调出原因" prop="formInline.reason">
+        <el-form-item label="申请原因" prop="reason">
           <el-input type="textarea" v-model="formCallout.reason"></el-input>
         </el-form-item>
+        <el-form-item>
+          <el-button @click="calloutFlag = false">取 消</el-button>
+          <el-button type="primary" @click="submitForm('formCallout')">确定</el-button>
+        </el-form-item>
       </el-form>
-    <el-button @click="calloutFlag = false">取 消</el-button>
-    <el-button type="primary" @click="submitCalloutForm(rulesCallou)">确 定</el-button>
     </el-dialog>
     <div class="button-wrap">
       <el-button @click="sortList">调整排序</el-button>
@@ -72,8 +76,10 @@
         </template>
       </el-table-column>
       <el-table-column label="姓名" prop="name"></el-table-column>
-      <el-table-column label="学历" prop="qualification"></el-table-column>
+      <el-table-column label="登录账号" prop="account"></el-table-column>
       <el-table-column label="手机号" prop="mobile"></el-table-column>
+      <el-table-column label="职务" prop="duty"></el-table-column>
+      <el-table-column label="身份类型" prop="type"></el-table-column>
       <el-table-column label="启用状态" prop="removed" align="center">
         <template slot-scope="scope">
           <span class="text-able" v-show="scope.row.removed">启用</span>
@@ -101,7 +107,7 @@
             解除兼职
           </el-button>
           <el-button
-            @click.native.prevent="removePerson(scope.row)"
+            @click.native.prevent="removeDuty(scope.row)"
             type="text"
             size="small">
             解除挂职
@@ -139,6 +145,7 @@ export default {
       isShowEditFlag: true,
       removeFlag: false,
       calloutFlag: false,
+      orgName: '',
       ruleForm: {
         uid: '',
         type: '',
@@ -149,20 +156,16 @@ export default {
         uid: '',
         deptId: '',
         orgId: '',
-        reason: ''
+        reason: '',
+        type: null
       },
       rulesCallou: {
-        rules: {
-          reason: [
-            { required: true, message: '请填写申请原因', trigger: 'blur' }
-          ],
-          deptId: [
-            { required: true, message: '请选择调出部门', trigger: 'blur' }
-          ],
-          orgId: [
-            { required: true, message: '请选择调出单位', trigger: 'blur' }
-          ]
-        }
+        /* reason: [
+          { required: true, message: '请填写申请原因', trigger: 'blur' }
+        ], */
+        orgId: [
+          { required: true, message: '请选择调出单位', trigger: 'blur' }
+        ]
       },
       rules: {
         reason: [
@@ -174,7 +177,7 @@ export default {
         selectMenmberFlag: false, // 显示弹窗，
         isAllData: true, // 是否需完整数据-默认为不需要（false，只包含用户id）
         notOnlyPerson: true, // 是否只选人，默认为false（只选人），true可以选择单位和部门
-        isSingleSelect: false // 是否为单选框  false为多选（默认），true为单选
+        isSingleSelect: true // 是否为单选框  false为多选（默认），true为单选
       }
     }
   },
@@ -260,41 +263,58 @@ export default {
     sortList () {
       this.$emit('cancel', true)
     },
+    // 表单初始化
+    fromInit () {
+      this.calloutFlag = false
+      this.removeFlag = false
+      this.formCallout = {
+        uid: '',
+        deptId: '',
+        orgId: '',
+        reason: '',
+        type: null
+      }
+      this.ruleForm = {
+        uid: '',
+        type: '',
+        reason: ''
+      }
+    },
+    // 调出
     calloutDialog (row) {
+      this.formCallout.uid = row.uid
+      this.formCallout.type = row.type
       this.calloutFlag = true
     },
-    removePerson (row) {
-      this.removeFlag = true
-      this.formCallout.uid = row.id
-      // 当前row.id
-    },
+    // 解除
     removeDuty (row) {
       this.removeFlag = true
-      this.ruleForm.uid = row.id
+      this.ruleForm.uid = row.uid
       this.ruleForm.type = row.type
     },
-    // 提交调出人员
-    submitCalloutForm (rulesCallou) {
-      this.$refs[rulesCallou].validate((valid) => {
-        alert(44444)
+    // 提交调出
+    submitForm (formCallout) {
+      this.$refs[formCallout].validate((valid) => {
         if (valid) {
           api[urlNames['calloutUser']](this.formCallout).then((res) => {
             this.$message.success(`调出成功`)
             this.calloutFlag = false
             console.log(res)
+            this.fromInit()
           }, (error) => {
 
           })
         }
       })
     },
-    // 解除兼职
+    // 提交解除兼职
     submitRemoveDuty (ruleForm) {
       this.$refs[ruleForm].validate((valid) => {
         if (valid) {
-          api[urlNames['removeDuty']](this.formCallout).then((res) => {
+          api[urlNames['removeDuty']](this.ruleForm).then((res) => {
             this.$message.success(`解除成功`)
             this.calloutFlag = false
+            this.fromInit()
             console.log(res)
           }, (error) => {
 
@@ -303,49 +323,20 @@ export default {
       })
     },
     // 选人弹窗组件返回的人员信息
+    // TODO选人组件完善后需要修改选择单位或单位下的部门
     dialogReturnMembersInfo (data, id) {
-      // console.log(JSON.parse(JSON.stringify(id)))
-      console.log(564854, id)
-
-
-      /* if (!JSON.parse(JSON.stringify(data)).length) {
-        let obj = {
-          uid: JSON.parse(JSON.stringify(data)).uid,
-          leaderType: JSON.parse(JSON.stringify(data)).duty
-        }
-        this.personList.push(obj)
-      } else {
-        JSON.parse(JSON.stringify(data)).forEach((item) => {
-          let obj = {
-            uid: item.uid,
-            leaderType: item.duty
-          }
-          this.personList.push(obj)
-        })
-      } */
-      // 保存
-      /* if (JSON.parse(JSON.stringify(data)) !== []) {
-        api[urlNames['createLeader']]({
-          nodeId: this.contentId,
-          nodeType: this.nodeInfo.nodeType,
-          calloutUser: this.personList
-        }).then((res) => {
-          this.$message.success(`添加成功`)
-          this.getGrid()
-          console.log(res)
-        }, (error) => {
-          this.$message.error(`保存失败，请重试`)
-        })
-      } */
+      console.log('danw',id)
+      this.formCallout.orgId = id[0].bindId
+      this.orgName = id[0].name
     },
     // 关闭选人弹窗
     closeselectMenmber () {
       this.selectDialog.selectMenmberFlag = false
     },
     // 打开选人组件
-    addMainLeader (single) {
+    addMainLeader () {
       this.selectDialog.selectMenmberFlag = true
-      this.selectDialog.isSingleSelect = single
+      this.selectDialog.isSingleSelect = true
       this.selectDialog.notOnlyPerson = true
       this.selectDialog.isAllData = true
     }
@@ -380,6 +371,20 @@ export default {
         }
       },
       deep: true
+    },
+    calloutFlag: {
+      handler (val) {
+        if (val === false) {
+          this.fromInit()
+        }
+      }
+    },
+    removeFlag: {
+      handler (val) {
+        if (val === false) {
+          this.fromInit()
+        }
+      }
     }
   }
 }

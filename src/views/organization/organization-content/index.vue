@@ -17,7 +17,6 @@
         <i v-if="content[0].nodeType === 2" class="menu-icon fa fa-sitemap big-icon" style="margin: 0px 5px;"></i>
         <i v-if="content[0].nodeType === 3" class="menu-icon fa fa-sitemap big-icon" style="margin: 0px 5px;"></i>
         <span class="organization-value" v-html="content[0].name"></span>
-        {{content[0].bindId}}
         <el-button>日志</el-button>
       </div>
       <div class="list-tab">
@@ -71,7 +70,7 @@
               </el-table-column>
             </el-table>
           </el-tab-pane>
-          <el-tab-pane label="人员管理" name="人员管理" v-if="content[0].nodeType !== 1">
+          <el-tab-pane label="人员管理" name="人员管理" v-if="content[0].bindId">
             <el-button class="add-btn" @click="openAddPerson">添加人员</el-button>
             <person-list
               v-if="activeName === '人员管理'"
@@ -83,10 +82,10 @@
               @cancel="getSortAction"
             ></person-list>
           </el-tab-pane>
-          <el-tab-pane label="部门领导" name="单位主要领导">
+          <el-tab-pane label="部门领导" name="单位主要领导" v-if="content[0].bindId">
             <leader-list
               v-if="activeName === '单位主要领导'"
-              :content-id="contentId"
+              :content-id="content[0].bindId"
               @getPage="getPage"
               :nodeInfo="nodeInfo"
             ></leader-list>

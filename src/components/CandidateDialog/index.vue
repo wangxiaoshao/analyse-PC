@@ -104,6 +104,7 @@ export default {
       isIndeterminate: false, // 选人不确定状态
 
       memberData: [], // 返回给调用者数据
+      orgData: [],
       orgList: [],
       isIndeterminateOrg: false, // 部门单位不确定状态
       checkAllOrg: false, // 是否全选-checkAllMember
@@ -128,9 +129,13 @@ export default {
       } else {
         this.memberData = this.selectedMenbersID
       }
-      this.$emit('dialogReturnMembersInfo', this.memberData)
+      if (this.seleceDialog.notOnlyPerson) {
+        this.$emit('dialogReturnMembersInfo', this.memberData, this.selectedOrg)
+      } else {
+        this.$emit('dialogReturnMembersInfo', this.memberData)
+      }
+      this.checkedMemberList = this.selectedMenbers = this.selectedMenbers = this.selectedOrgID = this.selectedOrg = this.memberData = []
       this.$emit('closeselectMenmber')
-      this.checkedMemberList = this.selectedMenbers = this.memberData = []
       this.isIndeterminate = this.checkAllMember = false
     },
     // 获取机构树--初始化
@@ -203,10 +208,10 @@ export default {
       if (this.seleceDialog.notOnlyPerson) {
         this.findcheckNodeTree(node.id)
       }
-      // （1:分类结点、2:部门结点、3:单位结点）
-      if (node.nodeType === 2) {
+      // （1:分类结点、3:部门结点、2:单位结点）
+      if (node.nodeType === 3) {
         this.findDepartmentMembers(node.bindId)
-      } else if (node.nodeType === 3) {
+      } else if (node.nodeType === 2) {
         this.findOrganizationMembers(node.bindId)
       }
     },
