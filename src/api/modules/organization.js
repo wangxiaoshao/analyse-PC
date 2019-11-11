@@ -206,5 +206,12 @@ export default {
     keepOriginResponse: true, // 是否保留后端返回数据格式
     serve: 'organizationManagePC',
     mock: '/findLabelByType.json' // development模式下，本地mock数据
+  },
+  [urlNames.findOrganizationById]: {
+    type: 'get',
+    url: '/api/jg_manage/organ/findOrganizationById',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    serve: 'organizationManagePC',
+    mock: '/findOrganizationById.json' // development模式下，本地mock数据
   }
 }

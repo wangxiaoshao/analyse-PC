@@ -9,72 +9,35 @@
       </el-col>
     </el-row>
     <!--表格-->
-    <el-table :data="gridData">
-      <template>
-        <el-table-column label="单位名称"  align="center">
-          <el-table-column
-            align="center"
-            prop="name"
-            label="原值">
-            <template slot-scope="scope" v-if="scope.row.changeFields.name">
-              <div>{{scope.row.changeFields.name.beforeChangeValue}}</div>
-            </template>
-          </el-table-column>
-          <el-table-column label="变更值"  align="center">
-            <template slot-scope="scope" v-if="scope.row.changeFields.name">
-              <div>{{scope.row.changeFields.name.afterChangeValue}}</div>
-            </template>
-          </el-table-column>
-        </el-table-column>
-        <el-table-column label="单位电话"  align="center">
-          <el-table-column
-            align="center"
-            prop="name"
-            label="原值">
-            <template slot-scope="scope" v-if="scope.row.changeFields.phone">
-              <div>{{scope.row.changeFields.phone.beforeChangeValue}}</div>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="变更值"
-            align="center">
-            <template slot-scope="scope" v-if="scope.row.changeFields.phone">
-              <div>{{scope.row.changeFields.phone.afterChangeValue}}</div>
-            </template>
-          </el-table-column>
-        </el-table-column>
-        <el-table-column
-          align="center"
-          prop="date"
-          label="申请原因"
-          width="150">
-          <template slot-scope="scope">
-            <el-tooltip :content="scope.row.reason" placement="top">
-              <div>{{scope.row.reason}}</div>
-            </el-tooltip>
+    <site-table :tableConfig="tableConfig"
+                :tableHeight="tableHeight"
+                :mergeConfig="mergeConfig"
+                :operateWidth="operateWidth"
+                :operate="operate"
+                :tableData="tableData">
+      <template slot="appendPersonalColumn">
+        <el-table-column label="申请原因" align="center">
+          <template>
+            <span>{{reason}}</span>
           </template>
         </el-table-column>
-        <el-table-column
-          v-if="!isWaitApproval"
-          align="center"
-          prop="date"
-          label="审核意见"
-          width="150">
-          <template slot-scope="scope">
-            <div>{{scope.row.message}}</div>
+        <el-table-column label="审核意见" align="center" v-if="!isShowSuggest">
+          <template>
+            <span>{{message}}</span>
           </template>
         </el-table-column>
       </template>
-    </el-table>
+    </site-table>
 
     <edit-dialog :visible="editDialogVisible"
                  :config-type="type"
                  :current="currentEdit"
+                 :pageConfig="pageConfig"
                  :dialogTitle="dialogTitle"
                  :auditResult="auditResult"
                  @refreshList="getGrid"
                  @close="closeEditDialog"></edit-dialog>
-    <el-row :gutter="20" v-if="isWaitApproval">
+    <el-row :gutter="20" v-if="isShowSuggest">
       <el-col :span="12" :offset=19>
         <div style="margin-top: 40px">
           <el-button type="primary" plain @click="openExamineDialog(1)" >通过</el-button>
@@ -88,23 +51,47 @@
 <script type="text/ecmascript-6">
 import handleTable from '@src/mixins/handle-table'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
+import SiteTable from '@src/components/SiteTable/index.vue'
+import tableConfig from './tableConfig'
 import { api, urlNames } from '@src/api'
 import EditDialog from '../EditDialog/index'
 import { mapState, mapMutations } from 'vuex'
 
 export default {
-  components: { EditDialog },
+  components: { EditDialog, SiteTable },
   mixins: [handleTable, handleBreadcrumb],
   data () {
     return {
-      gridData: [],
+      tableConfig,
+      reason: '',
+      message: '',
+      tableData: [],
       currentEdit: null,
       editDialogVisible: false,
       dialogTitle: '审核意见',
       type: 'content',
       loading: true,
-      isWaitApproval: false,
-      auditResult: false
+      isShowSuggest: false,
+      auditResult: false,
+      tableHeight: null,
+      pageConfig: {},
+      mergeConfig: [
+        {
+          ele: 'col',
+          eleIndex: 4,
+          rowspan: 4,
+          colspan: 1,
+        },
+        {
+          ele: 'col',
+          eleIndex: 3,
+          rowspan: 4,
+          colspan: 1,
+        },
+      ],
+      operateWidth: 100,
+      tableCheckbox: true,
+      operate: false
     }
   },
   computed: {
@@ -112,12 +99,12 @@ export default {
   },
   created () {
     if (this.$route.name === 'WaitApprovalDetail') {
-      this.isWaitApproval = true
+      this.isShowSuggest = true
     }
   },
   mounted () {
     this.pushBreadcrumb({
-      name: this.isWaitApproval ? '去审核' : '查看明细',
+      name: this.isShowSuggest ? '去审核' : '查看明细',
       parent: {
         name: this.examine.backPath,
         query: {
@@ -134,15 +121,22 @@ export default {
         id: this.$route.query.id,
         type: this.$route.query.type
       }).then((res) => {
-        let arrLen = res.data.changeFields.length
-        let obj = {}
-        for (let i = 0; i < arrLen; i++) {
-          let key = res.data.changeFields[i].fieldName
-          let val = res.data.changeFields[i]
-          obj[key] = val
+        this.reason = res.data.reason
+        this.message = res.data.message
+        this.tableData = res.data.changeFields
+        this.pageConfig = {
+          page: 2,
+          limit: 2
         }
-        res.data.changeFields = obj
-        this.gridData.push(res.data)
+        // let arrLen = res.data.changeFields.length
+        // let obj = {}
+        // for (let i = 0; i < arrLen; i++) {
+        //   let key = res.data.changeFields[i].fieldName
+        //   let val = res.data.changeFields[i]
+        //   obj[key] = val
+        // }
+        // res.data.changeFields = obj
+        // this.gridData.push(res.data)
       }, () => {
         this.gridData = []
       })

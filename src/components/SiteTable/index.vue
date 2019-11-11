@@ -3,6 +3,8 @@
             :data="tableData"
             @sort-change="sort"
             :height="tableHeight"
+            :colMergeConfig="mergeConfig"
+            :span-method="openColMerge"
             v-loading = "tableLoading"
             border
             @selection-change="selectionChange"
@@ -11,10 +13,10 @@
         <el-table-column type="index" v-if="tableIndex" width="60" align="center" label="#">
             <template slot-scope="scope">{{scope.$index+(pageConfig.page - 1) * pageConfig.limit + 1}}</template>
         </el-table-column>
+      <slot name="prePersonalColumn"></slot>
         <template v-for="item in tableConfig">
           <el-table-column
-                        v-if="!item.tooltip"
-                        :prop="item.id"
+                        :prop="item.key"
                         align="center"
                         :formatter="item.formatter"
                         :label="item.label"
@@ -22,32 +24,10 @@
                         :sortable="item.sortable"
                         :show-overflow-tooltip="item.showOverflowTooltip || false"
                         :min-width="item.minWidth || null">
-            <template slot-scope="scope">
-              <div v-if="item.field === 'state' || item.field === 'isEnable'"
-                   :class="scope.row[item.field] ? 'text-green':'text-red'">
-                {{scope.row[item.field] ? '已确认' : '待确认'}}
-              </div>
-              <div v-if="item.field !== 'state' && item.field !== 'isEnable'">
-                {{item.field === 'order' ? scope.$index + 1 : scope.row[item.field]}}
-              </div>
-            </template>
-        </el-table-column>
-        <el-table-column v-else
-                        align="center"
-                        :formatter="item.formatter"
-                        :label="item.label"
-                        :key="item.key"
-                        :sortable="item.sortable"
-                        :show-overflow-tooltip="item.showOverflowTooltip || false"
-                        :min-width="item.minWidth || null">
-          <template slot-scope="scope">
-            <el-tooltip :content="scope.row[item.field]" placement="top">
-            <div>{{item.field === 'order' ? scope.$index + 1 : scope.row[item.field]}}</div>
-            </el-tooltip>
-          </template>
         </el-table-column>
         </template>
 
+      <slot name="appendPersonalColumn"></slot>
         <el-table-column label="操作" align="center" fixed="right" v-if="operate" :width="operateWidth">
             <template slot-scope="scope">
                 <slot name="operate" :slot-scope="scope"></slot>
@@ -74,6 +54,10 @@ export default {
     },
     tableHeight: {
       type: Number | String | null,
+      default: null
+    },
+    mergeConfig: {
+      type: Array | null,
       default: null
     },
     // 以下在wf基础上新增的
@@ -105,11 +89,33 @@ export default {
     }
   },
   created () {
+    console.log(this.pageConfig)
   },
   methods: {
+    /*
+  * @openColMerge：开启表格合并功能
+  * @param：
+  *  mergeConfig: {
+          ele: 'row' 或 'col' 合并行还是列
+          eleIndex: 2, 需要合并的元素的索引值
+          rowspan: 1, 行合并数
+          colspan: 2, 列合并数
+        },
+  */
+    openColMerge ({ rowIndex, columnIndex }) {
+      let len = this.mergeConfig ? this.mergeConfig.length : 0
+      for (let i = 0; i < len; i++) {
+        let ele = this.mergeConfig[i].ele === 'col' ? columnIndex : rowIndex
+        if (ele === this.mergeConfig[i].eleIndex) {
+          let rowspan = this.mergeConfig[i].rowspan,
+            colspan = this.mergeConfig[i].colspan
+          return [rowspan, colspan]
+        }
+      }
+    },
     // 排序
     sort () {
-      this.emit('sort-change')
+      this.$emit('sort-change')
     },
     selectionChange (selection) {
       this.$emit('selection-change', selection)

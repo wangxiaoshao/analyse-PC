@@ -41,10 +41,10 @@
           <el-button v-show="scope.row.nodeType === 1" @click.native="openEditNode(scope.row)" type="text" size="small">
             修改
           </el-button>
-          <el-button v-show="scope.row.nodeType === 2" @click.native="openDepartmentEdit(scope.row)" type="text" size="small">
+          <el-button v-show="scope.row.nodeType === 3" @click.native="openDepartmentEdit(scope.row)" type="text" size="small">
             修改
           </el-button>
-          <el-button v-show="scope.row.nodeType === 3" @click.native="openEditUnit(scope.row)" type="text" size="small">
+          <el-button v-show="scope.row.nodeType === 2" @click.native="openEditUnit(scope.row)" type="text" size="small">
             修改
           </el-button>
         </template>
