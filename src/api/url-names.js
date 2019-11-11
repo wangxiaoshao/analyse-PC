@@ -106,6 +106,8 @@ export default {
   findPerson: 'findPerson',
   // 创建单位
   createOrganization: 'createOrganization',
+  // 查询单位
+  findOrganizationById: 'findOrganizationById',
   // 系统设置
   dictionaryList: 'dictionaryList',
   // 标签查询

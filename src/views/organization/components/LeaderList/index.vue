@@ -6,21 +6,29 @@
       @closeselectMenmber="closeselectMenmber">
     </candidate-dialog>
     <div class="button-wrap">
-      <el-button type="primary" v-if="mainList" @click="addMainLeader(true,true,1)">添加主要领导</el-button>
+      <el-button type="primary" v-if="mainLeaderList.length === 0" @click="addMainLeader(true,true,1)">添加主要领导</el-button>
     </div>
     <div class="list-ground">
       <el-table
         :data="mainLeaderList"
         v-loading="loading"
+        stripe
+        border
+        highlight-current-row
+        size="medium"
         style="width: 100%">
-        <el-table-column
-          prop="date"
-          label="日期"
-          width="180">
+        <el-table-column prop="description" label="序号" width="60" align="center">
+          <template slot-scope="scope">
+            <i class="sortBtnDo menu-icon fa fa-bars"  v-if="sortFlag" style="font-size: 25px"></i>
+            <span :title="scope" v-else>{{scope.$index + 1}}</span>
+          </template>
         </el-table-column>
         <el-table-column label="头像">
-          <template>
-            <span></span>
+          <template slot-scope="scope">
+            <span class="person-pic">
+             <img v-if="scope.row.portraitUrl !== ''" :src="scope.row.portraitUrl">
+              <img src="@src/common/images/head-pic.png">
+            </span>
           </template>
         </el-table-column>
         <el-table-column
@@ -29,8 +37,8 @@
           width="180">
         </el-table-column>
         <el-table-column
-          prop="address"
-          label="地址">
+          prop="duty"
+          label="职务">
         </el-table-column>
         <el-table-column prop="act" label="操作" width="100" align="center">
           <template slot-scope="scope">
@@ -58,6 +66,7 @@
         :data="otherLeaderList"
         stripe
         border
+        v-loading="loading"
         highlight-current-row
         size="medium"
         id="leaderList"
@@ -68,7 +77,19 @@
             <span :title="scope" v-else>{{scope.$index + 1}}</span>
           </template>
         </el-table-column>
+        <el-table-column label="头像">
+          <template slot-scope="scope">
+            <span class="person-pic">
+             <img v-if="scope.row.portraitUrl !== ''" :src="scope.row.portraitUrl">
+              <img src="@src/common/images/head-pic.png">
+            </span>
+          </template>
+        </el-table-column>
         <el-table-column label="姓名" prop="name"></el-table-column>
+        <el-table-column
+          prop="duty"
+          label="职务">
+        </el-table-column>
         <el-table-column prop="act" label="操作" width="100" align="center">
           <template slot-scope="scope">
             <el-button @click.native="openEditNode(scope.row)" type="text" size="small">
@@ -113,20 +134,22 @@ export default {
         notOnlyPerson: true, // 是否只选人，默认为false（只选人），true可以选择单位和部门
         isSingleSelect: false // 是否为单选框  false为多选（默认），true为单选
       },
-      learderType: 1
+      learderType: 1,
+      mainLeaderList: [],
+      otherLeaderList: []
     }
   },
   created () {
     this.getGrid()
   },
-  computed: {
+  /* computed: {
     mainLeaderList () {
-      return this.list.find(column => +column.type === 1)
+      return this.list.find(column => +column.leaderType === '1')
     },
     otherLeaderList () {
-      return this.list.filter(column => +column.type !== 2)
+      return this.list.filter(column => +column.leaderType === '2')
     }
-  },
+  }, */
   methods: {
     getGrid () {
       let data = {
@@ -137,6 +160,19 @@ export default {
       api[urlNames['findLeaderList']](data).then((res) => {
         this.loading = false
         this.list = res.data
+        if (this.list.length === 0) {
+          this.mainLeaderList = []
+          this.otherLeaderList = []
+        } else {
+          this.list.forEach((item) => {
+            if (item.leaderType === '1' || item.leaderType === 1) {
+              this.mainLeaderList.push(item)
+            }
+            if (item.leaderType === '2' || item.leaderType === 2) {
+              this.otherLeaderList.push(item)
+            }
+          })
+        }
         console.log(33, res.data)
       }, () => {
         this.loading = false
@@ -147,7 +183,7 @@ export default {
     dialogReturnMembersInfo (data) {
       // 主要领导1，其他领导2
       if (!JSON.parse(JSON.stringify(data)).length) {
-        alert(JSON.parse(JSON.stringify(data))[0].uid)
+        //alert(JSON.parse(JSON.stringify(data))[0].uid)
         let obj = {
           uid: JSON.parse(JSON.stringify(data))[0].uid,
           leaderType: this.learderType
@@ -221,6 +257,11 @@ export default {
         }
       },
       deep: true
+    },
+    mainLeaderList: {
+      handler (val) {
+        console.log(3333, val)
+      }
     }
   }
 }

@@ -22,7 +22,7 @@
 
 <script>
 import handleTable from '@src/mixins/handle-table'
-import organizationTree from './components/Tree/index'
+import organizationTree from '@src/components/Tree/index'
 import searchResult from './components/Result/index'
 export default {
   mixins: [ handleTable ],

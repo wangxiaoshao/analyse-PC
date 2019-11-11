@@ -26,7 +26,7 @@ export default {
       this.$router.push({
         name: 'DepartmentEdit',
         params: {
-          id: row.id
+          id: row.bindId
         }
       })
     }

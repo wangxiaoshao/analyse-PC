@@ -1,18 +1,20 @@
 <template>
   <el-dialog title="选择标签" :visible.sync="openSearchFlag" :showClose="false">
     <i class="el-icon-close tag-close" @click="close"></i>
-    <el-input placeholder="请输入内容" v-model="tagKeyWord" @change="searchTag(1,tagKeyWord)" class="input-with-select">
+    <el-input placeholder="请输入内容" v-model="tagKeyWord" class="input-with-select">
       <el-button slot="append" icon="el-icon-search"></el-button>
     </el-input>
-    <div class="tag-content">
+    <div class="tag-content" v-loading="loading">
       <el-checkbox-group
-        v-model="checkTagGroup">
+        v-model="checkTagGroup"
+      >
         <el-checkbox
           v-for="item in searchTags"
           border
-          :label="item.name"
+          :label="`${item.id}` + '|' + `${item.name}`"
           :title="item.name"
-          :key="item.name"
+          :value="item.id"
+          :key="item.id"
         >{{item.name}}</el-checkbox>
       </el-checkbox-group>
     </div>
@@ -29,6 +31,7 @@ export default {
   props: ['addInfo', 'openSearchFlag'],
   data () {
     return {
+      loading: true,
       addFlag: false,
       tagKeyWord: '',
       checkTagGroup: [],
@@ -39,32 +42,32 @@ export default {
   },
   created () {
     this.addFlag = this.sendInfo.searchFlag
-    console.log(this.addInfo)
+    this.searchTag()
   },
   methods: {
     close () {
-      /* this.addFlag = false
-      this.sendInfo = {
-        searchFlag: false,
-        id: this.addInfo.id
-      }
-      this.$emit('addInfo', this.sendInfo) */
+      this.tagKeyWord = ''
+      this.searchTags = []
+      this.checkTagGroup = []
       this.$emit('close', false)
     },
     // 搜索标签
-    searchTag (type, name) {
-      alert(type,name)
+    searchTag () {
+      this.loading = true
       api[urlNames['findLabelByType']]({
-        type: type,
-        name: name
+        type: this.addInfo.type,
+        name: this.tagKeyWord
       }).then((res) => {
         this.searchTags = res.data
+        this.loading = false
       }, (error) => {
-
+        this.loading = false
+        this.searchTags = []
       })
     },
     sendTags () {
       this.$emit('getTag', this.checkTagGroup)
+      this.$emit('close', false)
     }
   }
 }
