@@ -60,7 +60,10 @@ export default {
   findOrgLabelList: 'findOrgLabelList', // 根据单位id获取标签
   getGroupList: 'getGroupList', // 获取分组列表
   createGroup: 'createGroup', // 创建分组
+  findGroupById: 'findGroupById',
   getGroupUsers: 'getGroupUsers', // 分组成员
+  addGroupUsers: 'addGroupUsers', // 添加成员
+  deleteGroupMembers: 'deleteGroupMembers', // 删除分组成员
   // 创建节点
   createViewNode: 'createViewNode',
   // 根据id获取详情
@@ -106,6 +109,8 @@ export default {
   findPerson: 'findPerson',
   // 创建单位
   createOrganization: 'createOrganization',
+  // 查询单位
+  findOrganizationById: 'findOrganizationById',
   // 系统设置
   dictionaryList: 'dictionaryList',
   // 标签查询

@@ -16,62 +16,66 @@
      <el-row>
        <el-col :span="12">
          <el-form-item label="单位名称" prop="name">
-           <el-input v-model="ruleForm.name"></el-input>
+           <el-input v-model="ruleForm.organization.name"></el-input>
          </el-form-item>
          <el-form-item label="单位地址" prop="addr">
-           <el-input v-model="ruleForm.addr"></el-input>
+           <el-input v-model="ruleForm.organization.address"></el-input>
          </el-form-item>
          <el-form-item label="传真号码" prop="tel">
-           <el-input v-model="ruleForm.fax"></el-input>
+           <el-input v-model="ruleForm.organization.fax"></el-input>
          </el-form-item>
          <el-form-item label="统一单位信用编码" prop="uiniteCode">
-           <el-input v-model="ruleForm.uniteCode" :disabled="true"></el-input>
+           <el-input v-model="ruleForm.organization.creditId" :disabled="true"></el-input>
          </el-form-item>
-         <el-form-item label=" 上级单位" prop="parentName">
-           <el-input v-model="ruleForm.parentName" :disabled="true"></el-input>
+         <el-form-item label=" 上级单位">
+           <el-input v-model="parentName" :disabled="true"></el-input>
          </el-form-item>
          <el-form-item label="所属类型" prop="type">
-           <el-select v-model="ruleForm.type" placeholder="请选择所属类型">
-             <el-option label="区域一" value="shanghai"></el-option>
-             <el-option label="区域二" value="beijing"></el-option>
+           <el-select v-model="ruleForm.organization.type" @change="getType" placeholder="请选择所属类型">
+             <el-option label="区域一" value="1"></el-option>
+             <el-option label="区域二" value="2"></el-option>
            </el-select>
          </el-form-item>
        </el-col>
        <el-col :span="12">
          <el-form-item label="单位简称" prop="shortName">
-           <el-input v-model="ruleForm.shortName"></el-input>
+           <el-input v-model="ruleForm.organization.shortName"></el-input>
          </el-form-item>
-         <el-form-item label="单位电话" prop="tel">
-           <el-input v-model="ruleForm.tel"></el-input>
+         <el-form-item label="单位电话" prop="phone">
+           <el-input v-model="ruleForm.organization.phone"></el-input>
          </el-form-item>
          <el-form-item label="邮编" prop="zipCode">
-           <el-input v-model="ruleForm.zipCode"></el-input>
+           <el-input v-model="ruleForm.organization.zipCode"></el-input>
          </el-form-item>
          <el-form-item label="区域">
             <!--选择区域组件-->
-           <area-list></area-list>
+           <area-list @getAreaId="getAreaId"></area-list>
          </el-form-item>
-         <el-form-item label="所属系统" prop="system">
-           <el-select v-model="ruleForm.system" placeholder="请选择所属系统">
-             <el-option label="区域一" value="shanghai"></el-option>
-             <el-option label="区域二" value="beijing"></el-option>
+         <el-form-item label="所属系统" prop="systemType">
+           <el-select v-model="ruleForm.organization.systemType" @change="getSystemType" placeholder="请选择所属系统">
+             <el-option
+               v-for="item in systemTypeOption"
+               :key="item.value"
+               :value="item.value"
+               :label="item.label"
+             ></el-option>
            </el-select>
          </el-form-item>
          <el-form-item label=" 启用状态" prop="enable">
-           <el-switch v-model="ruleForm.enable"></el-switch>
+           <el-switch v-model="ruleForm.organization.removed"></el-switch>
          </el-form-item>
        </el-col>
      </el-row>
       <el-row>
         <el-form-item label="单位标签">
           <el-tag
-            v-for="tag in tags"
-            :key="tag.name"
+            v-for="tag in tagsName"
+            :key="tag"
             type="info"
             closable
-            :title="tag.name"
+            :title="tag"
           >
-            {{tag.name}}
+            {{tag}}
           </el-tag>
           <el-tag class="add-tag-btn" @click="openSearchFlag = true"><i class="el-icon-plus"></i>添加标签</el-tag>
         </el-form-item>
@@ -82,7 +86,7 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="单位介绍" prop="ext01">
-            <el-input type="textarea" v-model="ruleForm.ext01"></el-input>
+            <el-input type="textarea" v-model="ruleForm.organization.ext01"></el-input>
           </el-form-item>
           <el-form-item label="申请原因" prop="reason">
             <el-input type="textarea" v-model="ruleForm.reason"></el-input>
@@ -90,12 +94,13 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="单位职责" prop="ext02">
-            <el-input type="textarea" v-model="ruleForm.ext02"></el-input>
+            <el-input type="textarea" v-model="ruleForm.organization.ext02"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-form-item v-show="isShowEditFlag">
         <el-button type="primary" @click="submitForm('ruleForm')">{{submitHtml}}</el-button>
+        <el-button @click="goBack">取消</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -115,7 +120,7 @@ export default {
       openSearchFlag: false,
       addInfo: {
         searchFlag: false,
-        type: 3
+        type: 1 // 1.单位，2、部门，3、人员
       },
       loading: false,
       isShowEditFlag: true,
@@ -124,79 +129,80 @@ export default {
       submitHtml: '保存',
       oldFrom: {},
       tagKeyWord: '',
-      tags: [], // 提交的标签
+      tagsName: [],
+      parentName: '',
+      bindId: '',
       ruleForm: {
-        name: '',
-        shortName: '',
-        addr: '',
-        tel: '',
-        fax: '',
-        zipCode: '',
-        uniteCode: '',
-        parentName: '',
-        parentId: '',
-        system: '',
-        type: '',
-        enable: false,
-        ext01: '',
-        ext02: '',
         reason: '',
-        uiniteCode: ''
+        nodeId: '', // 节点id
+        areaId: null,
+        labelId: [],
+        nodeType: 2,
+        organization: {
+          id: '',
+          parentId: '', // bindId
+          zipCode: '',
+          address: '',
+          ext02: '',
+          ext01: '',
+          type: null,
+          creditId: '',
+          removed: false,
+          phone: '',
+          systemType: null, // 1人大，2党委，4政府，8政协
+          name: '',
+          otherName: '',
+          shortName: '',
+          fax: ''
+        }
       },
       rules: {
-        name: [
+        'organization.name': [
           { required: true, message: '请输入单位名称', trigger: 'blur' }
         ],
-        enable: [
+        'organization.removed': [
           { required: true, message: '请选中启用状态', trigger: 'blur' }
-        ],
-        unitParent: [
-          { required: true, message: '上级单位不能为空', trigger: 'blur' }
         ]
       },
-      options: []
+      systemTypeOption: [
+        {
+          label: '人大',
+          value: 1
+        }, {
+          label: '党委',
+          value: 2
+        }
+      ]
     }
   },
   mounted () {
     this.setBreadcrumbTitle()
   },
   created () {
-    this.getDetail()
+    this.getNodeInfo()
   },
   beforeRouteUpdate (to, from, next) {
     next()
     this.setBreadcrumbTitle()
   },
   methods: {
-    getDetail () {
-      let data = {
-        id: this.$route.params.id || this.$route.params.parentId
-      }
-      this.loading = true
-      api[urlNames['findViewNodeById']](data).then((res) => {
-        console.log(999999, res.data)
-        this.loading = false
-        let backId = ''
-        if (this.$route.name === 'UnitAdd') {
-          this.ruleForm.parentName = res.data.name
-          backId = res.data.id
-        } else {
-          this.ruleForm.name = res.data.name
-          this.ruleForm.parentName = res.data.parentName
-          this.ruleForm.enable = res.data.removed
-          backId = res.data.parentId
+    getNodeInfo () {
+      api[urlNames['findViewNodeById']]({
+        id: this.$route.params.parentId || this.$route.params.id
+      }).then((res) => {
+        this.bindId = res.data.bindId
+        this.ruleForm.organization.parentId = res.data.bindId
+        this.ruleForm.nodeId = res.data.id
+        if (res.data.bindId) {
+          this.getDetail()
         }
-        /* if (this.ruleForm.parentId === '-1') {
-          this.backId = this.ruleForm.id
-        } else {
-          this.backId = this.ruleForm.parentId
-        } */
+        this.parentName = res.data.name
         this.pushBreadcrumb({
           name: this.breadcrumbTitle,
           parent: {
             name: 'OrganizationContent',
             params: {
-              nodeId: backId
+              nodeId: this.$route.params.parentId || this.$route.params.id
             },
             query: {
               type: 'back'
@@ -207,13 +213,50 @@ export default {
         this.$message.error(`没有内容`)
       })
     },
+    getDetail () {
+      let data = {
+        id: this.bindId
+      }
+      this.loading = true
+      api[urlNames['findOrganizationById']](data).then((res) => {
+        console.log('------', res.data)
+        this.loading = false
+        if (this.$route.name === 'UnitAdd') {
+          /* this.parentName = res.data.name
+          this.ruleForm.nodeId = res.data.id
+          this.ruleForm.nodeId = res.data.id
+          this.ruleForm.organization.parentId = res.data.id
+          this.ruleForm.organization.id = '' */
+        } else {
+          this.ruleForm.areaId = res.data.areaId
+          this.ruleForm.labelId = res.data.labelId
+          this.ruleForm.organization.address = res.data.address
+          this.ruleForm.organization.name = res.data.name
+          this.ruleForm.organization.address = res.data.address
+          this.ruleForm.nodeId = res.data.parentId
+          // this.ruleForm.organization.parentId = ''
+          this.ruleForm.organization.id = res.data.id
+          this.ruleForm.organization.removed = res.data.removed
+          this.ruleForm.organization.fax = res.data.fax
+          this.ruleForm.organization.phone = res.data.phone
+          this.ruleForm.organization.shortName = res.data.shortName
+          this.ruleForm.organization.systemType = res.data.systemType
+          this.ruleForm.organization.type = res.data.type
+          this.ruleForm.organization.zipCode = res.data.zipCode
+        }
+      }, (error) => {
+        this.$message.error(`没有内容`)
+      })
+    },
     getClose (val) {
       this.openSearchFlag = val
     },
     // 获取选中的标签
     getTag (val) {
+      console.log('标签', val)
       val.forEach((item) => {
-        this.tags.push(item)
+        this.tagsName.push(item.split('|')[1])
+        this.ruleForm.labelId.push(item.split('|')[0])
       })
     },
     setBreadcrumbTitle () { // 设置面包屑title
@@ -231,41 +274,33 @@ export default {
         this.breadcrumbTitle = '单位详情'
       }
     },
+    getSystemType (el) {
+      this.ruleForm.organization.systemType = el
+    },
+    getType (el) {
+      this.ruleForm.organization.type = el
+    },
+    getAreaId (val) {
+      this.ruleForm.areaId = val
+    },
     submitForm (ruleForm) {
       this.$refs[ruleForm].validate((valid) => {
         if (valid) {
-          const data = {
-            reason: this.ruleForm.reason,
-            nodeId: this.ruleForm.parentId,
-            areaId: '2400',
-            labelId: [],
-            organization: {
-              nodeType: 3,
-              zipCode: this.ruleForm.zipCode, // 邮编
-              address: this.ruleForm.addr,
-              ext01: this.ruleForm.ext01,
-              ext02: this.ruleForm.ext02,
-              type: 1,
-              creditId: this.ruleForm.uiniteCode,
-              removed: this.ruleForm.enable,
-              phone: this.ruleForm.tel,
-              systemType: this.ruleForm.system,
-              id: this.$route.params.id,
-              parentId: this.ruleForm.parentId || this.$route.params.parentId,
-              name: this.ruleForm.name,
-              otherName: this.ruleForm.shortName,
-              enable: true,
-              fax: this.ruleForm.fax
-            }
-          }
-          api[urlNames['createOrganization']](data).then((res) => {
+          api[urlNames['createOrganization']](this.ruleForm).then((res) => {
             this.$message.success(`添加成功`)
-            console.log(res)
+            this.goBack()
           }, (error) => {
 
           })
         }
       })
+    },
+    goBack () {
+      let breadcrumb = [...this.app.pageBreadcrumb]
+      let currentPage = breadcrumb[breadcrumb.length - 1]
+      breadcrumb.splice(-1, 1)
+      this.SET_PAGE_BREADCRUMB(breadcrumb)
+      this.$router.push(currentPage.parent)
     }
   }
 }

@@ -20,9 +20,8 @@ export default {
         lazy: true,
         children: 'children',
         label: 'name',
-        value: 'id',
+        value: null,
         lazyLoad (node, resolve) {
-          console.log(node)
           if (!node.data) {
             return
           }
@@ -31,6 +30,9 @@ export default {
               parentId: node.data.id
             }).then((res) => {
               resolve(res.data)
+              this.value = node.data.id
+              this.$emit('getAreaId', this.value)
+              console.log(this.value)
             })
           }
         }

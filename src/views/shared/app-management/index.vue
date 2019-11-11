@@ -1,11 +1,12 @@
 <template>
 <div class="app-management">
   <div class="create-app">
-    <el-button type="primary" @click="createApp">创建应用</el-button>
+    <el-button class="create-btn" type="primary" @click="createApp">创建应用</el-button>
   </div>
   <div class="table">
     <el-table
       ref="singleTable"
+      border
       :data="appList"
       highlight-current-row
       style="width: 100%">
@@ -56,7 +57,6 @@
         align="center"
         width="140">
         <template slot-scope="scope">
-          <el-button @click="handleClick(scope.row)" type="text" size="small">查看详情</el-button>
           <el-button @click="handleClick(scope.row)" type="text" size="small">编辑</el-button>
         </template>
       </el-table-column>

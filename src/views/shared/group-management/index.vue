@@ -9,12 +9,13 @@
             :value="item.value">
           </el-option>
         </el-select>
-        <el-button type="primary" @click="openDialog">创建分组</el-button>
+        <el-button class="create-btn" type="primary" @click="openDialog">创建分组</el-button>
       </div>
       <div class="table">
         <el-table
           ref="singleTable"
           :data="groupList"
+          border
           highlight-current-row
           @current-change="handleCurrentChange"
           style="width: 100%">
@@ -48,9 +49,10 @@
           <el-table-column
             label="操作"
             align="center"
-            width="140">
+            width="180">
             <template slot-scope="scope">
-              <el-button @click="handleClickToDetail(scope.row)" type="text" size="small">编辑</el-button>
+              <el-button @click="handleClickToDetail(scope.row)" type="text" size="small">编辑成员</el-button>
+              <el-button @click="handleEditGroup(scope.row)" type="text" size="small">编辑分组</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -64,7 +66,7 @@
           :total="total">
         </el-pagination>
       </div>
-      <create-group-dialog @close="close" :creategroupdialogVisible="creategroupdialogVisible"></create-group-dialog>
+      <create-group-dialog :groupFrom="groupFrom" @close="close" :creategroupdialogVisible="creategroupdialogVisible"></create-group-dialog>
     </div>
 </template>
 
@@ -83,6 +85,12 @@ export default {
       creategroupdialogVisible: false,
       currentPage: 1,
       pageSize: 10,
+      groupFrom: {
+        ownerType: 1, // 1用户、2部门、3单位
+        name: '',
+        description: '',
+        removed: true
+      },
       type: '',
       options: [{
         value: '1',
@@ -119,6 +127,21 @@ export default {
     // 打开创建弹窗
     openDialog () {
       this.creategroupdialogVisible = true
+    },
+    // 编辑分组
+    handleEditGroup (row) {
+      this.creategroupdialogVisible = true
+      this.findGroupDetail(row.id)
+    },
+    // 获取分组详情
+    findGroupDetail (id) {
+      api[urlNames['findGroupById']]({
+        id: id
+      }).then((res) => {
+        if (res.status === 0) {
+          this.groupFrom = res.data
+        }
+      })
     },
     handleCurrentChange (val) {
       this.currentRow = val

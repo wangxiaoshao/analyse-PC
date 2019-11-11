@@ -1,12 +1,13 @@
 <template>
   <div class="view-management">
-    <div>
+    <div class="create-btn">
       <el-button type="primary" @click="createView">创建视图</el-button>
     </div>
     <div class="table">
       <el-table
         ref="singleTable"
         :data="viewList"
+        border
         highlight-current-row
         @current-change="handleCurrentChange"
         style="width: 100%">
@@ -22,12 +23,12 @@
           align="center"
           width="120">
         </el-table-column>
-<!--        <el-table-column-->
-<!--          property="name"-->
-<!--          label="视图ID"-->
-<!--          align="center"-->
-<!--          width="120">-->
-<!--        </el-table-column>-->
+        <el-table-column
+          property="id"
+          label="视图ID"
+          align="center"
+          width="120">
+        </el-table-column>
         <el-table-column
           property="time"
           align="center"
