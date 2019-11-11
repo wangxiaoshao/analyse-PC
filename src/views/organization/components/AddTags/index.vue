@@ -1,7 +1,7 @@
 <template>
   <el-dialog title="选择标签" :visible.sync="openSearchFlag" :showClose="false">
     <i class="el-icon-close tag-close" @click="close"></i>
-    <el-input placeholder="请输入内容" v-model="tagKeyWord" @change="searchTag(addInfo.type,tagKeyWord)" class="input-with-select">
+    <el-input placeholder="请输入内容" v-model="tagKeyWord" @change="searchTag(1,tagKeyWord)" class="input-with-select">
       <el-button slot="append" icon="el-icon-search"></el-button>
     </el-input>
     <div class="tag-content">
@@ -53,6 +53,7 @@ export default {
     },
     // 搜索标签
     searchTag (type, name) {
+      alert(type,name)
       api[urlNames['findLabelByType']]({
         type: type,
         name: name

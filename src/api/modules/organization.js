@@ -193,4 +193,18 @@ export default {
       'Content-Type': 'application/json'
     }
   },
+  [urlNames.getAreaList]: {
+    type: 'get',
+    url: '/api/jg_manage/organ/findAreaList',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    serve: 'organizationManagePC',
+    mock: '/findAreaList.json' // development模式下，本地mock数据
+  },
+  [urlNames.findLabelByType]: {
+    type: 'get',
+    url: '/api/jg_manage/label/findLabelByType',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    serve: 'organizationManagePC',
+    mock: '/findLabelByType.json' // development模式下，本地mock数据
+  }
 }

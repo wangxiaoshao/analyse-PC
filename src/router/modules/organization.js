@@ -50,7 +50,7 @@ export default [
     component: Organization,
     children: [
       {
-        path: 'organization-content/:nodeId/:bindId',
+        path: 'organization-content/:nodeId',
         name: 'OrganizationContent',
         component: OrganizationContent
       }, {

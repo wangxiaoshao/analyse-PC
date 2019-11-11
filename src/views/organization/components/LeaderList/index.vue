@@ -6,16 +6,22 @@
       @closeselectMenmber="closeselectMenmber">
     </candidate-dialog>
     <div class="button-wrap">
-      <el-button type="primary" v-if="mainList" @click="addMainLeader(true,true)">添加主要领导</el-button>
+      <el-button type="primary" v-if="mainList" @click="addMainLeader(true,true,1)">添加主要领导</el-button>
     </div>
     <div class="list-ground">
       <el-table
-        :data="mainList"
+        :data="mainLeaderList"
+        v-loading="loading"
         style="width: 100%">
         <el-table-column
           prop="date"
           label="日期"
           width="180">
+        </el-table-column>
+        <el-table-column label="头像">
+          <template>
+            <span></span>
+          </template>
         </el-table-column>
         <el-table-column
           prop="name"
@@ -29,9 +35,6 @@
         <el-table-column prop="act" label="操作" width="100" align="center">
           <template slot-scope="scope">
             <el-button @click.native="openEditNode(scope.row)" type="text" size="small">
-              修改
-            </el-button>
-            <el-button @click.native="openEditNode(scope.row)" type="text" size="small">
               删除
             </el-button>
           </template>
@@ -43,17 +46,16 @@
     </div>
     <div class="list-ground">
       <div class="button-wrap">
-        <el-button type="primary" @click="addMainLeader(false,true)">添加领导</el-button>
-        <el-button @click="sortFlag = true">调整排序</el-button>
+        <el-button type="primary" @click="addMainLeader(false,true,2)">添加领导</el-button>
+       <!-- <el-button @click="sortFlag = true">调整排序</el-button>-->
       </div>
-      <div class="sort-do" v-if="sortFlag">
+      <!--<div class="sort-do" v-if="sortFlag">
         按住左键上下拖动调整排序
         <a >保存</a>
         <a  @click="sortFlag = false">取消</a>
-      </div>
+      </div>-->
       <el-table
-        v-loading="loading"
-        :data="list"
+        :data="otherLeaderList"
         stripe
         border
         highlight-current-row
@@ -101,20 +103,29 @@ export default {
   data () {
     return {
       sortFlag: false,
-      mainList: [],
       list: [],
+      userVoList: [],
       personList: [],
       selectDialog: {
-        selectMenmberTitle: '选人组件', // 选人组件标题
+        selectMenmberTitle: '选择单位', // 选人组件标题
         selectMenmberFlag: false, // 显示弹窗，
         isAllData: true, // 是否需完整数据-默认为不需要（false，只包含用户id）
-        notOnlyPerson: false, // 是否只选人，默认为false（只选人），true可以选择单位和部门
+        notOnlyPerson: true, // 是否只选人，默认为false（只选人），true可以选择单位和部门
         isSingleSelect: false // 是否为单选框  false为多选（默认），true为单选
-      }
+      },
+      learderType: 1
     }
   },
   created () {
     this.getGrid()
+  },
+  computed: {
+    mainLeaderList () {
+      return this.list.find(column => +column.type === 1)
+    },
+    otherLeaderList () {
+      return this.list.filter(column => +column.type !== 2)
+    }
   },
   methods: {
     getGrid () {
@@ -126,7 +137,7 @@ export default {
       api[urlNames['findLeaderList']](data).then((res) => {
         this.loading = false
         this.list = res.data
-        console.log(33, this.list)
+        console.log(33, res.data)
       }, () => {
         this.loading = false
         this.list = []
@@ -134,18 +145,19 @@ export default {
     },
     // 选人弹窗组件返回的人员信息
     dialogReturnMembersInfo (data) {
-      console.log(JSON.parse(JSON.stringify(data)))
+      // 主要领导1，其他领导2
       if (!JSON.parse(JSON.stringify(data)).length) {
+        alert(JSON.parse(JSON.stringify(data))[0].uid)
         let obj = {
-          uid: JSON.parse(JSON.stringify(data)).uid,
-          leaderType: JSON.parse(JSON.stringify(data)).duty
+          uid: JSON.parse(JSON.stringify(data))[0].uid,
+          leaderType: this.learderType
         }
         this.personList.push(obj)
       } else {
         JSON.parse(JSON.stringify(data)).forEach((item) => {
           let obj = {
             uid: item.uid,
-            leaderType: item.duty
+            leaderType: this.learderType
           }
           this.personList.push(obj)
         })
@@ -155,7 +167,7 @@ export default {
         api[urlNames['createLeader']]({
           nodeId: this.contentId,
           nodeType: this.nodeInfo.nodeType,
-          calloutUser: this.personList
+          leaders: this.personList
         }).then((res) => {
           this.$message.success(`添加成功`)
           this.getGrid()
@@ -170,11 +182,12 @@ export default {
       this.selectDialog.selectMenmberFlag = false
     },
     // 打开选人组件
-    addMainLeader (single, all) {
+    addMainLeader (single, all, learderType) {
       this.selectDialog.selectMenmberFlag = true
       this.selectDialog.isSingleSelect = single
-      this.selectDialog.notOnlyPerson = false
+      this.selectDialog.notOnlyPerson = true
       this.selectDialog.isAllData = all
+      this.learderType = learderType
     }
   },
   watch: {

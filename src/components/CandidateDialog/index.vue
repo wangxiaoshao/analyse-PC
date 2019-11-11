@@ -208,10 +208,10 @@ export default {
       if (this.seleceDialog.notOnlyPerson) {
         this.findcheckNodeTree(node.id)
       }
-      // （1:分类结点、2:部门结点、3:单位结点）
-      if (node.nodeType === 2) {
+      // （1:分类结点、3:部门结点、2:单位结点）
+      if (node.nodeType === 3) {
         this.findDepartmentMembers(node.bindId)
-      } else if (node.nodeType === 3) {
+      } else if (node.nodeType === 2) {
         this.findOrganizationMembers(node.bindId)
       }
     },

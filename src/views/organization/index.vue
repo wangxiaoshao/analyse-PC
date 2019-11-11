@@ -52,8 +52,7 @@ export default {
       this.$router.push({
         name: 'OrganizationContent',
         params: {
-          nodeId: id,
-          bindId: bindId
+          nodeId: id
         }
       })
     }
