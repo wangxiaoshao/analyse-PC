@@ -10,15 +10,11 @@
               :class="activeColor==2?'top-active':''"
               @click="onChange(2)"
             >其他单位通讯录</div>
-            <!-- <el-radio-group v-model="tabPosition" @change="communications">
-              <el-radio-button label="thisUnit" autofocus="true">本单位通讯录</el-radio-button>
-              <el-radio-button label="OtherUnits">其他单位通讯录</el-radio-button>
-            </el-radio-group>-->
           </div>
           <div class="site-scroll" style="padding-right: 10px;margin-top:-20px;">
             <search-choose :defaultNodeId="defaultNodeId"></search-choose>
             <div class="tree-content">
-              <address-book-tree></address-book-tree>
+              <address-book-tree :ThisUnit="ThisUnit"></address-book-tree>
             </div>
           </div>
         </el-col>
@@ -52,6 +48,7 @@
 import handleTable from '@src/mixins/handle-table'
 import addressBookTree from './components/Tree/index'
 import searchChoose from './components/Choose/index'
+import { api, urlNames } from '@src/api'
 export default {
   name: 'AddressBook',
   mixins: [handleTable],
@@ -64,18 +61,15 @@ export default {
       defaultNodeId: null,
       activeColor: 1,
 
+      ThisUnit: {},
+      userId: "1111111111111111111",
     }
   },
   computed: {
-    scrollStyle () {
-      return {
-        height: (this.app.windowHeight - 123) + 'px',
-        width: '100%'
-      }
-    }
+
   },
   created () {
-
+    this.getAddressBook();
   },
   methods: {
     getDefault (val) {
@@ -86,19 +80,21 @@ export default {
      */
     onChange (e) {
       this.activeColor = e;
-      // if(e===1){
-      //   this.activeColor=e;
-      // }else if(e===2){
-      // }
+      if (e === 1) {
+        this.getAddressBook();
+      } else if (e === 2) {
+        console.log(e)
+      }
     },
-    // getAddressBook(){
-    //       api[urlNames['getAddressBoookList']]({
-    //     parentId: parentId,
-    //     getDataType: 2 //1:只查人员，2:查人员和部门
-    //   }).then(res => {
-    //     // success callback（）
-    //   })
-    // },
+    getAddressBook () {
+      api[urlNames['getAddressBookList']]({
+        uid: this.userId,
+      }).then(res => {
+        this.ThisUnit = res.data;
+      }).catch(err => {
+        console.log(err)
+      })
+    },
 
     toUnit () {
       alert(1)

@@ -25,7 +25,7 @@
 
 #### 第一步：新增一个名字为department的api模块
 
-在api->modules下新增department.js
+在api->modules下新增department.js 
 
 ```
 import urlNames from '../url-names'; // 必须引入url-names，vue文件才能通过名字找到该请求

@@ -99,17 +99,6 @@ export default {
     mock: '/findMemberList.json'
   },
 
-  /*
-     * 通讯录
-     * */
-  [urlNames.getAddressBookList]: {
-    type: 'get', // 请求类型
-    url: '/api/jg_txl/txl/departmentTxl', // 请求地址
-    keepOriginResponse: true, // 返回数据是否保留后端response数据格式
-    showLoading: true, // 该请求是否需要全局loading
-    serve: 'organizationManagePC', // 该请求对应服务端，服务端名字在url-prefix中配置
-    mock: '/getAddressBookList.json' // development模式下，本地mock数据地址
-  },
 
   [urlNames.findOrgLabelList]: {
     type: 'get', // 请求类型
@@ -126,5 +115,5 @@ export default {
   ...organization,
   ...shared, // 共享视图
   ...system, // 系统管理
-  ...addressBook
+  ...addressBook,//通讯录
 }

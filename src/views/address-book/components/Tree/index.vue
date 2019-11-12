@@ -14,19 +14,7 @@
 </template>
 <script>
 export default {
-  watch: {
-    filterText (val) {
-      this.$refs.tree.filter(val);
-    }
-  },
-
-  methods: {
-    filterNode (value, data) {
-      if (!value) return true;
-      return data.label.indexOf(value) !== -1;
-    }
-  },
-
+  props: ['ThisUnit'],
   data () {
     return {
       filterText: '',
@@ -65,11 +53,32 @@ export default {
           label: '二级 3-2'
         }]
       }],
+
       defaultProps: {
         children: 'children',
         label: 'label'
       }
     };
-  }
+  },
+  created () {
+
+    this.IntoList();
+  },
+  methods: {
+    IntoList () {
+      console.log(this.ThisUnit);
+    },
+
+
+    filterNode (value, data) {
+      if (!value) return true;
+      return data.label.indexOf(value) !== -1;
+    }
+  },
+  watch: {
+    filterText (val) {
+      this.$refs.tree.filter(val);
+    }
+  },
 };
 </script>
