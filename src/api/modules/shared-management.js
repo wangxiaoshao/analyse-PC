@@ -158,12 +158,9 @@ export default {
    分组详情
    */
   [urlNames.findGroupById]: {
-    type: 'post',
+    type: 'get',
     url: '/api/group/findGroupById',
     serve: 'organizationManagePC',
-    headers: {
-      'Content-Type': 'application/json'
-    },
     keepOriginResponse: false
   },
   /**
@@ -192,12 +189,22 @@ export default {
    删除分组成员
    */
   [urlNames.deleteGroupMembers]: {
-    type: 'post',
+    type: 'get',
     url: '/api/group/member/removeMembers',
     serve: 'organizationManagePC',
     headers: {
       'Content-Type': 'application/json'
     },
+    showLoading: true,
+    keepOriginResponse: false
+  },
+  /**
+   修改分组
+   */
+  [urlNames.renameGroup]: {
+    type: 'post',
+    url: '/api/group/renameGroup',
+    serve: 'organizationManagePC',
     showLoading: true,
     keepOriginResponse: false
   }

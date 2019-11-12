@@ -2,7 +2,6 @@
   <div class="tags-mnagement">
     <div class="operate">
       <el-select width="200px" @change="selectSearch" v-model="value" placeholder="请选择">
-        <el-option label="全部" :value="0"></el-option>
         <el-option label="单位标签" :value="1"></el-option>
         <el-option label="部门标签" :value="2"></el-option>
         <el-option label="个人标签" :value="3"></el-option>
@@ -37,6 +36,8 @@
       </span>
       </el-tree>
     </div>
+<!-- fa   fa-tags-->
+<!--    user-circle-o-->
     <create-tag-form @updateLabelLiat="updateLabelLiat" @close="close" :flagdata="flagdata" :createData="createData"
                      :createTagDialogVisible="createTagDialogVisible"></create-tag-form>
   </div>
@@ -109,9 +110,27 @@ export default {
     },
     // 删除节点
     deleteLabel (id) {
-      api[urlNames['deleteLabel']]({
-        id: id + ''
-      }).then((res) => {
+      this.$confirm('此操作将永久删除该标签, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        api[urlNames['deleteLabel']]({
+          id: id
+        }).then((res) => {
+          if (res.status === 0) {
+            this.findLabelList('-1', '')
+            this.$message({
+              type: 'success',
+              message: '删除标签成功'
+            })
+          }
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
       })
     },
     selectSearch () {
