@@ -1,24 +1,29 @@
 <template>
   <div class="person-manage-content">
-    <add-tags :tagsFlag="openAddTagFlag" @getFlag="getFlag"></add-tags>
+   <!-- <add-tags :tagsFlag="openAddTagFlag" @getFlag="getFlag"></add-tags>-->
     <!--人员管理-->
-    <el-form :model="personFrom" :disabled="disabledFlag" :rules="rules" ref="personFrom" label-width="100px" class="demo-personFrom" style="width: 100%">
+    <el-form :model="personFrom" :disabled="disabledFlag" ref="personFrom" label-width="100px" class="demo-personFrom" style="width: 100%">
       <el-menu class="el-menu-demo" mode="horizontal">
         <el-menu-item>基础信息</el-menu-item>
       </el-menu>
       <el-row class="row-item">
         <el-col :span="12">
           <el-form-item label="姓名" prop="name">
-            <el-input v-model="personFrom.name"></el-input>
+            <el-autocomplete
+              v-model="personFrom.name"
+              :fetch-suggestions="querySearchAsync"
+              placeholder="请输入内容"
+              @select="handleSelect"
+            ></el-autocomplete>
           </el-form-item>
-          <el-form-item label="职务" prop="dutyName">
+         <!-- <el-form-item label="职务" prop="dutyName">
             <el-select v-model="personFrom.dutyName" placeholder="请选择职务">
               <el-option label="区域一" value="shanghai"></el-option>
               <el-option label="区域二" value="beijing"></el-option>
             </el-select>
-          </el-form-item>
+          </el-form-item>-->
         </el-col>
-        <el-col :span="12">
+       <!-- <el-col :span="12">
           <el-form-item label="手机号" prop="mobile">
             <el-input v-model="personFrom.mobile"></el-input>
           </el-form-item>
@@ -28,12 +33,12 @@
               <el-option label="区域二" value="beijing"></el-option>
             </el-select>
           </el-form-item>
-        </el-col>
+        </el-col>-->
       </el-row>
-      <el-menu class="el-menu-demo" mode="horizontal">
+    <!--  <el-menu class="el-menu-demo" mode="horizontal">
         <el-menu-item>完善其他信息</el-menu-item>
-      </el-menu>
-      <el-row class="row-item">
+      </el-menu>-->
+      <!--<el-row class="row-item">
         <el-col :span="12">
           <el-form-item label="头像">
             <el-upload
@@ -51,9 +56,8 @@
             <el-input v-model="personFrom.mobile2"></el-input>
           </el-form-item>
           <el-form-item label="民族" prop="nation">
-            <el-select v-model="personFrom.nation" placeholder="请选择民族">
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
+            <el-select placeholder="请选择民族">
+              <el-option></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="所属党派" prop="politicalParty">
@@ -143,12 +147,13 @@
             <el-input type="textarea" v-model="personFrom.reason"></el-input>
           </el-form-item>
         </el-col>
-      </el-row>
+      </el-row>-->
     </el-form>
   </div>
 </template>
 
 <script>
+import { api, urlNames } from '@src/api'
 import addTags from '../AddTags/index'
 export default {
   props: ['disabledFlag', 'isShowEditFlag'],
@@ -158,6 +163,10 @@ export default {
   data () {
     return {
       openAddTagFlag: false,
+      option: [],
+      restaurants: [],
+      state: '',
+      timeout: null,
       personFrom: {
         name: '',
         dutyName: '',
@@ -184,7 +193,61 @@ export default {
       tags: []
     }
   },
+  created () {
+    this.init()
+  },
+  computed: {
+
+  },
+  watch: {
+    'personFrom.name': {
+      handler (val) {
+        if (val.length > 1) {
+          this.restaurants = this.loadAll()
+        }
+      }
+    }
+  },
   methods: {
+    init () {
+      // this.getDicList(28) // 民族
+    },
+    loadAll () {
+      api[urlNames['findUserByParams']]({
+        name: this.personFrom.name
+      }).then((res) => {
+        this.restaurants = res.data
+      }, (error) => {
+
+      })
+    },
+    querySearchAsync (queryString, cb) {
+      let restaurants = this.restaurants
+      let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants
+
+      clearTimeout(this.timeout)
+      this.timeout = setTimeout(() => {
+        cb(results)
+      }, 3000 * Math.random())
+    },
+    createStateFilter (queryString) {
+      return (state) => {
+        return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0)
+      }
+    },
+    handleSelect (item) {
+      console.log(item)
+    },
+    // 字典列表
+    /* getDicList (id) {
+      api[urlNames['dicList']]({
+        id: id
+      }).then((res) => {
+        this.option = res.data
+        console.log(this.option)
+      }, (error) => {
+      })
+    }, */
     handleAvatarSuccess (res, file) {
       this.imageUrl = URL.createObjectURL(file.raw)
     },

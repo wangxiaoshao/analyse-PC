@@ -25,33 +25,34 @@
           <el-form-item label=" 上级部门" prop="parentDep">
             <el-input v-model="parentDep" :disabled="true"></el-input>
           </el-form-item>
+          <el-form-item label=" 启用状态" prop="removed">
+            <el-switch v-model="ruleForm.department.removed"></el-switch>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+         <!-- <el-form-item label="部门简称" prop="shortName">
+            <el-input v-model="ruleForm.department.shortName"></el-input>
+          </el-form-item>-->
           <el-form-item
             label="部门电话"
             prop="phone"
           >
             <el-input v-model="ruleForm.department.phone"></el-input>
           </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="部门简称" prop="shortName">
-            <el-input v-model="ruleForm.department.shortName"></el-input>
-          </el-form-item>
           <el-form-item label="上级单位" prop="orgName">
             <el-input v-model="orgName" :disabled="true"></el-input>
-          </el-form-item>
-          <el-form-item label=" 启用状态" prop="removed">
-            <el-switch v-model="ruleForm.department.removed"></el-switch>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-form-item label="单位标签">
           <el-tag
-            v-for="tag in tagsName"
+            v-for="(tag,index) in tagsName"
             :key="tag"
             type="info"
             closable
             :title="tag"
+            @close="removeTag(tag,index)"
           >
             {{tag}}
           </el-tag>
@@ -167,7 +168,7 @@ export default {
         if (res.data.bindId && res.data.nodeType === 3) {
           this.getDetail()
           if (this.$route.name !== 'DepartmentAdd') {
-            this.findOrgLabelList()
+            this.findLabel(res.data.nodeType)
           }
         }
         this.parentName = res.data.name
@@ -215,9 +216,10 @@ export default {
       })
     },
     // 获取标签
-    findOrgLabelList () {
-      api[urlNames['findOrgLabelList']]({
-        orgId: this.bindId
+    findLabel (type) {
+      api[urlNames['findLabel']]({
+        id: this.bindId,
+        type: type
       }).then((res) => {
         res.data.forEach((item) => {
           this.tagsName.push(item.split('|')[1])
@@ -225,6 +227,10 @@ export default {
         })
       }, (error) => {
       })
+    },
+    removeTag (tag, index) {
+      this.tagsName.splice(index, 1)
+      this.ruleForm.labelId.splice(index, 1)
     },
     getClose (val) {
       this.openSearchFlag = val
@@ -263,7 +269,6 @@ export default {
       this.ruleForm.areaId = val
     },
     submitForm (ruleForm) {
-      console.log(3333333333, this.ruleForm)
       this.$refs[ruleForm].validate((valid) => {
         if (valid) {
           api[urlNames['createDepartment']](this.ruleForm).then((res) => {

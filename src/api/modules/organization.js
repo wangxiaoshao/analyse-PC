@@ -235,6 +235,13 @@ export default {
     url: '/api/jg_manage/system/dictList',
     keepOriginResponse: true, // 是否保留后端返回数据格式
     serve: 'organizationManagePC',
-    mock: '/findOrganizationById.json' // development模式下，本地mock数据
+    mock: '/dicList.json' // development模式下，本地mock数据
+  },
+  [urlNames.findUserByParams]: {
+    type: 'get',
+    url: '/api/jg_manage/user/findUserByParams',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    serve: 'organizationManagePC',
+    mock: '/findUserByParams.json' // development模式下，本地mock数据
   }
 }

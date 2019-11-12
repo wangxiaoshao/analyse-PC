@@ -58,6 +58,7 @@ export default {
   createLabel: 'createLabel', //  创建标签
   deleteLabel: 'deleteLabel', // 删除标签
   findOrgLabelList: 'findOrgLabelList', // 根据单位id获取标签
+  findLabel: 'findLabel',
   getGroupList: 'getGroupList', // 获取分组列表
   createGroup: 'createGroup', // 创建分组
   findGroupById: 'findGroupById',

@@ -13,9 +13,9 @@
     </el-dialog>
     <div class="organization-wrap" v-if="content[0]">
       <div class="organization-info">
-        <i v-if="content[0].nodeType === 1" class="menu-icon fa fa-user-o big-icon" style="margin: 0px 5px;"></i>
-        <i v-if="content[0].nodeType === 2" class="menu-icon fa fa-building-o big-icon" style="margin: 0px 5px;"></i>
-        <i v-if="content[0].nodeType === 3" class="menu-icon fa fa-institution big-icon" style="margin: 0px 5px;"></i>
+        <i v-if="content[0].nodeType === 1" class="imenu-icon fa fa-sitemap big-icon" style="margin: 0px 5px;"></i>
+        <i v-if="content[0].nodeType === 2" class="imenu-icon fa fa-building-o big-icon" style="margin: 0px 5px;"></i>
+        <i v-if="content[0].nodeType === 3" class="imenu-icon fa fa-institution big-icon" style="margin: 0px 5px;"></i>
         <span class="organization-value" v-html="content[0].name"></span>
         <el-button>日志</el-button>
       </div>
@@ -248,8 +248,8 @@ export default {
         this.nodeInfo.nodeType = res.data.nodeType
         this.nodeInfo.parentId = res.data.id
         this.loading = false
-        if (this.content[0].bindId && this.content[0].nodeType === 2) {
-          this.findOrgLabelList()
+        if (this.content[0].bindId) {
+          this.findLabel(this.content[0].nodeType)
         }
         if (this.content[0].nodeType === 1) {
           this.showAddNodeFlag = true
@@ -270,9 +270,10 @@ export default {
         this.$message.error(`没有内容`)
       })
     },
-    findOrgLabelList () {
-      api[urlNames['findOrgLabelList']]({
-        orgId: this.content[0].bindId
+    findLabel (type) {
+      api[urlNames['findLabel']]({
+        id: this.content[0].bindId,
+        type: type
       }).then((res) => {
         this.labelList = res.data
         console.log(res.data)

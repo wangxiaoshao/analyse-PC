@@ -62,7 +62,7 @@ export default {
         this.id = node.data.id
         setTimeout(() => {
           resolve(this.treeSonList)
-        }, 500)
+        }, 800)
         this.treeSonList = []
       }
     },
