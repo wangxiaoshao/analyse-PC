@@ -1,26 +1,11 @@
 <template>
   <div class="form-content" v-loading="loading">
-    <el-dialog title="选择标签" :visible.sync="openAddTagFlag">
-      <el-input placeholder="请输入内容" v-model="tagKeyWord" class="input-with-select">
-        <el-button slot="append" icon="el-icon-search"></el-button>
-      </el-input>
-      <div class="tag-content">
-        <el-checkbox-group
-          v-model="checkTagGroup">
-          <el-checkbox
-            v-for="item in searchTags"
-            border
-            :label="item.name"
-            :title="item.name"
-            :key="item.name"
-          >{{item.name}}</el-checkbox>
-        </el-checkbox-group>
-      </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="openAddTagFlag = false">取 消</el-button>
-        <el-button type="primary" @click="getCheckTags">确 定</el-button>
-      </span>
-    </el-dialog>
+    <search-lable
+      :openSearchFlag="openSearchFlag"
+      :addInfo="addInfo"
+      @close="getClose"
+      @getTag="getTag"
+    ></search-lable>
     <el-form :model="ruleForm" :disabled="disabledFlag" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
       <div class="detail-title">
         <i class="menu-icon fa fa-sitemap" style="margin: 0px 5px;"></i>部门信息
@@ -28,69 +13,48 @@
       <el-menu class="el-menu-demo" mode="horizontal">
         <el-menu-item index="1">基础信息</el-menu-item>
       </el-menu>
-     <el-row>
-       <el-col :span="12">
-         <el-form-item label="部门名称" prop="name">
-           <el-input v-model="ruleForm.name"></el-input>
-         </el-form-item>
-         <el-form-item label="部门地址" prop="addr">
-           <el-input v-model="ruleForm.addr"></el-input>
-         </el-form-item>
-         <el-form-item label="传真号码" prop="tel">
-           <el-input v-model="ruleForm.fax"></el-input>
-         </el-form-item>
-         <el-form-item label="统一部门信用编码" prop="uiniteCode">
-           <el-input v-model="ruleForm.uniteCode" :disabled="true"></el-input>
-         </el-form-item>
-         <el-form-item label=" 所属单位" prop="parent">
-           <el-input v-model="ruleForm.parent" :disabled="true"></el-input>
-         </el-form-item>
-         <el-form-item label="所属类型" prop="type">
-           <el-select v-model="ruleForm.type" placeholder="请选择所属类型">
-             <el-option label="区域一" value="shanghai"></el-option>
-             <el-option label="区域二" value="beijing"></el-option>
-           </el-select>
-         </el-form-item>
-       </el-col>
-       <el-col :span="12">
-         <el-form-item label="部门简称" prop="shortName">
-           <el-input v-model="ruleForm.shortName"></el-input>
-         </el-form-item>
-         <el-form-item label="部门电话" prop="tel">
-           <el-input v-model="ruleForm.tel"></el-input>
-         </el-form-item>
-         <el-form-item label="邮编" prop="zipCode">
-           <el-input v-model="ruleForm.zipCode"></el-input>
-         </el-form-item>
-         <el-form-item label="区域" prop="name">
-           <el-cascader
-             :options="options"
-             filterable
-           ></el-cascader>
-         </el-form-item>
-         <el-form-item label="所属系统" prop="system">
-           <el-select v-model="ruleForm.system" placeholder="请选择所属系统">
-             <el-option label="区域一" value="shanghai"></el-option>
-             <el-option label="区域二" value="beijing"></el-option>
-           </el-select>
-         </el-form-item>
-         <el-form-item label=" 启用状态" prop="able">
-           <el-switch v-model="ruleForm.able"></el-switch>
-         </el-form-item>
-       </el-col>
-     </el-row>
       <el-row>
-        <el-form-item label="部门标签">
+        <el-col :span="12">
+          <el-form-item
+            label="部门名称"
+            prop="name"
+          >
+            <el-input v-model="ruleForm.department.name"></el-input>
+          </el-form-item>
+          <el-form-item label=" 上级部门" prop="parentDep">
+            <el-input v-model="parentDep" :disabled="true"></el-input>
+          </el-form-item>
+          <el-form-item
+            label="部门电话"
+            prop="phone"
+          >
+            <el-input v-model="ruleForm.department.phone"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="部门简称" prop="shortName">
+            <el-input v-model="ruleForm.department.shortName"></el-input>
+          </el-form-item>
+          <el-form-item label="上级单位" prop="orgName">
+            <el-input v-model="orgName" :disabled="true"></el-input>
+          </el-form-item>
+          <el-form-item label=" 启用状态" prop="removed">
+            <el-switch v-model="ruleForm.department.removed"></el-switch>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-form-item label="单位标签">
           <el-tag
-            v-for="tag in tags"
-            :key="tag.name"
+            v-for="tag in tagsName"
+            :key="tag"
             type="info"
             closable
-            :title="tag.name"
+            :title="tag"
           >
-            {{tag.name}}
+            {{tag}}
           </el-tag>
-          <el-tag class="add-tag-btn" @click="openAddTagFlag =  true"><i class="el-icon-plus"></i>添加标签</el-tag>
+          <el-tag class="add-tag-btn" @click="openSearchFlag = true"><i class="el-icon-plus"></i>添加标签</el-tag>
         </el-form-item>
       </el-row>
       <el-menu class="el-menu-demo" mode="horizontal">
@@ -98,21 +62,22 @@
       </el-menu>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="部门介绍" prop="instruction">
-            <el-input type="textarea" v-model="ruleForm.instruction"></el-input>
+          <el-form-item label="单位介绍" prop="duty">
+            <el-input type="textarea" v-model="ruleForm.department.duty"></el-input>
           </el-form-item>
           <el-form-item label="申请原因" prop="reason">
             <el-input type="textarea" v-model="ruleForm.reason"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="部门职责" prop="duties">
-            <el-input type="textarea" v-model="ruleForm.duties"></el-input>
+          <el-form-item label="单位职责" prop="description">
+            <el-input type="textarea" v-model="ruleForm.department.description"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-form-item v-show="isShowEditFlag">
         <el-button type="primary" @click="submitForm('ruleForm')">{{submitHtml}}</el-button>
+        <el-button @click="goBack">取消</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -121,48 +86,165 @@
 <script>
 import { api, urlNames } from '@src/api'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
+import searchLable from '../components/AddTags/index'
 export default {
   name: 'index',
   mixins: [ handleBreadcrumb ],
+  components: { searchLable },
   data () {
     return {
+      openSearchFlag: false,
+      addInfo: {
+        searchFlag: false,
+        type: 2 // 1.单位，2、部门，3、人员
+      },
       loading: false,
       isShowEditFlag: true,
       disabledFlag: false,
       breadcrumbTitle: '添加节点',
       submitHtml: '保存',
       oldFrom: {},
-      openAddTagFlag: false,
       tagKeyWord: '',
-      searchTags: [], // 搜索标签结果
-      checkTagGroup: [], // 选中的标签
-      tags: [], // 提交的标签
+      tagsName: [],
+      orgName: '',
+      parentDep: '',
+      parentName: '',
+      bindId: '',
       ruleForm: {
-        name: '',
-        shortName: '',
-        addr: '',
-        tel: '',
-        fax: '',
-        zipCode: '',
-        uniteCode: '',
-        parent: '',
-        system: '',
-        type: '',
-        able: false,
-        instruction: '',
-        duties: '',
-        reason: ''
+        reason: '',
+        nodeId: '',
+        labelId: [],
+        department: {
+          removed: true,
+          phone: '',
+          name: '',
+          description: '',
+          duty: '',
+          id: '',
+          shortName: '',
+          parentId: '',
+          orgId: ''
+        }
       },
-      rules: {
-        name: [
-          { required: true, message: '请输入部门名称', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 1 到 5 个字符', trigger: 'blur' }
-        ]
-      },
-      options: []
+      systemTypeOption: [
+        {
+          label: '人大',
+          value: 1
+        }, {
+          label: '党委',
+          value: 2
+        }
+      ]
     }
   },
+  mounted () {
+    this.setBreadcrumbTitle()
+  },
+  created () {
+    this.init()
+  },
+  beforeRouteUpdate (to, from, next) {
+    next()
+    this.setBreadcrumbTitle()
+  },
   methods: {
+    init () {
+      api[urlNames['findViewNodeById']]({
+        id: this.$route.params.parentId || this.$route.params.id
+      }).then((res) => {
+        // this.bindId = res.data.bindId
+        // this.ruleForm.department.parentId = res.data.bindId
+        this.ruleForm.nodeId = res.data.id
+        if (res.data.nodeType === 2) { // 上级单位
+          this.parentDep = '无'
+          this.ruleForm.department.parentId = ''
+          this.orgName = res.data.name
+          this.ruleForm.department.orgId = res.data.bindId
+        }
+        if (res.data.nodeType === 3) { // 上级部门
+          this.orgName = '无'
+          this.ruleForm.department.orgId = ''
+          this.parentDep = res.data.parentDep
+          this.ruleForm.department.parentId = res.data.bindId
+        }
+        if (res.data.bindId && res.data.nodeType === 3) {
+          this.getDetail()
+          if (this.$route.name !== 'DepartmentAdd') {
+            this.findOrgLabelList()
+          }
+        }
+        this.parentName = res.data.name
+        this.pushBreadcrumb({
+          name: this.breadcrumbTitle,
+          parent: {
+            name: 'OrganizationContent',
+            params: {
+              nodeId: this.$route.params.parentId || this.$route.params.id
+            },
+            query: {
+              type: 'back'
+            }
+          }
+        })
+      }, (error) => {
+        this.$message.error(`没有内容`)
+      })
+    },
+    getDetail () {
+      let data = {
+        id: this.bindId
+      }
+      this.loading = true
+      api[urlNames['findDepartmentById']](data).then((res) => {
+        console.log('------', res.data)
+        this.loading = false
+        if (this.$route.name === 'DepartmentAdd') {
+        } else {
+          /* this.ruleForm.areaId = res.data.areaId
+          this.ruleForm.labelId = res.data.labelId
+          this.ruleForm.department.address = res.data.address
+          this.ruleForm.department.name = res.data.name
+          this.ruleForm.department.address = res.data.address
+          this.ruleForm.nodeId = res.data.parentId
+          // this.ruleForm.department.parentId = ''
+          this.ruleForm.department.id = res.data.id
+          this.ruleForm.department.removed = res.data.removed
+          this.ruleForm.department.fax = res.data.fax
+          this.ruleForm.department.phone = res.data.phone
+          this.ruleForm.department.shortName = res.data.shortName
+          this.ruleForm.department.systemType = res.data.systemType
+          this.ruleForm.department.type = res.data.type
+          this.ruleForm.department.zipCode = res.data.zipCode
+          this.ruleForm.department.ext01 = res.data.ext01
+          this.ruleForm.department.ext02 = res.data.ext02 */
+        }
+      }, (error) => {
+        this.$message.error(`没有内容`)
+      })
+    },
+    // 获取标签
+    findOrgLabelList () {
+      api[urlNames['findOrgLabelList']]({
+        orgId: this.bindId
+      }).then((res) => {
+        res.data.forEach((item) => {
+          this.tagsName.push(item.split('|')[1])
+          this.ruleForm.labelId.push(item.split('|')[0])
+        })
+      }, (error) => {
+      })
+    },
+    getClose (val) {
+      this.openSearchFlag = val
+    },
+    // 获取选中的标签
+    getTag (val) {
+      console.log('标签', val)
+      val.forEach((item) => {
+        this.tagsName.push(item.split('|')[1])
+        this.ruleForm.labelId.push(item.split('|')[0])
+      })
+    },
     setBreadcrumbTitle () { // 设置面包屑title
       if (this.$route.name === 'DepartmentEdit' || this.$route.name === 'DepartmentAdd') {
         this.isShowEditFlag = true
@@ -177,67 +259,35 @@ export default {
         this.disabledFlag = true
         this.breadcrumbTitle = '部门详情'
       }
-      // 设置返回路由
-      this.pushBreadcrumb({
-        name: this.breadcrumbTitle,
-        parent: {
-          name: 'OrganizationContent',
-          query: {
-            type: 'back'
-          }
-        }
-      })
     },
-    submitForm (formName) {
-      this.$refs[formName].validate((valid) => {
+    getSystemType (el) {
+      this.ruleForm.department.systemType = el
+    },
+    getType (el) {
+      this.ruleForm.department.type = el
+    },
+    getAreaId (val) {
+      this.ruleForm.areaId = val
+    },
+    submitForm (ruleForm) {
+      console.log(3333333333, this.ruleForm)
+      this.$refs[ruleForm].validate((valid) => {
         if (valid) {
-          alert('submit!')
-        } else {
-          console.log('error submit!!')
-          return false
+          api[urlNames['createDepartment']](this.ruleForm).then((res) => {
+            this.$message.success(`添加成功`)
+            this.goBack()
+          }, (error) => {
+
+          })
         }
       })
     },
-    getCheckTags () {
-      this.openAddTagFlag = false
-      this.tags = this.checkTagGroup
-    },
-    getDepartmentDetail () {
-      const data = {
-        id: this.$route.params.id
-      }
-      this.loading = true
-      api[urlNames['findDepartmentById']](data).then((res) => {
-        this.loading = false
-        this.ruleForm.name = res.data.name
-        this.ruleForm.parent = res.data.orgName
-        this.ruleForm.tel = res.data.phone
-        this.ruleForm.duties = res.data.duty
-        this.ruleForm.instruction = res.data.description
-      }, (error) => {
-        this.$message.error(`没有内容`)
-      })
-    }
-  },
-  mounted () {
-    this.setBreadcrumbTitle()
-  },
-  created () {
-    if (this.$route.params.id) {
-      this.getDepartmentDetail()
-    }
-  },
-  computed: {
-  },
-  watch: {
-    $route: {
-      handler (val) {
-        this.setBreadcrumbTitle()
-        if (val.params.id) {
-          this.getDepartmentDetail()
-        }
-      },
-      deep: true
+    goBack () {
+      let breadcrumb = [...this.app.pageBreadcrumb]
+      let currentPage = breadcrumb[breadcrumb.length - 1]
+      breadcrumb.splice(-1, 1)
+      this.SET_PAGE_BREADCRUMB(breadcrumb)
+      this.$router.push(currentPage.parent)
     }
   }
 }

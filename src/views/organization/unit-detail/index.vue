@@ -193,7 +193,7 @@ export default {
         this.bindId = res.data.bindId
         this.ruleForm.organization.parentId = res.data.bindId
         this.ruleForm.nodeId = res.data.id
-        if (res.data.bindId) {
+        if (res.data.bindId && res.data.nodeType === 2) {
           this.getDetail()
           if (this.$route.name !== 'UnitAdd') {
             this.findOrgLabelList()
