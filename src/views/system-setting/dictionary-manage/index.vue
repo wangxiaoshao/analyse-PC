@@ -2,20 +2,22 @@
   <div class="site-module mod-dictionary">
     <el-row class="operator-row" :gutter="24">
       <el-col :span="24" class="text-right">
-        <el-button type="primary" @click="addDictionary">创建字典</el-button>
+        <!--<el-button type="primary" @click="addDictionary">创建字典</el-button>-->
       </el-col>
     </el-row>
     <!--表格-->
     <site-table :tableConfig="tableConfig"
                 :tableHeight="tableHeight"
+                :tableIndex="tableIndex"
+                :pageConfig="pageConfig"
                 :operateWidth="operateWidth"
                 :operate="operate"
                 :tableData="tableData">
       <template slot-scope="{slotScope}" slot="status">
       </template>
       <template slot-scope="{slotScope}" slot="operate">
-        <el-button size="mini" type="text" @click="openDialog(slotScope.row)">编辑</el-button>
-        <el-button size="mini" type="text" @click="openDialog(slotScope.row)">删除</el-button>
+        <el-button size="mini" type="text" @click="openDialog(slotScope.row)">添加</el-button>
+        <!--<el-button size="mini" type="text" @click="openDialog(slotScope.row)">删除</el-button>-->
       </template>
     </site-table>
     <!--分页-->
@@ -45,8 +47,9 @@
 
 <script type="text/ecmascript-6">
 import EditDialog from '../components/EditDialog/index'
-import DictionaryList from '../components/DictionaryList/index'
+import DictionaryList from '../components/DictionaryListDialog/index'
 import handleTable from '@src/mixins/handle-table'
+import tableConfig from './tableConfig'
 import { api, urlNames } from '@src/api'
 import SiteTable from '@src/components/SiteTable/index.vue'
 import { mapState, mapMutations } from 'vuex'
@@ -56,6 +59,7 @@ export default {
   mixins: [handleTable],
   data () {
     return {
+      tableConfig,
       gridData: [{
         counts: '1202',
         name: '王小虎'
@@ -88,60 +92,10 @@ export default {
         type: '',
         value: ''
       },
-      tableConfig: {
-        order: {
-          key: 0,
-          field: 'order',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '序号',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 50
-        },
-        dictName: {
-          key: 1,
-          field: 'dictName',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '字典名称',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        },
-        dictId: {
-          key: 2,
-          field: 'dictId',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '字典ID',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        },
-        dictDescribe: {
-          key: 3,
-          field: 'dictDescribe',
-          tooltip: true,
-          formatter: this.formatter,
-          label: '字典描述',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        },
-        isEnable: {
-          key: 4,
-          field: 'isEnable',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '启用状态',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        }
-      },
       tableData: [],
       tableHeight: null,
+      pageConfig: {},
+      tableIndex: true,
       operateWidth: 200,
       tableCheckbox: true,
       operate: true,
@@ -195,9 +149,6 @@ export default {
         }
       }
     },
-    trim (str) {
-      return (str + '').replace(/(\s+)$/g, '').replace(/^\s+/g, '')
-    },
     search () {
       this.$nextTick(() => {
         this.page.current = 1
@@ -207,8 +158,9 @@ export default {
     getGrid () {
       let data = {
         page: this.page.current,
-        pageSize: this.page.limit
+        limit: this.page.limit
       }
+      this.pageConfig = data
       let keys = Object.keys(this.searchQuery)
       let len = keys.length
       for (let i = 0; i < len; i++) {
@@ -230,6 +182,7 @@ export default {
       })
     },
     openDialog (row) {
+      console.log(row)
       this.dicDialogVisible = true
     },
     closeAddDialog (val) {
