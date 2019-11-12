@@ -81,7 +81,11 @@ export default {
       let currentPage = breadcrumb[breadcrumb.length - 1]
       breadcrumb.splice(-1, 1)
       this.SET_PAGE_BREADCRUMB(breadcrumb)
-      this.$router.push(currentPage.parent)
+      if (currentPage.parent) {
+        this.$router.push(currentPage.parent)
+      } else {
+        this.$router.go(-1)
+      }
     },
     getUserInfo () {
       api[urlNames.getUserInfo]().then((res) => {

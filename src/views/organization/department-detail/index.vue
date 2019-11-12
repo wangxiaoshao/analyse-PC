@@ -246,6 +246,7 @@ export default {
       })
     },
     setBreadcrumbTitle () { // 设置面包屑title
+      // TODO breadcrumbTitle可采用组件传参的模式替换路由判断，将配置权交给调用方
       if (this.$route.name === 'DepartmentEdit' || this.$route.name === 'DepartmentAdd') {
         this.isShowEditFlag = true
         this.disabledFlag = false
@@ -258,6 +259,8 @@ export default {
         this.isShowEditFlag = false
         this.disabledFlag = true
         this.breadcrumbTitle = '部门详情'
+        // 设置返回路由，一般用于跳转模块之外的链接
+        this.pushBreadcrumb(this.breadcrumb)
       }
     },
     getSystemType (el) {
