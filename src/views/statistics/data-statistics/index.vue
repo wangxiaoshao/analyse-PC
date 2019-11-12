@@ -85,12 +85,12 @@
         <el-card class="box-card" shadow="hover" :style="{height:'300px'}">
           <div slot="header" class="clearfix">
             <span>最新动态</span>
-            <el-button style="float: right; padding: 3px 0" type="text">查看更多</el-button>
+            <el-button style="float: right; padding: 3px 0" type="text" @click="handleMore">查看更多</el-button>
           </div>
           <div class="timeLine">
           <el-timeline :reverse="reverse">
           <el-timeline-item
-          v-for="(activity, index) in activities"
+          v-for="(activity, index) in newsList"
           :key="index"
           placement="top"
           :timestamp="activity.timestamp">
@@ -107,35 +107,17 @@
 <script type="text/ecmascript-6">
 import handleTable from '@src/mixins/handle-table'
 import echarts from '../components/Echarts'
+import { filters } from '@src/filters'
 import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
 
 export default {
-  components: { echarts },
+  components: { echarts, filters },
   mixins: [handleTable],
   data () {
     return {
       reverse: true,
-      activities: [{
-        content: '陈宇 修改了 贵州省人力资源管理局 的单',
-        timestamp: '2018-04-15'
-      },
-      {
-        content: '陈宇 修改了 贵州省人力资源管理局 的单',
-        timestamp: '2018-04-13'
-      },
-      {
-        content: '陈宇 修改了 贵州省人力资源管理局 的单',
-        timestamp: '2018-04-13'
-      },
-      {
-        content: '陈宇 修改了 贵州省人力资源管理局 的单',
-        timestamp: '2018-04-13'
-      },
-      {
-        content: '陈宇 登陆系统备份 4',
-        timestamp: '2018-04-11'
-      }],
+      newsList: [],
       dataList: [
         { id: 1, name: '今天', type: 1 },
         { id: 2, name: '昨天', type: 2 },
@@ -157,14 +139,29 @@ export default {
   },
   methods: {
     ...mapMutations(['SET_APPLICATION_PAGE', 'SET_APPLICATION_SEARCH_QUERY']),
+    handleMore () {
+      this.$router.push({
+        name: 'DataLog'
+      })
+    },
     search () {
       this.initDataStatistics()
     },
     initDataStatistics () {
+      let datefilters = this.$options.filters['date'](new Date().getTime(), 'yyyy-MM')
+      let data = {
+        date: datefilters,
+        type: 4,
+        page: 1,
+        limit: 5
+      }
       api[urlNames['getStatistiscManageDto']]({
         type: this.selected.type
       }).then((res) => {
         this.countData = res.data
+      })
+      api[urlNames['getDataLogList']](data).then((res) => {
+        this.newsList = res.data
       })
     },
     handleClick () {},

@@ -179,7 +179,7 @@ export default {
       this.SET_EXAMINE_BACKPATH(this.$route.name)
       this.$router.push({
         name: 'WaitApprovalDetail',
-        query: {
+        params: {
           id: row.id,
           type: row.type
         }

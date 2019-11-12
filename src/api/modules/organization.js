@@ -30,6 +30,7 @@ export default {
     type: 'post',
     url: '/api/jg_manage/viewNode/createViewNode',
     showLoading: true,
+    keepOriginResponse: true, // 是否保留后端返回数据格式
     serve: 'organizationManagePC',
     mock: 'createViewNode.json',
     headers: {
@@ -77,15 +78,19 @@ export default {
     type: 'post',
     url: '/api/jg_manage/department/createDepartment',
     keepOriginResponse: true, // 是否保留后端返回数据格式
+    showLoading: true, // 该请求发送时，是否显示全局loading
     serve: 'organizationManagePC',
-    mock: '/createDepartment.json' // development模式下，本地mock数据
+    mock: '/createDepartment.json', // development模式下，本地mock数据
+    headers: {
+      'Content-Type': 'application/json'
+    }
   },
   // 添加人员
   [urlNames.createUser]: {
     type: 'post',
     url: '/api/jg_manage/user/createUser',
     keepOriginResponse: true, // 是否保留后端返回数据格式
-    showLoading: false, // 该请求发送时，是否显示全局loading
+    showLoading: true, // 该请求发送时，是否显示全局loading
     serve: 'organizationManagePC',
     mock: '/createUser.json', // development模式下，本地mock数据
     headers: {
@@ -152,7 +157,7 @@ export default {
     type: 'post',
     url: '/api/jg_manage/organ/createOrganization',
     keepOriginResponse: true, // 是否保留后端返回数据格式
-    showLoading: false, // 该请求发送时，是否显示全局loading
+    showLoading: true, // 该请求发送时，是否显示全局loading
     serve: 'organizationManagePC',
     mock: '/createOrganization.json', // development模式下，本地mock数据
     headers: {
@@ -186,7 +191,7 @@ export default {
     type: 'post',
     url: '/api/jg_manage/user/createLeader',
     keepOriginResponse: true, // 是否保留后端返回数据格式
-    showLoading: false, // 该请求发送时，是否显示全局loading
+    showLoading: true, // 该请求发送时，是否显示全局loading
     serve: 'organizationManagePC',
     mock: '/createLeader.json', // development模式下，本地mock数据
     headers: {
