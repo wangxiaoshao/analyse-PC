@@ -125,17 +125,14 @@ export default {
   name: 'index',
   mixins: [ handleBreadcrumb ],
   props: {
-    // TODO breadcrumbTitle可采用组件传参的模式替换路由判断，将配置权交给调用方
-    breadcrumbTitle: {
-      type: '部门详情',
-      default () {
-        return {}
-      }
-    },
-    breadcrumbParent: {
+    // TODO breadcrumb可采用组件传参的模式替换路由判断，将配置权交给调用方
+    breadcrumb: {
       type: Object,
       default () {
-        return null
+        return {
+          name: '部门详情',
+          parent: null
+        }
       }
     }
   },
@@ -188,24 +185,12 @@ export default {
         } else {
           this.breadcrumbTitle = '添加部门'
         }
-        // 根据来源不同，设置不同的面包屑
-        this.pushBreadcrumb({
-          name: this.breadcrumbTitle,
-          parent: {
-            name: 'OrganizationContent',
-            query: {
-              type: 'back'
-            }
-          }
-        })
       } else {
         this.isShowEditFlag = false
         this.disabledFlag = true
         this.breadcrumbTitle = '部门详情'
         // 设置返回路由，一般用于跳转模块之外的链接
-        this.pushBreadcrumb({
-          name: this.breadcrumbTitle,
-        })
+        this.pushBreadcrumb(this.breadcrumb)
       }
     },
     submitForm (formName) {
