@@ -38,7 +38,7 @@ export default {
     return {
       showCheckboxFlag: false,
       treeList: [],
-      teeeSonList: [],
+      treeSonList: [],
       defaultProps: {
         children: 'children',
         label: 'name'
@@ -55,13 +55,14 @@ export default {
     loadNode (node, resolve) {
       if (node.level === 0) {
         return resolve(this.treeList)
+      } else {
+        this.findTreeSonList(node.data.id)
+        this.id = node.data.id
+        setTimeout(() => {
+          resolve(this.treeSonList)
+        }, 500)
+        this.treeSonList = []
       }
-      this.findTreeSonList(node.data.id)
-      this.id = node.data.id
-      setTimeout(() => {
-        resolve(this.treeSonList)
-      }, 500)
-      this.treeSonList = []
     },
     findTreeList (parentId) {
       api[urlNames['getTree']]({
