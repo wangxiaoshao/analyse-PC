@@ -63,7 +63,7 @@ export default {
   data () {
     return {
       currentPage: 1,
-      pageSize: 1,
+      pageSize: 10,
       total: 0,
       memberList: [],
       groupId: this.$route.params.id,

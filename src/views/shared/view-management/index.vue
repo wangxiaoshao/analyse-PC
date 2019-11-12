@@ -69,7 +69,7 @@
         :total="total">
       </el-pagination>
     </div>
-    <el-button @click="seleceDialog.selectMenmberFlag = true">选人组件</el-button>
+<!--    <el-button @click="seleceDialog.selectMenmberFlag = true">选人组件</el-button>-->
     <candidate-dialog @dialogReturnMembersInfo="dialogReturnMembersInfo" @closeselectMenmber="closeselectMenmber" :seleceDialog="seleceDialog"></candidate-dialog>
   </div>
 </template>

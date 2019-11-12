@@ -138,11 +138,12 @@ export default {
         this.getGrid()
       })
     },
+    // TODO 需要按父导航进行跳转
     jumpDetailPage (type) { // type = 1 || 3 || 4
-      let name = ''
+      let name = 'WaitApprovalPersonDetail'
       switch (type) {
         case 1:
-          name = 'PersonDetail'
+          name = 'WaitApprovalPersonDetail'
           break
         case 3:
           name = 'DepartmentDetail'

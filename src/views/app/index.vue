@@ -39,23 +39,26 @@ export default {
     return {
       user: null,
       userInfo: {},
-      asideMenu: asideMenu
+      asideMenu: asideMenu,
+      asideMenuActive: 0,
     }
   },
   mixins: [handleBreadcrumb],
   components: { sideMenu, siteHead, SiteBreadcrumb },
   watch: {
-    $route (newVal) {
-      this.SET_PAGE_BREADCRUMB([])
+    $route (newVal, oldVal) {
+      if (oldVal.path !== '/' && newVal.path !== '/') {
+        let newModule = newVal.path.split('/')[1]
+        let oldModule = oldVal.path.split('/')[1]
+        this.SET_PAGE_BREADCRUMB([])
+        if (newModule !== oldModule) {
+          this.init(newVal.path)
+        }
+      }
     }
   },
   computed: {
     ...mapState(['app']),
-    asideMenuActive () {
-      if (this.app.breadcrumb.length > 0) {
-        return this.app.breadcrumb[this.app.breadcrumb.length - 1].menuId.toString()
-      }
-    },
     scrollStyle () {
       return {
         height: (this.app.windowHeight - 123) + 'px',
@@ -65,10 +68,7 @@ export default {
   },
   created () {
     let path = location.hash.replace('#', '')
-    this.findMenuByPath(this.asideMenu.list, path, 0)
-    this.SET_BREADCRUMB(this.breadcrumb)
-    this.SET_WINDOWHEIGHT(document.body.offsetHeight)
-    this.SET_WINDOWWIDTH(document.body.offsetWidth)
+    this.init(path)
   },
   mounted () {
     this.addEventListenForResize()
@@ -76,12 +76,27 @@ export default {
   },
   methods: {
     ...mapMutations(['SET_USER_INFO', 'SET_WINDOWHEIGHT', 'SET_WINDOWWIDTH', 'SET_PAGE_BREADCRUMB']),
+    init (path) {
+      // 在初始化菜单是，手动将breakLoop置为false，否则findMenuByPath不进入循环
+      this.breakLoop = false
+      this.findMenuByPath(this.asideMenu.list, path, 0)
+      if (this.breadcrumb.length > 0) {
+        this.asideMenuActive = this.breadcrumb[this.breadcrumb.length - 1].menuId.toString()
+      }
+      this.SET_BREADCRUMB(this.breadcrumb)
+      this.SET_WINDOWHEIGHT(document.body.offsetHeight)
+      this.SET_WINDOWWIDTH(document.body.offsetWidth)
+    },
     goBack () {
       let breadcrumb = [...this.app.pageBreadcrumb]
       let currentPage = breadcrumb[breadcrumb.length - 1]
       breadcrumb.splice(-1, 1)
       this.SET_PAGE_BREADCRUMB(breadcrumb)
-      this.$router.push(currentPage.parent)
+      if (currentPage.parent) {
+        this.$router.push(currentPage.parent)
+      } else {
+        this.$router.go(-1)
+      }
     },
     getUserInfo () {
       api[urlNames.getUserInfo]().then((res) => {
@@ -107,11 +122,10 @@ export default {
       }
     },
     select (code, menu) {
-      this.breakLoop = false
       this.breadcrumb = []
-      this.findMenuByPath(this.asideMenu.list, menu.path, 0)
+      // this.findMenuByPath(this.asideMenu.list, menu.path, 0)
       this.$router.push(menu.path)
-      this.SET_BREADCRUMB(this.breadcrumb)
+      // this.SET_BREADCRUMB(this.breadcrumb)
     }
   }
 }
