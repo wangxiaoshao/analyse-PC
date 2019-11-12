@@ -214,9 +214,6 @@ export default {
         }
       }
     },
-    trim (str) {
-      return (str + '').replace(/(\s+)$/g, '').replace(/^\s+/g, '')
-    },
     search () {
       this.$nextTick(() => {
         this.page.current = 1
@@ -253,7 +250,7 @@ export default {
       this.SET_EXAMINE_BACKPATH(this.$route.name)
       this.$router.push({
         name: 'ConfirmInfoDetail',
-        query: { id: row.id }
+        params: { id: row.id }
       })
     },
     handleClose () {

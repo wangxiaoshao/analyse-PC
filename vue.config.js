@@ -42,6 +42,7 @@ module.exports = function (options) {
       proxy: {
         "/api/": {
           target: "http://jg-dev.lonmo.com",
+          // http://jg-dev.lonmo.com
           // pathRewrite: {
           //   "/api/": ""
           // }

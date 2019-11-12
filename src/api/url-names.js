@@ -38,6 +38,7 @@ export default {
   // 数据统计 statistics
   getStatistiscManageDto: 'getStatistiscManageDto',
   getParameter: 'getParameter',
+  getDataLogList: 'getDataLogList',
   // 获取视图--机构树
   getTree: 'getTree',
   // 搜索视图
@@ -65,6 +66,7 @@ export default {
   getGroupUsers: 'getGroupUsers', // 分组成员
   addGroupUsers: 'addGroupUsers', // 添加成员
   deleteGroupMembers: 'deleteGroupMembers', // 删除分组成员
+  renameGroup: 'renameGroup', // 修改分组启用状态
   // 创建节点
   createViewNode: 'createViewNode',
   // 根据id获取详情

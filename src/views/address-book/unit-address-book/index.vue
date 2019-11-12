@@ -1,22 +1,14 @@
 <template>
-<div style="background:#F5F6F8;" >
-    <div class="navbar-content" style="background:#F5F6F8;">
-       <el-breadcrumb separator="/" style="background:#F5F6F8;padding:20px;">
-  <el-breadcrumb-item :to="{ path: '/' }">本单位名称</el-breadcrumb-item>
-  <!-- <el-breadcrumb-item><a href="/"></a></el-breadcrumb-item> -->
-
-</el-breadcrumb>
-    </div>
+  <div style="background:#F5F6F8;">
     <div>
-    <div class="department-content">
-      <department-table></department-table>
+      <div class="department-content">
+        <department-table></department-table>
+      </div>
+      <!-- <div>
+        <router-view></router-view>
+      </div>-->
     </div>
-    <div>
-    <router-view></router-view>
   </div>
-    </div>
-
-</div>
 </template>
 <script>
 import unitNavbar from '../components/Unitnavbar/index'
@@ -58,5 +50,5 @@ export default {
 }
 </script>
 <style lang="less">
-@import "index";
+@import 'index';
 </style>

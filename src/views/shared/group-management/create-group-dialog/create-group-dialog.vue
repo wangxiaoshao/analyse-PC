@@ -51,9 +51,6 @@ export default {
     }
   },
   created () {
-    if (this.groupId !== '') {
-      this.findGroupDetail(this.groupId)
-    }
   },
   methods: {
     // 提交表单
@@ -62,34 +59,31 @@ export default {
         this.$message.warning('请输入分组名称')
         return false
       }
-      console.log(JSON.parse(JSON.stringify(this.groupFrom)))
-      api[urlNames['createGroup']]({
-        ownerType: this.groupFrom.ownerType, // 1用户、2部门、3单位
-        name: this.groupFrom.name,
-        description: this.groupFrom.description,
-        removed: this.groupFrom.removed
-      }).then((res) => {
-        if (res.status === 0) {
-          this.colseDialog()
-          this.$message.success('创建分组成功')
-          this.groupFrom.name = this.groupFrom.description = ''
-        }
-      })
-    },
-    // 获取分组详情
-    findGroupDetail (id) {
-      console.log('111111111111111111111111')
-      api[urlNames['findGroupById']]({
-        id: id
-      }).then((res) => {
-        if (res.status === 0) {
-          this.groupDetail.ownerType = 2
-          this.groupDetail.name = '点击'
-          this.groupDetail.description = '加载'
-          this.groupDetail.removed = false
-          this.groupDetail = res.data
-        }
-      })
+      if (this.groupFrom.id === undefined || this.groupFrom.id === '') {
+        api[urlNames['createGroup']]({
+          ownerType: this.groupFrom.ownerType, // 1用户、2部门、3单位
+          name: this.groupFrom.name,
+          description: this.groupFrom.description,
+          removed: this.groupFrom.removed
+        }).then((res) => {
+          if (res.status === 0) {
+            this.colseDialog()
+            this.$message.success('创建分组成功')
+            this.groupFrom.name = this.groupFrom.description = ''
+          }
+        })
+      } else {
+        api[urlNames['renameGroup']]({
+          id: this.groupFrom.id,
+          removed: this.groupFrom.removed
+        }).then((res) => {
+          if (res.status === 0) {
+            this.colseDialog()
+            this.$message.success('修改分组成功')
+            this.groupFrom.name = this.groupFrom.description = ''
+          }
+        })
+      }
     },
     colseDialog () {
       this.$emit('close')

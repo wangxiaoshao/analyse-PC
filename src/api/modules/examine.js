@@ -8,6 +8,7 @@ export default {
     type: 'get',
     url: '/api/jg_manage/audit/findAuditList',
     keepOriginResponse: true,
+    showLoading: true,
     serve: 'organizationManagePC',
     mock: 'examine/getAuditList.json'
   },
@@ -15,6 +16,7 @@ export default {
     type: 'get',
     url: '/api/jg_manage/audit/findApplyAuditList',
     keepOriginResponse: true,
+    showLoading: true,
     serve: 'organizationManagePC',
     mock: 'examine/getMyApplyAuditList.json'
   },
@@ -22,6 +24,7 @@ export default {
     type: 'get',
     url: '/api/jg_manage/confirmation/findConfirmationList',
     keepOriginResponse: true,
+    showLoading: true,
     serve: 'organizationManagePC',
     mock: 'examine/getInfoConfirmList.json'
   },
@@ -36,11 +39,12 @@ export default {
     type: 'get',
     url: '/api/jg_manage/audit/findAuditById',
     keepOriginResponse: true,
+    showLoading: true,
     serve: 'organizationManagePC',
     mock: 'examine/getAuditDetailsById.json'
   },
   [urlNames.saveAudit]: { // 保存审批
-    type: 'get',
+    type: 'post',
     url: '/api/jg_manage/audit/saveAudit',
     keepOriginResponse: true,
     serve: 'organizationManagePC',

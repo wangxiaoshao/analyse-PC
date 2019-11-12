@@ -1,7 +1,7 @@
 <template>
   <div class="create-app-management">
     <div class="to-log">
-      <el-button type="primary">查看数据推送日志</el-button>
+      <el-button type="primary" @click="toDataLog">查看数据推送日志</el-button>
     </div>
     <el-form ref="ruleForm"   :rules="rules" :model="appFrom" label-width="120px">
       <el-row :gutter="80">
@@ -15,16 +15,15 @@
         <el-col :span="12">
           <div class="grid-content bg-purple-light">
             <el-form-item label="绑定视图" prop="viewId">
-              <el-autocomplete
-                v-model="appFrom.viewId"
-                placeholder="请输入内容"
-                @select="handleSelect"
-                width="100%"
-              ></el-autocomplete>
-<!--              <el-select  v-model="appFrom.viewId" placeholder="请搜索选择视图">-->
-<!--                <el-option label="视图1" value="1">视图1</el-option>-->
-<!--                <el-option label="视图1" value="1">视图2</el-option>-->
-<!--              </el-select>-->
+<!--              <el-autocomplete-->
+<!--                v-model="appFrom.viewId"-->
+<!--                placeholder="请输入内容"-->
+<!--                @select="handleSelect"-->
+<!--                width="100%"-->
+<!--              ></el-autocomplete>-->
+              <el-select  v-model="appFrom.viewId" placeholder="请选择视图">
+                <el-option label="视图1" :value="1">视图1</el-option>
+              </el-select>
             </el-form-item>
           </div>
         </el-col>
@@ -48,14 +47,14 @@
       <el-row :gutter="80">
         <el-col :span="12">
           <div class="grid-content bg-purple">
-            <el-form-item label="联系人">
+            <el-form-item label="联系人" prop="concatUser">
               <el-input placeholder="请输入联系人" v-model="appFrom.concatUser"></el-input>
             </el-form-item>
           </div>
         </el-col>
         <el-col :span="12">
           <div class="grid-content bg-purple-light">
-            <el-form-item label="联系电话" prop="phone">
+            <el-form-item label="联系电话" prop="concatPhone">
               <el-input placeholder="请输入联系电话" v-model="appFrom.concatPhone"></el-input>
             </el-form-item>
           </div>
@@ -64,29 +63,26 @@
       <el-row :gutter="80">
         <el-col :span="12">
           <div class="grid-content bg-purple">
-            <el-form-item label="应用访问地址">
+            <el-form-item label="应用访问地址" prop="apiUrl">
               <el-input placeholder="请输入应用访问地址"  v-model="appFrom.apiUrl"></el-input>
             </el-form-item>
           </div>
         </el-col>
         <el-col :span="12">
           <div class="grid-content bg-purple-light">
-            <el-form-item label="备注说明">
+            <el-form-item label="备注说明" prop="description">
               <el-input placeholder="请输入备注说明"  v-model="appFrom.description"></el-input>
             </el-form-item>
           </div>
         </el-col>
       </el-row>
       <el-form-item label="启用状态">
-        <el-radio-group v-model="appFrom.removed">
-          <el-radio :label="0">启用</el-radio>
-          <el-radio :label="1">禁用</el-radio>
-        </el-radio-group>
+        <el-switch v-model="appFrom.removed"></el-switch>
       </el-form-item>
       <el-form-item align="center">
         <el-button v-if="$route.query.id=== undefined" type="primary" @click="onSubmit('ruleForm')">立即创建</el-button>
         <el-button v-if="$route.query.id!== undefined" type="primary" @click="onSubmit('ruleForm')">修改</el-button>
-        <el-button>取消</el-button>
+        <el-button @click="back">取消</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -111,13 +107,6 @@ export default {
     })
   },
   data () {
-    var appNmae = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请输入应用名称'))
-      } else {
-        callback()
-      }
-    }
     // 验证密码
     let validatePass = (rule, value, callback) => {
       if (value === '') {
@@ -141,14 +130,14 @@ export default {
       appFrom: {
         id: '',
         name: '',
-        viewId: '',
+        viewId: 1,
         apiAccount: '',
         apiPassword: '',
         concatUser: '',
         concatPhone: '',
         apiUrl: '',
         description: '',
-        removed: 0
+        removed: true
       },
       rules: {
         name: [
@@ -160,11 +149,20 @@ export default {
         apiPassword: [
           { required: true, validator: validatePass, message: '请输填写应用接口账号', trigger: 'blur' }
         ],
-        phone: [
-          { required: true, trigger: 'blur', validator: validPhone }
-        ],
         viewId: [
           { required: true, message: '请选择视图ID', trigger: 'change' }
+        ],
+        concatUser: [
+          { required: true, message: '请输入应用名称', trigger: 'blur' }
+        ],
+        concatPhone: [
+          { required: true, message: '请输入应用名称', trigger: 'blur' }
+        ],
+        apiUrl: [
+          { required: true, message: '请输入应用名称', trigger: 'blur' }
+        ],
+        description: [
+          { required: true, message: '请输入应用名称', trigger: 'blur' }
         ]
       }
     }
@@ -175,6 +173,12 @@ export default {
     }
   },
   methods: {
+    toDataLog () {
+      this.$router.push({ path: '/data-log' })
+    },
+    back () {
+      this.$router.push({ name: 'AppManagement' })
+    },
     getViewList (page, limt) {
       api[urlNames['getViewList']]({
         page: page,
@@ -184,15 +188,6 @@ export default {
       })
     },
     onSubmit (ref) {
-      // this.$refs[ref].validate((valid) => {
-      //   if (valid) {
-      //     alert('submit!')
-      //   } else {
-      //     console.log('error submit!!')
-      //     return false
-      //   }
-      // })
-      console.log(JSON.parse(JSON.stringify(this.appFrom)), 'this.appFrom')
       if (this.$route.query.id === undefined) {
         this.createApp()
       } else if (this.$route.query.id !== undefined) {
@@ -208,7 +203,6 @@ export default {
         concatUser: this.appFrom.concatUser,
         concatPhone: this.appFrom.concatPhone,
         apiUrl: this.appFrom.apiUrl,
-        url: this.appFrom.apiUrl,
         description: this.appFrom.description,
         removed: this.appFrom.removed
       }).then((res) => {
@@ -221,13 +215,12 @@ export default {
       api[urlNames['updateApp']]({
         id: this.appFrom.id,
         name: this.appFrom.name,
-        viewId: 1,
+        viewId: this.appFrom.viewId,
         apiAccount: this.appFrom.apiAccount,
         apiPassword: this.appFrom.apiPassword,
         concatUser: this.appFrom.concatUser,
         concatPhone: this.appFrom.concatPhone,
         apiUrl: this.appFrom.apiUrl,
-        url: this.appFrom.apiUrl,
         description: this.appFrom.description,
         removed: this.appFrom.removed
       }).then((res) => {

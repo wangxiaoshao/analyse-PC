@@ -1,11 +1,8 @@
 <template>
   <div class="site-module mod-application-config">
     <el-row class="operator-row">
-      <el-col :span="12">
-        <div style="color: #909399;padding-left: 10px;padding-top: 16px">审批编码：2029200000009</div>
-      </el-col>
-      <el-col :span="12" class="text-right">
-        <el-button type="info" @click="jumpDetailPage($route.query.type)">查看详情</el-button>
+      <el-col :span="24" class="text-right">
+        <el-button type="info" @click="jumpDetailPage($route.params.type)">查看详情</el-button>
       </el-col>
     </el-row>
     <!--表格-->
@@ -32,7 +29,6 @@
     <edit-dialog :visible="editDialogVisible"
                  :config-type="type"
                  :current="currentEdit"
-                 :pageConfig="pageConfig"
                  :dialogTitle="dialogTitle"
                  :auditResult="auditResult"
                  @refreshList="getGrid"
@@ -74,7 +70,6 @@ export default {
       isShowSuggest: false,
       auditResult: false,
       tableHeight: null,
-      pageConfig: {},
       mergeConfig: [
         {
           ele: 'col',
@@ -118,25 +113,12 @@ export default {
     ...mapMutations(['SET_APPLICATION_PAGE', 'SET_EXAMINE_DETAIL']),
     getGrid () {
       api[urlNames['getAuditDetailsById']]({
-        id: this.$route.query.id,
-        type: this.$route.query.type
+        id: this.$route.params.id,
+        type: this.$route.params.type
       }).then((res) => {
         this.reason = res.data.reason
         this.message = res.data.message
         this.tableData = res.data.changeFields
-        this.pageConfig = {
-          page: 2,
-          limit: 2
-        }
-        // let arrLen = res.data.changeFields.length
-        // let obj = {}
-        // for (let i = 0; i < arrLen; i++) {
-        //   let key = res.data.changeFields[i].fieldName
-        //   let val = res.data.changeFields[i]
-        //   obj[key] = val
-        // }
-        // res.data.changeFields = obj
-        // this.gridData.push(res.data)
       }, () => {
         this.gridData = []
       })
@@ -175,8 +157,9 @@ export default {
       this.$router.push({
         name: name,
         params: {
-          id: this.$route.query.id,
-          type: this.$route.query.type
+          pathName: this.$route.path,
+          id: this.$route.params.id,
+          type: this.$route.params.type
         }
       })
     }

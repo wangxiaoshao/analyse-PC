@@ -11,7 +11,10 @@ const MyApplicationDetail = () => import('@src/views/my-application/MyApplicatio
 const ConfirmInfo = () => import('@src/views/confirm-info/index.vue')
 const ConfirmInfoList = () => import('@src/views/confirm-info/ConfirmInfoList/index.vue')
 const ConfirmInfoDetail = () => import('@src/views/confirm-info/ConfirmInfoDetail/index.vue')
+
+const UnitDetail = () => import('@src/views/organization/unit-detail/index.vue')
 const PersonDetail = () => import('@src/views/organization/person-detail/index.vue')
+
 
 export default [
   { // 待我审核
@@ -25,20 +28,22 @@ export default [
         component: WaitApprovalList
       },
       {
-        path: 'detail',
+        path: 'detail/:type/:id',
         name: 'WaitApprovalDetail',
         component: WaitApprovalDetail
       },
+      // 单位详情
       {
-        path: 'person-detail',
-        name: 'WaitApprovalPersonDetail',
-        component: PersonDetail,
-        props: {
-          breadcrumb: {
-            name: '人员详情'
-          }
-        }
-      }
+        path: '/unitDetail/:id',
+        name: 'UnitDetail',
+        component: UnitDetail
+      },
+      // 人员详情
+      {
+        path: '/personDetail/:id',
+        name: 'PersonDetail',
+        component: PersonDetail
+      },
     ]
 
   },
@@ -53,19 +58,9 @@ export default [
         component: ApprovedList
       },
       {
-        path: 'detail',
+        path: 'detail/:type/:id',
         name: 'ApprovedDetail',
         component: ApprovedDetail
-      },
-      {
-        path: 'person-detail',
-        name: 'ApprovedPersonDetail',
-        component: PersonDetail,
-        props: {
-          breadcrumb: {
-            name: '人员详情'
-          }
-        }
       }
     ]
   },
@@ -80,19 +75,9 @@ export default [
         component: MyApplicationList
       },
       {
-        path: 'detail',
+        path: 'detail/:type/:id',
         name: 'MyApplicationDetail',
         component: MyApplicationDetail
-      },
-      {
-        path: 'person-detail',
-        name: 'MyApplicationPersonDetail',
-        component: PersonDetail,
-        props: {
-          breadcrumb: {
-            name: '人员详情'
-          }
-        }
       }
     ]
   },
@@ -107,7 +92,7 @@ export default [
         component: ConfirmInfoList
       },
       {
-        path: 'detail',
+        path: 'detail/:type/:id',
         name: 'ConfirmInfoDetail',
         component: ConfirmInfoDetail
       }

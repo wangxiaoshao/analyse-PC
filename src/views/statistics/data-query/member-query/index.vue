@@ -43,6 +43,8 @@
     <!--表格-->
     <site-table :tableConfig="tableConfig"
                 :tableHeight="tableHeight"
+                :tableIndex="tableIndex"
+                :pageConfig="pageConfig"
                 :operateWidth="operateWidth"
                 :operate="operate"
                 :tableData="tableData">
@@ -68,6 +70,7 @@
 <script type="text/ecmascript-6">
 import handleTable from '@src/mixins/handle-table'
 import SiteTable from '@src/components/SiteTable/index.vue'
+import tableConfig from './tableConfig'
 import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
 
@@ -76,6 +79,7 @@ export default {
   mixins: [handleTable],
   data () {
     return {
+      tableConfig,
       searchQuery: {
         name: '',
         uid: '',
@@ -84,80 +88,10 @@ export default {
         deptName: '',
         labelName: ''
       },
-      tableConfig: {
-        order: {
-          key: 0,
-          field: 'order',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '序号',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 50
-        },
-        name: {
-          key: 1,
-          field: 'name',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '人员名称',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        },
-        uid: {
-          key: 2,
-          field: 'uid',
-          tooltip: true,
-          formatter: this.formatter,
-          label: '人员ID',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        },
-        account: {
-          key: 3,
-          field: 'account',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '登陆账号',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        },
-        orgName: {
-          key: 4,
-          field: 'orgName',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '所属单位',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        },
-        deptName: {
-          key: 5,
-          field: 'deptName',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '所属部门',
-          sortable: true,
-          showOverflowTooltip: false,
-          minWidth: 100
-        },
-        labelName: {
-          key: 6,
-          field: 'labelName',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '标签',
-          sortable: true,
-          showOverflowTooltip: false,
-          minWidth: 100
-        }
-      },
       tableData: [],
       tableHeight: null,
+      pageConfig: {},
+      tableIndex: true,
       operateWidth: 100,
       tableCheckbox: true,
       operate: true
@@ -215,6 +149,7 @@ export default {
         page: this.page.current,
         pageSize: this.page.limit
       }
+      this.pageConfig = data
       let keys = Object.keys(this.searchQuery)
       let len = keys.length
       for (let i = 0; i < len; i++) {
