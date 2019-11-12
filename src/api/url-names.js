@@ -64,6 +64,7 @@ export default {
   getGroupUsers: 'getGroupUsers', // 分组成员
   addGroupUsers: 'addGroupUsers', // 添加成员
   deleteGroupMembers: 'deleteGroupMembers', // 删除分组成员
+  renameGroup: 'renameGroup', // 修改分组启用状态
   // 创建节点
   createViewNode: 'createViewNode',
   // 根据id获取详情

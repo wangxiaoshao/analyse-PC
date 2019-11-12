@@ -126,6 +126,11 @@ export default {
     },
     // 打开创建弹窗
     openDialog () {
+      // 创建初始化--防止修改数据覆盖
+      this.groupFrom.ownerType = 1 // 1用户、2部门、3单位
+      this.groupFrom.name = ''
+      this.groupFrom.description = ''
+      this.groupFrom.removed = true
       this.creategroupdialogVisible = true
     },
     // 编辑分组

@@ -60,10 +60,16 @@ export default {
   methods: {
     // 创建标签
     onSubmit () {
+      let parentId = null
+      if (this.createData.id === '' || this.createData.id === undefined) {
+        parentId = '-1'
+      } else {
+        parentId = this.createData.id
+      }
       api[urlNames['createLabel']]({
         name: this.labelForm.name,
         type: this.labelForm.type,
-        parentId: this.createData.id
+        parentId: parentId
       }).then((res) => {
         if (res.status === 0) {
           this.$message.success('创建成功')

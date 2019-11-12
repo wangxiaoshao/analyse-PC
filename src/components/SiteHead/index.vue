@@ -3,21 +3,20 @@
     <div class="site__head">
       <div class="site__head-content">
         <div class="site__head--center">
-          <h2>组织机构人员管控平台</h2>
-<!--          <el-breadcrumb class="site-breadcrumb" v-if="breadcrumb.length > 0">-->
-<!--            <el-breadcrumb-item v-for="item in breadcrumb"-->
-<!--                                class="breadcrumb-item"-->
-<!--                                :key="item.menuId">{{item.name}}</el-breadcrumb-item>-->
-<!--            <el-breadcrumb-item v-for="pageItem in pageBreadcrumb"-->
-<!--                                class="breadcrumb-item">{{pageItem.name}}</el-breadcrumb-item>-->
-<!--          </el-breadcrumb>-->
+         <div class="logo"><img src="@src/common/images/logo.png"></div>
+          <div class="name"><h2>组织机构人员管控平台</h2></div>
         </div>
-        <div class="site__head--right" v-if="user">
-          <span style="margin-right: 8px;">欢迎您</span>
-          <span>{{user.name}}</span>
-          <el-button size="mini" style="margin-left: 15px"
-                     v-show="pageBreadcrumb.length > 0"
-                     @click="goBack">返回</el-button>
+        <div class="site__head--right">
+          <i class="ico fa fa-file-text-o"></i>
+          <a href="">数据文档</a>
+          <i class="ico fa fa-phone"></i>
+          <a href="">联系我们</a>
+          <span style="margin-right: 8px;">欢迎您!</span>
+          <span>运维人员</span>
+          <i class="fa fa-sign-in fa-lg"></i>
+<!--          <el-button size="mini" style="margin-left: 15px"-->
+<!--                     v-show="pageBreadcrumb.length > 0"-->
+<!--                     @click="goBack">返回</el-button>-->
 <!--          <el-dropdown v-if="user" trigger="click" @command="handleCommand">-->
 <!--            <span class="el-dropdown-link dropdown-trigger">{{user.name}}<i-->
 <!--                    class="el-icon-arrow-down el-icon&#45;&#45;right"></i></span>-->
@@ -39,12 +38,6 @@ export default {
   components: {},
   name: 'Head',
   props: {
-    user: {
-      type: Object,
-      default () {
-        return {}
-      }
-    },
     breadcrumb: {
       type: Array,
       default () {

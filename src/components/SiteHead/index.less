@@ -1,49 +1,84 @@
-.site__head{
+
+.site__head {
   background-color: #fff;
   padding: 0 10px 0 0;
   color: #333;
   height: 60px;
   border-bottom: 1px solid #F4F6F9;
   min-width: 900px;
-  .site__head-content{
+
+  .site__head-content {
     display: flex;
     height: inherit;
     width: 100%;
     align-items: center;
     justify-content: space-between;
   }
-  .site__head--center{
+
+  .site__head--center {
     // background-color: #333;
     flex: 1 1 auto;
+    display: flex;
+
+    .logo {
+      img {
+        max-width: 48px;
+        vertical-align: middle;
+      }
+    }
+
+    .name {
+      flex: 1;
+
+      h2 {
+        padding: 9px 0 0 10px;
+      }
+    }
   }
-  .site__head--left, .site__head--right{
+
+  .site__head--left, .site__head--right {
     flex: 0 1 auto;
     height: inherit;
     line-height: 60px;
   }
-  .site__head--left img{
+
+  .site__head--left img {
     position: relative;
     top: 1px;
   }
-  .site__head--right{
+
+  .site__head--right {
     padding-right: 5px;
     text-align: right;
+
+    .ico {
+      color: #373F4C;
+      font-size: 16px;
+      margin: 0 5px;
+    }
+    a{
+      margin-right: 10px;
+    }
   }
-  .site__head--left{
+
+  .site__head--left {
     text-align: center;
+
     a {
       text-decoration: none;
       color: #333;
-      img{
+
+      img {
         vertical-align: middle;
       }
     }
   }
 
-  .el-menu{
+  .el-menu {
     border-bottom: none;
   }
-  .el-dropdown{
+
+  .el-dropdown {
     cursor: pointer;
   }
 }

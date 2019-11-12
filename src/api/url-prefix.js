@@ -11,7 +11,7 @@ const Serve = {
     organizationManagePC: ''
   },
   production: {
-    organizationManagePC: 'http://jg-dev.lonmo.com'
+    organizationManagePC: ''
   }
 }
 
