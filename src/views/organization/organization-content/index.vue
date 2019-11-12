@@ -14,8 +14,8 @@
     <div class="organization-wrap" v-if="content[0]">
       <div class="organization-info">
         <i v-if="content[0].nodeType === 1" class="menu-icon fa fa-user-o big-icon" style="margin: 0px 5px;"></i>
-        <i v-if="content[0].nodeType === 2" class="menu-icon fa fa-sitemap big-icon" style="margin: 0px 5px;"></i>
-        <i v-if="content[0].nodeType === 3" class="menu-icon fa fa-sitemap big-icon" style="margin: 0px 5px;"></i>
+        <i v-if="content[0].nodeType === 2" class="menu-icon fa fa-building-o big-icon" style="margin: 0px 5px;"></i>
+        <i v-if="content[0].nodeType === 3" class="menu-icon fa fa-institution big-icon" style="margin: 0px 5px;"></i>
         <span class="organization-value" v-html="content[0].name"></span>
         <el-button>日志</el-button>
       </div>

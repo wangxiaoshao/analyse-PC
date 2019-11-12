@@ -15,15 +15,6 @@ export default {
     mock: '/findViewNodeById.json' // development模式下，本地mock数据
   },
   /**
-  * 获取人员列表
-  */
-  [urlNames.getPersonList]: {
-    type: 'get',
-    url: '/work/service/getPersonList',
-    serve: 'organizationManagePC',
-    mock: 'getPersonList.json'
-  },
-  /**
    * 添加节点、设置节点
    */
   [urlNames.createViewNode]: {
@@ -68,7 +59,7 @@ export default {
     type: 'get',
     url: '/api/jg_manage/department/findDepartmentById',
     keepOriginResponse: true, // 是否保留后端返回数据格式
-    serve: 'workspaceManagement',
+    serve: 'organizationManagePC',
     mock: '/findDepartmentById.json' // development模式下，本地mock数据
   },
   /**
@@ -164,6 +155,15 @@ export default {
       'Content-Type': 'application/json'
     }
   },
+  /**
+   * 人员管理
+   */
+  [urlNames.getPersonList]: {
+    type: 'get',
+    url: '/work/service/getPersonList',
+    serve: 'organizationManagePC',
+    mock: 'getPersonList.json'
+  },
   /* 人员调出 */
   [urlNames.calloutUser]: {
     type: 'post',
@@ -215,6 +215,24 @@ export default {
   [urlNames.findOrganizationById]: {
     type: 'get',
     url: '/api/jg_manage/organ/findOrganizationById',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    serve: 'organizationManagePC',
+    mock: '/findOrganizationById.json' // development模式下，本地mock数据
+  },
+  [urlNames.upload]: {
+    type: 'post',
+    url: '/api/jg_manage/image/upload',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    showLoading: true, // 该请求发送时，是否显示全局loading
+    serve: 'organizationManagePC',
+    mock: '/upload.json', // development模式下，本地mock数据
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  },
+  [urlNames.dicList]: {
+    type: 'get',
+    url: '/api/jg_manage/system/dictList',
     keepOriginResponse: true, // 是否保留后端返回数据格式
     serve: 'organizationManagePC',
     mock: '/findOrganizationById.json' // development模式下，本地mock数据

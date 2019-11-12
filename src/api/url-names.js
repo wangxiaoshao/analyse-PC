@@ -117,5 +117,9 @@ export default {
   // 通讯录
   getAddressBookList: 'getAddressBookList',
   findLabelByType: 'findLabelByType',
-  getAreaList: 'findAreaList'
+  getAreaList: 'findAreaList',
+  // 证件照上传
+  upload: 'upload',
+  // 字典管理
+  dicList: 'dicList'
 }

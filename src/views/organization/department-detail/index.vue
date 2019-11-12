@@ -6,7 +6,7 @@
       @close="getClose"
       @getTag="getTag"
     ></search-lable>
-    <el-form :model="ruleForm" :disabled="disabledFlag" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+    <el-form :model="ruleForm" :disabled="disabledFlag" ref="ruleForm" label-width="100px" class="demo-ruleForm">
       <div class="detail-title">
         <i class="menu-icon fa fa-sitemap" style="margin: 0px 5px;"></i>部门信息
       </div>
@@ -17,7 +17,8 @@
         <el-col :span="12">
           <el-form-item
             label="部门名称"
-            prop="name"
+            prop="department.name"
+            :rules="[{ required: true, message: '名称不能为空'}]"
           >
             <el-input v-model="ruleForm.department.name"></el-input>
           </el-form-item>
@@ -152,19 +153,15 @@ export default {
       api[urlNames['findViewNodeById']]({
         id: this.$route.params.parentId || this.$route.params.id
       }).then((res) => {
-        // this.bindId = res.data.bindId
+        this.bindId = res.data.bindId
         // this.ruleForm.department.parentId = res.data.bindId
         this.ruleForm.nodeId = res.data.id
         if (res.data.nodeType === 2) { // 上级单位
-          this.parentDep = '无'
-          this.ruleForm.department.parentId = ''
           this.orgName = res.data.name
           this.ruleForm.department.orgId = res.data.bindId
         }
         if (res.data.nodeType === 3) { // 上级部门
-          this.orgName = '无'
-          this.ruleForm.department.orgId = ''
-          this.parentDep = res.data.parentDep
+          this.parentDep = res.data.name
           this.ruleForm.department.parentId = res.data.bindId
         }
         if (res.data.bindId && res.data.nodeType === 3) {
@@ -174,6 +171,7 @@ export default {
           }
         }
         this.parentName = res.data.name
+        // 设置返回路由，一般用于跳转模块之外的链接
         this.pushBreadcrumb({
           name: this.breadcrumbTitle,
           parent: {
@@ -199,24 +197,18 @@ export default {
         console.log('------', res.data)
         this.loading = false
         if (this.$route.name === 'DepartmentAdd') {
+          this.orgName = res.data.orgName
+          this.ruleForm.department.orgId = res.data.orgId
         } else {
-          /* this.ruleForm.areaId = res.data.areaId
-          this.ruleForm.labelId = res.data.labelId
-          this.ruleForm.department.address = res.data.address
-          this.ruleForm.department.name = res.data.name
-          this.ruleForm.department.address = res.data.address
-          this.ruleForm.nodeId = res.data.parentId
-          // this.ruleForm.department.parentId = ''
+          this.orgName = res.data.orgName
+          this.parentName = res.data.parentName
+          this.ruleForm.department.parentId = res.data.parentId
+          this.ruleForm.department.orgId = res.data.orgId
           this.ruleForm.department.id = res.data.id
-          this.ruleForm.department.removed = res.data.removed
-          this.ruleForm.department.fax = res.data.fax
           this.ruleForm.department.phone = res.data.phone
-          this.ruleForm.department.shortName = res.data.shortName
-          this.ruleForm.department.systemType = res.data.systemType
-          this.ruleForm.department.type = res.data.type
-          this.ruleForm.department.zipCode = res.data.zipCode
-          this.ruleForm.department.ext01 = res.data.ext01
-          this.ruleForm.department.ext02 = res.data.ext02 */
+          this.ruleForm.department.name = res.data.name
+          this.ruleForm.department.description = res.data.description
+          this.ruleForm.department.duty = res.data.duty
         }
       }, (error) => {
         this.$message.error(`没有内容`)
@@ -259,8 +251,6 @@ export default {
         this.isShowEditFlag = false
         this.disabledFlag = true
         this.breadcrumbTitle = '部门详情'
-        // 设置返回路由，一般用于跳转模块之外的链接
-        this.pushBreadcrumb(this.breadcrumb)
       }
     },
     getSystemType (el) {
