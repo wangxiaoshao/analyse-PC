@@ -1,10 +1,6 @@
 <template>
   <div class="search-content">
-    <el-popover
-      v-if="resultFlag"
-      placement="top-start"
-      width="100%"
-    >
+    <!-- <el-popover v-if="resultFlag" placement="top-start" width="100%">
       <div class="result-list">
         <div class="back-btn">
           <el-button size="mini" @click="goBackTree">返回</el-button>
@@ -12,30 +8,34 @@
         <el-table v-loading="loadFlag" :data="gridData" :show-header="false">
           <el-table-column property="name">
             <template slot-scope="scope">
-              <span :title="scope.row.name" class="table-span" @click="setNodeId(scope.row)">{{scope.row.name}}</span>
+              <span
+                :title="scope.row.name"
+                class="table-span"
+                @click="setNodeId(scope.row)"
+              >{{scope.row.name}}</span>
             </template>
           </el-table-column>
         </el-table>
       </div>
-    </el-popover>
+    </el-popover>-->
     <el-row>
-      <el-col :span="8">
-        <el-select v-model="value" placeholder="请选择" @change="getType">
+      <el-input placeholder="请输入内容" v-model="keyWord" @change="getResult" class="input-with-select">
+        <el-select
+          v-model="value"
+          style="width: 80px"
+          @change="getType"
+          slot="prepend"
+          placeholder="请选择"
+        >
           <el-option
-            v-for="item in options"
+            v-for="item in departmentunit"
             :key="item.value"
             :label="item.label"
-            :value="item.value">
-          </el-option>
+            :value="item.value"
+          ></el-option>
         </el-select>
-      </el-col>
-      <el-col :span="16">
-        <el-input
-          placeholder="搜索" suffix-icon="el-icon-search" v-model="keyWord"
-          @input="onFocus"
-        >
-        </el-input>
-      </el-col>
+        <el-button slot="append" icon="el-icon-search"></el-button>
+      </el-input>
     </el-row>
   </div>
 </template>
@@ -44,13 +44,15 @@
 import { api, urlNames } from '@src/api'
 /* import debounce from '@src/mixins/debounce' */
 export default {
-/*  mixins: [ debounce ], */
+  /*  mixins: [ debounce ], */
   data () {
     return {
       resultFlag: false,
       loadFlag: true,
+
+
       keyWord: '',
-      options: [{
+      departmentunit: [{
         value: 'department',
         label: '部门'
       }, {
@@ -67,12 +69,11 @@ export default {
   },
   props: ['defaultNodeId'],
   methods: {
-    getType (el) {
-      this.type = el
+    getType (e) {
+      this.type = e
     },
     onFocus () {
       this.resultFlag = true
-      // this.debounce(this.getResult, 600)
       this.getResult()
     },
     // 获取搜索结果
@@ -82,6 +83,7 @@ export default {
       }
       this.loadFlag = true
       api[urlNames['searchViewNode']](data).then(res => {
+        console.log(res, "===")
         this.gridData = res.data
         this.loadFlag = false
       })
@@ -111,5 +113,5 @@ export default {
 </script>
 
 <style lang="less">
-  @import "index";
+@import 'index';
 </style>
