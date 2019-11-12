@@ -1,44 +1,41 @@
 
 const tableConfig = {
-  applyName: {
-    key: 'applyName',
+  name: {
+    key: 'name',
     tooltip: false,
-    label: '申请人',
+    label: '部门名称',
     sortable: false,
     showOverflowTooltip: false,
     minWidth: 100
   },
-  content: {
-    key: 'content',
+  id: {
+    key: 'id',
     tooltip: true,
-    label: '申请内容',
+    label: '部门ID',
     sortable: false,
     showOverflowTooltip: false,
     minWidth: 100
   },
-  applyTime: {
-    key: 'applyTime',
+  orgName: {
+    key: 'orgName',
     tooltip: false,
-    label: '申请时间',
+    label: '所属单位',
     sortable: false,
     showOverflowTooltip: false,
     minWidth: 100
   },
-  reason: {
-    key: 'reason',
-    tooltip: true,
-    label: '申请原因',
+  orgAdministrator: {
+    key: 'orgAdministrator',
+    tooltip: false,
+    label: '单位管理员',
     sortable: false,
-    showOverflowTooltip: true,
+    showOverflowTooltip: false,
     minWidth: 100
   },
-  state: {
-    key: 'state',
+  labelName: {
+    key: 'labelName',
     tooltip: false,
-    label: '审核状态',
-    formatter: (row, column, cellValue) => {
-      return cellValue === 1 ? '已审核' : '待审核'
-    },
+    label: '标签',
     sortable: false,
     showOverflowTooltip: false,
     minWidth: 100

@@ -13,5 +13,13 @@ export default {
     keepOriginResponse: true,
     serve: 'organizationManagePC',
     mock: 'statistics/getStatistiscManageDto.json'
-  }
+  },
+  [urlNames.getDataLogList]: { // 系统日志列表
+    type: 'post',
+    url: '/api/jg_manage/logger/findLoggerList',
+    keepOriginResponse: true,
+    showLoading: true,
+    serve: 'organizationManagePC',
+    mock: 'statistics/getDataLogList.json'
+  },
 }

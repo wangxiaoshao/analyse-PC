@@ -38,6 +38,7 @@ export default {
   // 数据统计 statistics
   getStatistiscManageDto: 'getStatistiscManageDto',
   getParameter: 'getParameter',
+  getDataLogList: 'getDataLogList',
   // 获取视图--机构树
   getTree: 'getTree',
   // 搜索视图

@@ -12,8 +12,8 @@
           <el-option label="今天" :value="['today']"></el-option>
           <el-option label="昨天" :value="['yesterday']"></el-option>
           <!--<el-option label="周" :value="['week', '周', 'yyyy 第 WW 周']"></el-option>-->
-            <el-option label="月" :value="['month', '月', 'yyyy-DD']"></el-option>
-          <el-option label="选择日期" :value="['date', '日期', 'yyyy-MM-DD']"></el-option>
+            <el-option label="月" :value="['month', '月', 'yyyy-MM']"></el-option>
+          <el-option label="选择日期" :value="['date', '日期', 'yyyy-MM-dd']"></el-option>
           </el-select>
         </div>
       </el-col>
@@ -25,6 +25,7 @@
             :type="dateType"
             :default-value="weekstart"
             :format="format"
+            :value-format="format"
             :placeholder="'选择'+value"
             @change="dateChange">
           </el-date-picker>
@@ -41,7 +42,7 @@
         <div class="timeLine">
           <el-timeline :reverse="reverse">
             <el-timeline-item
-              v-for="(activity, index) in activities"
+              v-for="(activity, index) in newsList"
               :key="index"
               placement="top"
               :timestamp="activity.timestamp">
@@ -83,26 +84,7 @@ export default {
       },
       weekstart: '',
       reverse: true,
-      activities: [{
-        content: '陈宇 修改了 贵州省人力资源管理局 的单',
-        timestamp: '2018-04-15'
-      },
-      {
-        content: '陈宇 修改了 贵州省人力资源管理局 的单',
-        timestamp: '2018-04-13'
-      },
-      {
-        content: '陈宇 修改了 贵州省人力资源管理局 的单',
-        timestamp: '2018-04-13'
-      },
-      {
-        content: '陈宇 修改了 贵州省人力资源管理局 的单',
-        timestamp: '2018-04-13'
-      },
-      {
-        content: '陈宇 登陆系统备份 4',
-        timestamp: '2018-04-11'
-      }],
+      newsList: [],
       currentDateVal: '',
       openPicker: false,
       selectValue: '',
@@ -128,11 +110,13 @@ export default {
       this.SET_APPLICATION_SEARCH_QUERY({})
     }
     this.initQuery()
-    this.getGrid()
+    this.getGrid(this.date)
   },
   methods: {
     ...mapMutations(['SET_APPLICATION_PAGE', 'SET_APPLICATION_SEARCH_QUERY']),
     selectChange (val) {
+      this.date = ''
+      this.currentDateVal = ''
       this.openPicker = false
       let todayDate = new Date()
       if (val && val.length > 1) {
@@ -145,9 +129,15 @@ export default {
         todayDate = new Date(todayDate.setDate(todayDate.getDate() - 1))
       }
       this.date = this.$options.filters['date'](todayDate.getTime(), 'yyyy-MM-dd')
+      if (this.date) {
+        this.getGrid(this.date)
+      }
     },
     dateChange (val) {
-      console.log(val)
+      if (val) {
+        let type = this.dateType === 'month' ? 4 : 0
+        this.getGrid(val, type)
+      }
     },
     initQuery () {
       let keys = Object.assign({}, this.$route.query)
@@ -162,24 +152,12 @@ export default {
         }
       }
     },
-    trim (str) {
-      return (str + '').replace(/(\s+)$/g, '').replace(/^\s+/g, '')
-    },
-    getAreaList () {
-      api[urlNames['getAreaList']]().then((res) => {
-        this.areaList = res.data
-      })
-    },
-    search () {
-      this.$nextTick(() => {
-        this.page.current = 1
-        this.getGrid()
-      })
-    },
-    getGrid () {
+    getGrid (date, type) {
       let data = {
+        date: date,
+        type: type || 0, // 后端需要传输的数据类型 月份type：4 || 天：0
         page: this.page.current,
-        pageSize: this.page.limit
+        limit: this.page.limit
       }
       let keys = Object.keys(this.searchQuery)
       let len = keys.length
@@ -192,8 +170,8 @@ export default {
           data[key] = value
         }
       }
-      api[urlNames['getApplicationList']](data).then((res) => {
-        this.list = res.data
+      api[urlNames['getDataLogList']](data).then((res) => {
+        this.newsList = res.data
         this.page.total = res.total
       }, () => {
         this.list = []
