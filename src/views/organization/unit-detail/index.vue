@@ -179,22 +179,25 @@ export default {
     this.setBreadcrumbTitle()
   },
   created () {
-    this.getNodeInfo()
+    this.init()
   },
   beforeRouteUpdate (to, from, next) {
     next()
     this.setBreadcrumbTitle()
   },
   methods: {
-    getNodeInfo () {
+    init () {
       api[urlNames['findViewNodeById']]({
         id: this.$route.params.parentId || this.$route.params.id
       }).then((res) => {
         this.bindId = res.data.bindId
         this.ruleForm.organization.parentId = res.data.bindId
         this.ruleForm.nodeId = res.data.id
-        if (res.data.bindId) {
+        if (res.data.bindId && res.data.nodeType === 2) {
           this.getDetail()
+          if (this.$route.name !== 'UnitAdd') {
+            this.findOrgLabelList()
+          }
         }
         this.parentName = res.data.name
         this.pushBreadcrumb({
@@ -222,11 +225,6 @@ export default {
         console.log('------', res.data)
         this.loading = false
         if (this.$route.name === 'UnitAdd') {
-          /* this.parentName = res.data.name
-          this.ruleForm.nodeId = res.data.id
-          this.ruleForm.nodeId = res.data.id
-          this.ruleForm.organization.parentId = res.data.id
-          this.ruleForm.organization.id = '' */
         } else {
           this.ruleForm.areaId = res.data.areaId
           this.ruleForm.labelId = res.data.labelId
@@ -243,9 +241,23 @@ export default {
           this.ruleForm.organization.systemType = res.data.systemType
           this.ruleForm.organization.type = res.data.type
           this.ruleForm.organization.zipCode = res.data.zipCode
+          this.ruleForm.organization.ext01 = res.data.ext01
+          this.ruleForm.organization.ext02 = res.data.ext02
         }
       }, (error) => {
         this.$message.error(`没有内容`)
+      })
+    },
+    // 获取标签
+    findOrgLabelList () {
+      api[urlNames['findOrgLabelList']]({
+        orgId: this.bindId
+      }).then((res) => {
+        res.data.forEach((item) => {
+          this.tagsName.push(item.split('|')[1])
+          this.ruleForm.labelId.push(item.split('|')[0])
+        })
+      }, (error) => {
       })
     },
     getClose (val) {

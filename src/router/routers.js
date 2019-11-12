@@ -9,11 +9,11 @@ import addressbook from './modules/addressbook'
 
 /* 路由 */
 export default [
-    ...organization,
-    ...examine,
-    ...statistics,
-    ...system,
-    ...share,
-    ...addressbook,
-    ...roleManage
+  ...organization,
+  ...examine,
+  ...statistics,
+  ...system,
+  ...share,
+  ...addressbook,
+  ...roleManage
 ]

@@ -26,6 +26,18 @@ export default {
   components: {
     personManage, step, accountManage
   },
+  props: {
+    // TODO breadcrumb可采用组件传参的模式替换路由判断，将配置权交给调用方
+    breadcrumb: {
+      type: Object,
+      default () {
+        return {
+          name: '人员详情',
+          parent: null
+        }
+      }
+    }
+  },
   data () {
     return {
       loading: false,
@@ -39,6 +51,7 @@ export default {
     }
   },
   methods: {
+    // TODO breadcrumb可采用组件传参的模式替换路由判断，将配置权交给调用方
     setBreadcrumbTitle () { // 设置面包屑title
       if (this.$route.name === 'PersonEdit' || this.$route.name === 'PersonAdd') {
         this.isShowEditFlag = true
@@ -53,15 +66,7 @@ export default {
         this.disabledFlag = true
         this.breadcrumbTitle = '人员详情'
       }
-      this.pushBreadcrumb({
-        name: this.breadcrumbTitle,
-        parent: {
-          name: 'OrganizationContent',
-          query: {
-            type: 'back'
-          }
-        }
-      })
+      this.pushBreadcrumb(this.breadcrumb)
     },
     getCheckTags () {
       this.openAddTagFlag = false

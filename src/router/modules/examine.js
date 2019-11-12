@@ -11,7 +11,7 @@ const MyApplicationDetail = () => import('@src/views/my-application/MyApplicatio
 const ConfirmInfo = () => import('@src/views/confirm-info/index.vue')
 const ConfirmInfoList = () => import('@src/views/confirm-info/ConfirmInfoList/index.vue')
 const ConfirmInfoDetail = () => import('@src/views/confirm-info/ConfirmInfoDetail/index.vue')
-
+const PersonDetail = () => import('@src/views/organization/person-detail/index.vue')
 
 export default [
   { // 待我审核
@@ -28,6 +28,16 @@ export default [
         path: 'detail',
         name: 'WaitApprovalDetail',
         component: WaitApprovalDetail
+      },
+      {
+        path: 'person-detail',
+        name: 'WaitApprovalPersonDetail',
+        component: PersonDetail,
+        props: {
+          breadcrumb: {
+            name: '人员详情'
+          }
+        }
       }
     ]
 
@@ -46,6 +56,16 @@ export default [
         path: 'detail',
         name: 'ApprovedDetail',
         component: ApprovedDetail
+      },
+      {
+        path: 'person-detail',
+        name: 'ApprovedPersonDetail',
+        component: PersonDetail,
+        props: {
+          breadcrumb: {
+            name: '人员详情'
+          }
+        }
       }
     ]
   },
@@ -63,6 +83,16 @@ export default [
         path: 'detail',
         name: 'MyApplicationDetail',
         component: MyApplicationDetail
+      },
+      {
+        path: 'person-detail',
+        name: 'MyApplicationPersonDetail',
+        component: PersonDetail,
+        props: {
+          breadcrumb: {
+            name: '人员详情'
+          }
+        }
       }
     ]
   },
