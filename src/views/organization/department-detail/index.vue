@@ -124,6 +124,21 @@ import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
 export default {
   name: 'index',
   mixins: [ handleBreadcrumb ],
+  props: {
+    // TODO breadcrumbTitle可采用组件传参的模式替换路由判断，将配置权交给调用方
+    breadcrumbTitle: {
+      type: '部门详情',
+      default () {
+        return {}
+      }
+    },
+    breadcrumbParent: {
+      type: Object,
+      default () {
+        return null
+      }
+    }
+  },
   data () {
     return {
       loading: false,
@@ -164,6 +179,7 @@ export default {
   },
   methods: {
     setBreadcrumbTitle () { // 设置面包屑title
+      // TODO breadcrumbTitle可采用组件传参的模式替换路由判断，将配置权交给调用方
       if (this.$route.name === 'DepartmentEdit' || this.$route.name === 'DepartmentAdd') {
         this.isShowEditFlag = true
         this.disabledFlag = false
@@ -172,21 +188,25 @@ export default {
         } else {
           this.breadcrumbTitle = '添加部门'
         }
+        // 根据来源不同，设置不同的面包屑
+        this.pushBreadcrumb({
+          name: this.breadcrumbTitle,
+          parent: {
+            name: 'OrganizationContent',
+            query: {
+              type: 'back'
+            }
+          }
+        })
       } else {
         this.isShowEditFlag = false
         this.disabledFlag = true
         this.breadcrumbTitle = '部门详情'
+        // 设置返回路由，一般用于跳转模块之外的链接
+        this.pushBreadcrumb({
+          name: this.breadcrumbTitle,
+        })
       }
-      // 设置返回路由
-      this.pushBreadcrumb({
-        name: this.breadcrumbTitle,
-        parent: {
-          name: 'OrganizationContent',
-          query: {
-            type: 'back'
-          }
-        }
-      })
     },
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
