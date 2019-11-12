@@ -1,18 +1,25 @@
 {
-  "total": 2,
   "message": "success",
-  "data": [{
-    "departmentName": "5M1UdynN",
-    "uid": 6006,
-    "memberInfo": "VDhB",
-    "month": 605,
-    "departmentId": 6825,
-    "confirmId": 7918,
-    "id": 4616,
-    "userName": "1nT",
-    "orgId": 43
-  }],
+  "data": {
+    "typeList": [
+      {
+        "total": "2",
+        "text": "在职"
+      },
+      {
+        "total": "1",
+        "text": "挂职"
+      },
+      {
+        "total": "1",
+        "text": "兼职"
+      },
+      {
+        "total": "1",
+        "text": "调出"
+      }
+    ]
+  },
   "status": 0,
-  "timestamp": "2019-10-30 16:13:01"
+  "timestamp": "2019-10-31 16:49:03"
 }
-
