@@ -118,8 +118,13 @@ export default {
   dictionaryList: 'dictionaryList',
   // 标签查询
 
-  // 通讯录
+  /**
+   * 通讯录 
+   */
+  //查询用户所在单位
   getAddressBookList: 'getAddressBookList',
+  // 查询部门下的下级部门
+  getDepartmentChildtree: 'getDepartmentChildtree',
   findLabelByType: 'findLabelByType',
   getAreaList: 'findAreaList',
   // 证件照上传

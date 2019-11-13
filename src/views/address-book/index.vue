@@ -4,16 +4,20 @@
       <el-row>
         <el-col :span="6">
           <div class="organ-top">
-            <div class="top-one" :class="activeColor==1?'top-active':''" @click="onChange(1)">本单位通讯录</div>
+            <div
+              class="top-one"
+              :class="activeColor==1?'top-active':''"
+              @click="onChange(1,$event)"
+            >本单位通讯录</div>
             <div
               class="top-two"
               :class="activeColor==2?'top-active':''"
               @click="onChange(2)"
             >其他单位通讯录</div>
           </div>
-          <div class="site-scroll" style="padding-right: 10px;margin-top:-20px;">
+          <div class="tree-main">
             <search-choose :defaultNodeId="defaultNodeId"></search-choose>
-            <div class="tree-content">
+            <div>
               <address-book-tree :ThisUnit="ThisUnit"></address-book-tree>
             </div>
           </div>
@@ -32,7 +36,7 @@
           <el-breadcrumb-item>活动详情</el-breadcrumb-item>
           </el-breadcrumb>-->
           <transition name="fade-transform" mode="out-in" style="height: 100%">
-            <el-scrollbar class="site-scroll">
+            <el-scrollbar>
               <keep-alive>
                 <router-view></router-view>
               </keep-alive>
@@ -78,18 +82,20 @@ export default {
     /**
      * 切换通讯录
      */
-    onChange (e) {
+    onChange (e, event) {
+      console.log(event)
       this.activeColor = e;
       if (e === 1) {
         this.getAddressBook();
       } else if (e === 2) {
-        console.log(e)
+        console.log(e, event)
       }
     },
     getAddressBook () {
       api[urlNames['getAddressBookList']]({
         uid: this.userId,
       }).then(res => {
+        console.log(res, "===")
         this.ThisUnit = res.data;
       }).catch(err => {
         console.log(err)
