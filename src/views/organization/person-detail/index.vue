@@ -53,7 +53,7 @@ export default {
   methods: {
     // TODO breadcrumb可采用组件传参的模式替换路由判断，将配置权交给调用方
     setBreadcrumbTitle () { // 设置面包屑title
-      if (this.$route.name === 'PersonEdit' || this.$route.name === 'PersonAdd') {
+      /*if (this.$route.name === 'PersonEdit' || this.$route.name === 'PersonAdd') {
         this.isShowEditFlag = true
         this.disabledFlag = false
         if (this.$route.name === 'NodeEdit') {
@@ -65,7 +65,7 @@ export default {
         this.isShowEditFlag = false
         this.disabledFlag = true
         this.breadcrumbTitle = '人员详情'
-      }
+      }*/
       this.pushBreadcrumb(this.breadcrumb)
     },
     getCheckTags () {

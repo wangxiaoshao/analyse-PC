@@ -129,6 +129,16 @@ export default {
     serve: 'organizationManagePC',
     mock: '/findLeaderList.json' // development模式下，本地mock数据
   },
+  [urlNames.deleteLeader]: {
+    type: 'post',
+    url: '/api/jg_manage/user/deleteLeader',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    serve: 'organizationManagePC',
+    mock: '/deleteLeader.json', // development模式下，本地mock数据
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  },
   [urlNames.roleList]: {
     type: 'get',
     url: '/api/jg_manage/user/roleList',

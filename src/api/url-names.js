@@ -94,6 +94,7 @@ export default {
   createLeader: 'createLeader',
   // 查询领导信息
   findLeaderList: 'findLeaderList',
+  deleteLeader: 'deleteLeader',
   // 根据id查人员详情
   findUserById: 'findUserById',
   // 人员列表排序
