@@ -237,13 +237,14 @@ export default {
     },
     deleteRow (row) {
       this.dialogVisible = true
-      this.deleteId = row.uid
+      this.deleteId = row.id
     },
     sublimeDelete () {
       api[urlNames['deleteLeader']]({
         id: this.deleteId
       }).then((res) => {
         this.dialogVisible = false
+        this.$message.success(`保存成功`)
         this.getGrid()
       }, (error) => {
         this.$message.error(`保存失败，请重试`)

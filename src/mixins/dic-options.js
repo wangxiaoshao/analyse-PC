@@ -47,7 +47,7 @@ export default {
     userDutyLevelOptions () { // 单位职务级别
       return this.app.dicList.filter(column => +column.type === 40)
     },
-    userBusinessTypeOptions () { // 单位职务级别
+    userBusinessTypeOptions () { // 单位行业类型
       return this.app.dicList.filter(column => +column.type === 41)
     }
   },

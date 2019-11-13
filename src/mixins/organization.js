@@ -29,6 +29,15 @@ export default {
           id: row.id
         }
       })
+    },
+    // 编辑人员
+    openEiditPerson (row) {
+      this.$router.push({
+        name: 'PersonEdit',
+        params: {
+          id: row.uid
+        }
+      })
     }
   }
 }

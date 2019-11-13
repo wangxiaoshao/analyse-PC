@@ -3,7 +3,13 @@
     <!--步骤条-->
     <step :active="activeIndex" @getActive="getActive"></step>
    <el-container>
-     <person-manage v-if="stepOneFlag" :disabledFlag="disabledFlag" :isShowEditFlag="isShowEditFlag"></person-manage>
+     <person-manage
+       v-if="stepOneFlag"
+       :disabledFlag="disabledFlag"
+       :isShowEditFlag="isShowEditFlag"
+       :user-detail="userInfo.user"
+       :post-detail="userInfo.userIdentity"
+     ></person-manage>
      <!--账号管理-->
      <account-manage v-if="stepTwoFlag" :disabledFlag="disabledFlag" :isShowEditFlag="isShowEditFlag"></account-manage>
    </el-container>
@@ -47,25 +53,78 @@ export default {
       stepOneFlag: true,
       stepTwoFlag: false,
       openAddTagFlag: false,
-      activeIndex: 0
+      activeIndex: 0,
+      userInfo: {
+        userAccount: [],
+        labelId: [],
+        userIdentity: [],
+        userId: null,
+        user: {
+          birthday: null,
+          nation: '',
+          portraitUrl: '',
+          sex: 1,
+          mobile: '',
+          politicalParty: '',
+          qualification: '',
+          positionClass: '',
+          officePhone: '',
+          idcard: '',
+          mobile2: '',
+          name: '',
+          professionalTitle: '',
+          type: null,
+          userState: null,
+          userType: null
+        }
+      },
+      postInfo: {
+        departmentId: '',
+        postName: '',
+        type: '',
+        orgId: '',
+        dutyName: ''
+      }
+    }
+  },
+  created () {
+    this.setBreadcrumbTitle()
+    if (this.$route.params.id) {
+      this.getUserDetail()
     }
   },
   methods: {
+    getUserDetail () {
+      api[urlNames['findUserById']]({
+        id: this.$route.params.id
+      }).then((res) => {
+        // this.userInfo = res.data
+        this.userInfo.user.name = res.data.name
+        this.userInfo.user.idcard = res.data.idcard
+        this.userInfo.user.mobile = res.data.mobile
+        this.userInfo.user.mobile2 = res.data.mobile2
+        this.userInfo.user.officePhone = res.data.officePhone
+        this.userInfo.user.sex = res.data.sex
+        this.userInfo.user.birthday = res.data.birthday
+        this.userInfo.user.portraitUrl = res.data.portraitUrl
+        this.userInfo.user.qualification = res.data.qualification
+        this.userInfo.user.professionalTitle = res.data.professionalTitle
+        this.userInfo.user.positionClass = res.data.positionClass
+        this.userInfo.user.nation = res.data.nation
+        this.userInfo.user.politicalParty = res.data.politicalParty
+        this.userInfo.user.signed = res.data.signed
+        this.postInfo.type = res.data.userType
+        this.postInfo.postName = res.data.postName
+        this.userInfo.user.qualification = res.data.qualification
+        this.userInfo.user.positionClass = res.data.positionClass
+        this.userInfo.user.userState = res.data.userState
+        this.userInfo.user.userType = res.data.userType
+      }, (error) => {
+        this.$message.error(`保存失败，请重试`)
+      })
+    },
     // TODO breadcrumb可采用组件传参的模式替换路由判断，将配置权交给调用方
     setBreadcrumbTitle () { // 设置面包屑title
-      /*if (this.$route.name === 'PersonEdit' || this.$route.name === 'PersonAdd') {
-        this.isShowEditFlag = true
-        this.disabledFlag = false
-        if (this.$route.name === 'NodeEdit') {
-          this.breadcrumbTitle = '编辑人员'
-        } else {
-          this.breadcrumbTitle = '添加人员'
-        }
-      } else {
-        this.isShowEditFlag = false
-        this.disabledFlag = true
-        this.breadcrumbTitle = '人员详情'
-      }*/
       this.pushBreadcrumb(this.breadcrumb)
     },
     getCheckTags () {
@@ -87,17 +146,6 @@ export default {
     },
     getActive (val) {
       this.active = val
-    }
-  },
-  created () {
-    this.setBreadcrumbTitle()
-  },
-  watch: {
-    $route: {
-      handler (val) {
-        this.setBreadcrumbTitle()
-      },
-      deep: true
     }
   }
 }
