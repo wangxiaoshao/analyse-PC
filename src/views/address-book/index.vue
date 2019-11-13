@@ -4,11 +4,7 @@
       <el-row>
         <el-col :span="6">
           <div class="organ-top">
-            <div
-              class="top-one"
-              :class="activeColor==1?'top-active':''"
-              @click="onChange(1,$event)"
-            >本单位通讯录</div>
+            <div class="top-one" :class="activeColor==1?'top-active':''" @click="onChange(1)">本单位通讯录</div>
             <div
               class="top-two"
               :class="activeColor==2?'top-active':''"
@@ -18,7 +14,7 @@
           <div class="tree-main">
             <search-choose :defaultNodeId="defaultNodeId"></search-choose>
             <div>
-              <address-book-tree :ThisUnit="ThisUnit"></address-book-tree>
+              <address-book-tree :thisUnit="thisUnit"></address-book-tree>
             </div>
           </div>
         </el-col>
@@ -65,8 +61,8 @@ export default {
       defaultNodeId: null,
       activeColor: 1,
 
-      ThisUnit: {},
-      userId: '1111111111111111111'
+      thisUnit: {},
+      userId: "1111111111111111111",
     }
   },
   computed: {
@@ -82,21 +78,19 @@ export default {
     /**
      * 切换通讯录
      */
-    onChange (e, event) {
-      console.log(event)
-      this.activeColor = e
+    onChange (e) {
+      this.activeColor = e;
       if (e === 1) {
         this.getAddressBook()
       } else if (e === 2) {
-        console.log(e, event)
+
       }
     },
     getAddressBook () {
       api[urlNames['getAddressBookList']]({
         uid: this.userId
       }).then(res => {
-        console.log(res, '===')
-        this.ThisUnit = res.data
+        this.thisUnit = res.data;
       }).catch(err => {
         console.log(err)
       })

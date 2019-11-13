@@ -3,82 +3,86 @@
     <!-- <el-input placeholder="输入关键字进行过滤" v-model="filterText"></el-input> -->
 
     <el-tree
-      class="filter-tree"
-      :data="data"
-      :props="defaultProps"
-      default-expand-all
-      :filter-node-method="filterNode"
-      ref="tree"
+      :props="props"
+      :load="loadNode"
+      node-key="id"
+      lazy
+      @node-click="handleNodeClick"
+      @node-expand="handleCheckChange"
     ></el-tree>
   </div>
 </template>
 <script>
+import { api, urlNames } from '@src/api'
 export default {
-  props: ['ThisUnit'],
+  props: ['thisUnit'],
   data () {
     return {
       props: {
         label: 'name',
         children: 'zones'
       },
-      count: 1
-    }
+      count: 1,
+      this_unit: {},
+      childrenTree: [],
+      subsetId: null,
+    };
   },
   created () {
-    console.log(this.ThisUnit, '=====')
-    this.IntoList()
+
   },
   methods: {
-    handleCheckChange (data, checked, indeterminate) {
-      // console.log(data, checked, indeterminate);
+    handleCheckChange (data) {
+      this.getTmentChild(data.id)
     },
     handleNodeClick (data) {
-      // console.log(data, "111111111111111");
+      console.log(data, "111111111111111")
     },
     loadNode (node, resolve) {
-      // console.log(node.level, "=======");
-      if (node.level === 0) {
-        return resolve([{ name: 'region1', id: 1 }, { name: 'region2', id: 2 }])
-      }
-      if (node.level > 1) {
-        // console.log("大于1")
-      }
-      // if (node.level > 3) return resolve([]);
-
-      var hasChild
-      if (node.data.name === 'region1') {
-        hasChild = true
-      } else if (node.data.name === 'region2') {
-        hasChild = false
-      } else {
-        hasChild = Math.random() > 0
-      }
-
+      console.log(node.level, "=======node")
       setTimeout(() => {
-        var data
-        if (hasChild) {
-          data = [{
-            name: 'zone' + this.count++
-          }, {
-            name: 'zone' + this.count++
-          }]
+        if (node.level === 0) {
+          let treeParent = [{ name: this.thisUnit.name, id: this.thisUnit.id }]
+          return resolve(treeParent);
+        }
+        if (node.level > 1) {
+
+        }
+        // if (node.level > 3) return resolve([]);
+        var hasChild;
+        if (this.childrenTree.length > 0) {
+          hasChild = true;
         } else {
-          data = []
+          hasChild = false;
         }
 
-        resolve(data)
+        setTimeout(() => {
+          var data;
+          if (hasChild) {
+            data = this.childrenTree
+          } else {
+            data = [];
+          }
+          resolve(data);
+        }, 500);
       }, 500)
     },
-
-
-    IntoList () {
-      let treeList = [{ id: this.ThisUnit.id, name: this.ThisUnit.name }]
-      for (const key in treeList) {
-        if (treeList.hasOwnProperty(key)) {
-          const element = treeList[key]
-          // this.listData.push(element)
+    /**
+     * 查询部门下的下级部门
+     */
+    getTmentChild (subsetId) {
+      this.childrenTree = [];
+      api[urlNames['getDepartmentChildtree']]({
+        departmentId: subsetId,
+      }).then(res => {
+        if (res.data.length > 0) {
+          res.data.forEach(element => {
+            this.childrenTree.push(element)
+          });
         }
-      }
+      }).catch(err => {
+        console.log(err)
+      })
     },
 
 
@@ -88,9 +92,12 @@ export default {
     }
   },
   watch: {
-    filterText (val) {
-      this.$refs.tree.filter(val)
+    thisUnit (newvalue, oldvalue) {
+      this.this_unit = newvalue;
     }
-  }
-}
+  },
+};
 </script>
+<style lang="less">
+@import 'index';
+</style>
