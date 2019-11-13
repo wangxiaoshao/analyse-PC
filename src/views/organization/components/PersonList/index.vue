@@ -89,7 +89,7 @@
       <el-table-column prop="act" label="操作" width="200" align="center">
         <template slot-scope="scope">
           <el-button
-            @click.native.prevent="deleteRow(scope.$index, tableData4)"
+            @click.native.prevent="openEiditPerson(scope.row)"
             type="text"
             size="small">
             修改
@@ -133,8 +133,9 @@ import CandidateDialog from '@src/components/CandidateDialog/index'
 import Sortable from 'sortablejs'
 import handleTable from '@src/mixins/handle-table'
 import { api, urlNames } from '@src/api'
+import organizationEdit from '@src/mixins/organization'
 export default {
-  mixins: [handleTable],
+  mixins: [handleTable , organizationEdit],
   props: ['contentPage', 'id', 'sortFlag', 'type'],
   components: { CandidateDialog },
   data () {
