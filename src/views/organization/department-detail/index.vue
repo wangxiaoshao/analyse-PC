@@ -93,6 +93,18 @@ export default {
   name: 'index',
   mixins: [ handleBreadcrumb ],
   components: { searchLable },
+  props: {
+    // TODO breadcrumb可采用组件传参的模式替换路由判断，将配置权交给调用方
+    breadcrumb: {
+      type: Object,
+      default () {
+        return {
+          name: '部门详情',
+          parent: null
+        }
+      }
+    }
+  },
   data () {
     return {
       openSearchFlag: false,
@@ -173,18 +185,7 @@ export default {
         }
         this.parentName = res.data.name
         // 设置返回路由，一般用于跳转模块之外的链接
-        this.pushBreadcrumb({
-          name: this.breadcrumbTitle,
-          parent: {
-            name: 'OrganizationContent',
-            params: {
-              nodeId: this.$route.params.parentId || this.$route.params.id
-            },
-            query: {
-              type: 'back'
-            }
-          }
-        })
+        this.pushBreadcrumb(this.breadcrumb)
       }, (error) => {
         this.$message.error(`没有内容`)
       })
@@ -249,9 +250,18 @@ export default {
         this.isShowEditFlag = true
         this.disabledFlag = false
         if (this.$route.name === 'DepartmentEdit') {
-          this.breadcrumbTitle = '编辑部门'
+          this.breadcrumb.name = '编辑部门'
         } else {
-          this.breadcrumbTitle = '添加部门'
+          this.breadcrumb.name = '添加部门'
+        }
+        this.breadcrumb.parent = {
+          name: 'OrganizationContent',
+          params: {
+            nodeId: this.$route.params.parentId || this.$route.params.id
+          },
+          query: {
+            type: 'back'
+          }
         }
       } else {
         this.isShowEditFlag = false

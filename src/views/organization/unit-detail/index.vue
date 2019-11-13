@@ -119,6 +119,18 @@ export default {
   name: 'index',
   mixins: [ handleBreadcrumb, dicOption],
   components: { areaList, searchLable },
+  props: {
+    // TODO breadcrumb可采用组件传参的模式替换路由判断，将配置权交给调用方
+    breadcrumb: {
+      type: Object,
+      default () {
+        return {
+          name: '部门详情',
+          parent: null
+        }
+      }
+    }
+  },
   data () {
     return {
       openSearchFlag: false,
@@ -275,9 +287,18 @@ export default {
         this.isShowEditFlag = true
         this.disabledFlag = false
         if (this.$route.name === 'UnitEdit') {
-          this.breadcrumbTitle = '编辑单位'
+          this.breadcrumb.name = '编辑单位'
         } else {
-          this.breadcrumbTitle = '添加单位'
+          this.breadcrumb.name = '添加单位'
+        }
+        this.breadcrumb.parent = {
+          name: 'OrganizationContent',
+          params: {
+            nodeId: this.$route.params.parentId || this.$route.params.id
+          },
+          query: {
+            type: 'back'
+          }
         }
       } else {
         this.isShowEditFlag = false
