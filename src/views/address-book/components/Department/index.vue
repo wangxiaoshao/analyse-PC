@@ -14,7 +14,7 @@
       </el-table>
     </div>
     <div class="member-tab-content">
-      <member-table :personnel="personnel"></member-table>
+      <member-table :personnel="personnel" :treeList="treeList"></member-table>
     </div>
   </div>
 </template>
@@ -23,7 +23,7 @@ import memberTable from '../Member/index'
 import { api, urlNames } from '@src/api'
 export default {
   name: 'index',
-  props: ['departmentList'],
+  props: ['departmentList', 'treeList'],
   components: {
     memberTable
   },
@@ -49,7 +49,8 @@ export default {
           department: element.name,
           tel: '部门电话：',
           phone: element.phone,
-          next: '下级'
+          next: '下级',
+          id: element.id
         })
       });
     }

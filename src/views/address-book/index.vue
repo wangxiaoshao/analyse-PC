@@ -35,7 +35,7 @@
           <transition name="fade-transform" mode="out-in" style="height: 100%">
             <el-scrollbar>
               <keep-alive>
-                <Department :departmentList="departmentList"></Department>
+                <Department :departmentList="departmentList" :treeList="treeList"></Department>
               </keep-alive>
             </el-scrollbar>
           </transition>
@@ -70,6 +70,7 @@ export default {
       userId: "1111111111111111111",
       departmentList: [],
       navigation: [],
+      treeList: {},
     }
   },
   computed: {
@@ -80,16 +81,13 @@ export default {
   },
   methods: {
     handleNodeClickTree (event) {
+      this.treeList = event
       this.navigation = [];
       this.navigation.push({ id: event.id, name: event.name })
       api[urlNames['getOrgDepartmentTxlList']]({
-        page: 1,
-        limit: 100,
         orgId: event.id,
       }).then(res => {
         this.departmentList = res.data
-      }).catch(err => {
-
       })
 
     },
@@ -112,23 +110,8 @@ export default {
         uid: this.userId
       }).then(res => {
         this.thisUnit = res.data;
-      }).catch(err => {
-        console.log(err)
       })
     },
-
-    toUnit () {
-      alert(1)
-      this.$router.push({
-        name: 'UnitAddressBook'
-      })
-    },
-    toOtherUnit () {
-      alert(2)
-      this.$router.push({
-        name: 'UnitAddressBook'
-      })
-    }
   }
 
 }
