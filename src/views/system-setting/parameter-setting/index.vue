@@ -243,6 +243,7 @@
 </template>
 
 <script>
+import { api, urlNames } from '@src/api'
 const cityOptions = ['上海', '北京', '广州', '深圳']
 export default {
   name: 'ParameterSettings',
@@ -265,7 +266,17 @@ export default {
       checkboxGroup1: ''
     }
   },
+  created () {
+    this.getSystemParameter()
+  },
   methods: {
+    getSystemParameter () {
+      // getSystemParameter
+      api[urlNames['getSystemParameter']]({
+      }).then((res) => {
+        console.log(res, 'getSystemParameter')
+      })
+    },
     handleCheckAllChange (val) {
       this.checkedCities = val ? cityOptions : []
       this.isIndeterminate = false

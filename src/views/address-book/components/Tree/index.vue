@@ -17,55 +17,68 @@ export default {
   props: ['ThisUnit'],
   data () {
     return {
-      filterText: '',
-      data: [{
-        id: 1,
-        label: '一级 1',
-        children: [{
-          id: 4,
-          label: '二级 1-1',
-          children: [{
-            id: 9,
-            label: '三级 1-1-1'
-          }, {
-            id: 10,
-            label: '三级 1-1-2'
-          }]
-        }]
-      }, {
-        id: 2,
-        label: '一级 2',
-        children: [{
-          id: 5,
-          label: '二级 2-1'
-        }, {
-          id: 6,
-          label: '二级 2-2'
-        }]
-      }, {
-        id: 3,
-        label: '一级 3',
-        children: [{
-          id: 7,
-          label: '二级 3-1'
-        }, {
-          id: 8,
-          label: '二级 3-2'
-        }]
-      }],
-
-      defaultProps: {
-        children: 'children',
-        label: 'label'
-      }
+      props: {
+        label: 'name',
+        children: 'zones'
+      },
+      count: 1
     }
   },
   created () {
+    console.log(this.ThisUnit, '=====')
     this.IntoList()
   },
   methods: {
+    handleCheckChange (data, checked, indeterminate) {
+      // console.log(data, checked, indeterminate);
+    },
+    handleNodeClick (data) {
+      // console.log(data, "111111111111111");
+    },
+    loadNode (node, resolve) {
+      // console.log(node.level, "=======");
+      if (node.level === 0) {
+        return resolve([{ name: 'region1', id: 1 }, { name: 'region2', id: 2 }])
+      }
+      if (node.level > 1) {
+        // console.log("大于1")
+      }
+      // if (node.level > 3) return resolve([]);
+
+      var hasChild
+      if (node.data.name === 'region1') {
+        hasChild = true
+      } else if (node.data.name === 'region2') {
+        hasChild = false
+      } else {
+        hasChild = Math.random() > 0
+      }
+
+      setTimeout(() => {
+        var data
+        if (hasChild) {
+          data = [{
+            name: 'zone' + this.count++
+          }, {
+            name: 'zone' + this.count++
+          }]
+        } else {
+          data = []
+        }
+
+        resolve(data)
+      }, 500)
+    },
+
+
     IntoList () {
-      console.log(this.ThisUnit)
+      let treeList = [{ id: this.ThisUnit.id, name: this.ThisUnit.name }]
+      for (const key in treeList) {
+        if (treeList.hasOwnProperty(key)) {
+          const element = treeList[key]
+          // this.listData.push(element)
+        }
+      }
     },
 
 
