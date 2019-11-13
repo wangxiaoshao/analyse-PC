@@ -1,4 +1,3 @@
-
 const tableConfig = {
   applyName: {
     key: 'applyName',
