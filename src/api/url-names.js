@@ -116,7 +116,9 @@ export default {
   // 查询单位
   findOrganizationById: 'findOrganizationById',
   // 系统设置
-  dictionaryList: 'dictionaryList',
+  getDictionaryList: 'getdDictionaryList',
+  addDictionary: 'addDictionary',
+  getDicListByType: 'getDicListByType',
   getSystemParameter: 'getSystemParameter', // 参数设置
   // 标签查询
 

@@ -39,7 +39,7 @@ export default [
       {
         path: 'detail/:type/:id',
         name: 'WaitApprovalDetail',
-        meta: { preName: 'WaitApproval' },
+        meta: { prePath: 'wait-approval' },
         component: WaitApprovalDetail
       },
       // 单位详情
@@ -76,7 +76,7 @@ export default [
       {
         path: 'detail/:type/:id',
         name: 'ApprovedDetail',
-        meta: { preName: 'Approved' },
+        meta: { prePath: 'approved' },
         component: ApprovedDetail
       },
       // 单位详情
@@ -112,7 +112,7 @@ export default [
       {
         path: 'detail/:type/:id',
         name: 'MyApplicationDetail',
-        meta: { preName: 'MyApplication' },
+        meta: { prePath: 'my-application' },
         component: MyApplicationDetail
       },
       // 单位详情

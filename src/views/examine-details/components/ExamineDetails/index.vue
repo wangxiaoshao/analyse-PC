@@ -139,28 +139,24 @@ export default {
       })
     },
     // TODO 需要按父导航进行跳转
-    jumpDetailPage (type) { // type = 1 || 3 || 4
-      let preName = this.$route.meta.preName,
-        name = ''
+    jumpDetailPage (type) { // type = 1 || 3部门 || 4单位
+      let prePath = this.$route.meta.prePath,
+        path = ''
       switch (type) {
         case 1:
-          name = preName + 'PersonDetail'
+          path = prePath + '/PersonDetail'
           break
         case 3:
-          name = preName + 'DepartmentDetail'
+          path = prePath + '/DepartmentDetail'
           break
         case 4:
-          name = preName + 'UnitDetail'
+          path = prePath + '/UnitDetail'
           break
         default :
           break
       }
       this.$router.push({
-        name: name,
-        params: {
-          id: this.$route.params.id,
-          type: this.$route.params.type
-        }
+        path: `/${path}/${this.$route.params.id}`
       })
     }
   }

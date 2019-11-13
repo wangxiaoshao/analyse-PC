@@ -4,23 +4,27 @@
     <el-row class="operator-row">
       <el-col :span="24">
         <el-row :gutter="10" type="flex">
-          <el-col :span="5">
-            <el-input placeholder="部门名称" v-model="searchQuery.name" clearable>
+          <el-col :span="4">
+            <el-input placeholder="单位名称" v-model="searchQuery.name" clearable>
             </el-input>
           </el-col>
-          <el-col :span="5">
-            <el-input placeholder="部门ID" v-model="searchQuery.id" clearable>
+          <el-col :span="4">
+            <el-input placeholder="单位ID" v-model="searchQuery.id" clearable>
             </el-input>
           </el-col>
-          <el-col :span="5">
-            <el-input placeholder="所属单位" v-model="searchQuery.orgName" clearable>
+          <el-col :span="4">
+            <el-input placeholder="上级名称" v-model="searchQuery.parentName" clearable>
             </el-input>
           </el-col>
-          <el-col :span="5">
+          <el-col :span="4">
+            <el-input placeholder="上级ID" v-model="searchQuery.parentId" clearable>
+            </el-input>
+          </el-col>
+          <el-col :span="4">
             <el-input placeholder="标签" v-model="searchQuery.labelName" clearable>
             </el-input>
           </el-col>
-          <el-col :span="5" class="text-right">
+          <el-col :span="4" class="text-right">
             <el-button type="primary" plain @click="getGrid">查询</el-button>
           </el-col>
         </el-row>
@@ -36,9 +40,9 @@
                 :tableData="tableData">
       <template slot-scope="{slotScope}" slot="status">
       </template>
-          <template slot-scope="{slotScope}" slot="operate">
-            <el-button size="mini" type="text" @click="goDetails(slotScope.row)">查看明细</el-button>
-          </template>
+      <template slot-scope="{slotScope}" slot="operate">
+        <el-button size="mini" type="text" @click="goDetails(slotScope.row)">查看明细</el-button>
+      </template>
     </site-table>
     <!--分页-->
     <el-pagination
@@ -67,13 +71,14 @@ export default {
     return {
       tableConfig,
       searchQuery: {
-        id: '',
         name: '',
-        orgName: '',
-        orgAdministrator: ''
+        id: '',
+        parentName: '',
+        parentId: '',
+        labelName: ''
       },
       tableData: [],
-      tableHeight: 200,
+      tableHeight: null,
       operateWidth: 100,
       tableCheckbox: true,
       pageConfig: {},
@@ -126,10 +131,10 @@ export default {
       })
     },
     getGrid () {
-      this.loading = true
       let data = {
         page: this.page.current,
-        limit: this.page.limit
+        limit: this.page.limit,
+        ...this.searchQuery
       }
       this.pageConfig = data
       let keys = Object.keys(this.searchQuery)
@@ -143,10 +148,11 @@ export default {
           data[key] = value
         }
       }
-      api[urlNames['findDepartmentList']](data).then((res) => {
+      api[urlNames['findOrganizationList']](data).then((res) => {
         this.tableData = res.data
         this.page.total = res.total
       }, () => {
+        this.loading = false
         this.tableData = []
         this.page.total = 0
       })
@@ -154,19 +160,18 @@ export default {
     goDetails (row) {
       this.SET_APPLICATION_PAGE(this.page)
       this.SET_EXAMINE_SEARCH_QUERY(this.searchQuery)
-      this.SET_EXAMINE_TABLEDATA(this.tableData)
-      this.SET_EXAMINE_DETAIL(row)
-      this.SET_EXAMINE_BACKPATH(this.$route.name)
+      this.SET_EXAMINE_TABLEDATA(this.tableData) // 存储当前页面table的数据列表
+      this.SET_EXAMINE_DETAIL(row) // ExamineDetails页面需要用到的当前列表中点击项的数据
+      this.SET_EXAMINE_BACKPATH(this.$route.name) // ExamineDetails页面需要用到的当前列表中点击项的数据
       this.$router.push({
-        name: 'ExamineDetails',
-        params: { parentCode: 1910281645 }
+        path: `/${this.$route.meta.prePath}/unitDetail/${row.id}`
       })
     }
   }
 }
 </script>
 <style lang="less">
-  @import "./index";
+  @import "index";
 </style>
 
 
