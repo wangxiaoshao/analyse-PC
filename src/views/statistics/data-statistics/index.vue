@@ -106,12 +106,13 @@
 
 <script type="text/ecmascript-6">
 import handleTable from '@src/mixins/handle-table'
+import filters from '@src/filters'
 import echarts from '../components/Echarts'
 import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
 
 export default {
-  components: { echarts },
+  components: { echarts, filters },
   mixins: [handleTable],
   data () {
     return {
