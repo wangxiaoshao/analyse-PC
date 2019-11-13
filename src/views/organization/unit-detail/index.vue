@@ -32,8 +32,11 @@
          </el-form-item>
          <el-form-item label="所属类型" prop="type">
            <el-select v-model="ruleForm.organization.type" @change="getType" placeholder="请选择所属类型">
-             <el-option label="区域一" value="1"></el-option>
-             <el-option label="区域二" value="2"></el-option>
+             <el-option
+               v-for="item in classOption"
+               :key="item.id"
+               :label="item.text"
+               :value="item.value"></el-option>
            </el-select>
          </el-form-item>
        </el-col>
@@ -54,10 +57,10 @@
          <el-form-item label="所属系统" prop="systemType">
            <el-select v-model="ruleForm.organization.systemType" @change="getSystemType" placeholder="请选择所属系统">
              <el-option
-               v-for="item in systemTypeOption"
-               :key="item.value"
+               v-for="item in applicationOption"
+               :key="item.id"
                :value="item.value"
-               :label="item.label"
+               :label="item.text"
              ></el-option>
            </el-select>
          </el-form-item>
@@ -77,7 +80,7 @@
           >
             {{tag}}
           </el-tag>
-          <el-tag class="add-tag-btn" @click="openSearchFlag = true"><i class="el-icon-plus"></i>添加标签</el-tag>
+          <el-tag class="add-tag-btn" v-if="!disabledFlag" @click="openSearchFlag = true"><i class="el-icon-plus"></i>添加标签</el-tag>
         </el-form-item>
       </el-row>
       <el-menu class="el-menu-demo" mode="horizontal">
@@ -109,12 +112,25 @@
 <script>
 import { api, urlNames } from '@src/api'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
+import dicOption from '@src/mixins/dic-options.js'
 import searchLable from '../components/AddTags/index'
 import areaList from '../components/AreaList/index'
 export default {
   name: 'index',
-  mixins: [ handleBreadcrumb ],
+  mixins: [ handleBreadcrumb, dicOption],
   components: { areaList, searchLable },
+  props: {
+    // TODO breadcrumb可采用组件传参的模式替换路由判断，将配置权交给调用方
+    breadcrumb: {
+      type: Object,
+      default () {
+        return {
+          name: '部门详情',
+          parent: null
+        }
+      }
+    }
+  },
   data () {
     return {
       openSearchFlag: false,
@@ -167,6 +183,8 @@ export default {
       ]
     }
   },
+  computed: {
+  },
   mounted () {
     this.setBreadcrumbTitle()
   },
@@ -185,7 +203,6 @@ export default {
         this.bindId = res.data.bindId
         this.ruleForm.organization.parentId = res.data.bindId
         this.ruleForm.nodeId = res.data.id
-        this.getDicList(1)
         if (res.data.bindId && res.data.nodeType === 2) {
           this.getDetail()
           if (this.$route.name !== 'UnitAdd') {
@@ -207,15 +224,6 @@ export default {
         })
       }, (error) => {
         this.$message.error(`没有内容`)
-      })
-    },
-    // 字典列表
-    getDicList (id) {
-      api[urlNames['dicList']]({
-        id: id
-      }).then((res) => {
-        console.log(res.data)
-      }, (error) => {
       })
     },
     getDetail () {
@@ -279,9 +287,18 @@ export default {
         this.isShowEditFlag = true
         this.disabledFlag = false
         if (this.$route.name === 'UnitEdit') {
-          this.breadcrumbTitle = '编辑单位'
+          this.breadcrumb.name = '编辑单位'
         } else {
-          this.breadcrumbTitle = '添加单位'
+          this.breadcrumb.name = '添加单位'
+        }
+        this.breadcrumb.parent = {
+          name: 'OrganizationContent',
+          params: {
+            nodeId: this.$route.params.parentId || this.$route.params.id
+          },
+          query: {
+            type: 'back'
+          }
         }
       } else {
         this.isShowEditFlag = false

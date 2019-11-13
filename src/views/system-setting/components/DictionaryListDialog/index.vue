@@ -17,7 +17,8 @@
               <el-input v-model="form.value" placeholder="请输入字典值" clearable></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="addDic('form')">创建</el-button>
+              <el-button type="primary" @click="addDic('form')">{{type || '创建'}}</el-button>
+              <!--<el-button type="primary" @click="addDic('form')">创建</el-button>-->
             </el-form-item>
           </el-form>
           <template>
@@ -64,7 +65,7 @@ import { mapState, mapMutations } from 'vuex'
 import { api, urlNames } from '@src/api'
 
 export default {
-  props: ['visible', 'close', 'dialogTitle'],
+  props: ['visible', 'close', 'dialogTitle', 'dictionaryType'],
   components: {},
   data () {
     var checkAge = (rule, value, callback) => {
@@ -85,17 +86,13 @@ export default {
       },
       isShow: false,
       formLabelWidth: '120px',
-      tableData: [
-        {
-          text: '字典名称1',
-          value: '值1'
-        }
-      ],
+      tableData: [],
+      foundDicList: [],
       newAddList: [],
       rules: {
         text: [{ validator: checkAge, trigger: 'blur' }],
-        value: [{ validator: checkAge, trigger: 'blur' }],
-      },
+        value: [{ validator: checkAge, trigger: 'blur' }]
+      }
     }
   },
   mounted () {
@@ -106,25 +103,41 @@ export default {
       return {
         maxHeight: this.$store.state.app.windowHeight / 2 + 'px'
       }
-    }
+    },
+    type () {
+      if (this.dictionaryType) {
+        this.getDicByTypeList()
+        return '创建'
+      } else {
+        return '创建'
+      }
+    },
   },
   methods: {
-    initDicList () {
-      api[urlNames['sendEditRightsInfo']](data).then((res) => {
-        this.$message({
-          message: this.current ? '修改成功' : '添加成功',
-          type: 'success'
-        })
-      }, (error) => {
-
+    getDicByTypeList () {
+      let type = {
+        type: this.dictionaryType
+      }
+      api[urlNames['getDicListByType']](type).then((res) => {
+        this.tableData = res.data
+      }, () => {
+        this.tableData = []
       })
     },
     addAllDic () {
-      console.log(...this.tableData)
-      // this.tableData.push()
+      let paraems = {
+        tyep: this.dictionaryType,
+        data: [...this.foundDicList]
+      }
+      console.log(paraems)
+      api[urlNames['addDictionary']](paraems).then((res) => {
+          console.log(res)
+      }, () => {
+        this.foundDicList = []
+      })
     },
     indexMethod (index) {
-      return index + 1;
+      return index + 1
     },
     handleClose (tag) {
       this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1)
@@ -140,28 +153,9 @@ export default {
       this.$refs[form].validate((valid) => {
         if (valid) {
           let addItem = JSON.parse(JSON.stringify(this.form))
+          this.foundDicList.push(addItem)
           this.tableData.push(addItem)
           this.$refs[form].resetFields()
-          // let data = new FormData()
-          // let keys = Object.keys(this.form)
-          // let len = keys.length
-          // for (let i = 0; i < len; i++) {
-          //   let key = keys[i]
-          //   let value = this.form[key]
-          //   if (value) {
-          //     data.append(key, value)
-          //   }
-          // }
-          // api[urlNames['sendEditRightsInfo']](data).then((res) => {
-          //   this.$message({
-          //     message: this.current ? '修改成功' : '添加成功',
-          //     type: 'success'
-          //   })
-          //   this.$emit('refreshList')
-          //   this.closeDialog()
-          // }, (error) => {
-          //
-          // })
         }
       })
     }

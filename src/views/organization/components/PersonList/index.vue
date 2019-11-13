@@ -89,7 +89,7 @@
       <el-table-column prop="act" label="操作" width="200" align="center">
         <template slot-scope="scope">
           <el-button
-            @click.native.prevent="deleteRow(scope.$index, tableData4)"
+            @click.native.prevent="openEiditPerson(scope.row)"
             type="text"
             size="small">
             修改
@@ -133,8 +133,9 @@ import CandidateDialog from '@src/components/CandidateDialog/index'
 import Sortable from 'sortablejs'
 import handleTable from '@src/mixins/handle-table'
 import { api, urlNames } from '@src/api'
+import organizationEdit from '@src/mixins/organization'
 export default {
-  mixins: [handleTable],
+  mixins: [handleTable , organizationEdit],
   props: ['contentPage', 'id', 'sortFlag', 'type'],
   components: { CandidateDialog },
   data () {
@@ -325,7 +326,7 @@ export default {
     // 选人弹窗组件返回的人员信息
     // TODO选人组件完善后需要修改选择单位或单位下的部门
     dialogReturnMembersInfo (data, id) {
-      console.log('danw',id)
+      console.log('danw', id)
       this.formCallout.orgId = id[0].bindId
       this.orgName = id[0].name
     },

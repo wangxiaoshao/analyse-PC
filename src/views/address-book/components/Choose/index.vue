@@ -1,25 +1,13 @@
 <template>
   <div class="search-content">
-    <!-- <el-popover v-if="resultFlag" placement="top-start" width="100%">
-      <div class="result-list">
-        <div class="back-btn">
-          <el-button size="mini" @click="goBackTree">返回</el-button>
-        </div>
-        <el-table v-loading="loadFlag" :data="gridData" :show-header="false">
-          <el-table-column property="name">
-            <template slot-scope="scope">
-              <span
-                :title="scope.row.name"
-                class="table-span"
-                @click="setNodeId(scope.row)"
-              >{{scope.row.name}}</span>
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
-    </el-popover>-->
     <el-row>
-      <el-input placeholder="请输入内容" v-model="keyWord" @change="getResult" class="input-with-select">
+      <el-input
+        placeholder="请输入内容"
+        v-model="keyWord"
+        onFocus
+        @change="getResult"
+        class="input-with-select"
+      >
         <el-select
           v-model="value"
           style="width: 80px"
@@ -28,13 +16,13 @@
           placeholder="请选择"
         >
           <el-option
-            v-for="item in departmentunit"
+            v-for="item in nodeTree"
             :key="item.value"
             :label="item.label"
             :value="item.value"
           ></el-option>
         </el-select>
-        <el-button slot="append" icon="el-icon-search"></el-button>
+        <el-button slot="append" @click="getResult" icon="el-icon-search"></el-button>
       </el-input>
     </el-row>
   </div>
@@ -42,73 +30,59 @@
 
 <script>
 import { api, urlNames } from '@src/api'
-/* import debounce from '@src/mixins/debounce' */
 export default {
-  /*  mixins: [ debounce ], */
+  props: ['defaultNodeId'],
   data () {
     return {
-      resultFlag: false,
-      loadFlag: true,
-
-
       keyWord: '',
-      departmentunit: [{
-        value: 'department',
-        label: '部门'
-      }, {
-        value: 'unit',
-        label: '单位'
-      }, {
-        value: 'person',
-        label: '人员'
-      }],
-      value: '部门',
+
+      value: '选择',
       gridData: [],
-      type: 'department'
+      nodeType: '',
+
+      nodeTree: [],
     }
   },
-  props: ['defaultNodeId'],
+
+  created () {
+    this.findNodeTree(-1)
+  },
   methods: {
+    // 获取机构树--初始化
+    findNodeTree (parentId) {
+      api[urlNames['getTree']]({
+        parentId: parentId,
+        viewId: -1
+      }).then((res) => {
+        res.data.forEach(element => {
+          this.nodeTree.push({
+            value: element.nodeType,
+            label: element.name
+          })
+        });
+      })
+    },
+
     getType (e) {
-      this.type = e
+      this.nodeType = e
     },
     onFocus () {
-      this.resultFlag = true
       this.getResult()
     },
     // 获取搜索结果
     getResult () {
       let data = {
-        name: this.keyWord
+        name: this.keyWord,
+        nodeType: this.nodeType
       }
       this.loadFlag = true
       api[urlNames['searchViewNode']](data).then(res => {
-        console.log(res, "===")
+        console.log(res, '===')
         this.gridData = res.data
-        this.loadFlag = false
       })
     },
-    setNodeId (row) {
-      this.$router.push({
-        name: 'OrganizationContent',
-        params: {
-          nodeId: row.id
-        }
-      })
-    },
-    goBackTree () {
-      this.resultFlag = false
-      this.$router.push({
-        name: 'OrganizationContent',
-        params: {
-          nodeId: this.defaultNodeId
-        }
-      })
-    }
   },
-  created () {
-    // this.debouncedSearch = this.debounce(this.getResult, 5000)
-  }
+
 }
 </script>
 

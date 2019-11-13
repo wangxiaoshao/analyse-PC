@@ -107,8 +107,8 @@ export default {
       for (let i = 0; i < len; i++) {
         let ele = this.mergeConfig[i].ele === 'col' ? columnIndex : rowIndex
         if (ele === this.mergeConfig[i].eleIndex) {
-          let rowspan = this.mergeConfig[i].rowspan,
-            colspan = this.mergeConfig[i].colspan
+          let rowspan = this.mergeConfig[i].rowspan
+          let colspan = this.mergeConfig[i].colspan
           return [rowspan, colspan]
         }
       }

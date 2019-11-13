@@ -75,14 +75,14 @@ export default {
           ele: 'col',
           eleIndex: 4,
           rowspan: 4,
-          colspan: 1,
+          colspan: 1
         },
         {
           ele: 'col',
           eleIndex: 3,
           rowspan: 4,
-          colspan: 1,
-        },
+          colspan: 1
+        }
       ],
       operateWidth: 100,
       tableCheckbox: true,
@@ -139,28 +139,24 @@ export default {
       })
     },
     // TODO 需要按父导航进行跳转
-    jumpDetailPage (type) { // type = 1 || 3 || 4
-      let name = 'WaitApprovalPersonDetail'
+    jumpDetailPage (type) { // type = 1 || 3部门 || 4单位
+      let prePath = this.$route.meta.prePath,
+        path = ''
       switch (type) {
         case 1:
-          name = 'WaitApprovalPersonDetail'
+          path = prePath + '/PersonDetail'
           break
         case 3:
-          name = 'DepartmentDetail'
+          path = prePath + '/DepartmentDetail'
           break
         case 4:
-          name = 'UnitDetail'
+          path = prePath + '/UnitDetail'
           break
         default :
           break
       }
       this.$router.push({
-        name: name,
-        params: {
-          pathName: this.$route.path,
-          id: this.$route.params.id,
-          type: this.$route.params.type
-        }
+        path: `/${path}/${this.$route.params.id}`
       })
     }
   }

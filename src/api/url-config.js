@@ -123,5 +123,5 @@ export default {
   ...organization,
   ...shared, // 共享视图
   ...system, // 系统管理
-  ...addressBook,//通讯录
+  ...addressBook// 通讯录
 }

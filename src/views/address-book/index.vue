@@ -4,11 +4,7 @@
       <el-row>
         <el-col :span="6">
           <div class="organ-top">
-            <div
-              class="top-one"
-              :class="activeColor==1?'top-active':''"
-              @click="onChange(1,$event)"
-            >本单位通讯录</div>
+            <div class="top-one" :class="activeColor==1?'top-active':''" @click="onChange(1)">本单位通讯录</div>
             <div
               class="top-two"
               :class="activeColor==2?'top-active':''"
@@ -18,7 +14,8 @@
           <div class="tree-main">
             <search-choose :defaultNodeId="defaultNodeId"></search-choose>
             <div>
-              <address-book-tree :ThisUnit="ThisUnit"></address-book-tree>
+              <address-book-tree @handle-nodeClick="handleNodeClickTree" :thisUnit="thisUnit"></address-book-tree>
+              <!-- <addTreeList :thisUnit="thisUnit"></addTreeList> -->
             </div>
           </div>
         </el-col>
@@ -26,7 +23,7 @@
           <div>
             <el-breadcrumb separator="/" style="background:#F5F6F8;padding:20px;">
               <el-breadcrumb-item>本单位名称</el-breadcrumb-item>
-              <el-breadcrumb-item>本单位名称</el-breadcrumb-item>
+              <el-breadcrumb-item v-for="(item,index) in navigation" :key="index">{{item.name}}</el-breadcrumb-item>
             </el-breadcrumb>
           </div>
           <!-- <el-breadcrumb separator-class="el-icon-arrow-right">
@@ -38,7 +35,7 @@
           <transition name="fade-transform" mode="out-in" style="height: 100%">
             <el-scrollbar>
               <keep-alive>
-                <router-view></router-view>
+                <Department :departmentList="departmentList" :treeList="treeList"></Department>
               </keep-alive>
             </el-scrollbar>
           </transition>
@@ -52,69 +49,69 @@
 import handleTable from '@src/mixins/handle-table'
 import addressBookTree from './components/Tree/index'
 import searchChoose from './components/Choose/index'
+import addTreeList from "./components/TreeList"
+import Department from './components/Department'
 import { api, urlNames } from '@src/api'
 export default {
   name: 'AddressBook',
   mixins: [handleTable],
   components: {
     addressBookTree,
-    searchChoose
+    searchChoose,
+    addTreeList,
+    Department
   },
   data () {
     return {
       defaultNodeId: null,
       activeColor: 1,
 
-      ThisUnit: {},
+      thisUnit: {},
       userId: "1111111111111111111",
+      departmentList: [],
+      navigation: [],
+      treeList: {},
     }
   },
   computed: {
 
   },
   created () {
-    this.getAddressBook();
+    this.getAddressBook()
   },
   methods: {
+    handleNodeClickTree (event) {
+      this.treeList = event
+      this.navigation = [];
+      this.navigation.push({ id: event.id, name: event.name })
+      api[urlNames['getOrgDepartmentTxlList']]({
+        orgId: event.id,
+      }).then(res => {
+        this.departmentList = res.data
+      })
+    },
     getDefault (val) {
       this.defaultNodeId = val
     },
     /**
      * 切换通讯录
      */
-    onChange (e, event) {
-      console.log(event)
+    onChange (e) {
       this.activeColor = e;
       if (e === 1) {
-        this.getAddressBook();
+        this.getAddressBook()
       } else if (e === 2) {
-        console.log(e, event)
+
       }
     },
     getAddressBook () {
       api[urlNames['getAddressBookList']]({
-        uid: this.userId,
+        uid: this.userId
       }).then(res => {
-        console.log(res, "===")
-        this.ThisUnit = res.data;
-      }).catch(err => {
-        console.log(err)
+        this.thisUnit = res.data;
       })
     },
-
-    toUnit () {
-      alert(1)
-      this.$router.push({
-        name: 'UnitAddressBook'
-      })
-    },
-    toOtherUnit () {
-      alert(2)
-      this.$router.push({
-        name: 'UnitAddressBook'
-      })
-    }
-  },
+  }
 
 }
 </script>

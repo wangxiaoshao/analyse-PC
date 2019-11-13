@@ -1,9 +1,19 @@
 
 const DataStatistics = () => import('@src/views/statistics/data-statistics/index.vue')
 const DataLog = () => import('@src/views/statistics/data-log/index.vue')
-const UnitQuery = () => import('@src/views/statistics/data-query/unit-query/index.vue')
-const DepartmentQuery = () => import('@src/views/statistics/data-query/department-query/index.vue')
-const MemberQuery = () => import('@src/views/statistics/data-query/member-query/index.vue')
+
+const UnitQuery = () => import('@src/views/unit-query/index.vue')
+const UnitQueryList = () => import('@src/views/unit-query/UnitQueryList/index.vue')
+
+const DepartmentQuery = () => import('@src/views/department-query/index.vue')
+const DepartmentQueryList = () => import('@src/views/department-query/DepartmentQueryList/index.vue')
+
+const MemberQuery = () => import('@src/views/member-query/index.vue')
+const MemberQueryList = () => import('@src/views/member-query/MemberQueryList/index.vue')
+
+const QueryUnitDetail = () => import('@src/views/organization/unit-detail/index.vue')
+const QueryPersonDetail = () => import('@src/views/organization/person-detail/index.vue')
+const QueryDepartmentDetail = () => import('@src/views/organization/department-detail/index.vue')
 
 
 export default [
@@ -15,17 +25,59 @@ export default [
   { // 单位查询
     path: '/unit-query',
     name: 'UnitQuery',
-    component: UnitQuery
+    component: UnitQuery,
+    children: [
+      {
+        path: '/',
+        name: 'UnitQueryList',
+        meta: { prePath: 'unit-query' },
+        component: UnitQueryList
+      },
+      // 单位详情
+      {
+        path: 'unitDetail/:id',
+        name: 'QueryUnitDetail',
+        component: QueryUnitDetail
+      }
+    ]
   },
   { // 部门查询
     path: '/department-query',
     name: 'DepartmentQuery',
-    component: DepartmentQuery
+    component: DepartmentQuery,
+    children: [
+      {
+        path: '/',
+        name: 'DepartmentQueryList',
+        meta: { prePath: 'department-query' },
+        component: DepartmentQueryList
+      },
+      // 部门详情
+      {
+        path: '/departmentDetail/:id',
+        name: 'QueryDepartmentDetail',
+        component: QueryDepartmentDetail
+      }
+    ]
   },
   { // 人员查询
     path: '/member-query',
     name: 'MemberQuery',
-    component: MemberQuery
+    component: MemberQuery,
+    children: [
+      {
+        path: '/',
+        name: 'MemberQueryList',
+        meta: { prePath: 'member-query' },
+        component: MemberQueryList
+      },
+      // 人员详情
+      {
+        path: 'personDetail/:id',
+        name: 'QueryPersonDetail',
+        component: QueryPersonDetail
+      }
+    ]
   },
   { // 系统日志
     path: '/data-log',

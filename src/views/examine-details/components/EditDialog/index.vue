@@ -59,7 +59,7 @@ export default {
   },
   methods: {
     closeDialog (form) {
-      this.$refs[form].resetFields()
+      // this.$refs[form].resetFields()
       this.$emit('close')
     },
     passExamine (form) {

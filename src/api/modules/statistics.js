@@ -21,5 +21,5 @@ export default {
     showLoading: true,
     serve: 'organizationManagePC',
     mock: 'statistics/getDataLogList.json'
-  },
+  }
 }
