@@ -8,7 +8,8 @@ const DictionaryManage = () => import('@src/views/system-setting/dictionary-mana
 const SystemSetting = () => import('@src/views/system-setting/index.vue')
 // 权限配置
 const RightsManagement = () => import('@src/views/shared/rights-management/index.vue')
-
+// 参数配置
+const ParameterSetting = () => import('@src/views/system-setting/parameter-setting/index.vue')
 export default [
   // 权限管理
   {
@@ -44,6 +45,11 @@ export default [
         path: '/dictionary-manage',
         name: 'DictionaryManage',
         component: DictionaryManage
+      },
+      {
+        path: '/parameter-setting',
+        name: 'ParameterSettings',
+        component: ParameterSetting
       }
     ]
   }

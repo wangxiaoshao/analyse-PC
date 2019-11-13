@@ -57,6 +57,18 @@ export default {
     keepOriginResponse: false
   },
   /**
+   * 获取视图草稿
+   */
+  [urlNames.synchronizedNode]: {
+    type: 'post',
+    url: '/api/jg_manage/view/synchronizedNode',
+    serve: 'organizationManagePC',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    keepOriginResponse: false
+  },
+  /**
    * 获取应用列表
    */
   [urlNames.getAppList]: {

@@ -59,6 +59,7 @@
                   <el-form-item label="选择组织机构">
                     <div class="select-org">
                       <el-tree
+                        ref="selecttree"
                         :data="nodeTree"
                         show-checkbox
                         node-key="id"
@@ -71,15 +72,19 @@
                         :allow-drop="allowDrop"
                         @node-drag-end="nodedragend"
                         @node-drag-over="handleDragOver"
-                        :expand-on-click-node="false">
+                        :expand-on-click-node="false"
+                        :default-checked-keys="checkedKeys">
                       </el-tree>
                     </div>
                   </el-form-item>
                 </div>
               </el-col>
               <el-col :span="7" :offset="2">
-                <div class="grid-content bg-purple-light">
-                  <el-form-item label="视图组织机构">
+                <div class="grid-content bg-purple-light select-org-panel">
+                    <div class="select-btn">
+                      <p><el-button type="primary" size="small">新机构视图</el-button></p>
+                      <p><el-button size="small">旧机构视图</el-button></p>
+                    </div>
                     <div class="select-org">
                       <el-tree
                         :data="viewNodeTree"
@@ -90,15 +95,15 @@
                         :props="defaultProps"
                         :check-strictly="true"
                         @node-drag-enter="handleDragEnter"
-                        :expand-on-click-node="false">
+                        :expand-on-click-node="false"
+                        :default-checked-keys="checkedKeys">
                       </el-tree>
                     </div>
-                  </el-form-item>
                 </div>
               </el-col>
             </el-row>
             <el-form-item>
-              <el-button type="primary" @click="onSubmit">保存</el-button>
+              <el-button type="primary" @click="synchronizedNode">保存</el-button>
               <el-button>取消</el-button>
             </el-form-item>
           </el-form>
@@ -138,7 +143,7 @@ export default {
         removed: true,
         roleBindUserIds: []
       },
-      returnViewId: null,
+      returnViewId: null, // 228770923203788800
       form: {},
       rules: {
         name: [
@@ -155,12 +160,22 @@ export default {
       nodeDraftTree: [], // 机构草噶
       tempNode: [], // 拖拽节点中间变量
       viewNodeTree: [], // 右边草稿树节点
+      syncChild: true,
+      viewNodeDraft: {
+        id: '',
+        parentId: '',
+        name: '',
+        nodeType: null,
+        bindId: null
+      },
       for: {
         id: '',
         parentId: '',
         viewId: '',
         name: ''
-      }
+      },
+      selectedKeys: [], // 已保存选中
+      checkedKeys: []
     }
   },
   mounted () {
@@ -233,10 +248,11 @@ export default {
       })
     },
     // 创建视图草稿
-    createNodeDraft (parentId) {
-      api[urlNames['findNodeDraftList']]({
-        parentId: parentId,
-        viewId: this.returnViewId ? this.returnViewId : this.$route.params.id
+    createNodeDraft () {
+      api[urlNames['createNodeDraft']]({
+        syncChild: this.syncChild,
+        viewId: '228770923203788800',
+        viewNodeDraft: this.viewNodeDraft
       }).then((res) => {
         this.nodeTree = res.data
       })
@@ -263,6 +279,10 @@ export default {
     },
     // tab点击切换
     handleClick () {},
+    // 设置tree选中
+    setCheckedKeys () {
+      this.$refs.selecttree.setCheckedKeys(this.checkedKeys)
+    },
     allowDrop (draggingNode, dropNode, type) {
     },
     // 拖拽--暂时无用
@@ -272,11 +292,39 @@ export default {
     },
     // 拖拽结束时触发的事件--原来机构树
     nodedragend (Node, lastNode, lastTree, e) {
-      if (e.screenX > 1020 && e.screenX < 1330 && e.screenY > 425 && e.screenY < 725) {
+      console.log(e.screenX, e.screenY)
+      if (e.screenX > 1020 && e.screenX < 1330 && e.screenY > 350 && e.screenY < 725) {
+        this.viewNodeDraft.id = Node.data.id
+        Node.data.parentId = this.viewNodeDraft.parentId = '-1'
+        this.viewNodeDraft.name = Node.data.name
+        this.viewNodeDraft.nodeType = Node.data.nodeType
+        this.viewNodeDraft.bindId = Node.data.bindId
+        console.log(JSON.parse(JSON.stringify(Node.data)), 'Node.data')
+        this.$confirm('是否包括子节点', '提示', {
+          confirmButtonText: '包括',
+          cancelButtonText: '不包括',
+          type: 'warning'
+        }).then(() => {
+          this.syncChild = true
+          this.createNodeDraft()
+        }).catch(() => {
+          this.syncChild = false
+          this.createNodeDraft()
+        })
+        this.checkedKeys.push(Node.data.id)
+        this.setCheckedKeys()
         this.viewNodeTree.push(Node.data)
       }
       // console.log(e.screenX, '1020----------1330')
       // console.log(e.screenY, '425----------725')
+    },
+    // 草稿-》保存视图
+    synchronizedNode () {
+      api[urlNames['synchronizedNode']]({
+        viewId: '228770923203788800'
+      }).then((res) => {
+        console.log(res, '---------------')
+      })
     },
     handleDragEnter () {
     },
@@ -285,22 +333,30 @@ export default {
     },
     // 单选框选中
     currentchange (node, checked) {
+      if (this.viewNodeTree[this.viewNodeTree.length - 1].id === node.id) {
+        return false
+      }
+      console.log(JSON.parse(JSON.stringify(node)), checked, 'node')
       if (checked) {
-        this.$confirm('是否选择子节点', '提示', {
-          confirmButtonText: '选择',
-          cancelButtonText: '不选择',
+        this.viewNodeDraft.id = node.id
+        node.parentId = this.viewNodeDraft.parentId = '-1'
+        node.checked = true
+        this.viewNodeDraft.name = node.name
+        this.viewNodeDraft.nodeType = node.nodeType
+        this.viewNodeDraft.bindId = node.bindId
+        this.$confirm('是否包括子节点', '提示', {
+          confirmButtonText: '包括',
+          cancelButtonText: '不包括',
           type: 'warning'
         }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '选择!'
-          })
+          this.syncChild = true
+          this.createNodeDraft()
         }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '不选择'
-          })
+          this.syncChild = false
+          this.createNodeDraft()
         })
+        this.checkedKeys.push(node.id)
+        this.viewNodeTree.push(node)
       }
     }
   }
