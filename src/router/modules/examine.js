@@ -12,8 +12,17 @@ const ConfirmInfo = () => import('@src/views/confirm-info/index.vue')
 const ConfirmInfoList = () => import('@src/views/confirm-info/ConfirmInfoList/index.vue')
 const ConfirmInfoDetail = () => import('@src/views/confirm-info/ConfirmInfoDetail/index.vue')
 
-const UnitDetail = () => import('@src/views/organization/unit-detail/index.vue')
-const PersonDetail = () => import('@src/views/organization/person-detail/index.vue')
+const WaitApprovalUnitDetail = () => import('@src/views/organization/unit-detail/index.vue')
+const WaitApprovalPersonDetail = () => import('@src/views/organization/person-detail/index.vue')
+const WaitApprovalDepartmentDetail = () => import('@src/views/organization/department-detail/index.vue')
+
+const ApprovedUnitDetail = () => import('@src/views/organization/unit-detail/index.vue')
+const ApprovedPersonDetail = () => import('@src/views/organization/person-detail/index.vue')
+const ApprovedDepartmentDetail = () => import('@src/views/organization/department-detail/index.vue')
+
+const MyApplicationUnitDetail = () => import('@src/views/organization/unit-detail/index.vue')
+const MyApplicationPersonDetail = () => import('@src/views/organization/person-detail/index.vue')
+const MyApplicationDepartmentDetail = () => import('@src/views/organization/department-detail/index.vue')
 
 
 export default [
@@ -30,20 +39,27 @@ export default [
       {
         path: 'detail/:type/:id',
         name: 'WaitApprovalDetail',
+        meta: { preName: 'WaitApproval' },
         component: WaitApprovalDetail
       },
       // 单位详情
       {
-        path: '/unitDetail/:id',
-        name: 'UnitDetail',
-        component: UnitDetail
+        path: 'unitDetail/:id',
+        name: 'WaitApprovalUnitDetail',
+        component: WaitApprovalUnitDetail
       },
       // 人员详情
       {
-        path: '/personDetail/:id',
-        name: 'PersonDetail',
-        component: PersonDetail
+        path: 'personDetail/:id',
+        name: 'WaitApprovalPersonDetail',
+        component: WaitApprovalPersonDetail
       },
+      // 部门详情
+      {
+        path: 'departmentDetail/:id',
+        name: 'WaitApprovalDepartmentDetail',
+        component: WaitApprovalDepartmentDetail
+      }
     ]
 
   },
@@ -60,7 +76,26 @@ export default [
       {
         path: 'detail/:type/:id',
         name: 'ApprovedDetail',
+        meta: { preName: 'Approved' },
         component: ApprovedDetail
+      },
+      // 单位详情
+      {
+        path: 'unitDetail/:id',
+        name: 'ApprovedUnitDetail',
+        component: ApprovedUnitDetail
+      },
+      // 人员详情
+      {
+        path: 'personDetail/:id',
+        name: 'ApprovedPersonDetail',
+        component: ApprovedPersonDetail
+      },
+      // 部门详情
+      {
+        path: 'departmentDetail/:id',
+        name: 'ApprovedDepartmentDetail',
+        component: ApprovedDepartmentDetail
       }
     ]
   },
@@ -77,7 +112,26 @@ export default [
       {
         path: 'detail/:type/:id',
         name: 'MyApplicationDetail',
+        meta: { preName: 'MyApplication' },
         component: MyApplicationDetail
+      },
+      // 单位详情
+      {
+        path: 'unitDetail/:id',
+        name: 'MyApplicationUnitDetail',
+        component: MyApplicationUnitDetail
+      },
+      // 人员详情
+      {
+        path: 'personDetail/:id',
+        name: 'MyApplicationPersonDetail',
+        component: MyApplicationPersonDetail
+      },
+      // 部门详情
+      {
+        path: 'departmentDetail/:id',
+        name: 'MyApplicationDepartmentDetail',
+        component: MyApplicationDepartmentDetail
       }
     ]
   },

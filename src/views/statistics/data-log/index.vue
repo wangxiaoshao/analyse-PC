@@ -68,10 +68,12 @@
 
 <script type="text/ecmascript-6">
 import handleTable from '@src/mixins/handle-table'
+import filters from '@src/filters'
 import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
 
 export default {
+  components: { filters },
   mixins: [handleTable],
   data () {
     return {

@@ -140,16 +140,17 @@ export default {
     },
     // TODO 需要按父导航进行跳转
     jumpDetailPage (type) { // type = 1 || 3 || 4
-      let name = 'WaitApprovalPersonDetail'
+      let preName = this.$route.meta.preName,
+        name = ''
       switch (type) {
         case 1:
-          name = 'WaitApprovalPersonDetail'
+          name = preName + 'PersonDetail'
           break
         case 3:
-          name = 'DepartmentDetail'
+          name = preName + 'DepartmentDetail'
           break
         case 4:
-          name = 'UnitDetail'
+          name = preName + 'UnitDetail'
           break
         default :
           break
@@ -157,7 +158,6 @@ export default {
       this.$router.push({
         name: name,
         params: {
-          pathName: this.$route.path,
           id: this.$route.params.id,
           type: this.$route.params.type
         }
