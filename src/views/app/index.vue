@@ -40,7 +40,7 @@ export default {
       user: null,
       userInfo: {},
       asideMenu: asideMenu,
-      asideMenuActive: 0,
+      asideMenuActive: 0
     }
   },
   mixins: [handleBreadcrumb],
@@ -73,9 +73,10 @@ export default {
   mounted () {
     this.addEventListenForResize()
     // this.getUserInfo()
+    this.getDicList()
   },
   methods: {
-    ...mapMutations(['SET_USER_INFO', 'SET_WINDOWHEIGHT', 'SET_WINDOWWIDTH', 'SET_PAGE_BREADCRUMB']),
+    ...mapMutations(['SET_USER_INFO', 'SET_WINDOWHEIGHT', 'SET_WINDOWWIDTH', 'SET_PAGE_BREADCRUMB', 'DIC_LIST']),
     init (path) {
       // 在初始化菜单是，手动将breakLoop置为false，否则findMenuByPath不进入循环
       this.breakLoop = false
@@ -103,6 +104,11 @@ export default {
         this.user = res.user
         this.SET_USER_INFO(res.user)
       }).catch((e) => {
+      })
+    },
+    getDicList () {
+      api[urlNames['dicList']]().then((res) => {
+        this.DIC_LIST(res.data)
       })
     },
     setWindowSize () {

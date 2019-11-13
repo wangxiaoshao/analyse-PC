@@ -6,7 +6,8 @@ const app = {
     windowHeight: document.body.offsetHeight,
     windowWidth: document.body.offsetWidth,
     breadcrumb: [],
-    pageBreadcrumb: []
+    pageBreadcrumb: [],
+    dicList: []
   },
   mutations: {
     [types.SET_USER_INFO] (state, user) {
@@ -23,6 +24,9 @@ const app = {
     },
     [types.SET_PAGE_BREADCRUMB] (state, val) {
       state.pageBreadcrumb = val
+    },
+    [types.DIC_LIST] (state, val) {
+      state.dicList = val
     }
   }
 }

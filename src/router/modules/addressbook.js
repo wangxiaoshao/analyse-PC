@@ -1,4 +1,4 @@
-//通讯录
+// 通讯录
 const AddressBook = () =>
     import('@src/views/address-book/index.vue')
 const UnitAddressBook = () =>
@@ -7,24 +7,24 @@ const MemberList = () =>
     import('@src/views/address-book/member-list/index.vue')
 
 export default [
-    /**通讯录 */
+  /** 通讯录 */
+  {
+    path: '/address-book',
+    name: 'AddressBook',
+    component: AddressBook,
+    // redircet: '/address-book/unit-address-book/',
+    children: [{
+      path: '/',
+      name: 'UnitAddressBook',
+      component: UnitAddressBook
+    },
     {
-        path: "/address-book",
-        name: 'AddressBook',
-        component: AddressBook,
-        // redircet: '/address-book/unit-address-book/',
-        children: [{
-            path: '/',
-            name: 'UnitAddressBook',
-            component: UnitAddressBook,
-        },
-        {
-            path: '/member-list',
-            name: 'MemberList',
-            component: MemberList
-        }
-
-        ]
-
+      path: '/member-list',
+      name: 'MemberList',
+      component: MemberList
     }
+
+    ]
+
+  }
 ]

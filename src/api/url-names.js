@@ -48,6 +48,7 @@ export default {
   // 共享视图
   getViewList: 'getViewList', // 视图列表
   createView: 'createView', // 创建视图
+  synchronizedNode: 'synchronizedNode', // 提交视图草稿审核
   findViewAdmin: 'findViewAdmin', // 视图管理员
   getAppList: 'getAppList', // 应用列表
   findNodeDraftList: 'findNodeDraftList', // 获取视图草稿
@@ -116,12 +117,13 @@ export default {
   findOrganizationById: 'findOrganizationById',
   // 系统设置
   dictionaryList: 'dictionaryList',
+  getSystemParameter: 'getSystemParameter', // 参数设置
   // 标签查询
 
   /**
-   * 通讯录 
+   * 通讯录
    */
-  //查询用户所在单位
+  // 查询用户所在单位
   getAddressBookList: 'getAddressBookList',
   // 查询部门下的下级部门
   getDepartmentChildtree: 'getDepartmentChildtree',

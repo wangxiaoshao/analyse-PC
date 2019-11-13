@@ -43,7 +43,7 @@ export default [
         path: '/personDetail/:id',
         name: 'PersonDetail',
         component: PersonDetail
-      },
+      }
     ]
 
   },

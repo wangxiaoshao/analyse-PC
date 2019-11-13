@@ -1,6 +1,7 @@
 <template>
-  <div class="tree-list">
+  <div>
     <!-- <el-input placeholder="输入关键字进行过滤" v-model="filterText"></el-input> -->
+
     <el-tree
       :props="props"
       :load="loadNode"
@@ -86,8 +87,8 @@ export default {
 
 
     filterNode (value, data) {
-      if (!value) return true;
-      return data.label.indexOf(value) !== -1;
+      if (!value) return true
+      return data.label.indexOf(value) !== -1
     }
   },
   watch: {

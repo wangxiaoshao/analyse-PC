@@ -69,7 +69,7 @@ export default {
 
   },
   created () {
-    this.getAddressBook();
+    this.getAddressBook()
   },
   methods: {
     getDefault (val) {
@@ -81,14 +81,14 @@ export default {
     onChange (e) {
       this.activeColor = e;
       if (e === 1) {
-        this.getAddressBook();
+        this.getAddressBook()
       } else if (e === 2) {
 
       }
     },
     getAddressBook () {
       api[urlNames['getAddressBookList']]({
-        uid: this.userId,
+        uid: this.userId
       }).then(res => {
         this.thisUnit = res.data;
       }).catch(err => {
@@ -108,7 +108,7 @@ export default {
         name: 'UnitAddressBook'
       })
     }
-  },
+  }
 
 }
 </script>

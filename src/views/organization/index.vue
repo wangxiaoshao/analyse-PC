@@ -21,9 +21,11 @@
 </template>
 
 <script>
+import { api, urlNames } from '@src/api'
 import handleTable from '@src/mixins/handle-table'
 import organizationTree from '@src/components/Tree/index'
 import searchResult from './components/Result/index'
+import { mapState, mapMutations } from 'vuex'
 export default {
   mixins: [ handleTable ],
   components: {
@@ -42,6 +44,9 @@ export default {
       }
     }
   },
+  mounted () {
+
+  },
   methods: {
     // 点击节点加载子节点
     handleNodeClick (node) {
@@ -56,9 +61,6 @@ export default {
         }
       })
     }
-  },
-  created () {
-
   }
 }
 </script>

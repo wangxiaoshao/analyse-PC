@@ -94,8 +94,8 @@ export default {
       newAddList: [],
       rules: {
         text: [{ validator: checkAge, trigger: 'blur' }],
-        value: [{ validator: checkAge, trigger: 'blur' }],
-      },
+        value: [{ validator: checkAge, trigger: 'blur' }]
+      }
     }
   },
   mounted () {
@@ -124,7 +124,7 @@ export default {
       // this.tableData.push()
     },
     indexMethod (index) {
-      return index + 1;
+      return index + 1
     },
     handleClose (tag) {
       this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1)
