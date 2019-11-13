@@ -94,6 +94,7 @@ export default {
   createLeader: 'createLeader',
   // 查询领导信息
   findLeaderList: 'findLeaderList',
+  deleteLeader: 'deleteLeader',
   // 根据id查人员详情
   findUserById: 'findUserById',
   // 人员列表排序
@@ -129,6 +130,10 @@ export default {
   getAddressBookList: 'getAddressBookList',
   // 查询部门下的下级部门
   getDepartmentChildtree: 'getDepartmentChildtree',
+  //查询单位下部门通讯信息
+  getOrgDepartmentTxlList: 'getOrgDepartmentTxlList',
+  //查询单位下人员通讯信息
+  getOrgUserTxlList: 'getOrgUserTxlList',
   findLabelByType: 'findLabelByType',
   getAreaList: 'findAreaList',
   // 证件照上传

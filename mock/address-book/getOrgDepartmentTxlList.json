@@ -1,0 +1,11 @@
+{
+    "status": 0,
+    "message": "success",
+    "total": 123,
+    "data": [
+        {
+            "phone": "部门电话",
+            "name": "部门名称"
+        }
+    ]
+}

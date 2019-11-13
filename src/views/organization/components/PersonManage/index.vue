@@ -2,7 +2,7 @@
   <div class="person-manage-content">
    <!-- <add-tags :tagsFlag="openAddTagFlag" @getFlag="getFlag"></add-tags>-->
     <!--人员管理-->
-    <el-form :model="personFrom" :disabled="disabledFlag" ref="personFrom" label-width="100px" class="demo-personFrom" style="width: 100%">
+    <el-form :disabled="disabledFlag" ref="personFrom" label-width="100px" class="demo-personFrom" style="width: 100%">
       <el-menu class="el-menu-demo" mode="horizontal">
         <el-menu-item>基础信息</el-menu-item>
       </el-menu>
@@ -16,29 +16,30 @@
               @select="handleSelect"
             ></el-autocomplete>
           </el-form-item>
-         <!-- <el-form-item label="职务" prop="dutyName">
-            <el-select v-model="personFrom.dutyName" placeholder="请选择职务">
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
-            </el-select>
-          </el-form-item>-->
+          <el-form-item label="职务" prop="dutyName">
+            <el-input placeholder="请输入职务" v-model="personFrom.professionalTitle"></el-input>
+          </el-form-item>
         </el-col>
-       <!-- <el-col :span="12">
+        <el-col :span="12">
           <el-form-item label="手机号" prop="mobile">
-            <el-input v-model="personFrom.mobile"></el-input>
+            <el-input placeholder="请输入手机号" v-model="personFrom.mobile"></el-input>
           </el-form-item>
           <el-form-item label="身份类型" prop="type">
-            <el-select v-model="personFrom.type" placeholder="请选择身份类型">
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
+            <el-select placeholder="请选择身份类型" v-model="postFrom.type">
+              <el-option
+                v-for="item in userTypeOptions"
+                :key="item.id"
+                :label="item.text"
+                :value="item.value"
+              ></el-option>
             </el-select>
           </el-form-item>
-        </el-col>-->
+        </el-col>
       </el-row>
-    <!--  <el-menu class="el-menu-demo" mode="horizontal">
+      <el-menu class="el-menu-demo" mode="horizontal">
         <el-menu-item>完善其他信息</el-menu-item>
-      </el-menu>-->
-      <!--<el-row class="row-item">
+      </el-menu>
+      <el-row class="row-item">
         <el-col :span="12">
           <el-form-item label="头像">
             <el-upload
@@ -53,27 +54,33 @@
             </el-upload>
           </el-form-item>
           <el-form-item label="备用手机号" prop="mobile2">
-            <el-input v-model="personFrom.mobile2"></el-input>
+            <el-input placeholder="请输入备用手机号" v-model="personFrom.mobile2"></el-input>
           </el-form-item>
           <el-form-item label="民族" prop="nation">
-            <el-select placeholder="请选择民族">
-              <el-option></el-option>
+            <el-select placeholder="请选择民族" v-model="personFrom.nation">
+              <el-option
+                v-for="item in userNationOptions"
+                :key="item.id"
+                :label="item.text"
+                :value="item.value"
+              ></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="所属党派" prop="politicalParty">
-            <el-select v-model="personFrom.politicalParty" placeholder="请选择所属党派">
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
+            <el-select placeholder="请选择所属党派" v-model="personFrom.politicalParty">
+              <el-option
+                v-for="item in partisanOptions"
+                :key="item.id"
+                :label="item.text"
+                :value="item.value"
+              ></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label=" 岗位" prop="postName">
-            <el-select v-model="personFrom.postName" placeholder="请选择岗位">
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
-            </el-select>
+            <el-input placeholder="请输入岗位" v-model="postFrom.postName"></el-input>
           </el-form-item>
           <el-form-item label=" 办公电话" prop="officePhone">
-            <el-input v-model="personFrom.officePhone"></el-input>
+            <el-input placeholder="请输入办公电话" v-model="personFrom.officePhone"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -95,27 +102,43 @@
             </el-input>
           </el-form-item>
           <el-form-item label="学历" prop="qualification">
-            <el-select v-model="personFrom.qualification" placeholder="请选择学历">
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
+            <el-select placeholder="请选择学历" v-model="personFrom.qualification">
+              <el-option
+                v-for="item in userEducationOptions"
+                :key="item.id"
+                :label="item.text"
+                :value="item.value"
+              ></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="职级" prop="positionClass">
-            <el-select v-model="personFrom.positionClass" placeholder="请选择职级">
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
+            <el-select placeholder="请选择职级" v-model="personFrom.positionClass">
+              <el-option
+                v-for="item in userPankOptions"
+                :key="item.id"
+                :label="item.text"
+                :value="item.value"
+              ></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label=" 人员状态" prop="action">
-            <el-select v-model="personFrom.action" placeholder="请选择人员状态">
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
+            <el-select placeholder="请选择人员状态" v-model="personFrom.userState">
+              <el-option
+                v-for="item in userActionOptions"
+                :key="item.id"
+                :label="item.text"
+                :value="item.value"
+              ></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="人员类型" prop="userAccount">
-            <el-select v-model="personFrom.userAccount" placeholder="请选择人员类型">
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
+          <el-form-item label="人员类型" prop="userAccount" >
+            <el-select placeholder="请选择人员类型" v-model="personFrom.userType">
+              <el-option
+                v-for="item in personTypeOptions"
+                :key="item.id"
+                :label="item.text"
+                :value="item.value"
+              ></el-option>
             </el-select>
           </el-form-item>
         </el-col>
@@ -139,15 +162,15 @@
       <el-row class="row-item">
         <el-col :span="12">
           <el-form-item label="人员介绍" prop="instruction">
-            <el-input type="textarea" v-model="personFrom.instruction"></el-input>
+            <el-input type="textarea"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="人员职责" prop="reason">
-            <el-input type="textarea" v-model="personFrom.reason"></el-input>
+            <el-input type="textarea"></el-input>
           </el-form-item>
         </el-col>
-      </el-row>-->
+      </el-row>
     </el-form>
   </div>
 </template>
@@ -155,8 +178,10 @@
 <script>
 import { api, urlNames } from '@src/api'
 import addTags from '../AddTags/index'
+import dicOption from '@src/mixins/dic-options.js'
 export default {
-  props: ['disabledFlag', 'isShowEditFlag'],
+  props: ['disabledFlag', 'isShowEditFlag', 'userDetail', 'postDetail'],
+  mixins: [dicOption],
   components: {
     addTags
   },
@@ -167,22 +192,8 @@ export default {
       restaurants: [],
       state: '',
       timeout: null,
-      personFrom: {
-        name: '',
-        dutyName: '',
-        mobile: '',
-        type: 0,
-        mobile2: '',
-        nation: '',
-        politicalParty: '',
-        postName: '',
-        officePhone: '',
-        idcard: '',
-        qualification: '',
-        positionClass: '',
-        userAccount: '',
-        action: ''
-      },
+      personFrom: this.userDetail,
+      postFrom: this.postDetail,
       rules: {
         name: [
           { required: true, message: '请输入部门名称', trigger: 'blur' },

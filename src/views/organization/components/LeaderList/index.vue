@@ -5,6 +5,16 @@
       @dialogReturnMembersInfo="dialogReturnMembersInfo"
       @closeselectMenmber="closeselectMenmber">
     </candidate-dialog>
+    <el-dialog
+      title="确认删除"
+      :visible.sync="dialogVisible"
+      width="30%">
+      <span>确认删除该领导吗？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="sublimeDelete">确 定</el-button>
+      </span>
+    </el-dialog>
     <div class="button-wrap" v-if="mainLeaderList.length === 0">
       <el-button type="primary" @click="addMainLeader(true,true,1)">添加主要领导</el-button>
     </div>
@@ -42,7 +52,7 @@
         </el-table-column>
         <el-table-column prop="act" label="操作" width="100" align="center">
           <template slot-scope="scope">
-            <el-button @click.native="openEditNode(scope.row)" type="text" size="small">
+            <el-button @click.native="deleteRow(scope.row)" type="text" size="small">
               删除
             </el-button>
           </template>
@@ -81,7 +91,7 @@
           <template slot-scope="scope">
             <span class="person-pic">
              <img v-if="scope.row.portraitUrl !== ''" :src="scope.row.portraitUrl">
-              <img src="@src/common/images/head-pic.png">
+              <img v-else src="@src/common/images/head-pic.png">
             </span>
           </template>
         </el-table-column>
@@ -92,7 +102,7 @@
         </el-table-column>
         <el-table-column prop="act" label="操作" width="100" align="center">
           <template slot-scope="scope">
-            <el-button @click.native="openEditNode(scope.row)" type="text" size="small">
+            <el-button @click.native="deleteRow(scope.row)" type="text" size="small">
               删除
             </el-button>
           </template>
@@ -123,6 +133,8 @@ export default {
   components: { CandidateDialog },
   data () {
     return {
+      dialogVisible: false,
+      deleteId: null,
       sortFlag: false,
       list: [],
       userVoList: [],
@@ -173,7 +185,6 @@ export default {
             }
           })
         }
-        console.log(33, res.data)
       }, () => {
         this.loading = false
         this.list = []
@@ -183,7 +194,6 @@ export default {
     dialogReturnMembersInfo (data) {
       // 主要领导1，其他领导2
       if (!JSON.parse(JSON.stringify(data)).length) {
-        // alert(JSON.parse(JSON.stringify(data))[0].uid)
         let obj = {
           uid: JSON.parse(JSON.stringify(data))[0].uid,
           leaderType: this.learderType
@@ -224,6 +234,21 @@ export default {
       this.selectDialog.notOnlyPerson = true
       this.selectDialog.isAllData = all
       this.learderType = learderType
+    },
+    deleteRow (row) {
+      this.dialogVisible = true
+      this.deleteId = row.id
+    },
+    sublimeDelete () {
+      api[urlNames['deleteLeader']]({
+        id: this.deleteId
+      }).then((res) => {
+        this.dialogVisible = false
+        this.$message.success(`保存成功`)
+        this.getGrid()
+      }, (error) => {
+        this.$message.error(`保存失败，请重试`)
+      })
     }
   },
   watch: {

@@ -4,9 +4,6 @@
       <div class="department-content">
         <department-table></department-table>
       </div>
-      <!-- <div>
-        <router-view></router-view>
-      </div>-->
     </div>
   </div>
 </template>
@@ -15,6 +12,11 @@ import unitNavbar from '../components/Unitnavbar/index'
 import departmentTable from '../components/Department/index'
 // import memberTable from '../components/Member/index'
 export default {
+  components: {
+    unitNavbar,
+    // memberTable,
+    departmentTable
+  },
   data () {
     return {
       tableData: [
@@ -41,12 +43,6 @@ export default {
       ]
     }
   },
-  // name:'UnitAddressBook',
-  components: {
-    unitNavbar,
-    // memberTable,
-    departmentTable
-  }
 }
 </script>
 <style lang="less">

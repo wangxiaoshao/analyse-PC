@@ -1,21 +1,38 @@
 <template>
-  <el-tree
-    :data="treeList"
-    node-key="id"
-    :props="defaultProps"
-    :highlight-current="true"
-    lazy
-    ref="treeList"
-    :load="loadNode"
-    @node-click="handleNodeClick"
-   >
+  <div class="treelist">
+    <el-tree
+      :data="treeList"
+      node-key="id"
+      :props="defaultProps"
+      :highlight-current="true"
+      lazy
+      ref="treeList"
+      :load="loadNode"
+      @node-click="handleNodeClick"
+    >
       <span class="custom-tree-node" slot-scope="{ node, data }">
         <i class="imenu-icon fa fa-sitemap" v-if="data.nodeType === 1"></i>
         <i class="imenu-icon fa fa-building-o" v-if="data.nodeType === 2"></i>
         <i class="imenu-icon fa fa-institution" v-if="data.nodeType === 3"></i>
-        <span :class="[data.id===$route.params.nodeId ?'active':'noActive']">{{node.label}}</span>
+        <span>{{ node.label }}</span>
+        <!--<span class="custom-tree-float">
+          <el-button
+            type="text"
+            size="mini"
+            @click="createTag(data, {flag:0,title:node.label})">
+            新增
+          </el-button>
+          <el-button
+            type="text"
+            size="mini"
+            class="delete"
+            @click="deleteLabel(node.id)">
+            删除
+          </el-button>
+        </span>-->
       </span>
-  </el-tree>
+    </el-tree>
+  </div>
 </template>
 
 <script>
@@ -23,8 +40,6 @@ import { api, urlNames } from '@src/api'
 export default {
   data () {
     return {
-      active: 'active',
-      noActive: 'noActive',
       showCheckboxFlag: false,
       treeList: [],
       treeSonList: [],
@@ -90,5 +105,5 @@ export default {
 </script>
 
 <style lang="less">
-  @import "index";
+@import 'index';
 </style>
