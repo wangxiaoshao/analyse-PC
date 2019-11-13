@@ -150,7 +150,7 @@ export default {
           sortable: false,
           showOverflowTooltip: false,
           minWidth: 100
-        },
+        }
       },
       tableData: [],
       tableHeight: null,

@@ -66,14 +66,14 @@ export default {
       activeColor: 1,
 
       ThisUnit: {},
-      userId: "1111111111111111111",
+      userId: '1111111111111111111'
     }
   },
   computed: {
 
   },
   created () {
-    this.getAddressBook();
+    this.getAddressBook()
   },
   methods: {
     getDefault (val) {
@@ -84,19 +84,19 @@ export default {
      */
     onChange (e, event) {
       console.log(event)
-      this.activeColor = e;
+      this.activeColor = e
       if (e === 1) {
-        this.getAddressBook();
+        this.getAddressBook()
       } else if (e === 2) {
         console.log(e, event)
       }
     },
     getAddressBook () {
       api[urlNames['getAddressBookList']]({
-        uid: this.userId,
+        uid: this.userId
       }).then(res => {
-        console.log(res, "===")
-        this.ThisUnit = res.data;
+        console.log(res, '===')
+        this.ThisUnit = res.data
       }).catch(err => {
         console.log(err)
       })
@@ -114,7 +114,7 @@ export default {
         name: 'UnitAddressBook'
       })
     }
-  },
+  }
 
 }
 </script>

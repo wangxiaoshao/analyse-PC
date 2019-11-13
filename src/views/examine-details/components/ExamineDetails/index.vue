@@ -75,14 +75,14 @@ export default {
           ele: 'col',
           eleIndex: 4,
           rowspan: 4,
-          colspan: 1,
+          colspan: 1
         },
         {
           ele: 'col',
           eleIndex: 3,
           rowspan: 4,
-          colspan: 1,
-        },
+          colspan: 1
+        }
       ],
       operateWidth: 100,
       tableCheckbox: true,
