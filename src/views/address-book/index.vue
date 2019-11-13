@@ -14,7 +14,8 @@
           <div class="tree-main">
             <search-choose :defaultNodeId="defaultNodeId"></search-choose>
             <div>
-              <address-book-tree :thisUnit="thisUnit"></address-book-tree>
+              <address-book-tree @handle-nodeClick="handleNodeClickTree" :thisUnit="thisUnit"></address-book-tree>
+              <!-- <addTreeList :thisUnit="thisUnit"></addTreeList> -->
             </div>
           </div>
         </el-col>
@@ -22,7 +23,7 @@
           <div>
             <el-breadcrumb separator="/" style="background:#F5F6F8;padding:20px;">
               <el-breadcrumb-item>本单位名称</el-breadcrumb-item>
-              <el-breadcrumb-item>本单位名称</el-breadcrumb-item>
+              <el-breadcrumb-item v-for="(item,index) in navigation" :key="index">{{item.name}}</el-breadcrumb-item>
             </el-breadcrumb>
           </div>
           <!-- <el-breadcrumb separator-class="el-icon-arrow-right">
@@ -34,7 +35,7 @@
           <transition name="fade-transform" mode="out-in" style="height: 100%">
             <el-scrollbar>
               <keep-alive>
-                <router-view></router-view>
+                <Department :departmentList="departmentList"></Department>
               </keep-alive>
             </el-scrollbar>
           </transition>
@@ -48,13 +49,17 @@
 import handleTable from '@src/mixins/handle-table'
 import addressBookTree from './components/Tree/index'
 import searchChoose from './components/Choose/index'
+import addTreeList from "./components/TreeList"
+import Department from './components/Department'
 import { api, urlNames } from '@src/api'
 export default {
   name: 'AddressBook',
   mixins: [handleTable],
   components: {
     addressBookTree,
-    searchChoose
+    searchChoose,
+    addTreeList,
+    Department
   },
   data () {
     return {
@@ -63,6 +68,8 @@ export default {
 
       thisUnit: {},
       userId: "1111111111111111111",
+      departmentList: [],
+      navigation: [],
     }
   },
   computed: {
@@ -72,6 +79,20 @@ export default {
     this.getAddressBook()
   },
   methods: {
+    handleNodeClickTree (event) {
+      this.navigation = [];
+      this.navigation.push({ id: event.id, name: event.name })
+      api[urlNames['getOrgDepartmentTxlList']]({
+        page: 1,
+        limit: 100,
+        orgId: event.id,
+      }).then(res => {
+        this.departmentList = res.data
+      }).catch(err => {
+
+      })
+
+    },
     getDefault (val) {
       this.defaultNodeId = val
     },

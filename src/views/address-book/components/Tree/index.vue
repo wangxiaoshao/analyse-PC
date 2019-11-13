@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="tree-list">
     <!-- <el-input placeholder="输入关键字进行过滤" v-model="filterText"></el-input> -->
 
     <el-tree
@@ -9,7 +9,14 @@
       lazy
       @node-click="handleNodeClick"
       @node-expand="handleCheckChange"
-    ></el-tree>
+    >
+      <span class="custom-tree-node" slot-scope="{ node, data }">
+        <i class="imenu-icon fa fa-sitemap" v-if="data"></i>
+        <!-- <i class="imenu-icon fa fa-building-o" v-if="data.nodeType === 2"></i>
+        <i class="imenu-icon fa fa-institution" v-if="data.nodeType === 3"></i>-->
+        <span>{{ node.label }}</span>
+      </span>
+    </el-tree>
   </div>
 </template>
 <script>
@@ -36,17 +43,13 @@ export default {
       this.getTmentChild(data.id)
     },
     handleNodeClick (data) {
-      console.log(data, "111111111111111")
+      this.$emit('handle-nodeClick', data)
     },
     loadNode (node, resolve) {
-      console.log(node.level, "=======node")
       setTimeout(() => {
         if (node.level === 0) {
           let treeParent = [{ name: this.thisUnit.name, id: this.thisUnit.id }]
           return resolve(treeParent);
-        }
-        if (node.level > 1) {
-
         }
         // if (node.level > 3) return resolve([]);
         var hasChild;
@@ -55,7 +58,6 @@ export default {
         } else {
           hasChild = false;
         }
-
         setTimeout(() => {
           var data;
           if (hasChild) {
@@ -84,12 +86,6 @@ export default {
         console.log(err)
       })
     },
-
-
-    filterNode (value, data) {
-      if (!value) return true
-      return data.label.indexOf(value) !== -1
-    }
   },
   watch: {
     thisUnit (newvalue, oldvalue) {

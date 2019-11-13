@@ -23,54 +23,39 @@
   </div>
 </template>
 <script>
-
+import { api, urlNames } from '@src/api'
 export default {
+  props: ['personnel'],
   data () {
     return {
       tableData: [{
         img: '2016-05-02',
         name: '王小虎',
         tel: '电话：13412341234'
-      }, {
-        img: '2016-05-02',
-        name: '王小虎',
-        tel: '电话：13412341234'
-      }, {
-        img: '2016-05-02',
-        name: '王小虎',
-        tel: '电话：13412341234'
-      }, {
-        img: '2016-05-02',
-        name: '王小虎',
-        tel: '电话：13412341234'
-      },
-      {
-        img: '2016-05-02',
-        name: '王小虎',
-        tel: '电话：13412341234'
-      }, {
-        img: '2016-05-02',
-        name: '王小虎',
-        tel: '电话：13412341234'
-      }, {
-        img: '2016-05-02',
-        name: '王小虎',
-        tel: '电话：13412341234'
-      }, {
-        img: '2016-05-02',
-        name: '王小虎',
-        tel: '电话：13412341234'
-      }, {
-        img: '2016-05-02',
-        name: '王小虎',
-        tel: '电话：13412341234'
-      }, {
-        img: '2016-05-02',
-        name: '王小虎',
-        tel: '电话：13412341234'
       }]
     }
-  }
+  },
+  methods: {
+    getpersonnel (page, limit, orgId) {
+      let data = {
+        page: page,
+        limit: limit,
+        orgId: orgId
+      }
+      console.log(data)
+      api[urlNames['getOrgUserTxlList']](data).then(res => {
+        console.log(res)
+      }).catch(err => {
+
+      })
+
+    }
+  },
+  watch: {
+    personnel (newValue, oldValue) {
+      this.getpersonnel(1, 5, newValue.id)
+    }
+  },
 }
 </script>
 <style lang="less">
