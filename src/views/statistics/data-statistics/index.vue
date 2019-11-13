@@ -106,7 +106,6 @@
 
 <script type="text/ecmascript-6">
 import handleTable from '@src/mixins/handle-table'
-import filters from '@src/filters'
 import echarts from '../components/Echarts'
 import { filters } from '@src/filters'
 import { api, urlNames } from '@src/api'
