@@ -54,7 +54,7 @@ import handleTable from '@src/mixins/handle-table'
 import SiteTable from '@src/components/SiteTable/index.vue'
 import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
-import tableConfig from "./tableConfig"
+import tableConfig from './tableConfig'
 
 export default {
   components: { SiteTable },

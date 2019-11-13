@@ -325,7 +325,7 @@ export default {
     // 选人弹窗组件返回的人员信息
     // TODO选人组件完善后需要修改选择单位或单位下的部门
     dialogReturnMembersInfo (data, id) {
-      console.log('danw',id)
+      console.log('danw', id)
       this.formCallout.orgId = id[0].bindId
       this.orgName = id[0].name
     },

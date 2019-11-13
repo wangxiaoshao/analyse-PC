@@ -58,27 +58,26 @@ export default {
         children: 'children',
         label: 'label'
       }
-    };
+    }
   },
   created () {
-
-    this.IntoList();
+    this.IntoList()
   },
   methods: {
     IntoList () {
-      console.log(this.ThisUnit);
+      console.log(this.ThisUnit)
     },
 
 
     filterNode (value, data) {
-      if (!value) return true;
-      return data.label.indexOf(value) !== -1;
+      if (!value) return true
+      return data.label.indexOf(value) !== -1
     }
   },
   watch: {
     filterText (val) {
-      this.$refs.tree.filter(val);
+      this.$refs.tree.filter(val)
     }
-  },
-};
+  }
+}
 </script>

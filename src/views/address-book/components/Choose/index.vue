@@ -83,7 +83,7 @@ export default {
       }
       this.loadFlag = true
       api[urlNames['searchViewNode']](data).then(res => {
-        console.log(res, "===")
+        console.log(res, '===')
         this.gridData = res.data
         this.loadFlag = false
       })

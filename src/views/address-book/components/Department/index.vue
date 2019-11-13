@@ -23,7 +23,7 @@ import { api, urlNames } from '@src/api'
 export default {
   name: 'index',
   components: {
-    memberTable,
+    memberTable
   },
   data () {
     return {
@@ -60,9 +60,9 @@ export default {
     },
     toMemberList (e) {
       console.log(e)
-    },
+    }
 
-  },
+  }
 }
 </script>
 <style lang="less">

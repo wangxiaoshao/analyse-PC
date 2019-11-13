@@ -183,7 +183,7 @@ export default {
     dialogReturnMembersInfo (data) {
       // 主要领导1，其他领导2
       if (!JSON.parse(JSON.stringify(data)).length) {
-        //alert(JSON.parse(JSON.stringify(data))[0].uid)
+        // alert(JSON.parse(JSON.stringify(data))[0].uid)
         let obj = {
           uid: JSON.parse(JSON.stringify(data))[0].uid,
           leaderType: this.learderType

@@ -4,7 +4,7 @@ import urlNames from '../url-names'
    */
 export default {
   /**
-   * 本单位通讯录 查询用户所在单位 
+   * 本单位通讯录 查询用户所在单位
    */
   [urlNames.getAddressBookList]: {
     type: 'get', // 请求类型
