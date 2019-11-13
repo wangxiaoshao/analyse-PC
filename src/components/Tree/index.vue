@@ -10,7 +10,9 @@
     @node-click="handleNodeClick"
    >
       <span class="custom-tree-node" slot-scope="{ node, data }">
-        <i class="imenu-icon fa fa-sitemap" v-if="node.nodeType"></i>
+        <i class="imenu-icon fa fa-sitemap" v-if="data.nodeType === 1"></i>
+        <i class="imenu-icon fa fa-building-o" v-if="data.nodeType === 2"></i>
+        <i class="imenu-icon fa fa-institution" v-if="data.nodeType === 3"></i>
         <span>{{ node.label }}</span>
         <!--<span class="custom-tree-float">
           <el-button
@@ -60,7 +62,7 @@ export default {
         this.id = node.data.id
         setTimeout(() => {
           resolve(this.treeSonList)
-        }, 500)
+        }, 800)
         this.treeSonList = []
       }
     },
@@ -100,6 +102,6 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style lang="less">
+  @import "index";
 </style>

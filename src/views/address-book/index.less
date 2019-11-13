@@ -1,13 +1,39 @@
 .organization-content{
-    position: relative;
-    height: 100%;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    // border-right: 1px solid rgba(224, 224, 224, 1);
-    // border-right: 1px solid red;
-    
-    
+  overflow: hidden;
+    .organ-top{
+      margin-bottom: 30px;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content:center;
+      padding-right: 10px;
+      .top-one{
+        flex: 1;
+        text-align: center;
+        padding: 8px 0px;
+        cursor: pointer;
+        border-left: 1px solid #DCDFE6;
+        border-top: 1px solid #DCDFE6;
+        border-bottom: 1px solid #DCDFE6;
+      }
+      .top-two{
+        border-right: 1px solid #DCDFE6;
+        border-top: 1px solid #DCDFE6;
+        border-bottom: 1px solid #DCDFE6;
+        flex: 1;
+        text-align: center;
+        padding: 8px 0px;
+        cursor: pointer;
+      }
+      .top-active{
+        color: #ffffff;
+        background:#409EFF;
+      }
+    }
+
+
+
+
     .site-scroll{
       position: relative;
       height: 100% !important;

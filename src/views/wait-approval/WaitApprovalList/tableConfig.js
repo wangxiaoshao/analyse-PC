@@ -2,7 +2,6 @@
 const tableConfig = {
   applyName: {
     key: 'applyName',
-    tooltip: false,
     label: '申请人',
     sortable: false,
     showOverflowTooltip: false,
@@ -10,7 +9,6 @@ const tableConfig = {
   },
   content: {
     key: 'content',
-    tooltip: true,
     label: '申请内容',
     sortable: false,
     showOverflowTooltip: false,
@@ -18,7 +16,6 @@ const tableConfig = {
   },
   applyTime: {
     key: 'applyTime',
-    tooltip: false,
     label: '申请时间',
     sortable: false,
     showOverflowTooltip: false,
@@ -26,7 +23,6 @@ const tableConfig = {
   },
   reason: {
     key: 'reason',
-    tooltip: true,
     label: '申请原因',
     sortable: false,
     showOverflowTooltip: true,
@@ -34,12 +30,11 @@ const tableConfig = {
   },
   state: {
     key: 'state',
-    tooltip: false,
     label: '审核状态',
     formatter: (row, column, cellValue) => {
       return cellValue === 1 ? '已审核' : '待审核'
     },
-    sortable: true,
+    sortable: false,
     showOverflowTooltip: false,
     minWidth: 100
   }

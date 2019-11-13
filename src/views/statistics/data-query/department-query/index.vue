@@ -29,6 +29,8 @@
     <!--表格-->
     <site-table :tableConfig="tableConfig"
                 :tableHeight="tableHeight"
+                :tableIndex="tableIndex"
+                :pageConfig="pageConfig"
                 :operateWidth="operateWidth"
                 :operate="operate"
                 :tableData="tableData">
@@ -54,6 +56,7 @@
 <script type="text/ecmascript-6">
 import handleTable from '@src/mixins/handle-table'
 import SiteTable from '@src/components/SiteTable/index.vue'
+import tableConfig from './tableConfig'
 import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
 
@@ -62,78 +65,19 @@ export default {
   mixins: [handleTable],
   data () {
     return {
+      tableConfig,
       searchQuery: {
         id: '',
         name: '',
         orgName: '',
         orgAdministrator: ''
       },
-      tableConfig: {
-        order: {
-          key: 0,
-          field: 'order',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '序号',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 50
-        },
-        name: {
-          key: 1,
-          field: 'name',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '部门名称',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        },
-        id: {
-          key: 2,
-          field: 'id',
-          tooltip: true,
-          formatter: this.formatter,
-          label: '部门ID',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        },
-        orgName: {
-          key: 3,
-          field: 'orgName',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '所属单位',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        },
-        orgAdministrator: {
-          key: 4,
-          field: 'orgAdministrator',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '单位管理员',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        },
-        labelName: {
-          key: 5,
-          field: 'labelName',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '标签',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        }
-      },
       tableData: [],
       tableHeight: 200,
       operateWidth: 100,
       tableCheckbox: true,
+      pageConfig: {},
+      tableIndex: true,
       operate: true
     }
   },
@@ -175,9 +119,6 @@ export default {
         }
       }
     },
-    trim (str) {
-      return (str + '').replace(/(\s+)$/g, '').replace(/^\s+/g, '')
-    },
     search () {
       this.$nextTick(() => {
         this.page.current = 1
@@ -190,6 +131,7 @@ export default {
         page: this.page.current,
         limit: this.page.limit
       }
+      this.pageConfig = data
       let keys = Object.keys(this.searchQuery)
       let len = keys.length
       for (let i = 0; i < len; i++) {

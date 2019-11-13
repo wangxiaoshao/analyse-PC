@@ -38,6 +38,7 @@ export default {
   // 数据统计 statistics
   getStatistiscManageDto: 'getStatistiscManageDto',
   getParameter: 'getParameter',
+  getDataLogList: 'getDataLogList',
   // 获取视图--机构树
   getTree: 'getTree',
   // 搜索视图
@@ -59,6 +60,7 @@ export default {
   createLabel: 'createLabel', //  创建标签
   deleteLabel: 'deleteLabel', // 删除标签
   findOrgLabelList: 'findOrgLabelList', // 根据单位id获取标签
+  findLabel: 'findLabel',
   getGroupList: 'getGroupList', // 获取分组列表
   createGroup: 'createGroup', // 创建分组
   findGroupById: 'findGroupById',
@@ -117,8 +119,13 @@ export default {
   dictionaryList: 'dictionaryList',
   getSystemParameter: 'getSystemParameter', // 参数设置
   // 标签查询
+
   // 通讯录
   getAddressBookList: 'getAddressBookList',
   findLabelByType: 'findLabelByType',
-  getAreaList: 'findAreaList'
+  getAreaList: 'findAreaList',
+  // 证件照上传
+  upload: 'upload',
+  // 字典管理
+  dicList: 'dicList'
 }

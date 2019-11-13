@@ -6,7 +6,7 @@
       @close="getClose"
       @getTag="getTag"
     ></search-lable>
-    <el-form :model="ruleForm" :disabled="disabledFlag" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+    <el-form :model="ruleForm" :disabled="disabledFlag" ref="ruleForm" label-width="100px" class="demo-ruleForm">
       <div class="detail-title">
         <i class="menu-icon fa fa-sitemap" style="margin: 0px 5px;"></i>单位信息
       </div>
@@ -156,14 +156,6 @@ export default {
           fax: ''
         }
       },
-      rules: {
-        'organization.name': [
-          { required: true, message: '请输入单位名称', trigger: 'blur' }
-        ],
-        'organization.removed': [
-          { required: true, message: '请选中启用状态', trigger: 'blur' }
-        ]
-      },
       systemTypeOption: [
         {
           label: '人大',
@@ -193,10 +185,11 @@ export default {
         this.bindId = res.data.bindId
         this.ruleForm.organization.parentId = res.data.bindId
         this.ruleForm.nodeId = res.data.id
+        this.getDicList(1)
         if (res.data.bindId && res.data.nodeType === 2) {
           this.getDetail()
           if (this.$route.name !== 'UnitAdd') {
-            this.findOrgLabelList()
+            this.findLabel(res.data.nodeType)
           }
         }
         this.parentName = res.data.name
@@ -214,6 +207,15 @@ export default {
         })
       }, (error) => {
         this.$message.error(`没有内容`)
+      })
+    },
+    // 字典列表
+    getDicList (id) {
+      api[urlNames['dicList']]({
+        id: id
+      }).then((res) => {
+        console.log(res.data)
+      }, (error) => {
       })
     },
     getDetail () {
@@ -249,9 +251,10 @@ export default {
       })
     },
     // 获取标签
-    findOrgLabelList () {
-      api[urlNames['findOrgLabelList']]({
-        orgId: this.bindId
+    findLabel (type) {
+      api[urlNames['findLabel']]({
+        id: this.bindId,
+        type: type
       }).then((res) => {
         res.data.forEach((item) => {
           this.tagsName.push(item.split('|')[1])

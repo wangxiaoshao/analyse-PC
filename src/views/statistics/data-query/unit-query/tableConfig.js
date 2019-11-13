@@ -1,62 +1,57 @@
 
 const tableConfig = {
-  applyName: {
-    key: 'applyName',
-    field: 'applyName',
+  name: {
+    key: 'name',
     tooltip: false,
-    label: '申请人',
+    label: '单位名称',
     sortable: false,
     showOverflowTooltip: false,
     minWidth: 100
   },
-  content: {
-    key: 'content',
+  id: {
+    key: 'id',
     tooltip: true,
-    label: '申请内容',
+    label: '单位ID',
     sortable: false,
     showOverflowTooltip: false,
     minWidth: 100
   },
-  applyTime: {
-    key: 'applyTime',
+  creditId: {
+    key: 'creditId',
     tooltip: false,
-    label: '申请时间',
+    label: '统一单位编码',
     sortable: false,
     showOverflowTooltip: false,
     minWidth: 100
   },
-  reason: {
-    key: 'reason',
-    tooltip: true,
-    label: '申请原因',
-    sortable: false,
-    showOverflowTooltip: false,
-    minWidth: 100
-  },
-  state: {
-    key: 'state',
+  orgAdministrator: {
+    key: 'orgAdministrator',
     tooltip: false,
-    label: '审核状态',
-    sortable: false,
-    formatter: ({ cellValue }) => {
-      return cellValue === 1 ? '通过' : '不通过'
-    },
-    showOverflowTooltip: false,
-    minWidth: 100
-  },
-  auditTime: {
-    key: 'auditTime',
-    tooltip: false,
-    label: '审核时间',
+    label: '单位管理员',
     sortable: false,
     showOverflowTooltip: false,
     minWidth: 100
   },
-  auditOpinion: {
-    key: 'auditOpinion',
-    field: 'auditOpinion',
+  parentName: {
+    key: 'parentName',
     tooltip: false,
-    label: '审核意见',
+    label: '上级单位',
+    sortable: false,
+    showOverflowTooltip: false,
+    minWidth: 100
+  },
+  parentId: {
+    key: 'parentId',
+    tooltip: false,
+    label: '上级ID',
+    sortable: false,
+    showOverflowTooltip: false,
+    minWidth: 100
+  },
+  labelName: {
+    key: 'labelName',
+    tooltip: false,
+    label: '标签',
     sortable: false,
     showOverflowTooltip: false,
     minWidth: 100
