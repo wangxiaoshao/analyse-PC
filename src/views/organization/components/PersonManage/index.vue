@@ -7,14 +7,42 @@
         <el-menu-item>基础信息</el-menu-item>
       </el-menu>
       <el-row class="row-item">
-        <el-col :span="12">
+        <el-col :span="12" style="position: relative">
           <el-form-item label="姓名" prop="name">
-            <el-autocomplete
+            <el-input
+              placeholder="请输入姓名"
               v-model="personFrom.name"
-              :fetch-suggestions="querySearchAsync"
-              placeholder="请输入内容"
-              @select="handleSelect"
-            ></el-autocomplete>
+              @input="loadSearch"
+            ></el-input>
+            <el-popover
+              v-if="searchFlag"
+              placement="top-start"
+              width="500"
+            >
+              <div class="default-warn">
+                <i class="el-icon-warning"></i>
+                若您是为同一个人开通兼职帐号，直接选择以下人员进行帐号开通
+              </div>
+              <div class="result-list">
+                <el-table v-loading="loadFlag" :data="list" :show-header="true">
+                  <el-table-column property="name" label="姓名">
+                    <template slot-scope="scope">
+                      <span :title="scope.row.name" class="table-span">{{scope.row.name}}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column property="orgName" label="单位名称">
+                    <template slot-scope="scope">
+                      <span :title="scope.row.orgName" class="table-span">{{scope.row.orgName}}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column property="duty" label="职位">
+                    <template slot-scope="scope">
+                      <span :title="scope.row.duty" class="table-span">{{scope.row.duty}}</span>
+                    </template>
+                  </el-table-column>
+                </el-table>
+              </div>
+            </el-popover>
           </el-form-item>
           <el-form-item label="职务" prop="dutyName">
             <el-input placeholder="请输入职务" v-model="personFrom.professionalTitle"></el-input>
@@ -201,7 +229,10 @@ export default {
         ]
       },
       imageUrl: '',
-      tags: []
+      tags: [],
+      list: [],
+      searchFlag: false,
+      loadFlag: true
     }
   },
   created () {
@@ -210,55 +241,50 @@ export default {
   computed: {
 
   },
-  watch: {
-    'personFrom.name': {
-      handler (val) {
-        if (val.length > 1) {
-          this.restaurants = this.loadAll()
-        }
-      }
-    }
-  },
   methods: {
     init () {
-      // this.getDicList(28) // 民族
     },
-    loadAll () {
-      api[urlNames['findUserByParams']]({
-        name: this.personFrom.name
-      }).then((res) => {
-        this.restaurants = res.data
-      }, (error) => {
-
-      })
+    getName () {
+      alert(11111)
     },
-    querySearchAsync (queryString, cb) {
-      let restaurants = this.restaurants
-      let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants
-
-      clearTimeout(this.timeout)
-      this.timeout = setTimeout(() => {
-        cb(results)
-      }, 3000 * Math.random())
-    },
-    createStateFilter (queryString) {
-      return (state) => {
-        return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0)
+    loadSearch () {
+      if (this.personFrom.name.length > 1) {
+        this.searchFlag = true
+        this.loadFlag = true
+        setTimeout(() => {
+          api[urlNames['findUserByParams']]({
+            name: this.personFrom.name
+          }).then((res) => {
+            this.loadFlag = false
+            this.list = res.data
+            console.log(this.list)
+          }, (error) => {
+            this.list = []
+          })
+        }, 500)
       }
     },
-    handleSelect (item) {
-      console.log(item)
+    remoteMethod (query) {
+      this.personFrom.name = query
+      if (query.length > 1) {
+        setTimeout(() => {
+          this.loadUser = true
+          api[urlNames['findUserByParams']]({
+            name: query
+          }).then((res) => {
+            this.loadUser = false
+            this.$nextTick(() => {
+              this.option = res.data
+            })
+            console.log(this.option)
+          }, (error) => {
+
+          })
+        }, 500)
+      } else {
+        this.options = []
+      }
     },
-    // 字典列表
-    /* getDicList (id) {
-      api[urlNames['dicList']]({
-        id: id
-      }).then((res) => {
-        this.option = res.data
-        console.log(this.option)
-      }, (error) => {
-      })
-    }, */
     handleAvatarSuccess (res, file) {
       this.imageUrl = URL.createObjectURL(file.raw)
     },

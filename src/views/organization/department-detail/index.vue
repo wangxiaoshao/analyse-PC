@@ -156,6 +156,7 @@ export default {
   },
   created () {
     this.init()
+    this.pushBreadcrumb(this.breadcrumb)
   },
   beforeRouteUpdate (to, from, next) {
     next()
@@ -185,7 +186,6 @@ export default {
         }
         this.parentName = res.data.name
         // 设置返回路由，一般用于跳转模块之外的链接
-        this.pushBreadcrumb(this.breadcrumb)
       }, (error) => {
         this.$message.error(`没有内容`)
       })

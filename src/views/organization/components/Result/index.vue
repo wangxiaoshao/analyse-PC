@@ -22,7 +22,7 @@
       <el-input
         placeholder="请输入内容"
         v-model="keyWord"
-        @change="getResult"
+        @input="getResult"
         class="input-with-select">
         <el-select v-model="value" style="width: 80px" @change="getType" slot="prepend" placeholder="请选择">
           <el-option label="节点" value="1"></el-option>
@@ -74,10 +74,14 @@ export default {
         nodeType: this.type
       }
       this.loadFlag = true
-      api[urlNames['searchViewNode']](data).then(res => {
-        this.gridData = res.data
-        this.loadFlag = false
-      })
+      if (this.keyWord !== '') {
+        setTimeout(() => {
+          api[urlNames['searchViewNode']](data).then(res => {
+            this.gridData = res.data
+            this.loadFlag = false
+          })
+        }, 500)
+      }
     },
     setNodeId (row) {
       this.$router.push({
@@ -89,12 +93,12 @@ export default {
     },
     goBackTree () {
       this.resultFlag = false
-      this.$router.push({
+      /*this.$router.push({
         name: 'OrganizationContent',
         params: {
           nodeId: this.defaultNodeId
         }
-      })
+      })*/
     }
   },
   created () {

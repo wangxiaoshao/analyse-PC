@@ -128,14 +128,17 @@ export default {
   getAddressBookList: 'getAddressBookList',
   // 查询部门下的下级部门
   getDepartmentChildtree: 'getDepartmentChildtree',
-  //查询单位下部门通讯信息
+  // 查询单位下部门通讯信息
   getOrgDepartmentTxlList: 'getOrgDepartmentTxlList',
-  //查询单位下人员通讯信息
+  // 查询单位下人员通讯信息
   getOrgUserTxlList: 'getOrgUserTxlList',
   findLabelByType: 'findLabelByType',
   getAreaList: 'findAreaList',
   // 证件照上传
   upload: 'upload',
   // 字典管理
-  dicList: 'dicList'
+  dicList: 'dicList',
+  findRoleList: 'findRoleList',
+  getRoleBindUserList: 'getRoleBindUserList',
+  saveRoleBindUser: 'saveRoleBindUser'
 }
