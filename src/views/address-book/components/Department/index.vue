@@ -39,7 +39,13 @@ export default {
   methods: {
     toMemberList (scope) {
       this.personnel = scope;
-    }
+      api[urlNames['getOrgDepartmentTxlList']]({
+        orgId: scope.id,
+      }).then(res => {
+        // this.departmentList = res.data
+        console.log(res)
+      })
+    },
   },
   watch: {
     departmentList (newvalue, oldvalue) {

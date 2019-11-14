@@ -57,15 +57,24 @@ export default {
     keepOriginResponse: false
   },
   /**
-   * 获取视图草稿
+   * 更新视图(排序)草稿
    */
-  [urlNames.synchronizedNode]: {
+  [urlNames.updateNodeDraft]: {
     type: 'post',
-    url: '/api/jg_manage/view/synchronizedNode',
+    url: '/api/jg_manage/view/updateNodeDraft',
     serve: 'organizationManagePC',
     headers: {
       'Content-Type': 'application/json'
     },
+    keepOriginResponse: false
+  },
+  /**
+   * 保存视图草稿-》审核
+   */
+  [urlNames.synchronizedNode]: {
+    type: 'get',
+    url: '/api/jg_manage/view/synchronizedNode',
+    serve: 'organizationManagePC',
     keepOriginResponse: false
   },
   /**

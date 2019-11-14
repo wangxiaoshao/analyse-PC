@@ -1,0 +1,21 @@
+{
+  "status": 0,
+  "message": "success",
+  "total": 123,
+  "data": [
+    {
+      "removed": 34,
+      "createTime": 1748882059281,
+      "subject": "K",
+      "description": "Jrit",
+      "id": 3412
+    },
+    {
+      "removed": 34,
+      "createTime": 1748882059281,
+      "subject": "K",
+      "description": "Jrit",
+      "id": 55555
+    }
+  ]
+}

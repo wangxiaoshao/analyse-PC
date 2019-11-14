@@ -2,7 +2,6 @@
   <div class="site-module mod-dictionary">
     <el-row class="operator-row" :gutter="24">
       <el-col :span="24" class="text-right">
-        <!--<el-button type="primary" @click="addDictionary">创建字典</el-button>-->
       </el-col>
     </el-row>
     <!--表格-->
@@ -17,7 +16,6 @@
       </template>
       <template slot-scope="{slotScope}" slot="operate">
         <el-button size="mini" type="text" @click="openDialog(slotScope.row)">添加</el-button>
-        <!--<el-button size="mini" type="text" @click="openDialog(slotScope.row)">删除</el-button>-->
       </template>
     </site-table>
     <!--分页-->
@@ -40,6 +38,7 @@
       :visible="dicDialogVisible"
       :config-type="type"
       :dialogTitle="dicTitle"
+      :dictionaryType="dictionaryType"
       @refreshList="getGrid"
       @close="closeAddDialog"></dictionary-list>
   </div>
@@ -60,38 +59,9 @@ export default {
   data () {
     return {
       tableConfig,
-      gridData: [{
-        counts: '1202',
-        name: '王小虎'
-      }],
-      loading: true,
-      statusOptions: [{
-        value: '选项1',
-        label: '已确认'
-      },
-      {
-        value: '选项2',
-        label: '未确认'
-      },
-      {
-        value: '选项3',
-        label: '待确认'
-      }],
-      statusValue: '',
-      searchTimeValue: '',
-      dictionaryNameList: [],
       dialogVisible: false,
       dicDialogVisible: false,
       type: '',
-      currentEdit: null,
-      currentParent: {
-        description: '',
-        label: '',
-        remarks: '',
-        orderNum: '',
-        type: '',
-        value: ''
-      },
       tableData: [],
       tableHeight: null,
       pageConfig: {},
@@ -99,6 +69,7 @@ export default {
       operateWidth: 200,
       tableCheckbox: true,
       operate: true,
+      dictionaryType: '',
       title: '创建字典',
       dicTitle: '职级字段列表'
     }
@@ -118,7 +89,6 @@ export default {
       this.SET_EXAMINE_DETAIL({})
       this.SET_EXAMINE_BACKPATH({})
     }
-    this.initQuery()
     this.getGrid()
   },
   methods: {
@@ -134,19 +104,6 @@ export default {
     scrollStyle () {
       return {
         height: this.$store.state.app.windowHeight - 30 + 'px'
-      }
-    },
-    initQuery () {
-      let keys = Object.assign({}, this.$route.query)
-      let len = keys.length
-      for (let i = 0; i < len; i++) {
-        let key = keys[i]
-        let value = this.$route.query[key]
-        if (this.page[key] !== undefined) {
-          this.page[key] = value
-        } else if (this.searchQuery[key] !== undefined) {
-          this.searchQuery[key] = value
-        }
       }
     },
     search () {
@@ -172,7 +129,7 @@ export default {
           data[key] = value
         }
       }
-      api[urlNames['dictionaryList']](data).then((res) => {
+      api[urlNames['getDictionaryList']](data).then((res) => {
         this.loading = false
         this.tableData = res.data
         this.page.total = res.total
@@ -182,11 +139,14 @@ export default {
       })
     },
     openDialog (row) {
-      console.log(row)
-      this.dicDialogVisible = true
+      if (row && row.id) {
+        this.dictionaryType = row.id
+
+        this.dicDialogVisible = true
+      }
     },
-    closeAddDialog (val) {
-      this[val] = false
+    closeAddDialog (dialogName) {
+      this[dialogName] = false
     }
   }
 }

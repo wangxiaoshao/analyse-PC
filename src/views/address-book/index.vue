@@ -89,7 +89,6 @@ export default {
       }).then(res => {
         this.departmentList = res.data
       })
-
     },
     getDefault (val) {
       this.defaultNodeId = val

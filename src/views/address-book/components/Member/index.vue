@@ -38,9 +38,7 @@ export default {
         limit: limit,
         orgId: orgId
       }
-      console.log(data)
       api[urlNames['getOrgUserTxlList']](data).then(res => {
-        console.log(res)
         this.tableData = res.data
       })
     }

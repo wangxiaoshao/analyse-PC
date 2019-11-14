@@ -4,28 +4,38 @@
     <el-row class="operator-row">
       <el-col :span="24">
         <el-row :gutter="10" type="flex">
-          <el-col :span="4">
-            <el-input placeholder="单位名称" v-model="searchQuery.name" clearable>
+          <el-col :span="7">
+            <el-input placeholder="人员名称" v-model="searchQuery.name" clearable>
             </el-input>
           </el-col>
-          <el-col :span="4">
-            <el-input placeholder="单位ID" v-model="searchQuery.id" clearable>
+          <el-col :span="7">
+            <el-input placeholder="人员ID" v-model="searchQuery.uid" clearable>
             </el-input>
           </el-col>
-          <el-col :span="4">
-            <el-input placeholder="上级名称" v-model="searchQuery.parentName" clearable>
+          <el-col :span="7">
+            <el-input placeholder="登陆账号" v-model="searchQuery.account" clearable>
             </el-input>
           </el-col>
-          <el-col :span="4">
-            <el-input placeholder="上级ID" v-model="searchQuery.parentId" clearable>
+          <el-col :span="3" class="text-right">
+            <el-button type="primary" plain @click="getGrid">查询</el-button>
+          </el-col>
+        </el-row>
+      </el-col>
+    </el-row>
+    <el-row class="operator-row">
+      <el-col :span="24">
+        <el-row :gutter="10" type="flex">
+          <el-col :span="7">
+            <el-input placeholder="所属单位" v-model="searchQuery.orgName" clearable>
             </el-input>
           </el-col>
-          <el-col :span="4">
+          <el-col :span="7">
+            <el-input placeholder="所属部门" v-model="searchQuery.deptName" clearable>
+            </el-input>
+          </el-col>
+          <el-col :span="7">
             <el-input placeholder="标签" v-model="searchQuery.labelName" clearable>
             </el-input>
-          </el-col>
-          <el-col :span="4" class="text-right">
-            <el-button type="primary" plain @click="getGrid">查询</el-button>
           </el-col>
         </el-row>
       </el-col>
@@ -72,17 +82,18 @@ export default {
       tableConfig,
       searchQuery: {
         name: '',
-        id: '',
-        parentName: '',
-        parentId: '',
+        uid: '',
+        account: '',
+        orgName: '',
+        deptName: '',
         labelName: ''
       },
       tableData: [],
       tableHeight: null,
-      operateWidth: 100,
-      tableCheckbox: true,
       pageConfig: {},
       tableIndex: true,
+      operateWidth: 100,
+      tableCheckbox: true,
       operate: true
     }
   },
@@ -136,8 +147,7 @@ export default {
     getGrid () {
       let data = {
         page: this.page.current,
-        limit: this.page.limit,
-        ...this.searchQuery
+        pageSize: this.page.limit
       }
       this.pageConfig = data
       let keys = Object.keys(this.searchQuery)
@@ -151,11 +161,10 @@ export default {
           data[key] = value
         }
       }
-      api[urlNames['findOrganizationList']](data).then((res) => {
+      api[urlNames['findMemberList']](data).then((res) => {
         this.tableData = res.data
         this.page.total = res.total
       }, () => {
-        this.loading = false
         this.tableData = []
         this.page.total = 0
       })
@@ -167,15 +176,14 @@ export default {
       this.SET_EXAMINE_DETAIL(row) // ExamineDetails页面需要用到的当前列表中点击项的数据
       this.SET_EXAMINE_BACKPATH(this.$route.name) // ExamineDetails页面需要用到的当前列表中点击项的数据
       this.$router.push({
-        name: 'ExamineDetails',
-        params: { parentCode: 1910281645 }
+        path: `/${this.$route.meta.prePath}/personDetail/${row.id}`
       })
     }
   }
 }
 </script>
 <style lang="less">
-  @import "./index";
+  @import "index";
 </style>
 
 
