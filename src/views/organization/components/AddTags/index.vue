@@ -1,7 +1,7 @@
 <template>
   <el-dialog title="选择标签" :visible.sync="openSearchFlag" :showClose="false">
     <i class="el-icon-close tag-close" @click="close"></i>
-    <el-input placeholder="请输入内容" v-model="tagKeyWord" class="input-with-select">
+    <el-input placeholder="请输入内容" v-model="tagKeyWord" class="input-with-select" @change="searchTag">
       <el-button slot="append" icon="el-icon-search"></el-button>
     </el-input>
     <div class="tag-content" v-loading="loading">

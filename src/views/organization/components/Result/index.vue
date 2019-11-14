@@ -37,9 +37,7 @@
 
 <script>
 import { api, urlNames } from '@src/api'
-import debounce from '@src/mixins/debounce'
 export default {
-  mixins: [ debounce ],
   data () {
     return {
       debouncedSearch: null,
@@ -53,18 +51,12 @@ export default {
     }
   },
   props: ['defaultNodeId'],
+  created () {
+    this.debouncedSearch = this.debounce(this.getResult, 600)
+  },
   methods: {
     getType (el) {
       this.type = el
-    },
-    onFocus () {
-      this.resultFlag = true
-    },
-    onBlur () {
-      this.resultFlag = false
-    },
-    onChange () {
-      this.debouncedSearch()
     },
     // 获取搜索结果
     getResult () {
@@ -92,29 +84,14 @@ export default {
       })
     },
     goBackTree () {
+      this.keyWord = ''
       this.resultFlag = false
-      /*this.$router.push({
+      this.$router.push({
         name: 'OrganizationContent',
         params: {
           nodeId: this.defaultNodeId
         }
-      })*/
-    }
-  },
-  created () {
-    this.debouncedSearch = this.debounce(this.getResult, 600)
-    // this.getResult()
-    // this.debouncedSearch = this.debounce(this.getResult, 5000)
-  },
-  watch: {
-    keyWord: {
-      handler (val) {
-        if (val !== '') {
-          // this.debouncedSearch = this.debounce(this.getResult, 500)
-          // this.getResult
-        }
-      },
-      deep: true
+      })
     }
   }
 }

@@ -143,5 +143,6 @@ export default {
   dicList: 'dicList',
   findRoleList: 'findRoleList',
   getRoleBindUserList: 'getRoleBindUserList',
-  saveRoleBindUser: 'saveRoleBindUser'
+  saveRoleBindUser: 'saveRoleBindUser',
+  findUserAccountByUid: 'findUserAccountByUid'
 }

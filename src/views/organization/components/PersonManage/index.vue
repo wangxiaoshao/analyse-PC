@@ -1,8 +1,18 @@
 <template>
   <div class="person-manage-content">
-   <!-- <add-tags :tagsFlag="openAddTagFlag" @getFlag="getFlag"></add-tags>-->
+    <add-tags
+      :openSearchFlag="openSearchFlag"
+      :addInfo="addInfo"
+      @close="getClose"
+      @getTag="getTag"
+    ></add-tags>
     <!--人员管理-->
-    <el-form :disabled="disabledFlag" ref="personFrom" label-width="100px" class="demo-personFrom" style="width: 100%">
+    <el-form
+      :disabled="disabledFlag"
+      ref="personFrom"
+      label-width="100px"
+      class="demo-personFrom"
+      style="width: 100%">
       <el-menu class="el-menu-demo" mode="horizontal">
         <el-menu-item>基础信息</el-menu-item>
       </el-menu>
@@ -12,8 +22,8 @@
             <el-input
               placeholder="请输入姓名"
               v-model="personFrom.name"
-              @input="loadSearch"
-            ></el-input>
+              @blur="closeSearch"
+              @input="loadSearch"></el-input>
             <el-popover
               v-if="searchFlag"
               placement="top-start"
@@ -24,7 +34,12 @@
                 若您是为同一个人开通兼职帐号，直接选择以下人员进行帐号开通
               </div>
               <div class="result-list">
-                <el-table v-loading="loadFlag" :data="list" :show-header="true">
+                <el-table
+                  v-loading="loadFlag"
+                  max-height="200"
+                  :data="list"
+                  @row-click="selectRow"
+                  :show-header="true">
                   <el-table-column property="name" label="姓名">
                     <template slot-scope="scope">
                       <span :title="scope.row.name" class="table-span">{{scope.row.name}}</span>
@@ -45,12 +60,19 @@
             </el-popover>
           </el-form-item>
           <el-form-item label="职务" prop="dutyName">
-            <el-input placeholder="请输入职务" v-model="personFrom.professionalTitle"></el-input>
+            <el-input
+              placeholder="请输入职务"
+              v-model="personFrom.professionalTitle"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="手机号" prop="mobile">
-            <el-input placeholder="请输入手机号" v-model="personFrom.mobile"></el-input>
+          <el-form-item
+            label="手机号"
+            prop="mobile"
+          >
+            <el-input
+              placeholder="请输入手机号"
+              v-model="personFrom.mobile"></el-input>
           </el-form-item>
           <el-form-item label="身份类型" prop="type">
             <el-select placeholder="请选择身份类型" v-model="postFrom.type">
@@ -174,15 +196,16 @@
       <el-row>
         <el-form-item label="部门标签">
           <el-tag
-            v-for="tag in tags"
-            :key="tag.name"
+            v-for="tag in tagsName"
+            :key="tag"
             type="info"
             closable
-            :title="tag.name"
+            :title="tag"
+            @close="removeTag(tag,index)"
           >
-            {{tag.name}}
+            {{tag}}
           </el-tag>
-          <el-tag class="add-tag-btn" v-if="!disabledFlag" @click="openAddTagFlag =  true">
+          <el-tag class="add-tag-btn" v-if="!disabledFlag" @click="openSearchFlag = true">
             <i class="el-icon-plus"></i>添加标签
           </el-tag>
         </el-form-item>
@@ -199,6 +222,10 @@
           </el-form-item>
         </el-col>
       </el-row>
+      <el-footer class="add-person-footer">
+        <el-button type="primary" @click="next">下一步</el-button>
+        <el-button >取消</el-button>
+      </el-footer>
     </el-form>
   </div>
 </template>
@@ -215,40 +242,43 @@ export default {
   },
   data () {
     return {
-      openAddTagFlag: false,
+      openSearchFlag: false,
       option: [],
       restaurants: [],
       state: '',
       timeout: null,
       personFrom: this.userDetail,
       postFrom: this.postDetail,
-      rules: {
-        name: [
-          { required: true, message: '请输入部门名称', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 1 到 5 个字符', trigger: 'blur' }
-        ]
-      },
       imageUrl: '',
-      tags: [],
+      tagsName: [],
+      labelId: [],
       list: [],
       searchFlag: false,
-      loadFlag: true
+      loadFlag: true,
+      addInfo: {
+        searchFlag: false,
+        type: 3 // 1.单位，2、部门，3、人员
+      }
     }
   },
   created () {
     this.init()
   },
-  computed: {
-
-  },
   methods: {
     init () {
+      alert(this.sendUserFlag)
+      /* this.$emit('get-post', this.postFrom)
+      this.$emit('get-user', this.personFrom) */
     },
-    getName () {
-      alert(11111)
+    // 搜索表格点击当前行
+    selectRow (val) {
+      let uid = val.uid
+      console.log(6526, uid)
     },
+    // 搜索数据
     loadSearch () {
-      if (this.personFrom.name.length > 1) {
+      this.searchFlag = false
+      if (this.$route.name === 'PersonAdd' && this.personFrom.name.length > 1) {
         this.searchFlag = true
         this.loadFlag = true
         setTimeout(() => {
@@ -262,28 +292,12 @@ export default {
             this.list = []
           })
         }, 500)
+      } else {
+        this.searchFlag = false
       }
     },
-    remoteMethod (query) {
-      this.personFrom.name = query
-      if (query.length > 1) {
-        setTimeout(() => {
-          this.loadUser = true
-          api[urlNames['findUserByParams']]({
-            name: query
-          }).then((res) => {
-            this.loadUser = false
-            this.$nextTick(() => {
-              this.option = res.data
-            })
-            console.log(this.option)
-          }, (error) => {
-
-          })
-        }, 500)
-      } else {
-        this.options = []
-      }
+    closeSearch () {
+      this.searchFlag = false
     },
     handleAvatarSuccess (res, file) {
       this.imageUrl = URL.createObjectURL(file.raw)
@@ -300,8 +314,23 @@ export default {
       }
       return isJPG && isLt2M
     },
-    getFlag (val) {
-      this.openAddTagFlag = val
+    getClose (val) {
+      this.openSearchFlag = val
+    },
+    getTag (val) {
+      console.log('标签', val)
+      val.forEach((item) => {
+        this.tagsName.push(item.split('|')[1])
+        this.labelId.push(item.split('|')[0])
+      })
+    },
+    removeTag (tag, index) {
+      this.tagsName.splice(index, 1)
+      this.ruleForm.labelId.splice(index, 1)
+    },
+    next () {
+      this.$emit('get-post', this.postFrom)
+      this.$emit('get-user', this.personFrom)
     }
   }
 }

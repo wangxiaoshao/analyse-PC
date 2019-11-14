@@ -9,15 +9,17 @@
        :isShowEditFlag="isShowEditFlag"
        :user-detail="userInfo.user"
        :post-detail="userInfo.userIdentity"
+       @get-user="getUser"
+       @get-post="getPost"
      ></person-manage>
      <!--账号管理-->
      <account-manage v-if="stepTwoFlag" :disabledFlag="disabledFlag" :isShowEditFlag="isShowEditFlag"></account-manage>
    </el-container>
-   <el-footer class="add-person-footer">
+   <!--<el-footer class="add-person-footer">
       <el-button type="primary" @click="next" v-if="stepOneFlag">下一步</el-button>
       <el-button type="primary" @click="last" v-if="stepTwoFlag">上一步</el-button>
       <el-button type="primary" v-if="!disabledFlag">保存</el-button>
-    </el-footer>
+    </el-footer>-->
   </div>
 </template>
 
@@ -53,11 +55,12 @@ export default {
       stepOneFlag: true,
       stepTwoFlag: false,
       openAddTagFlag: false,
+      sendUserFlag: false,
       activeIndex: 0,
       userInfo: {
-        userAccount: [],
+        userAccount: [], // 账户
         labelId: [],
-        userIdentity: [],
+        userIdentity: [], // 绑定身份类型
         userId: null,
         user: {
           birthday: null,
@@ -119,9 +122,26 @@ export default {
         this.userInfo.user.positionClass = res.data.positionClass
         this.userInfo.user.userState = res.data.userState
         this.userInfo.user.userType = res.data.userType
+        this.getUserAccount(res.data.uid)
       }, (error) => {
         this.$message.error(`保存失败，请重试`)
       })
+    },
+    getUserAccount (userId) {
+      api[urlNames['findUserAccountByUid']]({
+        userId: userId
+      }).then((res) => {
+        console.log(res.data)
+      }, (error) => {
+      })
+    },
+    getUser (val) { // 获取用户信息
+      this.userInfo.user = val
+      console.log(val)
+    },
+    getPost (val) {
+      this.userInfo.userIdentity = val
+      console.log(val)
     },
     // TODO breadcrumb可采用组件传参的模式替换路由判断，将配置权交给调用方
     setBreadcrumbTitle () { // 设置面包屑title
@@ -131,11 +151,12 @@ export default {
       this.openAddTagFlag = false
       this.tags = this.checkTagGroup
     },
-    next () {
+   /* next () {
       this.stepTwoFlag = true
       this.stepOneFlag = false
       this.activeIndex = 1
-    },
+      this.sendUserFlag = true
+    },*/
     last () {
       this.stepTwoFlag = false
       this.stepOneFlag = true
