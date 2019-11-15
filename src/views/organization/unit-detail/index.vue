@@ -198,15 +198,19 @@ export default {
         if (res.data.bindId) {
           this.parentName = res.data.name
           this.bindId = res.data.bindId
-          this.ruleForm.organization.parentId = res.data.bindId
           if (this.$route.name !== 'UnitAdd') {
+            if (res.data.bindId === 2) {
+              this.ruleForm.organization.parentId = res.data.bindId
+            }
             this.ruleForm.nodeId = res.data.id
             this.findLabel(res.data.nodeType)
             this.getDetail()
           } else {
-            this.ruleForm.nodeId = res.data.parentId
+            this.ruleForm.nodeId = res.data.id
+            this.ruleForm.organization.parentId = res.data.bindId
           }
         } else {
+          this.parentName = ''
           this.ruleForm.nodeId = res.data.id
         }
       }, (error) => {

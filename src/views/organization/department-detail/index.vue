@@ -172,16 +172,18 @@ export default {
       }).then((res) => {
         this.bindId = res.data.bindId
         this.ruleForm.nodeId = res.data.id
-        // this.ruleForm.department.parentId = res.data.bindId
-        this.getDetail()
         if (res.data.bindId) {
-         /* if (res.data.nodeType === 2) { // 上级单位
-            this.orgName = res.data.name
-            this.ruleForm.department.orgId = res.data.bindId
-          }*/
+          if (res.data.nodeType === 2) {
+            api[urlNames['findOrganizationById']]({
+              id: res.data.bindId
+            }).then((res) => {
+              this.orgName = res.data.name
+              this.ruleForm.department.orgId = res.data.id
+            })
+          }
           if (res.data.nodeType === 3) { // 上级部门
-            this.parentDep = res.data.name
             this.ruleForm.department.parentId = res.data.bindId
+            this.getDetail()
           }
           if (this.$route.name !== 'DepartmentAdd') {
             this.findLabel(res.data.nodeType)
@@ -204,9 +206,11 @@ export default {
         } else {
           this.orgName = res.data.orgName
           this.ruleForm.department.orgId = res.data.orgId
-          /* this.parentName = res.data.parentName */
-          /* this.ruleForm.department.parentId = res.data.parentId */
-          this.ruleForm.department.orgId = res.data.orgId
+          if (res.data.parentId) {
+            this.parentDep = res.data.parentName
+          } else {
+            this.parentDep = ''
+          }
           this.ruleForm.department.id = res.data.id
           this.ruleForm.department.phone = res.data.phone
           this.ruleForm.department.name = res.data.name
