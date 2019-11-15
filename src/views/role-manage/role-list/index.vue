@@ -1,7 +1,14 @@
 <template>
   <div>
     <!--表格-->
-    <el-table v-loading="loading" :data="list" :max-height="tableMaxHeight" border style="width: 100%">
+    <el-table
+      v-loading="loading"
+      :data="list"
+      stripe
+      border
+      highlight-current-row
+      :max-height="tableMaxHeight"
+      style="width: 100%">
       <el-table-column prop="description" label="序号" width="60" align="center">
         <template slot-scope="scope">
           <span :title="scope">{{scope.$index + 1}}</span>
@@ -9,14 +16,16 @@
       </el-table-column>
       <el-table-column prop="name" label="角色名称">
       </el-table-column>
-      <el-table-column prop="dec" label="角色描述">
+      <el-table-column prop="title" label="角色描述">
       </el-table-column>
-      <el-table-column prop="creatTime" label="创建时间">
+      <el-table-column prop="createTime" label="创建时间">
+      </el-table-column>
+      <el-table-column prop="updatedTime" label="修改时间">
       </el-table-column>
       <el-table-column prop="value" label="启用状态">
         <template slot-scope="scope">
-          <span class="text-green" v-show="scope.row.enable === 1">启用</span>
-          <span class="text-red" v-show="scope.row.enable === 0">停用</span>
+          <span class="text-green" v-show="scope.row.removed">启用</span>
+          <span class="text-red" v-show="!scope.row.removed">停用</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" min-width="180">
@@ -63,8 +72,9 @@ export default {
         limit: this.page.limit
       }
       this.loading = true
-      api[urlNames['roleList']](data).then((res) => {
+      api[urlNames['findRoleList']](data).then((res) => {
         this.loading = false
+        console.log(res.data)
         this.list = res.data
       }, () => {
         this.loading = false

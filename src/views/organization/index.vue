@@ -5,7 +5,7 @@
        <div class="site-scroll" style="padding-right: 20px;">
          <search-result :defaultNodeId="defaultNodeId"></search-result>
          <div class="tree-content">
-           <organization-tree @handle-node-click="handleNodeClick"></organization-tree>
+           <organization-tree @handle-node-click="handleNodeClick" @get-default-node="getDefaultNode"></organization-tree>
          </div>
        </div>
       </el-col>
@@ -21,13 +21,9 @@
 </template>
 
 <script>
-import { api, urlNames } from '@src/api'
-import handleTable from '@src/mixins/handle-table'
 import organizationTree from '@src/components/Tree/index'
 import searchResult from './components/Result/index'
-import { mapState, mapMutations } from 'vuex'
 export default {
-  mixins: [ handleTable ],
   components: {
     organizationTree, searchResult
   },
@@ -44,7 +40,7 @@ export default {
       }
     }
   },
-  mounted () {
+  created () {
 
   },
   methods: {
@@ -52,7 +48,6 @@ export default {
     handleNodeClick (node) {
       let id = ''
       id = node.id
-      this.defaultNodeId = node.id
       let bindId = node.bindId || ''
       this.$router.push({
         name: 'OrganizationContent',
@@ -60,6 +55,10 @@ export default {
           nodeId: id
         }
       })
+    },
+    getDefaultNode (val) {
+      this.defaultNodeId = val
+      alert(val)
     }
   }
 }

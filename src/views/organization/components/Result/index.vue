@@ -22,7 +22,7 @@
       <el-input
         placeholder="请输入内容"
         v-model="keyWord"
-        @change="getResult"
+        @input="getResult"
         class="input-with-select">
         <el-select v-model="value" style="width: 80px" @change="getType" slot="prepend" placeholder="请选择">
           <el-option label="节点" value="1"></el-option>
@@ -37,9 +37,7 @@
 
 <script>
 import { api, urlNames } from '@src/api'
-import debounce from '@src/mixins/debounce'
 export default {
-  mixins: [ debounce ],
   data () {
     return {
       debouncedSearch: null,
@@ -53,18 +51,12 @@ export default {
     }
   },
   props: ['defaultNodeId'],
+  created () {
+    this.debouncedSearch = this.debounce(this.getResult, 600)
+  },
   methods: {
     getType (el) {
       this.type = el
-    },
-    onFocus () {
-      this.resultFlag = true
-    },
-    onBlur () {
-      this.resultFlag = false
-    },
-    onChange () {
-      this.debouncedSearch()
     },
     // 获取搜索结果
     getResult () {
@@ -74,10 +66,14 @@ export default {
         nodeType: this.type
       }
       this.loadFlag = true
-      api[urlNames['searchViewNode']](data).then(res => {
-        this.gridData = res.data
-        this.loadFlag = false
-      })
+      if (this.keyWord !== '') {
+        setTimeout(() => {
+          api[urlNames['searchViewNode']](data).then(res => {
+            this.gridData = res.data
+            this.loadFlag = false
+          })
+        }, 500)
+      }
     },
     setNodeId (row) {
       this.$router.push({
@@ -88,6 +84,7 @@ export default {
       })
     },
     goBackTree () {
+      this.keyWord = ''
       this.resultFlag = false
       this.$router.push({
         name: 'OrganizationContent',
@@ -95,22 +92,6 @@ export default {
           nodeId: this.defaultNodeId
         }
       })
-    }
-  },
-  created () {
-    this.debouncedSearch = this.debounce(this.getResult, 600)
-    // this.getResult()
-    // this.debouncedSearch = this.debounce(this.getResult, 5000)
-  },
-  watch: {
-    keyWord: {
-      handler (val) {
-        if (val !== '') {
-          // this.debouncedSearch = this.debounce(this.getResult, 500)
-          // this.getResult
-        }
-      },
-      deep: true
     }
   }
 }

@@ -35,8 +35,12 @@
                 :operateWidth="operateWidth"
                 :operate="operate"
                 :tableData="tableData">
-      <template slot-scope="{slotScope}" slot="status">
-      </template>
+      <el-table-column label="状态" align="center">
+        <template slot-scope="scope">
+          <span v-show="scope.row.auditState === 1" class="text-green">已确认</span>
+          <span v-show="scope.row.auditState !== 1" class="text-red">待确认</span>
+        </template>
+      </el-table-column>
       <template slot-scope="{slotScope}" slot="operate">
         <el-button size="mini" type="text" @click="goConfig(slotScope.row)">人员明细</el-button>
       </template>

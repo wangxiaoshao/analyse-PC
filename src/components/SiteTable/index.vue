@@ -3,7 +3,7 @@
             :data="tableData"
             @sort-change="sort"
             :height="tableHeight"
-            :colMergeConfig="mergeConfig"
+            :col-merge-config="mergeConfig"
             :span-method="openColMerge"
             v-loading = "tableLoading"
             border
@@ -18,6 +18,7 @@
           <el-table-column
                         :prop="item.key"
                         align="center"
+                        label-class-name="black"
                         :formatter="item.formatter"
                         :label="item.label"
                         :key="item.key"
@@ -26,14 +27,13 @@
                         :min-width="item.minWidth || null">
         </el-table-column>
         </template>
-
-      <slot name="appendPersonalColumn"></slot>
-        <el-table-column label="操作" align="center" fixed="right" v-if="operate" :width="operateWidth">
-            <template slot-scope="scope">
-                <slot name="operate" :slot-scope="scope"></slot>
-            </template>
-        </el-table-column>
-      </el-table>
+      <slot></slot>
+      <el-table-column label="操作" align="center" fixed="right" v-if="operate" :width="operateWidth">
+        <template slot-scope="scope">
+          <slot name="operate" :slot-scope="scope"></slot>
+        </template>
+      </el-table-column>
+    </el-table>
 </template>
 <script>
 
@@ -89,7 +89,6 @@ export default {
     }
   },
   created () {
-    console.log(this.pageConfig)
   },
   methods: {
     /*
@@ -123,3 +122,14 @@ export default {
   }
 }
 </script>
+<style>
+  .black{
+    color: black;
+  }
+  .red{
+    color: #F56C6C;
+  }
+  .green{
+    color: #67C23A;
+  }
+</style>

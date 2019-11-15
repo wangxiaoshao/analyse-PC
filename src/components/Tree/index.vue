@@ -60,6 +60,7 @@ export default {
       }).then((res) => {
         this.total = parseInt(res.total)
         this.treeList = res.data
+        this.$emit('get-default-node', res.data[0].id)
         if (this.$route.name === 'Organization') {
           this.handleNodeClick(res.data[0])
         }

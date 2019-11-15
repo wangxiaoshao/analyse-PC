@@ -141,5 +141,9 @@ export default {
   // 证件照上传
   upload: 'upload',
   // 字典管理
-  dicList: 'dicList'
+  dicList: 'dicList',
+  findRoleList: 'findRoleList',
+  getRoleBindUserList: 'getRoleBindUserList',
+  saveRoleBindUser: 'saveRoleBindUser',
+  findUserAccountByUid: 'findUserAccountByUid'
 }

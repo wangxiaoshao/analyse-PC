@@ -11,6 +11,7 @@ import system from './modules/system'
 import statistics from './modules/statistics'
 import shared from './modules/shared-management'
 import addressBook from './modules/address-book'
+import roleManage from './modules/role-manage'
 export default {
   [urlNames.getUserInfo]: {
     type: 'get',
@@ -123,5 +124,6 @@ export default {
   ...organization,
   ...shared, // 共享视图
   ...system, // 系统管理
-  ...addressBook// 通讯录
+  ...addressBook, // 通讯录
+  ...roleManage // 角色管理
 }

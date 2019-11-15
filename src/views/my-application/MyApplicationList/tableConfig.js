@@ -32,17 +32,6 @@ const tableConfig = {
     showOverflowTooltip: false,
     minWidth: 100
   },
-  state: {
-    key: 'state',
-    tooltip: false,
-    label: '审核状态',
-    sortable: false,
-    formatter: ({ cellValue }) => {
-      return cellValue === 1 ? '已审核' : '待审核'
-    },
-    showOverflowTooltip: false,
-    minWidth: 100
-  },
   auditTime: {
     key: 'auditTime',
     tooltip: false,
