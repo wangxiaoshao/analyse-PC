@@ -193,10 +193,10 @@ export default {
   },
   beforeRouteUpdate (to, from, next) {
     next()
-    this.setBreadcrumbTitle()
   },
   methods: {
     init () {
+      this.pushBreadcrumb(this.breadcrumb)
       api[urlNames['findViewNodeById']]({
         id: this.$route.params.parentId || this.$route.params.id
       }).then((res) => {

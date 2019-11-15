@@ -156,7 +156,6 @@ export default {
   },
   created () {
     this.init()
-    this.pushBreadcrumb(this.breadcrumb)
   },
   beforeRouteUpdate (to, from, next) {
     next()
@@ -164,6 +163,7 @@ export default {
   },
   methods: {
     init () {
+      this.pushBreadcrumb(this.breadcrumb)
       api[urlNames['findViewNodeById']]({
         id: this.$route.params.parentId || this.$route.params.id
       }).then((res) => {
@@ -171,11 +171,11 @@ export default {
         // this.ruleForm.department.parentId = res.data.bindId
         this.ruleForm.nodeId = res.data.id
         if (res.data.nodeType === 2) { // 上级单位
-          this.orgName = res.data.name
+          this.orgName = res.data.parentName
           this.ruleForm.department.orgId = res.data.bindId
         }
         if (res.data.nodeType === 3) { // 上级部门
-          this.parentDep = res.data.name
+          this.parentDep = res.data.parentName
           this.ruleForm.department.parentId = res.data.bindId
         }
         if (res.data.bindId && res.data.nodeType === 3) {
@@ -203,8 +203,8 @@ export default {
           this.ruleForm.department.orgId = res.data.orgId
         } else {
           this.orgName = res.data.orgName
-          this.parentName = res.data.parentName
-          this.ruleForm.department.parentId = res.data.parentId
+         /* this.parentName = res.data.parentName*/
+          /*this.ruleForm.department.parentId = res.data.parentId*/
           this.ruleForm.department.orgId = res.data.orgId
           this.ruleForm.department.id = res.data.id
           this.ruleForm.department.phone = res.data.phone
