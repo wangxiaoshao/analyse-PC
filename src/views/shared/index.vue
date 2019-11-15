@@ -61,12 +61,10 @@ export default {
   computed: {
   },
   mounted () {
-    this.getGrid()
   },
   methods: {
     change () {
       this.page.current = 1
-      this.getGrid()
     },
     trim (str) {
       return (str + '').replace(/(\s+)$/g, '').replace(/^\s+/g, '')
@@ -85,15 +83,6 @@ export default {
         data.startTime = this.dataValue[0]
         data.endTime = this.dataValue[1]
       }
-      api[urlNames['getAdminLog']](data).then((res) => {
-        this.loading = false
-        this.list = res.result.items
-        this.page.total = res.result.total_items
-      }, () => {
-        this.loading = false
-        this.list = []
-        this.page.total = 0
-      })
     }
   }
 }

@@ -1,12 +1,5 @@
 <template>
   <div class="candidate">
-    <!--    seleceDialog: {-->
-    <!--    selectMenmberTitle: '选人组件', // 选人组件标题-->
-    <!--    selectMenmberFlag: false, // 显示弹窗，-->
-    <!--    isAllData: true, // 是否需完整数据-默认为不需要（false，只包含用户id）-->
-    <!--    notOnlyPerson: false, // 是否只选人，默认为false（只选人），true可以选择单位和部门-->
-    <!--    isSingleSelect: false // 是否为单选框  false为多选（默认），true为单选-->
-    <!--    }-->
     <el-dialog
       custom-class="right-dialog edit-dialog"
       :title="seleceDialog.selectMenmberTitle"
@@ -21,7 +14,14 @@
             lazy
             :load="loadNode"
             :props="defaultProps"
-            @node-click="handleNodeClick"></el-tree>
+            @node-click="handleNodeClick">
+             <span class="custom-tree-node" slot-scope="{ node, data }">
+               <i class="imenu-icon fa fa-sitemap" v-if="data.nodeType === 1"></i>
+               <i class="imenu-icon fa fa-building-o" v-if="data.nodeType === 2"></i>
+               <i class="imenu-icon fa fa-institution" v-if="data.nodeType === 3"></i>
+               <span>{{node.label}}</span>
+             </span>
+          </el-tree>
         </div>
         <!--        <div class="transfer">-->
         <!--          <el-transfer-->
@@ -83,7 +83,14 @@
 
 <script>
 import { api, urlNames } from '@src/api'
-
+// 参数列表
+// seleceDialog: {
+//   selectMenmberTitle: '选人组件', // 选人组件标题
+//     selectMenmberFlag: false, // 显示弹窗，
+//     isAllData: true, // 是否需完整数据-默认为不需要（false，只包含用户id）
+//     notOnlyPerson: false, // 是否只选人，默认为false（只选人），true可以选择单位和部门
+//     isSingleSelect: false // 是否为单选框  false为多选（默认），true为单选
+// }
 export default {
   name: 'Candidate',
   props: ['seleceDialog'],
