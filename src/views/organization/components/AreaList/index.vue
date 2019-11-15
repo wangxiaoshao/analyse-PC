@@ -1,8 +1,10 @@
 <template>
   <div>
     <el-cascader
+      :multiple="false"
       :options="options"
       :props="props"
+      v-model="areaValue"
     >
     </el-cascader>
   </div>
@@ -14,6 +16,7 @@ import { api, urlNames } from '@src/api'
 export default {
   data () {
     return {
+      areaValue: [],
       options: [], // 第一次加载数据
       value: '',
       props: {
@@ -32,12 +35,14 @@ export default {
               resolve(res.data)
               this.value = node.data.id
               this.$emit('getAreaId', this.value)
-              console.log(this.value)
             })
           }
         }
       }
     }
+  },
+  created () {
+    this.getArea()
   },
   methods: {
     getArea (parentId) {
@@ -47,9 +52,6 @@ export default {
         this.options = res.data
       })
     }
-  },
-  created () {
-    this.getArea()
   }
 }
 </script>

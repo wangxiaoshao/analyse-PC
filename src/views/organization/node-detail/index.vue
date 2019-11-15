@@ -173,7 +173,7 @@ export default {
     this.setBreadcrumbTitle()
   },
   watch: {
-    newValue: {
+   /* newValue: {
       handler (val) {
         if (val.enable !== this.oldFrom.enable || val.reason !== this.oldFrom.reason) {
           this.submitHtml = '保存并提交申请'
@@ -182,7 +182,7 @@ export default {
         }
       },
       deep: true
-    }
+    }*/
   }
 }
 </script>
