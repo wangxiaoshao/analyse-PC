@@ -16,9 +16,13 @@
         width="50">
       </el-table-column>
       <el-table-column
-        property="name"
         label="名称"
-        align="center">
+      align="center">
+        <template slot-scope="scope">
+         <div>
+           <span>{{scope.row.name}}</span>
+         </div>
+        </template>
       </el-table-column>
       <el-table-column
         property="memberId"

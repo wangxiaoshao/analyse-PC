@@ -78,6 +78,15 @@ export default {
     keepOriginResponse: false
   },
   /**
+   * 保存视图草稿-》审核
+   */
+  [urlNames.findViewById]: {
+    type: 'get',
+    url: '/api/jg_manage/view/findViewById',
+    serve: 'organizationManagePC',
+    keepOriginResponse: false
+  },
+  /**
    * 获取应用列表
    */
   [urlNames.getAppList]: {
@@ -226,6 +235,9 @@ export default {
     type: 'post',
     url: '/api/group/renameGroup',
     serve: 'organizationManagePC',
+    headers: {
+      'Content-Type': 'application/json'
+    },
     showLoading: true,
     keepOriginResponse: false
   }

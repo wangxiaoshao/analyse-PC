@@ -11,6 +11,7 @@
         :data="data"
         show-checkbox
         node-key="id"
+        :check-strictly="true"
         :default-expanded-keys="[2, 3]"
         :default-checked-keys="[5]"
         :props="defaultProps">
@@ -33,6 +34,7 @@ export default {
       data: [{
         id: 1,
         label: '一级 1',
+        disabled: true,
         children: [{
           id: 4,
           label: '二级 1-1',
@@ -47,6 +49,7 @@ export default {
       }, {
         id: 2,
         label: '一级 2',
+        disabled: true,
         children: [{
           id: 5,
           label: '二级 2-1'
@@ -57,6 +60,7 @@ export default {
       }, {
         id: 3,
         label: '一级 3',
+        disabled: true,
         children: [{
           id: 7,
           label: '二级 3-1'

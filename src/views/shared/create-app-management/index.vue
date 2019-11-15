@@ -188,6 +188,15 @@ export default {
       })
     },
     onSubmit (ref) {
+      if (this.appFrom.apiAccount.trim().length === 0 ||
+        this.appFrom.apiPassword.trim().length === 0 ||
+        this.appFrom.concatUser.trim().length === 0 ||
+        this.appFrom.concatPhone.trim().length === 0 ||
+        this.appFrom.apiUrl.trim().length === 0 ||
+        this.appFrom.description.trim().length === 0) {
+        this.$message.info('请填写必填字段')
+        return false
+      }
       if (this.$route.query.id === undefined) {
         this.createApp()
       } else if (this.$route.query.id !== undefined) {
@@ -208,6 +217,7 @@ export default {
       }).then((res) => {
         if (res.status === 0 && this.$route.query.id === undefined) {
           this.$message.success('创建成功')
+          this.back()
         }
       })
     },
@@ -226,6 +236,7 @@ export default {
       }).then((res) => {
         if (res.status === 0) {
           this.$message.success('修改成功')
+          this.back()
         }
       })
     },

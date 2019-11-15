@@ -45,11 +45,11 @@
             <span class="text-disable" v-show="!scope.row.removed">停用</span>
           </template>
         </el-table-column>
-        <el-table-column
-          property="remark"
-          align="center"
-          label="备注说明">
-        </el-table-column>
+<!--     暂时隐藏   <el-table-column-->
+<!--          property="remark"-->
+<!--          align="center"-->
+<!--          label="备注说明">-->
+<!--        </el-table-column>-->
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
             <el-button
@@ -112,7 +112,7 @@ export default {
     },
     // 跳转创建视图
     createView () {
-      this.$router.push({ name: 'CreateView' })
+      this.$router.push({ path: '/view-management/create-view/0' })
     },
     // 关闭选人弹窗
     closeselectMenmber () {
@@ -125,8 +125,9 @@ export default {
     handleCurrentChange (val) {
       this.currentRow = val
     },
+    // 编辑
     handleEdit (index, row) {
-      console.log(index, row)
+      this.$router.push({ path: `/view-management/create-view/${row.id}` })
     },
     handleDelete (index, row) {
       console.log(index, row)
