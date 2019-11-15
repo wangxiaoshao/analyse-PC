@@ -88,8 +88,6 @@ export default {
       }
     }
   },
-  created () {
-  },
   methods: {
     /*
   * @openColMerge：开启表格合并功能

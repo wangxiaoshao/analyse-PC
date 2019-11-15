@@ -64,11 +64,17 @@
       :before-close="handleClose">
       <!--表格-->
       <site-table :tableConfig="dialogTableConfig"
-                  :tableHeight="tableHeight"
+                  :tableHeight="dialogTableHeight"
                   :operateWidth="operateWidth"
                   :operate="operate"
                   :tableData="tableData">
       </site-table>
+      <el-row :gutter="20" :style="{marginTop: '20px'}">
+        <el-col :span="12" :offset="8">
+          <el-button type="primary">确认</el-button>
+          <el-button :style="{marginLeft: '40px'}" @click="handleClose">取消</el-button>
+        </el-col>
+      </el-row>
     </el-dialog>
   </div>
 </template>
@@ -137,27 +143,26 @@ export default {
         value: ''
       },
       dialogTableConfig: {
-        text: {
-          key: 0,
-          field: 'text',
+        keyName: {
+          key: 'keyName',
           tooltip: false,
           label: '名称',
           sortable: false,
           showOverflowTooltip: false,
           minWidth: 50
         },
-        total: {
-          key: 1,
-          field: 'total',
+        valueName: {
+          key: 'valueName',
           tooltip: false,
           label: '值',
           sortable: false,
           showOverflowTooltip: false,
-          minWidth: 100
+          minWidth: 50
         }
       },
       tableData: [],
       tableHeight: null,
+      dialogTableHeight: 300,
       tableIndex: true,
       pageConfig: {},
       mergeConfig: null,

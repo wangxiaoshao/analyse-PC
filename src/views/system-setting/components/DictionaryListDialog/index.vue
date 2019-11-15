@@ -1,13 +1,14 @@
 <template>
   <div class="dic-edit-dialog">
     <el-dialog :title="dialogTitle"
+               align="center"
                :fullscreen="false"
                :visible.sync="visible"
                :close-on-click-modal="false"
                :close-on-press-escape="false"
                :show-close="false">
       <div class="dialog-close" @click="closeDialog('form')"><i class="el-icon-close"></i></div>
-        <div :style="{marginLeft: '20px'}">
+        <div>
           <el-form :inline="true" :model="form" class="demo-form-inline" :rules="rules" ref="form">
             <el-form-item label="值" prop="value">
               <el-input v-model="form.value"  type="number" min="1" placeholder="请输入字典值" clearable></el-input>
@@ -47,12 +48,12 @@
           </el-col>
         </el-row>
       <el-row :gutter="20" :style="{marginTop: '20px'}">
-        <el-col :span="12" :offset="8">
+        <el-col :span="12" :offset="6">
           <el-button
             type="primary"
             @click="addAllDic"
             :disabled="foundDicList && foundDicList.length === 0">批量添加</el-button>
-          <el-button @click="closeDialog('form')">取消</el-button>
+          <el-button @click="closeDialog('form')" :style="{marginLeft: '60px'}">取消</el-button>
         </el-col>
       </el-row>
     </el-dialog>
