@@ -93,7 +93,7 @@ export default {
   name: 'index',
   mixins: [ handleBreadcrumb ],
   components: { searchLable },
-  props: {
+  /*props: {
     // TODO breadcrumb可采用组件传参的模式替换路由判断，将配置权交给调用方
     breadcrumb: {
       type: Object,
@@ -104,9 +104,13 @@ export default {
         }
       }
     }
-  },
+  },*/
   data () {
     return {
+      breadcrumb: {
+        name: '单位详情',
+        parent: null
+      },
       openSearchFlag: false,
       addInfo: {
         searchFlag: false,
@@ -163,28 +167,39 @@ export default {
   },
   methods: {
     init () {
-      this.pushBreadcrumb(this.breadcrumb)
       api[urlNames['findViewNodeById']]({
         id: this.$route.params.parentId || this.$route.params.id
       }).then((res) => {
         this.bindId = res.data.bindId
-        // this.ruleForm.department.parentId = res.data.bindId
         this.ruleForm.nodeId = res.data.id
-        if (res.data.nodeType === 2) { // 上级单位
-          this.orgName = res.data.parentName
-          this.ruleForm.department.orgId = res.data.bindId
-        }
-        if (res.data.nodeType === 3) { // 上级部门
-          this.parentDep = res.data.parentName
-          this.ruleForm.department.parentId = res.data.bindId
-        }
-        if (res.data.bindId && res.data.nodeType === 3) {
-          this.getDetail()
+        // this.ruleForm.department.parentId = res.data.bindId
+        if (res.data.bindId) {
+          if (res.data.nodeType === 2) { // 上级单位
+            this.orgName = res.data.name
+            this.ruleForm.department.orgId = res.data.bindId
+          }
+          if (res.data.nodeType === 3) { // 上级部门
+            this.parentDep = res.data.name
+            this.ruleForm.department.parentId = res.data.bindId
+          }
           if (this.$route.name !== 'DepartmentAdd') {
             this.findLabel(res.data.nodeType)
+            this.ruleForm.nodeId = res.data.parentId
+            this.getDetail()
+          } else {
+            this.ruleForm.nodeId = res.data.id
           }
+          this.breadcrumb.parent = {
+            name: 'OrganizationContent',
+            params: {
+              nodeId: this.ruleForm.nodeId
+            },
+            query: {
+              type: 'back'
+            }
+          }
+          this.pushBreadcrumb(this.breadcrumb)
         }
-        this.parentName = res.data.name
         // 设置返回路由，一般用于跳转模块之外的链接
       }, (error) => {
         this.$message.error(`没有内容`)
@@ -196,15 +211,14 @@ export default {
       }
       this.loading = true
       api[urlNames['findDepartmentById']](data).then((res) => {
-        console.log('------', res.data)
         this.loading = false
         if (this.$route.name === 'DepartmentAdd') {
           this.orgName = res.data.orgName
           this.ruleForm.department.orgId = res.data.orgId
         } else {
           this.orgName = res.data.orgName
-         /* this.parentName = res.data.parentName*/
-          /*this.ruleForm.department.parentId = res.data.parentId*/
+          /* this.parentName = res.data.parentName */
+          /* this.ruleForm.department.parentId = res.data.parentId */
           this.ruleForm.department.orgId = res.data.orgId
           this.ruleForm.department.id = res.data.id
           this.ruleForm.department.phone = res.data.phone
@@ -254,19 +268,11 @@ export default {
         } else {
           this.breadcrumb.name = '添加部门'
         }
-        this.breadcrumb.parent = {
-          name: 'OrganizationContent',
-          params: {
-            nodeId: this.$route.params.parentId || this.$route.params.id
-          },
-          query: {
-            type: 'back'
-          }
-        }
       } else {
         this.isShowEditFlag = false
         this.disabledFlag = true
         this.breadcrumbTitle = '部门详情'
+        this.pushBreadcrumb(this.breadcrumb)
       }
     },
     getSystemType (el) {

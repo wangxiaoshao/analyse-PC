@@ -119,7 +119,7 @@ export default {
   name: 'index',
   mixins: [ handleBreadcrumb, dicOption],
   components: { areaList, searchLable },
-  props: {
+  /* props: {
     // TODO breadcrumb可采用组件传参的模式替换路由判断，将配置权交给调用方
     breadcrumb: {
       type: Object,
@@ -130,9 +130,13 @@ export default {
         }
       }
     }
-  },
+  }, */
   data () {
     return {
+      breadcrumb: {
+        name: '单位详情',
+        parent: null
+      },
       openSearchFlag: false,
       addInfo: {
         searchFlag: false,
@@ -141,7 +145,6 @@ export default {
       loading: false,
       isShowEditFlag: true,
       disabledFlag: false,
-      breadcrumbTitle: '添加节点',
       submitHtml: '保存',
       oldFrom: {},
       tagKeyWord: '',
@@ -196,32 +199,33 @@ export default {
   },
   methods: {
     init () {
-      this.pushBreadcrumb(this.breadcrumb)
       api[urlNames['findViewNodeById']]({
         id: this.$route.params.parentId || this.$route.params.id
       }).then((res) => {
-        this.bindId = res.data.bindId
-        this.ruleForm.organization.parentId = res.data.bindId
-        this.ruleForm.nodeId = res.data.id
         if (res.data.bindId && res.data.nodeType === 2) {
+          this.parentName = res.data.name
+          this.bindId = res.data.bindId
+          this.ruleForm.organization.parentId = res.data.bindId
           this.getDetail()
           if (this.$route.name !== 'UnitAdd') {
+            this.ruleForm.nodeId = res.data.parentId
             this.findLabel(res.data.nodeType)
+          } else {
+            this.ruleForm.parentId = res.data.id
+          }
+        } else {
+          this.ruleForm.organization.parentId = res.data.id
+        }
+        this.breadcrumb.parent = {
+          name: 'OrganizationContent',
+          params: {
+            nodeId: this.ruleForm.nodeId
+          },
+          query: {
+            type: 'back'
           }
         }
-        this.parentName = res.data.name
-        this.pushBreadcrumb({
-          name: this.breadcrumbTitle,
-          parent: {
-            name: 'OrganizationContent',
-            params: {
-              nodeId: this.$route.params.parentId || this.$route.params.id
-            },
-            query: {
-              type: 'back'
-            }
-          }
-        })
+        this.pushBreadcrumb(this.breadcrumb)
       }, (error) => {
         this.$message.error(`没有内容`)
       })
@@ -291,19 +295,11 @@ export default {
         } else {
           this.breadcrumb.name = '添加单位'
         }
-        this.breadcrumb.parent = {
-          name: 'OrganizationContent',
-          params: {
-            nodeId: this.$route.params.parentId || this.$route.params.id
-          },
-          query: {
-            type: 'back'
-          }
-        }
       } else {
         this.isShowEditFlag = false
         this.disabledFlag = true
-        this.breadcrumbTitle = '单位详情'
+        this.breadcrumb.name = '单位详情'
+        this.pushBreadcrumb(this.breadcrumb)
       }
     },
     getSystemType (el) {

@@ -51,9 +51,6 @@ export default {
     }
   },
   props: ['defaultNodeId'],
-  created () {
-    this.debouncedSearch = this.debounce(this.getResult, 600)
-  },
   methods: {
     getType (el) {
       this.type = el
