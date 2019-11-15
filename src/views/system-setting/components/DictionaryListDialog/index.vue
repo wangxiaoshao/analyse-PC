@@ -111,7 +111,7 @@ export default {
       } else {
         return '创建'
       }
-    },
+    }
   },
   methods: {
     getDicByTypeList () {
@@ -161,7 +161,7 @@ export default {
     closeDialog (form) {
       this.$refs[form].resetFields()
       this.$emit('close', 'dicDialogVisible')
-    },
+    }
   }
 }
 </script>
