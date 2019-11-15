@@ -54,7 +54,7 @@ export default [
       },
       // 部门详情
       {
-        path: '/departmentDetail/:id',
+        path: 'departmentDetail/:id',
         name: 'QueryDepartmentDetail',
         component: QueryDepartmentDetail
       }

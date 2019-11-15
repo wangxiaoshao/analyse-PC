@@ -12,7 +12,7 @@
                 :operateWidth="operateWidth"
                 :operate="operate"
                 :tableData="tableData">
-      <template slot="appendPersonalColumn">
+      <template>
         <el-table-column label="申请原因" align="center">
           <template>
             <span>{{reason}}</span>
@@ -70,20 +70,8 @@ export default {
       isShowSuggest: false,
       auditResult: false,
       tableHeight: null,
-      mergeConfig: [
-        {
-          ele: 'col',
-          eleIndex: 4,
-          rowspan: 4,
-          colspan: 1
-        },
-        {
-          ele: 'col',
-          eleIndex: 3,
-          rowspan: 4,
-          colspan: 1
-        }
-      ],
+      entityId: null,
+      mergeConfig: null,
       operateWidth: 100,
       tableCheckbox: true,
       operate: false
@@ -114,11 +102,26 @@ export default {
     getGrid () {
       api[urlNames['getAuditDetailsById']]({
         id: this.$route.params.id,
-        type: this.$route.params.type
+        type: this.$route.params.type,
       }).then((res) => {
         this.reason = res.data.reason
         this.message = res.data.message
         this.tableData = res.data.changeFields
+        this.entityId = res.data.entityId
+        this.mergeConfig = [
+          {
+            ele: 'col',
+            eleIndex: 4,
+            rowspan: this.tableData.length,
+            colspan: 1
+          },
+          {
+            ele: 'col',
+            eleIndex: 3,
+            rowspan: this.tableData.length,
+            colspan: 1
+          }
+        ]
       }, () => {
         this.gridData = []
       })
@@ -142,7 +145,7 @@ export default {
     jumpDetailPage (type) { // type = 1 || 3部门 || 4单位
       let prePath = this.$route.meta.prePath,
         path = ''
-      switch (type) {
+      switch (+type) {
         case 1:
           path = prePath + '/PersonDetail'
           break
@@ -155,8 +158,9 @@ export default {
         default :
           break
       }
+      console.log(this.entityId)
       this.$router.push({
-        path: `/${path}/${this.$route.params.id}`
+        path: `/${path}/${this.entityId}`
       })
     }
   }

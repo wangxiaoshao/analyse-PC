@@ -1,7 +1,7 @@
 <template>
   <div class="create-view">
     <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane :disabled="!createBasic" label="视图基本信息" name="first">
+      <el-tab-pane :disabled="createBasic" label="视图基本信息" name="first">
         <div class="from">
           <el-form ref="form" :rules="rules" :model="ViewFrom" label-width="100px">
             <el-row>
@@ -15,7 +15,7 @@
               <el-col :span="12">
                 <div class="grid-content bg-purple-light">
                   <el-form-item label="视图管理员">
-                    <el-select v-model="ViewFrom.roleBindUserIds" multiple placeholder="请选择">
+                    <el-select v-model="ViewFrom.roleBindUserIds" multiple collapse-tags placeholder="请选择">
                       <el-option
                         v-for="item in adminList"
                         :key="item.uid"
@@ -30,27 +30,27 @@
             <el-row>
               <el-col :span="12">
                 <div class="grid-content bg-purple">
-                  <el-form-item label="备注">
-                    <el-input v-model="ViewFrom.remark"></el-input>
-                  </el-form-item>
-                </div>
-              </el-col>
-              <el-col :span="12">
-                <div class="grid-content bg-purple-light">
                   <el-form-item label="启用状态">
                     <el-switch v-model="ViewFrom.removed"></el-switch>
                   </el-form-item>
                 </div>
               </el-col>
+              <el-col :span="12">
+                <div class="grid-content bg-purple-light">
+<!--                暂时隐藏  <el-form-item label="备注">-->
+<!--                    <el-input v-model="ViewFrom.remark"></el-input>-->
+<!--                  </el-form-item>-->
+                </div>
+              </el-col>
             </el-row>
-            <el-form-item>
+            <el-form-item align="center">
               <el-button type="primary" @click="createView">保存视图基本信息</el-button>
               <el-button @click="backToList">取消</el-button>
             </el-form-item>
           </el-form>
         </div>
       </el-tab-pane>
-      <el-tab-pane :disabled="createBasic" label="视图组织机构" name="second">
+      <el-tab-pane :disabled="createInfo" label="视图组织机构" name="second">
         <div class="from">
           <el-form ref="form" :model="form" label-width="100px">
             <el-row :gutter="10">
@@ -74,6 +74,12 @@
                         @node-drag-over="handleDragOver"
                         :expand-on-click-node="false"
                         :default-checked-keys="checkedKeys">
+                          <span class="custom-tree-node" slot-scope="{ node, data }">
+                            <i class="imenu-icon fa fa-sitemap" v-if="data.nodeType === 1"></i>
+                            <i class="imenu-icon fa fa-building-o" v-if="data.nodeType === 2"></i>
+                            <i class="imenu-icon fa fa-institution" v-if="data.nodeType === 3"></i>
+                            <span>{{node.label}}</span>
+                          </span>
                       </el-tree>
                     </div>
                   </el-form-item>
@@ -81,31 +87,37 @@
               </el-col>
               <el-col :span="7" :offset="2">
                 <div class="grid-content bg-purple-light select-org-panel">
-                    <div class="select-btn">
-                      <p style="font-size: 14px;color: #606266;padding: 0 10px;">新机构视图</p>
-<!--                      <p><el-button type="primary" size="small">新机构视图</el-button></p>-->
-<!--                      <p><el-button size="small">旧机构视图</el-button></p>-->
-                    </div>
-                    <div class="select-org">
-                      <el-tree
-                        :data="viewNodeTree"
-                        show-checkbox
-                        node-key="id"
-                        draggable
-                        lazy
-                        :load="loadOrgNode"
-                        :props="defaultProps"
-                        :check-strictly="true"
-                        @node-drag-end="nodeDragEnd"
-                        :expand-on-click-node="false"
-                        :default-checked-keys="checkedKeys">
-                      </el-tree>
-                    </div>
+                  <div class="select-btn">
+                    <p style="font-size: 14px;color: #606266;padding: 0 10px;">新机构视图</p>
+                    <!--                      <p><el-button type="primary" size="small">新机构视图</el-button></p>-->
+                    <!--                      <p><el-button size="small">旧机构视图</el-button></p>-->
+                  </div>
+                  <div class="select-org">
+                    <el-tree
+                      :data="viewNodeTree"
+                      show-checkbox
+                      node-key="id"
+                      draggable
+                      lazy
+                      :load="loadOrgNode"
+                      :props="defaultProps"
+                      :check-strictly="true"
+                      @node-drag-end="nodeDragEnd"
+                      :expand-on-click-node="false"
+                      :default-checked-keys="checkedKeys">
+                        <span class="custom-tree-node" slot-scope="{ node, data }">
+                            <i class="imenu-icon fa fa-sitemap" v-if="data.nodeType === 1"></i>
+                            <i class="imenu-icon fa fa-building-o" v-if="data.nodeType === 2"></i>
+                            <i class="imenu-icon fa fa-institution" v-if="data.nodeType === 3"></i>
+                            <span>{{node.label}}</span>
+                         </span>
+                    </el-tree>
+                  </div>
                 </div>
               </el-col>
             </el-row>
             <el-form-item>
-              <el-button type="primary" @click="synchronizedNode">保存视图</el-button>
+              <el-button style="margin-left: 267px" type="primary" @click="synchronizedNode">保存视图</el-button>
               <el-button @click="backToList">取消</el-button>
             </el-form-item>
           </el-form>
@@ -119,33 +131,21 @@
 import handleTable from '@src/mixins/handle-table'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
 import { api, urlNames } from '@src/api'
+
 export default {
   name: 'CreateView',
   mixins: [handleTable, handleBreadcrumb],
   data () {
     return {
       activeName: 'first',
-      adminList: [{
-        uid: '156156516',
-        type: '选项1',
-        name: '黄金糕'
-      }, {
-        uid: '1561256516',
-        type: '选项1',
-        name: '黄金糕2'
-      },
-      {
-        uid: '1561536516',
-        type: '选项1',
-        name: '黄金糕1'
-      }],
+      adminList: [],
       ViewFrom: {
         name: '',
         remark: '',
         removed: true,
         roleBindUserIds: []
       },
-      returnViewId: null, // 228770923203788800
+      returnViewId: this.$route.params.id, // 228770923203788800
       form: {},
       rules: {
         name: [
@@ -171,7 +171,8 @@ export default {
         nodeType: null,
         bindId: null
       },
-      createBasic: true, // tab切换禁用
+      createBasic: false, // tab切换禁用
+      createInfo: true,
       for: {
         id: '',
         parentId: '',
@@ -196,8 +197,10 @@ export default {
   created () {
     this.findViewAdmin()
     this.findNodeTree('-1')
-    if (this.$route.params.id !== undefined) {
-      this.findNodeDraftList(this.$route.params.id)
+    if (this.$route.params.id !== '0') {
+      this.findNodeDraftList('-1')
+      this.findViewById(this.$route.params.id)
+      this.createInfo = false
     }
   },
   methods: {
@@ -211,16 +214,21 @@ export default {
         this.$message.warning('请选择视图管理员')
         return false
       }
+      if (this.returnViewId === '0') {
+        this.returnViewId = ''
+      }
       api[urlNames['createView']]({
+        id: this.returnViewId,
         name: this.ViewFrom.name,
-        remark: this.ViewFrom.remark,
+        remark: '暂时隐藏',
         removed: this.ViewFrom.removed,
         roleBindUserId: this.ViewFrom.roleBindUserIds
       }).then((res) => {
         if (res.status === 0) {
           this.returnViewId = res.data
           this.activeName = 'second'
-          this.createBasic = false
+          this.createBasic = true
+          this.createInfo = false
           this.$message.success('基本信息保存成功')
           console.log(res)
         }
@@ -230,7 +238,7 @@ export default {
     findViewAdmin () {
       api[urlNames['findViewAdmin']]({}).then((res) => {
         if (res.status === 0) {
-          // this.adminList = res.data
+          this.adminList = res.data
         }
       })
     },
@@ -245,6 +253,9 @@ export default {
     },
     // 创建视图草稿
     createNodeDraft () {
+      if (this.returnViewId === 0) {
+        this.returnViewId = ''
+      }
       api[urlNames['createNodeDraft']]({
         syncChild: this.syncChild,
         viewId: this.returnViewId,
@@ -310,7 +321,8 @@ export default {
       this.viewNodeSonTree = []
     },
     // tab点击切换
-    handleClick () {},
+    handleClick () {
+    },
     // 设置tree选中
     setCheckedKeys () {
       // setChecked
@@ -360,6 +372,7 @@ export default {
       }).then((res) => {
         if (res.status === 0) {
           this.createBasic = true
+          this.backToList()
         }
       })
     },
@@ -419,6 +432,19 @@ export default {
     // 返回列表
     backToList () {
       this.$router.push({ path: '/view-management' })
+    },
+    // 获取试图详情
+    findViewById (id) {
+      api[urlNames['findViewById']]({
+        id: id
+      }).then((res) => {
+        this.ViewFrom.name = res.data.name
+        this.ViewFrom.removed = res.data.state
+        this.ViewFrom.roleBindUserIds = []
+        res.data.list.forEach(item => {
+          this.ViewFrom.roleBindUserIds.push(item.uid)
+        })
+      })
     }
   }
 }

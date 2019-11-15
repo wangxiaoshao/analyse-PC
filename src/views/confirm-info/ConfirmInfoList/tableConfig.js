@@ -24,17 +24,6 @@ const tableConfig = {
     showOverflowTooltip: false,
     minWidth: 100
   },
-  state: {
-    key: 'state',
-    tooltip: false,
-    label: '确认状态',
-    sortable: false,
-    formatter: ({ row, column, cellValue }) => {
-      return cellValue === 1 ? '已确认' : '待确认'
-    },
-    showOverflowTooltip: false,
-    minWidth: 100
-  },
   confirmTime: {
     key: 'confirmTime',
     tooltip: false,

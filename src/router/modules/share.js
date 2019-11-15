@@ -22,7 +22,7 @@ export default [
         component: ViewManagement
       },
       {
-        path: '/view-management/create-view',
+        path: '/view-management/create-view/:id',
         name: 'CreateView',
         component: CreateView
       },

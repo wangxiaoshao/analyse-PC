@@ -6,16 +6,14 @@ const lookPersonPermission = () => import('@src/views/role-manage/look-person-pe
 const DictionaryManage = () => import('@src/views/system-setting/dictionary-manage/index.vue')
 // 系统设置
 const SystemSetting = () => import('@src/views/system-setting/index.vue')
-// 权限配置
-const RightsManagement = () => import('@src/views/shared/rights-management/index.vue')
 // 参数配置
 const ParameterSetting = () => import('@src/views/system-setting/parameter-setting/index.vue')
 export default [
   // 权限管理
   {
-    path: '/rights-management',
-    name: 'RightsManagement',
-    component: RightsManagement
+    path: '/parameter-setting',
+    name: 'ParameterSettings',
+    component: ParameterSetting
   },
   // 角色管理
   {

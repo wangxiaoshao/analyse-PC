@@ -75,6 +75,9 @@ export default {
       } else {
         api[urlNames['renameGroup']]({
           id: this.groupFrom.id,
+          ownerType: this.groupFrom.ownerType, // 1用户、2部门、3单位
+          name: this.groupFrom.name,
+          description: this.groupFrom.description,
           removed: this.groupFrom.removed
         }).then((res) => {
           if (res.status === 0) {

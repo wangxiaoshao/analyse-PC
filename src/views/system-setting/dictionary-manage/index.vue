@@ -12,8 +12,12 @@
                 :operateWidth="operateWidth"
                 :operate="operate"
                 :tableData="tableData">
-      <template slot-scope="{slotScope}" slot="status">
-      </template>
+      <el-table-column label="启用状态" align="center">
+        <template slot-scope="scope">
+          <span v-show="scope.row.remove === 1" class="text-green">启用</span>
+          <span v-show="scope.row.remove !== 1" class="text-red">禁用</span>
+        </template>
+      </el-table-column>
       <template slot-scope="{slotScope}" slot="operate">
         <el-button size="mini" type="text" @click="openDialog(slotScope.row)">添加</el-button>
       </template>

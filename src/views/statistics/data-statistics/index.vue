@@ -67,17 +67,17 @@
         <!--<div :style="{width: '100%', height: '500px', backgroundColor: 'red'}"></div>-->
         <el-row>
           <el-col :span="24">
-            <div class="template-btn unit-query" @click="jumpQuery('Unit')">单位查询</div>
+            <div class="template-btn unit-query" @click="jumpQuery('unit')">单位查询</div>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
-            <div class="template-btn depart-query" @click="jumpQuery('Department')">部门查询</div>
+            <div class="template-btn depart-query" @click="jumpQuery('department')">部门查询</div>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
-            <div class="template-btn member-query" @click="jumpQuery('Member')">人员查询</div>
+            <div class="template-btn member-query" @click="jumpQuery('member')">人员查询</div>
           </el-col>
         </el-row>
       </el-col>
@@ -93,8 +93,8 @@
           v-for="(activity, index) in newsList"
           :key="index"
           placement="top"
-          :timestamp="activity.timestamp">
-          {{activity.content}}
+          :timestamp="activity.actionTime">
+            {{activity.userName}}{{activity.description}}
           </el-timeline-item>
           </el-timeline>
           </div>
@@ -128,7 +128,7 @@ export default {
         type: 1
       },
       activeName: 'unit',
-      countData: []
+      countData: [],
     }
   },
   computed: {
@@ -167,7 +167,7 @@ export default {
     handleClick () {},
     jumpQuery (routerParams) { // routerParams === Unit|Department|Member
       this.$router.push({
-        name: routerParams + 'Query'
+        path: routerParams + '-query'
       })
     }
   }

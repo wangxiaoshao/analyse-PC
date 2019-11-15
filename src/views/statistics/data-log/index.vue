@@ -27,6 +27,7 @@
             :format="format"
             :value-format="format"
             :placeholder="'选择'+value"
+            :picker-options="pickerOptions"
             @change="dateChange">
           </el-date-picker>
         </div>
@@ -45,8 +46,8 @@
               v-for="(activity, index) in newsList"
               :key="index"
               placement="top"
-              :timestamp="activity.timestamp">
-              {{activity.content}}
+              :timestamp="activity.actionTime">
+              {{activity.userName}}{{activity.description}}
             </el-timeline-item>
           </el-timeline>
         </div>
@@ -92,6 +93,12 @@ export default {
       inputValue: '',
       dateType: '',
       format: '',
+      pickerOptions: {
+        disabledDate (time) {
+          return time.getTime() > Date.now() - 8.64e6
+        },
+        shortcuts: null
+      },
       value: ''
     }
   },
@@ -109,7 +116,6 @@ export default {
       this.SET_APPLICATION_PAGE({})
       this.SET_APPLICATION_SEARCH_QUERY({})
     }
-    this.initQuery()
     this.getGrid(this.date)
   },
   methods: {
@@ -139,36 +145,12 @@ export default {
         this.getGrid(val, type)
       }
     },
-    initQuery () {
-      let keys = Object.assign({}, this.$route.query)
-      let len = keys.length
-      for (let i = 0; i < len; i++) {
-        let key = keys[i]
-        let value = this.$route.query[key]
-        if (this.page[key] !== undefined) {
-          this.page[key] = value
-        } else if (this.searchQuery[key] !== undefined) {
-          this.searchQuery[key] = value
-        }
-      }
-    },
     getGrid (date, type) {
       let data = {
         date: date,
         type: type || 0, // 后端需要传输的数据类型 月份type：4 || 天：0
         page: this.page.current,
         limit: this.page.limit
-      }
-      let keys = Object.keys(this.searchQuery)
-      let len = keys.length
-      for (let i = 0; i < len; i++) {
-        let key = keys[i]
-        let value = this.searchQuery[key]
-        if (typeof value !== 'number') {
-          if (value) { data[key] = value }
-        } else {
-          data[key] = value
-        }
       }
       api[urlNames['getDataLogList']](data).then((res) => {
         this.newsList = res.data
@@ -178,16 +160,6 @@ export default {
         this.page.total = 0
       })
     },
-    goConfig (row) {
-      this.SET_APPLICATION_PAGE(this.page)
-      this.SET_APPLICATION_SEARCH_QUERY(this.searchQuery)
-      this.$router.push({
-        name: 'ExamineDetails',
-        params: {
-          id: 12
-        }
-      })
-    }
   }
 }
 </script>

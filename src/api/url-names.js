@@ -50,6 +50,7 @@ export default {
   createView: 'createView', // 创建视图
   synchronizedNode: 'synchronizedNode', // 提交视图草稿审核
   findViewAdmin: 'findViewAdmin', // 视图管理员
+  findViewById: 'findViewById', // 试图详情
   getAppList: 'getAppList', // 应用列表
   findNodeDraftList: 'findNodeDraftList', // 获取视图草稿
   updateNodeDraft: 'updateNodeDraft', // 更新视图(排序)草稿

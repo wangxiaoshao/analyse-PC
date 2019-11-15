@@ -35,8 +35,12 @@
                 :operateWidth="operateWidth"
                 :operate="operate"
                 :tableData="tableData">
-      <template slot-scope="{slotScope}" slot="status">
-      </template>
+      <el-table-column label="状态" align="center">
+        <template slot-scope="scope">
+          <span v-show="scope.row.auditState === 1" class="text-green">已确认</span>
+          <span v-show="scope.row.auditState !== 1" class="text-red">待确认</span>
+        </template>
+      </el-table-column>
       <template slot-scope="{slotScope}" slot="operate">
         <el-button size="mini" type="text" @click="goConfig(slotScope.row)">人员明细</el-button>
       </template>
@@ -60,11 +64,17 @@
       :before-close="handleClose">
       <!--表格-->
       <site-table :tableConfig="dialogTableConfig"
-                  :tableHeight="tableHeight"
+                  :tableHeight="dialogTableHeight"
                   :operateWidth="operateWidth"
                   :operate="operate"
                   :tableData="tableData">
       </site-table>
+      <el-row :gutter="20" :style="{marginTop: '20px'}">
+        <el-col :span="12" :offset="8">
+          <el-button type="primary">确认</el-button>
+          <el-button :style="{marginLeft: '40px'}" @click="handleClose">取消</el-button>
+        </el-col>
+      </el-row>
     </el-dialog>
   </div>
 </template>
@@ -133,27 +143,26 @@ export default {
         value: ''
       },
       dialogTableConfig: {
-        text: {
-          key: 0,
-          field: 'text',
+        keyName: {
+          key: 'keyName',
           tooltip: false,
           label: '名称',
           sortable: false,
           showOverflowTooltip: false,
           minWidth: 50
         },
-        total: {
-          key: 1,
-          field: 'total',
+        valueName: {
+          key: 'valueName',
           tooltip: false,
           label: '值',
           sortable: false,
           showOverflowTooltip: false,
-          minWidth: 100
+          minWidth: 50
         }
       },
       tableData: [],
       tableHeight: null,
+      dialogTableHeight: 300,
       tableIndex: true,
       pageConfig: {},
       mergeConfig: null,

@@ -59,7 +59,7 @@ export default {
   },
   methods: {
     closeDialog (form) {
-      // this.$refs[form].resetFields()
+      this.$refs[form].resetFields()
       this.$emit('close')
     },
     passExamine (form) {
@@ -68,17 +68,17 @@ export default {
           let obj = {
             message: this.form.desc,
             auditResult: this.auditResult,
-            id: this.$route.query.id
+            id: this.$route.params.id
           }
           this.$emit('close')
           api[urlNames['saveAudit']](obj).then((res) => {
             if (res && res.message === 'success') {
               // this.$emit('refreshList')
               this.$router.push({
-                name: 'ApprovedDetail',
-                query: {
-                  id: this.$route.query.id,
-                  type: this.$route.query.type
+                path: '/approved',
+                params: {
+                  id: this.$route.params.id,
+                  type: this.$route.params.type
                 }
               })
             }
