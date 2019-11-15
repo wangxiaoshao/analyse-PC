@@ -30,11 +30,15 @@
                 :operateWidth="operateWidth"
                 :operate="operate"
                 :tableData="tableData">
-      <template slot-scope="{slotScope}" slot="status">
+      <el-table-column label="状态" align="center">
+        <template slot-scope="scope">
+          <span v-show="scope.row.auditState === 1" class="text-green">已审核</span>
+          <span v-show="scope.row.auditState !== 1" class="text-red">待审核</span>
+        </template>
+      </el-table-column>
+      <template slot-scope="{slotScope}" slot="operate">
+        <el-button size="mini" type="text" @click="goDetail(slotScope.row)">去审核</el-button>
       </template>
-          <template slot-scope="{slotScope}" slot="operate">
-            <el-button size="mini" type="text" @click="goConfig(slotScope.row)">去审核</el-button>
-          </template>
     </site-table>
     <!--分页-->
     <el-pagination
@@ -171,7 +175,8 @@ export default {
         this.page.total = 0
       })
     },
-    goConfig (row) {
+    goDetail (row) {
+      console.log(row)
       this.SET_APPLICATION_PAGE(this.page)
       this.SET_EXAMINE_SEARCH_QUERY(this.searchQuery)
       this.SET_EXAMINE_TABLEDATA(this.tableData) // 存储当前页面table的数据列表

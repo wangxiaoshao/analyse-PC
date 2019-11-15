@@ -14,7 +14,6 @@ export default {
   [urlNames.addDictionary]: {
     type: 'post',
     url: '/api/jg_manage/system/addDictItem',
-    keepOriginResponse: true,
     serve: 'organizationManagePC',
     mock: 'system-setting/addDictionary.json',
     headers: {

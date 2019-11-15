@@ -46,6 +46,7 @@ export default {
   [urlNames.saveAudit]: { // 保存审批
     type: 'post',
     url: '/api/jg_manage/audit/saveAudit',
+    showLoading: true,
     keepOriginResponse: true,
     serve: 'organizationManagePC',
     mock: 'examine/saveAudit.json'

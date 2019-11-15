@@ -147,7 +147,7 @@ export default {
     getGrid () {
       let data = {
         page: this.page.current,
-        pageSize: this.page.limit
+        limit: this.page.limit
       }
       this.pageConfig = data
       let keys = Object.keys(this.searchQuery)
@@ -176,7 +176,7 @@ export default {
       this.SET_EXAMINE_DETAIL(row) // ExamineDetails页面需要用到的当前列表中点击项的数据
       this.SET_EXAMINE_BACKPATH(this.$route.name) // ExamineDetails页面需要用到的当前列表中点击项的数据
       this.$router.push({
-        path: `/${this.$route.meta.prePath}/personDetail/${row.id}`
+        path: `/${this.$route.meta.prePath}/personDetail/${row.uid}`
       })
     }
   }

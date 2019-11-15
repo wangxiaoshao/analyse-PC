@@ -23,17 +23,6 @@ const tableConfig = {
     sortable: false,
     showOverflowTooltip: false,
     minWidth: 100
-  },
-  removed: {
-    key: 'removed',
-    tooltip: false,
-    label: '启用状态',
-    sortable: false,
-    formatter: ({ cellValue }) => {
-      return cellValue === 1 ? '启用' : '禁用'
-    },
-    showOverflowTooltip: false,
-    minWidth: 100
   }
 }
 export default tableConfig

@@ -26,16 +26,6 @@ const tableConfig = {
     sortable: false,
     showOverflowTooltip: true,
     minWidth: 100
-  },
-  state: {
-    key: 'state',
-    label: '审核状态',
-    formatter: (row, column, cellValue) => {
-      return cellValue === 1 ? '已审核' : '待审核'
-    },
-    sortable: false,
-    showOverflowTooltip: false,
-    minWidth: 100
   }
 }
 export default tableConfig
