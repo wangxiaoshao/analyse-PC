@@ -194,7 +194,7 @@ export default {
       api[urlNames['findViewNodeById']]({
         id: this.$route.params.parentId || this.$route.params.id
       }).then((res) => {
-        this.parentName = res.data.name
+        this.getArea(res.data.bindId)
         if (res.data.bindId) {
           this.parentName = res.data.name
           this.bindId = res.data.bindId
@@ -258,6 +258,15 @@ export default {
           this.tagsName.push(item.split('|')[1])
           this.ruleForm.labelId.push(item.split('|')[0])
         })
+      }, (error) => {
+      })
+    },
+    // 获取区域
+    getArea (orgId) {
+      api[urlNames['findOrgAreaList']]({
+        orgId: orgId
+      }).then((res) => {
+        console.log(res.data)
       }, (error) => {
       })
     },

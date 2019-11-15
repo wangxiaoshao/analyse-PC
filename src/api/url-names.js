@@ -144,5 +144,9 @@ export default {
   findRoleList: 'findRoleList',
   getRoleBindUserList: 'getRoleBindUserList',
   saveRoleBindUser: 'saveRoleBindUser',
-  findUserAccountByUid: 'findUserAccountByUid'
+  findUserAccountByUid: 'findUserAccountByUid',
+  // 查询单位下的区域
+  findOrgAreaList: 'findOrgAreaList',
+  // 查询用户可用配置
+  option: 'option'
 }

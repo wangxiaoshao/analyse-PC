@@ -21,6 +21,14 @@ export default {
     serve: 'organizationManagePC',
     mock: '/getUserInfo.json' // development模式下，本地mock数据
   },
+  [urlNames.option]: {
+    type: 'get',
+    url: '/api/jg_manage/option',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    showLoading: false, // 该请求发送时，是否显示全局loading
+    serve: 'organizationManagePC',
+    mock: '/option.json' // development模式下，本地mock数据
+  },
   [urlNames.getTree]: {
     type: 'get',
     url: '/api/jg_manage/viewNode/findNodeTree',
