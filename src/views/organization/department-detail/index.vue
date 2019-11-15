@@ -25,7 +25,7 @@
           <el-form-item label=" 上级部门" prop="parentDep">
             <el-input v-model="parentDep" :disabled="true"></el-input>
           </el-form-item>
-          <el-form-item label=" 启用状态" prop="removed">
+          <el-form-item label=" 启用状态" prop="department.removed">
             <el-switch v-model="ruleForm.department.removed"></el-switch>
           </el-form-item>
         </el-col>
@@ -35,7 +35,7 @@
           </el-form-item>-->
           <el-form-item
             label="部门电话"
-            prop="phone"
+            prop="department.phone"
           >
             <el-input v-model="ruleForm.department.phone"></el-input>
           </el-form-item>
@@ -45,7 +45,7 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-form-item label="单位标签">
+        <el-form-item label="单位标签" prop="labelId">
           <el-tag
             v-for="(tag,index) in tagsName"
             :key="tag"
@@ -64,7 +64,7 @@
       </el-menu>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="单位介绍" prop="duty">
+          <el-form-item label="单位介绍" prop="department.duty">
             <el-input type="textarea" v-model="ruleForm.department.duty"></el-input>
           </el-form-item>
           <el-form-item label="申请原因" prop="reason">
@@ -72,7 +72,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="单位职责" prop="description">
+          <el-form-item label="单位职责" prop="department.description">
             <el-input type="textarea" v-model="ruleForm.department.description"></el-input>
           </el-form-item>
         </el-col>
@@ -93,7 +93,7 @@ export default {
   name: 'index',
   mixins: [ handleBreadcrumb ],
   components: { searchLable },
-  /*props: {
+  /* props: {
     // TODO breadcrumb可采用组件传参的模式替换路由判断，将配置权交给调用方
     breadcrumb: {
       type: Object,
@@ -104,11 +104,11 @@ export default {
         }
       }
     }
-  },*/
+  }, */
   data () {
     return {
       breadcrumb: {
-        name: '单位详情',
+        name: '部门详情',
         parent: null
       },
       openSearchFlag: false,
@@ -173,34 +173,20 @@ export default {
         this.bindId = res.data.bindId
         this.ruleForm.nodeId = res.data.id
         // this.ruleForm.department.parentId = res.data.bindId
+        this.getDetail()
         if (res.data.bindId) {
-          if (res.data.nodeType === 2) { // 上级单位
+         /* if (res.data.nodeType === 2) { // 上级单位
             this.orgName = res.data.name
             this.ruleForm.department.orgId = res.data.bindId
-          }
+          }*/
           if (res.data.nodeType === 3) { // 上级部门
             this.parentDep = res.data.name
             this.ruleForm.department.parentId = res.data.bindId
           }
           if (this.$route.name !== 'DepartmentAdd') {
             this.findLabel(res.data.nodeType)
-            this.ruleForm.nodeId = res.data.parentId
-            this.getDetail()
-          } else {
-            this.ruleForm.nodeId = res.data.id
           }
-          this.breadcrumb.parent = {
-            name: 'OrganizationContent',
-            params: {
-              nodeId: this.ruleForm.nodeId
-            },
-            query: {
-              type: 'back'
-            }
-          }
-          this.pushBreadcrumb(this.breadcrumb)
         }
-        // 设置返回路由，一般用于跳转模块之外的链接
       }, (error) => {
         this.$message.error(`没有内容`)
       })
@@ -217,6 +203,7 @@ export default {
           this.ruleForm.department.orgId = res.data.orgId
         } else {
           this.orgName = res.data.orgName
+          this.ruleForm.department.orgId = res.data.orgId
           /* this.parentName = res.data.parentName */
           /* this.ruleForm.department.parentId = res.data.parentId */
           this.ruleForm.department.orgId = res.data.orgId
@@ -272,8 +259,8 @@ export default {
         this.isShowEditFlag = false
         this.disabledFlag = true
         this.breadcrumbTitle = '部门详情'
-        this.pushBreadcrumb(this.breadcrumb)
       }
+      this.pushBreadcrumb(this.breadcrumb)
     },
     getSystemType (el) {
       this.ruleForm.department.systemType = el
@@ -297,11 +284,7 @@ export default {
       })
     },
     goBack () {
-      let breadcrumb = [...this.app.pageBreadcrumb]
-      let currentPage = breadcrumb[breadcrumb.length - 1]
-      breadcrumb.splice(-1, 1)
-      this.SET_PAGE_BREADCRUMB(breadcrumb)
-      this.$router.push(currentPage.parent)
+      this.$router.go(-1)
     }
   }
 }

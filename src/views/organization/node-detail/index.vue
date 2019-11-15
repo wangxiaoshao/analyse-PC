@@ -13,8 +13,8 @@
       <el-form-item label="上级节点" prop="parentName">
         <el-input v-model="ruleForm.parentName" :disabled="true"></el-input>
       </el-form-item>
-      <el-form-item label="是否启用" prop="enable">
-        <el-switch v-model="ruleForm.enable"></el-switch>
+      <el-form-item label="是否启用" prop="removed">
+        <el-switch v-model="ruleForm.removed"></el-switch>
       </el-form-item>
       <el-form-item label="申请原因" prop="reason">
         <el-input type="textarea" v-model="ruleForm.reason"></el-input>
@@ -45,7 +45,7 @@ export default {
       ruleForm: {
         reason: '',
         name: '',
-        enable: false,
+        removed: false,
         parentName: '',
         id: '',
         parentId: ''
@@ -132,7 +132,7 @@ export default {
               id: this.$route.params.id,
               parentId: this.ruleForm.parentId || this.$route.params.parentId,
               name: this.ruleForm.name,
-              enable: true
+              removed: this.ruleForm.removed
             }
           }
           api[urlNames['createViewNode']](data).then((res) => {

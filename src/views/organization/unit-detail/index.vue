@@ -15,22 +15,22 @@
       </el-menu>
      <el-row>
        <el-col :span="12">
-         <el-form-item label="单位名称" prop="name">
+         <el-form-item label="单位名称" prop="organization.name" :rules="[{ required: true, message: '名称不能为空'}]">
            <el-input v-model="ruleForm.organization.name"></el-input>
          </el-form-item>
-         <el-form-item label="单位地址" prop="addr">
+         <el-form-item label="单位地址" prop="organization.address">
            <el-input v-model="ruleForm.organization.address"></el-input>
          </el-form-item>
-         <el-form-item label="传真号码" prop="tel">
+         <el-form-item label="传真号码" prop="organization.fax">
            <el-input v-model="ruleForm.organization.fax"></el-input>
          </el-form-item>
-         <el-form-item label="统一单位信用编码" prop="uiniteCode">
+         <el-form-item label="统一单位信用编码" prop="organization.creditId">
            <el-input v-model="ruleForm.organization.creditId" :disabled="true"></el-input>
          </el-form-item>
          <el-form-item label=" 上级单位">
            <el-input v-model="parentName" :disabled="true"></el-input>
          </el-form-item>
-         <el-form-item label="所属类型" prop="type">
+         <el-form-item label="所属类型" prop="organization.type">
            <el-select v-model="ruleForm.organization.type" @change="getType" placeholder="请选择所属类型">
              <el-option
                v-for="item in classOption"
@@ -41,20 +41,21 @@
          </el-form-item>
        </el-col>
        <el-col :span="12">
-         <el-form-item label="单位简称" prop="shortName">
+         <el-form-item label="单位简称" prop="organization.shortName">
            <el-input v-model="ruleForm.organization.shortName"></el-input>
          </el-form-item>
-         <el-form-item label="单位电话" prop="phone">
+         <el-form-item label="单位电话" prop="organization.phone">
            <el-input v-model="ruleForm.organization.phone"></el-input>
          </el-form-item>
-         <el-form-item label="邮编" prop="zipCode">
+         <el-form-item label="邮编" prop="organization.zipCode">
            <el-input v-model="ruleForm.organization.zipCode"></el-input>
          </el-form-item>
-         <el-form-item label="区域">
+         <el-form-item label="所属区域" prop="areaId">
             <!--选择区域组件-->
+           <el-input v-model="ruleForm.areaId" style="display: none"></el-input>
            <area-list @getAreaId="getAreaId"></area-list>
          </el-form-item>
-         <el-form-item label="所属系统" prop="systemType">
+         <el-form-item label="所属系统" prop="organization.systemType">
            <el-select v-model="ruleForm.organization.systemType" @change="getSystemType" placeholder="请选择所属系统">
              <el-option
                v-for="item in applicationOption"
@@ -64,7 +65,7 @@
              ></el-option>
            </el-select>
          </el-form-item>
-         <el-form-item label=" 启用状态" prop="enable">
+         <el-form-item label=" 启用状态" prop="organization.removed" :rules="[{ required: true, message: '请选择启用状态 '}]">
            <el-switch v-model="ruleForm.organization.removed"></el-switch>
          </el-form-item>
        </el-col>
@@ -174,16 +175,7 @@ export default {
           shortName: '',
           fax: ''
         }
-      },
-      systemTypeOption: [
-        {
-          label: '人大',
-          value: 1
-        }, {
-          label: '党委',
-          value: 2
-        }
-      ]
+      }
     }
   },
   computed: {
@@ -202,30 +194,21 @@ export default {
       api[urlNames['findViewNodeById']]({
         id: this.$route.params.parentId || this.$route.params.id
       }).then((res) => {
-        if (res.data.bindId && res.data.nodeType === 2) {
+        this.parentName = res.data.name
+        if (res.data.bindId) {
           this.parentName = res.data.name
           this.bindId = res.data.bindId
           this.ruleForm.organization.parentId = res.data.bindId
-          this.getDetail()
           if (this.$route.name !== 'UnitAdd') {
-            this.ruleForm.nodeId = res.data.parentId
+            this.ruleForm.nodeId = res.data.id
             this.findLabel(res.data.nodeType)
+            this.getDetail()
           } else {
-            this.ruleForm.parentId = res.data.id
+            this.ruleForm.nodeId = res.data.parentId
           }
         } else {
-          this.ruleForm.organization.parentId = res.data.id
+          this.ruleForm.nodeId = res.data.id
         }
-        this.breadcrumb.parent = {
-          name: 'OrganizationContent',
-          params: {
-            nodeId: this.ruleForm.nodeId
-          },
-          query: {
-            type: 'back'
-          }
-        }
-        this.pushBreadcrumb(this.breadcrumb)
       }, (error) => {
         this.$message.error(`没有内容`)
       })
@@ -236,7 +219,6 @@ export default {
       }
       this.loading = true
       api[urlNames['findOrganizationById']](data).then((res) => {
-        console.log('------', res.data)
         this.loading = false
         if (this.$route.name === 'UnitAdd') {
         } else {
@@ -245,7 +227,7 @@ export default {
           this.ruleForm.organization.address = res.data.address
           this.ruleForm.organization.name = res.data.name
           this.ruleForm.organization.address = res.data.address
-          this.ruleForm.nodeId = res.data.parentId
+          // this.ruleForm.nodeId = res.data.parentId
           // this.ruleForm.organization.parentId = ''
           this.ruleForm.organization.id = res.data.id
           this.ruleForm.organization.removed = res.data.removed
@@ -299,8 +281,8 @@ export default {
         this.isShowEditFlag = false
         this.disabledFlag = true
         this.breadcrumb.name = '单位详情'
-        this.pushBreadcrumb(this.breadcrumb)
       }
+      this.pushBreadcrumb(this.breadcrumb)
     },
     getSystemType (el) {
       this.ruleForm.organization.systemType = el
@@ -324,11 +306,7 @@ export default {
       })
     },
     goBack () {
-      let breadcrumb = [...this.app.pageBreadcrumb]
-      let currentPage = breadcrumb[breadcrumb.length - 1]
-      breadcrumb.splice(-1, 1)
-      this.SET_PAGE_BREADCRUMB(breadcrumb)
-      this.$router.push(currentPage.parent)
+      this.$router.go(-1)
     }
   }
 }
