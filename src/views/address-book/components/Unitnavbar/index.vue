@@ -1,6 +1,6 @@
 <template>
   <el-breadcrumb separator="/">
-    <el-breadcrumb-item :to="{ path: '/' }">本单位名称</el-breadcrumb-item>
+    <el-breadcrumb-item :to="{ path: '/' }"></el-breadcrumb-item>
     <el-breadcrumb-item>
       <a href="/">活动管理</a>
     </el-breadcrumb-item>

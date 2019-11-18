@@ -42,7 +42,12 @@ export default {
       api[urlNames['getOrgDepartmentTxlList']]({
         orgId: scope.id
       }).then(res => {
-        // this.departmentList = res.data
+        this.departmentList = res.data
+      //   this.$router.push({
+      //   id: 'id',
+      //   name:'1',
+      //   phone:'1'
+      // })
         console.log(res)
       })
     }
