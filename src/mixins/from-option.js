@@ -12,7 +12,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['app']),
+    ...mapState(['app'])
   },
   methods: {
     ...mapMutations(['DIC_LIST'])

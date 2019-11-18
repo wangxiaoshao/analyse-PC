@@ -164,12 +164,12 @@ export default {
       this.openAddTagFlag = false
       this.tags = this.checkTagGroup
     },
-   /* next () {
+    /* next () {
       this.stepTwoFlag = true
       this.stepOneFlag = false
       this.activeIndex = 1
       this.sendUserFlag = true
-    },*/
+    }, */
     last () {
       this.stepTwoFlag = false
       this.stepOneFlag = true

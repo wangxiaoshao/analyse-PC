@@ -28,7 +28,7 @@ export default {
   props: ['personnel', 'treeList'],
   data () {
     return {
-      tableData: [],
+      tableData: []
     }
   },
   methods: {
@@ -50,7 +50,7 @@ export default {
     treeList (newValue, oldValue) {
       this.getpersonnel(1, 5, newValue.id)
     }
-  },
+  }
 }
 </script>
 <style lang="less">

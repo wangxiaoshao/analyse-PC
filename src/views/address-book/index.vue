@@ -49,7 +49,7 @@
 import handleTable from '@src/mixins/handle-table'
 import addressBookTree from './components/Tree/index'
 import searchChoose from './components/Choose/index'
-import addTreeList from "./components/TreeList"
+import addTreeList from './components/TreeList'
 import Department from './components/Department'
 import { api, urlNames } from '@src/api'
 export default {
@@ -67,10 +67,10 @@ export default {
       activeColor: 1,
 
       thisUnit: {},
-      userId: "1111111111111111111",
+      userId: '1111111111111111111',
       departmentList: [],
       navigation: [],
-      treeList: {},
+      treeList: {}
     }
   },
   computed: {
@@ -82,10 +82,10 @@ export default {
   methods: {
     handleNodeClickTree (event) {
       this.treeList = event
-      this.navigation = [];
+      this.navigation = []
       this.navigation.push({ id: event.id, name: event.name })
       api[urlNames['getOrgDepartmentTxlList']]({
-        orgId: event.id,
+        orgId: event.id
       }).then(res => {
         this.departmentList = res.data
       })
@@ -97,7 +97,7 @@ export default {
      * 切换通讯录
      */
     onChange (e) {
-      this.activeColor = e;
+      this.activeColor = e
       if (e === 1) {
         this.getAddressBook()
       } else if (e === 2) {
@@ -108,9 +108,9 @@ export default {
       api[urlNames['getAddressBookList']]({
         uid: this.userId
       }).then(res => {
-        this.thisUnit = res.data;
+        this.thisUnit = res.data
       })
-    },
+    }
   }
 
 }

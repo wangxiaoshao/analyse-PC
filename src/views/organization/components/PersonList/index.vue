@@ -135,7 +135,7 @@ import handleTable from '@src/mixins/handle-table'
 import { api, urlNames } from '@src/api'
 import organizationEdit from '@src/mixins/organization'
 export default {
-  mixins: [handleTable , organizationEdit],
+  mixins: [handleTable, organizationEdit],
   props: ['contentPage', 'id', 'sortFlag', 'type'],
   components: { CandidateDialog },
   data () {

@@ -186,7 +186,7 @@ export default {
             this.getDetail()
           }
           if (this.$route.name !== 'DepartmentAdd') {
-            this.findLabel(res.data.nodeType)
+            this.findLabel(2)
           }
         }
       }, (error) => {
@@ -228,8 +228,8 @@ export default {
         type: type
       }).then((res) => {
         res.data.forEach((item) => {
-          this.tagsName.push(item.split('|')[1])
-          this.ruleForm.labelId.push(item.split('|')[0])
+          this.tagsName.push(item.name)
+          this.ruleForm.labelId.push(item.id)
         })
       }, (error) => {
       })

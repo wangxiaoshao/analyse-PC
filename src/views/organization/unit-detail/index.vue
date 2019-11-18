@@ -203,7 +203,7 @@ export default {
               this.ruleForm.organization.parentId = res.data.bindId
             }
             this.ruleForm.nodeId = res.data.id
-            this.findLabel(res.data.nodeType)
+            this.findLabel(1)
             this.getDetail()
           } else {
             this.ruleForm.nodeId = res.data.id
@@ -255,8 +255,8 @@ export default {
         type: type
       }).then((res) => {
         res.data.forEach((item) => {
-          this.tagsName.push(item.split('|')[1])
-          this.ruleForm.labelId.push(item.split('|')[0])
+          this.tagsName.push(item.name)
+          this.ruleForm.labelId.push(item.id)
         })
       }, (error) => {
       })
@@ -276,10 +276,13 @@ export default {
     // 获取选中的标签
     getTag (val) {
       console.log('标签', val)
+      let tag = []
       val.forEach((item) => {
         this.tagsName.push(item.split('|')[1])
-        this.ruleForm.labelId.push(item.split('|')[0])
+        tag.push(item.split('|')[0])
+        console.log(item.split('|')[0])
       })
+      this.ruleForm.labelId = tag
     },
     setBreadcrumbTitle () { // 设置面包屑title
       if (this.$route.name === 'UnitEdit' || this.$route.name === 'UnitAdd') {
