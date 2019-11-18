@@ -167,7 +167,7 @@ export default {
   },
   methods: {
     init () {
-      if (this.$route.name === 'DepartmentAdd' && this.$route.name === 'DepartmentEdit') {
+      if (this.$route.name === 'DepartmentAdd' || this.$route.name === 'DepartmentEdit') {
         api[urlNames['findViewNodeById']]({
           id: this.$route.params.parentId || this.$route.params.id
         }).then((res) => {

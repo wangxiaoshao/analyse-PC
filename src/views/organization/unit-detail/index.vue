@@ -191,31 +191,37 @@ export default {
   },
   methods: {
     init () {
-      api[urlNames['findViewNodeById']]({
-        id: this.$route.params.parentId || this.$route.params.id
-      }).then((res) => {
-        this.getArea(res.data.bindId)
-        if (res.data.bindId) {
-          this.parentName = res.data.name
-          this.bindId = res.data.bindId
-          if (this.$route.name !== 'UnitAdd') {
-            if (res.data.bindId === 2) {
+      if (this.$route.name === 'UnitAdd' || this.$route.name === 'UnitEdit') {
+        api[urlNames['findViewNodeById']]({
+          id: this.$route.params.parentId || this.$route.params.id
+        }).then((res) => {
+          this.getArea(res.data.bindId)
+          if (res.data.bindId) {
+            this.parentName = res.data.name
+            this.bindId = res.data.bindId
+            if (this.$route.name !== 'UnitAdd') {
+              if (res.data.bindId === 2) {
+                this.ruleForm.organization.parentId = res.data.bindId
+              }
+              this.ruleForm.nodeId = res.data.id
+              this.findLabel(1)
+              this.getDetail()
+            } else {
+              this.ruleForm.nodeId = res.data.id
               this.ruleForm.organization.parentId = res.data.bindId
             }
-            this.ruleForm.nodeId = res.data.id
-            this.findLabel(1)
-            this.getDetail()
           } else {
+            this.parentName = ''
             this.ruleForm.nodeId = res.data.id
-            this.ruleForm.organization.parentId = res.data.bindId
           }
-        } else {
-          this.parentName = ''
-          this.ruleForm.nodeId = res.data.id
-        }
-      }, (error) => {
-        this.$message.error(`没有内容`)
-      })
+        }, (error) => {
+          this.$message.error(`没有内容`)
+        })
+      } else {
+        this.bindId = this.$route.params.id
+        this.findLabel(1)
+        this.getDetail()
+      }
     },
     getDetail () {
       let data = {
