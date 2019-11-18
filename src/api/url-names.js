@@ -23,6 +23,7 @@ export default {
 
   // 部门查询
   findDepartmentList: 'findDepartmentList',
+  findDepartmentListByPost: 'findDepartmentListByPost',
   // 单位查询
   findOrganizationList: 'findOrganizationList',
   // 人员查询

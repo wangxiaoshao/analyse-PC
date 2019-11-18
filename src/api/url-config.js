@@ -125,6 +125,15 @@ export default {
     mock: '/findLabel.json' // development模式下，本地mock数据地址
   },
 
+  // 标签查询
+  [urlNames.findLabelByType]: {
+    type: 'get',
+    url: '/api/jg_manage/label/findLabelByType',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    serve: 'organizationManagePC',
+    mock: '/findLabelByType.json' // development模式下，本地mock数据
+  },
+
   // 应用管理
   ...application,
   ...examine, // 申请审核

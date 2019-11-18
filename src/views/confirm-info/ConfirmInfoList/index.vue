@@ -9,13 +9,13 @@
         <el-row :gutter="10" type="flex">
           <div class="block">
             <el-date-picker
-              v-model="searchTimeValue"
-              type="month"
-              placeholder="选择月">
+              v-model="searchQuery.timeValue"
+              type="year"
+              :placeholder="defaultTime" @change="selectChange('timeField')">
             </el-date-picker>
           </div>
           <el-col :span="8">
-            <el-select v-model="statusValue" clearable placeholder="选择确认状态">
+            <el-select v-model="searchQuery.statusValue" clearable placeholder="选择确认状态"    @change="selectChange">
               <el-option
                 v-for="item in statusOptions"
                 :key="item.value"
@@ -30,8 +30,6 @@
     <!--表格-->
     <site-table :tableConfig="tableConfig"
                 :tableHeight="tableHeight"
-                :tableIndex="tableIndex"
-                :pageConfig="pageConfig"
                 :operateWidth="operateWidth"
                 :operate="operate"
                 :tableData="tableData">
@@ -80,16 +78,15 @@
 </template>
 
 <script type="text/ecmascript-6">
-import EditDialog from '../../examine-details/components/EditDialog'
-import ConfigDialog from '../../examine-details/components/EditDialog'
 import handleTable from '@src/mixins/handle-table'
 import SiteTable from '@src/components/SiteTable/index.vue'
+import { filters } from '@src/filters'
 import tableConfig from './tableConfig'
 import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
 
 export default {
-  components: { EditDialog, ConfigDialog, SiteTable },
+  components: { SiteTable, filters },
   mixins: [handleTable],
   data () {
     return {
@@ -100,19 +97,17 @@ export default {
       }],
       loading: true,
       statusOptions: [{
-        value: '选项1',
+        value: 1,
         label: '已确认'
       },
       {
-        value: '选项2',
+        value: 0,
         label: '未确认'
-      },
-      {
-        value: '选项3',
-        label: '待确认'
       }],
-      statusValue: '',
-      searchTimeValue: '',
+      searchQuery: {
+        statusValue: '',
+        timeValue: ''
+      },
       list: [],
       areaList: [
         {
@@ -133,15 +128,6 @@ export default {
       ],
       dictionaryNameList: [],
       dialogVisible: false,
-      currentEdit: null,
-      currentParent: {
-        description: '',
-        label: '',
-        remarks: '',
-        orderNum: '',
-        type: '',
-        value: ''
-      },
       dialogTableConfig: {
         keyName: {
           key: 'keyName',
@@ -160,11 +146,10 @@ export default {
           minWidth: 50
         }
       },
+      defaultTime: '',
       tableData: [],
       tableHeight: null,
       dialogTableHeight: 300,
-      tableIndex: true,
-      pageConfig: {},
       mergeConfig: null,
       operateWidth: 100,
       tableCheckbox: true,
@@ -175,9 +160,10 @@ export default {
     ...mapState(['application', 'examine'])
   },
   created () {
+    let datefilters = this.$options.filters['date'](new Date().getTime(), 'yyyy')
+    this.defaultTime = datefilters
     if (this.$route.query.type === 'back') {
       this.page = Object.assign(this.page, this.application.page)
-      this.searchQuery = Object.assign(this.searchQuery, this.examine.searchQuery)
       this.tableData = Object.assign(this.tableData, this.examine.tableData)
     } else {
       this.SET_APPLICATION_PAGE({})
@@ -196,6 +182,12 @@ export default {
       'SET_EXAMINE_DETAIL',
       'SET_EXAMINE_SEARCH_QUERY',
       'SET_EXAMINE_BACKPATH']),
+    selectChange (val) {
+      if (val === 'timeField' && this.searchQuery.timeValue) {
+        this.searchQuery.timeValue = this.$options.filters['date'](this.searchQuery.timeValue.getTime(), 'yyyy')
+      }
+      this.getGrid()
+    },
     getConfirmMemberList () {
       api[urlNames['getConfirmMemberList']]().then((res) => {
         this.tableData = res.data
@@ -235,7 +227,6 @@ export default {
         page: this.page.current,
         limit: this.page.limit
       }
-      this.pageConfig = data
       let keys = Object.keys(this.searchQuery)
       let len = keys.length
       for (let i = 0; i < len; i++) {
