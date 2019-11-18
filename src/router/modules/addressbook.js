@@ -25,12 +25,12 @@ export default [
         name: 'MemberList',
         component: MemberList
       }
-    ],
+    ]
   },
   {
     path: '/department',
     name: 'Department',
     component: Department
-  },
+  }
 
 ]

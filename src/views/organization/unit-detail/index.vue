@@ -191,31 +191,37 @@ export default {
   },
   methods: {
     init () {
-      api[urlNames['findViewNodeById']]({
-        id: this.$route.params.parentId || this.$route.params.id
-      }).then((res) => {
-        this.getArea(res.data.bindId)
-        if (res.data.bindId) {
-          this.parentName = res.data.name
-          this.bindId = res.data.bindId
-          if (this.$route.name !== 'UnitAdd') {
-            if (res.data.bindId === 2) {
+      if (this.$route.name === 'UnitAdd' || this.$route.name === 'UnitEdit') {
+        api[urlNames['findViewNodeById']]({
+          id: this.$route.params.parentId || this.$route.params.id
+        }).then((res) => {
+          this.getArea(res.data.bindId)
+          if (res.data.bindId) {
+            this.parentName = res.data.name
+            this.bindId = res.data.bindId
+            if (this.$route.name !== 'UnitAdd') {
+              if (res.data.bindId === 2) {
+                this.ruleForm.organization.parentId = res.data.bindId
+              }
+              this.ruleForm.nodeId = res.data.id
+              this.findLabel(1)
+              this.getDetail()
+            } else {
+              this.ruleForm.nodeId = res.data.id
               this.ruleForm.organization.parentId = res.data.bindId
             }
-            this.ruleForm.nodeId = res.data.id
-            this.findLabel(res.data.nodeType)
-            this.getDetail()
           } else {
+            this.parentName = ''
             this.ruleForm.nodeId = res.data.id
-            this.ruleForm.organization.parentId = res.data.bindId
           }
-        } else {
-          this.parentName = ''
-          this.ruleForm.nodeId = res.data.id
-        }
-      }, (error) => {
-        this.$message.error(`没有内容`)
-      })
+        }, (error) => {
+          this.$message.error(`没有内容`)
+        })
+      } else {
+        this.bindId = this.$route.params.id
+        this.findLabel(1)
+        this.getDetail()
+      }
     },
     getDetail () {
       let data = {
@@ -255,8 +261,8 @@ export default {
         type: type
       }).then((res) => {
         res.data.forEach((item) => {
-          this.tagsName.push(item.split('|')[1])
-          this.ruleForm.labelId.push(item.split('|')[0])
+          this.tagsName.push(item.name)
+          this.ruleForm.labelId.push(item.id)
         })
       }, (error) => {
       })
@@ -276,10 +282,13 @@ export default {
     // 获取选中的标签
     getTag (val) {
       console.log('标签', val)
+      let tag = []
       val.forEach((item) => {
         this.tagsName.push(item.split('|')[1])
-        this.ruleForm.labelId.push(item.split('|')[0])
+        tag.push(item.split('|')[0])
+        console.log(item.split('|')[0])
       })
+      this.ruleForm.labelId = tag
     },
     setBreadcrumbTitle () { // 设置面包屑title
       if (this.$route.name === 'UnitEdit' || this.$route.name === 'UnitAdd') {

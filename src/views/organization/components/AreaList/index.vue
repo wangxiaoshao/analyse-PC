@@ -5,6 +5,7 @@
       :options="options"
       :props="props"
       v-model="areaValue"
+      style="width: 100%"
     >
     </el-cascader>
   </div>

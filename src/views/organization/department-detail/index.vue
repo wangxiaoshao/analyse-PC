@@ -167,31 +167,37 @@ export default {
   },
   methods: {
     init () {
-      api[urlNames['findViewNodeById']]({
-        id: this.$route.params.parentId || this.$route.params.id
-      }).then((res) => {
-        this.bindId = res.data.bindId
-        this.ruleForm.nodeId = res.data.id
-        if (res.data.bindId) {
-          if (res.data.nodeType === 2) {
-            api[urlNames['findOrganizationById']]({
-              id: res.data.bindId
-            }).then((res) => {
-              this.orgName = res.data.name
-              this.ruleForm.department.orgId = res.data.id
-            })
+      if (this.$route.name === 'DepartmentAdd' || this.$route.name === 'DepartmentEdit') {
+        api[urlNames['findViewNodeById']]({
+          id: this.$route.params.parentId || this.$route.params.id
+        }).then((res) => {
+          this.bindId = res.data.bindId
+          this.ruleForm.nodeId = res.data.id
+          if (res.data.bindId) {
+            if (res.data.nodeType === 2) {
+              api[urlNames['findOrganizationById']]({
+                id: res.data.bindId
+              }).then((res) => {
+                this.orgName = res.data.name
+                this.ruleForm.department.orgId = res.data.id
+              })
+            }
+            if (res.data.nodeType === 3) { // 上级部门
+              this.ruleForm.department.parentId = res.data.bindId
+              this.getDetail()
+            }
+            if (this.$route.name !== 'DepartmentAdd') {
+              this.findLabel(2)
+            }
           }
-          if (res.data.nodeType === 3) { // 上级部门
-            this.ruleForm.department.parentId = res.data.bindId
-            this.getDetail()
-          }
-          if (this.$route.name !== 'DepartmentAdd') {
-            this.findLabel(res.data.nodeType)
-          }
-        }
-      }, (error) => {
-        this.$message.error(`没有内容`)
-      })
+        }, (error) => {
+          this.$message.error(`没有内容`)
+        })
+      } else {
+        this.bindId = this.$route.params.id
+        this.getDetail()
+        this.findLabel(2)
+      }
     },
     getDetail () {
       let data = {
@@ -228,8 +234,8 @@ export default {
         type: type
       }).then((res) => {
         res.data.forEach((item) => {
-          this.tagsName.push(item.split('|')[1])
-          this.ruleForm.labelId.push(item.split('|')[0])
+          this.tagsName.push(item.name)
+          this.ruleForm.labelId.push(item.id)
         })
       }, (error) => {
       })
