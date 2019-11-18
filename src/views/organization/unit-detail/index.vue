@@ -15,22 +15,22 @@
       </el-menu>
      <el-row>
        <el-col :span="12">
-         <el-form-item label="单位名称" prop="name">
+         <el-form-item label="单位名称" prop="organization.name" :rules="[{ required: true, message: '名称不能为空'}]">
            <el-input v-model="ruleForm.organization.name"></el-input>
          </el-form-item>
-         <el-form-item label="单位地址" prop="addr">
+         <el-form-item label="单位地址" prop="organization.address">
            <el-input v-model="ruleForm.organization.address"></el-input>
          </el-form-item>
-         <el-form-item label="传真号码" prop="tel">
+         <el-form-item label="传真号码" prop="organization.fax">
            <el-input v-model="ruleForm.organization.fax"></el-input>
          </el-form-item>
-         <el-form-item label="统一单位信用编码" prop="uiniteCode">
+         <el-form-item label="统一单位信用编码" prop="organization.creditId">
            <el-input v-model="ruleForm.organization.creditId" :disabled="true"></el-input>
          </el-form-item>
          <el-form-item label=" 上级单位">
            <el-input v-model="parentName" :disabled="true"></el-input>
          </el-form-item>
-         <el-form-item label="所属类型" prop="type">
+         <el-form-item label="所属类型" prop="organization.type">
            <el-select v-model="ruleForm.organization.type" @change="getType" placeholder="请选择所属类型">
              <el-option
                v-for="item in classOption"
@@ -41,20 +41,21 @@
          </el-form-item>
        </el-col>
        <el-col :span="12">
-         <el-form-item label="单位简称" prop="shortName">
+         <el-form-item label="单位简称" prop="organization.shortName">
            <el-input v-model="ruleForm.organization.shortName"></el-input>
          </el-form-item>
-         <el-form-item label="单位电话" prop="phone">
+         <el-form-item label="单位电话" prop="organization.phone">
            <el-input v-model="ruleForm.organization.phone"></el-input>
          </el-form-item>
-         <el-form-item label="邮编" prop="zipCode">
+         <el-form-item label="邮编" prop="organization.zipCode">
            <el-input v-model="ruleForm.organization.zipCode"></el-input>
          </el-form-item>
-         <el-form-item label="区域">
+         <el-form-item label="所属区域" prop="areaId">
             <!--选择区域组件-->
+           <el-input v-model="ruleForm.areaId" style="display: none"></el-input>
            <area-list @getAreaId="getAreaId"></area-list>
          </el-form-item>
-         <el-form-item label="所属系统" prop="systemType">
+         <el-form-item label="所属系统" prop="organization.systemType">
            <el-select v-model="ruleForm.organization.systemType" @change="getSystemType" placeholder="请选择所属系统">
              <el-option
                v-for="item in applicationOption"
@@ -64,7 +65,7 @@
              ></el-option>
            </el-select>
          </el-form-item>
-         <el-form-item label=" 启用状态" prop="enable">
+         <el-form-item label=" 启用状态" prop="organization.removed" :rules="[{ required: true, message: '请选择启用状态 '}]">
            <el-switch v-model="ruleForm.organization.removed"></el-switch>
          </el-form-item>
        </el-col>
@@ -119,7 +120,7 @@ export default {
   name: 'index',
   mixins: [ handleBreadcrumb, dicOption],
   components: { areaList, searchLable },
-  props: {
+  /* props: {
     // TODO breadcrumb可采用组件传参的模式替换路由判断，将配置权交给调用方
     breadcrumb: {
       type: Object,
@@ -130,9 +131,13 @@ export default {
         }
       }
     }
-  },
+  }, */
   data () {
     return {
+      breadcrumb: {
+        name: '单位详情',
+        parent: null
+      },
       openSearchFlag: false,
       addInfo: {
         searchFlag: false,
@@ -141,7 +146,6 @@ export default {
       loading: false,
       isShowEditFlag: true,
       disabledFlag: false,
-      breadcrumbTitle: '添加节点',
       submitHtml: '保存',
       oldFrom: {},
       tagKeyWord: '',
@@ -171,16 +175,7 @@ export default {
           shortName: '',
           fax: ''
         }
-      },
-      systemTypeOption: [
-        {
-          label: '人大',
-          value: 1
-        }, {
-          label: '党委',
-          value: 2
-        }
-      ]
+      }
     }
   },
   computed: {
@@ -193,38 +188,40 @@ export default {
   },
   beforeRouteUpdate (to, from, next) {
     next()
-    this.setBreadcrumbTitle()
   },
   methods: {
     init () {
-      api[urlNames['findViewNodeById']]({
-        id: this.$route.params.parentId || this.$route.params.id
-      }).then((res) => {
-        this.bindId = res.data.bindId
-        this.ruleForm.organization.parentId = res.data.bindId
-        this.ruleForm.nodeId = res.data.id
-        if (res.data.bindId && res.data.nodeType === 2) {
-          this.getDetail()
-          if (this.$route.name !== 'UnitAdd') {
-            this.findLabel(res.data.nodeType)
-          }
-        }
-        this.parentName = res.data.name
-        this.pushBreadcrumb({
-          name: this.breadcrumbTitle,
-          parent: {
-            name: 'OrganizationContent',
-            params: {
-              nodeId: this.$route.params.parentId || this.$route.params.id
-            },
-            query: {
-              type: 'back'
+      if (this.$route.name === 'UnitAdd' || this.$route.name === 'UnitEdit') {
+        api[urlNames['findViewNodeById']]({
+          id: this.$route.params.parentId || this.$route.params.id
+        }).then((res) => {
+          this.getArea(res.data.bindId)
+          if (res.data.bindId) {
+            this.parentName = res.data.name
+            this.bindId = res.data.bindId
+            if (this.$route.name !== 'UnitAdd') {
+              if (res.data.bindId === 2) {
+                this.ruleForm.organization.parentId = res.data.bindId
+              }
+              this.ruleForm.nodeId = res.data.id
+              this.findLabel(1)
+              this.getDetail()
+            } else {
+              this.ruleForm.nodeId = res.data.id
+              this.ruleForm.organization.parentId = res.data.bindId
             }
+          } else {
+            this.parentName = ''
+            this.ruleForm.nodeId = res.data.id
           }
+        }, (error) => {
+          this.$message.error(`没有内容`)
         })
-      }, (error) => {
-        this.$message.error(`没有内容`)
-      })
+      } else {
+        this.bindId = this.$route.params.id
+        this.findLabel(1)
+        this.getDetail()
+      }
     },
     getDetail () {
       let data = {
@@ -232,7 +229,6 @@ export default {
       }
       this.loading = true
       api[urlNames['findOrganizationById']](data).then((res) => {
-        console.log('------', res.data)
         this.loading = false
         if (this.$route.name === 'UnitAdd') {
         } else {
@@ -241,7 +237,7 @@ export default {
           this.ruleForm.organization.address = res.data.address
           this.ruleForm.organization.name = res.data.name
           this.ruleForm.organization.address = res.data.address
-          this.ruleForm.nodeId = res.data.parentId
+          // this.ruleForm.nodeId = res.data.parentId
           // this.ruleForm.organization.parentId = ''
           this.ruleForm.organization.id = res.data.id
           this.ruleForm.organization.removed = res.data.removed
@@ -265,9 +261,18 @@ export default {
         type: type
       }).then((res) => {
         res.data.forEach((item) => {
-          this.tagsName.push(item.split('|')[1])
-          this.ruleForm.labelId.push(item.split('|')[0])
+          this.tagsName.push(item.name)
+          this.ruleForm.labelId.push(item.id)
         })
+      }, (error) => {
+      })
+    },
+    // 获取区域
+    getArea (orgId) {
+      api[urlNames['findOrgAreaList']]({
+        orgId: orgId
+      }).then((res) => {
+        console.log(res.data)
       }, (error) => {
       })
     },
@@ -277,10 +282,13 @@ export default {
     // 获取选中的标签
     getTag (val) {
       console.log('标签', val)
+      let tag = []
       val.forEach((item) => {
         this.tagsName.push(item.split('|')[1])
-        this.ruleForm.labelId.push(item.split('|')[0])
+        tag.push(item.split('|')[0])
+        console.log(item.split('|')[0])
       })
+      this.ruleForm.labelId = tag
     },
     setBreadcrumbTitle () { // 设置面包屑title
       if (this.$route.name === 'UnitEdit' || this.$route.name === 'UnitAdd') {
@@ -291,20 +299,12 @@ export default {
         } else {
           this.breadcrumb.name = '添加单位'
         }
-        this.breadcrumb.parent = {
-          name: 'OrganizationContent',
-          params: {
-            nodeId: this.$route.params.parentId || this.$route.params.id
-          },
-          query: {
-            type: 'back'
-          }
-        }
       } else {
         this.isShowEditFlag = false
         this.disabledFlag = true
-        this.breadcrumbTitle = '单位详情'
+        this.breadcrumb.name = '单位详情'
       }
+      this.pushBreadcrumb(this.breadcrumb)
     },
     getSystemType (el) {
       this.ruleForm.organization.systemType = el
@@ -328,11 +328,7 @@ export default {
       })
     },
     goBack () {
-      let breadcrumb = [...this.app.pageBreadcrumb]
-      let currentPage = breadcrumb[breadcrumb.length - 1]
-      breadcrumb.splice(-1, 1)
-      this.SET_PAGE_BREADCRUMB(breadcrumb)
-      this.$router.push(currentPage.parent)
+      this.$router.go(-1)
     }
   }
 }

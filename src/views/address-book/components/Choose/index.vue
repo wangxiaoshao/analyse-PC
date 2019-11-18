@@ -40,7 +40,7 @@ export default {
       gridData: [],
       nodeType: '',
 
-      nodeTree: [],
+      nodeTree: []
     }
   },
 
@@ -59,7 +59,7 @@ export default {
             value: element.nodeType,
             label: element.name
           })
-        });
+        })
       })
     },
 
@@ -80,8 +80,8 @@ export default {
         console.log(res, '===')
         this.gridData = res.data
       })
-    },
-  },
+    }
+  }
 
 }
 </script>

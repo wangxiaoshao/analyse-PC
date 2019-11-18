@@ -159,7 +159,7 @@ export default {
         this.list = []
         this.page.total = 0
       })
-    },
+    }
   }
 }
 </script>

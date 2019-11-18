@@ -128,7 +128,7 @@ export default {
         type: 1
       },
       activeName: 'unit',
-      countData: [],
+      countData: []
     }
   },
   computed: {

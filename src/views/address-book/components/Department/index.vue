@@ -30,7 +30,7 @@ export default {
   data () {
     return {
       tableData: [],
-      personnel: {},
+      personnel: {}
     }
   },
   created () {
@@ -38,18 +38,18 @@ export default {
   },
   methods: {
     toMemberList (scope) {
-      this.personnel = scope;
+      this.personnel = scope
       api[urlNames['getOrgDepartmentTxlList']]({
-        orgId: scope.id,
+        orgId: scope.id
       }).then(res => {
         // this.departmentList = res.data
         console.log(res)
       })
-    },
+    }
   },
   watch: {
     departmentList (newvalue, oldvalue) {
-      this.tableData = [];
+      this.tableData = []
       newvalue.forEach(element => {
         this.tableData.push({
           department: element.name,
@@ -58,7 +58,7 @@ export default {
           next: '下级',
           id: element.id
         })
-      });
+      })
     }
   }
 

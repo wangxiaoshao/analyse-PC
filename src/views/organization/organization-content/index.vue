@@ -19,9 +19,9 @@
         <span class="organization-value" v-html="content[0].name"></span>
         <el-button>日志</el-button>
       </div>
-      <div class="label-content">
-        <span v-for="item in labelList" :key="item.id">{{item.label}}</span>
-      </div>
+     <!-- <div class="label-content">
+        <span v-for="item in labelList" :key="item.id">{{item.name}}</span>
+      </div>-->
       <div class="list-tab">
         <el-tabs v-model="activeName">
           <div class="content-title">
@@ -249,7 +249,12 @@ export default {
         this.nodeInfo.parentId = res.data.id
         this.loading = false
         if (this.content[0].bindId) {
-          this.findLabel(this.content[0].nodeType)
+         /* if (this.content[0].nodeType === 2) {
+            this.findLabel(1)
+          }
+          if (this.content[0].nodeType === 3) {
+            this.findLabel(2)
+          }*/
         }
         if (this.content[0].nodeType === 1) {
           this.showAddNodeFlag = true

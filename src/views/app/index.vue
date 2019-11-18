@@ -74,9 +74,10 @@ export default {
     this.addEventListenForResize()
     // this.getUserInfo()
     this.getDicList()
+    this.getOption()
   },
   methods: {
-    ...mapMutations(['SET_USER_INFO', 'SET_WINDOWHEIGHT', 'SET_WINDOWWIDTH', 'SET_PAGE_BREADCRUMB', 'DIC_LIST']),
+    ...mapMutations(['SET_USER_INFO', 'SET_WINDOWHEIGHT', 'SET_WINDOWWIDTH', 'SET_PAGE_BREADCRUMB', 'DIC_LIST', 'GET_OPTION']),
     init (path) {
       // 在初始化菜单是，手动将breakLoop置为false，否则findMenuByPath不进入循环
       this.breakLoop = false
@@ -109,6 +110,11 @@ export default {
     getDicList () {
       api[urlNames['dicList']]().then((res) => {
         this.DIC_LIST(res.data)
+      })
+    },
+    getOption () {
+      api[urlNames['option']]().then((res) => {
+        this.GET_OPTION(res.data)
       })
     },
     setWindowSize () {

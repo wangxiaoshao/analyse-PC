@@ -145,18 +145,31 @@ export default {
     },
     // TODO breadcrumb可采用组件传参的模式替换路由判断，将配置权交给调用方
     setBreadcrumbTitle () { // 设置面包屑title
+      if (this.$route.name === 'PersonAdd' || this.$route.name === 'PersonEdit') {
+        this.isShowEditFlag = true
+        this.disabledFlag = false
+        if (this.$route.name === 'PersonEdit') {
+          this.breadcrumb.name = '编辑人员'
+        } else {
+          this.breadcrumbTitle = '添加人员'
+        }
+      } else {
+        this.isShowEditFlag = false
+        this.disabledFlag = true
+        this.breadcrumb.name = '人员详情'
+      }
       this.pushBreadcrumb(this.breadcrumb)
     },
     getCheckTags () {
       this.openAddTagFlag = false
       this.tags = this.checkTagGroup
     },
-   /* next () {
+    /* next () {
       this.stepTwoFlag = true
       this.stepOneFlag = false
       this.activeIndex = 1
       this.sendUserFlag = true
-    },*/
+    }, */
     last () {
       this.stepTwoFlag = false
       this.stepOneFlag = true

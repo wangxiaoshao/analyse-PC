@@ -8,8 +8,7 @@
     ></add-tags>
     <!--人员管理-->
     <el-form
-      :disabled="disabledFlag"
-      ref="personFrom"
+      :model="userDetail" :disabled="disabledFlag" ref="userDetail"
       label-width="100px"
       class="demo-personFrom"
       style="width: 100%">
@@ -18,10 +17,10 @@
       </el-menu>
       <el-row class="row-item">
         <el-col :span="12" style="position: relative">
-          <el-form-item label="姓名" prop="name">
+          <el-form-item label="姓名" prop="name" :rules="[{ required: true, message: '姓名不能为空'}]">
             <el-input
               placeholder="请输入姓名"
-              v-model="personFrom.name"
+              v-model="userDetail.name"
               @blur="closeSearch"
               @input="loadSearch"></el-input>
             <el-popover
@@ -266,7 +265,6 @@ export default {
   },
   methods: {
     init () {
-      alert(this.sendUserFlag)
       /* this.$emit('get-post', this.postFrom)
       this.$emit('get-user', this.personFrom) */
     },
