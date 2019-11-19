@@ -8,12 +8,20 @@
        :disabledFlag="disabledFlag"
        :isShowEditFlag="isShowEditFlag"
        :user-detail="userInfo.user"
-       :post-detail="userInfo.userIdentity"
+       :post-detail="userInfo.identity"
        @get-user="getUser"
        @get-post="getPost"
+       @get-uid="getUid"
      ></person-manage>
      <!--账号管理-->
-     <account-manage v-if="stepTwoFlag" :disabledFlag="disabledFlag" :isShowEditFlag="isShowEditFlag"></account-manage>
+     <account-manage
+       v-if="stepTwoFlag"
+       :disabledFlag="disabledFlag"
+       :isShowEditFlag="isShowEditFlag"
+       :account-list="accountList"
+       :user-info ="userInfo.user"
+       @get-account="getAccount"
+     ></account-manage>
    </el-container>
    <!--<el-footer class="add-person-footer">
       <el-button type="primary" @click="next" v-if="stepOneFlag">下一步</el-button>
@@ -34,20 +42,12 @@ export default {
   components: {
     personManage, step, accountManage
   },
-  props: {
-    // TODO breadcrumb可采用组件传参的模式替换路由判断，将配置权交给调用方
-    breadcrumb: {
-      type: Object,
-      default () {
-        return {
-          name: '人员详情',
-          parent: null
-        }
-      }
-    }
-  },
   data () {
     return {
+      breadcrumb: {
+        name: '人员详情',
+        parent: null
+      },
       loading: false,
       breadcrumbTitle: '',
       isShowEditFlag: false,
@@ -57,16 +57,24 @@ export default {
       openAddTagFlag: false,
       sendUserFlag: false,
       activeIndex: 0,
+      accountList: [],
       userInfo: {
         userAccount: [], // 账户
         labelId: [],
-        userIdentity: [], // 绑定身份类型
+        identity: {
+          departmentId: '', // 部门id
+          postName: '', // 岗位名称
+          id: '',
+          type: null,
+          orgId: '',
+          dutyName: '' // 职务名称
+        },
         userId: null,
         user: {
-          birthday: null,
+          birthday: '',
           nation: '',
           portraitUrl: '',
-          sex: 1,
+          sex: null,
           mobile: '',
           politicalParty: '',
           qualification: '',
@@ -80,26 +88,51 @@ export default {
           userState: null,
           userType: null
         }
-      },
-      postInfo: {
-        departmentId: '',
-        postName: '',
-        type: '',
-        orgId: '',
-        dutyName: ''
       }
     }
   },
-  created () {
+  mounted () {
     this.setBreadcrumbTitle()
-    if (this.$route.params.id) {
-      this.getUserDetail()
-    }
+  },
+  created () {
+    this.init()
   },
   methods: {
-    getUserDetail () {
+    init () {
+      if (this.$route.name === 'PersonAdd' || this.$route.name === 'PersonEdit') {
+        if (this.$route.params.id) {
+          this.getUserDetail(this.$route.params.id)
+        }
+        api[urlNames['findViewNodeById']]({
+          id: this.$route.params.parentId || this.$route.params.id
+        }).then((res) => {
+          if (res.data.nodeType === 2) {
+            api[urlNames['findOrganizationById']]({
+              id: res.data.bindId
+            }).then((res) => {
+              this.userInfo.identity.orgId = res.data.id
+            }, (error) => {
+              this.$message.error(`没有内容`)
+            })
+          }
+          if (res.data.nodeType === 3) {
+            api[urlNames['findDepartmentById']]({
+              id: res.data.bindId
+            }).then((res) => {
+              this.userInfo.identity.departmentId = res.data.id
+              this.userInfo.identity.orgId = res.data.orgId
+            }, (error) => {
+              this.$message.error(`没有内容`)
+            })
+          }
+        }, (error) => {
+          this.$message.error(`没有内容`)
+        })
+      }
+    },
+    getUserDetail (id) {
       api[urlNames['findUserById']]({
-        id: this.$route.params.id
+        id: id
       }).then((res) => {
         // this.userInfo = res.data
         this.userInfo.user.name = res.data.name
@@ -116,8 +149,8 @@ export default {
         this.userInfo.user.nation = res.data.nation
         this.userInfo.user.politicalParty = res.data.politicalParty
         this.userInfo.user.signed = res.data.signed
-        this.postInfo.type = res.data.userType
-        this.postInfo.postName = res.data.postName
+        this.userInfo.identity.type = res.data.userType
+        this.userInfo.identity.postName = res.data.postName
         this.userInfo.user.qualification = res.data.qualification
         this.userInfo.user.positionClass = res.data.positionClass
         this.userInfo.user.userState = res.data.userState
@@ -131,17 +164,43 @@ export default {
       api[urlNames['findUserAccountByUid']]({
         userId: userId
       }).then((res) => {
+        this.userInfo.userAccount = res.data
+        this.accountList = res.data
         console.log(res.data)
       }, (error) => {
       })
     },
     getUser (val) { // 获取用户信息
       this.userInfo.user = val
+      this.stepTwoFlag = true
+      this.stepOneFlag = false
+      this.activeIndex = 1
+      this.sendUserFlag = true
+      // this.submitForm()
+    },
+    // 绑定身份
+    getPost (val) {
+      this.userInfo.identity = val
       console.log(val)
     },
-    getPost (val) {
-      this.userInfo.userIdentity = val
-      console.log(val)
+    // 获取账号
+    getAccount (val) {
+      // this.userInfo.userAccount = val
+      this.submitForm()
+      console.log(5557, this.userInfo.userAccount)
+    },
+    getUid (val) {
+      this.getUserAccount(val)
+      this.getUserDetail(val)
+    },
+    // 保存createUser
+    submitForm () {
+      api[urlNames['createUser']](this.userInfo).then((res) => {
+        this.$message.success(`保存成功`)
+        console.log(res)
+      }, (error) => {
+        this.$message.error(`保存失败，请重试`)
+      })
     },
     // TODO breadcrumb可采用组件传参的模式替换路由判断，将配置权交给调用方
     setBreadcrumbTitle () { // 设置面包屑title
@@ -151,7 +210,7 @@ export default {
         if (this.$route.name === 'PersonEdit') {
           this.breadcrumb.name = '编辑人员'
         } else {
-          this.breadcrumbTitle = '添加人员'
+          this.breadcrumb.name = '添加人员'
         }
       } else {
         this.isShowEditFlag = false
