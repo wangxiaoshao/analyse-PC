@@ -12,25 +12,17 @@
         @current-change="handleCurrentChange"
         style="width: 100%">
         <el-table-column
-          type="index"
-          label="序号"
-          align="center"
-          width="50">
-        </el-table-column>
-        <el-table-column
           property="name"
           label="视图名称"
-          align="center"
-          width="120">
+          align="center">
         </el-table-column>
         <el-table-column
           property="id"
           label="视图ID"
-          align="center"
-          width="120">
+          align="center">
         </el-table-column>
         <el-table-column
-          property="time"
+          property="createTime"
           align="center"
           label="创建时间">
         </el-table-column>

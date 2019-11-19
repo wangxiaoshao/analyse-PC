@@ -11,12 +11,6 @@
       highlight-current-row
       style="width: 100%">
       <el-table-column
-        type="index"
-        label="序号"
-        width="50"
-        align="center">
-      </el-table-column>
-      <el-table-column
         property="name"
         label="应用名称"
         align="center">
