@@ -47,8 +47,11 @@
          <el-form-item label="单位电话" prop="organization.phone">
            <el-input v-model="ruleForm.organization.phone"></el-input>
          </el-form-item>
-         <el-form-item label="邮编" prop="organization.zipCode">
-           <el-input v-model="ruleForm.organization.zipCode"></el-input>
+         <el-form-item
+           label="邮编"
+           prop="organization.zipCode"
+         >
+           <el-input v-model="ruleForm.organization.zipCode" onkeyup="this.value=this.value.replace(/[^\d.]/g,'');" maxlength="6"></el-input>
          </el-form-item>
          <el-form-item label="所属区域" prop="areaId">
             <!--选择区域组件-->
@@ -314,12 +317,13 @@ export default {
     },
     getAreaId (val) {
       this.ruleForm.areaId = val
+      alert(val)
     },
     submitForm (ruleForm) {
       this.$refs[ruleForm].validate((valid) => {
         if (valid) {
           api[urlNames['createOrganization']](this.ruleForm).then((res) => {
-            this.$message.success(`添加成功`)
+            this.$message.success(`保存成功`)
             this.goBack()
           }, (error) => {
 

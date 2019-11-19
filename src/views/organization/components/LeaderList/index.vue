@@ -215,7 +215,7 @@ export default {
           nodeType: this.nodeInfo.nodeType,
           leaders: this.personList
         }).then((res) => {
-          this.$message.success(`添加成功`)
+          this.$message.success(`保存成功`)
           this.getGrid()
           console.log(res)
         }, (error) => {

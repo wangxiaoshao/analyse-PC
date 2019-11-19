@@ -3,17 +3,21 @@
     <div class="set-default">
       <div class="default-warn"><i class="el-icon-warning"></i>默认帐号用于您一个帐号全站都能使用，若遇到不能使用的业务系统，请切换身份类型即可。</div>
       设置默认帐号
-      <el-select v-model="value" :disabled="disabledFlag" placeholder="请选择">
+      <el-select
+        v-model="accountSelect"
+        @change="getDefaultAccount"
+        :disabled="disabledFlag"
+        placeholder="请选择">
         <el-option
-          v-for="item in accountOptions"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
+          v-for="item in accountList"
+          :key="item.id"
+          :label="item.name"
+          :value="item.defaultAccount">
         </el-option>
       </el-select>
     </div>
     <el-collapse v-model="activeAccount" accordion class="account-list">
-      <el-collapse-item title="帐号：chenyu27  身份：省委办公厅   电子政务处   副处长 " name="1">
+     <!-- <el-collapse-item title="帐号：chenyu27  身份：省委办公厅   电子政务处   副处长 " name="1">
         <bind-system :disabledFlag="disabledFlag"></bind-system>
         <div class="edit-content">
           <el-form ref="form" :disabled="disabledFlag" :model="editForm" label-width="80px" class="demo-personFrom">
@@ -25,7 +29,8 @@
             </el-form-item>
           </el-form>
         </div>
-      </el-collapse-item>
+      </el-collapse-item>-->
+      <el-collapse-item v-for="item in accountList" :key="item.id" :title="item.name + ' ' + userInfo.name + ' ' + userInfo.dutyName + ' ' + userInfo.postName"></el-collapse-item>
     </el-collapse>
     <div class="creat-account-content">
       <el-button class="creat-btn" v-show="!disabledFlag" @click="creatAccount"><i class="el-icon-plus el-icon--left">创建账号</i></el-button>
@@ -68,6 +73,10 @@
         </el-form-item>
       </el-form>
     </div>
+      <el-footer class="add-person-footer">
+        <el-button type="primary" @click="fromSublime">保存</el-button>
+        <el-button >取消</el-button>
+      </el-footer>
   </div>
 </template>
 
@@ -75,7 +84,7 @@
 import bindSystem from '../BindSystem/index'
 export default {
   components: { bindSystem },
-  props: ['disabledFlag', 'isShowEditFlag'],
+  props: ['disabledFlag', 'isShowEditFlag', 'accountList', 'userInfo'],
   data () {
     return {
       addAccount: {
@@ -89,8 +98,8 @@ export default {
       activeAccount: '1',
       tags: [], // 提交的标签
       options: [],
-      accountOptions: [],
-      value: '',
+      accountSend: [],
+      accountSelect: 1,
       editForm: {
         editForm: 'chengyu',
         passWord: '1124154'
@@ -103,6 +112,27 @@ export default {
     },
     creatAccount () {
       this.addFlag = true
+    },
+    getDefaultAccount (val) {
+      this.accountList.forEach((item) => {
+        if (item.id === val.value) {
+          let obj = {
+            id: item.id,
+            defaultAccount: 1,
+            password: item.password,
+            removed: item.removed,
+            appId: item.appId,
+            name: item.name
+          }
+          this.accountSend.push(obj)
+        } else {
+          this.accountSend.push(item)
+        }
+      })
+      console.log(val)
+    },
+    fromSublime () {
+      this.$emit('get-account', this.accountSend)
     }
   }
 }

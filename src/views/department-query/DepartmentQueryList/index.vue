@@ -17,8 +17,16 @@
             </el-input>
           </el-col>
           <el-col :span="5">
-            <el-input placeholder="标签" v-model="searchQuery.labelName" clearable>
-            </el-input>
+            <el-autocomplete
+              v-model="searchQuery.selectValue"
+              :trigger-on-focus=triggerOnFocus
+              :fetch-suggestions="querySearchAsync"
+              placeholder="标签"
+              @select="handleSelect">
+              <template slot-scope="{ item }">
+                <div class="name">{{ item.name }}</div>
+              </template>
+            </el-autocomplete>
           </el-col>
           <el-col :span="5" class="text-right">
             <el-button type="primary" plain @click="getGrid">查询</el-button>
@@ -29,8 +37,6 @@
     <!--表格-->
     <site-table :tableConfig="tableConfig"
                 :tableHeight="tableHeight"
-                :tableIndex="tableIndex"
-                :pageConfig="pageConfig"
                 :operateWidth="operateWidth"
                 :operate="operate"
                 :tableData="tableData">
@@ -70,15 +76,14 @@ export default {
         id: '',
         name: '',
         orgName: '',
-        orgAdministrator: ''
+        labelName: ''
       },
       tableData: [],
       tableHeight: 200,
       operateWidth: 100,
       tableCheckbox: true,
-      pageConfig: {},
-      tableIndex: true,
-      operate: true
+      operate: true,
+      triggerOnFocus: false,
     }
   },
   computed: {
@@ -106,6 +111,31 @@ export default {
       'SET_EXAMINE_DETAIL',
       'SET_EXAMINE_SEARCH_QUERY',
       'SET_EXAMINE_BACKPATH']),
+    querySearchAsync (queryString, cb) {
+      api[urlNames['findLabelByType']]({
+        type: 2,
+        name: queryString
+      }).then((res) => {
+        if (res) {
+          let data = res.data
+          clearTimeout(this.timeout)
+          var results = queryString ? data.filter(this.createStateFilter(queryString)) : data
+          this.timeout = setTimeout(() => {
+            cb(results)
+          }, 3000 * Math.random())
+        }
+      }, () => {
+        return []
+      })
+    },
+    createStateFilter (queryString) {
+      return (state) => {
+        return (state.name.toLowerCase().indexOf(queryString.toLowerCase()) === 0)
+      }
+    },
+    handleSelect (item) {
+      this.searchQuery.selectValue = item.name
+    },
     initQuery () {
       let keys = Object.assign({}, this.$route.query)
       let len = keys.length
@@ -131,7 +161,6 @@ export default {
         page: this.page.current,
         limit: this.page.limit
       }
-      this.pageConfig = data
       let keys = Object.keys(this.searchQuery)
       let len = keys.length
       for (let i = 0; i < len; i++) {
@@ -143,6 +172,7 @@ export default {
           data[key] = value
         }
       }
+      console.log(data)
       api[urlNames['findDepartmentList']](data).then((res) => {
         this.tableData = res.data
         this.page.total = res.total
