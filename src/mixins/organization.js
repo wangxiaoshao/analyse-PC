@@ -35,7 +35,8 @@ export default {
       this.$router.push({
         name: 'PersonEdit',
         params: {
-          id: row.uid
+          id: row.uid,
+          identityId: row.identityId
         }
       })
     }

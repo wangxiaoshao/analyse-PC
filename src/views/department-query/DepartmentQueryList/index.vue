@@ -79,7 +79,7 @@ export default {
         labelName: ''
       },
       tableData: [],
-      tableHeight: 200,
+      tableHeight: null,
       operateWidth: 100,
       tableCheckbox: true,
       operate: true,
@@ -172,7 +172,6 @@ export default {
           data[key] = value
         }
       }
-      console.log(data)
       api[urlNames['findDepartmentList']](data).then((res) => {
         this.tableData = res.data
         this.page.total = res.total

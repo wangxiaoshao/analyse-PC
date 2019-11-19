@@ -148,17 +148,17 @@ export default {
       calloutFlag: false,
       orgName: '',
       ruleForm: {
-        uid: '',
+        identityId: '',
         type: '',
         reason: ''
       },
       // 人员调出表单
       formCallout: {
+        identityId: '',
         uid: '',
         deptId: '',
         orgId: '',
-        reason: '',
-        type: null
+        reason: ''
       },
       rulesCallou: {
         /* reason: [
@@ -194,7 +194,7 @@ export default {
     getGrid () {
       this.loading = true
       // let bindId = this.$route.params.bindId
-      if (this.type === 2) {
+      if (this.type === 3) {
         let data = {
           deptId: this.id,
           page: this.contentPage.current,
@@ -209,7 +209,7 @@ export default {
           this.contentPage.total = 0
         })
       }
-      if (this.type === 3) {
+      if (this.type === 2) {
         let data = {
           orgId: this.id,
           page: this.contentPage.current,
@@ -269,29 +269,29 @@ export default {
       this.calloutFlag = false
       this.removeFlag = false
       this.formCallout = {
+        identityId: '',
         uid: '',
         deptId: '',
         orgId: '',
-        reason: '',
-        type: null
+        reason: ''
       }
       this.ruleForm = {
-        uid: '',
-        type: '',
+        identityId: '',
         reason: ''
       }
     },
     // 调出
     calloutDialog (row) {
+      this.formCallout.identityId = row.identityId
       this.formCallout.uid = row.uid
-      this.formCallout.type = row.type
+      // this.formCallout.type = row.type
       this.calloutFlag = true
     },
     // 解除
     removeDuty (row) {
       this.removeFlag = true
-      this.ruleForm.uid = row.uid
-      this.ruleForm.type = row.type
+      this.ruleForm.identityId = row.identityId
+      // this.ruleForm.type = row.type
     },
     // 提交调出
     submitForm (formCallout) {
