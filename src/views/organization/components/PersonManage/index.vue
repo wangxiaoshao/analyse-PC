@@ -22,7 +22,7 @@
             >
               <el-input
                 placeholder="请输入姓名"
-                :disabled="baseAble"
+                :disabled="isDefaultFlag"
                 v-model="userDetail.name"
                 id="nameSearch"
                 slot="reference"
@@ -72,7 +72,7 @@
           >
             <el-input
               placeholder="请输入手机号"
-              :disabled="baseAble"
+              :disabled="isDefaultFlag"
               v-model="userDetail.mobile"></el-input>
           </el-form-item>
           <!--:rules="[{ required: true, message: '请选择身份类型'}]"-->
@@ -105,12 +105,12 @@
                 </el-upload>
               </el-form-item>
               <el-form-item label="备用手机号" prop="mobile2">
-                <el-input placeholder="请输入备用手机号"  :disabled="baseAble" v-model="userDetail.mobile2"></el-input>
+                <el-input placeholder="请输入备用手机号"  :disabled="isDefaultFlag" v-model="userDetail.mobile2"></el-input>
               </el-form-item>
               <el-form-item label="民族" prop="nation">
                 <el-select
                   placeholder="请选择民族"
-                  :disabled="baseAble"
+                  :disabled="isDefaultFlag"
                   @change="getNation"
                   v-model="userDetail.nation">
                   <el-option
@@ -124,7 +124,7 @@
               <el-form-item label="性别"  prop="sex">
                 <el-select
                   placeholder="请选择性别"
-                  :disabled="baseAble"
+                  :disabled="isDefaultFlag"
                   @change="getSex"
                   v-model="userDetail.sex">
                   <el-option
@@ -138,7 +138,7 @@
               <el-form-item label="所属党派" prop="politicalParty">
                 <el-select
                   placeholder="请选择所属党派"
-                  :disabled="baseAble"
+                  :disabled="isDefaultFlag"
                   @change="getPolicalParty"
                   v-model="userDetail.politicalParty">
                   <el-option
@@ -163,14 +163,14 @@
                 </el-select>
               </el-form-item>
               <el-form-item label=" 办公电话" prop="officePhone">
-                <el-input placeholder="请输入办公电话" :disabled="baseAble" v-model="userDetail.officePhone"></el-input>
+                <el-input placeholder="请输入办公电话" :disabled="isDefaultFlag" v-model="userDetail.officePhone"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="证件照">
                 <el-upload
                   class="avatar-uploader"
-                  :disabled="baseAble"
+                  :disabled="isDefaultFlag"
                   action="https://jsonplaceholder.typicode.com/posts/"
                   :show-file-list="false"
                   :on-success="handleAvatarSuccess"
@@ -180,14 +180,14 @@
                 </el-upload>
               </el-form-item>
               <el-form-item label="身份证号" prop="idcard">
-                <el-input placeholder="请输入内容" :disabled="baseAble" v-model="userDetail.idcard">
+                <el-input placeholder="请输入内容" :disabled="isDefaultFlag" v-model="userDetail.idcard">
                   <el-button slot="append" v-if="!disabledFlag" type="success" class="form-btn">点击实名认证</el-button>
                 </el-input>
               </el-form-item>
               <el-form-item label="学历" prop="qualification">
                 <el-select
                   placeholder="请选择学历"
-                  :disabled="baseAble"
+                  :disabled="isDefaultFlag"
                   @change="getQualification"
                   v-model="userDetail.qualification">
                   <el-option
@@ -202,7 +202,7 @@
                 <el-select
                   placeholder="请选择职级"
                   @change="getPositionClass"
-                  :disabled="baseAble"
+                  :disabled="isDefaultFlag"
                   v-model="userDetail.positionClass">
                   <el-option
                     v-for="item in userPankOptions"
@@ -215,7 +215,7 @@
               <el-form-item label=" 人员状态" prop="action">
                 <el-select
                   placeholder="请选择人员状态"
-                  :disabled="baseAble"
+                  :disabled="isDefaultFlag"
                   @change="getUserState"
                   v-model="userDetail.userState">
                   <el-option
@@ -251,12 +251,12 @@
           <el-row class="row-item">
             <el-col :span="12">
               <el-form-item label="人员介绍" prop="instruction">
-                <el-input type="textarea" :disabled="baseAble"></el-input>
+                <el-input type="textarea" :disabled="isDefaultFlag"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="人员职责" prop="reason">
-                <el-input type="textarea" :disabled="baseAble"></el-input>
+                <el-input type="textarea" :disabled="isDefaultFlag"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -265,7 +265,7 @@
       <el-form-item>
         <el-footer class="add-person-footer">
           <el-button type="primary" @click="next('userDetail')">下一步</el-button>
-          <el-button >取消</el-button>
+          <el-button @click="goBack">取消</el-button>
         </el-footer>
       </el-form-item>
     </el-form>
@@ -277,7 +277,7 @@ import { api, urlNames } from '@src/api'
 import addTags from '../AddTags/index'
 import dicOption from '@src/mixins/dic-options.js'
 export default {
-  props: ['disabledFlag', 'isShowEditFlag', 'userDetail', 'postDetail'],
+  props: ['disabledFlag', 'isShowEditFlag', 'userDetail', 'postDetail', 'isDefaultFlag'],
   mixins: [dicOption],
   components: {
     addTags
@@ -285,7 +285,6 @@ export default {
   data () {
     return {
       openSearchFlag: false,
-      baseAble: false,
       option: [],
       restaurants: [],
       state: '',
@@ -308,6 +307,8 @@ export default {
   created () {
     this.init()
   },
+  computed: {
+  },
   watch: {
     focusFlag (newVal) {
       alert(newVal)
@@ -315,16 +316,13 @@ export default {
   },
   methods: {
     init () {
-      /* this.$emit('get-post', this.postFrom)
-      this.$emit('get-user', this.personFrom) */
     },
     // 搜索表格点击当前行
     selectRow (val) {
       let uid = val.uid
       this.searchFlag = false
       this.$emit('get-uid', uid)
-      this.baseAble = true
-      console.log(6526, uid)
+      this.$emit('get-defauf', true)
     },
     // 搜索数据
     loadSearch () {
@@ -379,9 +377,6 @@ export default {
     getUserType (val) {
       this.personFrom.userType = val
     },
-    closeSearch () {
-      this.searchFlag = false
-    },
     handleAvatarSuccess (res, file) {
       this.imageUrl = URL.createObjectURL(file.raw)
     },
@@ -401,7 +396,6 @@ export default {
       this.openSearchFlag = val
     },
     getTag (val) {
-      console.log('标签', val)
       val.forEach((item) => {
         this.tagsName.push(item.split('|')[1])
         this.labelId.push(item.split('|')[0])
@@ -411,10 +405,6 @@ export default {
       this.tagsName.splice(index, 1)
       this.ruleForm.labelId.splice(index, 1)
     },
-    /* next () {
-      this.$emit('get-post', this.postFrom)
-      this.$emit('get-user', this.personFrom)
-    } */
     next (userDetail) {
       this.$refs[userDetail].validate((valid) => {
         if (valid) {
@@ -425,6 +415,9 @@ export default {
           return false
         }
       })
+    },
+    goBack () {
+      this.$router.go(-1)
     }
   }
 }

@@ -9,9 +9,11 @@
        :isShowEditFlag="isShowEditFlag"
        :user-detail="userInfo.user"
        :post-detail="userInfo.identity"
+       :is-default-flag="isDefaultFlag"
        @get-user="getUser"
        @get-post="getPost"
        @get-uid="getUid"
+       @get-defauf="getDefaut"
      ></person-manage>
      <!--账号管理-->
      <account-manage
@@ -20,7 +22,9 @@
        :isShowEditFlag="isShowEditFlag"
        :account-list="accountList"
        :user-info ="userInfo.user"
+       :is-default-flag="isDefaultFlag"
        @get-account="getAccount"
+       @get-back="getBack"
      ></account-manage>
    </el-container>
    <!--<el-footer class="add-person-footer">
@@ -56,6 +60,7 @@ export default {
       stepTwoFlag: false,
       openAddTagFlag: false,
       sendUserFlag: false,
+      isDefaultFlag: false,
       activeIndex: 0,
       accountList: [],
       userInfo: {
@@ -193,10 +198,14 @@ export default {
       this.getUserAccount(val)
       this.getUserDetail(val)
     },
+    getDefaut (val) {
+      this.isDefaultFlag = val
+    },
     // 保存createUser
     submitForm () {
       api[urlNames['createUser']](this.userInfo).then((res) => {
         this.$message.success(`保存成功`)
+        this.goBack()
         console.log(res)
       }, (error) => {
         this.$message.error(`保存失败，请重试`)
@@ -223,19 +232,13 @@ export default {
       this.openAddTagFlag = false
       this.tags = this.checkTagGroup
     },
-    /* next () {
-      this.stepTwoFlag = true
-      this.stepOneFlag = false
-      this.activeIndex = 1
-      this.sendUserFlag = true
-    }, */
-    last () {
+    getBack () {
       this.stepTwoFlag = false
       this.stepOneFlag = true
       this.activeIndex = 0
     },
     goBack () {
-      this.$emit('go-back')
+      this.$router.go(-1)
     },
     getActive (val) {
       this.active = val

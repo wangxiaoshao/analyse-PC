@@ -175,12 +175,7 @@ export default {
       this.getContent()
     },
     setStore () {
-      this.backInfo = {
-        backId: this.$route.params.nodeId,
-        backActive: this.activeName
-      }
       this.SET_ORGANIZATION_PAGE(this.currentPage)
-      this.SET_ORGANIZATION_BACK_INFO(this.backInfo)
     },
     getPage (val) {
       this.currentPage = val
@@ -249,12 +244,12 @@ export default {
         this.nodeInfo.parentId = res.data.id
         this.loading = false
         if (this.content[0].bindId) {
-         /* if (this.content[0].nodeType === 2) {
+          /* if (this.content[0].nodeType === 2) {
             this.findLabel(1)
           }
           if (this.content[0].nodeType === 3) {
             this.findLabel(2)
-          }*/
+          } */
         }
         if (this.content[0].nodeType === 1) {
           this.showAddNodeFlag = true
@@ -290,6 +285,15 @@ export default {
     isSort: {
       handler () {
         this.sortShowFlag = false
+      }
+    },
+    activeName: {
+      handler (val) {
+        this.backInfo = {
+          backId: this.$route.params.nodeId,
+          backActive: val
+        }
+        this.SET_ORGANIZATION_BACK_INFO(this.backInfo)
       }
     }
   }
