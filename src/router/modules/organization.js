@@ -66,7 +66,7 @@ export default [
         name: 'DepartmentEdit',
         component: DepartmentDetail
       }, {
-        path: 'person-edit/:id',
+        path: 'person-edit/:id/:identityId',
         name: 'PersonEdit',
         component: PersonDetail
       }, {

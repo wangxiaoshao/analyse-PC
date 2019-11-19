@@ -57,11 +57,19 @@
                 </el-table>
               </div>
             </el-popover>
+            <div class="tip-msg"
+                 v-show="userAuditFields.indexOf('name') > -1 && userDetail.name !== oldUserInfo.user.name">
+              该字段修改后需要审核
+            </div>
           </el-form-item>
           <el-form-item label="职务" prop="professionalTitle" :rules="[{ required: true, message: '职务不能为空'}]">
             <el-input
               placeholder="请输入职务"
               v-model="userDetail.professionalTitle"></el-input>
+            <div class="tip-msg"
+                 v-show="userAuditFields.indexOf('professionalTitle') > -1 && userDetail.professionalTitle !== oldUserInfo.user.professionalTitle">
+              该字段修改后需要审核
+            </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -74,6 +82,10 @@
               placeholder="请输入手机号"
               :disabled="isDefaultFlag"
               v-model="userDetail.mobile"></el-input>
+            <div class="tip-msg"
+                 v-show="userAuditFields.indexOf('mobile') > -1 && userDetail.mobile !== oldUserInfo.user.mobile">
+              该字段修改后需要审核
+            </div>
           </el-form-item>
           <!--:rules="[{ required: true, message: '请选择身份类型'}]"-->
           <el-form-item label="身份类型" prop="userType">
@@ -85,6 +97,10 @@
                 :value="item.value"
               ></el-option>
             </el-select>
+            <div class="tip-msg"
+                 v-show="userAuditFields.indexOf('userType') > -1 && userDetail.userType !== oldUserInfo.user.userType">
+              该字段修改后需要审核
+            </div>
           </el-form-item>
         </el-col>
       </el-row>
@@ -105,7 +121,14 @@
                 </el-upload>
               </el-form-item>
               <el-form-item label="备用手机号" prop="mobile2">
-                <el-input placeholder="请输入备用手机号"  :disabled="isDefaultFlag" v-model="userDetail.mobile2"></el-input>
+                <el-input
+                  placeholder="请输入备用手机号"
+                  :disabled="isDefaultFlag"
+                  v-model="userDetail.mobile2"></el-input>
+                <div class="tip-msg"
+                     v-show="userAuditFields.indexOf('mobile2') > -1 && userDetail.mobile2 !== oldUserInfo.user.mobile2">
+                  该字段修改后需要审核
+                </div>
               </el-form-item>
               <el-form-item label="民族" prop="nation">
                 <el-select
@@ -120,6 +143,10 @@
                     :value="item.value"
                   ></el-option>
                 </el-select>
+                <div class="tip-msg"
+                     v-show="userAuditFields.indexOf('nation') > -1 && userDetail.nation !== oldUserInfo.user.nation">
+                  该字段修改后需要审核
+                </div>
               </el-form-item>
               <el-form-item label="性别"  prop="sex">
                 <el-select
@@ -134,6 +161,10 @@
                     :value="item.value"
                   ></el-option>
                 </el-select>
+                <div class="tip-msg"
+                     v-show="userAuditFields.indexOf('sex') > -1 && userDetail.sex !== oldUserInfo.user.sex">
+                  该字段修改后需要审核
+                </div>
               </el-form-item>
               <el-form-item label="所属党派" prop="politicalParty">
                 <el-select
@@ -148,6 +179,10 @@
                     :value="item.value"
                   ></el-option>
                 </el-select>
+                <div class="tip-msg"
+                     v-show="userAuditFields.indexOf('politicalParty') > -1 && userDetail.politicalParty !== oldUserInfo.user.politicalParty">
+                  该字段修改后需要审核
+                </div>
               </el-form-item>
               <el-form-item label="人员类型" prop="userAccount" >
                 <el-select
@@ -161,9 +196,20 @@
                     :value="item.value"
                   ></el-option>
                 </el-select>
+                <div class="tip-msg"
+                     v-show="userAuditFields.indexOf('userType') > -1 && userDetail.userType !== oldUserInfo.user.userType">
+                  该字段修改后需要审核
+                </div>
               </el-form-item>
               <el-form-item label=" 办公电话" prop="officePhone">
-                <el-input placeholder="请输入办公电话" :disabled="isDefaultFlag" v-model="userDetail.officePhone"></el-input>
+                <el-input
+                  placeholder="请输入办公电话"
+                  :disabled="isDefaultFlag"
+                  v-model="userDetail.officePhone"></el-input>
+                <div class="tip-msg"
+                     v-show="userAuditFields.indexOf('officePhone') > -1 && userDetail.officePhone !== oldUserInfo.user.officePhone">
+                  该字段修改后需要审核
+                </div>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -183,6 +229,10 @@
                 <el-input placeholder="请输入内容" :disabled="isDefaultFlag" v-model="userDetail.idcard">
                   <el-button slot="append" v-if="!disabledFlag" type="success" class="form-btn">点击实名认证</el-button>
                 </el-input>
+                <div class="tip-msg"
+                     v-show="userAuditFields.indexOf('idcard') > -1 && userDetail.idcard !== oldUserInfo.user.idcard">
+                  该字段修改后需要审核
+                </div>
               </el-form-item>
               <el-form-item label="学历" prop="qualification">
                 <el-select
@@ -197,6 +247,10 @@
                     :value="item.value"
                   ></el-option>
                 </el-select>
+                <div class="tip-msg"
+                     v-show="userAuditFields.indexOf('qualification') > -1 && userDetail.qualification !== oldUserInfo.user.qualification">
+                  该字段修改后需要审核
+                </div>
               </el-form-item>
               <el-form-item label="职级" prop="positionClass">
                 <el-select
@@ -211,6 +265,10 @@
                     :value="item.value"
                   ></el-option>
                 </el-select>
+                <div class="tip-msg"
+                     v-show="userAuditFields.indexOf('positionClass') > -1 && userDetail.positionClass !== oldUserInfo.user.positionClass">
+                  该字段修改后需要审核
+                </div>
               </el-form-item>
               <el-form-item label=" 人员状态" prop="action">
                 <el-select
@@ -225,14 +283,22 @@
                     :value="item.value"
                   ></el-option>
                 </el-select>
+                <div class="tip-msg"
+                     v-show="userAuditFields.indexOf('userState') > -1 && userDetail.userState !== oldUserInfo.user.userState">
+                  该字段修改后需要审核
+                </div>
               </el-form-item>
               <el-form-item label=" 岗位" prop="postName">
                 <el-input placeholder="请输入岗位" v-model="postDetail.postName"></el-input>
+                <div class="tip-msg"
+                     v-show="userAuditFields.indexOf('postName') > -1 && postDetail.postName !== oldUserInfo.identity.postName">
+                  该字段修改后需要审核
+                </div>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
-            <el-form-item label="部门标签">
+            <el-form-item label="人员标签">
               <el-tag
                 v-for="tag in tagsName"
                 :key="tag"
@@ -251,12 +317,12 @@
           <el-row class="row-item">
             <el-col :span="12">
               <el-form-item label="人员介绍" prop="instruction">
-                <el-input type="textarea" :disabled="isDefaultFlag"></el-input>
+                <el-input type="textarea" v-model="userDetail.ext01" :disabled="isDefaultFlag"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="人员职责" prop="reason">
-                <el-input type="textarea" :disabled="isDefaultFlag"></el-input>
+                <el-input type="textarea" v-model="userDetail.ext02" :disabled="isDefaultFlag"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -277,7 +343,7 @@ import { api, urlNames } from '@src/api'
 import addTags from '../AddTags/index'
 import dicOption from '@src/mixins/dic-options.js'
 export default {
-  props: ['disabledFlag', 'isShowEditFlag', 'userDetail', 'postDetail', 'isDefaultFlag'],
+  props: ['disabledFlag', 'isShowEditFlag', 'userDetail', 'postDetail', 'isDefaultFlag', 'userAuditFields', 'oldUserInfo'],
   mixins: [dicOption],
   components: {
     addTags
@@ -316,6 +382,7 @@ export default {
   },
   methods: {
     init () {
+
     },
     // 搜索表格点击当前行
     selectRow (val) {
@@ -364,6 +431,7 @@ export default {
     // 选择职级
     getPositionClass (val) {
       this.personFrom.positionClass = val
+      console.log(this.personFrom.positionClass)
     },
     // 选择党派
     getPolicalParty (val) {

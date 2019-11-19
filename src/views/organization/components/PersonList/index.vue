@@ -284,14 +284,14 @@ export default {
     calloutDialog (row) {
       this.formCallout.identityId = row.identityId
       this.formCallout.uid = row.uid
-     // this.formCallout.type = row.type
+      // this.formCallout.type = row.type
       this.calloutFlag = true
     },
     // 解除
     removeDuty (row) {
       this.removeFlag = true
       this.ruleForm.identityId = row.identityId
-      //this.ruleForm.type = row.type
+      // this.ruleForm.type = row.type
     },
     // 提交调出
     submitForm (formCallout) {

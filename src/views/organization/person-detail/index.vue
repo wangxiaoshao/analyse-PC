@@ -4,12 +4,14 @@
     <step :active="activeIndex" @getActive="getActive"></step>
    <el-container>
      <person-manage
+       :user-audit-fields="app.option.options.userAuditFields"
        v-if="stepOneFlag"
        :disabledFlag="disabledFlag"
        :isShowEditFlag="isShowEditFlag"
        :user-detail="userInfo.user"
        :post-detail="userInfo.identity"
        :is-default-flag="isDefaultFlag"
+       :old-user-info="oldUserInfo"
        @get-user="getUser"
        @get-post="getPost"
        @get-uid="getUid"
@@ -41,6 +43,7 @@ import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
 import personManage from '../components/PersonManage/index'
 import accountManage from '../components/AccountManage/index'
 import step from '../components/Step/index'
+import { mapState, mapMutations } from 'vuex'
 export default {
   mixins: [ handleBreadcrumb ],
   components: {
@@ -63,6 +66,7 @@ export default {
       isDefaultFlag: false,
       activeIndex: 0,
       accountList: [],
+      oldUserInfo: {},
       userInfo: {
         userAccount: [], // 账户
         labelId: [],
@@ -91,7 +95,10 @@ export default {
           professionalTitle: '',
           type: null,
           userState: null,
-          userType: null
+          userType: null,
+          ext01: '',
+          ext02: '',
+          ext03: ''
         }
       }
     }
@@ -102,9 +109,16 @@ export default {
   created () {
     this.init()
   },
+  comments: {
+    ...mapState(['app'])
+  },
   methods: {
+    ...mapMutations(['GET_OPTION']),
     init () {
-      if (this.$route.name === 'PersonAdd' || this.$route.name === 'PersonEdit') {
+      this.app.option.options.userAuditFields.forEach((item) => {
+        // console.log(4444, this.userInfo.user)
+      })
+      if (this.$route.name === 'PersonAdd') {
         if (this.$route.params.id) {
           this.getUserDetail(this.$route.params.id)
         }
@@ -134,6 +148,11 @@ export default {
           this.$message.error(`没有内容`)
         })
       }
+      if (this.$route.name === 'PersonEdit') {
+        if (this.$route.params.id) {
+          this.getUserDetail(this.$route.params.id)
+        }
+      }
     },
     getUserDetail (id) {
       api[urlNames['findUserById']]({
@@ -160,6 +179,7 @@ export default {
         this.userInfo.user.positionClass = res.data.positionClass
         this.userInfo.user.userState = res.data.userState
         this.userInfo.user.userType = res.data.userType
+        this.oldUserInfo = JSON.parse(JSON.stringify(this.userInfo))
         this.getUserAccount(res.data.uid)
       }, (error) => {
         this.$message.error(`保存失败，请重试`)
