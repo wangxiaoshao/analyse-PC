@@ -115,7 +115,11 @@ export default {
   methods: {
     ...mapMutations(['GET_OPTION']),
     init () {
+      this.app.option.options.userAuditFields.forEach((item) => {
+        // console.log(4444, this.userInfo.user)
+      })
       if (this.$route.name === 'PersonAdd') {
+        this.oldUserInfo = JSON.parse(JSON.stringify(this.userInfo))
         if (this.$route.params.id) {
           this.getUserDetail(this.$route.params.id)
         }
@@ -176,7 +180,9 @@ export default {
         this.userInfo.user.positionClass = res.data.positionClass
         this.userInfo.user.userState = res.data.userState
         this.userInfo.user.userType = res.data.userType
-        this.oldUserInfo = JSON.parse(JSON.stringify(this.userInfo))
+        if (this.$route.name === 'PersonEdit') {
+          this.oldUserInfo = JSON.parse(JSON.stringify(this.userInfo))
+        }
         this.getUserAccount(res.data.uid)
       }, (error) => {
         this.$message.error(`保存失败，请重试`)
