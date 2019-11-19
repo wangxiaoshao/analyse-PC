@@ -10,8 +10,8 @@
       </el-col>
       <el-col :span="5">
         <div class="grid-content member-font">
-          <div class="member-size">{{item.name}}</div>
-          <div>{{item.dutyName}}</div>
+          <div class="member-size">姓名：{{item.name}}</div>
+          <div>职务：{{item.dutyName}}</div>
         </div>
       </el-col>
       <el-col :span="16">

@@ -1,38 +1,21 @@
 <template>
-  <div class="treelist">
-    <el-tree
-      :data="treeList"
-      node-key="id"
-      :props="defaultProps"
-      :highlight-current="true"
-      lazy
-      ref="treeList"
-      :load="loadNode"
-      @node-click="handleNodeClick"
-    >
+  <el-tree
+    :data="treeList"
+    node-key="id"
+    :props="defaultProps"
+    :highlight-current="true"
+    lazy
+    ref="treeList"
+    :load="loadNode"
+    @node-click="handleNodeClick"
+   >
       <span class="custom-tree-node" slot-scope="{ node, data }">
         <i class="imenu-icon fa fa-sitemap" v-if="data.nodeType === 1"></i>
         <i class="imenu-icon fa fa-building-o" v-if="data.nodeType === 2"></i>
         <i class="imenu-icon fa fa-institution" v-if="data.nodeType === 3"></i>
-        <span>{{ node.label }}</span>
-        <!--<span class="custom-tree-float">
-          <el-button
-            type="text"
-            size="mini"
-            @click="createTag(data, {flag:0,title:node.label})">
-            新增
-          </el-button>
-          <el-button
-            type="text"
-            size="mini"
-            class="delete"
-            @click="deleteLabel(node.id)">
-            删除
-          </el-button>
-        </span>-->
+        <span :class="[data.id===$route.params.nodeId ?'active':'noActive']">{{node.label}}</span>
       </span>
-    </el-tree>
-  </div>
+  </el-tree>
 </template>
 
 <script>
@@ -40,6 +23,8 @@ import { api, urlNames } from '@src/api'
 export default {
   data () {
     return {
+      active: 'active',
+      noActive: 'noActive',
       showCheckboxFlag: false,
       treeList: [],
       treeSonList: [],
@@ -73,9 +58,9 @@ export default {
         parentId: parentId,
         viewId: -1
       }).then((res) => {
-        
         this.total = parseInt(res.total)
         this.treeList = res.data
+        this.$emit('get-default-node', res.data[0].id)
         if (this.$route.name === 'Organization') {
           this.handleNodeClick(res.data[0])
         }
@@ -90,10 +75,11 @@ export default {
         parentId: parentId,
         viewId: -1
       }).then((res) => {
-        console.log(1234)
-        console.log(res)
         this.treeSonList = res.data
+      console.log("qqq")
+      console.log(res)
       })
+
     },
     handleNodeClick (node) {
       this.$emit('handle-node-click', node)
@@ -108,5 +94,5 @@ export default {
 </script>
 
 <style lang="less">
-@import 'index';
+  @import "index";
 </style>

@@ -8,6 +8,9 @@ const DictionaryManage = () => import('@src/views/system-setting/dictionary-mana
 const SystemSetting = () => import('@src/views/system-setting/index.vue')
 // 参数配置
 const ParameterSetting = () => import('@src/views/system-setting/parameter-setting/index.vue')
+
+//账号管理
+const AccountManagement=()=>import('@src/views/system-setting/account-management/index.vue')
 export default [
   // 权限管理
   {
@@ -50,6 +53,13 @@ export default [
         component: ParameterSetting
       }
     ]
+  },
+
+  //账号管理
+  {
+    path: '/account-management',
+    name: 'AccountManagement',
+    component: AccountManagement,
   }
 ]
 

@@ -21,40 +21,35 @@
               <!-- <addTreeList :thisUnit="thisUnit"></addTreeList> -->
             </div>
               
-            <other-address-book-tree @handle-nodeClick="handleNodeClickTree" :otherUnit='nodeTree'  v-if="isShow===2"></other-address-book-tree>
+            <other-address-book-tree @handle-nodeClick="handleNodeClickTree" :otherUnit='otherUnit'  v-if="isShow===2"></other-address-book-tree>
             
           </div>
         </el-col>
         <el-col :span="18" style="background:#F5F6F8;border-left: 1px solid #f2f2f2;height: 100%">
           <div>
             <el-breadcrumb separator="/" style="background:#F5F6F8;padding:20px;">
-              <el-breadcrumb-item>本单位通讯录</el-breadcrumb-item>
-              <el-breadcrumb-item v-for="(item,index) in navigation" :key="index">{{item.name}}</el-breadcrumb-item>
+              <el-breadcrumb-item>{{navigation1.name}}</el-breadcrumb-item>
+              <el-breadcrumb-item v-for="(item,index) in navigation" :key="index" class='class1 class2' >
+                <a v-if="navigation.length-1!==index"  @click.prevent='goCurrentNodeDetail(item.id, index)'>{{item.name}}</a>
+                <span v-if="navigation.length-1===index" href="" disabled >{{item.name}}</span>
+                <!-- <span :class="color?'class1':'class2'"></span> -->
+                <!-- <span v-if="index<navigation.length-1?'(:class='class1')':'(:class='class2')'"></span> -->
+                
+              </el-breadcrumb-item>
             </el-breadcrumb>
 
             <transition name="fade-transform" mode="out-in" style="height: 100%;border:1px solid red">
             <el-scrollbar>
               <keep-alive>
-                <Department :departmentList="departmentList" :treeList="treeList" ></Department>
+                <Department   
+                  :departmentList="departmentList" 
+                  :treeList="treeList" 
+                  @handle-child-click="handleChildClick"></Department>
+               <!-- <member-table :personnel="personnel" :memberList="memberList" :treeList="treeList"></member-table> -->
               </keep-alive>
             </el-scrollbar>
           </transition>
         </div>
-          <!-- <div v-if="isShow===2">
-            <el-breadcrumb separator="/" style="background:#F5F6F8;padding:20px;">
-              <el-breadcrumb-item>其他单位名称</el-breadcrumb-item>
-              <el-breadcrumb-item v-for="(item,index) in navigation" :key="index">{{item.name}}</el-breadcrumb-item>
-            </el-breadcrumb>
-            <transition name="fade-transform" mode="out-in" style="height: 100%;border:1px solid red">
-            <el-scrollbar>
-              <keep-alive>
-                <other-unit-address-book :departmentList="departmentList" :treeList="treeList" ></other-unit-address-book>
-              </keep-alive>
-            </el-scrollbar>
-          </transition>
-          </div> -->
-
-          
         </el-col>
       </el-row>
     </el-container>
@@ -67,7 +62,8 @@ import addressBookTree from './components/Tree/index'
 import searchChoose from './components/Choose/index'
 import addTreeList from './components/TreeList'
 import Department from './components/Department'
-import otherAddressBookTree from '@src/components/Tree/'
+import MemberTable from './components/Member/index'
+import otherAddressBookTree from './components/Maintree/index'
 import otherUnitAddressBook from './unit-address-book/index'
 import { api, urlNames } from '@src/api'
 import { type } from 'os';
@@ -79,12 +75,14 @@ export default {
     searchChoose,
     addTreeList,
     Department,
+    // MemberTable
     otherAddressBookTree,
     otherUnitAddressBook
   },
   data () {
    
     return {
+      color:true,
       isShow:1,
       defaultNodeId: null,
       activeColor: 1,
@@ -92,13 +90,13 @@ export default {
       thisUnit: {},
       userId: '1111111111111111111',
       departmentList: [],
+      memberList: [],
       navigation: [],
+      navigation1: [],
       treeList: {},
-
-      nodeTree:{},
+      otherUnit:{},
       otherNavigation:[]
-
-
+      
     }
   },
   computed: {
@@ -107,17 +105,68 @@ export default {
   created () {
     this.getAddressBook(),
     this.findNodeTree()
+    this.navigation1.name="本单位通讯录"
+    
   },
   methods: {
-    handleNodeClickTree (event) {
-      this.treeList = event
-      this.navigation = []
-      this.navigation.push({ id: event.id, name: event.name })
-      api[urlNames['getOrgDepartmentTxlList']]({
-        orgId: event.id
-      }).then(res => {
-        // this.departmentList = res.data
+      getAddressBook () {
+        api[urlNames['getAddressBookList']]({
+          uid: this.userId
+        
+        }).then(res => {
+          // console.log("----------11")
+          // console.log(res)
+          // console.log("----------22")
+          this.thisUnit = res.data
+          this.handleNodeClickTree(this.thisUnit)
       })
+      // console.log(uid)
+    },
+    findNodeTree (parentId) {
+      api[urlNames['getTree']]({
+        parentId: parentId,
+        viewId: -1
+      }).then((res) => {
+          this.otherUnit = res.data
+        
+          // console.log(res)
+        // res.data.forEach(element => {
+        //   this.nodeTree.push({
+        //     value: element.nodeType,
+        //     label: element.name
+        //   })
+        // })
+      })
+    },
+    handleChildClick (node) {
+      this.navigation.push({id: node.id, name: node.name})
+      this.getDetail(node.id)
+    },
+    handleNodeClickTree (node) {
+      this.treeList = node
+      this.navigation = []
+      this.navigation.push({ id: node.id, name: node.name })
+      // console.log(1212)
+      // console.log(this.navigation)
+      this.getDetail(node.id)
+      
+    },
+    getDetail (nodeId) {
+      this.getDepartmentList(nodeId)
+      // this.getMemberList(nodeId)
+    },
+    getDepartmentList (nodeId) {
+      api[urlNames['getOrgDepartmentTxlList']]({
+        orgId: nodeId
+      }).then(res => {
+        this.departmentList = res.data
+      })
+    },
+    goCurrentNodeDetail(depid, index){
+      let len = this.navigation.length
+      this.navigation.splice(index+1, len - index + 1)
+      // debugger
+      this.getDetail(depid)
     },
     getDefault (val) {
       this.defaultNodeId = val
@@ -130,20 +179,13 @@ export default {
       this.isShow=e
       if (e === 1) {
         this.getAddressBook()
-        navigation:[{name:"本单位名称"}]
+        this.navigation1.name="本单位通讯录"
       } else if (e === 2) {
-        console.log(1111111)
         this.findNodeTree()
-        navigation:[{name:"其他单位名称"}]
+        this.navigation1.name="其他单位通讯录"
         
       }
-    },
-    getAddressBook () {
-      api[urlNames['getAddressBookList']]({
-        uid: this.userId
-      }).then(res => {
-        this.thisUnit = res.data
-      })
+      // console.log(this.navigation)
     },
     //  findNodeTree (parentId) {
     //   api[urlNames['getTree']]({
@@ -153,24 +195,12 @@ export default {
     //     this.nodeTree = res.data
     //   })
     // },
-     findNodeTree (parentId) {
-      api[urlNames['getTree']]({
-        parentId: parentId,
-        viewId: -1
-      }).then((res) => {
-        res.data.forEach(element => {
-          // this.nodeTree.push({
-          //   value: element.nodeType,
-          //   label: element.name
-          // })
-        })
-      })
-    },
+     
   }
 
 }
 </script>
 
 <style lang="less">
-@import 'index';
+  @import 'index';
 </style>
