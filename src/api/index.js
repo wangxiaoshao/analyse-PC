@@ -74,7 +74,7 @@ function getSign(params, postDataStr, timestamp) {
   }
   aSign.sort()
   console.log('signArray: ' + aSign.join("&"));
-  return sha1(aSign.join("&"));
+  return sha1(aSign.join(""));
 }
 
 /**
