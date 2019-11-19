@@ -56,25 +56,25 @@ function formatHeader (headers) {
   return fHeaders
 }
 
-function getSign(params, postDataStr, timestamp) {
-  let data = JSON.parse(JSON.stringify(params));
-  data = (typeof data === "object") ? data : {};
+function getSign (params, postDataStr, timestamp) {
+  let data = JSON.parse(JSON.stringify(params))
+  data = (typeof data === 'object') ? data : {}
   // 时间戳需要传入，才能保持时间戳一致
-  data._ = timestamp;
-  let aKeys = Object.keys(data);
-  let aSign = [];
+  data._ = timestamp
+  let aKeys = Object.keys(data)
+  let aSign = []
 
-  let length = aKeys.length;
+  let length = aKeys.length
   for (let i = 0; i < length; i++) {
-    let key = aKeys[i];
-    aSign.push(key + "=" + data[key]);
+    let key = aKeys[i]
+    aSign.push(key + '=' + data[key])
   }
   if (postDataStr) {
     aSign.push(postDataStr)
   }
   aSign.sort()
-  console.log('signArray: ' + aSign.join("&"));
-  return sha1(aSign.join(""));
+  console.log('signArray: ' + aSign.join('&'))
+  return sha1(aSign.join(''))
 }
 
 /**

@@ -115,9 +115,6 @@ export default {
   methods: {
     ...mapMutations(['GET_OPTION']),
     init () {
-      this.app.option.options.userAuditFields.forEach((item) => {
-        // console.log(4444, this.userInfo.user)
-      })
       if (this.$route.name === 'PersonAdd') {
         if (this.$route.params.id) {
           this.getUserDetail(this.$route.params.id)

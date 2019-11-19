@@ -21,12 +21,20 @@
             :rules="[{ required: true, message: '名称不能为空'}]"
           >
             <el-input v-model="ruleForm.department.name"></el-input>
+            <div class="tip-msg"
+                 v-show="this.app.option.options.departmentAuditFields.indexOf('name') > -1 && ruleForm.department.name !== oldFrom.department.name">
+              该字段修改后需要审核
+            </div>
           </el-form-item>
           <el-form-item label=" 上级部门" prop="parentDep">
             <el-input v-model="parentDep" :disabled="true"></el-input>
           </el-form-item>
           <el-form-item label=" 启用状态" prop="department.removed">
             <el-switch v-model="ruleForm.department.removed"></el-switch>
+            <div class="tip-msg"
+                 v-show="this.app.option.options.departmentAuditFields.indexOf('removed') > -1 && ruleForm.department.removed !== oldFrom.department.removed">
+              该字段修改后需要审核
+            </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -38,15 +46,24 @@
             prop="department.phone"
           >
             <el-input v-model="ruleForm.department.phone"></el-input>
+            <div class="tip-msg"
+                 v-show="this.app.option.options.departmentAuditFields.indexOf('phone') > -1 && ruleForm.department.phone !== oldFrom.department.phone">
+              该字段修改后需要审核
+            </div>
           </el-form-item>
           <el-form-item label="上级单位" prop="orgName">
             <el-input v-model="orgName" :disabled="true"></el-input>
+            <div class="tip-msg"
+                 v-show="this.app.option.options.departmentAuditFields.indexOf('orgName') > -1 && ruleForm.department.orgName !== oldFrom.department.orgName">
+              该字段修改后需要审核
+            </div>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-form-item label="单位标签" prop="labelId">
           <el-tag
+            v-model="ruleForm.labelId"
             v-for="(tag,index) in tagsName"
             :key="tag"
             type="info"
@@ -57,6 +74,10 @@
             {{tag}}
           </el-tag>
           <el-tag class="add-tag-btn" v-if="!disabledFlag" @click="openSearchFlag = true"><i class="el-icon-plus"></i>添加标签</el-tag>
+          <div class="tip-msg"
+               v-show="this.app.option.options.departmentAuditFields.indexOf('labelId') > -1 && ruleForm.labelId !== oldFrom.labelId">
+            该字段修改后需要审核
+          </div>
         </el-form-item>
       </el-row>
       <el-menu class="el-menu-demo" mode="horizontal">
@@ -66,14 +87,26 @@
         <el-col :span="12">
           <el-form-item label="单位介绍" prop="department.duty">
             <el-input type="textarea" v-model="ruleForm.department.duty"></el-input>
+            <div class="tip-msg"
+                 v-show="this.app.option.options.departmentAuditFields.indexOf('duty') > -1 && ruleForm.department.duty !== oldFrom.department.duty">
+              该字段修改后需要审核
+            </div>
           </el-form-item>
           <el-form-item label="申请原因" prop="reason">
             <el-input type="textarea" v-model="ruleForm.reason"></el-input>
+            <div class="tip-msg"
+                 v-show="this.app.option.options.departmentAuditFields.indexOf('reason') > -1 && ruleForm.reason !== oldFrom.reason">
+              该字段修改后需要审核
+            </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="单位职责" prop="department.description">
             <el-input type="textarea" v-model="ruleForm.department.description"></el-input>
+            <div class="tip-msg"
+                 v-show="this.app.option.options.departmentAuditFields.indexOf('description') > -1 && ruleForm.department.description !== oldFrom.department.description">
+              该字段修改后需要审核
+            </div>
           </el-form-item>
         </el-col>
       </el-row>
@@ -89,6 +122,7 @@
 import { api, urlNames } from '@src/api'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
 import searchLable from '../components/AddTags/index'
+import { mapState, mapMutations } from 'vuex'
 export default {
   name: 'index',
   mixins: [ handleBreadcrumb ],
@@ -155,6 +189,9 @@ export default {
       ]
     }
   },
+  comments: {
+    ...mapState(['app'])
+  },
   mounted () {
     this.setBreadcrumbTitle()
   },
@@ -166,6 +203,7 @@ export default {
     this.setBreadcrumbTitle()
   },
   methods: {
+    ...mapMutations(['GET_OPTION']),
     init () {
       if (this.$route.name === 'DepartmentAdd' || this.$route.name === 'DepartmentEdit') {
         api[urlNames['findViewNodeById']]({
@@ -222,6 +260,7 @@ export default {
           this.ruleForm.department.name = res.data.name
           this.ruleForm.department.description = res.data.description
           this.ruleForm.department.duty = res.data.duty
+          this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
         }
       }, (error) => {
         this.$message.error(`没有内容`)
