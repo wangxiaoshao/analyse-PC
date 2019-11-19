@@ -78,7 +78,7 @@ export default {
      * 单位查询
      * */
   [urlNames.findOrganizationList]: {
-    type: 'post',
+    type: 'get',
     url: '/api/jg_manage/organ/findOrganizationList',
     keepOriginResponse: true,
     showLoading: true,
@@ -97,11 +97,11 @@ export default {
     mock: '/findDepartmentList.json'
   },
   /*
-     * 部门查询
+     * 人员查询
      * */
   [urlNames.findMemberList]: {
     type: 'get',
-    url: '/api/jg_manage/user/findUserByOrgAndDeptAndLabelAndUserName',
+    url: '/api/jg_manage/user/findUserList',
     keepOriginResponse: true,
     showLoading: false,
     serve: 'organizationManagePC',

@@ -10,10 +10,10 @@
                 :operateWidth="operateWidth"
                 :operate="operate"
                 :tableData="tableData">
-      <el-table-column label="启用状态" align="center">
+      <el-table-column label="启用状态" align="center" min-width="50">
         <template slot-scope="scope">
-          <span v-show="scope.row.remove === 1" class="text-green">启用</span>
-          <span v-show="scope.row.remove !== 1" class="text-red">禁用</span>
+          <span v-show="scope.row.removed === 1" class="text-green">启用</span>
+          <span v-show="scope.row.removed !== 1" class="text-red">禁用</span>
         </template>
       </el-table-column>
       <template slot-scope="{slotScope}" slot="operate">
@@ -66,7 +66,7 @@ export default {
       type: '',
       tableData: [],
       tableHeight: null,
-      operateWidth: 200,
+      operateWidth: 100,
       tableCheckbox: true,
       operate: true,
       dictionaryType: '',
