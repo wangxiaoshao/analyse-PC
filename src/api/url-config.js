@@ -21,6 +21,14 @@ export default {
     serve: 'organizationManagePC',
     mock: '/getUserInfo.json' // development模式下，本地mock数据
   },
+  [urlNames.option]: {
+    type: 'get',
+    url: '/api/jg_manage/option',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    showLoading: false, // 该请求发送时，是否显示全局loading
+    serve: 'organizationManagePC',
+    mock: '/option.json' // development模式下，本地mock数据
+  },
   [urlNames.getTree]: {
     type: 'get',
     url: '/api/jg_manage/viewNode/findNodeTree',
@@ -115,6 +123,15 @@ export default {
     keepOriginResponse: true, // 返回数据是否保留后端response数据格式
     serve: 'organizationManagePC', // 该请求对应服务端，服务端名字在url-prefix中配置
     mock: '/findLabel.json' // development模式下，本地mock数据地址
+  },
+
+  // 标签查询
+  [urlNames.findLabelByType]: {
+    type: 'get',
+    url: '/api/jg_manage/label/findLabelByType',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    serve: 'organizationManagePC',
+    mock: '/findLabelByType.json' // development模式下，本地mock数据
   },
 
   // 应用管理

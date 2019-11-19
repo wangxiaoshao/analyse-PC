@@ -102,7 +102,7 @@ export default {
     getGrid () {
       api[urlNames['getAuditDetailsById']]({
         id: this.$route.params.id,
-        type: this.$route.params.type,
+        type: this.$route.params.type
       }).then((res) => {
         this.reason = res.data.reason
         this.message = res.data.message
@@ -143,8 +143,8 @@ export default {
     },
     // TODO 需要按父导航进行跳转
     jumpDetailPage (type) { // type = 1 || 3部门 || 4单位
-      let prePath = this.$route.meta.prePath,
-        path = ''
+      let prePath = this.$route.meta.prePath
+      let path = ''
       switch (+type) {
         case 1:
           path = prePath + '/PersonDetail'

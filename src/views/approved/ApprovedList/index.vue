@@ -25,8 +25,6 @@
     <!--表格-->
     <site-table :tableConfig="tableConfig"
                 :tableHeight="tableHeight"
-                :tableIndex="tableIndex"
-                :pageConfig="pageConfig"
                 :operateWidth="operateWidth"
                 :operate="operate"
                 :tableData="tableData">
@@ -92,8 +90,6 @@ export default {
       ],
       tableData: [],
       tableHeight: null,
-      pageConfig: {},
-      tableIndex: true,
       operateWidth: 100,
       tableCheckbox: true,
       operate: true
@@ -150,7 +146,6 @@ export default {
         page: this.page.current,
         limit: this.page.limit
       }
-      this.pageConfig = data
       let keys = Object.keys(this.searchQuery)
       let len = keys.length
       for (let i = 0; i < len; i++) {

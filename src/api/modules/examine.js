@@ -30,7 +30,7 @@ export default {
   },
   [urlNames.getConfirmMemberList]: { // 信息确认-人员明细
     type: 'get',
-    url: '/api/jg_manage/confirmation/findConfirmationMember',
+    url: '/api/jg_manage/confirmation/confirmWindows',
     keepOriginResponse: true,
     serve: 'organizationManagePC',
     mock: 'examine/getConfirmMemberList.json'

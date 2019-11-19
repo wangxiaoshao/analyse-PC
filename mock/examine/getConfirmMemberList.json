@@ -1,25 +1,23 @@
 {
   "message": "success",
-  "data": {
-    "typeList": [
-      {
-        "total": "2",
-        "text": "在职"
-      },
-      {
-        "total": "1",
-        "text": "挂职"
-      },
-      {
-        "total": "1",
-        "text": "兼职"
-      },
-      {
-        "total": "1",
-        "text": "调出"
-      }
-    ]
-  },
+  "data": [
+    {
+      "keyName": "单位名称",
+      "valueName": "呵呵"
+    },
+    {
+      "keyName": "单位主要领导",
+      "valueName": "渣渣辉"
+    },
+    {
+      "keyName": "单位领导人数",
+      "valueName": "1"
+    },
+    {
+      "keyName": "单位兼职人数",
+      "valueName": "1"
+    }
+  ],
   "status": 0,
-  "timestamp": "2019-10-31 16:49:03"
+  "timestamp": "2019-11-11 18:02:33"
 }

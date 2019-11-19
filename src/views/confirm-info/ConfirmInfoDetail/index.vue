@@ -6,8 +6,6 @@
                 :operateWidth="operateWidth"
                 :operate="operate"
                 :tableData="tableData">
-      <template slot-scope="{slotScope}" slot="status">
-      </template>
     </site-table>
   </div>
 </template>

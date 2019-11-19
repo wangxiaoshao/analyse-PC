@@ -7,7 +7,8 @@ const app = {
     windowWidth: document.body.offsetWidth,
     breadcrumb: [],
     pageBreadcrumb: [],
-    dicList: []
+    dicList: [],
+    option: {}
   },
   mutations: {
     [types.SET_USER_INFO] (state, user) {
@@ -27,6 +28,9 @@ const app = {
     },
     [types.DIC_LIST] (state, val) {
       state.dicList = val
+    },
+    [types.GET_OPTION] (state, val) {
+      state.option = val
     }
   }
 }
