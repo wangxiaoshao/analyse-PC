@@ -6,7 +6,7 @@ const tableConfig = {
     label: '字典名称',
     sortable: false,
     showOverflowTooltip: false,
-    minWidth: 100
+    minWidth: 50
   },
   id: {
     key: 'id',
@@ -14,7 +14,7 @@ const tableConfig = {
     label: '字典ID',
     sortable: false,
     showOverflowTooltip: false,
-    minWidth: 100
+    minWidth: 50
   },
   description: {
     key: 'description',

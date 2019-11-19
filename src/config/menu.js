@@ -152,7 +152,7 @@ export default {
     {
       'menuId': '53',
       'name': '修改密码',
-      'path': '/parameter',
+      'path': '/pass-change',
       'type': 1
     },
     {
