@@ -145,5 +145,6 @@ export default {
   findRoleList: 'findRoleList',
   getRoleBindUserList: 'getRoleBindUserList',
   saveRoleBindUser: 'saveRoleBindUser',
+  findAuthorityManageList: 'findAuthorityManageList', // 权限配置列表
   findUserAccountByUid: 'findUserAccountByUid'
 }
