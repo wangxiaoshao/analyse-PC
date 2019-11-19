@@ -28,5 +28,14 @@ export default {
     headers: {
       'Content-Type': 'application/json'
     }
+  },
+  /*
+  * 权限配置列表 */
+  [urlNames.findAuthorityManageList]: {
+    type: 'get',
+    url: '/api/jg_manage/role/findAuthorityManageList',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    serve: 'organizationManagePC',
+    showLoading: true
   }
 }
