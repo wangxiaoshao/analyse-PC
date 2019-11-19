@@ -285,7 +285,7 @@ export default {
       this.$refs[ruleForm].validate((valid) => {
         if (valid) {
           api[urlNames['createDepartment']](this.ruleForm).then((res) => {
-            this.$message.success(`添加成功`)
+            this.$message.success(`保存成功`)
             this.goBack()
           }, (error) => {
 

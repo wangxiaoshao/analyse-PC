@@ -136,7 +136,7 @@ export default {
             }
           }
           api[urlNames['createViewNode']](data).then((res) => {
-            this.$message.success(`添加成功`)
+            this.$message.success(`保存成功`)
             this.goBack()
             console.log(res)
           }, (error) => {
