@@ -10,12 +10,6 @@
       highlight-current-row
       style="width: 100%">
       <el-table-column
-        label="序号"
-        type="index"
-        align="center"
-        width="50">
-      </el-table-column>
-      <el-table-column
         label="名称"
       align="center">
         <template slot-scope="scope">
@@ -28,6 +22,17 @@
         property="memberId"
         label="成员ID"
         align="center">
+      </el-table-column>
+      <el-table-column
+        label="成员类型"
+        align="center">
+        <template slot-scope="scope">
+            <div>
+              <span v-if="scope.row.nodeType ===1">单位</span>
+              <span v-if="scope.row.nodeType ===2">部门</span>
+              <span v-if="scope.row.nodeType ===3">人员</span>
+            </div>
+        </template>
       </el-table-column>
       <el-table-column
         label="操作"
