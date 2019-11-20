@@ -94,7 +94,7 @@
             </div>
           </el-form-item>
           <!--:rules="[{ required: true, message: '请选择身份类型'}]"-->
-          <el-form-item label="身份类型" prop="userType">
+          <el-form-item label="身份类型" prop="userType" :rules="[{ required: true, message: '请选择身份类型'}]">
             <el-select placeholder="请选择身份类型" v-model="userDetail.userType" @change="getIdentityType">
               <el-option
                 v-for="item in userTypeOptions"
