@@ -35,7 +35,7 @@
         <!--          </el-transfer>-->
         <!--        </div>-->
         <div class="member-list">
-          <div v-if="!seleceDialog.isSingleSelect" class="member-panel" :class="seleceDialog.notOnlyPerson?memberstyle:noorgstyle">
+          <div v-if="!seleceDialog.isSingleSelect&&seleceDialog.notOnlyPerson" class="member-panel" :class="seleceDialog.notOnlyPerson&&seleceDialog.isOnlyOrg?memberstyle:noorgstyle">
             <el-checkbox :indeterminate="isIndeterminate" v-model="checkAllMember" @change="handleCheckAllMemberChange">
               选择人员
             </el-checkbox>
@@ -43,13 +43,13 @@
               <el-checkbox v-for="item in memberList" :label="item.uid" :key="item.uid">{{item.name}}</el-checkbox>
             </el-checkbox-group>
           </div>
-          <div class="member-panel" v-if="seleceDialog.isSingleSelect">
+          <div class="member-panel" v-if="seleceDialog.isSingleSelect&&seleceDialog.notOnlyPerson">
             <p>选择人员</p>
             <el-radio-group @change="singleChecked" :class="seleceDialog.notOnlyPerson?memberstyle:singlecheck"  v-model="checkedMemberList">
               <el-radio :key="item.uid" v-for="item in memberList" :label="item.uid">{{item.name}}</el-radio>
             </el-radio-group>
           </div>
-          <div class="dep-panel" v-if="seleceDialog.notOnlyPerson" :class="{orgstyle:seleceDialog.notOnlyPerson}">
+          <div class="dep-panel" v-if="!seleceDialog.isSingleOrgSelect&&seleceDialog.isOnlyOrg" :class="seleceDialog.notOnlyPerson&&seleceDialog.isOnlyOrg?memberstyle:orgstyle">
             <el-checkbox :indeterminate="isIndeterminateOrg" v-model="checkAllOrg" @change="handleCheckAllOrgChange">
               选择单位/部门
             </el-checkbox>
@@ -57,15 +57,21 @@
               <el-checkbox v-for="item in orgList" :label="item.id" :key="item.id">{{item.name}}</el-checkbox>
             </el-checkbox-group>
           </div>
+          <div class="dep-panel" v-if="seleceDialog.isSingleOrgSelect&&seleceDialog.isOnlyOrg">
+            <p>选择单位/部门</p>
+            <el-radio-group @change="singleCheckedOrg" :class="seleceDialog.notOnlyPerson?memberstyle:singlecheck"  v-model="checkedMemberList">
+              <el-radio :key="item.uid" v-for="item in orgList" :label="item.uid">{{item.name}}</el-radio>
+            </el-radio-group>
+          </div>
         </div>
         <div class="select-member">
-          <div class="member-panel" :class="seleceDialog.notOnlyPerson?memberstyle:noorgstyle">
+          <div class="member-panel" v-if="seleceDialog.notOnlyPerson" :class="seleceDialog.notOnlyPerson&&seleceDialog.isOnlyOrg?memberstyle:noorgstyle">
             <p>已选人员:</p>
             <el-checkbox-group v-model="selectedMenbersID" @change="handleCheckedSelectChange">
               <el-checkbox  v-for="item in selectedMenbers" :label="item.uid" :key="item.uid">{{item.name}}</el-checkbox>
             </el-checkbox-group>
           </div>
-          <div class="dep-panel" v-if="seleceDialog.notOnlyPerson" :class="{orgstyle:seleceDialog.notOnlyPerson}">
+          <div class="dep-panel" v-if="seleceDialog.isOnlyOrg" :class="seleceDialog.notOnlyPerson&&seleceDialog.isOnlyOrg?memberstyle:orgstyle">
             <p>已选单位/部门:</p>
             <el-checkbox-group v-model="selectedOrgID" @change="handleCheckedSelectOrgChange">
               <el-checkbox v-for="item in selectedOrg" :label="item.id" :key="item.id">{{item.name}}</el-checkbox>
@@ -89,7 +95,8 @@ import { api, urlNames } from '@src/api'
 //     selectMenmberFlag: false, // 显示弹窗，
 //     isAllData: true, // 是否需完整数据-默认为不需要（false，只包含用户id）
 //     notOnlyPerson: false, // 是否只选人，默认为false（只选人），true可以选择单位和部门
-//     isSingleSelect: false // 是否为单选框  false为多选（默认），true为单选
+//     isSingleSelect: false // 是否为单选框  false为多选（默认），true为单选(isOnlyOrg为true时部门/单位单选)
+//     isOnlyOrg: false //  是否只选部门/单位 false为不是只选部门，true为只选部门
 // }
 export default {
   name: 'Candidate',
@@ -136,10 +143,12 @@ export default {
       } else {
         this.memberData = this.selectedMenbersID
       }
-      if (this.seleceDialog.notOnlyPerson) {
+      if (this.seleceDialog.notOnlyPerson && this.seleceDialog.isOnlyOrg) {
         this.$emit('dialogReturnMembersInfo', this.memberData, this.selectedOrg)
-      } else {
+      } else if (this.seleceDialog.notOnlyPerson) {
         this.$emit('dialogReturnMembersInfo', this.memberData)
+      } else if (this.seleceDialog.isOnlyOrg) {
+        this.$emit('dialogReturnMembersInfo', this.selectedOrg)
       }
       this.checkedMemberList = this.selectedMenbers = this.selectedMenbers = this.selectedOrgID = this.selectedOrg = this.memberData = []
       this.$emit('closeselectMenmber')
@@ -212,7 +221,7 @@ export default {
     },
     // 节点被点击时
     handleNodeClick (node) {
-      if (this.seleceDialog.notOnlyPerson) {
+      if (this.seleceDialog.isOnlyOrg) {
         this.findcheckNodeTree(node.id)
       }
       // （1:分类结点、3:部门结点、2:单位结点）
@@ -283,7 +292,7 @@ export default {
     handleCheckedSelectOrgChange (value) {
       // this.selectedOrg = this.selectedOrg.filter(item => value.indexOf(item.id) > -1)
     },
-    // 单选时的操作
+    // 单选时的操作--人员
     singleChecked () {
       let that = this
       that.selectedMenbers = that.selectedMenbersID = []
@@ -292,7 +301,9 @@ export default {
         return x.uid === that.selectedMenbersID[0]
       })
       that.selectedMenbers = { ...list }
-    }
+    },
+    // 单选操作--部门/单位
+    singleCheckedOrg () {}
   }
 }
 </script>

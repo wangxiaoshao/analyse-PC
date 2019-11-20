@@ -1,7 +1,7 @@
 <template>
     <div class="group-management">
       <div class="group-operation">
-        <el-select v-model="type" placeholder="请选择" @change="typeChange">
+        <el-select v-model="groupType" placeholder="请选择" @change="typeChange">
           <el-option
             v-for="item in options"
             :key="item.value"
@@ -85,7 +85,7 @@ export default {
         description: '',
         removed: true
       },
-      type: '',
+      groupType: '1',
       options: [{
         value: '1',
         label: '本单位'
@@ -100,7 +100,7 @@ export default {
     }
   },
   created () {
-    this.getGroupList(1, 10, '')
+    this.getGroupList(1, 10, '1')
   },
   methods: {
     getGroupList (page, limt, type) {
