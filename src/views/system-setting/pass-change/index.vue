@@ -4,8 +4,11 @@
       <el-col :span="6">
         <div class="account-info">
           <p>账号信息</p>
-          <div v-for="index in [1,2,3]" :key="index">
-            <el-button>管理员</el-button>
+          <div v-for="(item, index) in accountInfoList" :key="item.id">
+            <el-button
+              @click="selectAccount(item)"
+              :autofocus="index === 0">{{item.name}}
+            </el-button>
           </div>
         </div>
       </el-col>
@@ -14,7 +17,7 @@
           <el-tab-pane label="修改密码" name="first">
             <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
               <div :style="{margin: '20px'}" class="account-name">
-                <i class="el-icon-user" :style="{marginRight: '20px'}">{{userName}}</i>
+                <i class="el-icon-user" :style="{marginRight: '20px'}">{{currentSetAccount.name}}</i>
               </div>
               <el-form-item label="原密码" prop="oldPass">
                 <el-input
@@ -57,6 +60,7 @@
 
 <script type="text/ecmascript-6">
 import { api, urlNames } from '@src/api'
+import { mapState } from 'vuex'
 
 export default {
   data () {
@@ -91,6 +95,8 @@ export default {
       }
     }
     return {
+      accountInfoList: [],
+      currentSetAccount: {},
       activeName: 'first',
       userName: '管理员管理员',
       passRule: '密码规则:必须含数字、字母(区分大小写)、特殊字符(如！@#$_等)，且长度不少于8位。如：bgt123@SZF',
@@ -112,14 +118,48 @@ export default {
       }
     }
   },
+  created () {
+    console.log(this.app['option'])
+    let uid = this.app['option']
+    api[urlNames['findUserAccountByUid']]().then((res) => {
+      if (res && res.data) {
+        this.accountInfoList = res.data
+        this.currentSetAccount = res.data[0]
+      }
+    }, (error) => {
+      this.accountInfoList = []
+    })
+  },
+  computed: {
+    ...mapState(['app'])
+  },
   methods: {
+    selectAccount (val) {
+      console.log(val)
+      this.currentSetAccount = val
+    },
     handleClick (tab, event) {
-      console.log(tab, event)
+      // console.log(tab, event)
     },
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!')
+          let data = {
+            'accountId': this.currentSetAccount.id,
+            'oldPwd': this.ruleForm.oldPass,
+            'newPwd': this.ruleForm.newPass,
+            'repeatPwd': this.ruleForm.checkPass
+          }
+          api[urlNames['updatePwd']](data).then((res) => {
+            console.log(res)
+            let status = res && res.status ? res.status : ''
+            this.$message({
+              message: status === 0 ? '修改成功' : '修改失败',
+              type: status === 0 ? 'success' : 'error'
+            })
+          }, () => {
+
+          })
         } else {
           console.log('error submit!!')
           return false
