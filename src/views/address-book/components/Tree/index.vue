@@ -36,7 +36,7 @@ export default {
     }
   },
   created () {
-
+  // this.getDepartmentPerson()
   },
   methods: {
     handleCheckChange (data) {
@@ -85,14 +85,32 @@ export default {
       }).catch(err => {
         console.log(err)
       })
+    },
+
+    /**
+     * 查询部门下的人员
+     */
+    getDepartmentPerson(){
+    api[urlNames['getDepartmentPersonList']]({
+      departmentId:''
+    }).then(res => {
+        // if (res.data.length > 0) {
+        //   res.data.forEach(element => {
+        //     this.childrenTree.push(element)
+        //   })
+        // }
+        console.log(111)
+      }).catch(err => {
+        console.log(err)
+      })
     }
   },
   watch: {
     thisUnit (newvalue, oldvalue) {
-      this.this_unit = newvalue
+      this.this_unit = newvalue;
     }
-  }
-}
+  },
+};
 </script>
 <style lang="less">
 @import 'index';

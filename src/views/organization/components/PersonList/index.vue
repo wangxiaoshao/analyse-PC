@@ -40,7 +40,8 @@
         class="demo-ruleForm">
         <el-form-item label="调出单位">
           <span class="name-span">{{orgName}}</span>
-          <el-button @click="addMainLeader">选择调出单位</el-button>
+          <span class="name-span" v-if="depName !== ''">/{{depName}}</span>
+          <el-button @click="addMainLeader">选择调出单位/部门</el-button>
         </el-form-item>
         <el-form-item label="申请原因" prop="reason">
           <el-input type="textarea" v-model="formCallout.reason"></el-input>
@@ -149,9 +150,9 @@ export default {
       removeFlag: false,
       calloutFlag: false,
       orgName: '',
+      depName: '',
       ruleForm: {
         identityId: '',
-        type: '',
         reason: ''
       },
       // 人员调出表单
@@ -288,7 +289,6 @@ export default {
     calloutDialog (row) {
       this.formCallout.identityId = row.identityId
       this.formCallout.uid = row.uid
-      // this.formCallout.type = row.type
       this.calloutFlag = true
     },
     // 解除
@@ -304,7 +304,7 @@ export default {
           api[urlNames['calloutUser']](this.formCallout).then((res) => {
             this.$message.success(`调出成功`)
             this.calloutFlag = false
-            console.log(res)
+            this.getGrid()
             this.fromInit()
           }, (error) => {
 
@@ -320,7 +320,7 @@ export default {
             this.$message.success(`解除成功`)
             this.calloutFlag = false
             this.fromInit()
-            console.log(res)
+            this.getGrid()
           }, (error) => {
 
           })
@@ -331,8 +331,22 @@ export default {
     // TODO选人组件完善后需要修改选择单位或单位下的部门
     dialogReturnMembersInfo (data, id) {
       console.log('danw', id)
-      this.formCallout.orgId = id[0].bindId
-      this.orgName = id[0].name
+      if (id[0].nodeType === 2) {
+        this.formCallout.orgId = id[0].bindId
+        this.orgName = id[0].name
+      }
+      if (id[0].nodeType === 3) {
+        this.formCallout.deptId = id[0].bindId
+        api[urlNames['findDepartmentById']]({
+          id: id[0].bindId
+        }).then((res) => {
+          console.log(33333, res.data)
+          this.formCallout.orgId = res.data.orgId
+          this.orgName = res.data.orgName
+          this.depName = res.data.name
+        }, (error) => {
+        })
+      }
     },
     // 关闭选人弹窗
     closeselectMenmber () {

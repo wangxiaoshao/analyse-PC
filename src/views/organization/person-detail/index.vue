@@ -174,8 +174,8 @@ export default {
         this.userInfo.user.nation = parseInt(res.data.nation)
         this.userInfo.user.politicalParty = parseInt(res.data.politicalParty)
         this.userInfo.user.signed = res.data.signed
-        this.userInfo.identity.type = parseInt(res.data.userType)
-        this.userInfo.identity.postName = res.data.postName
+       /* this.userInfo.identity.type = parseInt(res.data.userType)
+        this.userInfo.identity.postName = res.data.postName*/
         this.userInfo.user.userState = res.data.userState
         this.userInfo.user.userType = parseInt(res.data.userType)
         if (this.$route.name === 'PersonEdit') {
@@ -203,11 +203,12 @@ export default {
         identityId: this.$route.params.identityId
       }).then((res) => {
         console.log(res.data)
-        //this.userInfo.identity.departmentId = res.data.id
+        this.userInfo.identity.departmentId = res.data.departmentId
         this.userInfo.identity.id = res.data.id
         this.userInfo.identity.orgId = res.data.orgId
         this.userInfo.identity.postName = res.data.postName
         this.userInfo.identity.type = parseInt(res.data.type)
+        this.userInfo.identity.dutyName = res.data.dutyName
       }, (error) => {
         this.$message.error(`没有内容`)
       })
