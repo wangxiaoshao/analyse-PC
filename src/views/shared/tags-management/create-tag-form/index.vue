@@ -20,7 +20,7 @@
             <el-form-item label="标签名称">
               <el-input v-model="labelForm.name"></el-input>
             </el-form-item>
-            <el-form-item v-if="flagdata.flag!==1" label="父级标签">
+            <el-form-item v-if="flagdata.flag!==1" label="上级标签">
               <el-input disabled="" v-model="flagdata.title"></el-input>
             </el-form-item>
           </el-form>

@@ -78,7 +78,7 @@ export default {
      * 单位查询
      * */
   [urlNames.findOrganizationList]: {
-    type: 'post',
+    type: 'get',
     url: '/api/jg_manage/organ/findOrganizationList',
     keepOriginResponse: true,
     showLoading: true,
@@ -97,11 +97,11 @@ export default {
     mock: '/findDepartmentList.json'
   },
   /*
-     * 部门查询
+     * 人员查询
      * */
   [urlNames.findMemberList]: {
     type: 'get',
-    url: '/api/jg_manage/user/findUserByOrgAndDeptAndLabelAndUserName',
+    url: '/api/jg_manage/user/findUserList',
     keepOriginResponse: true,
     showLoading: false,
     serve: 'organizationManagePC',
@@ -123,6 +123,15 @@ export default {
     keepOriginResponse: true, // 返回数据是否保留后端response数据格式
     serve: 'organizationManagePC', // 该请求对应服务端，服务端名字在url-prefix中配置
     mock: '/findLabel.json' // development模式下，本地mock数据地址
+  },
+
+  // 标签查询
+  [urlNames.findLabelByType]: {
+    type: 'get',
+    url: '/api/jg_manage/label/findLabelByType',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    serve: 'organizationManagePC',
+    mock: '/findLabelByType.json' // development模式下，本地mock数据
   },
 
   // 应用管理

@@ -7,15 +7,13 @@
     <!--表格-->
     <site-table :tableConfig="tableConfig"
                 :tableHeight="tableHeight"
-                :tableIndex="tableIndex"
-                :pageConfig="pageConfig"
                 :operateWidth="operateWidth"
                 :operate="operate"
                 :tableData="tableData">
-      <el-table-column label="启用状态" align="center">
+      <el-table-column label="启用状态" align="center" min-width="50">
         <template slot-scope="scope">
-          <span v-show="scope.row.remove === 1" class="text-green">启用</span>
-          <span v-show="scope.row.remove !== 1" class="text-red">禁用</span>
+          <span v-show="scope.row.removed === 1" class="text-green">启用</span>
+          <span v-show="scope.row.removed !== 1" class="text-red">禁用</span>
         </template>
       </el-table-column>
       <template slot-scope="{slotScope}" slot="operate">
@@ -68,9 +66,7 @@ export default {
       type: '',
       tableData: [],
       tableHeight: null,
-      pageConfig: {},
-      tableIndex: true,
-      operateWidth: 200,
+      operateWidth: 100,
       tableCheckbox: true,
       operate: true,
       dictionaryType: '',
@@ -121,7 +117,6 @@ export default {
         page: this.page.current,
         limit: this.page.limit
       }
-      this.pageConfig = data
       let keys = Object.keys(this.searchQuery)
       let len = keys.length
       for (let i = 0; i < len; i++) {

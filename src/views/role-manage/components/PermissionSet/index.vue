@@ -26,11 +26,13 @@
 
 <script>
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
+import { api, urlNames } from '@src/api'
 export default {
-  mixins: [ handleBreadcrumb],
+  mixins: [handleBreadcrumb],
   props: ['setFlag'],
   data () {
     return {
+      ManageList: [], // 权限列表
       data: [{
         id: 1,
         label: '一级 1',
@@ -76,11 +78,19 @@ export default {
     }
   },
   created () {
-
   },
   methods: {
     closeDialog () {
       this.$emit('getSetFlag', false)
+    },
+    findAuthorityManageList (roleId) {
+      api[urlNames['findAuthorityManageList']]({
+        roleId: roleId
+      }).then((res) => {
+        if (res.status === 0) {
+          this.ManageList = res.data
+        }
+      })
     }
   }
 }

@@ -151,8 +151,8 @@ export default {
     },
     {
       'menuId': '53',
-      'name': '账号管理',
-      'path': '/account-management',
+      'name': '修改密码',
+      'path': '/pass-change',
       'type': 1
     },
     {

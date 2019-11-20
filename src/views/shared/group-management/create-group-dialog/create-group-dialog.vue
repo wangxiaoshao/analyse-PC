@@ -17,9 +17,9 @@
           </el-form-item>
           <el-form-item label="选择单位">
             <el-select v-model="groupFrom.ownerType" placeholder="请选类型">
-              <el-option label="单位" :value="1"></el-option>
-              <el-option label="部门" :value="2"></el-option>
-              <el-option label="用户" :value="3"></el-option>
+              <el-option label="本单位" :value="1"></el-option>
+              <el-option label="本部门" :value="2"></el-option>
+              <el-option label="本人" :value="3"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="是否启用">

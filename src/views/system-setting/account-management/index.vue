@@ -13,7 +13,7 @@ import class from '@vue/cli-service';
         </el-col>
         <el-col :span="16">
             <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-              <el-menu-item index="1">处理中心</el-menu-item>
+              <el-menu-item index="1">修改密码</el-menu-item>
             </el-menu>
         </el-col>
       </el-row>

@@ -29,11 +29,9 @@
           <div>
             <el-breadcrumb separator="/" style="background:#F5F6F8;padding:20px;">
               <el-breadcrumb-item>{{navigation1.name}}</el-breadcrumb-item>
-              <el-breadcrumb-item v-for="(item,index) in navigation" :key="index" class='class1 class2' >
+              <el-breadcrumb-item v-for="(item,index) in navigation" :key="index" >
                 <a v-if="navigation.length-1!==index"  @click.prevent='goCurrentNodeDetail(item.id, index)'>{{item.name}}</a>
                 <span v-if="navigation.length-1===index" href="" disabled >{{item.name}}</span>
-                <!-- <span :class="color?'class1':'class2'"></span> -->
-                <!-- <span v-if="index<navigation.length-1?'(:class='class1')':'(:class='class2')'"></span> -->
                 
               </el-breadcrumb-item>
             </el-breadcrumb>
@@ -67,6 +65,7 @@ import otherAddressBookTree from './components/Maintree/index'
 import otherUnitAddressBook from './unit-address-book/index'
 import { api, urlNames } from '@src/api'
 import { type } from 'os';
+import { getDefaultSettings } from 'http2';
 export default {
   name: 'AddressBook',
   mixins: [handleTable],
@@ -104,7 +103,7 @@ export default {
   },
   created () {
     this.getAddressBook(),
-    this.findNodeTree()
+    // this.findNodeTree()
     this.navigation1.name="本单位通讯录"
     
   },
@@ -114,13 +113,9 @@ export default {
           uid: this.userId
         
         }).then(res => {
-          // console.log("----------11")
-          // console.log(res)
-          // console.log("----------22")
           this.thisUnit = res.data
           this.handleNodeClickTree(this.thisUnit)
       })
-      // console.log(uid)
     },
     findNodeTree (parentId) {
       api[urlNames['getTree']]({
@@ -146,8 +141,6 @@ export default {
       this.treeList = node
       this.navigation = []
       this.navigation.push({ id: node.id, name: node.name })
-      // console.log(1212)
-      // console.log(this.navigation)
       this.getDetail(node.id)
       
     },
@@ -183,18 +176,27 @@ export default {
       } else if (e === 2) {
         this.findNodeTree()
         this.navigation1.name="其他单位通讯录"
-        
       }
+      // console.log(1111)
       // console.log(this.navigation)
     },
-    //  findNodeTree (parentId) {
-    //   api[urlNames['getTree']]({
-    //     parentId: parentId,
-    //     viewId: -1
-    //   }).then((res) => {
-    //     this.nodeTree = res.data
-    //   })
-    // },
+     findNodeTree (parentId) {
+      api[urlNames['getTree']]({
+        parentId: parentId,
+        viewId: -1,
+      }).then((res) => {
+
+        this.nodeTree = res.data
+        // debugger
+        // get-default-node
+        getDefaultNode(res.data[0].name)
+          // this.handleNodeClickTree(this.nodeTree[0])
+      console.log(1111)
+      console.log(res)
+    
+      })
+    },
+
      
   }
 

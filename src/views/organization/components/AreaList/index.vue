@@ -1,11 +1,12 @@
 <template>
   <div>
     <el-cascader
-      :multiple="false"
       :options="options"
       :props="props"
-      v-model="areaValue"
       style="width: 100%"
+      v-model="areaValue"
+      ref="areaValue"
+      @change="getAreaValue"
     >
     </el-cascader>
   </div>
@@ -15,16 +16,18 @@
 import { api, urlNames } from '@src/api'
 
 export default {
+  props: ['areaOption'],
   data () {
     return {
-      areaValue: [],
+      areaValue: [520000, 520100],
       options: [], // 第一次加载数据
       value: '',
       props: {
+        multiple: false,
         lazy: true,
         children: 'children',
         label: 'name',
-        value: null,
+        value: 'id',
         lazyLoad (node, resolve) {
           if (!node.data) {
             return
@@ -35,7 +38,6 @@ export default {
             }).then((res) => {
               resolve(res.data)
               this.value = node.data.id
-              this.$emit('getAreaId', this.value)
             })
           }
         }
@@ -52,6 +54,9 @@ export default {
       }).then((res) => {
         this.options = res.data
       })
+    },
+    getAreaValue (val) {
+      this.$emit('getAreaId', val[val.length - 2])
     }
   }
 }

@@ -15,7 +15,7 @@
               <el-col :span="12">
                 <div class="grid-content bg-purple-light">
                   <el-form-item label="视图管理员">
-                    <el-select v-model="ViewFrom.roleBindUserIds" multiple collapse-tags placeholder="请选择">
+                    <el-select v-model="ViewFrom.roleBindUserIds" multiple placeholder="请选择">
                       <el-option
                         v-for="item in adminList"
                         :key="item.uid"
@@ -54,14 +54,13 @@
         <div class="from">
           <el-form ref="form" :model="form" label-width="100px">
             <el-row :gutter="10">
-              <el-col :span="7">
+              <el-col :span="8">
                 <div class="grid-content bg-purple">
                   <el-form-item label="选择组织机构">
                     <div class="select-org">
                       <el-tree
                         ref="selecttree"
                         :data="nodeTree"
-                        show-checkbox
                         node-key="id"
                         draggable
                         lazy
@@ -85,24 +84,26 @@
                   </el-form-item>
                 </div>
               </el-col>
-              <el-col :span="7" :offset="2">
-                <div class="grid-content bg-purple-light select-org-panel">
-                  <div class="select-btn">
-                    <p style="font-size: 14px;color: #606266;padding: 0 10px;">新机构视图</p>
-                    <!--                      <p><el-button type="primary" size="small">新机构视图</el-button></p>-->
-                    <!--                      <p><el-button size="small">旧机构视图</el-button></p>-->
-                  </div>
-                  <div class="select-org">
+              <el-col :span="8" :offset="2">
+                <div class="grid-content bg-purple-light">
+<!--                select-org-panel   <div class="select-btn">-->
+<!--                    <p style="font-size: 14px;color: #606266;padding: 0 10px;">新机构视图</p>-->
+<!--                                          <p><el-button type="primary" size="small">新机构视图</el-button></p>-->
+<!--                                          <p><el-button size="small">旧机构视图</el-button></p>-->
+<!--                  </div>-->
+                  <el-form-item label="新机构视图">
+                  <div class="select-org select-org123" ref="coordinates">
                     <el-tree
+                      class="left123"
                       :data="viewNodeTree"
-                      show-checkbox
                       node-key="id"
+                      ref="cheight"
                       draggable
                       lazy
                       :load="loadOrgNode"
                       :props="defaultProps"
                       :check-strictly="true"
-                      @node-drag-end="nodeDragEnd"
+                      @node-drag-over="nodeDragEnd"
                       :expand-on-click-node="false"
                       :default-checked-keys="checkedKeys">
                         <span class="custom-tree-node" slot-scope="{ node, data }">
@@ -113,6 +114,7 @@
                          </span>
                     </el-tree>
                   </div>
+                  </el-form-item>
                 </div>
               </el-col>
             </el-row>
@@ -204,6 +206,11 @@ export default {
     }
   },
   methods: {
+    // 获取树的左上点的坐标
+    getCoordinates () {
+      console.log(window.screenY, 'window.screenY')
+      return [{ top: this.$refs.coordinates.getBoundingClientRect().top }, { left: this.$refs.coordinates.getBoundingClientRect().left }, { x: window.screenX }, { y: window.screenY }]
+    },
     // 创建视图基本信息
     createView () {
       if (this.ViewFrom.name.trim().length === 0) {
@@ -339,8 +346,16 @@ export default {
     },
     // 拖拽结束时触发的事件--原来机构树
     nodedragend (Node, lastNode, lastTree, e) {
-      console.log(e.screenX, e.screenY)
-      if (e.screenX > 1020 && e.screenX < 1330 && e.screenY > 350 && e.screenY < 725) {
+      let coordinates = this.getCoordinates()
+      /*
+      coordinates
+      top:coordinates元素距离顶部的距离
+      left:coordinates元素距离左侧的距离
+      x:浏览器的位置-左侧
+      y:浏览器的位置-顶部
+      */
+      let boxHeight = this.$refs.cheight.$el.scrollHeight
+      if (e.screenX > coordinates[1].left + coordinates[2].x + 220 && e.screenX < coordinates[1].left + coordinates[2].x + 530 && e.screenY > coordinates[0].top + coordinates[3].y + 160 && e.screenY < coordinates[0].top + coordinates[3].y + 240 + boxHeight) {
         this.viewNodeDraft.id = Node.data.id
         Node.data.parentId = this.viewNodeDraft.parentId = '-1'
         this.viewNodeDraft.name = Node.data.name

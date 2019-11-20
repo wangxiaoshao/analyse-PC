@@ -226,13 +226,6 @@ export default {
     serve: 'organizationManagePC',
     mock: '/findAreaList.json' // development模式下，本地mock数据
   },
-  [urlNames.findLabelByType]: {
-    type: 'get',
-    url: '/api/jg_manage/label/findLabelByType',
-    keepOriginResponse: true, // 是否保留后端返回数据格式
-    serve: 'organizationManagePC',
-    mock: '/findLabelByType.json' // development模式下，本地mock数据
-  },
   [urlNames.findOrganizationById]: {
     type: 'get',
     url: '/api/jg_manage/organ/findOrganizationById',

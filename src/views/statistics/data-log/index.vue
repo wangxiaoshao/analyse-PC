@@ -1,7 +1,7 @@
 <template>
   <div class="data-log">
     <!--时间轴-->
-    <el-row :style="{paddingLeft: '60px'}">
+    <el-row :style="{paddingLeft: '60px', paddingTop: '30px'}">
       <el-col :span="4">
         <div class="block">
           <el-select v-model="selectValue"
@@ -38,7 +38,8 @@
         </div>
       </el-col>
     </el-row>
-    <el-row>
+    <div v-if="newsList && newsList.length === 0" class="noDataList">暂无数据</div>
+    <el-row v-if="newsList && newsList.length > 0">
       <el-col :span="14" :style="{ marginLeft: '80px', marginTop: '20px'}">
         <div class="timeLine">
           <el-timeline :reverse="reverse">
@@ -136,19 +137,19 @@ export default {
       }
       this.date = this.$options.filters['date'](todayDate.getTime(), 'yyyy-MM-dd')
       if (this.date) {
-        this.getGrid(this.date)
+        this.getGrid()
       }
     },
     dateChange (val) {
       if (val) {
-        let type = this.dateType === 'month' ? 4 : 0
-        this.getGrid(val, type)
+        this.date = val
+        this.getGrid()
       }
     },
-    getGrid (date, type) {
+    getGrid () {
       let data = {
-        date: date,
-        type: type || 0, // 后端需要传输的数据类型 月份type：4 || 天：0
+        date: this.date,
+        type: this.dateType === 'month' ? 4 : 0, // 后端需要传输的数据类型 月份type：4 || 天：0
         page: this.page.current,
         limit: this.page.limit
       }

@@ -41,7 +41,24 @@ export default {
       api[urlNames['getOrgUserTxlList']](data).then(res => {
         this.tableData = res.data
       })
-    }
+    },
+
+     // 其他单位通讯录查询部门下的所有人员
+    findDepartmentMembers (deptId) {
+      api[urlNames['findDepartmentMembers']]({
+        deptId: deptId
+      }).then((res) => {
+        this.memberList = res.data
+      })
+    },
+    // 其他单位通讯录查询单位下的所有人员
+    findOrganizationMembers (orgId) {
+      api[urlNames['findOrganizationMembers']]({
+        orgId: orgId
+      }).then((res) => {
+        this.memberList = res.data
+      })
+    },
   },
   watch: {
     personnel (newValue, oldValue) {

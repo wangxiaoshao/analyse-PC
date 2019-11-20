@@ -37,7 +37,6 @@ export default {
   created () {},
   methods: {
     childClick (node) {
-      //  this.personnel = node
       this.$emit('handle-child-click', node)
     }
   }

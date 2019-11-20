@@ -8,9 +8,7 @@ const DictionaryManage = () => import('@src/views/system-setting/dictionary-mana
 const SystemSetting = () => import('@src/views/system-setting/index.vue')
 // 参数配置
 const ParameterSetting = () => import('@src/views/system-setting/parameter-setting/index.vue')
-
-//账号管理
-const AccountManagement=()=>import('@src/views/system-setting/account-management/index.vue')
+const PassChange = () => import('@src/views/system-setting/pass-change/index.vue')
 export default [
   // 权限管理
   {
@@ -38,28 +36,19 @@ export default [
   },
   // 系统设置
   {
-    path: '/system-setting',
-    name: 'SystemSetting',
-    component: SystemSetting,
-    children: [
-      {
-        path: '/dictionary-manage',
-        name: 'DictionaryManage',
-        component: DictionaryManage
-      },
-      {
-        path: '/parameter-setting',
-        name: 'ParameterSettings',
-        component: ParameterSetting
-      }
-    ]
+    path: '/dictionary-manage',
+    name: 'DictionaryManage',
+    component: DictionaryManage
   },
-
-  //账号管理
   {
-    path: '/account-management',
-    name: 'AccountManagement',
-    component: AccountManagement,
+    path: '/parameter-setting',
+    name: 'ParameterSettings',
+    component: ParameterSetting
+  },
+  {
+    path: '/pass-change',
+    name: 'PassChange',
+    component: PassChange
   }
 ]
 

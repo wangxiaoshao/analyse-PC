@@ -20,12 +20,6 @@
           @current-change="handleCurrentChange"
           style="width: 100%">
           <el-table-column
-            label="序号"
-            type="index"
-            align="center"
-            width="50">
-          </el-table-column>
-          <el-table-column
             property="name"
             label="分组名称"
             align="center">
@@ -94,13 +88,13 @@ export default {
       type: '',
       options: [{
         value: '1',
-        label: '单位分组'
+        label: '本单位'
       }, {
         value: '2',
-        label: '部门分组'
+        label: '本部门'
       }, {
         value: '3',
-        label: '个人分组'
+        label: '本人'
       }],
       currentRow: null
     }
