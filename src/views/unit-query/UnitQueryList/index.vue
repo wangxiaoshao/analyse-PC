@@ -91,7 +91,7 @@ export default {
       restaurants: [],
       selectValue: '',
       triggerOnFocus: false,
-      timeout: null,
+      timeout: null
     }
   },
   computed: {

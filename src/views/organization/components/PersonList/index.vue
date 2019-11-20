@@ -101,14 +101,14 @@
             调出
           </el-button>
           <el-button
-            v-if="scope.row.type === 1"
+            v-if="scope.row.type === 1 || scope.row.type === '1'"
             @click.native.prevent="removeDuty(scope.row)"
             type="text"
             size="small">
             解除兼职
           </el-button>
           <el-button
-            v-if="scope.row.type === 2"
+            v-if="scope.row.type === 2 || scope.row.type === '2'"
             @click.native.prevent="removeDuty(scope.row)"
             type="text"
             size="small">

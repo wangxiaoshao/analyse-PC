@@ -1,6 +1,6 @@
 <template>
   <div class="account-manage">
-    <div class="set-default" v-if="isDefaultFlag">
+    <div class="set-default" v-if="accountList.length > 0">
       <div class="default-warn"><i class="el-icon-warning"></i>默认帐号用于您一个帐号全站都能使用，若遇到不能使用的业务系统，请切换身份类型即可。</div>
       设置默认帐号
       <el-select
@@ -98,6 +98,7 @@ export default {
         able: false,
         checkSystem: ['上海']
       },
+      oldFrom: {},
       systemList: ['上海', '北京', '广州', '深圳'],
       addFlag: this.isDefaultFlag,
       activeAccount: '1',
@@ -107,7 +108,13 @@ export default {
       accountSelect: 1
     }
   },
+  created () {
+    this.init()
+  },
   methods: {
+    init () {
+      this.oldFrom = JSON.parse(JSON.stringify(this.addAccount))
+    },
     handleClose (tag) {
       this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1)
     },
@@ -137,6 +144,18 @@ export default {
       console.log(val)
     },
     fromSublime () {
+      let accountObj = {
+        password: this.addAccount.password,
+        removed: this.addAccount.able,
+        appId: [],
+        name: this.addAccount.name,
+        id: '',
+        defaultAccount: null
+      }
+      if (this.addAccount.name !== this.oldFrom.name && this.addAccount.password !== this.oldFrom.password) {
+        debugger
+        this.accountSend.push(accountObj)
+      }
       this.$emit('get-account', this.accountSend)
     },
     lastStep () {

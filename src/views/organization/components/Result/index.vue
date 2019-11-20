@@ -64,7 +64,7 @@ export default {
         nodeType: this.type
       }
       this.loadFlag = true
-      if (this.keyWord !== '') {
+      if (this.keyWord.length > 1) {
         setTimeout(() => {
           api[urlNames['searchViewNode']](data).then(res => {
             this.gridData = res.data

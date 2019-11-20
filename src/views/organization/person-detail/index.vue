@@ -12,10 +12,12 @@
        :post-detail="userInfo.identity"
        :is-default-flag="isDefaultFlag"
        :old-user-info="oldUserInfo"
+       :label-id="userInfo.labelId"
        @get-user="getUser"
        @get-post="getPost"
        @get-uid="getUid"
        @get-defauf="getDefaut"
+       @get-label="getLabelId"
      ></person-manage>
      <!--账号管理-->
      <account-manage
@@ -81,13 +83,13 @@ export default {
         userId: null,
         user: {
           birthday: '',
-          nation: '',
+          nation: null,
           portraitUrl: '',
           sex: null,
           mobile: '',
-          politicalParty: '',
-          qualification: '',
-          positionClass: '',
+          politicalParty: null,
+          qualification: null,
+          positionClass: null,
           officePhone: '',
           idcard: '',
           mobile2: '',
@@ -148,14 +150,12 @@ export default {
         }, (error) => {
           this.$message.error(`没有内容`)
         })
-      }
-      if (this.$route.name === 'PersonEdit') {
-        if (this.$route.params.id) {
-          this.getUserDetail(this.$route.params.id)
-        }
+      } else {
+        this.getUserDetail(this.$route.params.id)
       }
     },
     getUserDetail (id) {
+      this.loading = true
       api[urlNames['findUserById']]({
         id: id
       }).then((res) => {
@@ -168,22 +168,22 @@ export default {
         this.userInfo.user.sex = res.data.sex
         this.userInfo.user.birthday = res.data.birthday
         this.userInfo.user.portraitUrl = res.data.portraitUrl
-        this.userInfo.user.qualification = res.data.qualification
+        this.userInfo.user.qualification = parseInt(res.data.qualification)
         this.userInfo.user.professionalTitle = res.data.professionalTitle
-        this.userInfo.user.positionClass = res.data.positionClass
-        this.userInfo.user.nation = res.data.nation
-        this.userInfo.user.politicalParty = res.data.politicalParty
+        this.userInfo.user.positionClass = parseInt(res.data.positionClass)
+        this.userInfo.user.nation = parseInt(res.data.nation)
+        this.userInfo.user.politicalParty = parseInt(res.data.politicalParty)
         this.userInfo.user.signed = res.data.signed
         this.userInfo.identity.type = res.data.userType
         this.userInfo.identity.postName = res.data.postName
-        this.userInfo.user.qualification = res.data.qualification
-        this.userInfo.user.positionClass = res.data.positionClass
         this.userInfo.user.userState = res.data.userState
         this.userInfo.user.userType = res.data.userType
         if (this.$route.name === 'PersonEdit') {
           this.oldUserInfo = JSON.parse(JSON.stringify(this.userInfo))
+          this.userInfo.userId = res.data.uid
         }
         this.getUserAccount(res.data.uid)
+        this.loading = false
       }, (error) => {
         this.$message.error(`保存失败，请重试`)
       })
@@ -214,6 +214,7 @@ export default {
     // 获取账号
     getAccount (val) {
       // this.userInfo.userAccount = val
+      this.userInfo.userAccount = val
       this.submitForm()
       console.log(5557, this.userInfo.userAccount)
     },
@@ -223,6 +224,9 @@ export default {
     },
     getDefaut (val) {
       this.isDefaultFlag = val
+    },
+    getLabelId (val) {
+      this.userInfo.labelId = val
     },
     // 保存createUser
     submitForm () {

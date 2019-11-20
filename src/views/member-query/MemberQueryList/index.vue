@@ -99,7 +99,7 @@ export default {
       operateWidth: 100,
       tableCheckbox: true,
       operate: true,
-      triggerOnFocus: false,
+      triggerOnFocus: false
     }
   },
   computed: {

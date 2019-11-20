@@ -32,8 +32,8 @@ export default {
       count: 1,
       this_unit: {},
       childrenTree: [],
-      subsetId: null,
-    };
+      subsetId: null
+    }
   },
   created () {
 
@@ -49,50 +49,50 @@ export default {
       setTimeout(() => {
         if (node.level === 0) {
           let treeParent = [{ name: this.thisUnit.name, id: this.thisUnit.id }]
-          return resolve(treeParent);
+          return resolve(treeParent)
         }
         // if (node.level > 3) return resolve([]);
-        var hasChild;
+        var hasChild
         if (this.childrenTree.length > 0) {
-          hasChild = true;
+          hasChild = true
         } else {
-          hasChild = false;
+          hasChild = false
         }
         setTimeout(() => {
-          var data;
+          var data
           if (hasChild) {
             data = this.childrenTree
           } else {
-            data = [];
+            data = []
           }
-          resolve(data);
-        }, 500);
+          resolve(data)
+        }, 500)
       }, 500)
     },
     /**
      * 查询部门下的下级部门
      */
     getTmentChild (subsetId) {
-      this.childrenTree = [];
+      this.childrenTree = []
       api[urlNames['getDepartmentChildtree']]({
-        departmentId: subsetId,
+        departmentId: subsetId
       }).then(res => {
         if (res.data.length > 0) {
           res.data.forEach(element => {
             this.childrenTree.push(element)
-          });
+          })
         }
       }).catch(err => {
         console.log(err)
       })
-    },
+    }
   },
   watch: {
     thisUnit (newvalue, oldvalue) {
-      this.this_unit = newvalue;
+      this.this_unit = newvalue
     }
-  },
-};
+  }
+}
 </script>
 <style lang="less">
 @import 'index';
