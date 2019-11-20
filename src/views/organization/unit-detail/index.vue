@@ -19,21 +19,21 @@
            <el-input v-model="ruleForm.organization.name"></el-input>
            <div class="tip-msg"
                 v-show="this.app.option.options.orgAuditFields.indexOf('name') > -1 && ruleForm.organization.name !== oldFrom.organization.name">
-             该字段修改后需要审核
+             添加或修改该字段需要提交审核
            </div>
          </el-form-item>
          <el-form-item label="单位地址" prop="organization.address">
            <el-input v-model="ruleForm.organization.address"></el-input>
            <div class="tip-msg"
                 v-show="this.app.option.options.orgAuditFields.indexOf('address') > -1 && ruleForm.organization.address !== oldFrom.organization.address">
-             该字段修改后需要审核
+             添加或修改该字段需要提交审核
            </div>
          </el-form-item>
          <el-form-item label="传真号码" prop="organization.fax">
            <el-input v-model="ruleForm.organization.fax"></el-input>
            <div class="tip-msg"
                 v-show="this.app.option.options.orgAuditFields.indexOf('fax') > -1 && ruleForm.organization.fax !== oldFrom.organization.fax">
-             该字段修改后需要审核
+             添加或修改该字段需要提交审核
            </div>
          </el-form-item>
          <el-form-item label="统一单位信用编码" prop="organization.creditId">
@@ -52,7 +52,7 @@
            </el-select>
            <div class="tip-msg"
                 v-show="this.app.option.options.orgAuditFields.indexOf('type') > -1 && ruleForm.organization.type !== oldFrom.organization.type">
-             该字段修改后需要审核
+             添加或修改该字段需要提交审核
            </div>
          </el-form-item>
        </el-col>
@@ -61,14 +61,14 @@
            <el-input v-model="ruleForm.organization.shortName"></el-input>
            <div class="tip-msg"
                 v-show="this.app.option.options.orgAuditFields.indexOf('shortName') > -1 && ruleForm.organization.shortName !== oldFrom.organization.shortName">
-             该字段修改后需要审核
+             添加或修改该字段需要提交审核
            </div>
          </el-form-item>
          <el-form-item label="单位电话" prop="organization.phone">
            <el-input v-model="ruleForm.organization.phone"></el-input>
            <div class="tip-msg"
                 v-show="this.app.option.options.orgAuditFields.indexOf('phone') > -1 && ruleForm.organization.phone !== oldFrom.organization.phone">
-             该字段修改后需要审核
+             添加或修改该字段需要提交审核
            </div>
          </el-form-item>
          <el-form-item
@@ -78,15 +78,18 @@
            <el-input v-model="ruleForm.organization.zipCode" onkeyup="this.value=this.value.replace(/[^\d.]/g,'');" maxlength="6"></el-input>
            <div class="tip-msg"
                 v-show="this.app.option.options.orgAuditFields.indexOf('zipCode') > -1 && ruleForm.organization.zipCode !== oldFrom.organization.zipCode">
-             该字段修改后需要审核
+             添加或修改该字段需要提交审核
            </div>
          </el-form-item>
          <el-form-item label="所属区域" prop="areaId">
             <!--选择区域组件-->
-           <area-list @getAreaId="getAreaId" v-model="ruleForm.areaId"></area-list>
+           <area-list
+             @getAreaId="getAreaId"
+             :area-option="areaOption"
+             v-model="ruleForm.areaId"></area-list>
            <div class="tip-msg"
                 v-show="this.app.option.options.orgAuditFields.indexOf('areaId') > -1 && ruleForm.areaId !== oldFrom.areaId">
-             该字段修改后需要审核
+             添加或修改该字段需要提交审核
            </div>
          </el-form-item>
          <el-form-item label="所属系统" prop="organization.systemType">
@@ -100,14 +103,14 @@
            </el-select>
            <div class="tip-msg"
                 v-show="this.app.option.options.orgAuditFields.indexOf('systemType') > -1 && ruleForm.organization.systemType !== oldFrom.organization.systemType">
-             该字段修改后需要审核
+             添加或修改该字段需要提交审核
            </div>
          </el-form-item>
          <el-form-item label=" 启用状态" prop="organization.removed" :rules="[{ required: true, message: '请选择启用状态 '}]">
            <el-switch v-model="ruleForm.organization.removed"></el-switch>
            <div class="tip-msg"
                 v-show="this.app.option.options.orgAuditFields.indexOf('removed') > -1 && ruleForm.organization.removed !== oldFrom.organization.removed">
-             该字段修改后需要审核
+             添加或修改该字段需要提交审核
            </div>
          </el-form-item>
        </el-col>
@@ -127,7 +130,7 @@
           <el-tag class="add-tag-btn" v-if="!disabledFlag" @click="openSearchFlag = true"><i class="el-icon-plus"></i>添加标签</el-tag>
           <div class="tip-msg"
                v-show="this.app.option.options.orgAuditFields.indexOf('labelId') > -1 && ruleForm.labelId !== oldFrom.labelId">
-            该字段修改后需要审核
+            添加或修改该字段需要提交审核
           </div>
         </el-form-item>
       </el-row>
@@ -140,14 +143,14 @@
             <el-input type="textarea" v-model="ruleForm.organization.ext01"></el-input>
             <div class="tip-msg"
                  v-show="this.app.option.options.orgAuditFields.indexOf('ext01') > -1 && ruleForm.organization.ext01 !== oldFrom.organization.ext01">
-              该字段修改后需要审核
+              添加或修改该字段需要提交审核
             </div>
           </el-form-item>
           <el-form-item label="申请原因" prop="reason">
             <el-input type="textarea" v-model="ruleForm.reason"></el-input>
             <div class="tip-msg"
                  v-show="this.app.option.options.orgAuditFields.indexOf('reason') > -1 && ruleForm.reason !== oldFrom.reason">
-              该字段修改后需要审核
+              添加或修改该字段需要提交审核
             </div>
           </el-form-item>
         </el-col>
@@ -156,7 +159,7 @@
             <el-input type="textarea" v-model="ruleForm.organization.ext02"></el-input>
             <div class="tip-msg"
                  v-show="this.app.option.options.orgAuditFields.indexOf('ext02') > -1 && ruleForm.organization.ext02 !== oldFrom.organization.ext02">
-              该字段修改后需要审核
+              添加或修改该字段需要提交审核
             </div>
           </el-form-item>
         </el-col>
@@ -212,6 +215,7 @@ export default {
       tagsName: [],
       parentName: '',
       bindId: '',
+      areaOption: [],
       ruleForm: {
         reason: '',
         nodeId: '', // 节点id
@@ -254,6 +258,9 @@ export default {
   methods: {
     ...mapMutations(['GET_OPTION']),
     init () {
+      if (this.$route.name === 'UnitAdd') {
+        this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
+      }
       if (this.$route.name === 'UnitAdd' || this.$route.name === 'UnitEdit') {
         api[urlNames['findViewNodeById']]({
           id: this.$route.params.parentId || this.$route.params.id
@@ -312,7 +319,9 @@ export default {
           this.ruleForm.organization.zipCode = res.data.zipCode
           this.ruleForm.organization.ext01 = res.data.ext01
           this.ruleForm.organization.ext02 = res.data.ext02
-          this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
+          if (this.$route.name === 'UnitEdit') {
+            this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
+          }
         }
       }, (error) => {
         this.$message.error(`没有内容`)
@@ -336,6 +345,7 @@ export default {
       api[urlNames['findOrgAreaList']]({
         orgId: orgId
       }).then((res) => {
+        this.areaOption = res.data
         console.log(res.data)
       }, (error) => {
       })
@@ -378,7 +388,6 @@ export default {
     },
     getAreaId (val) {
       this.ruleForm.areaId = val
-      alert(val)
     },
     submitForm (ruleForm) {
       this.$refs[ruleForm].validate((valid) => {

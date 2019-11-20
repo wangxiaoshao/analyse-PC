@@ -16,9 +16,10 @@
 import { api, urlNames } from '@src/api'
 
 export default {
+  props: ['areaOption'],
   data () {
     return {
-      areaValue: [],
+      areaValue: [520000, 520100],
       options: [], // 第一次加载数据
       value: '',
       props: {

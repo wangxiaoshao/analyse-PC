@@ -92,7 +92,7 @@ export default {
     type: 'get',
     url: '/api/jg_manage/department/findDepartmentList',
     keepOriginResponse: true,
-    showLoading: false,
+    showLoading: true,
     serve: 'organizationManagePC',
     mock: '/findDepartmentList.json'
   },
@@ -103,7 +103,7 @@ export default {
     type: 'get',
     url: '/api/jg_manage/user/findUserList',
     keepOriginResponse: true,
-    showLoading: false,
+    showLoading: true,
     serve: 'organizationManagePC',
     mock: '/findMemberList.json'
   },

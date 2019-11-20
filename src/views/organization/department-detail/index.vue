@@ -23,7 +23,7 @@
             <el-input v-model="ruleForm.department.name"></el-input>
             <div class="tip-msg"
                  v-show="this.app.option.options.departmentAuditFields.indexOf('name') > -1 && ruleForm.department.name !== oldFrom.department.name">
-              该字段修改后需要审核
+              添加或修改该字段需要提交审核
             </div>
           </el-form-item>
           <el-form-item label=" 上级部门" prop="parentDep">
@@ -33,7 +33,7 @@
             <el-switch v-model="ruleForm.department.removed"></el-switch>
             <div class="tip-msg"
                  v-show="this.app.option.options.departmentAuditFields.indexOf('removed') > -1 && ruleForm.department.removed !== oldFrom.department.removed">
-              该字段修改后需要审核
+              添加或修改该字段需要提交审核
             </div>
           </el-form-item>
         </el-col>
@@ -48,14 +48,14 @@
             <el-input v-model="ruleForm.department.phone"></el-input>
             <div class="tip-msg"
                  v-show="this.app.option.options.departmentAuditFields.indexOf('phone') > -1 && ruleForm.department.phone !== oldFrom.department.phone">
-              该字段修改后需要审核
+              添加或修改该字段需要提交审核
             </div>
           </el-form-item>
           <el-form-item label="上级单位" prop="orgName">
             <el-input v-model="orgName" :disabled="true"></el-input>
             <div class="tip-msg"
                  v-show="this.app.option.options.departmentAuditFields.indexOf('orgName') > -1 && ruleForm.department.orgName !== oldFrom.department.orgName">
-              该字段修改后需要审核
+              添加或修改该字段需要提交审核
             </div>
           </el-form-item>
         </el-col>
@@ -76,7 +76,7 @@
           <el-tag class="add-tag-btn" v-if="!disabledFlag" @click="openSearchFlag = true"><i class="el-icon-plus"></i>添加标签</el-tag>
           <div class="tip-msg"
                v-show="this.app.option.options.departmentAuditFields.indexOf('labelId') > -1 && ruleForm.labelId !== oldFrom.labelId">
-            该字段修改后需要审核
+            添加或修改该字段需要提交审核
           </div>
         </el-form-item>
       </el-row>
@@ -89,14 +89,14 @@
             <el-input type="textarea" v-model="ruleForm.department.duty"></el-input>
             <div class="tip-msg"
                  v-show="this.app.option.options.departmentAuditFields.indexOf('duty') > -1 && ruleForm.department.duty !== oldFrom.department.duty">
-              该字段修改后需要审核
+              添加或修改该字段需要提交审核
             </div>
           </el-form-item>
           <el-form-item label="申请原因" prop="reason">
             <el-input type="textarea" v-model="ruleForm.reason"></el-input>
             <div class="tip-msg"
                  v-show="this.app.option.options.departmentAuditFields.indexOf('reason') > -1 && ruleForm.reason !== oldFrom.reason">
-              该字段修改后需要审核
+              添加或修改该字段需要提交审核
             </div>
           </el-form-item>
         </el-col>
@@ -105,7 +105,7 @@
             <el-input type="textarea" v-model="ruleForm.department.description"></el-input>
             <div class="tip-msg"
                  v-show="this.app.option.options.departmentAuditFields.indexOf('description') > -1 && ruleForm.department.description !== oldFrom.department.description">
-              该字段修改后需要审核
+              添加或修改该字段需要提交审核
             </div>
           </el-form-item>
         </el-col>
@@ -205,6 +205,9 @@ export default {
   methods: {
     ...mapMutations(['GET_OPTION']),
     init () {
+      if (this.$route.name === 'DepartmentAdd') {
+        this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
+      }
       if (this.$route.name === 'DepartmentAdd' || this.$route.name === 'DepartmentEdit') {
         api[urlNames['findViewNodeById']]({
           id: this.$route.params.parentId || this.$route.params.id
@@ -260,7 +263,9 @@ export default {
           this.ruleForm.department.name = res.data.name
           this.ruleForm.department.description = res.data.description
           this.ruleForm.department.duty = res.data.duty
-          this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
+          if (this.$route.name === 'DepartmentEdit') {
+            this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
+          }
         }
       }, (error) => {
         this.$message.error(`没有内容`)

@@ -60,20 +60,21 @@ import { api, urlNames } from '@src/api'
 
 export default {
   data () {
-    var validateNewPass = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请输入新密码'))
-      } else {
-        if (this.ruleForm.checkPass !== '') {
-          this.$refs.ruleForm.validateField('checkPass')
-        }
-        callback()
-      }
-    }
     var validateOldPass = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请输入原始密码'))
       } else {
+        callback()
+      }
+    }
+    var validateNewPass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入新密码'))
+      } else {
+        let reg = /^(?!([a-zA-Z\d]*|[\d!@#\$%_\.*/]*|[a-zA-Z!@#\$%_\.*/]*)$)[a-zA-Z\d!@#\$%_\.*/]{8,}$/
+        reg.test(value) ? callback() : callback(new Error('请按照密码规则填写'))
+        console.log(reg.test(value))
+
         if (this.ruleForm.checkPass !== '') {
           this.$refs.ruleForm.validateField('checkPass')
         }
@@ -92,7 +93,7 @@ export default {
     return {
       activeName: 'first',
       userName: '管理员管理员',
-      passRule: '密码规则:必须含数字、字母(区分大小写)、特殊字符(如！~@/*&等)，且长度不少于8位。如：bgt123@SZF',
+      passRule: '密码规则:必须含数字、字母(区分大小写)、特殊字符(如！@#$_等)，且长度不少于8位。如：bgt123@SZF',
       ruleForm: {
         oldPass: '',
         checkPass: '',

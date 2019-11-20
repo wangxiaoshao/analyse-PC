@@ -59,7 +59,7 @@
             </el-popover>
             <div class="tip-msg"
                  v-show="userAuditFields.indexOf('name') > -1 && userDetail.name !== oldUserInfo.user.name">
-              该字段修改后需要审核
+              添加或修改该字段需要提交审核
             </div>
           </el-form-item>
           <el-form-item label="职务" prop="professionalTitle" :rules="[{ required: true, message: '职务不能为空'}]">
@@ -68,7 +68,7 @@
               v-model="userDetail.professionalTitle"></el-input>
             <div class="tip-msg"
                  v-show="userAuditFields.indexOf('professionalTitle') > -1 && userDetail.professionalTitle !== oldUserInfo.user.professionalTitle">
-              该字段修改后需要审核
+              添加或修改该字段需要提交审核
             </div>
           </el-form-item>
         </el-col>
@@ -84,7 +84,7 @@
               v-model="userDetail.mobile"></el-input>
             <div class="tip-msg"
                  v-show="userAuditFields.indexOf('mobile') > -1 && userDetail.mobile !== oldUserInfo.user.mobile">
-              该字段修改后需要审核
+              添加或修改该字段需要提交审核
             </div>
           </el-form-item>
           <!--:rules="[{ required: true, message: '请选择身份类型'}]"-->
@@ -99,7 +99,7 @@
             </el-select>
             <div class="tip-msg"
                  v-show="userAuditFields.indexOf('userType') > -1 && userDetail.userType !== oldUserInfo.user.userType">
-              该字段修改后需要审核
+              添加或修改该字段需要提交审核
             </div>
           </el-form-item>
         </el-col>
@@ -127,7 +127,7 @@
                   v-model="userDetail.mobile2"></el-input>
                 <div class="tip-msg"
                      v-show="userAuditFields.indexOf('mobile2') > -1 && userDetail.mobile2 !== oldUserInfo.user.mobile2">
-                  该字段修改后需要审核
+                  添加或修改该字段需要提交审核
                 </div>
               </el-form-item>
               <el-form-item label="民族" prop="nation">
@@ -145,7 +145,7 @@
                 </el-select>
                 <div class="tip-msg"
                      v-show="userAuditFields.indexOf('nation') > -1 && userDetail.nation !== oldUserInfo.user.nation">
-                  该字段修改后需要审核
+                  添加或修改该字段需要提交审核
                 </div>
               </el-form-item>
               <el-form-item label="性别"  prop="sex">
@@ -163,7 +163,7 @@
                 </el-select>
                 <div class="tip-msg"
                      v-show="userAuditFields.indexOf('sex') > -1 && userDetail.sex !== oldUserInfo.user.sex">
-                  该字段修改后需要审核
+                  添加或修改该字段需要提交审核
                 </div>
               </el-form-item>
               <el-form-item label="所属党派" prop="politicalParty">
@@ -181,7 +181,7 @@
                 </el-select>
                 <div class="tip-msg"
                      v-show="userAuditFields.indexOf('politicalParty') > -1 && userDetail.politicalParty !== oldUserInfo.user.politicalParty">
-                  该字段修改后需要审核
+                  添加或修改该字段需要提交审核
                 </div>
               </el-form-item>
               <el-form-item label="人员类型" prop="userAccount" >
@@ -196,9 +196,11 @@
                     :value="item.value"
                   ></el-option>
                 </el-select>
-                <div class="tip-msg"
-                     v-show="userAuditFields.indexOf('userType') > -1 && userDetail.userType !== oldUserInfo.user.userType">
-                  该字段修改后需要审核
+                <div v-if="oldUserInfo.user.userType">
+                  <div class="tip-msg"
+                       v-show="userAuditFields.indexOf('userType') > -1 && userDetail.userType !== oldUserInfo.user.userType ">
+                    添加或修改该字段需要提交审核
+                  </div>
                 </div>
               </el-form-item>
               <el-form-item label=" 办公电话" prop="officePhone">
@@ -206,9 +208,11 @@
                   placeholder="请输入办公电话"
                   :disabled="isDefaultFlag"
                   v-model="userDetail.officePhone"></el-input>
-                <div class="tip-msg"
-                     v-show="userAuditFields.indexOf('officePhone') > -1 && userDetail.officePhone !== oldUserInfo.user.officePhone">
-                  该字段修改后需要审核
+                <div v-if="oldUserInfo.user.officePhone">
+                  <div class="tip-msg"
+                       v-show="userAuditFields.indexOf('officePhone') > -1 && userDetail.officePhone !== oldUserInfo.user.officePhone">
+                    添加或修改该字段需要提交审核
+                  </div>
                 </div>
               </el-form-item>
             </el-col>
@@ -231,7 +235,7 @@
                 </el-input>
                 <div class="tip-msg"
                      v-show="userAuditFields.indexOf('idcard') > -1 && userDetail.idcard !== oldUserInfo.user.idcard">
-                  该字段修改后需要审核
+                  添加或修改该字段需要提交审核
                 </div>
               </el-form-item>
               <el-form-item label="学历" prop="qualification">
@@ -247,9 +251,11 @@
                     :value="item.value"
                   ></el-option>
                 </el-select>
-                <div class="tip-msg"
-                     v-show="userAuditFields.indexOf('qualification') > -1 && userDetail.qualification !== oldUserInfo.user.qualification">
-                  该字段修改后需要审核
+                <div v-if="oldUserInfo.user.qualification">
+                  <div class="tip-msg"
+                       v-show="userAuditFields.indexOf('qualification') > -1 && userDetail.qualification !== oldUserInfo.user.qualification">
+                    添加或修改该字段需要提交审核
+                  </div>
                 </div>
               </el-form-item>
               <el-form-item label="职级" prop="positionClass">
@@ -267,7 +273,7 @@
                 </el-select>
                 <div class="tip-msg"
                      v-show="userAuditFields.indexOf('positionClass') > -1 && userDetail.positionClass !== oldUserInfo.user.positionClass">
-                  该字段修改后需要审核
+                  添加或修改该字段需要提交审核
                 </div>
               </el-form-item>
               <el-form-item label=" 人员状态" prop="action">
@@ -285,14 +291,14 @@
                 </el-select>
                 <div class="tip-msg"
                      v-show="userAuditFields.indexOf('userState') > -1 && userDetail.userState !== oldUserInfo.user.userState">
-                  该字段修改后需要审核
+                  添加或修改该字段需要提交审核
                 </div>
               </el-form-item>
               <el-form-item label=" 岗位" prop="postName">
                 <el-input placeholder="请输入岗位" v-model="postDetail.postName"></el-input>
                 <div class="tip-msg"
                      v-show="userAuditFields.indexOf('postName') > -1 && postDetail.postName !== oldUserInfo.identity.postName">
-                  该字段修改后需要审核
+                  添加或修改该字段需要提交审核
                 </div>
               </el-form-item>
             </el-col>
