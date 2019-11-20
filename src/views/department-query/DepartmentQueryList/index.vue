@@ -18,7 +18,7 @@
           </el-col>
           <el-col :span="5">
             <el-autocomplete
-              v-model="searchQuery.selectValue"
+              v-model="searchQuery.labelName"
               :trigger-on-focus=triggerOnFocus
               :fetch-suggestions="querySearchAsync"
               placeholder="标签"
@@ -134,7 +134,7 @@ export default {
       }
     },
     handleSelect (item) {
-      this.searchQuery.selectValue = item.name
+      this.searchQuery.labelName = item.name
     },
     initQuery () {
       let keys = Object.assign({}, this.$route.query)
