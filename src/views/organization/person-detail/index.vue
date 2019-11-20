@@ -31,11 +31,10 @@
        @get-back="getBack"
      ></account-manage>
    </el-container>
-   <!--<el-footer class="add-person-footer">
-      <el-button type="primary" @click="next" v-if="stepOneFlag">下一步</el-button>
-      <el-button type="primary" @click="last" v-if="stepTwoFlag">上一步</el-button>
-      <el-button type="primary" v-if="!disabledFlag">保存</el-button>
-    </el-footer>-->
+   <el-footer class="add-person-footer" v-if="this.$route.name === 'PersonDetail'">
+      <el-button type="primary" @click="nextDetail" v-if="stepOneFlag">下一步</el-button>
+      <el-button type="primary" @click="lastDetail" v-if="stepTwoFlag">上一步</el-button>
+    </el-footer>
   </div>
 </template>
 
@@ -80,7 +79,7 @@ export default {
           orgId: '',
           dutyName: '' // 职务名称
         },
-        userId: null,
+        userId: '',
         user: {
           birthday: '',
           nation: null,
@@ -152,6 +151,7 @@ export default {
         })
       } else {
         this.getUserDetail(this.$route.params.id)
+        this.getIdentity()
       }
     },
     getUserDetail (id) {
@@ -174,10 +174,10 @@ export default {
         this.userInfo.user.nation = parseInt(res.data.nation)
         this.userInfo.user.politicalParty = parseInt(res.data.politicalParty)
         this.userInfo.user.signed = res.data.signed
-        this.userInfo.identity.type = res.data.userType
+        this.userInfo.identity.type = parseInt(res.data.userType)
         this.userInfo.identity.postName = res.data.postName
         this.userInfo.user.userState = res.data.userState
-        this.userInfo.user.userType = res.data.userType
+        this.userInfo.user.userType = parseInt(res.data.userType)
         if (this.$route.name === 'PersonEdit') {
           this.oldUserInfo = JSON.parse(JSON.stringify(this.userInfo))
           this.userInfo.userId = res.data.uid
@@ -198,6 +198,20 @@ export default {
       }, (error) => {
       })
     },
+    getIdentity () {
+      api[urlNames['findIdentityById']]({
+        identityId: this.$route.params.identityId
+      }).then((res) => {
+        console.log(res.data)
+        //this.userInfo.identity.departmentId = res.data.id
+        this.userInfo.identity.id = res.data.id
+        this.userInfo.identity.orgId = res.data.orgId
+        this.userInfo.identity.postName = res.data.postName
+        this.userInfo.identity.type = parseInt(res.data.type)
+      }, (error) => {
+        this.$message.error(`没有内容`)
+      })
+    },
     getUser (val) { // 获取用户信息
       this.userInfo.user = val
       this.stepTwoFlag = true
@@ -216,7 +230,6 @@ export default {
       // this.userInfo.userAccount = val
       this.userInfo.userAccount = val
       this.submitForm()
-      console.log(5557, this.userInfo.userAccount)
     },
     getUid (val) {
       this.getUserAccount(val)
@@ -269,6 +282,16 @@ export default {
     },
     getActive (val) {
       this.active = val
+    },
+    nextDetail () {
+      this.stepTwoFlag = true
+      this.stepOneFlag = false
+      this.activeIndex = 1
+    },
+    lastDetail () {
+      this.stepTwoFlag = false
+      this.stepOneFlag = true
+      this.activeIndex = 0
     }
   }
 }

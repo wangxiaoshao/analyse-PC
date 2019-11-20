@@ -18,22 +18,11 @@
       </el-select>
     </div>
     <el-collapse v-model="activeAccount" accordion class="account-list">
-     <!-- <el-collapse-item title="帐号：chenyu27  身份：省委办公厅   电子政务处   副处长 " name="1">
-        <bind-system :disabledFlag="disabledFlag"></bind-system>
-        <div class="edit-content">
-          <el-form ref="form" :disabled="disabledFlag" :model="editForm" label-width="80px" class="demo-personFrom">
-            <el-form-item label="账号" prop="accountName">
-              <el-input v-model="editForm.accountName"></el-input>
-            </el-form-item>
-            <el-form-item label="密码" prop="passWord">
-              <el-input v-model="editForm.passWord"></el-input>
-            </el-form-item>
-          </el-form>
-        </div>
-      </el-collapse-item>-->
-      <el-collapse-item v-for="item in accountList" :key="item.id" :title="item.name + ' ' + userInfo.name + ' ' + userInfo.dutyName + ' ' + userInfo.postName"></el-collapse-item>
+      <el-collapse-item v-for="item in accountList" :key="item.id" :title="item.name + ' ' + userInfo.name">
+        <bind-system @get-app="getAppId"></bind-system>
+      </el-collapse-item>
     </el-collapse>
-    <div class="creat-account-content">
+    <div class="creat-account-content" v-if="this.$route.name === 'PersonAdd' || this.$route.name === 'PersonEdit'">
       <el-button class="creat-btn" v-show="!disabledFlag" @click="creatAccount">
        <!-- <i class="el-icon-plus el-icon&#45;&#45;left">创建账号</i>-->
         创建账号
@@ -46,17 +35,22 @@
           <el-input v-model="addAccount.password"></el-input>
         </el-form-item>
         <el-form-item label="关联系统">
-         <bindSystem></bindSystem>
+         <bind-system @get-app="getAppId"></bind-system>
         </el-form-item>
-        <el-form-item label="是否禁用" prop="able">
-          <el-switch v-model="addAccount.able"></el-switch>
+        <el-form-item label="是否禁用" prop="removed">
+          <el-switch v-model="addAccount.removed"></el-switch>
+        </el-form-item>
+        <el-form-item label="申请原因" prop="reason">
+          <el-input type="textarea" v-model="addAccount.reason"></el-input>
         </el-form-item>
       </el-form>
     </div>
       <el-footer class="add-person-footer">
-        <el-button type="primary" @click="lastStep">上一步</el-button>
+        <span v-if="this.$route.name === 'PersonAdd' || this.$route.name === 'PersonEdit'">
+        <el-button type="primary" @click="lastStep" :disabled="false">上一步</el-button>
         <el-button type="primary" @click="fromSublime">保存</el-button>
         <el-button @click="goBack">取消</el-button>
+        </span>
       </el-footer>
   </div>
 </template>
@@ -69,10 +63,13 @@ export default {
   data () {
     return {
       addAccount: {
-        name: '',
         password: '',
-        able: false,
-        checkSystem: ['上海']
+        removed: true,
+        appId: [],
+        name: '',
+        id: '',
+        defaultAccount: null,
+        reason: ''
       },
       oldFrom: {},
       systemList: ['上海', '北京', '广州', '深圳'],
@@ -110,7 +107,8 @@ export default {
             password: item.password,
             removed: item.removed,
             appId: item.appId,
-            name: item.name
+            name: item.name,
+            reason: ''
           }
           this.accountSend.push(obj)
         } else {
@@ -122,14 +120,14 @@ export default {
     fromSublime () {
       let accountObj = {
         password: this.addAccount.password,
-        removed: this.addAccount.able,
-        appId: [],
+        removed: this.addAccount.removed,
+        appId: this.addAccount.appId,
         name: this.addAccount.name,
         id: '',
-        defaultAccount: null
+        defaultAccount: null,
+        reason: this.addAccount.reason
       }
       if (this.addAccount.name !== this.oldFrom.name && this.addAccount.password !== this.oldFrom.password) {
-        debugger
         this.accountSend.push(accountObj)
       }
       this.$emit('get-account', this.accountSend)
@@ -139,6 +137,11 @@ export default {
     },
     goBack () {
       this.$router.go(-1)
+    },
+    getAppId (val) {
+      this.addAccount.appId = val
+      console.log(5454, val)
+      console.log(this.addAccount)
     }
   }
 }

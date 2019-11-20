@@ -377,13 +377,13 @@
           </el-row>
         </el-collapse-item>
       </el-collapse>
-      <el-form-item>
-        <el-footer class="add-person-footer">
-          <el-button type="primary" @click="next('userDetail')">下一步</el-button>
-          <el-button @click="goBack">取消</el-button>
-        </el-footer>
-      </el-form-item>
     </el-form>
+    <el-footer class="add-person-footer">
+     <span v-if="this.$route.name === 'PersonAdd' || this.$route.name === 'PersonEdit'">
+        <el-button type="primary" @click="next('userDetail')" :disabled="false">下一步</el-button>
+        <el-button @click="goBack">取消</el-button>
+     </span>
+    </el-footer>
   </div>
 </template>
 

@@ -96,6 +96,13 @@ export default {
     serve: 'organizationManagePC',
     mock: '/findDepartmentMembers.json' // development模式下，本地mock数据
   },
+  [urlNames.findIdentityById]: {
+    type: 'get',
+    url: '/api/jg_manage/user/findIdentityById',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    serve: 'organizationManagePC',
+    mock: '/findIdentityById.json' // development模式下，本地mock数据
+  },
   // 查询单位下的所有人员
   [urlNames.findOrganizationMembers]: {
     type: 'get',

@@ -79,7 +79,7 @@
       <el-table-column label="登录账号" prop="account"></el-table-column>
       <el-table-column label="手机号" prop="mobile"></el-table-column>
       <el-table-column label="职务" prop="duty"></el-table-column>
-      <el-table-column label="身份类型" prop="type"></el-table-column>
+      <el-table-column label="身份类型" prop="typeText"></el-table-column>
       <el-table-column label="启用状态" prop="removed" align="center">
         <template slot-scope="scope">
           <span class="text-able" v-show="scope.row.removed">启用</span>
@@ -176,11 +176,13 @@ export default {
         ]
       },
       selectDialog: {
-        selectMenmberTitle: '选人组件', // 选人组件标题
+        selectMenmberTitle: '选择单位或部门', // 选人组件标题
         selectMenmberFlag: false, // 显示弹窗，
         isAllData: true, // 是否需完整数据-默认为不需要（false，只包含用户id）
-        notOnlyPerson: true, // 是否只选人，默认为false（只选人），true可以选择单位和部门
-        isSingleSelect: true // 是否为单选框  false为多选（默认），true为单选
+        notOnlyPerson: true, // 是否选人，默认为false（只选人）
+        isSingleSelect: true, // 是否为单选框  false为多选（默认）-人员单选
+        isSingleOrgSelect: true, // 是否为单选框  false为多选（默认），true为单选(isOnlyOrg为true时部门/单位单选)
+        isOnlyOrg: true
       }
     }
   },

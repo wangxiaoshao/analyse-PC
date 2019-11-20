@@ -1,6 +1,6 @@
 <template>
   <div class="choose-content">
-    <el-button v-popover:popover class="choose-btn" v-if="!disabledFlag" @click="openPopover">选择关联系统</el-button>
+    <el-button v-popover:popover class="choose-btn" v-if="!disabledFlag && this.$route.name !== 'PersonDetail'" @click="openPopover">选择关联系统</el-button>
     <el-popover
       ref="popover"
       width="700"
@@ -14,21 +14,21 @@
             class="app-check"
             v-for="item in appList"
             border
-            :label="item.name"
+            :label="`${item.id}` + '|' + `${item.name}`"
             :title="item.name"
             style="width: 132px;overflow: hidden;margin: 10px"
             :key="item.id">{{item.name}}</el-checkbox>
         </el-checkbox-group>
         <div class="popover-footer">
           <el-button type="primary" @click="sendApp">确定</el-button>
-          <el-button>取消</el-button>
+          <el-button @click="showPopover = false">取消</el-button>
         </div>
       </div>
     </el-popover>
     <el-tag
       :key="tag"
       type="info"
-      v-for="tag in checkSystem"
+      v-for="tag in systemList"
       closable
       :disable-transitions="false"
       style="margin: 5px"
@@ -46,7 +46,8 @@ export default {
     return {
       checkSystem: [],
       appList: [],
-      showPopover: false
+      showPopover: false,
+      systemList: []
     }
   },
   created () {
@@ -66,6 +67,12 @@ export default {
       this.showPopover = true
     },
     sendApp () {
+      const appIdList = []
+      this.checkSystem.forEach((item) => {
+        this.systemList.push(item.split('|')[1])
+        appIdList.push(item.split('|')[0])
+      })
+      this.$emit('get-app', appIdList)
       this.showPopover = false
     }
   }
