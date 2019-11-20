@@ -14,6 +14,16 @@ export default {
     mock: '/address-book/addressBookList.json' // development模式下，本地mock数据地址
   },
   /**
+   * 其他单位通讯录 查询用户所在单位
+   */
+  // [urlNames.getOtherAddressBookList]: {
+  //   type: 'get', // 请求类型
+  //   url: '/api/jg_txl/TxlNode/org', // 请求地址
+  //   keepOriginResponse: true, // 返回数据是否保留后端response数据格式
+  //   serve: 'organizationManagePC', // 该请求对应服务端，服务端名字在url-prefix中配置
+  //   mock: '/address-book/addressBookList.json' // development模式下，本地mock数据地址
+  // },
+  /**
    * 查询部门下的下级部门
    */
   [urlNames.getDepartmentChildtree]: {
@@ -42,6 +52,16 @@ export default {
     keepOriginResponse: true, // 返回数据是否保留后端response数据格式
     serve: 'organizationManagePC', // 该请求对应服务端，服务端名字在url-prefix中配置
     mock: '/address-book/getOrgUserTxlList.json' // development模式下，本地mock数据地址
+  },
+/**
+   * 查询部门下人员通讯信息
+   */
+  [urlNames.getDepartmentPersonList]: {
+    type: 'get', // 请求类型
+    url: '/api/jg_txl/txl/departmentTxl', // 请求地址
+    keepOriginResponse: true, // 返回数据是否保留后端response数据格式
+    serve: 'organizationManagePC' // 该请求对应服务端，服务端名字在url-prefix中配置
+    // mock: '/getUserInfo.json' // development模式下，本地mock数据地址
   }
 
 }

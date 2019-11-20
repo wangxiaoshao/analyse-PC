@@ -49,7 +49,7 @@
               <el-radio :key="item.uid" v-for="item in memberList" :label="item.uid">{{item.name}}</el-radio>
             </el-radio-group>
           </div>
-          <div class="dep-panel" v-if="!seleceDialog.isSingleOrgSelect&&seleceDialog.isOnlyOrg" :class="seleceDialog.notOnlyPerson&&seleceDialog.isOnlyOrg?memberstyle:orgstyle">
+          <div class="dep-panel" v-if="!seleceDialog.isSingleOrgSelect&&seleceDialog.isOnlyOrg" :class="seleceDialog.notOnlyPerson&&seleceDialog.isOnlyOrg?orgstyle:noorgstyle">
             <el-checkbox :indeterminate="isIndeterminateOrg" v-model="checkAllOrg" @change="handleCheckAllOrgChange">
               选择单位/部门
             </el-checkbox>
@@ -59,8 +59,8 @@
           </div>
           <div class="dep-panel" v-if="seleceDialog.isSingleOrgSelect&&seleceDialog.isOnlyOrg">
             <p>选择单位/部门</p>
-            <el-radio-group @change="singleCheckedOrg" :class="seleceDialog.notOnlyPerson?memberstyle:singlecheck"  v-model="checkedMemberList">
-              <el-radio :key="item.uid" v-for="item in orgList" :label="item.uid">{{item.name}}</el-radio>
+            <el-radio-group @change="singleCheckedOrg" :class="seleceDialog.notOnlyPerson?memberstyle:singlecheck"  v-model="checkedOrgList">
+              <el-radio :key="item.id" v-for="item in orgList" :label="item.id">{{item.name}}</el-radio>
             </el-radio-group>
           </div>
         </div>
@@ -71,7 +71,7 @@
               <el-checkbox  v-for="item in selectedMenbers" :label="item.uid" :key="item.uid">{{item.name}}</el-checkbox>
             </el-checkbox-group>
           </div>
-          <div class="dep-panel" v-if="seleceDialog.isOnlyOrg" :class="seleceDialog.notOnlyPerson&&seleceDialog.isOnlyOrg?memberstyle:orgstyle">
+          <div class="dep-panel" v-if="seleceDialog.isOnlyOrg" :class="seleceDialog.notOnlyPerson&&seleceDialog.isOnlyOrg?orgstyle:noorgstyle">
             <p>已选单位/部门:</p>
             <el-checkbox-group v-model="selectedOrgID" @change="handleCheckedSelectOrgChange">
               <el-checkbox v-for="item in selectedOrg" :label="item.id" :key="item.id">{{item.name}}</el-checkbox>
@@ -303,7 +303,15 @@ export default {
       that.selectedMenbers = { ...list }
     },
     // 单选操作--部门/单位
-    singleCheckedOrg () {}
+    singleCheckedOrg () {
+      let that = this
+      that.selectedOrg = that.selectedOrgID = []
+      that.selectedOrgID[0] = that.checkedOrgList
+      let list = that.orgList.filter(function (x) {
+        return x.id === that.selectedOrgID[0]
+      })
+      that.selectedOrg = { ...list }
+    }
   }
 }
 </script>

@@ -4,11 +4,11 @@
     node-key="id"
     :props="defaultProps"
     :highlight-current="true"
-    :default-expanded-keys="defaultNode"
     lazy
     ref="treeList"
     :load="loadNode"
     @node-click="handleNodeClick"
+    @node-expend="handleCheckChange"
    >
       <span class="custom-tree-node" slot-scope="{ node, data }">
         <i class="imenu-icon fa fa-sitemap" v-if="data.nodeType === 1"></i>
@@ -27,9 +27,9 @@ export default {
       active: 'active',
       noActive: 'noActive',
       showCheckboxFlag: false,
-      defaultNode: [],
       treeList: [],
       treeSonList: [],
+      treeDepartmentList:[],
       defaultProps: {
         children: 'children',
         label: 'name'
@@ -55,16 +55,18 @@ export default {
         this.treeSonList = []
       }
     },
+  
+    
     findTreeList (parentId) {
       api[urlNames['getTree']]({
         parentId: parentId,
         viewId: -1
       }).then((res) => {
+        console.log(12323242)
+        console.log(res)
         this.total = parseInt(res.total)
         this.treeList = res.data
-        this.defaultNode.push(res.data[0].id)
-        this.$emit('get-default-node', res.data[0].id)
-        this.findTreeSonList(res.data[0].id)
+        this.$emit('get-default-node', res.data[0].id,res.data[0].name)
         if (this.$route.name === 'Organization') {
           this.handleNodeClick(res.data[0])
         }
@@ -80,15 +82,36 @@ export default {
         viewId: -1
       }).then((res) => {
         this.treeSonList = res.data
+      console.log("1111")
+      // console.log(res)
+      bindId:11111
+      nodeType:1
       })
+
     },
-    handleNodeClick (node) {
-      this.$emit('handle-node-click', node)
-      /* if (node) {
-        this.$emit('handle-node-click', node.bindId)
-      } else {
-        this.$emit('handle-node-click', node.id)
-      } */
+    // findViewNodeList(id){
+    // api[urlNames['findViewNodeList']]({
+    //     viewId: -1,
+    //     id:
+      
+    // }).then((res)=>{
+    //   // this.treeDepartmentList=res.data
+    //   // console.log(123243523)
+    //   console.log(res)
+    // })
+    // },
+    handleCheckChange(){
+
+    },
+ 
+   handleNodeClick (data) {
+     this.$emit('handle-nodeClick', data)
+      // this.$emit('handle-node-click', node)
+      // if (node) {
+      //   this.$emit('handle-node-click', node.bindId)
+      // } else {
+      //   this.$emit('handle-node-click', node.id)
+      // } 
     }
   }
 }

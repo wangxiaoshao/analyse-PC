@@ -115,6 +115,7 @@ export default {
   updateUserCount: 'updateUserCount',
   // 绑定身份类型
   updateUserIdentity: 'updateUserIdentity',
+  findIdentityById: 'findIdentityById',
   findPerson: 'findPerson',
   // 创建单位
   createOrganization: 'createOrganization',

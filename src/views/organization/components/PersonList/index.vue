@@ -40,7 +40,8 @@
         class="demo-ruleForm">
         <el-form-item label="调出单位">
           <span class="name-span">{{orgName}}</span>
-          <el-button @click="addMainLeader">选择调出单位</el-button>
+          <span class="name-span" v-if="depName !== ''">/{{depName}}</span>
+          <el-button @click="addMainLeader">选择调出单位/部门</el-button>
         </el-form-item>
         <el-form-item label="申请原因" prop="reason">
           <el-input type="textarea" v-model="formCallout.reason"></el-input>
@@ -79,7 +80,7 @@
       <el-table-column label="登录账号" prop="account"></el-table-column>
       <el-table-column label="手机号" prop="mobile"></el-table-column>
       <el-table-column label="职务" prop="duty"></el-table-column>
-      <el-table-column label="身份类型" prop="type"></el-table-column>
+      <el-table-column label="身份类型" prop="typeText"></el-table-column>
       <el-table-column label="启用状态" prop="removed" align="center">
         <template slot-scope="scope">
           <span class="text-able" v-show="scope.row.removed">启用</span>
@@ -101,14 +102,14 @@
             调出
           </el-button>
           <el-button
-            v-if="scope.row.type === 1"
+            v-if="scope.row.type === 1 || scope.row.type === '1'"
             @click.native.prevent="removeDuty(scope.row)"
             type="text"
             size="small">
             解除兼职
           </el-button>
           <el-button
-            v-if="scope.row.type === 2"
+            v-if="scope.row.type === 2 || scope.row.type === '2'"
             @click.native.prevent="removeDuty(scope.row)"
             type="text"
             size="small">
@@ -149,9 +150,9 @@ export default {
       removeFlag: false,
       calloutFlag: false,
       orgName: '',
+      depName: '',
       ruleForm: {
         identityId: '',
-        type: '',
         reason: ''
       },
       // 人员调出表单
@@ -176,11 +177,13 @@ export default {
         ]
       },
       selectDialog: {
-        selectMenmberTitle: '选人组件', // 选人组件标题
+        selectMenmberTitle: '选择单位或部门', // 选人组件标题
         selectMenmberFlag: false, // 显示弹窗，
         isAllData: true, // 是否需完整数据-默认为不需要（false，只包含用户id）
-        notOnlyPerson: true, // 是否只选人，默认为false（只选人），true可以选择单位和部门
-        isSingleSelect: true // 是否为单选框  false为多选（默认），true为单选
+        notOnlyPerson: true, // 是否选人，默认为false（只选人）
+        isSingleSelect: true, // 是否为单选框  false为多选（默认）-人员单选
+        isSingleOrgSelect: true, // 是否为单选框  false为多选（默认），true为单选(isOnlyOrg为true时部门/单位单选)
+        isOnlyOrg: true
       }
     }
   },
@@ -286,7 +289,6 @@ export default {
     calloutDialog (row) {
       this.formCallout.identityId = row.identityId
       this.formCallout.uid = row.uid
-      // this.formCallout.type = row.type
       this.calloutFlag = true
     },
     // 解除
@@ -302,7 +304,7 @@ export default {
           api[urlNames['calloutUser']](this.formCallout).then((res) => {
             this.$message.success(`调出成功`)
             this.calloutFlag = false
-            console.log(res)
+            this.getGrid()
             this.fromInit()
           }, (error) => {
 
@@ -318,7 +320,7 @@ export default {
             this.$message.success(`解除成功`)
             this.calloutFlag = false
             this.fromInit()
-            console.log(res)
+            this.getGrid()
           }, (error) => {
 
           })
@@ -329,8 +331,22 @@ export default {
     // TODO选人组件完善后需要修改选择单位或单位下的部门
     dialogReturnMembersInfo (data, id) {
       console.log('danw', id)
-      this.formCallout.orgId = id[0].bindId
-      this.orgName = id[0].name
+      if (id[0].nodeType === 2) {
+        this.formCallout.orgId = id[0].bindId
+        this.orgName = id[0].name
+      }
+      if (id[0].nodeType === 3) {
+        this.formCallout.deptId = id[0].bindId
+        api[urlNames['findDepartmentById']]({
+          id: id[0].bindId
+        }).then((res) => {
+          console.log(33333, res.data)
+          this.formCallout.orgId = res.data.orgId
+          this.orgName = res.data.orgName
+          this.depName = res.data.name
+        }, (error) => {
+        })
+      }
     },
     // 关闭选人弹窗
     closeselectMenmber () {

@@ -142,6 +142,16 @@ export default {
     mock: '/findLabelByType.json' // development模式下，本地mock数据
   },
 
+  /**
+   * 获取应用列表
+   */
+  [urlNames.getAppList]: {
+    type: 'get',
+    url: '/api/jg_share/app/checkApps',
+    serve: 'organizationManagePC',
+    keepOriginResponse: false,
+    mock: 'getAppList.json'
+  },
   // 应用管理
   ...application,
   ...examine, // 申请审核
