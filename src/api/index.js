@@ -122,12 +122,16 @@ function createRequest (config) {
         signPostDataString = JSON.stringify(args)
       }
     }
+    let oTemp = {
+      _: timestamp,
+      sign: getSign(signParam, signPostDataString, timestamp)
+    }
     return axios({
       method: type,
       url: isFunction(url) ? url(args) : url,
       data: body,
       // 避免缓存get请求，加入时间戳
-      params: Object.assign({ _: timestamp, sign: getSign(signParam, signPostDataString, timestamp) }, args),
+      params: isPost ? oTemp : Object.assign({}, oTemp, args),
       headers: Object.assign(headers, option.headers),
       keepOriginResponse: config.keepOriginResponse,
       showLoading: config.showLoading,
