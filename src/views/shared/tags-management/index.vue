@@ -110,7 +110,7 @@ export default {
     },
     // 删除节点
     deleteLabel (id) {
-      this.$confirm('此操作将永久删除该标签, 是否继续?', '提示', {
+      this.$confirm('此操作将会永久删除下级的所有标签, 您确认删除么?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
