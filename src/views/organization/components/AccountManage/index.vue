@@ -46,31 +46,7 @@
           <el-input v-model="addAccount.password"></el-input>
         </el-form-item>
         <el-form-item label="关联系统">
-          <div class="choose-content">
-            <el-button v-popover:popover class="choose-btn">选择关联系统</el-button>
-            <el-popover
-              ref="popover"
-              placement="bottom"
-              width="500"
-              trigger="click"
-              popper-class="system-popover"
-            >
-              <div>
-                <el-checkbox-group v-model="addAccount.checkSystem">
-                  <el-checkbox v-for="item in systemList" border :label="item" :key="item">{{item}}</el-checkbox>
-                </el-checkbox-group>
-              </div>
-            </el-popover>
-            <el-tag
-              :key="tag"
-              type="info"
-              v-for="tag in addAccount.checkSystem"
-              closable
-              :disable-transitions="false"
-              @close="handleClose(tag)">
-              {{tag}}
-            </el-tag>
-          </div>
+         <bindSystem></bindSystem>
         </el-form-item>
         <el-form-item label="是否禁用" prop="able">
           <el-switch v-model="addAccount.able"></el-switch>

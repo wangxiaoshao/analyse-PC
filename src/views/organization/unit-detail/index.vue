@@ -144,6 +144,7 @@
             closable
             :title="tag"
             v-model="ruleForm.labelId"
+            @close="removeTag(tag,index)"
           >
             {{tag}}
           </el-tag>
@@ -367,6 +368,10 @@ export default {
         })
       }, (error) => {
       })
+    },
+    removeTag (tag, index) {
+      this.tagsName.splice(index, 1)
+      this.ruleForm.labelId.splice(index, 1)
     },
     // 获取区域
     getArea (orgId) {
