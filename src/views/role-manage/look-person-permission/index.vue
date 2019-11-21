@@ -59,7 +59,6 @@
 
 <script>
 import CandidateDialog from '@src/components/CandidateDialog/index'
-import permissionSet from '../components/PermissionSet/index'
 import handleTable from '@src/mixins/handle-table'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
 import { api, urlNames } from '@src/api'
