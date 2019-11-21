@@ -29,6 +29,17 @@ export default {
       'Content-Type': 'application/json'
     }
   },
+  [urlNames.deleteRoleBindUser]: {
+    type: 'post',
+    url: '/api/jg_manage/role/deleteRoleBindUser',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    serve: 'organizationManagePC',
+    mock: '/deleteRoleBindUser.json',
+    showLoading: true,
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  },
   /*
   * 权限配置列表 */
   [urlNames.findAuthorityManageList]: {
@@ -37,5 +48,16 @@ export default {
     keepOriginResponse: true, // 是否保留后端返回数据格式
     serve: 'organizationManagePC',
     showLoading: true
+  },
+  [urlNames.saveAuthorityManage]: {
+    type: 'post',
+    url: '/api/jg_manage/role/saveAuthorityManage',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    serve: 'organizationManagePC',
+    mock: '/saveAuthorityManage.json',
+    showLoading: true,
+    headers: {
+      'Content-Type': 'application/json'
+    }
   }
 }

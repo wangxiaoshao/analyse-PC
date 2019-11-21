@@ -103,8 +103,6 @@ export default {
   findUserById: 'findUserById',
   // 人员列表排序
   setUserSort: 'setUserSort',
-  // 角色列表
-  roleList: 'roleList',
   // 通过姓名查询用户基本信息
   findUserByParams: 'findUserByParams',
   // 根据userId查询用户身份
@@ -151,6 +149,8 @@ export default {
   saveRoleBindUser: 'saveRoleBindUser',
   findAuthorityManageList: 'findAuthorityManageList', // 权限配置列表
   findUserAccountByUid: 'findUserAccountByUid',
+  deleteRoleBindUser: 'deleteRoleBindUser',
+  saveAuthorityManage: 'saveAuthorityManage',
   // 查询单位下的区域
   findOrgAreaList: 'findOrgAreaList',
   // 查询用户可用配置

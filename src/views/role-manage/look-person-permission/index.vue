@@ -1,14 +1,23 @@
 <template>
     <div class="look-person">
+      <el-dialog
+        title="确认删除"
+        :visible.sync="dialogVisible"
+        width="30%">
+        <span>确认删除吗？</span>
+        <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="deleteRoleBindUser">确 定</el-button>
+      </span>
+      </el-dialog>
       <candidate-dialog
         :seleceDialog="selectDialog"
         @dialogReturnMembersInfo="dialogReturnMembersInfo"
         @closeselectMenmber="closeselectMenmber">
       </candidate-dialog>
-      <permission-set :setFlag="setFlag" @getSetFlag="getSetFlag"></permission-set>
       <div class="button-wrap">
         <el-button type="primary" @click="openselectMenmber">添加人员</el-button>
-        <el-button @click="setFlag = true">权限配置</el-button>
+        <el-button @click="goPermission">权限配置</el-button>
       </div>
       <!--表格-->
       <el-table v-loading="loading" :data="list" :max-height="tableMaxHeight" border style="width: 100%">
@@ -19,19 +28,19 @@
         </el-table-column>
         <el-table-column prop="name" label="成员姓名">
         </el-table-column>
-        <el-table-column prop="account" label="账号">
+        <el-table-column prop="type" label="身份类型">
         </el-table-column>
         <el-table-column prop="orgName" label="单位名称">
         </el-table-column>
-        <el-table-column prop="value" label="启用状态">
+       <!-- <el-table-column prop="value" label="启用状态" width="150" align="center">
           <template slot-scope="scope">
             <span class="text-green" v-show="scope.row.enable === 1">启用</span>
             <span class="text-red" v-show="scope.row.enable === 0">停用</span>
           </template>
-        </el-table-column>
-        <el-table-column label="操作" min-width="180">
+        </el-table-column>-->
+        <el-table-column label="操作" width="80" align="center">
           <template slot-scope="scope">
-            <el-button size="mini" type="text" @click="goLookPerson(scope.row)">删除</el-button>
+            <el-button size="mini" type="text" @click="getDelete(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -58,7 +67,7 @@ import { mapState, mapMutations } from 'vuex'
 
 export default {
   mixins: [handleTable, handleBreadcrumb],
-  components: { permissionSet, CandidateDialog },
+  components: { CandidateDialog },
   data () {
     return {
       list: [],
@@ -70,84 +79,14 @@ export default {
         selectMenmberFlag: false, // 显示弹窗，
         isAllData: true, // 是否需完整数据-默认为不需要（false，只包含用户id）
         notOnlyPerson: true, // 是否只选人，默认为false（只选人），true可以选择单位和部门
-        isSingleSelect: true // 是否为单选框  false为多选（默认），true为单选
-      }
+        isSingleSelect: false // 是否为单选框  false为多选（默认），true为单选
+      },
+      userId: [],
+      dialogVisible: false
     }
   },
   computed: {
     ...mapState(['roleManage'])
-  },
-  methods: {
-    ...mapMutations(['PERSON_PAGE', 'ROLE_ID']),
-    getGrid () {
-      let data = {
-        page: this.page.current,
-        parentId: this.$route.params.nodeId,
-        limit: this.page.limit
-      }
-      this.loading = true
-      api[urlNames['getRoleBindUserList']](data).then((res) => {
-        this.loading = false
-        this.list = res.data
-        this.permissionId = res.roleId
-        console.log(res.data)
-      }, () => {
-        this.loading = false
-        this.list = []
-        this.page.total = 0
-      })
-    },
-    openselectMenmber () {
-      this.selectDialog.selectMenmberFlag = true
-    },
-    closeselectMenmber () {
-      this.selectDialog.selectMenmberFlag = false
-    },
-    goPermission () {
-      this.PERSON_PAGE(this.page)
-      this.ROLE_ID(this.$route.params.id)
-      this.$router.push({
-        name: 'PermissionSetting',
-        params: {
-          id: this.permissionId
-        }
-      })
-    },
-    getSetFlag (val) {
-      this.setFlag = val
-    },
-    dialogReturnMembersInfo (data) {
-      console.log(JSON.parse(JSON.stringify(data)))
-      /* if (!JSON.parse(JSON.stringify(data)).length) {
-        let obj = {
-          uid: JSON.parse(JSON.stringify(data))[0].uid,
-          leaderType: this.learderType
-        }
-        this.personList.push(obj)
-      } else {
-        JSON.parse(JSON.stringify(data)).forEach((item) => {
-          let obj = {
-            uid: item.uid,
-            leaderType: this.learderType
-          }
-          this.personList.push(obj)
-        })
-      } */
-      // 保存
-      /* if (JSON.parse(JSON.stringify(data)) !== []) {
-        api[urlNames['saveRoleBindUser']]({
-          nodeId: this.contentId,
-          nodeType: this.nodeInfo.nodeType,
-          leaders: this.personList
-        }).then((res) => {
-          this.$message.success(`添加成功`)
-          this.getGrid()
-          console.log(res)
-        }, (error) => {
-          this.$message.error(`保存失败，请重试`)
-        })
-      } */
-    }
   },
   created () {
     if (this.$route.query.type === 'back') {
@@ -175,6 +114,83 @@ export default {
         }
       }
     })
+  },
+  methods: {
+    ...mapMutations(['PERSON_PAGE', 'ROLE_ID']),
+    getGrid () {
+      let data = {
+        page: this.page.current,
+        roleId: this.$route.params.id,
+        limit: this.page.limit
+      }
+      this.loading = true
+      api[urlNames['getRoleBindUserList']](data).then((res) => {
+        this.loading = false
+        this.list = res.data
+        this.permissionId = res.roleId
+        console.log(res.data)
+      }, () => {
+        this.loading = false
+        this.list = []
+        this.page.total = 0
+      })
+    },
+    getDelete (row) {
+      this.userId = row.uid
+      this.dialogVisible = true
+    },
+    // 删除角色绑定人员
+    deleteRoleBindUser () {
+      api[urlNames['deleteRoleBindUser']]({
+        roleId: this.$route.params.id,
+        userId: this.userId
+      }).then((res) => {
+        this.$message.success(`删除成功`)
+        this.dialogVisible = false
+        this.getGrid()
+        console.log(res)
+      }, (error) => {
+        this.$message.error(`保存失败，请重试`)
+      })
+    },
+    openselectMenmber () {
+      this.selectDialog.selectMenmberFlag = true
+    },
+    closeselectMenmber () {
+      this.selectDialog.selectMenmberFlag = false
+    },
+    goPermission () {
+      this.PERSON_PAGE(this.page)
+      this.ROLE_ID(this.$route.params.id)
+      this.$router.push({
+        name: 'PermissionSet',
+        params: {
+          id: this.$route.params.id
+        }
+      })
+    },
+    getSetFlag (val) {
+      this.setFlag = val
+    },
+    dialogReturnMembersInfo (data) {
+      console.log(JSON.parse(JSON.stringify(data)))
+      JSON.parse(JSON.stringify(data)).forEach((item) => {
+        this.userId.push(item.uid)
+      })
+      // 保存
+      if (JSON.parse(JSON.stringify(data)) !== []) {
+        api[urlNames['saveRoleBindUser']]({
+          roleId: this.$route.params.id,
+          userId: this.userId
+        }).then((res) => {
+          this.$message.success(`添加成功`)
+          this.getGrid()
+          console.log(res)
+        }, (error) => {
+          this.$message.error(`保存失败，请重试`)
+        })
+      }
+    }
   }
 }
 </script>

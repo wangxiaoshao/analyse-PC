@@ -19,8 +19,8 @@
       </el-table-column>
       <el-table-column prop="value" label="启用状态" width="100" align="center">
         <template slot-scope="scope">
-          <span class="text-disable" v-show="scope.row.removed">启用</span>
-          <span class="text-able" v-show="!scope.row.removed">停用</span>
+          <span class="text-able" v-show="scope.row.removed">启用</span>
+          <span class="text-disable" v-show="!scope.row.removed">停用</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" width="150" align="center">
@@ -58,6 +58,22 @@ export default {
   computed: {
     ...mapState(['roleManage'])
   },
+  created () {
+    if (this.$route.query.type === 'back') {
+      this.page = Object.assign(this.page, this.roleManage.page)
+      this.$router.push({
+        name: 'RoleList',
+        params: {
+          type: 'back',
+          id: this.roleManage.listId
+        }
+      })
+    } else {
+      this.SET_ROLEMANAGE_PAGE({})
+      this.LIST_ID({})
+    }
+    this.getGrid()
+  },
   methods: {
     ...mapMutations(['SET_ROLEMANAGE_PAGE', 'LIST_ID']),
     getGrid () {
@@ -87,22 +103,6 @@ export default {
         }
       })
     }
-  },
-  created () {
-    if (this.$route.query.type === 'back') {
-      this.page = Object.assign(this.page, this.roleManage.page)
-      this.$router.push({
-        name: 'RoleList',
-        params: {
-          type: 'back',
-          id: this.roleManage.listId
-        }
-      })
-    } else {
-      this.SET_ROLEMANAGE_PAGE({})
-      this.LIST_ID({})
-    }
-    this.getGrid()
   }
 }
 </script>
