@@ -133,7 +133,7 @@ export default {
     }
   },
   created () {
-    this.findNodeTree('-1')
+    this.findNodeTree()
   },
   methods: {
     // 确定获取数据
@@ -157,8 +157,6 @@ export default {
     // 获取机构树--初始化
     findNodeTree (parentId) {
       api[urlNames['getTree']]({
-        parentId: parentId,
-        viewId: -1
       }).then((res) => {
         this.nodeTree = res.data
       })
@@ -166,8 +164,7 @@ export default {
     // 获取机构树--加载子节点
     findSonNodeTree (parentId) {
       api[urlNames['getTree']]({
-        parentId: parentId,
-        viewId: -1
+        parentId: parentId
       }).then((res) => {
         this.nodeSonTree = res.data
       })
@@ -175,8 +172,7 @@ export default {
     // 获取机构树-加载可选
     findcheckNodeTree (parentId) {
       api[urlNames['getTree']]({
-        parentId: parentId,
-        viewId: -1
+        parentId: parentId
       }).then((res) => {
         this.orgList = []
         res.data.forEach(item => {

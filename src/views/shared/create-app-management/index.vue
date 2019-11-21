@@ -15,14 +15,21 @@
         <el-col :span="12">
           <div class="grid-content bg-purple-light">
             <el-form-item label="绑定视图" prop="viewId">
-<!--              <el-autocomplete-->
-<!--                v-model="appFrom.viewId"-->
-<!--                placeholder="请输入内容"-->
-<!--                @select="handleSelect"-->
-<!--                width="100%"-->
-<!--              ></el-autocomplete>-->
-              <el-select  v-model="appFrom.viewId" placeholder="请选择视图">
-                <el-option label="视图1" :value="1">视图1</el-option>
+              <el-select
+                v-model="value"
+                filterable
+                remote
+                reserve-keyword
+                placeholder="请输入视图名称"
+                :remote-method="getViewList"
+                :loading="selectLoading">
+                <el-option
+                  v-for="item in viewList"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id">
+                  {{item.name}}
+                </el-option>
               </el-select>
             </el-form-item>
           </div>
@@ -115,18 +122,10 @@ export default {
         callback()
       }
     }
-    var validPhone = (rule, value, callback) => {
-      let reg = '/^1[3|4|5|7|8][0-9]\\d{8}$/'
-      if (!value) {
-        callback(new Error('请输入电话号码'))
-      } else if (!reg.test(value)) {
-        callback(new Error('请输入正确的11位手机号码'))
-      } else {
-        callback()
-      }
-    }
     return {
+      selectLoading: false,
       viewList: [],
+      value: [],
       appFrom: {
         id: '',
         name: '',
@@ -168,6 +167,7 @@ export default {
     }
   },
   created () {
+    this.getViewList()
     if (this.$route.query.id !== undefined) {
       this.getAppDetail(this.$route.query.id)
     }
@@ -179,13 +179,16 @@ export default {
     back () {
       this.$router.push({ name: 'AppManagement' })
     },
-    getViewList (page, limt) {
-      api[urlNames['getViewList']]({
-        page: page,
-        limit: limt
-      }).then((res) => {
-        this.viewList = res.data
-      })
+    getViewList (query) {
+      if (query !== '') {
+        api[urlNames['getViewList']]({
+          keyWord: query,
+          page: 1,
+          limit: 10
+        }).then((res) => {
+          this.viewList = res.data
+        })
+      }
     },
     onSubmit (ref) {
       if (this.appFrom.apiAccount.trim().length === 0 ||

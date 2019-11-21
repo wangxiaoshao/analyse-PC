@@ -1,5 +1,11 @@
 <template>
   <div class="parameter-settings">
+    <el-tabs v-model="activeName" @tab-click="handleClick">
+      <el-tab-pane :disabled="createBasic" label="系统参数" name="first">
+      </el-tab-pane>
+      <el-tab-pane :disabled="createInfo" label="个人参数" name="second">
+      </el-tab-pane>
+    </el-tabs>
     <div class="parameter-item">
       <div class="header">用户密码安全设置</div>
       <el-form ref="form" :model="form" label-width="160px">
@@ -249,6 +255,7 @@ export default {
   name: 'ParameterSettings',
   data () {
     return {
+      activeName: 'first',
       form: {
         name: '',
         region: '',

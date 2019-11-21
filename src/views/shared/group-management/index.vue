@@ -30,7 +30,7 @@
             align="center">
           </el-table-column>
           <el-table-column
-          property="time"
+          property="createTime"
           align="center"
           label="创建时间">
         </el-table-column>
@@ -115,7 +115,7 @@ export default {
     },
     // 关闭弹窗
     close () {
-      this.getGroupList(this.currentPage, this.pageSize, this.type)
+      this.getGroupList(this.currentPage, this.pageSize, this.groupType)
       this.creategroupdialogVisible = false
     },
     // 打开创建弹窗
@@ -155,17 +155,17 @@ export default {
     // typeChange
     // 单位部门
     typeChange () {
-      this.getGroupList(this.currentPage, this.pageSize, this.type)
+      this.getGroupList(this.currentPage, this.pageSize, this.groupType)
     },
     // 每一页请求条数
     handleSizeChange (val) {
       this.pageSize = val
-      this.getGroupList(this.currentPage, val, this.type)
+      this.getGroupList(this.currentPage, val, this.groupType)
     },
     // 分页
     handleCurrentPageChange (val) {
       this.currentPage = val
-      this.getGroupList(val, this.pageSize, this.type)
+      this.getGroupList(val, this.pageSize, this.groupType)
     }
   }
 }
