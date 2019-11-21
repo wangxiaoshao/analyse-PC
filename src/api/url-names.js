@@ -4,6 +4,7 @@
  */
 export default {
   getUserInfo: 'getUserInfo',
+  popupWindow: 'popupWindow',
   // application
   getApplicationList: 'getApplicationList',
   toggleApplication: 'toggleApplication',
@@ -124,6 +125,7 @@ export default {
   getDictionaryList: 'getdDictionaryList',
   addDictionary: 'addDictionary',
   getDicListByType: 'getDicListByType',
+  updatePwd: 'updatePwd',
   getSystemParameter: 'getSystemParameter', // 参数设置
   // 标签查询
 

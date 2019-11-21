@@ -2,7 +2,12 @@
   <div class="site-module mod-dictionary">
     <!--操作row-->
     <el-row class="operator-row">
-      <el-button size="small" type="primary" @click="getConfirmMemberList">确认机构人员信息</el-button>
+      <el-button
+        size="small"
+        type="primary"
+        @click="getConfirmMemberList"
+        :disabled=!app.confirmState>确认机构人员信息
+      </el-button>
     </el-row>
     <el-row class="operator-row">
       <el-col :span="18">
@@ -157,7 +162,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['application', 'examine'])
+    ...mapState(['application', 'examine', 'app'])
   },
   created () {
     let datefilters = this.$options.filters['date'](new Date().getTime(), 'yyyy')
