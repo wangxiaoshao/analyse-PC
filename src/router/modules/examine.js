@@ -146,7 +146,7 @@ export default [
         component: ConfirmInfoList
       },
       {
-        path: 'detail/:type/:id',
+        path: 'detail/:month/:id',
         name: 'ConfirmInfoDetail',
         component: ConfirmInfoDetail
       }

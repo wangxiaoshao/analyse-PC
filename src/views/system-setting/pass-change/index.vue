@@ -22,7 +22,7 @@
               <el-form-item label="原密码" prop="oldPass">
                 <el-input
                   type="password"
-                  v-model.number="ruleForm.oldPass"
+                  v-model="ruleForm.oldPass"
                   show-password>
                 </el-input>
               </el-form-item>
@@ -151,8 +151,7 @@ export default {
             'repeatPwd': this.ruleForm.checkPass
           }
           api[urlNames['updatePwd']](data).then((res) => {
-            console.log(res)
-            let status = res && res.status ? res.status : ''
+            let status = res.status
             this.$message({
               message: status === 0 ? '修改成功' : '修改失败',
               type: status === 0 ? 'success' : 'error'

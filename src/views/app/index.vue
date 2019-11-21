@@ -72,7 +72,7 @@ export default {
   },
   mounted () {
     this.addEventListenForResize()
-    this.getUserInfo()
+    // this.getUserInfo()
     this.getDicList()
     this.getOption()
     this.confirmInfo()
@@ -141,14 +141,27 @@ export default {
       // this.SET_BREADCRUMB(this.breadcrumb)
     },
     confirmInfo () { // 确认信息弹框是否弹出
+      this.openConfirmInfo()
       api[urlNames.popupWindow]().then((res) => {
         if (res.data) {
-
+          this.openConfirmInfo()
         }
         this.GET_CONFIRM_INFO(res.data)
       }).catch((e) => {
       })
     },
+    openConfirmInfo () {
+      this.$confirm('是否跳转?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$router.push({
+          path: '/confirm-info'
+        })
+      }).catch(() => {
+      })
+    }
   }
 }
 </script>

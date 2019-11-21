@@ -17,7 +17,9 @@ export default {
   getAuditList: 'getAuditList', // 待我审核 、 我已审核
   getMyApplyAuditList: 'getMyApplyAuditList', // 我的申请
   getInfoConfirmList: 'getInfoConfirmList', // 信息确认
-  getConfirmMemberList: 'getConfirmMemberList', // 信息确认 - 人员明细
+  insertConfirmInfo: 'insertConfirmInfo', // 确认信息- 弹框确认按钮
+  getConfirmMemberList: 'getConfirmMemberList', // 信息确认 - 弹框
+  findConfirmMemberById: 'findConfirmMemberById', // 信息确认 - 人员明细
   getAuditDetailsById: 'getAuditDetailsById', // 审批详情
   saveAudit: 'saveAudit', // 保存审批
 

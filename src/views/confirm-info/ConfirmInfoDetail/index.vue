@@ -13,6 +13,7 @@
 <script type="text/ecmascript-6">
 import handleTable from '@src/mixins/handle-table'
 import SiteTable from '@src/components/SiteTable/index.vue'
+import tableConfig from './tableConfig'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
 import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
@@ -22,96 +23,7 @@ export default {
   mixins: [handleTable, handleBreadcrumb],
   data () {
     return {
-      gridData: [{
-        counts: '1202',
-        name: '王小虎'
-      }],
-      loading: true,
-      statusOptions: [{
-        value: '选项1',
-        label: '已确认'
-      },
-      {
-        value: '选项2',
-        label: '未确认'
-      },
-      {
-        value: '选项3',
-        label: '待确认'
-      }],
-      tableConfig: {
-        order: {
-          key: 0,
-          field: 'order',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '序号',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 50
-        },
-        orgName: {
-          key: 1,
-          field: 'orgName',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '单位名称',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        },
-        mainLeader: {
-          key: 2,
-          field: 'mainLeader',
-          tooltip: true,
-          formatter: this.formatter,
-          label: '单位主要领导',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        },
-        month: {
-          key: 3,
-          field: 'month',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '确认月份',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        },
-        state: {
-          key: 4,
-          field: 'state',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '确认状态',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        },
-        confirmTime: {
-          key: 5,
-          field: 'confirmTime',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '确认时间',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        },
-        confirmStaff: {
-          key: 6,
-          field: 'confirmStaff',
-          tooltip: false,
-          formatter: this.formatter,
-          label: '确认人员',
-          sortable: false,
-          showOverflowTooltip: false,
-          minWidth: 100
-        }
-      },
-
+      tableConfig,
       tableData: [],
       operateWidth: 100,
       tableHeight: null,
@@ -123,7 +35,6 @@ export default {
     ...mapState(['application', 'examine'])
   },
   created () {
-    this.initQuery()
     this.getGrid()
   },
   mounted () {
@@ -149,22 +60,6 @@ export default {
         height: this.$store.state.app.windowHeight - 30 + 'px'
       }
     },
-    initQuery () {
-      let keys = Object.assign({}, this.$route.query)
-      let len = keys.length
-      for (let i = 0; i < len; i++) {
-        let key = keys[i]
-        let value = this.$route.query[key]
-        if (this.page[key] !== undefined) {
-          this.page[key] = value
-        } else if (this.searchQuery[key] !== undefined) {
-          this.searchQuery[key] = value
-        }
-      }
-    },
-    trim (str) {
-      return (str + '').replace(/(\s+)$/g, '').replace(/^\s+/g, '')
-    },
     search () {
       this.$nextTick(() => {
         this.page.current = 1
@@ -174,8 +69,10 @@ export default {
     getGrid () {
       this.loading = true
       let data = {
+        date: this.$route.params.month,
+        confirmId:  this.$route.params.id,
         page: this.page.current,
-        pageSize: this.page.limit
+        limit: this.page.limit
       }
       let keys = Object.keys(this.searchQuery)
       let len = keys.length
@@ -188,22 +85,13 @@ export default {
           data[key] = value
         }
       }
-      api[urlNames['getConfirmMemberList']](data).then((res) => {
+      api[urlNames['findConfirmMemberById']](data).then((res) => {
         this.tableData = res.data
         this.page.total = res.total
       }, () => {
         this.tableData = []
         this.page.total = 0
       })
-    },
-    goConfig (row) {
-      this.$router.push({
-        name: 'ConfirmInfoDetail',
-        query: { id: row.id }
-      })
-    },
-    handleClose () {
-      this.dialogVisible = false
     }
   }
 }
