@@ -15,7 +15,7 @@ export default {
     mock: 'statistics/getStatistiscManageDto.json'
   },
   [urlNames.getDataLogList]: { // 系统日志列表
-    type: 'post',
+    type: 'get',
     url: '/api/jg_manage/logger/findLoggerList',
     keepOriginResponse: true,
     showLoading: true,

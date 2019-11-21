@@ -5,7 +5,6 @@
       :props="props"
       style="width: 100%"
       v-model="areaValue"
-      ref="areaValue"
       @change="getAreaValue"
     >
     </el-cascader>
@@ -19,7 +18,7 @@ export default {
   props: ['areaOption'],
   data () {
     return {
-      areaValue: [520000, 520100],
+      areaValue: [],
       options: [], // 第一次加载数据
       value: '',
       props: {
@@ -56,7 +55,8 @@ export default {
       })
     },
     getAreaValue (val) {
-      this.$emit('getAreaId', val[val.length - 2])
+      this.$emit('getAreaId', val)
+      console.log(val)
     }
   }
 }

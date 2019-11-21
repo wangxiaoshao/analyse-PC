@@ -75,9 +75,10 @@ export default {
     // this.getUserInfo()
     this.getDicList()
     this.getOption()
+    this.confirmInfo()
   },
   methods: {
-    ...mapMutations(['SET_USER_INFO', 'SET_WINDOWHEIGHT', 'SET_WINDOWWIDTH', 'SET_PAGE_BREADCRUMB', 'DIC_LIST', 'GET_OPTION']),
+    ...mapMutations(['SET_USER_INFO', 'SET_WINDOWHEIGHT', 'SET_WINDOWWIDTH', 'SET_PAGE_BREADCRUMB', 'DIC_LIST', 'GET_OPTION', 'GET_CONFIRM_INFO']),
     init (path) {
       // 在初始化菜单是，手动将breakLoop置为false，否则findMenuByPath不进入循环
       this.breakLoop = false
@@ -138,6 +139,28 @@ export default {
       // this.findMenuByPath(this.asideMenu.list, menu.path, 0)
       this.$router.push(menu.path)
       // this.SET_BREADCRUMB(this.breadcrumb)
+    },
+    confirmInfo () { // 确认信息弹框是否弹出
+      this.openConfirmInfo()
+      api[urlNames.popupWindow]().then((res) => {
+        if (res.data) {
+          this.openConfirmInfo()
+        }
+        this.GET_CONFIRM_INFO(res.data)
+      }).catch((e) => {
+      })
+    },
+    openConfirmInfo () {
+      this.$confirm('是否跳转?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$router.push({
+          path: '/confirm-info'
+        })
+      }).catch(() => {
+      })
     }
   }
 }

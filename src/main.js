@@ -24,10 +24,11 @@ new Vue({
   render: h => h(App),
   created () {
     // TODO 后端跳过单点登录，需要加上DEBUG_USER参数，正式环境需要去掉
-    if (process.env.NODE_ENV !== 'production') {
-      this.$cookie.set('DEBUG_USER', '')
-    } else {
-      this.$cookie.delete('DEBUG_USER')
-    }
+    this.$cookie.set('DEBUG_USER', '')
+    // if (process.env.NODE_ENV !== 'production') {
+    //   this.$cookie.set('DEBUG_USER', '')
+    // } else {
+    //   this.$cookie.delete('DEBUG_USER')
+    // }
   }
 }).$mount('#app')

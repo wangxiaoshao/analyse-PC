@@ -21,9 +21,11 @@
             :rules="[{ required: true, message: '名称不能为空'}]"
           >
             <el-input v-model="ruleForm.department.name"></el-input>
-            <div class="tip-msg"
-                 v-show="this.app.option.options.departmentAuditFields.indexOf('name') > -1 && ruleForm.department.name !== oldFrom.department.name">
-              添加或修改该字段需要提交审核
+            <div v-if="this.$route.name === 'DepartmentEdit' ||  this.$route.name === 'DepartmentAdd'">
+              <div class="tip-msg"
+                   v-show="this.app.option.options.departmentAuditFields.indexOf('name') > -1 && ruleForm.department.name !== oldFrom.department.name">
+                添加或修改该字段需要提交审核
+              </div>
             </div>
           </el-form-item>
           <el-form-item label=" 上级部门" prop="parentDep">
@@ -31,9 +33,11 @@
           </el-form-item>
           <el-form-item label=" 启用状态" prop="department.removed">
             <el-switch v-model="ruleForm.department.removed"></el-switch>
-            <div class="tip-msg"
-                 v-show="this.app.option.options.departmentAuditFields.indexOf('removed') > -1 && ruleForm.department.removed !== oldFrom.department.removed">
-              添加或修改该字段需要提交审核
+            <div v-if="this.$route.name === 'DepartmentEdit' ||  this.$route.name === 'DepartmentAdd'">
+              <div class="tip-msg"
+                   v-show="this.app.option.options.departmentAuditFields.indexOf('removed') > -1 && ruleForm.department.removed !== oldFrom.department.removed">
+                添加或修改该字段需要提交审核
+              </div>
             </div>
           </el-form-item>
         </el-col>
@@ -46,16 +50,20 @@
             prop="department.phone"
           >
             <el-input v-model="ruleForm.department.phone"></el-input>
+            <div v-if="this.$route.name === 'DepartmentEdit' ||  this.$route.name === 'DepartmentAdd'">
             <div class="tip-msg"
                  v-show="this.app.option.options.departmentAuditFields.indexOf('phone') > -1 && ruleForm.department.phone !== oldFrom.department.phone">
               添加或修改该字段需要提交审核
             </div>
+            </div>
           </el-form-item>
           <el-form-item label="上级单位" prop="orgName">
             <el-input v-model="orgName" :disabled="true"></el-input>
-            <div class="tip-msg"
-                 v-show="this.app.option.options.departmentAuditFields.indexOf('orgName') > -1 && ruleForm.department.orgName !== oldFrom.department.orgName">
-              添加或修改该字段需要提交审核
+            <div v-if="this.$route.name === 'DepartmentEdit' ||  this.$route.name === 'DepartmentAdd'">
+             <div class="tip-msg"
+                   v-show="this.app.option.options.departmentAuditFields.indexOf('orgName') > -1 && ruleForm.department.orgName !== oldFrom.department.orgName">
+                添加或修改该字段需要提交审核
+              </div>
             </div>
           </el-form-item>
         </el-col>
@@ -74,9 +82,11 @@
             {{tag}}
           </el-tag>
           <el-tag class="add-tag-btn" v-if="!disabledFlag" @click="openSearchFlag = true"><i class="el-icon-plus"></i>添加标签</el-tag>
-          <div class="tip-msg"
-               v-show="this.app.option.options.departmentAuditFields.indexOf('labelId') > -1 && ruleForm.labelId !== oldFrom.labelId">
-            添加或修改该字段需要提交审核
+          <div v-if="this.$route.name === 'DepartmentEdit' ||  this.$route.name === 'DepartmentAdd'">
+            <div class="tip-msg"
+                 v-show="this.app.option.options.departmentAuditFields.indexOf('labelId') > -1 && ruleForm.labelId !== oldFrom.labelId">
+              添加或修改该字段需要提交审核
+            </div>
           </div>
         </el-form-item>
       </el-row>
@@ -87,25 +97,31 @@
         <el-col :span="12">
           <el-form-item label="单位介绍" prop="department.duty">
             <el-input type="textarea" v-model="ruleForm.department.duty"></el-input>
-            <div class="tip-msg"
-                 v-show="this.app.option.options.departmentAuditFields.indexOf('duty') > -1 && ruleForm.department.duty !== oldFrom.department.duty">
-              添加或修改该字段需要提交审核
+            <div v-if="this.$route.name === 'DepartmentEdit' ||  this.$route.name === 'DepartmentAdd'">
+              <div class="tip-msg"
+                   v-show="this.app.option.options.departmentAuditFields.indexOf('duty') > -1 && ruleForm.department.duty !== oldFrom.department.duty">
+                添加或修改该字段需要提交审核
+              </div>
             </div>
           </el-form-item>
           <el-form-item label="申请原因" prop="reason">
             <el-input type="textarea" v-model="ruleForm.reason"></el-input>
-            <div class="tip-msg"
-                 v-show="this.app.option.options.departmentAuditFields.indexOf('reason') > -1 && ruleForm.reason !== oldFrom.reason">
-              添加或修改该字段需要提交审核
+            <div v-if="this.$route.name === 'DepartmentEdit' ||  this.$route.name === 'DepartmentAdd'">
+              <div class="tip-msg"
+                   v-show="this.app.option.options.departmentAuditFields.indexOf('reason') > -1 && ruleForm.reason !== oldFrom.reason">
+                添加或修改该字段需要提交审核
+              </div>
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="单位职责" prop="department.description">
             <el-input type="textarea" v-model="ruleForm.department.description"></el-input>
-            <div class="tip-msg"
-                 v-show="this.app.option.options.departmentAuditFields.indexOf('description') > -1 && ruleForm.department.description !== oldFrom.department.description">
-              添加或修改该字段需要提交审核
+            <div v-if="this.$route.name === 'DepartmentEdit' ||  this.$route.name === 'DepartmentAdd'">
+              <div class="tip-msg"
+                   v-show="this.app.option.options.departmentAuditFields.indexOf('description') > -1 && ruleForm.department.description !== oldFrom.department.description">
+                添加或修改该字段需要提交审核
+              </div>
             </div>
           </el-form-item>
         </el-col>

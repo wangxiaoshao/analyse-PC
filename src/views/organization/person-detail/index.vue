@@ -12,10 +12,13 @@
        :post-detail="userInfo.identity"
        :is-default-flag="isDefaultFlag"
        :old-user-info="oldUserInfo"
+       :label-id="userInfo.labelId"
+       :label-list="fromLabelList"
        @get-user="getUser"
        @get-post="getPost"
        @get-uid="getUid"
        @get-defauf="getDefaut"
+       @get-label="getLabelId"
      ></person-manage>
      <!--账号管理-->
      <account-manage
@@ -29,11 +32,10 @@
        @get-back="getBack"
      ></account-manage>
    </el-container>
-   <!--<el-footer class="add-person-footer">
-      <el-button type="primary" @click="next" v-if="stepOneFlag">下一步</el-button>
-      <el-button type="primary" @click="last" v-if="stepTwoFlag">上一步</el-button>
-      <el-button type="primary" v-if="!disabledFlag">保存</el-button>
-    </el-footer>-->
+   <el-footer class="add-person-footer" v-if="this.$route.name === 'PersonDetail'">
+      <el-button type="primary" @click="nextDetail" v-if="stepOneFlag">下一步</el-button>
+      <el-button type="primary" @click="lastDetail" v-if="stepTwoFlag">上一步</el-button>
+    </el-footer>
   </div>
 </template>
 
@@ -67,6 +69,7 @@ export default {
       activeIndex: 0,
       accountList: [],
       oldUserInfo: {},
+      fromLabelList: [],
       userInfo: {
         userAccount: [], // 账户
         labelId: [],
@@ -78,16 +81,16 @@ export default {
           orgId: '',
           dutyName: '' // 职务名称
         },
-        userId: null,
+        userId: '',
         user: {
           birthday: '',
-          nation: '',
+          nation: null,
           portraitUrl: '',
           sex: null,
           mobile: '',
-          politicalParty: '',
-          qualification: '',
-          positionClass: '',
+          politicalParty: null,
+          qualification: null,
+          positionClass: null,
           officePhone: '',
           idcard: '',
           mobile2: '',
@@ -115,9 +118,6 @@ export default {
   methods: {
     ...mapMutations(['GET_OPTION']),
     init () {
-      this.app.option.options.userAuditFields.forEach((item) => {
-        // console.log(4444, this.userInfo.user)
-      })
       if (this.$route.name === 'PersonAdd') {
         this.oldUserInfo = JSON.parse(JSON.stringify(this.userInfo))
         if (this.$route.params.id) {
@@ -148,14 +148,13 @@ export default {
         }, (error) => {
           this.$message.error(`没有内容`)
         })
-      }
-      if (this.$route.name === 'PersonEdit') {
-        if (this.$route.params.id) {
-          this.getUserDetail(this.$route.params.id)
-        }
+      } else {
+        this.getUserDetail(this.$route.params.id)
+        this.getIdentity()
       }
     },
     getUserDetail (id) {
+      this.loading = true
       api[urlNames['findUserById']]({
         id: id
       }).then((res) => {
@@ -168,22 +167,23 @@ export default {
         this.userInfo.user.sex = res.data.sex
         this.userInfo.user.birthday = res.data.birthday
         this.userInfo.user.portraitUrl = res.data.portraitUrl
-        this.userInfo.user.qualification = res.data.qualification
+        this.userInfo.user.qualification = parseInt(res.data.qualification)
         this.userInfo.user.professionalTitle = res.data.professionalTitle
-        this.userInfo.user.positionClass = res.data.positionClass
-        this.userInfo.user.nation = res.data.nation
-        this.userInfo.user.politicalParty = res.data.politicalParty
+        this.userInfo.user.positionClass = parseInt(res.data.positionClass)
+        this.userInfo.user.nation = parseInt(res.data.nation)
+        this.userInfo.user.politicalParty = parseInt(res.data.politicalParty)
         this.userInfo.user.signed = res.data.signed
-        this.userInfo.identity.type = res.data.userType
-        this.userInfo.identity.postName = res.data.postName
-        this.userInfo.user.qualification = res.data.qualification
-        this.userInfo.user.positionClass = res.data.positionClass
+        /* this.userInfo.identity.type = parseInt(res.data.userType)
+        this.userInfo.identity.postName = res.data.postName */
         this.userInfo.user.userState = res.data.userState
-        this.userInfo.user.userType = res.data.userType
+        this.userInfo.user.userType = parseInt(res.data.userType)
         if (this.$route.name === 'PersonEdit') {
           this.oldUserInfo = JSON.parse(JSON.stringify(this.userInfo))
+          this.userInfo.userId = res.data.uid
         }
         this.getUserAccount(res.data.uid)
+        this.findLabel(res.data.uid, 3)
+        this.loading = false
       }, (error) => {
         this.$message.error(`保存失败，请重试`)
       })
@@ -195,6 +195,30 @@ export default {
         this.userInfo.userAccount = res.data
         this.accountList = res.data
         console.log(res.data)
+      }, (error) => {
+      })
+    },
+    getIdentity () {
+      api[urlNames['findIdentityById']]({
+        identityId: this.$route.params.identityId
+      }).then((res) => {
+        console.log(res.data)
+        this.userInfo.identity.departmentId = res.data.departmentId
+        this.userInfo.identity.id = res.data.id
+        this.userInfo.identity.orgId = res.data.orgId
+        this.userInfo.identity.postName = res.data.postName
+        this.userInfo.identity.type = parseInt(res.data.type)
+        this.userInfo.identity.dutyName = res.data.dutyName
+      }, (error) => {
+        this.$message.error(`没有内容`)
+      })
+    },
+    findLabel (id, type) {
+      api[urlNames['findLabel']]({
+        id: id,
+        type: type
+      }).then((res) => {
+        this.fromLabelList = res.data
       }, (error) => {
       })
     },
@@ -214,8 +238,8 @@ export default {
     // 获取账号
     getAccount (val) {
       // this.userInfo.userAccount = val
+      this.userInfo.userAccount = val
       this.submitForm()
-      console.log(5557, this.userInfo.userAccount)
     },
     getUid (val) {
       this.getUserAccount(val)
@@ -223,6 +247,9 @@ export default {
     },
     getDefaut (val) {
       this.isDefaultFlag = val
+    },
+    getLabelId (val) {
+      this.userInfo.labelId = val
     },
     // 保存createUser
     submitForm () {
@@ -265,6 +292,16 @@ export default {
     },
     getActive (val) {
       this.active = val
+    },
+    nextDetail () {
+      this.stepTwoFlag = true
+      this.stepOneFlag = false
+      this.activeIndex = 1
+    },
+    lastDetail () {
+      this.stepTwoFlag = false
+      this.stepOneFlag = true
+      this.activeIndex = 0
     }
   }
 }

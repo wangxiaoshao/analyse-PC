@@ -1,33 +1,35 @@
 <template>
-  <el-dialog title="选择标签" :visible.sync="openSearchFlag" :showClose="false">
-    <i class="el-icon-close tag-close" @click="close"></i>
-    <el-input placeholder="请输入内容"
-              v-model="tagKeyWord"
-              class="input-with-select"
-              @change="searchTag"
-              @keyup.enter.native="searchTag"
-    >
-      <el-button slot="append" icon="el-icon-search"></el-button>
-    </el-input>
-    <div class="tag-content" v-loading="loading">
-      <el-checkbox-group
-        v-model="checkTagGroup"
+  <div class="tag-container">
+    <el-dialog title="选择标签" :visible.sync="openSearchFlag" :showClose="false">
+      <i class="el-icon-close tag-close" @click="close"></i>
+      <el-input placeholder="请输入内容"
+                v-model="tagKeyWord"
+                class="input-with-select"
+                @change="searchTag"
+                @keyup.enter.native="searchTag"
       >
-        <el-checkbox
-          v-for="item in searchTags"
-          border
-          :label="`${item.id}` + '|' + `${item.name}`"
-          :title="item.name"
-          :value="item.id"
-          :key="item.id"
-        >{{item.name}}</el-checkbox>
-      </el-checkbox-group>
-    </div>
-    <span slot="footer" class="dialog-footer">
+        <el-button slot="append" icon="el-icon-search"></el-button>
+      </el-input>
+      <div class="tag-content" v-loading="loading">
+        <el-checkbox-group
+          v-model="checkTagGroup"
+        >
+          <el-checkbox
+            v-for="item in searchTags"
+            border
+            :label="`${item.id}` + '|' + `${item.name}`"
+            :title="item.name"
+            :value="item.id"
+            :key="item.id"
+          >{{item.name}}</el-checkbox>
+        </el-checkbox-group>
+      </div>
+      <span slot="footer" class="dialog-footer">
         <el-button @click="close">取 消</el-button>
         <el-button type="primary" @click="sendTags">确 定</el-button>
       </span>
-  </el-dialog>
+    </el-dialog>
+  </div>
 </template>
 
 <script>

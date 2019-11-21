@@ -133,7 +133,25 @@ export default {
     serve: 'organizationManagePC',
     mock: '/findLabelByType.json' // development模式下，本地mock数据
   },
+  // 是否显示全局确认信息弹框
+  [urlNames.popupWindow]: {
+    type: 'get',
+    url: '/api/jg_manage/confirmation/popupWindow',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    serve: 'organizationManagePC',
+    mock: '/findLabelByType.json' // development模式下，本地mock数据
+  },
 
+  /**
+   * 获取应用列表
+   */
+  [urlNames.getAppList]: {
+    type: 'get',
+    url: '/api/jg_share/app/checkApps',
+    serve: 'organizationManagePC',
+    keepOriginResponse: false,
+    mock: 'getAppList.json'
+  },
   // 应用管理
   ...application,
   ...examine, // 申请审核

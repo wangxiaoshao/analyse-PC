@@ -4,6 +4,7 @@
  */
 export default {
   getUserInfo: 'getUserInfo',
+  popupWindow: 'popupWindow',
   // application
   getApplicationList: 'getApplicationList',
   toggleApplication: 'toggleApplication',
@@ -16,7 +17,9 @@ export default {
   getAuditList: 'getAuditList', // 待我审核 、 我已审核
   getMyApplyAuditList: 'getMyApplyAuditList', // 我的申请
   getInfoConfirmList: 'getInfoConfirmList', // 信息确认
-  getConfirmMemberList: 'getConfirmMemberList', // 信息确认 - 人员明细
+  insertConfirmInfo: 'insertConfirmInfo', // 确认信息- 弹框确认按钮
+  getConfirmMemberList: 'getConfirmMemberList', // 信息确认 - 弹框
+  findConfirmMemberById: 'findConfirmMemberById', // 信息确认 - 人员明细
   getAuditDetailsById: 'getAuditDetailsById', // 审批详情
   saveAudit: 'saveAudit', // 保存审批
 
@@ -102,8 +105,6 @@ export default {
   findUserById: 'findUserById',
   // 人员列表排序
   setUserSort: 'setUserSort',
-  // 角色列表
-  roleList: 'roleList',
   // 通过姓名查询用户基本信息
   findUserByParams: 'findUserByParams',
   // 根据userId查询用户身份
@@ -114,6 +115,7 @@ export default {
   updateUserCount: 'updateUserCount',
   // 绑定身份类型
   updateUserIdentity: 'updateUserIdentity',
+  findIdentityById: 'findIdentityById',
   findPerson: 'findPerson',
   // 创建单位
   createOrganization: 'createOrganization',
@@ -123,6 +125,7 @@ export default {
   getDictionaryList: 'getdDictionaryList',
   addDictionary: 'addDictionary',
   getDicListByType: 'getDicListByType',
+  updatePwd: 'updatePwd',
   getSystemParameter: 'getSystemParameter', // 参数设置
   // 标签查询
 
@@ -148,6 +151,8 @@ export default {
   saveRoleBindUser: 'saveRoleBindUser',
   findAuthorityManageList: 'findAuthorityManageList', // 权限配置列表
   findUserAccountByUid: 'findUserAccountByUid',
+  deleteRoleBindUser: 'deleteRoleBindUser',
+  saveAuthorityManage: 'saveAuthorityManage',
   // 查询单位下的区域
   findOrgAreaList: 'findOrgAreaList',
   // 查询用户可用配置

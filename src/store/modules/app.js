@@ -8,7 +8,8 @@ const app = {
     breadcrumb: [],
     pageBreadcrumb: [],
     dicList: [],
-    option: {}
+    option: {},
+    confirmState: ''
   },
   mutations: {
     [types.SET_USER_INFO] (state, user) {
@@ -31,6 +32,9 @@ const app = {
     },
     [types.GET_OPTION] (state, val) {
       state.option = val
+    },
+    [types.GET_CONFIRM_INFO] (state, val) {
+      state.confirmState = val
     }
   }
 }
