@@ -392,7 +392,7 @@ import { api, urlNames } from '@src/api'
 import addTags from '../AddTags/index'
 import dicOption from '@src/mixins/dic-options.js'
 export default {
-  props: ['disabledFlag', 'isShowEditFlag', 'userDetail', 'postDetail', 'isDefaultFlag', 'userAuditFields', 'oldUserInfo', 'labelId'],
+  props: ['disabledFlag', 'isShowEditFlag', 'userDetail', 'postDetail', 'isDefaultFlag', 'userAuditFields', 'oldUserInfo', 'labelId', 'labelList'],
   mixins: [dicOption],
   components: {
     addTags
@@ -424,14 +424,12 @@ export default {
   },
   computed: {
   },
-  watch: {
-    focusFlag (newVal) {
-      alert(newVal)
-    }
-  },
   methods: {
     init () {
-
+      this.labelList.forEach((item) => {
+        this.tagsName.push(item.name)
+        this.sendLabelId.push(item.id)
+      })
     },
     // 搜索表格点击当前行
     selectRow (val) {
