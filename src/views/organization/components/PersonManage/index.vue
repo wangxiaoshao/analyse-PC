@@ -59,7 +59,7 @@
             </el-popover>
             <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
               <div class="tip-msg"
-                   v-show="userAuditFields.indexOf('name') > -1 && userDetail.name !== oldUserInfo.user.name">
+                   v-show="this.app.option.options.userAuditFields.indexOf('name') > -1 && userDetail.name !== oldUserInfo.user.name">
                 添加或修改该字段需要提交审核
               </div>
             </div>
@@ -70,7 +70,7 @@
               v-model="userDetail.professionalTitle"></el-input>
             <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
               <div class="tip-msg"
-                   v-show="userAuditFields.indexOf('professionalTitle') > -1 && userDetail.professionalTitle !== oldUserInfo.user.professionalTitle">
+                   v-show="this.app.option.options.userAuditFields.indexOf('professionalTitle') > -1 && userDetail.professionalTitle !== oldUserInfo.user.professionalTitle">
                 添加或修改该字段需要提交审核
               </div>
             </div>
@@ -88,7 +88,7 @@
               v-model="userDetail.mobile"></el-input>
             <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
               <div class="tip-msg"
-                   v-show="userAuditFields.indexOf('mobile') > -1 && userDetail.mobile !== oldUserInfo.user.mobile">
+                   v-show="this.app.option.options.userAuditFields.indexOf('mobile') > -1 && userDetail.mobile !== oldUserInfo.user.mobile">
                 添加或修改该字段需要提交审核
               </div>
             </div>
@@ -105,7 +105,7 @@
             </el-select>
             <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
               <div class="tip-msg"
-                   v-show="userAuditFields.indexOf('userType') > -1 && userDetail.userType !== oldUserInfo.user.userType">
+                   v-show="this.app.option.options.userAuditFields.indexOf('userType') > -1 && userDetail.userType !== oldUserInfo.user.userType">
                 添加或修改该字段需要提交审核
               </div>
             </div>
@@ -135,7 +135,7 @@
                   v-model="userDetail.mobile2"></el-input>
                 <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
                   <div class="tip-msg"
-                       v-show="userAuditFields.indexOf('mobile2') > -1 && userDetail.mobile2 !== oldUserInfo.user.mobile2">
+                       v-show="this.app.option.options.userAuditFields.indexOf('mobile2') > -1 && userDetail.mobile2 !== oldUserInfo.user.mobile2">
                     添加或修改该字段需要提交审核
                   </div>
                 </div>
@@ -155,7 +155,7 @@
                 </el-select>
                 <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
                   <div class="tip-msg"
-                       v-show="userAuditFields.indexOf('nation') > -1 && userDetail.nation !== oldUserInfo.user.nation">
+                       v-show="this.app.option.options.userAuditFields.indexOf('nation') > -1 && userDetail.nation !== oldUserInfo.user.nation">
                     添加或修改该字段需要提交审核
                   </div>
                 </div>
@@ -175,7 +175,7 @@
                 </el-select>
                 <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
                   <div class="tip-msg"
-                       v-show="userAuditFields.indexOf('sex') > -1 && userDetail.sex !== oldUserInfo.user.sex">
+                       v-show="this.app.option.options.userAuditFields.indexOf('sex') > -1 && userDetail.sex !== oldUserInfo.user.sex">
                     添加或修改该字段需要提交审核
                   </div>
                 </div>
@@ -195,7 +195,7 @@
                 </el-select>
                 <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
                   <div class="tip-msg"
-                       v-show="userAuditFields.indexOf('politicalParty') > -1 && userDetail.politicalParty !== oldUserInfo.user.politicalParty">
+                       v-show="this.app.option.options.userAuditFields.indexOf('politicalParty') > -1 && userDetail.politicalParty !== oldUserInfo.user.politicalParty">
                     添加或修改该字段需要提交审核
                   </div>
                 </div>
@@ -214,7 +214,7 @@
                 </el-select>
                   <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
                     <div class="tip-msg"
-                         v-show="userAuditFields.indexOf('userType') > -1 && userDetail.userType !== oldUserInfo.user.userType ">
+                         v-show="this.app.option.options.userAuditFields.indexOf('userType') > -1 && userDetail.userType !== oldUserInfo.user.userType ">
                       添加或修改该字段需要提交审核
                     </div>
                   </div>
@@ -226,7 +226,7 @@
                   v-model="userDetail.officePhone"></el-input>
                 <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
                   <div class="tip-msg"
-                       v-show="userAuditFields.indexOf('officePhone') > -1 && userDetail.officePhone !== oldUserInfo.user.officePhone">
+                       v-show="this.app.option.options.userAuditFields.indexOf('officePhone') > -1 && userDetail.officePhone !== oldUserInfo.user.officePhone">
                     添加或修改该字段需要提交审核
                   </div>
                 </div>
@@ -251,7 +251,7 @@
                 </el-input>
                 <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
                   <div class="tip-msg"
-                       v-show="userAuditFields.indexOf('idcard') > -1 && userDetail.idcard !== oldUserInfo.user.idcard">
+                       v-show="this.app.option.options.userAuditFields.indexOf('idcard') > -1 && userDetail.idcard !== oldUserInfo.user.idcard">
                     添加或修改该字段需要提交审核
                   </div>
                 </div>
@@ -271,7 +271,7 @@
                 </el-select>
                 <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
                   <div class="tip-msg"
-                       v-show="userAuditFields.indexOf('qualification') > -1 && userDetail.qualification !== oldUserInfo.user.qualification">
+                       v-show="this.app.option.options.userAuditFields.indexOf('qualification') > -1 && userDetail.qualification !== oldUserInfo.user.qualification">
                     添加或修改该字段需要提交审核
                   </div>
                 </div>
@@ -291,7 +291,7 @@
                 </el-select>
                 <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
                   <div class="tip-msg"
-                       v-show="userAuditFields.indexOf('positionClass') > -1 && userDetail.positionClass !== oldUserInfo.user.positionClass">
+                       v-show="this.app.option.options.userAuditFields.indexOf('positionClass') > -1 && userDetail.positionClass !== oldUserInfo.user.positionClass">
                     添加或修改该字段需要提交审核
                   </div>
                 </div>
@@ -311,7 +311,7 @@
                 </el-select>
                 <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
                   <div class="tip-msg"
-                       v-show="userAuditFields.indexOf('userState') > -1 && userDetail.userState !== oldUserInfo.user.userState">
+                       v-show="this.app.option.options.userAuditFields.indexOf('userState') > -1 && userDetail.userState !== oldUserInfo.user.userState">
                     添加或修改该字段需要提交审核
                   </div>
                 </div>
@@ -320,7 +320,7 @@
                 <el-input placeholder="请输入岗位" v-model="postDetail.postName"></el-input>
                 <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
                   <div class="tip-msg"
-                       v-show="userAuditFields.indexOf('postName') > -1 && postDetail.postName !== oldUserInfo.identity.postName">
+                       v-show="this.app.option.options.userAuditFields.indexOf('postName') > -1 && postDetail.postName !== oldUserInfo.identity.postName">
                     添加或修改该字段需要提交审核
                   </div>
                 </div>
@@ -345,7 +345,7 @@
               </el-tag>
               <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
                 <div class="tip-msg"
-                     v-show="userAuditFields.indexOf('labelId') > -1 && sendLabelId !== oldUserInfo.labelId">
+                     v-show="this.app.option.options.userAuditFields.indexOf('labelId') > -1 && sendLabelId !== oldUserInfo.labelId">
                   添加或修改该字段需要提交审核
                 </div>
               </div>
@@ -357,7 +357,7 @@
                 <el-input type="textarea" v-model="userDetail.ext01" :disabled="isDefaultFlag"></el-input>
                 <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
                   <div class="tip-msg"
-                       v-show="userAuditFields.indexOf('ext01') > -1 && userDetail.ext01 !== oldUserInfo.user.ext01">
+                       v-show="this.app.option.options.userAuditFields.indexOf('ext01') > -1 && userDetail.ext01 !== oldUserInfo.user.ext01">
                     添加或修改该字段需要提交审核
                   </div>
                 </div>
@@ -368,7 +368,7 @@
                 <el-input type="textarea" v-model="userDetail.ext02" :disabled="isDefaultFlag"></el-input>
                 <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
                   <div class="tip-msg"
-                       v-show="userAuditFields.indexOf('ext02') > -1 && userDetail.ext02 !== oldUserInfo.user.ext02">
+                       v-show="this.app.option.options.userAuditFields.indexOf('ext02') > -1 && userDetail.ext02 !== oldUserInfo.user.ext02">
                     添加或修改该字段需要提交审核
                   </div>
                 </div>
@@ -391,8 +391,9 @@
 import { api, urlNames } from '@src/api'
 import addTags from '../AddTags/index'
 import dicOption from '@src/mixins/dic-options.js'
+import { mapState, mapMutations } from 'vuex'
 export default {
-  props: ['disabledFlag', 'isShowEditFlag', 'userDetail', 'postDetail', 'isDefaultFlag', 'userAuditFields', 'oldUserInfo', 'labelId'],
+  props: ['disabledFlag', 'isShowEditFlag', 'userDetail', 'postDetail', 'isDefaultFlag', 'userAuditFields', 'oldUserInfo', 'labelId', 'labelList'],
   mixins: [dicOption],
   components: {
     addTags
@@ -422,16 +423,16 @@ export default {
   created () {
     this.init()
   },
-  computed: {
-  },
-  watch: {
-    focusFlag (newVal) {
-      alert(newVal)
-    }
+  comments: {
+    ...mapState(['app'])
   },
   methods: {
+    ...mapMutations(['GET_OPTION']),
     init () {
-
+      this.labelList.forEach((item) => {
+        this.tagsName.push(item.name)
+        this.sendLabelId.push(item.id)
+      })
     },
     // 搜索表格点击当前行
     selectRow (val) {

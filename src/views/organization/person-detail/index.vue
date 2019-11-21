@@ -13,6 +13,7 @@
        :is-default-flag="isDefaultFlag"
        :old-user-info="oldUserInfo"
        :label-id="userInfo.labelId"
+       :label-list="fromLabelList"
        @get-user="getUser"
        @get-post="getPost"
        @get-uid="getUid"
@@ -68,6 +69,7 @@ export default {
       activeIndex: 0,
       accountList: [],
       oldUserInfo: {},
+      fromLabelList: [],
       userInfo: {
         userAccount: [], // 账户
         labelId: [],
@@ -116,9 +118,6 @@ export default {
   methods: {
     ...mapMutations(['GET_OPTION']),
     init () {
-      this.app.option.options.userAuditFields.forEach((item) => {
-        // console.log(4444, this.userInfo.user)
-      })
       if (this.$route.name === 'PersonAdd') {
         this.oldUserInfo = JSON.parse(JSON.stringify(this.userInfo))
         if (this.$route.params.id) {
@@ -174,8 +173,8 @@ export default {
         this.userInfo.user.nation = parseInt(res.data.nation)
         this.userInfo.user.politicalParty = parseInt(res.data.politicalParty)
         this.userInfo.user.signed = res.data.signed
-       /* this.userInfo.identity.type = parseInt(res.data.userType)
-        this.userInfo.identity.postName = res.data.postName*/
+        /* this.userInfo.identity.type = parseInt(res.data.userType)
+        this.userInfo.identity.postName = res.data.postName */
         this.userInfo.user.userState = res.data.userState
         this.userInfo.user.userType = parseInt(res.data.userType)
         if (this.$route.name === 'PersonEdit') {
@@ -183,6 +182,7 @@ export default {
           this.userInfo.userId = res.data.uid
         }
         this.getUserAccount(res.data.uid)
+        this.findLabel(res.data.uid, 3)
         this.loading = false
       }, (error) => {
         this.$message.error(`保存失败，请重试`)
@@ -211,6 +211,15 @@ export default {
         this.userInfo.identity.dutyName = res.data.dutyName
       }, (error) => {
         this.$message.error(`没有内容`)
+      })
+    },
+    findLabel (id, type) {
+      api[urlNames['findLabel']]({
+        id: id,
+        type: type
+      }).then((res) => {
+        this.fromLabelList = res.data
+      }, (error) => {
       })
     },
     getUser (val) { // 获取用户信息
