@@ -26,6 +26,7 @@
                 v-model="userDetail.name"
                 id="nameSearch"
                 slot="reference"
+                @blur="blur"
                 @input="loadSearch"></el-input>
               <div class="result-list">
                 <div class="default-warn" style="color: #FF6633">
@@ -417,7 +418,8 @@ export default {
       addInfo: {
         searchFlag: false,
         type: 3 // 1.单位，2、部门，3、人员
-      }
+      },
+      timer: null
     }
   },
   created () {
@@ -447,7 +449,11 @@ export default {
       if (this.$route.name === 'PersonAdd' && this.personFrom.name.length > 1) {
         this.searchFlag = true
         this.loadFlag = true
-        setTimeout(() => {
+        if (this.timer) {
+          clearTimeout(this.timer)
+          this.timer = null
+        }
+        this.timer = setTimeout(() => {
           api[urlNames['findUserByParams']]({
             name: this.personFrom.name
           }).then((res) => {
@@ -457,10 +463,14 @@ export default {
           }, (error) => {
             this.list = []
           })
-        }, 500)
+        }, 800)
       } else {
         this.searchFlag = false
+        this.timer = null
       }
+    },
+    blur () {
+      this.timer = null
     },
     // 选择身份类型
     getIdentityType (val) {
