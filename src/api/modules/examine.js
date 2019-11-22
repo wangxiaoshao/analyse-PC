@@ -28,12 +28,27 @@ export default {
     serve: 'organizationManagePC',
     mock: 'examine/getInfoConfirmList.json'
   },
-  [urlNames.getConfirmMemberList]: { // 信息确认-人员明细
+  [urlNames.insertConfirmInfo]: { // 信息确认
+    type: 'post',
+    url: '/api/jg_manage/confirmation/insertConfirmationOrgAndMember',
+    keepOriginResponse: true,
+    showLoading: true,
+    serve: 'organizationManagePC'
+  },
+  [urlNames.getConfirmMemberList]: { // 信息确认
     type: 'get',
     url: '/api/jg_manage/confirmation/confirmWindows',
     keepOriginResponse: true,
     serve: 'organizationManagePC',
+    showLoading: true,
     mock: 'examine/getConfirmMemberList.json'
+  },
+  [urlNames.findConfirmMemberById]: { // 信息确认-人员明细
+    type: 'get',
+    url: '/api/jg_manage/confirmation/findConfirmationMemberByConfirmId',
+    keepOriginResponse: true,
+    serve: 'organizationManagePC',
+    mock: 'examine/findConfirmMemberById.json'
   },
   [urlNames.getAuditDetailsById]: { // 审批详情
     type: 'get',

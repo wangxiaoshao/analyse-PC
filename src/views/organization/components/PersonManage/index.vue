@@ -57,18 +57,22 @@
                 </el-table>
               </div>
             </el-popover>
-            <div class="tip-msg"
-                 v-show="userAuditFields.indexOf('name') > -1 && userDetail.name !== oldUserInfo.user.name">
-              添加或修改该字段需要提交审核
+            <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
+              <div class="tip-msg"
+                   v-show="this.app.option.options.userAuditFields.indexOf('name') > -1 && userDetail.name !== oldUserInfo.user.name">
+                添加或修改该字段需要提交审核
+              </div>
             </div>
           </el-form-item>
           <el-form-item label="职务" prop="professionalTitle" :rules="[{ required: true, message: '职务不能为空'}]">
             <el-input
               placeholder="请输入职务"
               v-model="userDetail.professionalTitle"></el-input>
-            <div class="tip-msg"
-                 v-show="userAuditFields.indexOf('professionalTitle') > -1 && userDetail.professionalTitle !== oldUserInfo.user.professionalTitle">
-              添加或修改该字段需要提交审核
+            <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
+              <div class="tip-msg"
+                   v-show="this.app.option.options.userAuditFields.indexOf('professionalTitle') > -1 && userDetail.professionalTitle !== oldUserInfo.user.professionalTitle">
+                添加或修改该字段需要提交审核
+              </div>
             </div>
           </el-form-item>
         </el-col>
@@ -82,13 +86,15 @@
               placeholder="请输入手机号"
               :disabled="isDefaultFlag"
               v-model="userDetail.mobile"></el-input>
-            <div class="tip-msg"
-                 v-show="userAuditFields.indexOf('mobile') > -1 && userDetail.mobile !== oldUserInfo.user.mobile">
-              添加或修改该字段需要提交审核
+            <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
+              <div class="tip-msg"
+                   v-show="this.app.option.options.userAuditFields.indexOf('mobile') > -1 && userDetail.mobile !== oldUserInfo.user.mobile">
+                添加或修改该字段需要提交审核
+              </div>
             </div>
           </el-form-item>
           <!--:rules="[{ required: true, message: '请选择身份类型'}]"-->
-          <el-form-item label="身份类型" prop="userType">
+          <el-form-item label="身份类型" prop="userType" :rules="[{ required: true, message: '请选择身份类型'}]">
             <el-select placeholder="请选择身份类型" v-model="userDetail.userType" @change="getIdentityType">
               <el-option
                 v-for="item in userTypeOptions"
@@ -97,9 +103,11 @@
                 :value="item.value"
               ></el-option>
             </el-select>
-            <div class="tip-msg"
-                 v-show="userAuditFields.indexOf('userType') > -1 && userDetail.userType !== oldUserInfo.user.userType">
-              添加或修改该字段需要提交审核
+            <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
+              <div class="tip-msg"
+                   v-show="this.app.option.options.userAuditFields.indexOf('userType') > -1 && userDetail.userType !== oldUserInfo.user.userType">
+                添加或修改该字段需要提交审核
+              </div>
             </div>
           </el-form-item>
         </el-col>
@@ -125,9 +133,11 @@
                   placeholder="请输入备用手机号"
                   :disabled="isDefaultFlag"
                   v-model="userDetail.mobile2"></el-input>
-                <div class="tip-msg"
-                     v-show="userAuditFields.indexOf('mobile2') > -1 && userDetail.mobile2 !== oldUserInfo.user.mobile2">
-                  添加或修改该字段需要提交审核
+                <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
+                  <div class="tip-msg"
+                       v-show="this.app.option.options.userAuditFields.indexOf('mobile2') > -1 && userDetail.mobile2 !== oldUserInfo.user.mobile2">
+                    添加或修改该字段需要提交审核
+                  </div>
                 </div>
               </el-form-item>
               <el-form-item label="民族" prop="nation">
@@ -143,9 +153,11 @@
                     :value="item.value"
                   ></el-option>
                 </el-select>
-                <div class="tip-msg"
-                     v-show="userAuditFields.indexOf('nation') > -1 && userDetail.nation !== oldUserInfo.user.nation">
-                  添加或修改该字段需要提交审核
+                <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
+                  <div class="tip-msg"
+                       v-show="this.app.option.options.userAuditFields.indexOf('nation') > -1 && userDetail.nation !== oldUserInfo.user.nation">
+                    添加或修改该字段需要提交审核
+                  </div>
                 </div>
               </el-form-item>
               <el-form-item label="性别"  prop="sex">
@@ -161,9 +173,11 @@
                     :value="item.value"
                   ></el-option>
                 </el-select>
-                <div class="tip-msg"
-                     v-show="userAuditFields.indexOf('sex') > -1 && userDetail.sex !== oldUserInfo.user.sex">
-                  添加或修改该字段需要提交审核
+                <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
+                  <div class="tip-msg"
+                       v-show="this.app.option.options.userAuditFields.indexOf('sex') > -1 && userDetail.sex !== oldUserInfo.user.sex">
+                    添加或修改该字段需要提交审核
+                  </div>
                 </div>
               </el-form-item>
               <el-form-item label="所属党派" prop="politicalParty">
@@ -179,9 +193,11 @@
                     :value="item.value"
                   ></el-option>
                 </el-select>
-                <div class="tip-msg"
-                     v-show="userAuditFields.indexOf('politicalParty') > -1 && userDetail.politicalParty !== oldUserInfo.user.politicalParty">
-                  添加或修改该字段需要提交审核
+                <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
+                  <div class="tip-msg"
+                       v-show="this.app.option.options.userAuditFields.indexOf('politicalParty') > -1 && userDetail.politicalParty !== oldUserInfo.user.politicalParty">
+                    添加或修改该字段需要提交审核
+                  </div>
                 </div>
               </el-form-item>
               <el-form-item label="人员类型" prop="userAccount" >
@@ -196,21 +212,21 @@
                     :value="item.value"
                   ></el-option>
                 </el-select>
-                <div v-if="oldUserInfo.user.userType">
-                  <div class="tip-msg"
-                       v-show="userAuditFields.indexOf('userType') > -1 && userDetail.userType !== oldUserInfo.user.userType ">
-                    添加或修改该字段需要提交审核
+                  <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
+                    <div class="tip-msg"
+                         v-show="this.app.option.options.userAuditFields.indexOf('userType') > -1 && userDetail.userType !== oldUserInfo.user.userType ">
+                      添加或修改该字段需要提交审核
+                    </div>
                   </div>
-                </div>
               </el-form-item>
               <el-form-item label=" 办公电话" prop="officePhone">
                 <el-input
                   placeholder="请输入办公电话"
                   :disabled="isDefaultFlag"
                   v-model="userDetail.officePhone"></el-input>
-                <div v-if="oldUserInfo.user.officePhone">
+                <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
                   <div class="tip-msg"
-                       v-show="userAuditFields.indexOf('officePhone') > -1 && userDetail.officePhone !== oldUserInfo.user.officePhone">
+                       v-show="this.app.option.options.userAuditFields.indexOf('officePhone') > -1 && userDetail.officePhone !== oldUserInfo.user.officePhone">
                     添加或修改该字段需要提交审核
                   </div>
                 </div>
@@ -233,9 +249,11 @@
                 <el-input placeholder="请输入内容" :disabled="isDefaultFlag" v-model="userDetail.idcard">
                   <el-button slot="append" v-if="!disabledFlag" type="success" class="form-btn">点击实名认证</el-button>
                 </el-input>
-                <div class="tip-msg"
-                     v-show="userAuditFields.indexOf('idcard') > -1 && userDetail.idcard !== oldUserInfo.user.idcard">
-                  添加或修改该字段需要提交审核
+                <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
+                  <div class="tip-msg"
+                       v-show="this.app.option.options.userAuditFields.indexOf('idcard') > -1 && userDetail.idcard !== oldUserInfo.user.idcard">
+                    添加或修改该字段需要提交审核
+                  </div>
                 </div>
               </el-form-item>
               <el-form-item label="学历" prop="qualification">
@@ -251,9 +269,9 @@
                     :value="item.value"
                   ></el-option>
                 </el-select>
-                <div v-if="oldUserInfo.user.qualification">
+                <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
                   <div class="tip-msg"
-                       v-show="userAuditFields.indexOf('qualification') > -1 && userDetail.qualification !== oldUserInfo.user.qualification">
+                       v-show="this.app.option.options.userAuditFields.indexOf('qualification') > -1 && userDetail.qualification !== oldUserInfo.user.qualification">
                     添加或修改该字段需要提交审核
                   </div>
                 </div>
@@ -271,9 +289,11 @@
                     :value="item.value"
                   ></el-option>
                 </el-select>
-                <div class="tip-msg"
-                     v-show="userAuditFields.indexOf('positionClass') > -1 && userDetail.positionClass !== oldUserInfo.user.positionClass">
-                  添加或修改该字段需要提交审核
+                <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
+                  <div class="tip-msg"
+                       v-show="this.app.option.options.userAuditFields.indexOf('positionClass') > -1 && userDetail.positionClass !== oldUserInfo.user.positionClass">
+                    添加或修改该字段需要提交审核
+                  </div>
                 </div>
               </el-form-item>
               <el-form-item label=" 人员状态" prop="action">
@@ -289,16 +309,20 @@
                     :value="item.value"
                   ></el-option>
                 </el-select>
-                <div class="tip-msg"
-                     v-show="userAuditFields.indexOf('userState') > -1 && userDetail.userState !== oldUserInfo.user.userState">
-                  添加或修改该字段需要提交审核
+                <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
+                  <div class="tip-msg"
+                       v-show="this.app.option.options.userAuditFields.indexOf('userState') > -1 && userDetail.userState !== oldUserInfo.user.userState">
+                    添加或修改该字段需要提交审核
+                  </div>
                 </div>
               </el-form-item>
               <el-form-item label=" 岗位" prop="postName">
                 <el-input placeholder="请输入岗位" v-model="postDetail.postName"></el-input>
-                <div class="tip-msg"
-                     v-show="userAuditFields.indexOf('postName') > -1 && postDetail.postName !== oldUserInfo.identity.postName">
-                  添加或修改该字段需要提交审核
+                <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
+                  <div class="tip-msg"
+                       v-show="this.app.option.options.userAuditFields.indexOf('postName') > -1 && postDetail.postName !== oldUserInfo.identity.postName">
+                    添加或修改该字段需要提交审核
+                  </div>
                 </div>
               </el-form-item>
             </el-col>
@@ -306,6 +330,7 @@
           <el-row>
             <el-form-item label="人员标签">
               <el-tag
+                v-model="sendLabelId"
                 v-for="tag in tagsName"
                 :key="tag"
                 type="info"
@@ -318,29 +343,47 @@
               <el-tag class="add-tag-btn" v-if="!disabledFlag" @click="openSearchFlag = true">
                 <i class="el-icon-plus"></i>添加标签
               </el-tag>
+              <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
+                <div class="tip-msg"
+                     v-show="this.app.option.options.userAuditFields.indexOf('labelId') > -1 && sendLabelId !== oldUserInfo.labelId">
+                  添加或修改该字段需要提交审核
+                </div>
+              </div>
             </el-form-item>
           </el-row>
           <el-row class="row-item">
             <el-col :span="12">
               <el-form-item label="人员介绍" prop="instruction">
                 <el-input type="textarea" v-model="userDetail.ext01" :disabled="isDefaultFlag"></el-input>
+                <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
+                  <div class="tip-msg"
+                       v-show="this.app.option.options.userAuditFields.indexOf('ext01') > -1 && userDetail.ext01 !== oldUserInfo.user.ext01">
+                    添加或修改该字段需要提交审核
+                  </div>
+                </div>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="人员职责" prop="reason">
                 <el-input type="textarea" v-model="userDetail.ext02" :disabled="isDefaultFlag"></el-input>
+                <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
+                  <div class="tip-msg"
+                       v-show="this.app.option.options.userAuditFields.indexOf('ext02') > -1 && userDetail.ext02 !== oldUserInfo.user.ext02">
+                    添加或修改该字段需要提交审核
+                  </div>
+                </div>
               </el-form-item>
             </el-col>
           </el-row>
         </el-collapse-item>
       </el-collapse>
-      <el-form-item>
-        <el-footer class="add-person-footer">
-          <el-button type="primary" @click="next('userDetail')">下一步</el-button>
-          <el-button @click="goBack">取消</el-button>
-        </el-footer>
-      </el-form-item>
     </el-form>
+    <el-footer class="add-person-footer">
+     <span v-if="this.$route.name === 'PersonAdd' || this.$route.name === 'PersonEdit'">
+        <el-button type="primary" @click="next('userDetail')" :disabled="false">下一步</el-button>
+        <el-button @click="goBack">取消</el-button>
+     </span>
+    </el-footer>
   </div>
 </template>
 
@@ -348,8 +391,9 @@
 import { api, urlNames } from '@src/api'
 import addTags from '../AddTags/index'
 import dicOption from '@src/mixins/dic-options.js'
+import { mapState, mapMutations } from 'vuex'
 export default {
-  props: ['disabledFlag', 'isShowEditFlag', 'userDetail', 'postDetail', 'isDefaultFlag', 'userAuditFields', 'oldUserInfo'],
+  props: ['disabledFlag', 'isShowEditFlag', 'userDetail', 'postDetail', 'isDefaultFlag', 'userAuditFields', 'oldUserInfo', 'labelId', 'labelList'],
   mixins: [dicOption],
   components: {
     addTags
@@ -365,7 +409,7 @@ export default {
       postFrom: this.postDetail,
       imageUrl: '',
       tagsName: [],
-      labelId: [],
+      sendLabelId: this.labelId,
       list: [],
       searchFlag: false,
       loadFlag: true,
@@ -379,16 +423,16 @@ export default {
   created () {
     this.init()
   },
-  computed: {
-  },
-  watch: {
-    focusFlag (newVal) {
-      alert(newVal)
-    }
+  comments: {
+    ...mapState(['app'])
   },
   methods: {
+    ...mapMutations(['GET_OPTION']),
     init () {
-
+      this.labelList.forEach((item) => {
+        this.tagsName.push(item.name)
+        this.sendLabelId.push(item.id)
+      })
     },
     // 搜索表格点击当前行
     selectRow (val) {
@@ -472,12 +516,14 @@ export default {
     getTag (val) {
       val.forEach((item) => {
         this.tagsName.push(item.split('|')[1])
-        this.labelId.push(item.split('|')[0])
+        this.sendLabelId.push(item.split('|')[0])
       })
+      this.$emit('get-label', this.sendLabelId)
     },
     removeTag (tag, index) {
       this.tagsName.splice(index, 1)
-      this.ruleForm.labelId.splice(index, 1)
+      this.sendLabelId.splice(index, 1)
+      this.$emit('get-label', this.sendLabelId)
     },
     next (userDetail) {
       this.$refs[userDetail].validate((valid) => {

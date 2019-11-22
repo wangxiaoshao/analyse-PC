@@ -9,26 +9,21 @@
       highlight-current-row
       :max-height="tableMaxHeight"
       style="width: 100%">
-      <el-table-column prop="description" label="序号" width="60" align="center">
-        <template slot-scope="scope">
-          <span :title="scope">{{scope.$index + 1}}</span>
-        </template>
-      </el-table-column>
       <el-table-column prop="name" label="角色名称">
       </el-table-column>
       <el-table-column prop="title" label="角色描述">
       </el-table-column>
-      <el-table-column prop="createTime" label="创建时间">
+      <el-table-column prop="createTime" label="创建时间" width="150" align="center">
       </el-table-column>
-      <el-table-column prop="updatedTime" label="修改时间">
+      <el-table-column prop="updatedTime" label="修改时间" width="150" align="center">
       </el-table-column>
-      <el-table-column prop="value" label="启用状态">
+      <el-table-column prop="value" label="启用状态" width="100" align="center">
         <template slot-scope="scope">
-          <span class="text-green" v-show="scope.row.removed">启用</span>
-          <span class="text-red" v-show="!scope.row.removed">停用</span>
+          <span class="text-able" v-show="scope.row.removed">启用</span>
+          <span class="text-disable" v-show="!scope.row.removed">停用</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" min-width="180">
+      <el-table-column label="操作" width="150" align="center">
         <template slot-scope="scope">
           <el-button size="mini" type="text" @click="goLookPerson(scope.row)">查看成员及权限</el-button>
         </template>
@@ -63,6 +58,22 @@ export default {
   computed: {
     ...mapState(['roleManage'])
   },
+  created () {
+    if (this.$route.query.type === 'back') {
+      this.page = Object.assign(this.page, this.roleManage.page)
+      this.$router.push({
+        name: 'RoleList',
+        params: {
+          type: 'back',
+          id: this.roleManage.listId
+        }
+      })
+    } else {
+      this.SET_ROLEMANAGE_PAGE({})
+      this.LIST_ID({})
+    }
+    this.getGrid()
+  },
   methods: {
     ...mapMutations(['SET_ROLEMANAGE_PAGE', 'LIST_ID']),
     getGrid () {
@@ -92,22 +103,6 @@ export default {
         }
       })
     }
-  },
-  created () {
-    if (this.$route.query.type === 'back') {
-      this.page = Object.assign(this.page, this.roleManage.page)
-      this.$router.push({
-        name: 'RoleList',
-        params: {
-          type: 'back',
-          id: this.roleManage.listId
-        }
-      })
-    } else {
-      this.SET_ROLEMANAGE_PAGE({})
-      this.LIST_ID({})
-    }
-    this.getGrid()
   }
 }
 </script>

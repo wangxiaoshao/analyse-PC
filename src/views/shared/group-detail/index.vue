@@ -28,9 +28,9 @@
         align="center">
         <template slot-scope="scope">
             <div>
-              <span v-if="scope.row.nodeType ===1">单位</span>
-              <span v-if="scope.row.nodeType ===2">部门</span>
-              <span v-if="scope.row.nodeType ===3">人员</span>
+              <span v-if="scope.row.memberType ===3">单位</span>
+              <span v-if="scope.row.memberType ===2">部门</span>
+              <span v-if="scope.row.memberType ===1">人员</span>
             </div>
         </template>
       </el-table-column>
@@ -80,9 +80,9 @@ export default {
         selectMenmberTitle: '分组成员添加', // 选人组件标题
         selectMenmberFlag: false, // 显示弹窗，
         isAllData: true, // 是否需完整数据-默认为不需要（false，只包含用户id）
-        notOnlyPerson: false, // 是否选人，默认为false（只选人）
-        isSingleSelect: false, // 是否为单选框  false为多选（默认）-人员单选
-        isSingleOrgSelect: false, // 是否为单选框  false为多选（默认），true为单选(isOnlyOrg为true时部门/单位单选)
+        notOnlyPerson: true, // 是否选人，默认为false（只选人）
+        isSingleSelect: false, // 是否为单选框  false为多选（默认）-人员单选(与notOnlyPerson一起使用，notOnlyPerson为true是有效
+        isSingleOrgSelect: false, // 是否为单选框  false为多选（默认），true为单选(与isOnlyOrg一起使用，isOnlyOrg为true时部门/单位单选)
         isOnlyOrg: true //  是否选部门/单位 false为不是只选部门，true为只选部门
       },
       groupMemberInfo: []
@@ -133,11 +133,12 @@ export default {
       this.seleceDialog.selectMenmberFlag = false
     },
     dialogReturnMembersInfo (memberData, orgdData) {
+      console.log(JSON.parse(JSON.stringify(memberData)), 'this.$route.params.id')
       console.log(JSON.parse(JSON.stringify(orgdData)), 'this.$route.params.id')
       memberData.forEach(item => {
         this.groupMemberInfo.push({
           memberId: item.uid,
-          memberType: 3,
+          memberType: 1,
           groupId: this.groupId
         })
       })
@@ -154,7 +155,9 @@ export default {
     // 添加成员
     addGroupUsers (data) {
       api[urlNames['addGroupUsers']]({ data }).then((res) => {
-        console.log('-------------')
+        if (res.status === 0) {
+          this.$message.success('添加成功')
+        }
       })
     },
     // 每一页请求条数

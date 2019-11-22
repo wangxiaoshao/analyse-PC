@@ -4,6 +4,7 @@
     node-key="id"
     :props="defaultProps"
     :highlight-current="true"
+    :default-expanded-keys="defaultNode"
     lazy
     ref="treeList"
     :load="loadNode"
@@ -26,6 +27,7 @@ export default {
       active: 'active',
       noActive: 'noActive',
       showCheckboxFlag: false,
+      defaultNode: [],
       treeList: [],
       treeSonList: [],
       defaultProps: {
@@ -60,7 +62,9 @@ export default {
       }).then((res) => {
         this.total = parseInt(res.total)
         this.treeList = res.data
+        this.defaultNode.push(res.data[0].id)
         this.$emit('get-default-node', res.data[0].id)
+        this.findTreeSonList(res.data[0].id)
         if (this.$route.name === 'Organization') {
           this.handleNodeClick(res.data[0])
         }

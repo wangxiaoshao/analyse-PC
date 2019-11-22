@@ -14,13 +14,9 @@
         
       </el-table>
     </div>
-    <div class="member-tab-content">
-      <member-table :personnel="personnel" :treeList="treeList"></member-table>
-    </div>
   </div>
 </template>
 <script>
-import memberTable from '../Member/index'
 import { api, urlNames } from '@src/api'
 export default {
   name: 'index',
@@ -34,6 +30,7 @@ export default {
       isShow:true,
       tableData: [],
       personnel: {},
+      memberList:[],
       userId: '1111111111111111111',      
     }
   },

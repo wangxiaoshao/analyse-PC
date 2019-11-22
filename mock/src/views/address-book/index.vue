@@ -63,7 +63,7 @@ import MemberTable from './components/Member/index'
 import otherAddressBookTree from './components/Maintree/index'
 import otherUnitAddressBook from './unit-address-book/index'
 import { api, urlNames } from '@src/api'
-import { type } from 'os';
+// import { type } from 'os';
 export default {
   name: 'AddressBook',
   mixins: [handleTable],

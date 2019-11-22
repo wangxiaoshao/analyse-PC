@@ -11,8 +11,6 @@
     >
       <span class="custom-tree-node" slot-scope="{ node, data }">
         <i class="imenu-icon fa fa-sitemap" v-if="data"></i>
-        <!-- <i class="imenu-icon fa fa-building-o" v-if="data.nodeType === 2"></i>
-        <i class="imenu-icon fa fa-institution" v-if="data.nodeType === 3"></i>-->
         <span>{{ node.label }}</span>
       </span>
     </el-tree>
@@ -31,8 +29,8 @@ export default {
       count: 1,
       this_unit: {},
       childrenTree: [],
-      subsetId: null,
-    };
+      subsetId: null
+    }
   },
   created () {
   // this.getDepartmentPerson()
@@ -81,24 +79,6 @@ export default {
     //     console.log(err)
     //   })
     // },
-
-    /**
-     * 查询部门下的人员
-     */
-    getDepartmentPerson(){
-    api[urlNames['getDepartmentPersonList']]({
-      departmentId:''
-    }).then(res => {
-        // if (res.data.length > 0) {
-        //   res.data.forEach(element => {
-        //     this.childrenTree.push(element)
-        //   })
-        // }
-        console.log(111)
-      }).catch(err => {
-        console.log(err)
-      })
-    }
   },
   watch: {
     thisUnit (newvalue, oldvalue) {

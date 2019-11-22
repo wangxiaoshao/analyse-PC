@@ -87,16 +87,6 @@ export default {
     keepOriginResponse: false
   },
   /**
-   * 获取应用列表
-   */
-  [urlNames.getAppList]: {
-    type: 'get',
-    url: '/api/jg_share/app/checkApps',
-    serve: 'organizationManagePC',
-    keepOriginResponse: false,
-    mock: 'getAppList.json'
-  },
-  /**
    创建应用
    */
   [urlNames.createApp]: {

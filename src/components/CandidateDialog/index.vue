@@ -23,17 +23,6 @@
              </span>
           </el-tree>
         </div>
-        <!--        <div class="transfer">-->
-        <!--          <el-transfer-->
-        <!--            filterable-->
-        <!--            height="360px"-->
-        <!--            filter-placeholder="请输入名字"-->
-        <!--            v-model="selectedMenbers"-->
-        <!--            :props="{key: 'uid',label: 'name'}"-->
-        <!--            :titles="['选择', '已选']"-->
-        <!--            :data="memberList">-->
-        <!--          </el-transfer>-->
-        <!--        </div>-->
         <div class="member-list">
           <div v-if="!seleceDialog.isSingleSelect&&seleceDialog.notOnlyPerson" class="member-panel" :class="seleceDialog.notOnlyPerson&&seleceDialog.isOnlyOrg?memberstyle:noorgstyle">
             <el-checkbox :indeterminate="isIndeterminate" v-model="checkAllMember" @change="handleCheckAllMemberChange">
@@ -49,7 +38,7 @@
               <el-radio :key="item.uid" v-for="item in memberList" :label="item.uid">{{item.name}}</el-radio>
             </el-radio-group>
           </div>
-          <div class="dep-panel" v-if="!seleceDialog.isSingleOrgSelect&&seleceDialog.isOnlyOrg" :class="seleceDialog.notOnlyPerson&&seleceDialog.isOnlyOrg?memberstyle:orgstyle">
+          <div class="dep-panel" v-if="!seleceDialog.isSingleOrgSelect&&seleceDialog.isOnlyOrg" :class="seleceDialog.notOnlyPerson&&seleceDialog.isOnlyOrg?orgstyle:noorgstyle">
             <el-checkbox :indeterminate="isIndeterminateOrg" v-model="checkAllOrg" @change="handleCheckAllOrgChange">
               选择单位/部门
             </el-checkbox>
@@ -59,8 +48,8 @@
           </div>
           <div class="dep-panel" v-if="seleceDialog.isSingleOrgSelect&&seleceDialog.isOnlyOrg">
             <p>选择单位/部门</p>
-            <el-radio-group @change="singleCheckedOrg" :class="seleceDialog.notOnlyPerson?memberstyle:singlecheck"  v-model="checkedMemberList">
-              <el-radio :key="item.uid" v-for="item in orgList" :label="item.uid">{{item.name}}</el-radio>
+            <el-radio-group @change="singleCheckedOrg" :class="seleceDialog.notOnlyPerson?memberstyle:singlecheck"  v-model="checkedOrgList">
+              <el-radio :key="item.id" v-for="item in orgList" :label="item.id">{{item.name}}</el-radio>
             </el-radio-group>
           </div>
         </div>
@@ -71,7 +60,7 @@
               <el-checkbox  v-for="item in selectedMenbers" :label="item.uid" :key="item.uid">{{item.name}}</el-checkbox>
             </el-checkbox-group>
           </div>
-          <div class="dep-panel" v-if="seleceDialog.isOnlyOrg" :class="seleceDialog.notOnlyPerson&&seleceDialog.isOnlyOrg?memberstyle:orgstyle">
+          <div class="dep-panel" v-if="seleceDialog.isOnlyOrg" :class="seleceDialog.notOnlyPerson&&seleceDialog.isOnlyOrg?orgstyle:noorgstyle">
             <p>已选单位/部门:</p>
             <el-checkbox-group v-model="selectedOrgID" @change="handleCheckedSelectOrgChange">
               <el-checkbox v-for="item in selectedOrg" :label="item.id" :key="item.id">{{item.name}}</el-checkbox>
@@ -133,7 +122,7 @@ export default {
     }
   },
   created () {
-    this.findNodeTree('-1')
+    this.findNodeTree()
   },
   methods: {
     // 确定获取数据
@@ -157,8 +146,6 @@ export default {
     // 获取机构树--初始化
     findNodeTree (parentId) {
       api[urlNames['getTree']]({
-        parentId: parentId,
-        viewId: -1
       }).then((res) => {
         this.nodeTree = res.data
       })
@@ -166,8 +153,7 @@ export default {
     // 获取机构树--加载子节点
     findSonNodeTree (parentId) {
       api[urlNames['getTree']]({
-        parentId: parentId,
-        viewId: -1
+        parentId: parentId
       }).then((res) => {
         this.nodeSonTree = res.data
       })
@@ -175,8 +161,7 @@ export default {
     // 获取机构树-加载可选
     findcheckNodeTree (parentId) {
       api[urlNames['getTree']]({
-        parentId: parentId,
-        viewId: -1
+        parentId: parentId
       }).then((res) => {
         this.orgList = []
         res.data.forEach(item => {
@@ -262,18 +247,24 @@ export default {
     handleCheckedSelectChange (value) {
       // this.selectedMenbers = this.selectedMenbers.filter(item => value.indexOf(item.uid) > -1)
     },
-    // 选择框单选--到达已选框单位/部门
+    // 选择框全选--到达已选框单位/部门
     handleCheckAllOrgChange (val) {
       let ids = []
       this.orgList.forEach(item => {
         ids.push(item.id)
       })
-      this.checkedOrgList = this.selectedOrgID = val ? ids : [] // 权限ID
+      this.checkedOrgList = this.selectedOrgID = val ? ids : [] // 全选ID
+      // this.checkedOrgList =this.selectedOrgID= this.selectedOrgID.concat(val ? ids : []) // 全选ID
       this.selectedOrg = val ? this.orgList : [] // q全选
+      // this.selectedOrg=this.selectedOrg.concat(val ? this.orgList : []) // q全选
       this.isIndeterminateOrg = false
     },
     // 选择框单选--到达已选框单位部门
     handleCheckedOrgChange (val) {
+      // let selectIds = val.concat(this.selectedOrgID)
+      // selectIds = selectIds.filter(function (element, index, self) {
+      //   return self.indexOf(element) === index
+      // })
       this.selectedOrg = this.selectedOrgID = []
       val.forEach(item => {
         let list = this.orgList.filter(function (x) {
@@ -303,7 +294,15 @@ export default {
       that.selectedMenbers = { ...list }
     },
     // 单选操作--部门/单位
-    singleCheckedOrg () {}
+    singleCheckedOrg () {
+      let that = this
+      that.selectedOrg = that.selectedOrgID = []
+      that.selectedOrgID[0] = that.checkedOrgList
+      let list = that.orgList.filter(function (x) {
+        return x.id === that.selectedOrgID[0]
+      })
+      that.selectedOrg = { ...list }
+    }
   }
 }
 </script>

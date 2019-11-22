@@ -54,7 +54,7 @@
         <div class="from">
           <el-form ref="form" :model="form" label-width="100px">
             <el-row :gutter="10">
-              <el-col :span="8">
+              <el-col :span="10">
                 <div class="grid-content bg-purple">
                   <el-form-item label="选择组织机构">
                     <div class="select-org">
@@ -84,7 +84,7 @@
                   </el-form-item>
                 </div>
               </el-col>
-              <el-col :span="8" :offset="2">
+              <el-col :span="10" :offset="2">
                 <div class="grid-content bg-purple-light">
 <!--                select-org-panel   <div class="select-btn">-->
 <!--                    <p style="font-size: 14px;color: #606266;padding: 0 10px;">新机构视图</p>-->
@@ -198,7 +198,7 @@ export default {
   },
   created () {
     this.findViewAdmin()
-    this.findNodeTree('-1')
+    this.findNodeTree()
     if (this.$route.params.id !== '0') {
       this.findNodeDraftList('-1')
       this.findViewById(this.$route.params.id)
@@ -208,8 +208,7 @@ export default {
   methods: {
     // 获取树的左上点的坐标
     getCoordinates () {
-      console.log(window.screenY, 'window.screenY')
-      return [{ top: this.$refs.coordinates.getBoundingClientRect().top }, { left: this.$refs.coordinates.getBoundingClientRect().left }, { x: window.screenX }, { y: window.screenY }]
+      return { x: window.screenX }
     },
     // 创建视图基本信息
     createView () {
@@ -252,8 +251,6 @@ export default {
     // 获取机构树--初始化
     findNodeTree (parentId) {
       api[urlNames['getTree']]({
-        parentId: parentId,
-        viewId: -1
       }).then((res) => {
         this.nodeTree = res.data
       })
@@ -281,8 +278,7 @@ export default {
     // 获取机构树--加载子节点
     findSonNodeTree (parentId) {
       api[urlNames['getTree']]({
-        parentId: parentId,
-        viewId: -1
+        parentId: parentId
       }).then((res) => {
         this.nodeSonTree = res.data
       })
@@ -354,8 +350,9 @@ export default {
       x:浏览器的位置-左侧
       y:浏览器的位置-顶部
       */
-      let boxHeight = this.$refs.cheight.$el.scrollHeight
-      if (e.screenX > coordinates[1].left + coordinates[2].x + 220 && e.screenX < coordinates[1].left + coordinates[2].x + 530 && e.screenY > coordinates[0].top + coordinates[3].y + 160 && e.screenY < coordinates[0].top + coordinates[3].y + 240 + boxHeight) {
+      console.log((window.innerWidth - 240) / 2, 'window.innerWidth')
+      console.log(window.innerWidth, 'window.innerWidth')
+      if (e.screenX > (window.innerWidth - 240) / 2 + 240 + coordinates.x && e.screenX < (window.innerWidth - 240) / 2 + 240 + coordinates.x + window.innerWidth * 0.5) {
         this.viewNodeDraft.id = Node.data.id
         Node.data.parentId = this.viewNodeDraft.parentId = '-1'
         this.viewNodeDraft.name = Node.data.name

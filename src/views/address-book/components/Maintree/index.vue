@@ -7,7 +7,7 @@
     lazy
     ref="treeList"
     :load="loadNode"
-    :expand-on-click-node="false"
+    
     @node-click="handleNodeClick"
    >
       <span class="custom-tree-node " slot-scope="{ node, data }">
@@ -28,6 +28,8 @@ export default {
       showCheckboxFlag: false,
       treeList: [],
       treeSonList: [],
+      departmentList:[],
+      departmentList:[],
       treeDepartmentList:[],
       defaultProps: {
         children: 'children',
@@ -40,7 +42,7 @@ export default {
   },
   mounted () {
     this.findTreeList(-1)
-    this.findTreeDepartmentlist(1)
+    // this.findTreeDepartmentlist(1)
   },
   methods: {
     // 追加子节点
@@ -64,9 +66,9 @@ export default {
         // viewId: -1,
       }).then((res) => {
         console.log(res,'------12323242---')                
-        // console.log(res.data.typeNode,'wewdsdefwef----')
         this.treeSonList = res.data
-
+        this.otherDepartantList=this.treeSonList
+      console.log(this.otherDepartantList,'12123--0--')
       })
     },
     findTreeList (parentId) {
@@ -84,30 +86,18 @@ export default {
       })
     },
 
-    // 获取单位下的部门
+/**查询部门下的下级部门 */
     findTreeDepartmentlist (bindId) {
       api[urlNames['getTree']]({
         bindId: bindId,
       
       }).then((res) => {
-        // this.treeSonList = res.data
-      // bindId:11111
-      // nodeType:1
       })
     },
-    // findViewNodeList(bindId){
-    // api[urlNames['findViewNodeList']]({
-    //   bindId:bindId,
-    //     viewId: -1
-      
-    // }).then((res)=>{
-    //   // this.treeDepartmentList=res.data
-    //   console.log(123243523)
-    //   console.log(res)
-    // })
-    // },
+  
 
    handleNodeClick (data) {
+     console.log(JSON.parse(JSON.stringify(data)),'---------11111111111111111--------')
      this.$emit('handle-nodeClick', data)
       // this.$emit('handle-node-click', node)
       // if (node) {

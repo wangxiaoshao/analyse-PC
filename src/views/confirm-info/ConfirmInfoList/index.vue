@@ -2,20 +2,29 @@
   <div class="site-module mod-dictionary">
     <!--操作row-->
     <el-row class="operator-row">
-      <el-button size="small" type="primary" @click="getConfirmMemberList">确认机构人员信息</el-button>
+      <el-button
+        size="small"
+        type="primary"
+        @click="getConfirmMemberList"
+        >确认机构人员信息
+      </el-button>
     </el-row>
     <el-row class="operator-row">
       <el-col :span="18">
         <el-row :gutter="10" type="flex">
           <div class="block">
             <el-date-picker
-              v-model="searchQuery.timeValue"
+              v-model="searchQuery.year"
               type="year"
-              :placeholder="defaultTime" @change="selectChange('timeField')">
+              placeholder="请选择年份" @change="selectChange('timeField')">
             </el-date-picker>
           </div>
           <el-col :span="8">
-            <el-select v-model="searchQuery.statusValue" clearable placeholder="选择确认状态"    @change="selectChange">
+            <el-select
+              v-model="searchQuery.status"
+              clearable
+              placeholder="请选择确认状态"
+              @change="selectChange">
               <el-option
                 v-for="item in statusOptions"
                 :key="item.value"
@@ -35,8 +44,8 @@
                 :tableData="tableData">
       <el-table-column label="状态" align="center">
         <template slot-scope="scope">
-          <span v-show="scope.row.auditState === 1" class="text-green">已确认</span>
-          <span v-show="scope.row.auditState !== 1" class="text-red">待确认</span>
+          <span v-show="scope.row.status === 1" class="text-green">已确认</span>
+          <span v-show="scope.row.status !== 1" class="text-red">未确认</span>
         </template>
       </el-table-column>
       <template slot-scope="{slotScope}" slot="operate">
@@ -64,12 +73,12 @@
       <site-table :tableConfig="dialogTableConfig"
                   :tableHeight="dialogTableHeight"
                   :operateWidth="operateWidth"
-                  :operate="operate"
-                  :tableData="tableData">
+                  :operate="DialogOperate"
+                  :tableData="DialogTableData">
       </site-table>
       <el-row :gutter="20" :style="{marginTop: '20px'}">
         <el-col :span="12" :offset="8">
-          <el-button type="primary">确认</el-button>
+          <el-button type="primary" @click="handleConfirm">确认</el-button>
           <el-button :style="{marginLeft: '40px'}" @click="handleClose">取消</el-button>
         </el-col>
       </el-row>
@@ -81,7 +90,8 @@
 import handleTable from '@src/mixins/handle-table'
 import SiteTable from '@src/components/SiteTable/index.vue'
 import { filters } from '@src/filters'
-import tableConfig from './tableConfig'
+import confirmedTable from './confirmedTable'
+import unconfirmedTable from './unconfirmedTable'
 import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
 
@@ -90,44 +100,9 @@ export default {
   mixins: [handleTable],
   data () {
     return {
-      tableConfig,
-      gridData: [{
-        counts: '1202',
-        name: '王小虎'
-      }],
-      loading: true,
-      statusOptions: [{
-        value: 1,
-        label: '已确认'
-      },
-      {
-        value: 0,
-        label: '未确认'
-      }],
-      searchQuery: {
-        statusValue: '',
-        timeValue: ''
-      },
-      list: [],
-      areaList: [
-        {
-          'id': 1,
-          'code': '1',
-          'name': '单位'
-        },
-        {
-          'id': 2,
-          'code': '2',
-          'name': '部门'
-        },
-        {
-          'id': 3,
-          'code': '3',
-          'name': '人员'
-        }
-      ],
-      dictionaryNameList: [],
-      dialogVisible: false,
+      confirmedTable,
+      unconfirmedTable,
+      tableConfig: {},
       dialogTableConfig: {
         keyName: {
           key: 'keyName',
@@ -146,22 +121,41 @@ export default {
           minWidth: 50
         }
       },
+      statusOptions: [{
+        value: 1,
+        label: '已确认'
+      },
+      {
+        value: 0,
+        label: '未确认'
+      }],
+      searchQuery: {
+        year: '',
+        status: ''
+      },
+      list: [],
+      dictionaryNameList: [],
+      dialogVisible: false,
       defaultTime: '',
       tableData: [],
+      DialogTableData: [],
       tableHeight: null,
       dialogTableHeight: 300,
       mergeConfig: null,
       operateWidth: 100,
       tableCheckbox: true,
-      operate: false
+      operate: true,
+      DialogOperate: false
     }
   },
   computed: {
-    ...mapState(['application', 'examine'])
+    ...mapState(['application', 'examine', 'app'])
   },
   created () {
     let datefilters = this.$options.filters['date'](new Date().getTime(), 'yyyy')
     this.defaultTime = datefilters
+    this.searchQuery.year = datefilters
+    this.searchQuery.status = 1
     if (this.$route.query.type === 'back') {
       this.page = Object.assign(this.page, this.application.page)
       this.tableData = Object.assign(this.tableData, this.examine.tableData)
@@ -183,24 +177,22 @@ export default {
       'SET_EXAMINE_SEARCH_QUERY',
       'SET_EXAMINE_BACKPATH']),
     selectChange (val) {
-      if (val === 'timeField' && this.searchQuery.timeValue) {
-        this.searchQuery.timeValue = this.$options.filters['date'](this.searchQuery.timeValue.getTime(), 'yyyy')
+      if (val === 'timeField' && this.searchQuery.year) {
+        this.searchQuery.year = this.$options.filters['date'](this.searchQuery.year.getTime(), 'yyyy')
       }
+      console.log(this.searchQuery.status)
+      this.tableConfig = this.searchQuery.status === 1 ? this.confirmedTable : this.unconfirmedTable
+      console.log(this.tableConfig)
       this.getGrid()
     },
     getConfirmMemberList () {
       api[urlNames['getConfirmMemberList']]().then((res) => {
-        this.tableData = res.data
+        this.DialogTableData = res.data
         this.dialogVisible = true
       }, () => {
-        this.tableData = []
+        this.DialogTableData = []
         this.page.total = 0
       })
-    },
-    scrollStyle () {
-      return {
-        height: this.$store.state.app.windowHeight - 30 + 'px'
-      }
     },
     initQuery () {
       let keys = Object.assign({}, this.$route.query)
@@ -222,7 +214,7 @@ export default {
       })
     },
     getGrid () {
-      this.loading = true
+      this.tableData = []
       let data = {
         page: this.page.current,
         limit: this.page.limit
@@ -250,11 +242,23 @@ export default {
       this.SET_EXAMINE_BACKPATH(this.$route.name)
       this.$router.push({
         name: 'ConfirmInfoDetail',
-        params: { id: row.id }
+        params: { id: row.id, month: row.month }
       })
     },
     handleClose () {
       this.dialogVisible = false
+    },
+    handleConfirm () {
+      let newDatefmt = this.$options.filters['date'](new Date().getTime(), 'yyyy-MM')
+      let date = newDatefmt.split('-').join('')
+      if (date) {
+        api[urlNames['insertConfirmInfo']]({ date: date }).then((res) => {
+          if (res && res.status === 0) {
+            this.$message.success(`确认成功`)
+          }
+        })
+        this.dialogVisible = false
+      }
     }
   }
 }
