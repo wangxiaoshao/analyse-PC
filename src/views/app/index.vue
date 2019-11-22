@@ -141,17 +141,21 @@ export default {
       // this.SET_BREADCRUMB(this.breadcrumb)
     },
     confirmInfo () { // 确认信息弹框是否弹出
-      /*this.openConfirmInfo()
       api[urlNames.popupWindow]().then((res) => {
-        if (res.data) {
-          this.openConfirmInfo()
-        }
+        res.data ? this.openConfirmInfo() : ''
         this.GET_CONFIRM_INFO(res.data)
       }).catch((e) => {
-      })*/
+      })
     },
-    openConfirmInfo () {
-      this.$confirm('是否跳转?', '提示', {
+    openConfirmInfo () { // 处理全局的确认弹框信息
+      let getLoc = JSON.parse(localStorage.getItem('isShowConfirmDialog')) || {}
+      let date = getLoc.date ? getLoc.date : false
+      let currentDate = this.$options.filters['date'](new Date().getTime(), 'yyyy-MM-dd')
+      let isAlreadyShow = getLoc.isAlreadyShow || false
+      if (date === currentDate && isAlreadyShow) { // 不弹框
+        return false
+      }
+      this.$confirm('当月未确认信息，是否前去确认?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -159,9 +163,18 @@ export default {
         this.$router.push({
           path: '/confirm-info'
         })
+        this.openLocalStorage()
       }).catch(() => {
+        this.openLocalStorage()
       })
-    }
+    },
+    openLocalStorage () {
+      let isShowConfirmDialog = {
+        date: this.$options.filters['date'](new Date().getTime(), 'yyyy-MM-dd'),
+        isAlreadyShow: true
+      }
+      localStorage.setItem('isShowConfirmDialog', JSON.stringify(isShowConfirmDialog))
+    },
   }
 }
 </script>

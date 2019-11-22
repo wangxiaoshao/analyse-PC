@@ -7,6 +7,16 @@
                 :operate="operate"
                 :tableData="tableData">
     </site-table>
+    <!--分页-->
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="page.current"
+      :page-sizes="[1, 30, 50, 100]"
+      :page-size="page.limit"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="page.total">
+    </el-pagination>
   </div>
 </template>
 
@@ -55,24 +65,12 @@ export default {
       'SET_EXAMINE_DETAIL',
       'SET_EXAMINE_SEARCH_QUERY',
       'SET_EXAMINE_BACKPATH']),
-    scrollStyle () {
-      return {
-        height: this.$store.state.app.windowHeight - 30 + 'px'
-      }
-    },
-    search () {
-      this.$nextTick(() => {
-        this.page.current = 1
-        this.getGrid()
-      })
-    },
     getGrid () {
-      this.loading = true
       let data = {
         date: this.$route.params.month,
         confirmId:  this.$route.params.id,
         page: this.page.current,
-        limit: this.page.limit
+        limit: 1
       }
       let keys = Object.keys(this.searchQuery)
       let len = keys.length
