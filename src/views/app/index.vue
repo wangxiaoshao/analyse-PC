@@ -141,14 +141,14 @@ export default {
       // this.SET_BREADCRUMB(this.breadcrumb)
     },
     confirmInfo () { // 确认信息弹框是否弹出
-      /*this.openConfirmInfo()
+      /* this.openConfirmInfo()
       api[urlNames.popupWindow]().then((res) => {
         if (res.data) {
           this.openConfirmInfo()
         }
         this.GET_CONFIRM_INFO(res.data)
       }).catch((e) => {
-      })*/
+      }) */
     },
     openConfirmInfo () {
       this.$confirm('是否跳转?', '提示', {

@@ -7,7 +7,14 @@
         @check-change="handleCheckChange"
         :check-strictly="true"
         :props="defaultProps"
+        v-model="chexk"
         :default-checked-keys="isAuthorityCheck">
+<!--                <span class="custom-tree-node" slot-scope="{ node, data }">-->
+<!--                  <span class="tree-check">-->
+<!--                     <el-checkbox v-model="data.isAuthority"></el-checkbox>-->
+<!--                  </span>-->
+<!--                    <span>{{node.label}}</span>-->
+<!--                </span>-->
       </el-tree>
       <el-footer class="permission-setting-footer">
         <el-button type="primary" @click="saveAuthorityManage">保存</el-button>
@@ -26,12 +33,17 @@ export default {
     return {
       ManageList: [], // 权限列表
       defaultProps: {
-        children: 'authorityManageVoList',
+        children: 'children',
         label: 'title'
       },
       authorityManageList: [],
       checked: true,
-      isAuthorityCheck: []
+      isAuthorityCheck: [],
+      list: {
+        authorityManageVos: [],
+        roleId: this.$route.params.id
+      },
+      chexk: []
     }
   },
   created () {
@@ -60,14 +72,34 @@ export default {
         roleId: roleId
       }).then((res) => {
         if (res.status === 0) {
-          this.ManageList = res.data
           res.data.forEach(item => {
             if (item.isAuthority) {
               this.isAuthorityCheck.push(item.id)
             }
           })
+          this.ManageList = this.listToTree(res.data)
         }
       })
+    },
+    //  树结构转换
+    listToTree (list) {
+      let map = {}
+      let node
+      let roots = []
+      for (let i = 0; i < list.length; i++) {
+        map[list[i].id] = i // initialize the map
+        list[i].children = [] // initialize the children
+      }
+      for (let i = 0; i < list.length; i++) {
+        node = list[i]
+        if (node.parentId !== -1) {
+          // node.titleS = list[map[node.parentId]].title
+          list[map[node.parentId]].children.push(node)
+        } else {
+          roots.push(node)
+        }
+      }
+      return roots
     },
     // 复选框选中
     handleCheckChange (data, checked, indeterminate) {
@@ -76,36 +108,51 @@ export default {
           id: data.id,
           isAuthority: true
         }
-        this.authorityManageList.push(dataitem)
-        this.authorityManageList.filter(function (element, index, self) {
-          return self.indexOf(element.id) === index.id
+        let item = this.isAuthorityCheck.filter(function (item) {
+          return item === data.id
         })
-      } else {
-        let dataitem = {
-          id: data.id,
-          isAuthority: false
+        if (item.length !== 0) {
+          return false
+        } else {
+          this.list.authorityManageVos.push(dataitem)
         }
-        this.authorityManageList.push(dataitem)
-        this.authorityManageList.filter(function (element, index, self) {
-          return self.indexOf(element.id) === index.id
+      } else {
+        this.list.authorityManageVos.forEach((item, i) => {
+          if (item.id === data.id) {
+            this.list.authorityManageVos = this.list.authorityManageVos.splice(i - 1, 1)
+          } else {
+            let dataitem = {
+              id: data.id,
+              isAuthority: false
+            }
+            this.list.authorityManageVos.push(dataitem)
+          }
+        })
+        this.isAuthorityCheck.forEach(item => {
+          if (item === data.id) {
+            let dataitem = {
+              id: data.id,
+              isAuthority: false
+            }
+            this.list.authorityManageVos.push(dataitem)
+          }
         })
       }
-      console.log(JSON.parse(JSON.stringify(data)), checked, indeterminate, 'data, checked, indeterminate')
-      console.log(JSON.parse(JSON.stringify(this.authorityManageList)), checked, indeterminate, 'this.authorityManageList')
+      console.log(JSON.parse(JSON.stringify(this.list.authorityManageVos)), '---------')
     },
     saveAuthorityManage () {
-      api[urlNames['saveAuthorityManage']]({
-        authorityManageList: this.authorityManageList
-      }).then((res) => {
-        this.$message.success(`保存成功`)
-        console.log(res)
+      if (this.list.authorityManageVos.length === 0) {
+        this.$message.warning('您没有选择要修改的权限')
+        return false
+      }
+      api[urlNames['saveAuthorityManage']](this.list).then((res) => {
+        if (res.status === 0) {
+          this.$message.success(`配置成功`)
+        }
       }, (error) => {
         this.$message.error(`保存失败，请重试`)
       })
     },
-    /* getCheckList () {
-      console.log(21221,this.ManageList)
-    }, */
     goBack () {
       this.$router.go(-1)
     }

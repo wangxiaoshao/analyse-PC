@@ -11,20 +11,9 @@
           <a href="">数据文档</a>
           <i class="ico fa fa-phone"></i>
           <a href="">联系我们</a>
-          <span style="margin-right: 8px;">欢迎您!</span>
-          <span>运维人员</span>
-          <i class="ico fa fa-sign-in"></i>
-<!--          <el-button size="mini" style="margin-left: 15px"-->
-<!--                     v-show="pageBreadcrumb.length > 0"-->
-<!--                     @click="goBack">返回</el-button>-->
-<!--          <el-dropdown v-if="user" trigger="click" @command="handleCommand">-->
-<!--            <span class="el-dropdown-link dropdown-trigger">{{user.name}}<i-->
-<!--                    class="el-icon-arrow-down el-icon&#45;&#45;right"></i></span>-->
-<!--            <el-dropdown-menu slot="dropdown">-->
-<!--              <el-dropdown-item command="logout"><i class="fa fa-sign-out dropdown-icon" aria-hidden="true"></i>退出登录-->
-<!--              </el-dropdown-item>-->
-<!--            </el-dropdown-menu>-->
-<!--          </el-dropdown>-->
+          <span style="margin-right: 4px;">欢迎您!</span>
+          <span>{{app.option.user.name}}</span>
+          <a href="http://cas.gz.cegn.cn/cas/logout" class="ico fa fa-sign-in"></a>
         </div>
       </div>
     </div>
@@ -34,8 +23,12 @@
 /**
    * Created by lxe on 2019-09-18.
    */
+import { mapState, mapMutations } from 'vuex'
 export default {
   components: {},
+  computed: {
+    ...mapState(['app'])
+  },
   name: 'Head',
   props: {
     breadcrumb: {
@@ -56,6 +49,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['GET_OPTION']),
     goBack () {
       this.$emit('go-back')
     },
