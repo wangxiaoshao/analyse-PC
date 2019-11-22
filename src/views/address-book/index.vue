@@ -15,13 +15,11 @@
           <div class="tree-main">
             <search-choose :defaultNodeId="defaultNodeId"></search-choose>
             <div>
-              <address-book-tree @handle-nodeClick="handleNodeClickTree" :thisUnit="thisUnit" 
-              v-if="isShow===1"
+              <address-book-tree v-if="thisUnit && isShow===1" @handle-nodeClick="handleNodeClickTree" :thisUnit="thisUnit"
               ></address-book-tree>
-              <!-- <addTreeList :thisUnit="thisUnit"></addTreeList> -->
             </div>
               
-            <other-address-book-tree @handle-nodeClick="handleNodeClickTree" :otherUnit='otherUnit'  v-if="isShow===2"></other-address-book-tree>
+            <other-address-book-tree v-if="otherUnit&&isShow===2" @handle-nodeClick="handleNodeClickTree" :otherUnit='otherUnit'  ></other-address-book-tree>
             
           </div>
         </el-col>
@@ -41,6 +39,7 @@
               <keep-alive>
                 <Department   
                   :departmentList="departmentList" 
+                  :otherDepartantList="otherDepartantList"
                   :treeList="treeList" 
                   @handle-child-click="handleChildClick"></Department>
                <!-- <member-table :personnel="personnel" :memberList="memberList" :treeList="treeList"></member-table> -->
@@ -65,7 +64,6 @@ import otherAddressBookTree from './components/Maintree/index'
 import otherUnitAddressBook from './unit-address-book/index'
 import { api, urlNames } from '@src/api'
 import { type } from 'os';
-import { getDefaultSettings } from 'http2';
 export default {
   name: 'AddressBook',
   mixins: [handleTable],
@@ -85,10 +83,10 @@ export default {
       isShow:1,
       defaultNodeId: null,
       activeColor: 1,
-
-      thisUnit: {},
+      thisUnit: null,
       userId: '1111111111111111111',
       departmentList: [],
+      otherDepartantList:[],
       memberList: [],
       navigation: [],
       navigation1: [],
@@ -103,16 +101,15 @@ export default {
   },
   created () {
     this.getAddressBook(),
-    // this.findNodeTree()
     this.navigation1.name="本单位通讯录"
-    
+    // this.findNodeTree(bindId)
   },
   methods: {
       getAddressBook () {
         api[urlNames['getAddressBookList']]({
           uid: this.userId
-        
         }).then(res => {
+
           this.thisUnit = res.data
           this.handleNodeClickTree(this.thisUnit)
       })
@@ -120,10 +117,16 @@ export default {
     findNodeTree (parentId) {
       api[urlNames['getTree']]({
         parentId: parentId,
-        viewId: -1
+        // viewId: -1,
+        id:-1
       }).then((res) => {
           this.otherUnit = res.data
-        
+          for(let i;i<this.otherUnit.length;i++){
+            if(this.otherUnit[i].nodeType===3){
+              this.departmentList.push(this.otherUnit[i]);
+            }
+          }
+          this.handleNodeClickTree(this.otherUnit)
           // console.log(res)
         // res.data.forEach(element => {
         //   this.nodeTree.push({
@@ -164,6 +167,24 @@ export default {
     getDefault (val) {
       this.defaultNodeId = val
     },
+
+/** 
+ * 其他单位部门
+*/
+    findDepartmentList(){
+       api[urlNames['findDepartmentList']](data).then((res) => {
+         this.tableData = res.data
+        this.page.total = res.total
+      }, () => {
+        this.tableData = []
+        this.page.total = 0
+      })
+
+    },
+    /** 
+     * 其他单位--部门下所有人员[urlNames.findOrganizationMembers] [urlNames.findMemberList]
+    */
+
     /**
      * 切换通讯录
      */
@@ -174,30 +195,20 @@ export default {
         this.getAddressBook()
         this.navigation1.name="本单位通讯录"
       } else if (e === 2) {
-        this.findNodeTree()
+        this.findNodeTree(-1)
         this.navigation1.name="其他单位通讯录"
       }
-      // console.log(1111)
-      // console.log(this.navigation)
     },
+
      findNodeTree (parentId) {
       api[urlNames['getTree']]({
         parentId: parentId,
-        viewId: -1,
       }).then((res) => {
 
         this.nodeTree = res.data
-        // debugger
-        // get-default-node
-        getDefaultNode(res.data[0].name)
-          // this.handleNodeClickTree(this.nodeTree[0])
-      console.log(1111)
-      console.log(res)
-    
+          this.handleNodeClickTree(this.nodeTree[0])
       })
     },
-
-     
   }
 
 }
