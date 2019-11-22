@@ -1,0 +1,109 @@
+@bgColor: #efefef;
+
+
+.statistic-bgi{
+  min-width: 1010px;
+  color: #fff;
+  margin-bottom: 48px;
+  .template-one{
+    display: inline-block;
+    width: 310px;
+    height: 160px;
+    margin-right: 20px;
+    padding: 16px 24px;
+    border-radius: 4px;
+    color: #fff;
+  }
+  .template-two{
+    display: inline-block;
+    width: 210px;
+    height: 160px;
+    margin-right: 20px;
+    padding: 16px 24px;
+    border-radius: 4px;
+  }
+  .dark-blue{
+    background: url("../../../common/images/examine/blue_bgImg.png") no-repeat;
+    background-size: cover;
+  }
+  .light-purple{
+    background-color: #919DEC;
+  }
+  .light-blue{
+    background-color: #94C2F3;
+  }
+  .light-orange{
+    margin-right: 0;
+    background-color: #F3AC9B;
+  }
+  .register,.add-unit,.add-depart,.add-member{
+    font-family: STHeitiSC-Medium, STHeitiSC;
+    div:nth-child(1){
+      height: 40px;
+      line-height: 40px;
+      font-size: 14px;
+      font-weight: 200;
+    }
+    div:nth-child(2){
+      font-size: 20px;
+    }
+    div:nth-child(3){
+      height: 52px;
+      line-height: 52px;
+      font-size: 36px;
+    }
+  }
+}
+.statistic-tab{
+  height: 320px;
+  font-size: 14px;
+  margin-left: 8px;
+}
+.template-btn{
+  width: 100%;
+  height: 80px;
+  font-size: 24px;
+  line-height: 80px;
+  text-align: center;
+  margin-bottom: 24px;
+  color: #6D7278;
+  background-color: #EBEBEB;
+  border-radius: 4px;
+  position: relative;
+  &:before{
+    display: block;
+    content: '';
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 50%;
+    left: 50px;
+    margin-top: -20px;
+  }
+}
+.unit-query{
+  &:before{
+    background: url("../../../common/images/examine/unit_icon.png") no-repeat;
+    background-size: contain;
+  }
+}
+.depart-query{
+  &:before{
+    background: url("../../../common/images/examine/depart_icon.png") no-repeat;
+    background-size: contain;
+  }
+}
+.member-query{
+  &:before{
+    background: url("../../../common/images/examine/member_icon.png") no-repeat;
+    background-size: contain;
+  }
+}
+.timeLine{
+  padding-left: 140px;
+  .el-timeline-item__timestamp.is-top{
+    position: absolute;
+    left: -140px;
+  }
+}
+

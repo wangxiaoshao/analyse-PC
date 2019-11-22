@@ -73,7 +73,7 @@ export default [
       },
       // 人员详情
       {
-        path: 'personDetail/:id',
+        path: 'personDetail/:id/:identityId',
         name: 'QueryPersonDetail',
         component: QueryPersonDetail
       }
