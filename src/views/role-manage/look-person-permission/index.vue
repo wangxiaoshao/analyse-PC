@@ -174,13 +174,16 @@ export default {
     dialogReturnMembersInfo (data) {
       console.log(JSON.parse(JSON.stringify(data)))
       JSON.parse(JSON.stringify(data)).forEach((item) => {
-        this.userId.push(item.uid)
+        let obj = {
+          uid: item.uid
+        }
+        this.userId.push(obj)
       })
       // 保存
       if (JSON.parse(JSON.stringify(data)) !== []) {
         api[urlNames['saveRoleBindUser']]({
           id: this.$route.params.id,
-          userId: this.userId
+          userList: this.userId
         }).then((res) => {
           this.$message.success(`添加成功`)
           this.getGrid()

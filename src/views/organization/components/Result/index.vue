@@ -5,10 +5,10 @@
       placement="top-start"
       width="100%"
     >
+      <div class="back-btn">
+        <el-button size="mini" @click="goBackTree">返回</el-button>
+      </div>
       <div class="result-list">
-        <div class="back-btn">
-          <el-button size="mini" @click="goBackTree">返回</el-button>
-        </div>
         <el-table v-loading="loadFlag" :data="gridData" :show-header="false">
           <el-table-column property="name">
             <template slot-scope="scope">
