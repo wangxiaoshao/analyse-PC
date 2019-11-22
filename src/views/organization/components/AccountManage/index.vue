@@ -77,7 +77,7 @@ export default {
       activeAccount: '1',
       tags: [], // 提交的标签
       options: [],
-      accountSend: [],
+      accountSend: this.accountList,
       accountSelect: 1
     }
   },

@@ -179,7 +179,7 @@ export default {
       // 保存
       if (JSON.parse(JSON.stringify(data)) !== []) {
         api[urlNames['saveRoleBindUser']]({
-          roleId: this.$route.params.id,
+          id: this.$route.params.id,
           userId: this.userId
         }).then((res) => {
           this.$message.success(`添加成功`)

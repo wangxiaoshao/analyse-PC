@@ -286,15 +286,6 @@ export default {
       handler () {
         this.sortShowFlag = false
       }
-    },
-    activeName: {
-      handler (val) {
-        this.backInfo = {
-          backId: this.$route.params.nodeId,
-          backActive: val
-        }
-        this.SET_ORGANIZATION_BACK_INFO(this.backInfo)
-      }
     }
   }
 }
