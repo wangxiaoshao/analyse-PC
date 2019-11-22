@@ -142,7 +142,7 @@ export default {
     deleteRoleBindUser () {
       api[urlNames['deleteRoleBindUser']]({
         roleId: this.$route.params.id,
-        userId: this.userId
+        uid: this.userId
       }).then((res) => {
         this.$message.success(`删除成功`)
         this.dialogVisible = false

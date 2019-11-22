@@ -210,7 +210,7 @@ export default {
         this.userInfo.identity.type = parseInt(res.data.type)
         this.userInfo.identity.dutyName = res.data.dutyName
       }, (error) => {
-        this.$message.error(`没有内容`)
+        /*this.$message.error(`没有内容`)*/
       })
     },
     findLabel (id, type) {
