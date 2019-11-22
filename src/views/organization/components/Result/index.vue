@@ -48,7 +48,8 @@ export default {
       value: '部门',
       gridData: [],
       type: '1',
-      restaurants: []
+      restaurants: [],
+      timer: null
     }
   },
   props: ['defaultNodeId'],
@@ -65,6 +66,14 @@ export default {
       }
       this.loadFlag = true
       if (this.keyWord.length > 1) {
+        /*this.timer = setTimeout(function () {
+          api[urlNames['searchViewNode']](data).then(res => {
+            this.gridData = res.data
+            this.loadFlag = false
+           /!* clearTimeout(this.timer)
+            this.timer = null*!/
+          })
+        }, 500)*/
         setTimeout(() => {
           api[urlNames['searchViewNode']](data).then(res => {
             this.gridData = res.data
