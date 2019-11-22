@@ -6,8 +6,8 @@
           <p>账号信息</p>
           <div v-for="(item, index) in accountInfoList" :key="item.id">
             <el-button
-              @click="selectAccount(item)"
-              :autofocus="index === 0">{{item.name}}
+              @click="selectAccount(item, index)"
+              :type="currentIndex === index ? 'primary' : ''">{{item.name}}
             </el-button>
           </div>
         </div>
@@ -77,8 +77,6 @@ export default {
       } else {
         let reg = /^(?!([a-zA-Z\d]*|[\d!@#\$%_\.*/]*|[a-zA-Z!@#\$%_\.*/]*)$)[a-zA-Z\d!@#\$%_\.*/]{8,}$/
         reg.test(value) ? callback() : callback(new Error('请按照密码规则填写'))
-        console.log(reg.test(value))
-
         if (this.ruleForm.checkPass !== '') {
           this.$refs.ruleForm.validateField('checkPass')
         }
@@ -95,6 +93,7 @@ export default {
       }
     }
     return {
+      currentIndex: 0,
       accountInfoList: [],
       currentSetAccount: {},
       activeName: 'first',
@@ -119,14 +118,12 @@ export default {
     }
   },
   created () {
-    console.log(this.app['option'])
-    let uid = this.app['option']
     api[urlNames['findUserAccountByUid']]().then((res) => {
       if (res && res.data) {
         this.accountInfoList = res.data
         this.currentSetAccount = res.data[0]
       }
-    }, (error) => {
+    }, () => {
       this.accountInfoList = []
     })
   },
@@ -134,9 +131,9 @@ export default {
     ...mapState(['app'])
   },
   methods: {
-    selectAccount (val) {
-      console.log(val)
-      this.currentSetAccount = val
+    selectAccount (item, index) {
+      this.currentIndex = index
+      this.currentSetAccount = item
     },
     handleClick (tab, event) {
       // console.log(tab, event)

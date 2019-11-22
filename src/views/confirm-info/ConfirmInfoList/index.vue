@@ -5,6 +5,7 @@
       <el-button
         size="small"
         type="primary"
+        :disabled="!app.confirmState"
         @click="getConfirmMemberList"
         >确认机构人员信息
       </el-button>
@@ -37,7 +38,8 @@
       </el-col>
     </el-row>
     <!--表格-->
-    <site-table :tableConfig="tableConfig"
+    <site-table v-if="reRenderTable"
+                :tableConfig="tableConfig"
                 :tableHeight="tableHeight"
                 :operateWidth="operateWidth"
                 :operate="operate"
@@ -52,16 +54,6 @@
         <el-button size="mini" type="text" @click="goConfig(slotScope.row)">人员明细</el-button>
       </template>
     </site-table>
-    <!--分页-->
-    <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="page.current"
-      :page-sizes="[10, 30, 50, 100]"
-      :page-size="page.limit"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="page.total">
-    </el-pagination>
     <!--编辑dialog-->
     <el-dialog
       title="确认机构人员信息"
@@ -100,6 +92,7 @@ export default {
   mixins: [handleTable],
   data () {
     return {
+      reRenderTable: true,
       confirmedTable,
       unconfirmedTable,
       tableConfig: {},
@@ -121,14 +114,15 @@ export default {
           minWidth: 50
         }
       },
-      statusOptions: [{
-        value: 1,
-        label: '已确认'
-      },
-      {
-        value: 0,
-        label: '未确认'
-      }],
+      statusOptions: [
+        {
+          value: 1,
+          label: '已确认'
+        },
+        {
+          value: 0,
+          label: '未确认'
+        }],
       searchQuery: {
         year: '',
         status: ''
@@ -156,9 +150,10 @@ export default {
     this.defaultTime = datefilters
     this.searchQuery.year = datefilters
     this.searchQuery.status = 1
+    this.tableConfig = this.confirmedTable
     if (this.$route.query.type === 'back') {
       this.page = Object.assign(this.page, this.application.page)
-      this.tableData = Object.assign(this.tableData, this.examine.tableData)
+      this.searchQuery = Object.assign(this.searchQuery, this.examine.searchQuery)
     } else {
       this.SET_APPLICATION_PAGE({})
       this.SET_EXAMINE_SEARCH_QUERY({})
@@ -175,14 +170,23 @@ export default {
       'SET_EXAMINE_TABLEDATA',
       'SET_EXAMINE_DETAIL',
       'SET_EXAMINE_SEARCH_QUERY',
-      'SET_EXAMINE_BACKPATH']),
+      'SET_EXAMINE_BACKPATH',
+      'GET_CONFIRM_INFO']),
     selectChange (val) {
       if (val === 'timeField' && this.searchQuery.year) {
         this.searchQuery.year = this.$options.filters['date'](this.searchQuery.year.getTime(), 'yyyy')
       }
-      console.log(this.searchQuery.status)
-      this.tableConfig = this.searchQuery.status === 1 ? this.confirmedTable : this.unconfirmedTable
-      console.log(this.tableConfig)
+      if (this.searchQuery.status === 1) {
+        this.tableConfig = this.confirmedTable
+        this.operate = true
+      } else {
+        this.tableConfig = this.unconfirmedTable
+        this.operate = false
+      }
+      this.reRenderTable = false
+      setTimeout(() => {
+        this.reRenderTable = true
+      }, 100)
       this.getGrid()
     },
     getConfirmMemberList () {
@@ -240,6 +244,7 @@ export default {
     },
     goConfig (row) {
       this.SET_EXAMINE_BACKPATH(this.$route.name)
+      this.SET_EXAMINE_SEARCH_QUERY(this.searchQuery)
       this.$router.push({
         name: 'ConfirmInfoDetail',
         params: { id: row.id, month: row.month }
@@ -255,10 +260,19 @@ export default {
         api[urlNames['insertConfirmInfo']]({ date: date }).then((res) => {
           if (res && res.status === 0) {
             this.$message.success(`确认成功`)
+            this.getGrid()
+            this.confirmInfo()
           }
         })
         this.dialogVisible = false
       }
+    },
+    confirmInfo () {
+      api[urlNames.popupWindow]().then((res) => {
+        if (res) {
+          this.GET_CONFIRM_INFO(res.data)
+        }
+      })
     }
   }
 }
