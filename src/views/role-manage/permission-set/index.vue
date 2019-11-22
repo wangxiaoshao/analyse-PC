@@ -6,13 +6,8 @@
         show-checkbox
         @check-change="handleCheckChange"
         :check-strictly="true"
-        :props="defaultProps">
-<!--        <span class="custom-tree-node" slot-scope="{ node, data }">-->
-<!--          <span class="tree-check">-->
-<!--             <el-checkbox v-model="data.isAuthority"></el-checkbox>-->
-<!--          </span>-->
-<!--            <span>{{node.label}}</span>-->
-<!--        </span>-->
+        :props="defaultProps"
+        :default-checked-keys="isAuthorityCheck">
       </el-tree>
       <el-footer class="permission-setting-footer">
         <el-button type="primary" @click="saveAuthorityManage">保存</el-button>
@@ -34,9 +29,9 @@ export default {
         children: 'authorityManageVoList',
         label: 'title'
       },
-      selectAdmin: [],
       authorityManageList: [],
-      checked: true
+      checked: true,
+      isAuthorityCheck: []
     }
   },
   created () {
@@ -66,17 +61,43 @@ export default {
       }).then((res) => {
         if (res.status === 0) {
           this.ManageList = res.data
+          res.data.forEach(item => {
+            if (item.isAuthority) {
+              this.isAuthorityCheck.push(item.id)
+            }
+          })
         }
       })
     },
     // 复选框选中
-    handleCheckChange () {},
+    handleCheckChange (data, checked, indeterminate) {
+      if (checked) {
+        let dataitem = {
+          id: data.id,
+          isAuthority: true
+        }
+        this.authorityManageList.push(dataitem)
+        this.authorityManageList.filter(function (element, index, self) {
+          return self.indexOf(element.id) === index.id
+        })
+      } else {
+        let dataitem = {
+          id: data.id,
+          isAuthority: false
+        }
+        this.authorityManageList.push(dataitem)
+        this.authorityManageList.filter(function (element, index, self) {
+          return self.indexOf(element.id) === index.id
+        })
+      }
+      console.log(JSON.parse(JSON.stringify(data)), checked, indeterminate, 'data, checked, indeterminate')
+      console.log(JSON.parse(JSON.stringify(this.authorityManageList)), checked, indeterminate, 'this.authorityManageList')
+    },
     saveAuthorityManage () {
-      this.authorityManageList = this.ManageList
-      api[urlNames['saveAuthorityManage']](this.authorityManageList).then((res) => {
+      api[urlNames['saveAuthorityManage']]({
+        authorityManageList: this.authorityManageList
+      }).then((res) => {
         this.$message.success(`保存成功`)
-        this.dialogVisible = false
-        this.getGrid()
         console.log(res)
       }, (error) => {
         this.$message.error(`保存失败，请重试`)
