@@ -1,0 +1,237 @@
+body {
+  margin: 0;
+  padding: 0!important;
+  font-size: 14px;
+  font-family: "Microsoft YaHei", "微软雅黑", 'Helvetica', 'Tahoma', 'Arial', 'STXihei', "华文细黑", 'sans-serif';
+  //override vux modal-open to fix cr-detail can't scroll
+  &.modal-open {
+    position: absolute;
+    overflow: inherit;
+  }
+}
+.space-right-15{
+  margin-right: 15px;
+}
+.el-popup-parent--hidden{
+  .v-modal{
+    opacity: 0.4;
+  }
+  .el-message-box__wrapper{
+    background: rgba(0,0,0,0.5);
+    z-index: 10000 !important;
+  }
+}
+.clearfix{
+  &:before{
+    content: "";
+    display: table;
+    clear: both;
+  }
+  &:after{
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+.text-ellipsis{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.text-blue {
+  color: #409EFF
+}
+.text-green {
+  color: #67C23A
+}
+.text-orange {
+  color: #E6A23C
+}
+.text-red{
+  color: #F56C6C;
+}
+.text-grey{
+  color: #909399;
+}
+.text-right{
+  text-align: right;
+}
+.text-left{
+  text-align: left;
+}
+.text-center{
+  text-align: center;
+}
+.el-dialog{
+  //border-radius: 4px !important;
+  //form
+  .el-form-item{
+    margin-bottom: 20px;
+  }
+}
+.el-loading-mask.is-fullscreen{
+  z-index: 10000!important;
+  .el-loading-spinner i {
+    color: #fff;
+    font-size: 50px;
+    margin-bottom: 10px;
+  }
+  .el-loading-text {
+    color: #fff;
+    font-size: 16px;
+  }
+}
+.el-switch__core:after {
+  content: "";
+}
+.el-dialog__header{
+  padding: 0!important;
+  border-radius: 4px 4px 0 0;
+  background: #efefef;
+  .el-dialog__title{
+    display: block;
+    padding: 15px;
+  }
+}
+.dropdown-icon.fa{
+  margin-right: 15px;
+  position: relative;
+  font-size: 14px;
+  top:1px;
+  width: 10px;
+}
+//Ueditor 样式覆盖
+.el-form-item__content {
+  >textarea {
+    display: none;
+  }
+}
+.edui-default {
+  .edui-editor-breadcrumb{
+    display: none;
+  }
+  .edui-button-body, .edui-splitbutton-body, .edui-menubutton-body, .edui-combox-body{
+    height: 22px;
+  }
+  &.edui-shadow{
+    display: none;
+  }
+  .edui-popup-body{
+    iframe{
+      display: none;
+    }
+  }
+  .edui-editor-iframeholder{
+    min-height: 220px;
+  }
+}
+
+/*=============
+  全局el-diaog样式
+================*/
+.edit-dialog {
+  font-family: "Microsoft YaHei", "微软雅黑", 'Helvetica', 'Tahoma', 'Arial', 'STXihei', "华文细黑", 'sans-serif';
+  .go-back{
+    float: right;
+  }
+  .el-form-item.is-required .el-form-item__label:before{
+    content: none;
+  }
+  .el-input-number{
+    width: 100%;
+  }
+  .el-form-item__error{
+    display: none;
+  }
+  .is-success .el-input__inner{
+    border-color: #dcdfe6;
+  }
+  .el-dialog__header{
+    background: none;
+    padding: 8px 0;
+  }
+  .el-dialog__body{
+    padding: 0 0;
+  }
+  .el-dialog__footer{
+    padding: 10px 48px 10px
+  }
+  .el-dialog {
+    position: absolute;
+    right: 0;
+  }
+  .dialog-close{
+    cursor: pointer;
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    z-index: 1;
+  }
+  .dialog-title{
+    margin: 20px 0;
+    text-align: center;
+    font-family: "Microsoft YaHei", "微软雅黑", 'Helvetica', 'Tahoma', 'Arial', 'STXihei', "华文细黑", 'sans-serif';
+    font-size: 24px;
+    color: #303133;
+    font-weight: normal;
+  }
+  .edit-form{
+    padding: 40px 50px 40px 20px;
+  }
+  .confirm-btn{
+    text-align: center;
+    margin-top: 40px;
+    .el-button{
+      min-width: 120px;
+    }
+  }
+  .el-form-item__label{
+    font-size: 16px;
+    color: #303133;
+  }
+  .el-form-item{
+    margin-bottom: 15px;
+  }
+}
+.el-dialog__wrapper{
+  // 弹窗在右边的时候引用
+  .right-dialog {
+    position: absolute;
+    right: 0;
+    overflow: hidden;
+  }
+  .dialog-close{
+    cursor: pointer;
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    z-index: 1;
+  }
+  .dialog-footer{
+    text-align: center;
+  }
+}
+/*=============
+  全局el-table样式
+================*/
+.site-container {
+  .el-table--medium {
+    td{
+      padding: 4px 0;
+    }
+    th{
+      padding: 0;
+      line-height: 43px;
+    }
+  }
+}
+/*=============
+  全局el-tab样式
+================*/
+.el-tabs__nav-wrap::after{
+  background-color: #fff;
+}

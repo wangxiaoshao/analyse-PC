@@ -7,13 +7,12 @@
     lazy
     ref="treeList"
     :load="loadNode"
+    
     @node-click="handleNodeClick"
-    @node-expend="handleCheckChange"
    >
-      <span class="custom-tree-node" slot-scope="{ node, data }">
-        <i class="imenu-icon fa fa-sitemap" v-if="data.nodeType === 1"></i>
-        <i class="imenu-icon fa fa-building-o" v-if="data.nodeType === 2"></i>
-        <i class="imenu-icon fa fa-institution" v-if="data.nodeType === 3"></i>
+      <span class="custom-tree-node " slot-scope="{ node, data }">
+        <i class="imenu-icon fa fa-sitemap" v-if="data"></i>
+
         <span :class="[data.id===$route.params.nodeId ?'active':'noActive']">{{node.label}}</span>
       </span>
   </el-tree>
@@ -29,23 +28,28 @@ export default {
       showCheckboxFlag: false,
       treeList: [],
       treeSonList: [],
+      departmentList:[],
+      departmentList:[],
       treeDepartmentList:[],
       defaultProps: {
         children: 'children',
         label: 'name'
       },
       id: '',
-      parentId: -1
+      parentId: -1,
+      bindId:1
     }
   },
   mounted () {
     this.findTreeList(-1)
+    // this.findTreeDepartmentlist(1)
   },
   methods: {
     // 追加子节点
     loadNode (node, resolve) {
       if (node.level === 0) {
         return resolve(this.treeList)
+        
       } else {
         this.findTreeSonList(node.data.id)
         this.id = node.data.id
@@ -55,56 +59,45 @@ export default {
         this.treeSonList = []
       }
     },
-  
-    
+  //  获取子节点
+  findTreeSonList (parentId) {
+      api[urlNames['getTree']]({
+        parentId: parentId,
+        // viewId: -1,
+      }).then((res) => {
+        console.log(res,'------12323242---')                
+        this.treeSonList = res.data
+        this.otherDepartantList=this.treeSonList
+      console.log(this.otherDepartantList,'12123--0--')
+      })
+    },
     findTreeList (parentId) {
       api[urlNames['getTree']]({
         parentId: parentId,
-        viewId: -1
+        // viewId: -1
       }).then((res) => {
-        console.log(12323242)
-        console.log(res)
+
         this.total = parseInt(res.total)
         this.treeList = res.data
         this.$emit('get-default-node', res.data[0].id,res.data[0].name)
         if (this.$route.name === 'Organization') {
           this.handleNodeClick(res.data[0])
         }
-        // if (this.$route.name === 'Organization') {
-        //   this.handleNodeClick(res.data[0])
-        // }
       })
     },
-    // 获取子节点
-    findTreeSonList (parentId) {
+
+/**查询部门下的下级部门 */
+    findTreeDepartmentlist (bindId) {
       api[urlNames['getTree']]({
-        parentId: parentId,
-        viewId: -1
-      }).then((res) => {
-        this.treeSonList = res.data
-      console.log("1111")
-      // console.log(res)
-      bindId:11111
-      nodeType:1
-      })
-
-    },
-    // findViewNodeList(id){
-    // api[urlNames['findViewNodeList']]({
-    //     viewId: -1,
-    //     id:
+        bindId: bindId,
       
-    // }).then((res)=>{
-    //   // this.treeDepartmentList=res.data
-    //   // console.log(123243523)
-    //   console.log(res)
-    // })
-    // },
-    handleCheckChange(){
-
+      }).then((res) => {
+      })
     },
- 
+  
+
    handleNodeClick (data) {
+     console.log(JSON.parse(JSON.stringify(data)),'---------11111111111111111--------')
      this.$emit('handle-nodeClick', data)
       // this.$emit('handle-node-click', node)
       // if (node) {
