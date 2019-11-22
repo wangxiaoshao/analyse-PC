@@ -104,20 +104,9 @@
            </div>
            </div>
          </el-form-item>
-         <el-form-item label="所属区域" prop="areaId">
+         <el-form-item label="所属区域" prop="areaId" :rules="[{ required: true, message: '请选择区域'}]">
             <!--选择区域组件-->
-          <!-- <area-list
-             @getAreaId="getAreaId"
-             :area-option="areaOption"
-             v-model="ruleForm.areaId"></area-list>-->
-          <el-input v-model="areaCheck"></el-input>
-          <!-- <el-cascader
-             :props="props"
-             v-model="areaCheck"
-             :filterable="true"
-             @focus="areaFlag = true"
-             style="width: 100%"
-             clearable></el-cascader>-->
+          <el-input v-model="areaCheck" @focus="areaFlag = true"></el-input>
            <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
            <div class="tip-msg"
                 v-show="this.app.option.options.orgAuditFields.indexOf('areaId') > -1 && ruleForm.areaId !== oldFrom.areaId">
