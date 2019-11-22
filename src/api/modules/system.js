@@ -27,13 +27,6 @@ export default {
     serve: 'organizationManagePC',
     mock: 'system-setting/getDicListByType.json'
   },
-  [urlNames.findUserAccountByUid]: {
-    type: 'get',
-    url: '/api/jg_manage/user/findUserAccountByUid',
-    keepOriginResponse: true,
-    serve: 'organizationManagePC',
-    mock: 'system-setting/findUserAccountByUid.json'
-  },
   [urlNames.updatePwd]: {
     type: 'post',
     url: '/api/jg_manage/system/updatePwd',

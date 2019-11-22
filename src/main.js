@@ -12,6 +12,7 @@ import '@src/common/style/index.less'
 import './ext/font-awesome-4.7.0/css/font-awesome.css'
 import echarts from 'echarts'
 import VueCookies from 'vue-cookie'
+import './filters'
 
 Vue.use(VueCookies)
 Vue.use(elementUI, { size: 'medium' })

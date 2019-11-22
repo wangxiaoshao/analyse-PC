@@ -32,7 +32,6 @@ import siteHead from '@src/components/SiteHead'
 import SiteBreadcrumb from '@src/components/SiteBreadcrumb.vue'
 import asideMenu from '@src/config/menu'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb'
-import { filters } from '@src/filters'
 
 export default {
   name: 'app',
@@ -45,7 +44,7 @@ export default {
     }
   },
   mixins: [handleBreadcrumb],
-  components: { sideMenu, siteHead, SiteBreadcrumb, filters },
+  components: { sideMenu, siteHead, SiteBreadcrumb },
   watch: {
     $route (newVal, oldVal) {
       if (oldVal.path !== '/' && newVal.path !== '/') {
@@ -149,10 +148,10 @@ export default {
       })
     },
     openConfirmInfo () { // 处理全局的确认弹框信息
-      let getLoc = JSON.parse(localStorage.getItem('isShowConfirmDialog')) || {},
-        date = getLoc.date ? getLoc.date : false,
-        currentDate = this.$options.filters['date'](new Date().getTime(), 'yyyy-MM-dd'),
-        isAlreadyShow = getLoc.isAlreadyShow || false
+      let getLoc = JSON.parse(localStorage.getItem('isShowConfirmDialog')) || {}
+      let date = getLoc.date ? getLoc.date : false
+      let currentDate = this.$options.filters['date'](new Date().getTime(), 'yyyy-MM-dd')
+      let isAlreadyShow = getLoc.isAlreadyShow || false
       if (date === currentDate && isAlreadyShow) { // 不弹框
         return false
       }

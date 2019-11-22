@@ -81,14 +81,13 @@
 <script type="text/ecmascript-6">
 import handleTable from '@src/mixins/handle-table'
 import SiteTable from '@src/components/SiteTable/index.vue'
-import { filters } from '@src/filters'
 import confirmedTable from './confirmedTable'
 import unconfirmedTable from './unconfirmedTable'
 import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
 
 export default {
-  components: { SiteTable, filters },
+  components: { SiteTable },
   mixins: [handleTable],
   data () {
     return {

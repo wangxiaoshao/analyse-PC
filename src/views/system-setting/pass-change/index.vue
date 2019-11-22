@@ -14,7 +14,7 @@
       </el-col>
       <el-col :span="18">
         <el-tabs v-model="activeName" @tab-click="handleClick">
-          <el-tab-pane label="修改密码" name="first">
+          <el-tab-pane label="重置密码" name="first">
             <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
               <div :style="{margin: '20px'}" class="account-name">
                 <i class="el-icon-user" :style="{marginRight: '20px'}">{{currentSetAccount.name}}</i>
@@ -49,9 +49,9 @@
               </el-form-item>
             </el-form>
           </el-tab-pane>
-          <el-tab-pane label="重置密码" name="second">
-            重置密码
-          </el-tab-pane>
+          <!--<el-tab-pane label="重置密码" name="second">-->
+            <!--重置密码-->
+          <!--</el-tab-pane>-->
         </el-tabs>
       </el-col>
     </el-row>
