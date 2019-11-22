@@ -23,17 +23,6 @@
              </span>
           </el-tree>
         </div>
-        <!--        <div class="transfer">-->
-        <!--          <el-transfer-->
-        <!--            filterable-->
-        <!--            height="360px"-->
-        <!--            filter-placeholder="请输入名字"-->
-        <!--            v-model="selectedMenbers"-->
-        <!--            :props="{key: 'uid',label: 'name'}"-->
-        <!--            :titles="['选择', '已选']"-->
-        <!--            :data="memberList">-->
-        <!--          </el-transfer>-->
-        <!--        </div>-->
         <div class="member-list">
           <div v-if="!seleceDialog.isSingleSelect&&seleceDialog.notOnlyPerson" class="member-panel" :class="seleceDialog.notOnlyPerson&&seleceDialog.isOnlyOrg?memberstyle:noorgstyle">
             <el-checkbox :indeterminate="isIndeterminate" v-model="checkAllMember" @change="handleCheckAllMemberChange">
@@ -258,18 +247,24 @@ export default {
     handleCheckedSelectChange (value) {
       // this.selectedMenbers = this.selectedMenbers.filter(item => value.indexOf(item.uid) > -1)
     },
-    // 选择框单选--到达已选框单位/部门
+    // 选择框全选--到达已选框单位/部门
     handleCheckAllOrgChange (val) {
       let ids = []
       this.orgList.forEach(item => {
         ids.push(item.id)
       })
-      this.checkedOrgList = this.selectedOrgID = val ? ids : [] // 权限ID
+      this.checkedOrgList = this.selectedOrgID = val ? ids : [] // 全选ID
+      // this.checkedOrgList =this.selectedOrgID= this.selectedOrgID.concat(val ? ids : []) // 全选ID
       this.selectedOrg = val ? this.orgList : [] // q全选
+      // this.selectedOrg=this.selectedOrg.concat(val ? this.orgList : []) // q全选
       this.isIndeterminateOrg = false
     },
     // 选择框单选--到达已选框单位部门
     handleCheckedOrgChange (val) {
+      // let selectIds = val.concat(this.selectedOrgID)
+      // selectIds = selectIds.filter(function (element, index, self) {
+      //   return self.indexOf(element) === index
+      // })
       this.selectedOrg = this.selectedOrgID = []
       val.forEach(item => {
         let list = this.orgList.filter(function (x) {

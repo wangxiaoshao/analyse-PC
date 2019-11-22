@@ -3,13 +3,16 @@
       <el-tree
         :data="ManageList"
         node-key="id"
+        show-checkbox
+        @check-change="handleCheckChange"
+        :check-strictly="true"
         :props="defaultProps">
-        <span class="custom-tree-node" slot-scope="{ node, data }">
-          <span class="tree-check">
-             <el-checkbox v-model="data.isAuthority"></el-checkbox>
-          </span>
-            <span>{{node.label}}</span>
-        </span>
+<!--        <span class="custom-tree-node" slot-scope="{ node, data }">-->
+<!--          <span class="tree-check">-->
+<!--             <el-checkbox v-model="data.isAuthority"></el-checkbox>-->
+<!--          </span>-->
+<!--            <span>{{node.label}}</span>-->
+<!--        </span>-->
       </el-tree>
       <el-footer class="permission-setting-footer">
         <el-button type="primary" @click="saveAuthorityManage">保存</el-button>
@@ -31,6 +34,7 @@ export default {
         children: 'authorityManageVoList',
         label: 'title'
       },
+      selectAdmin: [],
       authorityManageList: [],
       checked: true
     }
@@ -65,10 +69,12 @@ export default {
         }
       })
     },
+    // 复选框选中
+    handleCheckChange () {},
     saveAuthorityManage () {
       this.authorityManageList = this.ManageList
       api[urlNames['saveAuthorityManage']](this.authorityManageList).then((res) => {
-        this.$message.success(`删除成功`)
+        this.$message.success(`保存成功`)
         this.dialogVisible = false
         this.getGrid()
         console.log(res)
