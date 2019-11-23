@@ -26,6 +26,7 @@
                 v-model="userDetail.name"
                 id="nameSearch"
                 slot="reference"
+                @blur="blur"
                 @input="loadSearch"></el-input>
               <div class="result-list">
                 <div class="default-warn" style="color: #FF6633">
@@ -114,20 +115,22 @@
       </el-row>
       <el-collapse>
         <el-collapse-item name="1" title="完善其他信息">
+          <el-row>
+            <el-form-item label="头像">
+              <el-upload
+                :disabled="disabledFlag"
+                class="avatar-uploader"
+                :action="'http://' + uploadHost + '/api/jg_manage/image/upload'"
+                :show-file-list="false"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload">
+                <img v-if="personFrom.portraitUrl" :src="personFrom.portraitUrl" class="avatar">
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              </el-upload>
+            </el-form-item>
+          </el-row>
           <el-row class="row-item">
             <el-col :span="12">
-              <el-form-item label="头像">
-                <el-upload
-                  :disabled="disabledFlag"
-                  class="avatar-uploader"
-                  action="https://jsonplaceholder.typicode.com/posts/"
-                  :show-file-list="false"
-                  :on-success="handleAvatarSuccess"
-                  :before-upload="beforeAvatarUpload">
-                  <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                </el-upload>
-              </el-form-item>
               <el-form-item label="备用手机号" prop="mobile2">
                 <el-input
                   placeholder="请输入备用手机号"
@@ -233,18 +236,6 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="证件照">
-                <el-upload
-                  class="avatar-uploader"
-                  :disabled="isDefaultFlag"
-                  action="https://jsonplaceholder.typicode.com/posts/"
-                  :show-file-list="false"
-                  :on-success="handleAvatarSuccess"
-                  :before-upload="beforeAvatarUpload">
-                  <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                </el-upload>
-              </el-form-item>
               <el-form-item label="身份证号" prop="idcard">
                 <el-input placeholder="请输入内容" :disabled="isDefaultFlag" v-model="userDetail.idcard">
                   <el-button slot="append" v-if="!disabledFlag" type="success" class="form-btn">点击实名认证</el-button>
@@ -400,6 +391,7 @@ export default {
   },
   data () {
     return {
+      uploadHost: window.location.host,
       openSearchFlag: false,
       option: [],
       restaurants: [],
@@ -417,7 +409,8 @@ export default {
       addInfo: {
         searchFlag: false,
         type: 3 // 1.单位，2、部门，3、人员
-      }
+      },
+      timer: null
     }
   },
   created () {
@@ -447,7 +440,11 @@ export default {
       if (this.$route.name === 'PersonAdd' && this.personFrom.name.length > 1) {
         this.searchFlag = true
         this.loadFlag = true
-        setTimeout(() => {
+        if (this.timer) {
+          clearTimeout(this.timer)
+          this.timer = null
+        }
+        this.timer = setTimeout(() => {
           api[urlNames['findUserByParams']]({
             name: this.personFrom.name
           }).then((res) => {
@@ -457,10 +454,14 @@ export default {
           }, (error) => {
             this.list = []
           })
-        }, 500)
+        }, 800)
       } else {
         this.searchFlag = false
+        this.timer = null
       }
+    },
+    blur () {
+      this.timer = null
     },
     // 选择身份类型
     getIdentityType (val) {
@@ -496,7 +497,33 @@ export default {
       this.personFrom.userType = val
     },
     handleAvatarSuccess (res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw)
+      this.personFrom.portraitUrl = res.data[0] || URL.createObjectURL(file.raw)
+    },
+    submitForm (form) {
+      this.$refs[form].validate((valid) => {
+        if (valid) {
+          let data = new FormData()
+          let keys = Object.keys(this.editForm)
+          let len = keys.length
+          for (let i = 0; i < len; i++) {
+            let key = keys[i]
+            let value = this.editForm[key]
+            if (value) {
+              data.append(key, value)
+            }
+          }
+          api[urlNames['sendEditRightsInfo']](data).then((res) => {
+            this.$message({
+              message: this.current ? '修改成功' : '添加成功',
+              type: 'success'
+            })
+            this.$emit('refreshList')
+            this.closeDialog()
+          }, (error) => {
+
+          })
+        }
+      })
     },
     beforeAvatarUpload (file) {
       const isJPG = file.type === 'image/jpeg'

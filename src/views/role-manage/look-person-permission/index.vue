@@ -142,7 +142,7 @@ export default {
     deleteRoleBindUser () {
       api[urlNames['deleteRoleBindUser']]({
         roleId: this.$route.params.id,
-        userId: this.userId
+        uid: this.userId
       }).then((res) => {
         this.$message.success(`删除成功`)
         this.dialogVisible = false
@@ -174,13 +174,16 @@ export default {
     dialogReturnMembersInfo (data) {
       console.log(JSON.parse(JSON.stringify(data)))
       JSON.parse(JSON.stringify(data)).forEach((item) => {
-        this.userId.push(item.uid)
+        let obj = {
+          uid: item.uid
+        }
+        this.userId.push(obj)
       })
       // 保存
       if (JSON.parse(JSON.stringify(data)) !== []) {
         api[urlNames['saveRoleBindUser']]({
-          roleId: this.$route.params.id,
-          userId: this.userId
+          id: this.$route.params.id,
+          userList: this.userId
         }).then((res) => {
           this.$message.success(`添加成功`)
           this.getGrid()

@@ -5,10 +5,10 @@
       placement="top-start"
       width="100%"
     >
+      <div class="back-btn">
+        <el-button size="mini" @click="goBackTree">返回</el-button>
+      </div>
       <div class="result-list">
-        <div class="back-btn">
-          <el-button size="mini" @click="goBackTree">返回</el-button>
-        </div>
         <el-table v-loading="loadFlag" :data="gridData" :show-header="false">
           <el-table-column property="name">
             <template slot-scope="scope">
@@ -23,6 +23,7 @@
         placeholder="请输入内容"
         v-model="keyWord"
         @input="getResult"
+        @blur="blur"
         @keyup.enter.native="getResult"
         class="input-with-select">
         <el-select v-model="value" style="width: 80px" @change="getType" slot="prepend" placeholder="请选择">
@@ -38,7 +39,9 @@
 
 <script>
 import { api, urlNames } from '@src/api'
+import debounce from '@src/mixins/debounce'
 export default {
+  mixins: [ debounce ],
   data () {
     return {
       debouncedSearch: null,
@@ -48,7 +51,8 @@ export default {
       value: '部门',
       gridData: [],
       type: '1',
-      restaurants: []
+      restaurants: [],
+      timer: null
     }
   },
   props: ['defaultNodeId'],
@@ -59,19 +63,29 @@ export default {
     // 获取搜索结果
     getResult () {
       this.resultFlag = true
+      this.loadFlag = true
       let data = {
         name: this.keyWord,
         nodeType: this.type
       }
-      this.loadFlag = true
       if (this.keyWord.length > 1) {
-        setTimeout(() => {
+        if (this.timer) {
+          clearTimeout(this.timer)
+          this.timer = null
+        }
+        // this.timer = this.debounce(this.getResultList, 800)
+        this.timer = setTimeout(() => {
           api[urlNames['searchViewNode']](data).then(res => {
             this.gridData = res.data
             this.loadFlag = false
           })
-        }, 500)
+        }, 800)
+      } else {
+        this.timer = null
       }
+    },
+    blur () {
+      this.timer = null
     },
     setNodeId (row) {
       this.$router.push({

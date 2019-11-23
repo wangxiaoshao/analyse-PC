@@ -5,6 +5,7 @@
     :props="defaultProps"
     :highlight-current="true"
     :default-expanded-keys="defaultNode"
+    :expand-on-click-node="false"
     lazy
     ref="treeList"
     :load="loadNode"
@@ -35,11 +36,11 @@ export default {
         label: 'name'
       },
       id: '',
-      parentId: -1
+      parentId: ''
     }
   },
-  mounted () {
-    this.findTreeList(-1)
+  created () {
+    this.findTreeList()
   },
   methods: {
     // 追加子节点
@@ -57,8 +58,7 @@ export default {
     },
     findTreeList (parentId) {
       api[urlNames['getTree']]({
-        parentId: parentId,
-        viewId: -1
+        parentId: parentId
       }).then((res) => {
         this.total = parseInt(res.total)
         this.treeList = res.data
@@ -76,8 +76,7 @@ export default {
     // 获取子节点
     findTreeSonList (parentId) {
       api[urlNames['getTree']]({
-        parentId: parentId,
-        viewId: -1
+        parentId: parentId
       }).then((res) => {
         this.treeSonList = res.data
       })

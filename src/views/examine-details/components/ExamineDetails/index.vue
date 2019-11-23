@@ -158,7 +158,6 @@ export default {
         default :
           break
       }
-      console.log(this.entityId)
       this.$router.push({
         path: `/${path}/${this.entityId}`
       })
