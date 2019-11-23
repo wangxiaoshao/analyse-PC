@@ -73,17 +73,14 @@ export default {
           this.$emit('close')
           api[urlNames['saveAudit']](obj).then((res) => {
             if (res && res.message === 'success') {
-              // this.$emit('refreshList')
-              this.$router.push({
-                path: '/approved',
-                params: {
-                  id: this.$route.params.id,
-                  type: this.$route.params.type
-                }
+              this.$message({
+                message: '审批成功',
+                type: 'success'
               })
             }
-          }, (error) => {
-
+            this.$router.push({
+              path: '/wait-approval'
+            })
           })
         }
       })

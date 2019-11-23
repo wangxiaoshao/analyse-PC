@@ -65,7 +65,6 @@ export default {
   data () {
     return {
       tableConfig,
-      loading: true,
       searchQuery: {
         id: '',
         status: '',
@@ -133,9 +132,6 @@ export default {
           this.searchQuery[key] = value
         }
       }
-    },
-    trim (str) {
-      return (str + '').replace(/(\s+)$/g, '').replace(/^\s+/g, '')
     },
     search () {
       this.$nextTick(() => {
