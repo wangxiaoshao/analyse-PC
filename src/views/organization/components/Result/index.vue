@@ -1,9 +1,10 @@
 <template>
   <div class="search-content">
     <el-popover
+      ref="popover"
+      placement="bottom-start"
       v-if="resultFlag"
-      placement="top-start"
-      width="100%"
+      width="300"
     >
       <div class="back-btn">
         <el-button size="mini" @click="goBackTree">返回</el-button>
@@ -20,6 +21,7 @@
     </el-popover>
     <el-row>
       <el-input
+        v-popover:popover
         placeholder="请输入内容"
         v-model="keyWord"
         @input="getResult"
@@ -27,9 +29,9 @@
         @keyup.enter.native="getResult"
         class="input-with-select">
         <el-select v-model="value" style="width: 80px" @change="getType" slot="prepend" placeholder="请选择">
-          <el-option label="节点" value="1"></el-option>
-          <el-option label="部门" value="3"></el-option>
           <el-option label="单位" value="2"></el-option>
+          <el-option label="部门" value="3"></el-option>
+          <el-option label="节点" value="1"></el-option>
         </el-select>
         <el-button slot="append" icon="el-icon-search"></el-button>
       </el-input>
@@ -46,11 +48,11 @@ export default {
     return {
       debouncedSearch: null,
       resultFlag: false,
-      loadFlag: true,
+      loadFlag: false,
       keyWord: '',
-      value: '部门',
+      value: '单位',
       gridData: [],
-      type: '1',
+      type: 2,
       restaurants: [],
       timer: null
     }
@@ -62,8 +64,6 @@ export default {
     },
     // 获取搜索结果
     getResult () {
-      this.resultFlag = true
-      this.loadFlag = true
       let data = {
         name: this.keyWord,
         nodeType: this.type
@@ -75,6 +75,8 @@ export default {
         }
         // this.timer = this.debounce(this.getResultList, 800)
         this.timer = setTimeout(() => {
+          this.resultFlag = true
+          this.loadFlag = true
           api[urlNames['searchViewNode']](data).then(res => {
             this.gridData = res.data
             this.loadFlag = false
@@ -104,6 +106,13 @@ export default {
           nodeId: this.defaultNodeId
         }
       })
+    }
+  },
+  watch: {
+    value (newVal) {
+      this.type = newVal
+      alert(newVal)
+      this.getResult()
     }
   }
 }

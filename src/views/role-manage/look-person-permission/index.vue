@@ -128,6 +128,7 @@ export default {
         this.list = res.data
         this.permissionId = res.roleId
         console.log(res.data)
+        this.page.total = res.total
       }, () => {
         this.loading = false
         this.list = []
@@ -154,6 +155,7 @@ export default {
     },
     openselectMenmber () {
       this.selectDialog.selectMenmberFlag = true
+      this.userId = []
     },
     closeselectMenmber () {
       this.selectDialog.selectMenmberFlag = false

@@ -1,7 +1,10 @@
 <template>
   <div>
     <div class="department-tab-content">
-      <el-table :data="departmentList"  style="width: 100%;background:#F5F6F8;" class="eltab">
+      <el-table :data="departmentList"
+                style="width: 100%;background:#F5F6F8;"
+                class="eltab"
+      >
         <el-table-column prop="name" label width="100" align="left" height="0"></el-table-column>
         <el-table-column label="部门电话" width="100">部门电话:</el-table-column>
         <el-table-column prop="phone" label></el-table-column>
@@ -11,7 +14,7 @@
             <span @click="childClick(scope.row)">下级</span>
           </template>
         </el-table-column>
-        
+
       </el-table>
     </div>
   </div>
@@ -19,27 +22,24 @@
 <script>
 import { api, urlNames } from '@src/api'
 export default {
-  name: 'index',
   props: ['departmentList', 'treeList'],
   components: {
     // memberTable
   },
   data () {
     return {
-      status:0,
-      isShow:true,
+      status: 0,
+      isShow: true,
       tableData: [],
       personnel: {},
-      memberList:[],
-      userId: '1111111111111111111',      
+      memberList: [],
+      userId: '1111111111111111111'
     }
   },
   created () {},
   methods: {
     childClick (node) {
       this.$emit('handle-child-click', node)
-      
-      
     }
   }
 }

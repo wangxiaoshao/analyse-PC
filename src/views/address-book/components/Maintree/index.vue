@@ -7,7 +7,7 @@
     lazy
     ref="treeList"
     :load="loadNode"
-    
+
     @node-click="handleNodeClick"
    >
       <span class="custom-tree-node " slot-scope="{ node, data }">
@@ -28,20 +28,19 @@ export default {
       showCheckboxFlag: false,
       treeList: [],
       treeSonList: [],
-      departmentList:[],
-      departmentList:[],
-      treeDepartmentList:[],
+      departmentList: [],
+      treeDepartmentList: [],
       defaultProps: {
         children: 'children',
         label: 'name'
       },
       id: '',
-      parentId: -1,
-      bindId:1
+      parentId: null,
+      bindId: null
     }
   },
   mounted () {
-    this.findTreeList(-1)
+    this.findTreeList()
     // this.findTreeDepartmentlist(1)
   },
   methods: {
@@ -49,7 +48,6 @@ export default {
     loadNode (node, resolve) {
       if (node.level === 0) {
         return resolve(this.treeList)
-        
       } else {
         this.findTreeSonList(node.data.id)
         this.id = node.data.id
@@ -59,52 +57,48 @@ export default {
         this.treeSonList = []
       }
     },
-  //  获取子节点
-  findTreeSonList (parentId) {
+    //  获取子节点
+    findTreeSonList (parentId) {
       api[urlNames['getTree']]({
-        parentId: parentId,
-        // viewId: -1,
+        parentId: parentId
       }).then((res) => {
-        console.log(res,'------12323242---')                
+        console.log(res, '------12323242---')
         this.treeSonList = res.data
-        this.otherDepartantList=this.treeSonList
-      console.log(this.otherDepartantList,'12123--0--')
+        this.otherDepartantList = this.treeSonList
+        console.log(this.otherDepartantList, '12123--0--')
       })
     },
     findTreeList (parentId) {
       api[urlNames['getTree']]({
-        parentId: parentId,
-        // viewId: -1
+        parentId: parentId
       }).then((res) => {
-
         this.total = parseInt(res.total)
         this.treeList = res.data
-        this.$emit('get-default-node', res.data[0].id,res.data[0].name)
+        this.$emit('get-default-node', res.data[0].id, res.data[0].name)
         if (this.$route.name === 'Organization') {
           this.handleNodeClick(res.data[0])
         }
       })
     },
 
-/**查询部门下的下级部门 */
+    /** 查询部门下的下级部门 */
     findTreeDepartmentlist (bindId) {
       api[urlNames['getTree']]({
-        bindId: bindId,
-      
+        bindId: bindId
       }).then((res) => {
       })
     },
-  
 
-   handleNodeClick (data) {
-     console.log(JSON.parse(JSON.stringify(data)),'---------11111111111111111--------')
-     this.$emit('handle-nodeClick', data)
+
+    handleNodeClick (data) {
+      console.log(JSON.parse(JSON.stringify(data)), '---------11111111111111111--------')
+      this.$emit('handle-nodeClick', data)
       // this.$emit('handle-node-click', node)
       // if (node) {
       //   this.$emit('handle-node-click', node.bindId)
       // } else {
       //   this.$emit('handle-node-click', node.id)
-      // } 
+      // }
     }
   }
 }

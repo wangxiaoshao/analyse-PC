@@ -33,11 +33,11 @@ export default {
         label: 'name'
       },
       id: '',
-      parentId: -1
+      parentId: null
     }
   },
   mounted () {
-    this.findTreeList(-1)
+    this.findTreeList()
   },
   methods: {
     // 追加子节点

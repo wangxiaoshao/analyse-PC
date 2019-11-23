@@ -1,11 +1,10 @@
 <template>
   <div class="member">
-    <el-row   v-for="(item,index) in tableData" :key="index">
+    <!--<el-row   v-for="(item,index) in tableData" :key="index">
       <el-col :span="3">
         <div class="grid-content">
           <div class="member-name">
             <img :src="item[memberProps.portraitUrl]" />
-            <!-- <img :src= :alt="item.portraitUrl" /> -->
           </div>
         </div>
       </el-col>
@@ -20,7 +19,34 @@
           <span>电话：{{item[memberProps.mobile]}}</span>
         </div>
       </el-col>
-    </el-row>
+    </el-row>-->
+   <el-table
+      :data="tableData"
+      border
+      style="width: 100%">
+      <el-table-column
+        prop="portraitUrl"
+        label="头像"
+        align="center"
+        width="100">
+        <template slot-scope="scope">
+          <span class="portrait-url">
+            <img :src="scope.row.portraitUrl">
+          </span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="name"
+        label="姓名"
+        width="180">
+      </el-table-column>
+     <el-table-column prop="mobile" label="手机号">
+     </el-table-column>
+      <el-table-column
+        prop="dutyName"
+        label="职位">
+      </el-table-column>
+    </el-table>
   </div>
 </template>
 <script>
@@ -32,11 +58,11 @@ export default {
     }
   },
 
-created(){
-},
+  created () {
+  },
 
   methods: {
-  
+
 
     // 其他单位通讯录查询单位下的所有人员
     // findOrganizationMembers (id) {

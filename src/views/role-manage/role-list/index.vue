@@ -87,6 +87,7 @@ export default {
         this.loading = false
         console.log(res.data)
         this.list = res.data
+        this.page.total = res.total
       }, () => {
         this.loading = false
         this.list = []
