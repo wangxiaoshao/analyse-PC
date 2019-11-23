@@ -8,13 +8,13 @@
             <div class="top-two" :class="activeColor==2?'top-active':''" @click="onChange(2)">其他单位通讯录</div>
           </div>
           <div class="tree-main">
-            <search-choose :defaultNodeId="defaultNodeId"></search-choose>
+            <search-choose v-if="activeColor==2" :defaultNodeId="defaultNodeId"></search-choose>
             <div>
               <address-book-tree v-if="thisUnit && isShow===1" @handle-nodeClick="handleNodeClickTree" :thisUnit="thisUnit"
               ></address-book-tree>
             </div>
 
-            <other-address-book-tree v-if="otherUnit&&isShow===2" @handle-nodeClick="handleNodeClickTree" :otherUnit='otherUnit'  ></other-address-book-tree>
+            <other-address-book-tree v-if="otherUnit&&isShow===2" @handle-node-other-click="handleNodeOtherClickTree" :otherUnit='otherUnit'  ></other-address-book-tree>
 
           </div>
         </el-col>
@@ -52,7 +52,7 @@
 <script>
 import handleTable from '@src/mixins/handle-table'
 import addressBookTree from './components/Tree/index'
-import searchChoose from './components/Choose/index'
+import searchChoose from '@src/components/Result/index'
 import addTreeList from './components/TreeList'
 import Department from './components/Department'
 import MemberTable from './components/Member/index'
@@ -103,7 +103,7 @@ export default {
       otherUnit: {},
       otherNavigation: [],
       neid: 1212,
-      defaultNode: ''
+      defaultNode: []
     }
   },
   computed: {
@@ -132,7 +132,7 @@ export default {
         id: -1
       }).then((res) => {
         this.otherUnit = res.data
-        this.defaultNode = res.data[0].id
+        this.defaultNode = res.data[0]
         for (let i; i < this.otherUnit.length; i++) {
           if (this.otherUnit[i].nodeType === 3) {
             this.departmentList.push(this.otherUnit[i])
@@ -141,12 +141,22 @@ export default {
         this.handleNodeClickTree(this.otherUnit)
       })
     },
+    //
     handleChildClick (node) {
       this.navigation.push({ id: node.id, name: node.name })
-
-      this.getDetail(node.id)
+      //this.getDetail(node.id)
     },
+    // 选择本单位通讯录
     handleNodeClickTree (node) {
+      this.treeList = node
+      this.navigation = []
+      this.navigation.push({ id: node.id, name: node.name })
+      this.getDetail(node.id)
+      this.otherDepartmentList = []
+    },
+    // 选择其他单位通讯录
+    handleNodeOtherClickTree (node) {
+      console.log('________', node)
       this.treeList = node
       this.navigation = []
       this.navigation.push({ id: node.id, name: node.name })
@@ -155,8 +165,9 @@ export default {
     },
     getDetail (nodeId) {
       this.getDepartmentList(nodeId)
+      this.getPersonnelDepartmentMembers(nodeId)
       // this.getPersonnelDepartmentMembers(nodeId)
-      this.activeColor === 1 ? this.getPersonnelDepartmentMembers(nodeId) : this.getOtherDepartmentMembers(nodeId)
+      // this.activeColor === 1 ? this.getPersonnelDepartmentMembers(nodeId) : this.getOtherDepartmentMembers(nodeId)
     },
     // 获取单位
     getDepartmentList (nodeId) {
@@ -166,17 +177,6 @@ export default {
         this.departmentList = res.data
       })
     },
-
-    // 其他单位通讯录-单位下人员
-    /* getOtherDepartmentMembers (id) {
-      api[urlNames['findOrganizationMembers']]({
-        orgId: id
-      }).then((res) => {
-        console.log('1213213============', res)
-        this.memberList = res.data
-      })
-    }, */
-
     // 本单位通讯录-单位下人员
     getPersonnelDepartmentMembers (orgId) {
       let data = {
@@ -190,35 +190,12 @@ export default {
       })
     },
 
-    // 本单位通讯录-部门下人员
-    getPersonnelmember (departmentId) {
-      api[urlNames['getDepartmentPersonList']]({
-        departmentId: departmentId
-      }).then(res => {
-        console.log(res, '111')
-        this.memberList = res.data
-      }).catch(err => {
-        console.log(err)
-      })
-    },
-
-    getMemberList (nodeId) {
-      api[urlNames['getOrgDepartmentTxlList']]({
-        orgId: nodeId
-      }).then(res => {
-        this.departmentList = res.data
-      })
-    },
     goCurrentNodeDetail (depid, index) {
       let len = this.navigation.length
       this.navigation.splice(index + 1, len - index + 1)
       // debugger
       this.getDetail(depid)
     },
-    getDefault (val) {
-      this.defaultNodeId = val
-    },
-
     /**
  * 其他单位下部门
 */
@@ -261,7 +238,6 @@ export default {
         this.navigation1.name = '本单位通讯录'
         // this.memberProps=personnelDepartmentMemberProp
       } else if (e === 2) {
-        this.findNodeTree()
         this.navigation1.name = '其他单位通讯录'
         // this.memberProps = otherDepartmentMemberProp
       }
@@ -277,8 +253,9 @@ export default {
   },
   watch: {
     activeColor () {
-      console.log('hjhhhhhh', this.otherUnit)
-      this.getDepartmentList(this.defaultNode)
+      this.getDetail(this.defaultNode.id)
+      this.findNodeTree()
+      this.navigation.push({ id: this.defaultNode.id, name: this.defaultNode.name })
     }
   }
 }
