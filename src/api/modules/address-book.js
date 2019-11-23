@@ -53,7 +53,7 @@ export default {
     serve: 'organizationManagePC', // 该请求对应服务端，服务端名字在url-prefix中配置
     mock: '/address-book/getOrgUserTxlList.json' // development模式下，本地mock数据地址
   },
-/**
+  /**
    * 查询部门下人员通讯信息
    */
   [urlNames.getDepartmentPersonList]: {

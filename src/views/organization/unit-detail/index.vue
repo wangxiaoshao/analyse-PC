@@ -6,6 +6,15 @@
       @close="getClose"
       @getTag="getTag"
     ></search-lable>
+    <el-drawer
+      title="选择区域"
+      :visible.sync="areaFlag"
+      :direction="'rtl'">
+      <area-list
+        @get-area="getAreaId"
+        @close="close"
+        v-model="ruleForm.areaId"></area-list>
+    </el-drawer>
     <el-form :model="ruleForm" :disabled="disabledFlag" ref="ruleForm" label-width="100px" class="demo-ruleForm">
       <div class="detail-title">
         <i class="menu-icon fa fa-sitemap" style="margin: 0px 5px;"></i>单位信息
@@ -95,12 +104,9 @@
            </div>
            </div>
          </el-form-item>
-         <el-form-item label="所属区域" prop="areaId">
+         <el-form-item label="所属区域" prop="areaId" :rules="[{ required: true, message: '请选择区域'}]">
             <!--选择区域组件-->
-           <area-list
-             @getAreaId="getAreaId"
-             :area-option="areaOption"
-             v-model="ruleForm.areaId"></area-list>
+          <el-input v-model="areaCheck" @focus="areaFlag = true"></el-input>
            <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
            <div class="tip-msg"
                 v-show="this.app.option.options.orgAuditFields.indexOf('areaId') > -1 && ruleForm.areaId !== oldFrom.areaId">
@@ -230,6 +236,15 @@ export default {
         name: '单位详情',
         parent: null
       },
+      areaFlag: false,
+      areaCheck: '',
+      areaOptions: [],
+      props: {
+        multiple: false,
+        children: 'children',
+        label: 'name',
+        value: 'id'
+      },
       openSearchFlag: false,
       addInfo: {
         searchFlag: false,
@@ -245,6 +260,7 @@ export default {
       parentName: '',
       bindId: '',
       areaOption: [],
+      allAreaList: [],
       ruleForm: {
         reason: '',
         nodeId: '', // 节点id
@@ -287,10 +303,10 @@ export default {
   methods: {
     ...mapMutations(['GET_OPTION']),
     init () {
-      if (this.$route.name === 'UnitAdd') {
-        this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
-      }
       if (this.$route.name === 'UnitAdd' || this.$route.name === 'UnitEdit') {
+        if (this.$route.name === 'UnitAdd') {
+          this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
+        }
         api[urlNames['findViewNodeById']]({
           id: this.$route.params.parentId || this.$route.params.id
         }).then((res) => {
@@ -378,8 +394,12 @@ export default {
       api[urlNames['findOrgAreaList']]({
         orgId: orgId
       }).then((res) => {
-        this.areaOption = res.data
-        console.log(res.data)
+        this.allAreaList = res.data
+        this.findMenuByPath(res.data)
+        this.ruleForm.areaId = this.areaOption[this.areaOption.length - 1].id
+        this.areaOption.forEach((item) => {
+          this.areaCheck += item.name + '/'
+        })
       }, (error) => {
       })
     },
@@ -420,7 +440,10 @@ export default {
       this.ruleForm.organization.type = el
     },
     getAreaId (val) {
-      this.ruleForm.areaId = val
+      this.areaCheck = val.name
+      console.log(val)
+      this.ruleForm.areaId = val.id
+      // this.ruleForm.areaId = val
     },
     submitForm (ruleForm) {
       this.$refs[ruleForm].validate((valid) => {
@@ -436,6 +459,18 @@ export default {
     },
     goBack () {
       this.$router.go(-1)
+    },
+    close () {
+      this.areaFlag = false
+    },
+    findMenuByPath (list) {
+      for (let item of list) {
+        this.areaOption.push(item)
+        if (item.children && item.children.length > 0) {
+          this.findMenuByPath(item.children)
+        } else {
+        }
+      }
     }
   }
 }

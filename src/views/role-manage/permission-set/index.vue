@@ -4,6 +4,7 @@
         :data="ManageList"
         node-key="id"
         show-checkbox
+        :expand-on-click-node="false"
         @check-change="handleCheckChange"
         :check-strictly="true"
         :props="defaultProps"

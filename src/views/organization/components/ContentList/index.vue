@@ -149,7 +149,6 @@ export default {
     },
     getGrid () {
       let data = {
-        viewId: -1,
         page: this.contentPage.current,
         parentId: this.nodeId,
         limit: this.contentPage.limit

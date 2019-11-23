@@ -240,17 +240,6 @@ export default {
     serve: 'organizationManagePC',
     mock: '/findOrganizationById.json' // development模式下，本地mock数据
   },
-  [urlNames.upload]: {
-    type: 'post',
-    url: '/api/jg_manage/image/upload',
-    keepOriginResponse: true, // 是否保留后端返回数据格式
-    showLoading: true, // 该请求发送时，是否显示全局loading
-    serve: 'organizationManagePC',
-    mock: '/upload.json', // development模式下，本地mock数据
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  },
   [urlNames.dicList]: {
     type: 'get',
     url: '/api/jg_manage/system/dictList',

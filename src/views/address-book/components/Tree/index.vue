@@ -44,24 +44,24 @@ export default {
     },
     loadNode (node, resolve) {
       if (node.level === 0) {
-          let treeParent = [{ name: this.thisUnit.name, id: this.thisUnit.id }]
-          return resolve(treeParent);
+        let treeParent = [{ name: this.thisUnit.name, id: this.thisUnit.id }]
+        return resolve(treeParent)
       }
-        // if (node.level > 3) return resolve([]);
+      // if (node.level > 3) return resolve([]);
       api[urlNames['getDepartmentChildtree']]({
-        departmentId: node.data.id,
+        departmentId: node.data.id
       }).then(res => {
-        console.log(res,'---------------------------=')
+        console.log(res, '---------------------------=')
         this.total = parseInt(res.total)
         if (res.data.length > 0) {
-          resolve(res.data);
+          resolve(res.data)
         } else {
-          resolve([]);
+          resolve([])
         }
       }).catch(err => {
         console.log(err)
       })
-    },
+    }
     /**
      * 查询部门下的下级部门
      */
@@ -82,10 +82,10 @@ export default {
   },
   watch: {
     thisUnit (newvalue, oldvalue) {
-      this.this_unit = newvalue;
+      this.this_unit = newvalue
     }
-  },
-};
+  }
+}
 </script>
 <style lang="less">
 @import 'index';

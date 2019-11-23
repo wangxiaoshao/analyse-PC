@@ -6,6 +6,8 @@
                 v-model="tagKeyWord"
                 class="input-with-select"
                 @change="searchTag"
+                @input="searchTag"
+                @blur="blur"
                 @keyup.enter.native="searchTag"
       >
         <el-button slot="append" icon="el-icon-search"></el-button>
@@ -44,7 +46,8 @@ export default {
       checkTagGroup: [],
       searchTags: [],
       getCheckTags: [],
-      sendInfo: {}
+      sendInfo: {},
+      timer: null
     }
   },
   created () {
@@ -61,20 +64,29 @@ export default {
     // 搜索标签
     searchTag () {
       this.loading = true
-      api[urlNames['findLabelByType']]({
-        type: this.addInfo.type,
-        name: this.tagKeyWord
-      }).then((res) => {
-        this.searchTags = res.data
-        this.loading = false
-      }, (error) => {
-        this.loading = false
-        this.searchTags = []
-      })
+      if (this.timer) {
+        clearTimeout(this.timer)
+        this.timer = null
+      }
+      this.timer = setTimeout(() => {
+        api[urlNames['findLabelByType']]({
+          type: this.addInfo.type,
+          name: this.tagKeyWord
+        }).then((res) => {
+          this.searchTags = res.data
+          this.loading = false
+        }, (error) => {
+          this.loading = false
+          this.searchTags = []
+        })
+      }, 800)
     },
     sendTags () {
       this.$emit('getTag', this.checkTagGroup)
       this.$emit('close', false)
+    },
+    blur () {
+      this.timer = null
     }
   }
 }
