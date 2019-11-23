@@ -22,7 +22,7 @@ export default {
   name: 'index',
   props: ['departmentList', 'treeList'],
   components: {
-    memberTable
+    // memberTable
   },
   data () {
     return {
