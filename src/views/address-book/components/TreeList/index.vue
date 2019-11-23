@@ -73,15 +73,15 @@ export default {
       //   parentId: parentId,
       //   viewId: -1
       // }).then((res) => {
-        
+
       //   this.total = parseInt(res.total)
       //   this.treeList = res.data
       //   if (this.$route.name === 'Organization') {
       //     this.handleNodeClick(res.data[0])
       //   }
-        // if (this.$route.name === 'Organization') {
-        //   this.handleNodeClick(res.data[0])
-        // }
+      // if (this.$route.name === 'Organization') {
+      //   this.handleNodeClick(res.data[0])
+      // }
       // })
     },
     // 获取子节点
@@ -90,7 +90,6 @@ export default {
         parentId: parentId,
         viewId: -1
       }).then((res) => {
-       
         this.treeSonList = res.data
       })
     },

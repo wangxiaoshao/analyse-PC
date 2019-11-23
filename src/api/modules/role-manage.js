@@ -30,15 +30,15 @@ export default {
     }
   },
   [urlNames.deleteRoleBindUser]: {
-    type: 'post',
+    type: 'get',
     url: '/api/jg_manage/role/deleteRoleBindUser',
     keepOriginResponse: true, // 是否保留后端返回数据格式
     serve: 'organizationManagePC',
     mock: '/deleteRoleBindUser.json',
-    showLoading: true,
-    headers: {
+    showLoading: true
+  /*  headers: {
       'Content-Type': 'application/json'
-    }
+    }*/
   },
   /*
   * 权限配置列表 */
