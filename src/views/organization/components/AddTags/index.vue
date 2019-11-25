@@ -37,7 +37,7 @@
 <script>
 import { api, urlNames } from '@src/api'
 export default {
-  props: ['addInfo', 'openSearchFlag'],
+  props: ['addInfo', 'openSearchFlag', 'defaultList'],
   data () {
     return {
       loading: true,
@@ -52,7 +52,6 @@ export default {
   },
   created () {
     this.addFlag = this.sendInfo.searchFlag
-    this.searchTag()
   },
   methods: {
     close () {
@@ -87,6 +86,15 @@ export default {
     },
     blur () {
       this.timer = null
+    }
+  },
+  watch: {
+    openSearchFlag (val) {
+      if (val === true) {
+        this.tagKeyWord = ''
+        this.searchTag()
+        //this.checkTagGroup = this.defaultList
+      }
     }
   }
 }

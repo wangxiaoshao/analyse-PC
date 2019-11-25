@@ -83,6 +83,7 @@ export default {
           })
         }, 800)
       } else {
+        this.resultFlag = false
         this.timer = null
       }
     },
@@ -111,7 +112,6 @@ export default {
   watch: {
     value (newVal) {
       this.type = newVal
-      alert(newVal)
       this.getResult()
     }
   }

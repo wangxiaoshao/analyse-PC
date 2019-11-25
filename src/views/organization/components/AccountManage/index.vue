@@ -72,7 +72,6 @@ export default {
         reason: ''
       },
       oldFrom: {},
-      systemList: ['上海', '北京', '广州', '深圳'],
       addFlag: this.isDefaultFlag,
       activeAccount: '1',
       tags: [], // 提交的标签

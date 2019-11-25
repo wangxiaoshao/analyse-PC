@@ -174,7 +174,7 @@ export default {
         isAlreadyShow: true
       }
       localStorage.setItem('isShowConfirmDialog', JSON.stringify(isShowConfirmDialog))
-    },
+    }
   }
 }
 </script>

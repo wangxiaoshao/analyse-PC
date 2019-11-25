@@ -290,10 +290,12 @@ export default {
       this.formCallout.identityId = row.identityId
       this.formCallout.uid = row.uid
       this.calloutFlag = true
+      this.$emit('cancel', false)
     },
     // 解除
     removeDuty (row) {
       this.removeFlag = true
+      this.$emit('cancel', false)
       this.ruleForm.identityId = row.identityId
       // this.ruleForm.type = row.type
     },

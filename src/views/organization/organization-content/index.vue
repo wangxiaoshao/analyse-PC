@@ -73,7 +73,7 @@
               </el-table-column>
             </el-table>
           </el-tab-pane>
-          <el-tab-pane label="人员管理" name="人员管理" v-if="content[0].bindId">
+          <el-tab-pane label="人员管理" name="人员管理" v-if="content[0].nodeType !== 1">
             <el-button class="add-btn" @click="openAddPerson">添加人员</el-button>
             <person-list
               v-if="activeName === '人员管理'"
@@ -85,7 +85,7 @@
               @cancel="getSortAction"
             ></person-list>
           </el-tab-pane>
-          <el-tab-pane label="部门领导" name="单位主要领导" v-if="content[0].bindId">
+          <el-tab-pane label="部门领导" name="单位主要领导" v-if="content[0].nodeType !== 1">
             <leader-list
               v-if="activeName === '单位主要领导'"
               :content-id="content[0].bindId"

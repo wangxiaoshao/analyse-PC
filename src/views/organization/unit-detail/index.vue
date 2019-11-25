@@ -3,6 +3,7 @@
     <search-lable
       :openSearchFlag="openSearchFlag"
       :addInfo="addInfo"
+      :default-list="defaultList"
       @close="getClose"
       @getTag="getTag"
     ></search-lable>
@@ -17,7 +18,7 @@
     </el-drawer>
     <el-form :model="ruleForm" :disabled="disabledFlag" ref="ruleForm" label-width="100px" class="demo-ruleForm">
       <div class="detail-title">
-        <i class="menu-icon fa fa-sitemap" style="margin: 0px 5px;"></i>单位信息
+        <i class="imenu-icon fa fa-building-o big-icon" style="margin: 0px 5px;"></i>单位信息
       </div>
       <el-menu class="el-menu-demo" mode="horizontal">
         <el-menu-item index="1">基础信息</el-menu-item>
@@ -31,6 +32,15 @@
                 v-show="this.app.option.options.orgAuditFields.indexOf('name') > -1 && ruleForm.organization.name !== oldFrom.organization.name">
              添加或修改该字段需要提交审核
            </div>
+           </div>
+         </el-form-item>
+         <el-form-item label="单位其他名称" prop="organization.otherName">
+           <el-input v-model="ruleForm.organization.otherName"></el-input>
+           <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
+             <div class="tip-msg"
+                  v-show="this.app.option.options.orgAuditFields.indexOf('otherName') > -1 && ruleForm.organization.otherName !== oldFrom.organization.otherName">
+               添加或修改该字段需要提交审核
+             </div>
            </div>
          </el-form-item>
          <el-form-item label="单位地址" prop="organization.address">
@@ -57,19 +67,13 @@
          <el-form-item label=" 上级单位">
            <el-input v-model="parentName" :disabled="true"></el-input>
          </el-form-item>
-         <el-form-item label="所属类型" prop="organization.type">
-           <el-select v-model="ruleForm.organization.type" @change="getType" placeholder="请选择所属类型">
-             <el-option
-               v-for="item in classOption"
-               :key="item.id"
-               :label="item.text"
-               :value="item.value"></el-option>
-           </el-select>
+         <el-form-item label=" 启用状态" prop="organization.removed">
+           <el-switch v-model="ruleForm.organization.removed"></el-switch>
            <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
-           <div class="tip-msg"
-                v-show="this.app.option.options.orgAuditFields.indexOf('type') > -1 && ruleForm.organization.type !== oldFrom.organization.type">
-             添加或修改该字段需要提交审核
-           </div>
+             <div class="tip-msg"
+                  v-show="this.app.option.options.orgAuditFields.indexOf('removed') > -1 && ruleForm.organization.removed !== oldFrom.organization.removed">
+               添加或修改该字段需要提交审核
+             </div>
            </div>
          </el-form-item>
        </el-col>
@@ -104,9 +108,10 @@
            </div>
            </div>
          </el-form-item>
-         <el-form-item label="所属区域" prop="areaId" :rules="[{ required: true, message: '请选择区域'}]">
+         <el-form-item label="所属区域" prop="areaId">
             <!--选择区域组件-->
-          <el-input v-model="areaCheck" @focus="areaFlag = true"></el-input>
+           <el-input v-model="ruleForm.areaId" style="display: none"></el-input>
+           <el-input v-model="areaCheck" @focus="areaFlag = true"></el-input>
            <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
            <div class="tip-msg"
                 v-show="this.app.option.options.orgAuditFields.indexOf('areaId') > -1 && ruleForm.areaId !== oldFrom.areaId">
@@ -130,13 +135,19 @@
            </div>
            </div>
          </el-form-item>
-         <el-form-item label=" 启用状态" prop="organization.removed" :rules="[{ required: true, message: '请选择启用状态 '}]">
-           <el-switch v-model="ruleForm.organization.removed"></el-switch>
+         <el-form-item label="所属类型" prop="organization.type">
+           <el-select v-model="ruleForm.organization.type" @change="getType" placeholder="请选择所属类型">
+             <el-option
+               v-for="item in classOption"
+               :key="item.id"
+               :label="item.text"
+               :value="item.value"></el-option>
+           </el-select>
            <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
-           <div class="tip-msg"
-                v-show="this.app.option.options.orgAuditFields.indexOf('removed') > -1 && ruleForm.organization.removed !== oldFrom.organization.removed">
-             添加或修改该字段需要提交审核
-           </div>
+             <div class="tip-msg"
+                  v-show="this.app.option.options.orgAuditFields.indexOf('type') > -1 && ruleForm.organization.type !== oldFrom.organization.type">
+               添加或修改该字段需要提交审核
+             </div>
            </div>
          </el-form-item>
        </el-col>
@@ -144,7 +155,7 @@
       <el-row>
         <el-form-item label="单位标签">
           <el-tag
-            v-for="tag in tagsName"
+            v-for="(tag,index) in tagsName"
             :key="tag"
             type="info"
             closable
@@ -154,7 +165,11 @@
           >
             {{tag}}
           </el-tag>
-          <el-tag class="add-tag-btn" v-if="!disabledFlag" @click="openSearchFlag = true"><i class="el-icon-plus"></i>添加标签</el-tag>
+          <el-tag class="add-tag-btn"
+                  v-if="!disabledFlag"
+                  @click="openSearchFlag = true">
+            <i class="el-icon-plus"></i>添加标签
+          </el-tag>
           <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
           <div class="tip-msg"
                v-show="this.app.option.options.orgAuditFields.indexOf('labelId') > -1 && ruleForm.labelId !== oldFrom.labelId">
@@ -261,6 +276,7 @@ export default {
       bindId: '',
       areaOption: [],
       allAreaList: [],
+      defaultList: [],
       ruleForm: {
         reason: '',
         nodeId: '', // 节点id
@@ -378,6 +394,7 @@ export default {
         id: this.bindId,
         type: type
       }).then((res) => {
+        this.defaultList = res.data
         res.data.forEach((item) => {
           this.tagsName.push(item.name)
           this.ruleForm.labelId.push(item.id)
@@ -409,13 +426,17 @@ export default {
     // 获取选中的标签
     getTag (val) {
       console.log('标签', val)
+      const res = new Map()
       let tag = []
       val.forEach((item) => {
         this.tagsName.push(item.split('|')[1])
         tag.push(item.split('|')[0])
         console.log(item.split('|')[0])
       })
-      this.ruleForm.labelId = tag
+      this.tagsName = this.tagsName.filter(a => !res.has(a) && res.set(a, 1))
+      let tagIdList = []
+      tagIdList = tag.filter(a => !res.has(a) && res.set(a, 1))
+      this.ruleForm.labelId = tagIdList
     },
     setBreadcrumbTitle () { // 设置面包屑title
       if (this.$route.name === 'UnitEdit' || this.$route.name === 'UnitAdd') {
