@@ -168,6 +168,8 @@ export default {
         nodeType: this.nodeInfo.nodeType,
         nodeId: this.contentId
       }
+      this.mainLeaderList = []
+      this.otherLeaderList = []
       this.loading = true
       api[urlNames['findLeaderList']](data).then((res) => {
         this.loading = false
