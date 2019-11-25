@@ -322,7 +322,7 @@
             <el-form-item label="人员标签">
               <el-tag
                 v-model="sendLabelId"
-                v-for="tag in tagsName"
+                v-for="(tag,index) in tagsName"
                 :key="tag"
                 type="info"
                 closable
@@ -423,10 +423,7 @@ export default {
   methods: {
     ...mapMutations(['GET_OPTION']),
     init () {
-      this.labelList.forEach((item) => {
-        this.tagsName.push(item.name)
-        this.sendLabelId.push(item.id)
-      })
+
     },
     // 搜索表格点击当前行
     selectRow (val) {
@@ -544,10 +541,19 @@ export default {
       this.openSearchFlag = val
     },
     getTag (val) {
+      const res = new Map()
+      let tag = []
       val.forEach((item) => {
         this.tagsName.push(item.split('|')[1])
-        this.sendLabelId.push(item.split('|')[0])
+        tag.push(item.split('|')[0])
       })
+      this.tagsName = this.tagsName.filter(a => !res.has(a) && res.set(a, 1))
+      this.sendLabelId = tag.filter(a => !res.has(a) && res.set(a, 1))
+      // this.ruleForm.labelId = tagIdList
+      /* val.forEach((item) => {
+        this.tagsName.push(item.split('|')[1])
+        this.sendLabelId.push(item.split('|')[0])
+      }) */
       this.$emit('get-label', this.sendLabelId)
     },
     removeTag (tag, index) {
@@ -562,13 +568,21 @@ export default {
           this.$emit('get-user', this.personFrom)
         } else {
           console.log('error submit!!')
-         // this.$message.error(`error submit!!`)
+          // this.$message.error(`error submit!!`)
           return false
         }
       })
     },
     goBack () {
       this.$router.go(-1)
+    }
+  },
+  watch: {
+    labelList (val) {
+      val.forEach((item) => {
+        this.tagsName.push(item.name)
+        this.sendLabelId.push(item.id)
+      })
     }
   }
 }
