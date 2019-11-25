@@ -79,6 +79,7 @@ export default {
       total: 0, // 总页码
       viewList: [],
       currentPage: 1,
+      pageSize: 10,
       currentRow: null,
       seleceDialog: {
         selectMenmberTitle: '选人组件', // 选人组件标题
@@ -125,10 +126,12 @@ export default {
       console.log(index, row)
     },
     handleSizeChange (val) {
-      console.log(`每页 ${val} 条`)
+      this.pageSize = val
+      this.getViewList(this.currentPage, val)
     },
     handleCurrentPageChange (val) {
-      console.log(`当前页: ${val}`)
+      this.currentPage = val
+      this.getViewList(val, this.pageSize)
     }
   }
 

@@ -69,7 +69,7 @@
                         @check-change="currentchange"
                         :check-strictly="true"
                         :allow-drop="allowDrop"
-                        @node-drag-end="nodedragend"
+                        @node-drag-end="nodeDragEnd"
                         @node-drag-over="handleDragOver"
                         :expand-on-click-node="false"
                         :default-checked-keys="checkedKeys">
@@ -103,7 +103,7 @@
                       :load="loadOrgNode"
                       :props="defaultProps"
                       :check-strictly="true"
-                      @node-drag-over="nodeDragEnd"
+                      @node-drag-end="nodeSelectDragEnd"
                       :expand-on-click-node="false"
                       :default-checked-keys="checkedKeys">
                         <span class="custom-tree-node" slot-scope="{ node, data }">
@@ -341,7 +341,7 @@ export default {
       // console.log('Tree drag over: ', draggingNode.label, dropNode, ev.screenX)
     },
     // 拖拽结束时触发的事件--原来机构树
-    nodedragend (Node, lastNode, lastTree, e) {
+    nodeDragEnd (Node, lastNode, lastTree, e) {
       let coordinates = this.getCoordinates()
       /*
       coordinates
@@ -396,13 +396,13 @@ export default {
         viewId: this.returnViewId
       }).then((res) => {
         if (res.status === 0) {
-          // this.findNodeDraftList('-1')
+          this.findNodeDraftList('-1')
           this.$message.success('调整节点位置成功')
         }
       })
     },
     // 草稿拖动节点位置
-    nodeDragEnd (dragNode, lastNode, seat, e) {
+    nodeSelectDragEnd (dragNode, lastNode, seat, e) {
       if (lastNode === null) {
         this.updateNodeDraft(dragNode.data.id, '-1')
       } else {
@@ -411,7 +411,6 @@ export default {
         }
         this.updateNodeDraft(dragNode.data.id, lastNode.data.id)
       }
-      console.log(JSON.parse(JSON.stringify(dragNode.data)), JSON.parse(JSON.stringify(lastNode.data)), '------123-----')
     },
     // 单选框选中
     currentchange (node, checked) {

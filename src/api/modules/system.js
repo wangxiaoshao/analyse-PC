@@ -46,5 +46,26 @@ export default {
     keepOriginResponse: true,
     serve: 'organizationManagePC',
     mock: 'system-setting/dictionaryList.json'
+  },
+
+  /*
+  * 提交配置设置 */
+  [urlNames.setClientOptions]: {
+    type: 'post',
+    url: '/api/jg_manage/option',
+    keepOriginResponse: true,
+    serve: 'organizationManagePC',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  },
+
+  /*
+  * 配置级别的配置信息 */
+  [urlNames.getSystemParameterlevel]: {
+    type: 'get',
+    url: '/api/jg_manage/option/levelOptions',
+    keepOriginResponse: true,
+    serve: 'organizationManagePC'
   }
 }
