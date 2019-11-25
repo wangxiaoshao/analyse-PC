@@ -103,7 +103,7 @@ export default {
       otherUnit: {},
       otherNavigation: [],
       neid: 1212,
-      defaultNode: []
+      defaultNode: {}
     }
   },
   computed: {
@@ -112,6 +112,7 @@ export default {
   created () {
     this.getAddressBook()
     this.navigation1.name = '本单位通讯录'
+    //this.getDetail(this.defaultNode.id)
     // this.findNodeTree(bindId)
   },
   methods: {
@@ -253,8 +254,11 @@ export default {
   },
   watch: {
     activeColor () {
-      this.getDetail(this.defaultNode.id)
+      //this.getDetail(this.defaultNode.id)
+      //this.getDetail(this.defaultNode.id)
       this.findNodeTree()
+
+
       this.navigation.push({ id: this.defaultNode.id, name: this.defaultNode.name })
     }
   }

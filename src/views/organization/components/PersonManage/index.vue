@@ -17,24 +17,24 @@
           <el-form-item label="姓名" prop="name" :rules="[{ required: true, message: '姓名不能为空'}]">
             <el-popover
               placement="bottom-start"
+              ref="popover"
               width="500"
-              trigger="click"
             >
               <el-input
+                v-popover:popover
+                slot="reference"
                 placeholder="请输入姓名"
                 :disabled="isDefaultFlag"
                 v-model="userDetail.name"
-                id="nameSearch"
-                slot="reference"
                 @blur="blur"
-                @input="loadSearch"></el-input>
-              <div class="result-list">
+                @input="loadSearch"
+                @keyup.enter.native="loadSearch"></el-input>
+              <div class="result-list" v-if="searchFlag">
                 <div class="default-warn" style="color: #FF6633">
                   <i class="el-icon-warning"></i>
                   若您是为同一个人开通兼职帐号，直接选择以下人员进行帐号开通
                 </div>
                 <el-table
-                  v-if="searchFlag"
                   v-loading="loadFlag"
                   max-height="200"
                   :data="list"
@@ -410,7 +410,8 @@ export default {
         searchFlag: false,
         type: 3 // 1.单位，2、部门，3、人员
       },
-      timer: null
+      timer: null,
+      showPopoverFlag: false
     }
   },
   created () {
@@ -438,13 +439,14 @@ export default {
     loadSearch () {
       this.searchFlag = false
       if (this.$route.name === 'PersonAdd' && this.personFrom.name.length > 1) {
-        this.searchFlag = true
-        this.loadFlag = true
         if (this.timer) {
           clearTimeout(this.timer)
           this.timer = null
         }
         this.timer = setTimeout(() => {
+          this.showPopoverFlag = true
+          this.searchFlag = true
+          this.loadFlag = true
           api[urlNames['findUserByParams']]({
             name: this.personFrom.name
           }).then((res) => {
@@ -457,6 +459,7 @@ export default {
         }, 800)
       } else {
         this.searchFlag = false
+        this.showPopoverFlag = false
         this.timer = null
       }
     },

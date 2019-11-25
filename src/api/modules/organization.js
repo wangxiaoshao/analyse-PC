@@ -249,7 +249,8 @@ export default {
   },
   [urlNames.findUserByParams]: {
     type: 'get',
-    url: '/api/jg_manage/user/findUserByParams',
+    //url: '/api/jg_manage/user/findUserByParams',
+    url: '/api/jg_manage/user/getUserCallInByName',
     keepOriginResponse: true, // 是否保留后端返回数据格式
     serve: 'organizationManagePC',
     mock: '/findUserByParams.json' // development模式下，本地mock数据
