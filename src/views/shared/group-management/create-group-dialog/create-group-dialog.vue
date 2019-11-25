@@ -28,9 +28,9 @@
         </el-form>
       </div>
       <span slot="footer" class="dialog-footer">
-    <el-button @click="colseDialog">取 消</el-button>
-    <el-button type="primary" @click="createGroup">确 定</el-button>
-  </span>
+       <el-button type="primary" @click="createGroup">确 定</el-button>
+       <el-button @click="colseDialog">取 消</el-button>
+      </span>
     </el-dialog>
   </div>
 </template>
