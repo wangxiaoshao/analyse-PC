@@ -317,12 +317,13 @@ export default {
     }
   },
   created () {
-    this.getSystemParameterlevel()
+    this.getSystemParameterlevel(1)
+    this.getSystemParameterlevel(2)
   },
   methods: {
-    getSystemParameterlevel () {
+    getSystemParameterlevel (level) {
       api[urlNames['getSystemParameterlevel']]({
-        level: 1
+        level: level
       }).then((res) => {
         console.log(res, 'getSystemParameter')
       })
