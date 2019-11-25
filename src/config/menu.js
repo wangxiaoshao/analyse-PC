@@ -18,7 +18,7 @@ export default {
     {
       'menuId': '12',
       'name': '通讯录',
-      'path': '/address-book',
+      'path': '/new-address-books',
       'type': 1
     }
     ]
