@@ -68,7 +68,7 @@ export default {
     getGrid () {
       let data = {
         date: this.$route.params.month,
-        confirmId:  this.$route.params.id,
+        confirmId: this.$route.params.id,
         page: this.page.current,
         limit: 1
       }

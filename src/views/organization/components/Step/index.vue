@@ -12,7 +12,7 @@ export default {
   props: ['active'],
   data () {
     return {
-      //activeName: this.active
+      // activeName: this.active
     }
   },
   created () {

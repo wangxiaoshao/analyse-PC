@@ -17,19 +17,19 @@ import class from '@vue/cli-service';
             </el-menu>
         </el-col>
       </el-row>
-      
+
 
     </div>
 </template>
 <script>
 
 export default {
-    name:'AccountManagement',
-      data() {
-      return {
-        activeIndex: '1',
-      };
-    },
+  name: 'AccountManagement',
+  data () {
+    return {
+      activeIndex: '1'
+    }
+  }
 }
 </script>
 <style lang="less">

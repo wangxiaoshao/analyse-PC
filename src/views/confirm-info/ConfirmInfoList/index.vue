@@ -140,7 +140,7 @@ export default {
       tableCheckbox: true,
       operate: true,
       DialogOperate: false,
-      dateClearable: false,
+      dateClearable: false
     }
   },
   computed: {
