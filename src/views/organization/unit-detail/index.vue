@@ -292,7 +292,7 @@ export default {
           ext01: '',
           type: null,
           creditId: '',
-          removed: false,
+          removed: true,
           phone: '',
           systemType: null, // 1人大，2党委，4政府，8政协
           name: '',
