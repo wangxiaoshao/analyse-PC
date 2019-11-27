@@ -1,5 +1,5 @@
 <template>
-  <div style="background:#F5F6F8;">
+  <div>
     <div>
       <div class="department-content">
         <department-table></department-table>

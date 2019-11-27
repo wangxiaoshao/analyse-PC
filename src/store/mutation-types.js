@@ -26,6 +26,7 @@ export const SET_ORGANIZATION_PAGE = 'SET_ORGANIZATION_PAGE'
 export const SET_ORGANIZATION_BACK_INFO = 'SET_ORGANIZATION_BACK_INFO'
 export const DIC_LIST = 'DIC_LIST'
 export const SET_TREE_ID = 'SET_TREE_ID'
+// 基本信息
 export const GET_OPTION = 'GET_OPTION'
 
 

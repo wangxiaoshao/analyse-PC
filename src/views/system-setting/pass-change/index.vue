@@ -1,6 +1,6 @@
 <template>
   <div class="pass-change">
-    <el-row :gutter="20">
+    <el-row :gutter="20" >
       <el-col :span="6">
         <div class="account-info">
           <p>账号信息</p>

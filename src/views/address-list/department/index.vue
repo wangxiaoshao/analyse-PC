@@ -22,10 +22,7 @@
 <script>
 import { api, urlNames } from '@src/api'
 export default {
-  props: ['departmentList', 'treeList'],
-  components: {
-    // memberTable
-  },
+  props: ['departmentList'],
   data () {
     return {
       status: 0,
@@ -33,7 +30,7 @@ export default {
       tableData: [],
       personnel: {},
       memberList: [],
-      userId: '1111111111111111111'
+      userId: '11111111111'
     }
   },
   created () {},

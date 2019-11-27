@@ -3,7 +3,7 @@
   <el-container class="organization-content">
 
     <el-row style="height: 100%;width: 100%">
-      <el-col :span="6" style="height: 100%">
+      <el-col :span="6" style="height: 100%;overflow-y:scroll">
         <el-radio-group v-model="tabPosition" style="margin-bottom: 30px;">
        <el-radio-button label="本单位通讯录">本单位通讯录</el-radio-button>
        <el-radio-button label="其他单位通讯录">其他单位通讯录</el-radio-button>
@@ -15,7 +15,7 @@
          </div>
        </div>
       </el-col>
-      <el-col :span="18" style="border-left: 1px solid #f2f2f2;background:#F5F6F8;height: 100%" >
+      <el-col :span="18" style="border-left: 1px solid #f2f2f2;height: 100%" >
         <transition name="fade-transform" mode="out-in" style="height: 100%">
           <el-scrollbar class="site-scroll">
             <router-view></router-view>
