@@ -84,6 +84,7 @@ export default {
           this.ruleForm.parentName = res.data.parentName
           this.ruleForm.parentId = res.data.parentId
           this.ruleForm.name = res.data.name
+          this.ruleForm.removed = res.data.removed
           this.ruleForm.id = res.data.id
         }
         if (this.ruleForm.parentId === '-1') {
