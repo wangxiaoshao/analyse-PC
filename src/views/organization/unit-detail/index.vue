@@ -292,7 +292,7 @@ export default {
           ext01: '',
           type: null,
           creditId: '',
-          removed: false,
+          removed: true,
           phone: '',
           systemType: null, // 1人大，2党委，4政府，8政协
           name: '',
@@ -326,11 +326,11 @@ export default {
         api[urlNames['findViewNodeById']]({
           id: this.$route.params.parentId || this.$route.params.id
         }).then((res) => {
-          this.getArea(res.data.bindId)
           if (res.data.bindId) {
             this.parentName = res.data.name
             this.bindId = res.data.bindId
             if (this.$route.name !== 'UnitAdd') {
+              this.getArea(res.data.bindId)
               if (res.data.bindId === 2) {
                 this.ruleForm.organization.parentId = res.data.bindId
               }
