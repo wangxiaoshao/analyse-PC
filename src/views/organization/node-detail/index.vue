@@ -45,7 +45,7 @@ export default {
       ruleForm: {
         reason: '',
         name: '',
-        removed: false,
+        removed: true,
         parentName: '',
         id: '',
         parentId: ''
@@ -85,6 +85,7 @@ export default {
           this.ruleForm.parentId = res.data.parentId
           this.ruleForm.name = res.data.name
           this.ruleForm.id = res.data.id
+          this.ruleForm.removed = res.data.removed
         }
         if (this.ruleForm.parentId === '-1') {
           this.backId = this.ruleForm.id
