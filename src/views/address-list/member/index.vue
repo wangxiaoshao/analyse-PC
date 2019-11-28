@@ -1,9 +1,13 @@
 <template >
     <div class="member-tab">
+
+
         <el-table
       :data="tableData"
       border
-      style="width: 100%">
+      style="width: 100%"
+      v-show="tableData.length!==0"
+      >
       <el-table-column
         prop="portraitUrl"
         label="头像"

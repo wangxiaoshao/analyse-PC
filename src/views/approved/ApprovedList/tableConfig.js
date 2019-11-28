@@ -22,6 +22,13 @@ const tableConfig = {
     tooltip: false,
     label: '申请时间',
     sortable: false,
+    formatter (row, column, cellValue) {
+      let timeStr = ''
+      if (cellValue) {
+        timeStr = cellValue.split(' ')[0]
+      }
+      return timeStr
+    },
     showOverflowTooltip: false,
     minWidth: 100
   },
@@ -37,6 +44,13 @@ const tableConfig = {
     key: 'auditTime',
     tooltip: false,
     label: '审核时间',
+    formatter (row, column, cellValue) {
+      let timeStr = ''
+      if (cellValue) {
+        timeStr = cellValue.split(' ')[0]
+      }
+      return timeStr
+    },
     sortable: false,
     showOverflowTooltip: false,
     minWidth: 100

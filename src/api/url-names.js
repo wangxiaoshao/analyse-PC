@@ -140,6 +140,8 @@ export default {
   //通讯录-查询部门下人员
   getAddressListDepartmentMembers:'getAddressListDepartmentMembers',
 
+  //通讯录搜索
+  getAddressListUserByName:'getAddressListUserByName',
 
   // 查询用户所在单位
   getAddressBookList: '',
@@ -165,5 +167,7 @@ export default {
   // 查询单位下的区域
   findOrgAreaList: 'findOrgAreaList',
   // 查询用户可用配置
-  option: 'option'
+  option: 'option',
+  setClientOptions: 'setClientOptions', // 提交配置信息
+  getSystemParameterlevel: 'getSystemParameterlevel'// 配置级别的配置信息
 }

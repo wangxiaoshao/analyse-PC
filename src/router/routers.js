@@ -6,6 +6,7 @@ import system from './modules/system'
 import roleManage from './modules/role-manage'
 import addressbook from './modules/addressbook'
 import addresslist from './modules/addresslist'
+import newAddressBooks from './modules/new-address-books'
 
 
 /* 路由 */
@@ -17,5 +18,6 @@ export default [
   ...share,
   ...addressbook,
   ...roleManage,
-  ...addresslist
+  ...addresslist,
+  ...newAddressBooks
 ]

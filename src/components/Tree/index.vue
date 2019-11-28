@@ -15,7 +15,7 @@
         <i class="imenu-icon fa fa-sitemap" v-if="data.nodeType === 1"></i>
         <i class="imenu-icon fa fa-building-o" v-if="data.nodeType === 2"></i>
         <i class="imenu-icon fa fa-institution" v-if="data.nodeType === 3"></i>
-        <span :class="[data.id===$route.params.nodeId ?'active':'noActive']">{{node.label}}</span>
+        <span :class="[data.id===$route.params.nodeId ||  data.id===$route.params.parentId?'active':'noActive']">{{node.label}}</span>
       </span>
   </el-tree>
 </template>

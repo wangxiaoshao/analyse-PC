@@ -210,7 +210,7 @@ export default {
         this.userInfo.identity.type = parseInt(res.data.type)
         this.userInfo.identity.dutyName = res.data.dutyName
       }, (error) => {
-        /*this.$message.error(`没有内容`)*/
+        /* this.$message.error(`没有内容`) */
       })
     },
     findLabel (id, type) {
@@ -302,6 +302,15 @@ export default {
       this.stepTwoFlag = false
       this.stepOneFlag = true
       this.activeIndex = 0
+    }
+  },
+  watch: {
+    stepTwoFlag (val) {
+      if (val === true) {
+        this.activeIndex = 1
+      } else {
+        this.activeIndex = 0
+      }
     }
   }
 }

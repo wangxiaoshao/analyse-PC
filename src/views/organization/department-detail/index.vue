@@ -8,7 +8,7 @@
     ></search-lable>
     <el-form :model="ruleForm" :disabled="disabledFlag" ref="ruleForm" label-width="100px" class="demo-ruleForm">
       <div class="detail-title">
-        <i class="menu-icon fa fa-sitemap" style="margin: 0px 5px;"></i>部门信息
+        <i class="imenu-icon fa fa-institution big-icon" style="margin: 0px 5px;"></i>部门信息
       </div>
       <el-menu class="el-menu-demo" mode="horizontal">
         <el-menu-item index="1">基础信息</el-menu-item>
@@ -221,16 +221,17 @@ export default {
   methods: {
     ...mapMutations(['GET_OPTION']),
     init () {
-      if (this.$route.name === 'DepartmentAdd') {
-        this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
-      }
       if (this.$route.name === 'DepartmentAdd' || this.$route.name === 'DepartmentEdit') {
+        if (this.$route.name === 'DepartmentAdd') {
+          this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
+        }
         api[urlNames['findViewNodeById']]({
           id: this.$route.params.parentId || this.$route.params.id
         }).then((res) => {
           this.bindId = res.data.bindId
           this.ruleForm.nodeId = res.data.id
           if (res.data.bindId) {
+            this.findLabel(2)
             if (res.data.nodeType === 2) {
               api[urlNames['findOrganizationById']]({
                 id: res.data.bindId
@@ -242,9 +243,6 @@ export default {
             if (res.data.nodeType === 3) { // 上级部门
               this.ruleForm.department.parentId = res.data.bindId
               this.getDetail()
-            }
-            if (this.$route.name !== 'DepartmentAdd') {
-              this.findLabel(2)
             }
           }
         }, (error) => {
@@ -293,6 +291,7 @@ export default {
         id: this.bindId,
         type: type
       }).then((res) => {
+        debugger
         res.data.forEach((item) => {
           this.tagsName.push(item.name)
           this.ruleForm.labelId.push(item.id)
@@ -309,11 +308,17 @@ export default {
     },
     // 获取选中的标签
     getTag (val) {
-      console.log('标签', val)
+      const res = new Map()
+      let tag = []
       val.forEach((item) => {
         this.tagsName.push(item.split('|')[1])
-        this.ruleForm.labelId.push(item.split('|')[0])
+        tag.push(item.split('|')[0])
+        console.log(item.split('|')[0])
       })
+      this.tagsName = this.tagsName.filter(a => !res.has(a) && res.set(a, 1))
+      let tagIdList = []
+      tagIdList = tag.filter(a => !res.has(a) && res.set(a, 1))
+      this.ruleForm.labelId = tagIdList
     },
     setBreadcrumbTitle () { // 设置面包屑title
       // TODO breadcrumbTitle可采用组件传参的模式替换路由判断，将配置权交给调用方

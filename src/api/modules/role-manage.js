@@ -38,7 +38,7 @@ export default {
     showLoading: true
   /*  headers: {
       'Content-Type': 'application/json'
-    }*/
+    } */
   },
   /*
   * 权限配置列表 */

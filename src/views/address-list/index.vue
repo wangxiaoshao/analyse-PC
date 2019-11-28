@@ -56,10 +56,10 @@ export default {
       departmentList:[],
       memberList:[],
       treeList: [],
+      hasChildren: true
     }
   },
   created () {
-    // if(this.app.option.user && this.app.option.user.orgId) {
       if(this.app.option.user && this.app.option.user.orgId){
         this.getAddressListUnitTree()
         this.getAddressListOrganizationMembers()
@@ -67,8 +67,6 @@ export default {
 
       }
         this.navigation1.name="本单位通讯录"
-      
-    // }
   },
   computed: {
    ...mapState(['app'])
@@ -86,11 +84,14 @@ export default {
         this.getAddressListUnitTree()
         this.getAddressListOrganizationMembers()
         this.getAddressListdepartment()
+        // this.getAddressListUnitUser()
+        
        
       } else if (e === 2) {
         this.navigation1.name = '其他单位通讯录'
         this.getAddressListOthertTree()
         this.getAddressListOrganizationMembers()
+        // this.getAddressListOtherUser()
       }
     },
 
@@ -104,7 +105,6 @@ export default {
       console.log(res,'wwederfjodpasla')
       this.treeList=res.data
       // this.departmentList=res.data 
-      
       this.handleNodeClickTree(this.treeList[0])  
     })
   },
@@ -131,6 +131,10 @@ export default {
     },
      handleChildClick (node) {
       this.navigation.push({ id: node.id, name: node.name })
+      this.getAddressListOrganizationMembers(node.id)
+      this.getAddressListdepartment(node.id)
+      this.getAddressListDepartmentMembers(node.id)
+      
     },
    
    /** 单位下部门*/
@@ -138,8 +142,7 @@ export default {
       api[urlNames['getAddressListTree']]({
         parentId: id      
       }).then((res=>{
-        this.departmentList=res.data 
-        // console.log(this.departmentList,"+renehfi----------")    
+        this.departmentList=res.data  
       }))
    },
 
@@ -163,13 +166,33 @@ export default {
     }))
     },
 
-    /**下级 */
+    /**点击回到当前 */
      goCurrentNodeDetail (depid, index) {
       let len = this.navigation.length
       this.navigation.splice(index + 1, len - index + 1)
-      // this.getDetail(depid)
+      this.getAddressListdepartment(depid)
+      this.getAddressListOrganizationMembers(depid.id)
+      this.getAddressListDepartmentMembers(id)
     },
 
+   /**人员搜索*/
+   getAddressListUnitUser(){
+     api[urlNames['getAddressListUserByName']]({
+       orgId: this.app.option.user.orgId,  
+       name:name
+      }).then(res => {
+        console.log(res, '===1111111111')
+        // this.gridData = res.data
+      })
+   },
+  getAddressListOtherUser(){
+    api[urlNames['getAddressListUserByName']]({
+       name:name
+      }).then(res => {
+        console.log(res, '========222222222222')
+        // this.gridData = res.data
+      })
+   },
   },
   watch: {
     'app.option.user.orgId': {

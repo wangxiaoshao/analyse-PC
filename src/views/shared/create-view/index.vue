@@ -1,7 +1,7 @@
 <template>
   <div class="create-view">
     <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane :disabled="createBasic" label="视图基本信息" name="first">
+      <el-tab-pane  label="视图基本信息" name="first">
         <div class="from">
           <el-form ref="form" :rules="rules" :model="ViewFrom" label-width="100px">
             <el-row>
@@ -50,7 +50,7 @@
           </el-form>
         </div>
       </el-tab-pane>
-      <el-tab-pane :disabled="createInfo" label="视图组织机构" name="second">
+      <el-tab-pane  label="视图组织机构" name="second">
         <div class="from">
           <el-form ref="form" :model="form" label-width="100px">
             <el-row :gutter="10">
@@ -69,7 +69,7 @@
                         @check-change="currentchange"
                         :check-strictly="true"
                         :allow-drop="allowDrop"
-                        @node-drag-end="nodedragend"
+                        @node-drag-end="nodeDragEnd"
                         @node-drag-over="handleDragOver"
                         :expand-on-click-node="false"
                         :default-checked-keys="checkedKeys">
@@ -103,7 +103,7 @@
                       :load="loadOrgNode"
                       :props="defaultProps"
                       :check-strictly="true"
-                      @node-drag-over="nodeDragEnd"
+                      @node-drag-end="nodeSelectDragEnd"
                       :expand-on-click-node="false"
                       :default-checked-keys="checkedKeys">
                         <span class="custom-tree-node" slot-scope="{ node, data }">
@@ -173,8 +173,6 @@ export default {
         nodeType: null,
         bindId: null
       },
-      createBasic: false, // tab切换禁用
-      createInfo: true,
       for: {
         id: '',
         parentId: '',
@@ -202,7 +200,6 @@ export default {
     if (this.$route.params.id !== '0') {
       this.findNodeDraftList('-1')
       this.findViewById(this.$route.params.id)
-      this.createInfo = false
     }
   },
   methods: {
@@ -233,8 +230,6 @@ export default {
         if (res.status === 0) {
           this.returnViewId = res.data
           this.activeName = 'second'
-          this.createBasic = true
-          this.createInfo = false
           this.$message.success('基本信息保存成功')
           console.log(res)
         }
@@ -341,7 +336,7 @@ export default {
       // console.log('Tree drag over: ', draggingNode.label, dropNode, ev.screenX)
     },
     // 拖拽结束时触发的事件--原来机构树
-    nodedragend (Node, lastNode, lastTree, e) {
+    nodeDragEnd (Node, lastNode, lastTree, e) {
       let coordinates = this.getCoordinates()
       /*
       coordinates
@@ -383,7 +378,6 @@ export default {
         viewId: this.returnViewId
       }).then((res) => {
         if (res.status === 0) {
-          this.createBasic = true
           this.backToList()
         }
       })
@@ -396,13 +390,13 @@ export default {
         viewId: this.returnViewId
       }).then((res) => {
         if (res.status === 0) {
-          // this.findNodeDraftList('-1')
+          this.findNodeDraftList('-1')
           this.$message.success('调整节点位置成功')
         }
       })
     },
     // 草稿拖动节点位置
-    nodeDragEnd (dragNode, lastNode, seat, e) {
+    nodeSelectDragEnd (dragNode, lastNode, seat, e) {
       if (lastNode === null) {
         this.updateNodeDraft(dragNode.data.id, '-1')
       } else {
@@ -411,7 +405,6 @@ export default {
         }
         this.updateNodeDraft(dragNode.data.id, lastNode.data.id)
       }
-      console.log(JSON.parse(JSON.stringify(dragNode.data)), JSON.parse(JSON.stringify(lastNode.data)), '------123-----')
     },
     // 单选框选中
     currentchange (node, checked) {
@@ -451,7 +444,7 @@ export default {
         id: id
       }).then((res) => {
         this.ViewFrom.name = res.data.name
-        this.ViewFrom.removed = res.data.state
+        this.ViewFrom.removed = res.data.removed
         this.ViewFrom.roleBindUserIds = []
         res.data.list.forEach(item => {
           this.ViewFrom.roleBindUserIds.push(item.uid)

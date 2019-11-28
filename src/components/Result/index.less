@@ -1,14 +1,21 @@
 .search-content{
   position: relative;
   .el-popover{
-    /*display: block !important;*/
+    display: block !important;
     top: 50px;
     width: 100% !important;
   }
+  .back-btn{
+    text-align: right;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    z-index: 9;
+  }
   .result-list{
-    .back-btn{
-      text-align: right;
-    }
+    max-height: 400px;
+    overflow: auto;
+    padding-top: 20px;
   }
   .table-span{
     display: block;
@@ -16,4 +23,5 @@
     height: 100%;
     cursor: pointer;
   }
+
 }

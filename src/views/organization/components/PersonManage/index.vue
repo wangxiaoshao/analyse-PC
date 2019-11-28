@@ -17,24 +17,24 @@
           <el-form-item label="姓名" prop="name" :rules="[{ required: true, message: '姓名不能为空'}]">
             <el-popover
               placement="bottom-start"
+              ref="popover"
               width="500"
-              trigger="click"
             >
               <el-input
+                v-popover:popover
+                slot="reference"
                 placeholder="请输入姓名"
                 :disabled="isDefaultFlag"
                 v-model="userDetail.name"
-                id="nameSearch"
-                slot="reference"
                 @blur="blur"
-                @input="loadSearch"></el-input>
-              <div class="result-list">
+                @input="loadSearch"
+                @keyup.enter.native="loadSearch"></el-input>
+              <div class="result-list" v-if="searchFlag">
                 <div class="default-warn" style="color: #FF6633">
                   <i class="el-icon-warning"></i>
                   若您是为同一个人开通兼职帐号，直接选择以下人员进行帐号开通
                 </div>
                 <el-table
-                  v-if="searchFlag"
                   v-loading="loadFlag"
                   max-height="200"
                   :data="list"
@@ -322,7 +322,7 @@
             <el-form-item label="人员标签">
               <el-tag
                 v-model="sendLabelId"
-                v-for="tag in tagsName"
+                v-for="(tag,index) in tagsName"
                 :key="tag"
                 type="info"
                 closable
@@ -410,7 +410,8 @@ export default {
         searchFlag: false,
         type: 3 // 1.单位，2、部门，3、人员
       },
-      timer: null
+      timer: null,
+      showPopoverFlag: false
     }
   },
   created () {
@@ -422,10 +423,7 @@ export default {
   methods: {
     ...mapMutations(['GET_OPTION']),
     init () {
-      this.labelList.forEach((item) => {
-        this.tagsName.push(item.name)
-        this.sendLabelId.push(item.id)
-      })
+
     },
     // 搜索表格点击当前行
     selectRow (val) {
@@ -438,13 +436,14 @@ export default {
     loadSearch () {
       this.searchFlag = false
       if (this.$route.name === 'PersonAdd' && this.personFrom.name.length > 1) {
-        this.searchFlag = true
-        this.loadFlag = true
         if (this.timer) {
           clearTimeout(this.timer)
           this.timer = null
         }
         this.timer = setTimeout(() => {
+          this.showPopoverFlag = true
+          this.searchFlag = true
+          this.loadFlag = true
           api[urlNames['findUserByParams']]({
             name: this.personFrom.name
           }).then((res) => {
@@ -457,6 +456,7 @@ export default {
         }, 800)
       } else {
         this.searchFlag = false
+        this.showPopoverFlag = false
         this.timer = null
       }
     },
@@ -541,10 +541,19 @@ export default {
       this.openSearchFlag = val
     },
     getTag (val) {
+      const res = new Map()
+      let tag = []
       val.forEach((item) => {
         this.tagsName.push(item.split('|')[1])
-        this.sendLabelId.push(item.split('|')[0])
+        tag.push(item.split('|')[0])
       })
+      this.tagsName = this.tagsName.filter(a => !res.has(a) && res.set(a, 1))
+      this.sendLabelId = tag.filter(a => !res.has(a) && res.set(a, 1))
+      // this.ruleForm.labelId = tagIdList
+      /* val.forEach((item) => {
+        this.tagsName.push(item.split('|')[1])
+        this.sendLabelId.push(item.split('|')[0])
+      }) */
       this.$emit('get-label', this.sendLabelId)
     },
     removeTag (tag, index) {
@@ -559,12 +568,21 @@ export default {
           this.$emit('get-user', this.personFrom)
         } else {
           console.log('error submit!!')
+          // this.$message.error(`error submit!!`)
           return false
         }
       })
     },
     goBack () {
       this.$router.go(-1)
+    }
+  },
+  watch: {
+    labelList (val) {
+      val.forEach((item) => {
+        this.tagsName.push(item.name)
+        this.sendLabelId.push(item.id)
+      })
     }
   }
 }

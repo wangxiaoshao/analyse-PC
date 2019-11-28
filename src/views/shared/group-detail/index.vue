@@ -143,9 +143,15 @@ export default {
         })
       })
       orgdData.forEach(item => {
+        let type = 2
+        if (item.nodeType === 2) {
+          type = 3
+        } else if (item.nodeType === 3) {
+          type = 2
+        }
         this.groupMemberInfo.push({
           memberId: item.bindId,
-          memberType: item.nodeType,
+          memberType: type,
           groupId: this.groupId
         })
       })
@@ -156,6 +162,7 @@ export default {
     addGroupUsers (data) {
       api[urlNames['addGroupUsers']]({ data }).then((res) => {
         if (res.status === 0) {
+          this.getGroupUsers(this.currentPage, this.pageSize)
           this.$message.success('添加成功')
         }
       })

@@ -68,11 +68,14 @@ export default {
     },
     sendApp () {
       const appIdList = []
+      const res = new Map()
       this.checkSystem.forEach((item) => {
         this.systemList.push(item.split('|')[1])
         appIdList.push(item.split('|')[0])
       })
-      this.$emit('get-app', appIdList)
+      this.systemList = this.systemList.filter(a => !res.has(a) && res.set(a, 1))
+      let sendId = appIdList.filter(a => res.has(a) && !res.set(a, 1))
+      this.$emit('get-app', sendId)
       this.showPopover = false
     }
   }

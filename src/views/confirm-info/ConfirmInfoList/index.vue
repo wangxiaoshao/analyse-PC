@@ -17,13 +17,14 @@
             <el-date-picker
               v-model="searchQuery.year"
               type="year"
-              placeholder="请选择年份" @change="selectChange('timeField')">
+              :clearable="dateClearable"
+              placeholder="请选择年份"
+              @change="selectChange('timeField')">
             </el-date-picker>
           </div>
           <el-col :span="8">
             <el-select
               v-model="searchQuery.status"
-              clearable
               placeholder="请选择确认状态"
               @change="selectChange">
               <el-option
@@ -138,7 +139,8 @@ export default {
       operateWidth: 100,
       tableCheckbox: true,
       operate: true,
-      DialogOperate: false
+      DialogOperate: false,
+      dateClearable: false
     }
   },
   computed: {

@@ -7,12 +7,10 @@
     lazy
     ref="treeList"
     :load="loadNode"
-
-    @node-click="handleNodeClick"
+    @node-click="handleNodeOtherClickTree"
    >
       <span class="custom-tree-node " slot-scope="{ node, data }">
         <i class="imenu-icon fa fa-sitemap" v-if="data"></i>
-
         <span :class="[data.id===$route.params.nodeId ?'active':'noActive']">{{node.label}}</span>
       </span>
   </el-tree>
@@ -75,24 +73,12 @@ export default {
         this.total = parseInt(res.total)
         this.treeList = res.data
         this.$emit('get-default-node', res.data[0].id, res.data[0].name)
-        if (this.$route.name === 'Organization') {
-          this.handleNodeClick(res.data[0])
-        }
       })
     },
 
-    /** 查询部门下的下级部门 */
-    findTreeDepartmentlist (bindId) {
-      api[urlNames['getTree']]({
-        bindId: bindId
-      }).then((res) => {
-      })
-    },
-
-
-    handleNodeClick (data) {
-      console.log(JSON.parse(JSON.stringify(data)), '---------11111111111111111--------')
-      this.$emit('handle-nodeClick', data)
+    handleNodeOtherClickTree (data) {
+      console.log(JSON.parse(JSON.stringify(data)), '222222')
+      this.$emit('handle-node-other-click', data)
       // this.$emit('handle-node-click', node)
       // if (node) {
       //   this.$emit('handle-node-click', node.bindId)
