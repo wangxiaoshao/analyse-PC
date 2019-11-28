@@ -56,7 +56,8 @@ export default {
       departmentList:[],
       memberList:[],
       treeList: [],
-      hasChildren: true
+      hasChildren: true,
+      name:''
     }
   },
   created () {
@@ -97,7 +98,7 @@ export default {
 
   /**通讯录视图 */
   getAddressListUnitTree(){
-    console.log(this.app.option.user,'wertyui12345====')
+    // console.log(this.app.option.user,'wertyui12345====')
     api[urlNames['getAddressListTree']]({
        orgId: this.app.option.user.orgId
       // orgId:"-3631625248176780884"
@@ -179,7 +180,7 @@ export default {
    getAddressListUnitUser(){
      api[urlNames['getAddressListUserByName']]({
        orgId: this.app.option.user.orgId,  
-       name:name
+       name:this.name
       }).then(res => {
         console.log(res, '===1111111111')
         // this.gridData = res.data
@@ -187,7 +188,7 @@ export default {
    },
   getAddressListOtherUser(){
     api[urlNames['getAddressListUserByName']]({
-       name:name
+       name:this.name
       }).then(res => {
         console.log(res, '========222222222222')
         // this.gridData = res.data

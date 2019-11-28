@@ -35,6 +35,7 @@
 
 <script>
 import { api, urlNames } from '@src/api'
+import debounce from '@src/mixins/debounce'
 export default {
   props: ['defaultNodeId'],
   data () {
@@ -44,7 +45,6 @@ export default {
       gridData: [],
       nodeType: '',
       nodeTree: [],
-      name:'',
        debouncedSearch: null,
       resultFlag: false,
       loadFlag: false,
@@ -58,21 +58,31 @@ export default {
   
   },
   methods: {
-    getType (e) {
-      this.nodeType = e
-    },
+
     onFocus () {
       this.getResult()
     },
     // 获取搜索结果
     getResult () {
         api[urlNames['getAddressListUserByName']]({
-          name:this.name
+          name:this.keyWord
       }).then(res => {
         this.getUserDetail=res.data
           console.log(this.getUserDetail, '===人员姓名')
       })
+    },
+
+    goBackTree () {
+      this.keyWord = ''
+      this.resultFlag = false
+      this.$router.push({
+        name: 'Department',
+        params: {
+          nodeId: this.defaultNodeId
+        }
+      })
     }
+
   }
 }
 </script>
