@@ -157,7 +157,7 @@ export default {
     },
     {
       'menuId': '54',
-      'name': '系统设置',
+      'name': '偏好设置',
       'path': '/parameter-setting',
       'type': 1
     }
