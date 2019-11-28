@@ -2,20 +2,24 @@
   <div class="parameter-settings">
     <el-tabs v-model="activeName">
       <el-tab-pane label="系统参数" name="first">
-        <parmaeter-from :submitLevel="submitLevel=1"></parmaeter-from>
+        <parmaeter-system-form></parmaeter-system-form>
       </el-tab-pane>
       <el-tab-pane label="单位参数" name="second">
-        <parmaeter-from :submitLevel="submitLevel=2"></parmaeter-from>
+        <parmaeter-org-form></parmaeter-org-form>
       </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
-import ParmaeterFrom from '@src/views/system-setting/parmaeter-from/index'
+import ParmaeterOrgForm from '@src/views/system-setting/parmaeter-org-form/index'
+import ParmaeterSystemForm from '@src/views/system-setting/parmaeter-system-form/index'
 export default {
   name: 'ParameterSettings',
-  components: { ParmaeterFrom },
+  components: {
+    ParmaeterOrgForm,
+    ParmaeterSystemForm
+  },
   data () {
     return {
       activeName: 'first',

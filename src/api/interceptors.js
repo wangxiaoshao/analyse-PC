@@ -106,9 +106,9 @@ axios.interceptors.response.use((response) => {
     const reg = /^.+\/cas\/login\/?\?service=/
     const match = reg.exec(response.request.responseURL)
     if (match) {
-      // window.location.href = match[0] + window.location.href
+      window.location.href = match[0] + window.location.href
       // TODO 后端单点登录有问题，临时跳转到后端的接口
-      window.location.href = `${match[0]}${location.protocol}//${window.location.host}/api/gate/forward`
+      // window.location.href = `${match[0]}${location.protocol}//${window.location.host}/api/gate/forward`
       return { status: -1, message: '未登录' }
     }
   }

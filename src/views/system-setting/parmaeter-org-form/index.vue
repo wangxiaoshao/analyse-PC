@@ -265,7 +265,6 @@ const userAuditList = [{ name: 'name', checkname: '用户姓名' }, { name: 'mob
 }, { name: 'type', checkname: '身份类型' }]
 export default {
   name: 'parmaeterFrom',
-  props: ['submitLevel'],
   data () {
     return {
       UserSecuritySettings: {// 用户安全
@@ -297,10 +296,6 @@ export default {
         checkedDepAuditList: [], //  部门
         checkedUserAuditList: [] // 人员选中
       },
-      orgFormSet: {
-        nameSet: [],
-        systemUserSet: []
-      },
       form: {
         name: '',
         region: '',
@@ -318,20 +313,16 @@ export default {
   },
   created () {
     this.getSystemParameterlevel(1)
-    this.getSystemParameterlevel(2)
   },
   methods: {
     getSystemParameterlevel (level) {
       api[urlNames['getSystemParameterlevel']]({
         level: level
       }).then((res) => {
-        console.log(res, 'getSystemParameter')
-      })
-    },
-    getSystemParameter () {
-      // getSystemParameter
-      api[urlNames['getSystemParameter']]({}).then((res) => {
-        console.log(res, 'getSystemParameter')
+        res.data.forEach(item => {
+          if (item.name === 'addressBookSet') {}
+        })
+        console.log(res.data, 'getSystemParameter147')
       })
     },
     handleCheckAllChange (val) {
@@ -341,22 +332,6 @@ export default {
       let checkedCount = value.length
       this.checkAll = checkedCount === this.cities.length
       this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length
-    },
-    // 单位设置提交
-    orgFormSetSubmit () {
-      console.log(this.orgFormSet.nameSet, 'orgFormSet')
-    },
-    userFormSetSubmit () {
-      let list = {
-        level: 1,
-        name: 'userAuditFields',
-        value: this.orgFormSet.systemUserSet
-      }
-      api[urlNames['setClientOptions']](list).then((res) => {
-        if (res.status === 0) {
-          this.$message.success('设置用户信息成功')
-        }
-      })
     },
     onSubmit (flag) {
       console.log('submit!')
@@ -370,19 +345,12 @@ export default {
         name: '',
         value: null
       }
-      if (this.submitLevel === 2) {
-        list.level = 2
-      }
       if (flag === 0) {
         list.name = 'UserSecuritySettings'
-        list.value = [this.UserSecuritySettings.defaultPassword, this.UserSecuritySettings.loginFailNum,
-          this.UserSecuritySettings.lockTime, this.UserSecuritySettings.passwordOverdueTime,
-          this.UserSecuritySettings.changePassword, this.UserSecuritySettings.changePasswordLength,
-          this.UserSecuritySettings.passwordStrength]
+        list.value = this.UserSecuritySettings
       } else if (flag === 1) {
         list.name = 'addressBookSet'
-        list.value = [this.addressBookSet.allOrgInfo, this.addressBookSet.userName, this.addressBookSet.userMobile,
-          this.addressBookSet.userPhone, this.addressBookSet.userDetail, this.addressBookSet.depPhone]
+        list.value = this.addressBookSet
       } else if (flag === 2) {
         list.name = 'addressBookSet'
         list.value = this.MessageRemind
