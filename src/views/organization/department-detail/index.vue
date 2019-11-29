@@ -328,7 +328,7 @@ export default {
         if (this.$route.name === 'DepartmentEdit') {
           this.breadcrumb.name = '编辑部门'
         } else {
-          this.breadcrumb.name = '添加部门'
+          this.breadcrumb.name = '添加内设机构'
         }
       } else {
         this.isShowEditFlag = false

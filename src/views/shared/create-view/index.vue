@@ -105,12 +105,13 @@
                       @node-drag-end="nodeSelectDragEnd"
                       :expand-on-click-node="false"
                       :default-checked-keys="checkedKeys">
-                        <span class="custom-tree-node" slot-scope="{ node, data }">
+                        <div class="custom-tree-node" slot-scope="{ node, data }">
                             <i class="imenu-icon fa fa-sitemap" v-if="data.nodeType === 1"></i>
                             <i class="imenu-icon fa fa-building-o" v-if="data.nodeType === 2"></i>
                             <i class="imenu-icon fa fa-institution" v-if="data.nodeType === 3"></i>
                             <span>{{node.label}}</span>
-                         </span>
+                          <span @click="deleteNodeTree(data.id)" class="delete-icon fa fa-trash-o"></span>
+                         </div>
                     </el-tree>
                   </div>
                   </el-form-item>
@@ -394,6 +395,29 @@ export default {
         }
       })
     },
+    // 删除视图草稿 - deleteViewById
+    deleteNodeTree (id) {
+      this.$confirm('是否也要删除该节点以下子节点信息?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        api[urlNames['deleteViewById']]({
+          id: id,
+          viewId: this.returnViewId
+        }).then((res) => {
+          if (res.status === 0) {
+            this.findNodeDraftList('-1')
+            this.$message.success('删除成功')
+          }
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
     // 草稿拖动节点位置
     nodeSelectDragEnd (dragNode, lastNode, seat, e) {
       if (lastNode === null) {
@@ -456,4 +480,9 @@ export default {
 
 <style scoped lang="less">
   @import "./index";
+  .el-tree-node__content:hover{
+    .fa-trash-o{
+      display: block;
+    }
+  }
 </style>

@@ -7,7 +7,7 @@
       :center="true">
       <div class="add-content">
         <el-button @click="goAddNode" v-if="showAddNodeFlag">添加节点</el-button>
-        <el-button v-if="showAddDepartmentFlag" @click="goAddDepartment">添加部门</el-button>
+        <el-button v-if="showAddDepartmentFlag" @click="goAddDepartment">添加内设机构</el-button>
         <el-button v-if="showAddUnitFlag" @click="goAddUnit">添加单位</el-button>
       </div>
     </el-dialog>

@@ -4,7 +4,7 @@
       <el-col :span="6" style="height: 100%">
        <div class="site-scroll">
          <search-result :defaultNodeId="defaultNodeId"></search-result>
-         <div class="tree-content">
+         <div class="tree-content" style="overflow: auto">
            <organization-tree @handle-node-click="handleNodeClick" @get-default-node="getDefaultNode"></organization-tree>
          </div>
        </div>

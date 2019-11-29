@@ -63,7 +63,7 @@ export default {
     mock: '/findDepartmentById.json' // development模式下，本地mock数据
   },
   /**
-   * 添加部门、设置部门
+   * 添加内设机构、设置部门
    */
   [urlNames.createDepartment]: {
     type: 'post',

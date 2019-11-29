@@ -87,6 +87,15 @@ export default {
     keepOriginResponse: false
   },
   /**
+   * 单条视图草稿
+   */
+  [urlNames.deleteViewById]: {
+    type: 'get',
+    url: '/api/jg_manage/view/deleteNodeDraft',
+    serve: 'organizationManagePC',
+    keepOriginResponse: false
+  },
+  /**
    创建应用
    */
   [urlNames.createApp]: {
