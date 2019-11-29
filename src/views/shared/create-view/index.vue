@@ -97,7 +97,6 @@
                       class="left123"
                       :data="viewNodeTree"
                       node-key="id"
-                      ref="cheight"
                       draggable
                       lazy
                       :load="loadOrgNode"
@@ -224,7 +223,7 @@ export default {
         id: this.returnViewId,
         name: this.ViewFrom.name,
         remark: '暂时隐藏',
-        removed: this.ViewFrom.removed,
+        removed: this.ViewFrom.removed ? 0 : 1,
         roleBindUserId: this.ViewFrom.roleBindUserIds
       }).then((res) => {
         if (res.status === 0) {

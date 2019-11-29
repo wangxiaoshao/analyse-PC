@@ -84,9 +84,8 @@ export default {
           this.ruleForm.parentName = res.data.parentName
           this.ruleForm.parentId = res.data.parentId
           this.ruleForm.name = res.data.name
-          this.ruleForm.removed = res.data.removed
           this.ruleForm.id = res.data.id
-          this.ruleForm.removed = res.data.removed
+          this.ruleForm.removed = !res.data.removed
         }
         if (this.ruleForm.parentId === '-1') {
           this.backId = this.ruleForm.id
@@ -134,7 +133,7 @@ export default {
               id: this.$route.params.id,
               parentId: this.ruleForm.parentId || this.$route.params.parentId,
               name: this.ruleForm.name,
-              removed: this.ruleForm.removed
+              removed: this.ruleForm.removed ? 0 : 1
             }
           }
           api[urlNames['createViewNode']](data).then((res) => {

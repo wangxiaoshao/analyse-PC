@@ -216,7 +216,7 @@ export default {
         concatPhone: this.appFrom.concatPhone,
         apiUrl: this.appFrom.apiUrl,
         description: this.appFrom.description,
-        removed: this.appFrom.removed
+        removed: this.appFrom.removed ? 0 : 1
       }).then((res) => {
         if (res.status === 0 && this.$route.query.id === undefined) {
           this.$message.success('创建成功')

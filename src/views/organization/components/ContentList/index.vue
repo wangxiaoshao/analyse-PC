@@ -26,8 +26,8 @@
       <el-table-column label="名称" prop="name"></el-table-column>
       <el-table-column label="启用状态" prop="removed" align="center">
         <template slot-scope="scope">
-          <span class="text-able" v-show="scope.row.removed">启用</span>
-          <span class="text-disable" v-show="!scope.row.removed">停用</span>
+          <span class="text-able" v-show="scope.row.removed === 0">启用</span>
+          <span class="text-disable" v-show="scope.row.removed===1">停用</span>
         </template>
       </el-table-column>
       <el-table-column prop="state" label="审核状态" width="100" align="center">

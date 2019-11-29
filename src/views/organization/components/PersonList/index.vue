@@ -83,8 +83,8 @@
       <el-table-column label="身份类型" prop="typeText"></el-table-column>
       <el-table-column label="启用状态" prop="removed" align="center">
         <template slot-scope="scope">
-          <span class="text-able" v-show="scope.row.removed">启用</span>
-          <span class="text-disable" v-show="!scope.row.removed">停用</span>
+          <span class="text-able" v-show="scope.row.removed === 0">启用</span>
+          <span class="text-disable" v-show="scope.row.removed===1">停用</span>
         </template>
       </el-table-column>
       <el-table-column prop="act" label="操作" width="200" align="center">

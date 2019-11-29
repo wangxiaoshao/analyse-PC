@@ -371,7 +371,7 @@ export default {
           // this.ruleForm.nodeId = res.data.parentId
           // this.ruleForm.organization.parentId = ''
           this.ruleForm.organization.id = res.data.id
-          this.ruleForm.organization.removed = res.data.removed
+          this.ruleForm.organization.removed = !res.data.removed
           this.ruleForm.organization.fax = res.data.fax
           this.ruleForm.organization.phone = res.data.phone
           this.ruleForm.organization.shortName = res.data.shortName
@@ -467,6 +467,7 @@ export default {
       // this.ruleForm.areaId = val
     },
     submitForm (ruleForm) {
+      this.ruleForm.organization.removed = this.ruleForm.organization.removed ? 0 : 1
       this.$refs[ruleForm].validate((valid) => {
         if (valid) {
           api[urlNames['createOrganization']](this.ruleForm).then((res) => {

@@ -12,8 +12,8 @@
                 :tableData="tableData">
       <el-table-column label="启用状态" align="center" min-width="50">
         <template slot-scope="scope">
-          <span v-show="scope.row.removed === 1" class="text-green">启用</span>
-          <span v-show="scope.row.removed !== 1" class="text-red">禁用</span>
+          <span class="text-able" v-show="scope.row.removed===0">启用</span>
+          <span class="text-disable" v-show="scope.row.removed===1">停用</span>
         </template>
       </el-table-column>
       <template slot-scope="{slotScope}" slot="operate">

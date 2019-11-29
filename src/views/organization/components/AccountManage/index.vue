@@ -37,7 +37,7 @@
         <el-form-item label="关联系统">
          <bind-system @get-app="getAppId"></bind-system>
         </el-form-item>
-        <el-form-item label="是否禁用" prop="removed">
+        <el-form-item label="是否启用" prop="removed">
           <el-switch v-model="addAccount.removed"></el-switch>
         </el-form-item>
         <el-form-item label="申请原因" prop="reason">
@@ -119,7 +119,7 @@ export default {
     fromSublime () {
       let accountObj = {
         password: this.addAccount.password,
-        removed: this.addAccount.removed,
+        removed: this.addAccount.removed ? 0 : 1,
         appId: this.addAccount.appId,
         name: this.addAccount.name,
         id: '',
@@ -139,8 +139,6 @@ export default {
     },
     getAppId (val) {
       this.addAccount.appId = val
-      console.log(5454, val)
-      console.log(this.addAccount)
     }
   }
 }

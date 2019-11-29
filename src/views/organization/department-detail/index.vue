@@ -277,6 +277,7 @@ export default {
           this.ruleForm.department.name = res.data.name
           this.ruleForm.department.description = res.data.description
           this.ruleForm.department.duty = res.data.duty
+          this.ruleForm.department.removed = !res.data.removed
           if (this.$route.name === 'DepartmentEdit') {
             this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
           }
@@ -291,7 +292,6 @@ export default {
         id: this.bindId,
         type: type
       }).then((res) => {
-        debugger
         res.data.forEach((item) => {
           this.tagsName.push(item.name)
           this.ruleForm.labelId.push(item.id)
@@ -347,6 +347,7 @@ export default {
       this.ruleForm.areaId = val
     },
     submitForm (ruleForm) {
+      this.ruleForm.department.removed = this.ruleForm.department.removed ? 0 : 1
       this.$refs[ruleForm].validate((valid) => {
         if (valid) {
           api[urlNames['createDepartment']](this.ruleForm).then((res) => {

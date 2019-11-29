@@ -64,7 +64,7 @@ export default {
           ownerType: this.groupFrom.ownerType, // 1用户、2部门、3单位
           name: this.groupFrom.name,
           description: this.groupFrom.description,
-          removed: this.groupFrom.removed
+          removed: this.groupFrom.removed ? 0 : 1
         }).then((res) => {
           if (res.status === 0) {
             this.colseDialog()

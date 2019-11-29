@@ -2,12 +2,12 @@
 <div class="parmaeterFrom">
   <div class="parameter-item">
     <div class="header">用户密码安全设置</div>
-    <el-form ref="UserSecuritySettings" :model="UserSecuritySettings" label-width="160px">
+    <el-form ref="orgUserSecuritySettings" :model="orgUserSecuritySettings" label-width="160px">
       <el-row>
         <el-col :span="7">
           <div class="grid-content bg-purple">
             <el-form-item label="用户默认密码">
-              <el-input size="mini" v-model="UserSecuritySettings.defaultPassword"></el-input>
+              <el-input size="mini" v-model="orgUserSecuritySettings.defaultPassword"></el-input>
             </el-form-item>
           </div>
         </el-col>
@@ -21,7 +21,7 @@
         <el-col :span="7">
           <div class="grid-content bg-purple">
             <el-form-item label="登录失败次数">
-              <el-input size="mini" v-model="UserSecuritySettings.loginFailNum"></el-input>
+              <el-input size="mini" v-model="orgUserSecuritySettings.loginFailNum"></el-input>
             </el-form-item>
           </div>
         </el-col>
@@ -35,7 +35,7 @@
         <el-col :span="7">
           <div class="grid-content bg-purple">
             <el-form-item label="锁定用户时长">
-              <el-input size="mini" v-model="UserSecuritySettings.lockTime"></el-input>
+              <el-input size="mini" v-model="orgUserSecuritySettings.lockTime"></el-input>
             </el-form-item>
           </div>
         </el-col>
@@ -49,7 +49,7 @@
         <el-col :span="7">
           <div class="grid-content bg-purple">
             <el-form-item label="密码过期周期">
-              <el-input size="mini" v-model="UserSecuritySettings.passwordOverdueTime"></el-input>
+              <el-input size="mini" v-model="orgUserSecuritySettings.passwordOverdueTime"></el-input>
             </el-form-item>
           </div>
         </el-col>
@@ -63,7 +63,7 @@
         <el-col :span="7">
           <div class="grid-content bg-purple">
             <el-form-item label="密码是否强制修改">
-              <el-select size="mini" v-model="UserSecuritySettings.changePassword" placeholder="请选择">
+              <el-select size="mini" v-model="orgUserSecuritySettings.changePassword" placeholder="请选择">
                 <el-option label="是" :value="true"></el-option>
                 <el-option label="否" :value="false"></el-option>
               </el-select>
@@ -80,7 +80,7 @@
         <el-col :span="7">
           <div class="grid-content bg-purple">
             <el-form-item label="密码强制修改单位范围">
-              <el-input size="mini" v-model="UserSecuritySettings.changePasswordLength"></el-input>
+              <el-input size="mini" v-model="orgUserSecuritySettings.changePasswordLength"></el-input>
             </el-form-item>
           </div>
         </el-col>
@@ -94,7 +94,7 @@
         <el-col :span="7">
           <div class="grid-content bg-purple">
             <el-form-item label="用户登录密码强度">
-              <el-select size="mini" v-model="UserSecuritySettings.passwordStrength" placeholder="请选择活动区域">
+              <el-select size="mini" v-model="orgUserSecuritySettings.passwordStrength" placeholder="请选择活动区域">
                 <el-option label="强" :value="0"></el-option>
                 <el-option label="中" :value="1"></el-option>
                 <el-option label="弱" :value="2"></el-option>
@@ -116,39 +116,39 @@
   </div>
   <div class="parameter-item">
     <div class="header">通讯录权限设置</div>
-    <el-form ref="addressBookSet" :model="addressBookSet" label-width="120px">
+    <el-form ref="orgAddressBookSet" :model="orgAddressBookSet" label-width="120px">
       <el-form-item label="所有单位信息">
-        <el-radio-group v-model="addressBookSet.allOrgInfo">
+        <el-radio-group v-model="orgAddressBookSet.allOrgInfo">
           <el-radio :label="false">不可见</el-radio>
           <el-radio :label="true">可见</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="人员姓名">
-        <el-radio-group v-model="addressBookSet.userName">
+        <el-radio-group v-model="orgAddressBookSet.userName">
           <el-radio :label="false">不可见</el-radio>
           <el-radio :label="true">可见</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="人员手机号">
-        <el-radio-group v-model="addressBookSet.userMobile">
+        <el-radio-group v-model="orgAddressBookSet.userMobile">
           <el-radio :label="false">不可见</el-radio>
           <el-radio :label="true">可见</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="单位座机号">
-        <el-radio-group v-model="addressBookSet.userPhone">
+        <el-radio-group v-model="orgAddressBookSet.userPhone">
           <el-radio :label="false">不可见</el-radio>
           <el-radio :label="true">可见</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="人员详情页">
-        <el-radio-group v-model="addressBookSet.userDetail">
+        <el-radio-group v-model="orgAddressBookSet.userDetail">
           <el-radio :label="false">不可见</el-radio>
           <el-radio :label="true">可见</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="部门座机号">
-        <el-radio-group v-model="addressBookSet.depPhone">
+        <el-radio-group v-model="orgAddressBookSet.depPhone">
           <el-radio :label="false">不可见</el-radio>
           <el-radio :label="true">可见</el-radio>
         </el-radio-group>
@@ -161,9 +161,9 @@
   </div>
   <div class="parameter-item">
     <div class="header">其他设置</div>
-    <el-form ref="MessageRemind" :model="MessageRemind" label-width="160px">
+    <el-form ref="orgMessageRemind" :model="orgMessageRemind" label-width="160px">
       <el-form-item label="设置信息确认弹窗提醒">
-        <el-checkbox-group size="medium" v-model="MessageRemind">
+        <el-checkbox-group size="medium" v-model="orgMessageRemind">
           <el-checkbox-button label="7">每月最后七天</el-checkbox-button>
           <el-checkbox-button label="5">每月最后五天</el-checkbox-button>
           <el-checkbox-button label="3">每月最后三天</el-checkbox-button>
@@ -177,7 +177,7 @@
   </div>
   <div class="parameter-item">
     <div class="header">申请审核字段设置</div>
-    <el-form ref="auditField" :model="auditField" label-width="160px">
+    <el-form ref="orgAuditField" :model="orgAuditField" label-width="160px">
       <div class="table">
         <div class="table-row">
           <div class="table-td" style="text-align: center">模块</div>
@@ -194,7 +194,7 @@
             节点
           </div>
           <div class="table-td">
-            <el-checkbox-group v-model="auditField.checkedNodeAuditList" @change="handleCheckAllChange">
+            <el-checkbox-group v-model="orgAuditField.checkedNodeAuditList" @change="handleCheckAllChange">
               <el-checkbox v-for="item in nodeAuditList" :label="item.name" :key="item.name">{{item.checkname}}
               </el-checkbox>
             </el-checkbox-group>
@@ -206,7 +206,7 @@
           </div>
           <div class="table-td">
             <p>
-              <el-checkbox-group v-model="auditField.checkedOrgAuditList" @change="handleCheckAllChange">
+              <el-checkbox-group v-model="orgAuditField.checkedOrgAuditList" @change="handleCheckAllChange">
                 <el-checkbox v-for="item in orgAuditList" :label="item.name" :key="item.name">{{item.checkname}}
                 </el-checkbox>
               </el-checkbox-group>
@@ -218,7 +218,7 @@
             部门
           </div>
           <div class="table-td">
-            <el-checkbox-group v-model="auditField.checkedDepAuditList" @change="handleCheckAllChange">
+            <el-checkbox-group v-model="orgAuditField.checkedDepAuditList" @change="handleCheckAllChange">
               <el-checkbox v-for="item in depAuditList" :label="item.name" :key="item.name">{{item.checkname}}
               </el-checkbox>
             </el-checkbox-group>
@@ -229,7 +229,7 @@
             人员
           </div>
           <div class="table-td">
-            <el-checkbox-group v-model="auditField.checkedUserAuditList" @change="handleCheckAllChange">
+            <el-checkbox-group v-model="orgAuditField.checkedUserAuditList" @change="handleCheckAllChange">
               <el-checkbox v-for="item in userAuditList" :label="item.name" :key="item.name">{{item.checkname}}
               </el-checkbox>
             </el-checkbox-group>
@@ -267,7 +267,7 @@ export default {
   name: 'parmaeterFrom',
   data () {
     return {
-      UserSecuritySettings: {// 用户安全
+      orgUserSecuritySettings: {// 用户安全
         defaultPassword: '123456',
         loginFailNum: 10,
         lockTime: 10,
@@ -276,7 +276,7 @@ export default {
         changePasswordLength: -1,
         passwordStrength: 0
       },
-      addressBookSet: { // 通讯录
+      orgAddressBookSet: { // 通讯录
         allOrgInfo: false,
         userName: false,
         userMobile: false,
@@ -284,13 +284,13 @@ export default {
         userDetail: false,
         depPhone: false
       },
-      MessageRemind: [], // 消息提醒
+      orgMessageRemind: [], // 消息提醒
       modeAuditList: [],
       orgAuditList: orgAuditList, // 单位审核字段数据
       nodeAuditList: nodeAuditList,
       depAuditList: depAuditList,
       userAuditList: userAuditList,
-      auditField: {
+      orgAuditField: {
         checkedNodeAuditList: [], // 节点选中数据
         checkedOrgAuditList: [], // 单位选中数据
         checkedDepAuditList: [], //  部门
@@ -320,9 +320,18 @@ export default {
         level: level
       }).then((res) => {
         res.data.forEach(item => {
-          if (item.name === 'addressBookSet') {}
+          if (item.name === 'orgAddressBookSet') {
+            this.orgAddressBookSet = JSON.parse(item.value)
+          }
+          if (item.name === 'orgUserSecuritySettings') {
+            this.orgUserSecuritySettings = JSON.parse(item.value)
+          } if (item.name === 'orgMessageRemind') {
+            this.orgMessageRemind = JSON.parse(item.value)
+          }
+          if (item.name === 'orgCheckedAuditList') {
+            this.orgAuditField = JSON.parse(item.value)
+          }
         })
-        console.log(res.data, 'getSystemParameter147')
       })
     },
     handleCheckAllChange (val) {
@@ -346,21 +355,21 @@ export default {
         value: null
       }
       if (flag === 0) {
-        list.name = 'UserSecuritySettings'
-        list.value = this.UserSecuritySettings
+        list.name = 'orgUserSecuritySettings'
+        list.value = this.orgUserSecuritySettings
       } else if (flag === 1) {
-        list.name = 'addressBookSet'
-        list.value = this.addressBookSet
+        list.name = 'orgAddressBookSet'
+        list.value = this.orgAddressBookSet
       } else if (flag === 2) {
-        list.name = 'addressBookSet'
-        list.value = this.MessageRemind
+        list.name = 'orgMessageRemind'
+        list.value = this.orgMessageRemind
       } else if (flag === 3) {
-        list.name = 'addressBookSet'
+        list.name = 'orgCheckedAuditList'
         list.value = {
-          checkedNodeAuditList: this.auditField.checkedNodeAuditList,
-          checkedOrgAuditList: this.auditField.checkedOrgAuditList,
-          checkedDepAuditList: this.auditField.checkedDepAuditList,
-          checkedUserAuditList: this.auditField.checkedUserAuditList
+          checkedNodeAuditList: this.orgAuditField.checkedNodeAuditList,
+          checkedOrgAuditList: this.orgAuditField.checkedOrgAuditList,
+          checkedDepAuditList: this.orgAuditField.checkedDepAuditList,
+          checkedUserAuditList: this.orgAuditField.checkedUserAuditList
         }
       }
       this.setClientOptions(list)

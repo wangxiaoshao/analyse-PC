@@ -19,8 +19,8 @@
       </el-table-column>
       <el-table-column prop="value" label="启用状态" width="100" align="center">
         <template slot-scope="scope">
-          <span class="text-able" v-show="scope.row.removed">启用</span>
-          <span class="text-disable" v-show="!scope.row.removed">停用</span>
+          <span class="text-able" v-show="scope.row.removed===0">启用</span>
+          <span class="text-disable" v-show="scope.row.removed===1">停用</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" width="150" align="center">
