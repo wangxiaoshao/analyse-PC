@@ -132,8 +132,19 @@ export default {
   /**
    * 通讯录
    */
+  //查询通讯录视图
+  getAddressListTree:'getAddressListTree',
+
+  //通讯录-查询单位下员
+  getAddressListOrganizationMembers:'getAddressListOrganizationMembers',
+  //通讯录-查询部门下人员
+  getAddressListDepartmentMembers:'getAddressListDepartmentMembers',
+
+  //通讯录搜索
+  getAddressListUserByName:'getAddressListUserByName',
+
   // 查询用户所在单位
-  getAddressBookList: 'getAddressBookList',
+  getAddressBookList: '',
   // 查询部门下的下级部门
   getDepartmentChildtree: 'getDepartmentChildtree',
   // 查询单位下部门通讯信息

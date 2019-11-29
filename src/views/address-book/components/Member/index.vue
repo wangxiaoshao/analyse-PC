@@ -43,7 +43,7 @@
      <el-table-column prop="mobile" label="手机号">
      </el-table-column>
       <el-table-column
-        prop="dutyName"
+        prop="duty"
         label="职位">
       </el-table-column>
     </el-table>

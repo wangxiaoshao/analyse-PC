@@ -1,7 +1,7 @@
 <template>
 <div>
-   <div class="navbar-content" style="background:#F5F6F8;">
-       <el-breadcrumb separator="/" style="background:#F5F6F8;padding:20px;">
+   <div class="navbar-content">
+       <el-breadcrumb separator="/" style="padding:20px;">
   <el-breadcrumb-item :to="{ path: '/' }">本单位名称</el-breadcrumb-item>
   <el-breadcrumb-item><a href="/">部门</a></el-breadcrumb-item>
 

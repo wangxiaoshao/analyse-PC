@@ -4,6 +4,7 @@
       <el-table :data="departmentList"
                 style="width: 100%;"
                 class="eltab"
+                v-show="departmentList.length!==0"
       >
         <el-table-column prop="name" label width="100" align="left" height="0"></el-table-column>
         <el-table-column label="部门电话" width="100">部门电话:</el-table-column>
@@ -22,10 +23,7 @@
 <script>
 import { api, urlNames } from '@src/api'
 export default {
-  props: ['departmentList', 'treeList'],
-  components: {
-    // memberTable
-  },
+  props: ['departmentList'],
   data () {
     return {
       status: 0,
@@ -33,7 +31,7 @@ export default {
       tableData: [],
       personnel: {},
       memberList: [],
-      userId: '1111111111111111111'
+      userId: '11111111111'
     }
   },
   created () {},

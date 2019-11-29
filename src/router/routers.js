@@ -5,6 +5,7 @@ import statistics from './modules/statistics'
 import system from './modules/system'
 import roleManage from './modules/role-manage'
 import addressbook from './modules/addressbook'
+import addresslist from './modules/addresslist'
 import newAddressBooks from './modules/new-address-books'
 
 
@@ -17,5 +18,6 @@ export default [
   ...share,
   ...addressbook,
   ...roleManage,
+  ...addresslist,
   ...newAddressBooks
 ]
