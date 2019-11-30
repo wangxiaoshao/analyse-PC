@@ -5,6 +5,7 @@ const NodeDetail = () => import('@src/views/organization/node-detail/index.vue')
 const UnitDetail = () => import('@src/views/organization/unit-detail/index.vue')
 const DepartmentDetail = () => import('@src/views/organization/department-detail/index.vue')
 const PersonDetail = () => import('@src/views/organization/person-detail/index.vue')
+const OperateLog = () => import('@src/views/organization/operate-log/index.vue')
 
 /* 路由 */
 export default [
@@ -85,6 +86,10 @@ export default [
         path: 'person-add/:parentId',
         name: 'PersonAdd',
         component: PersonDetail
+      }, {
+        path: 'operate-log/:id',
+        name: 'OperateLog',
+        component: OperateLog
       }
     ]
   }

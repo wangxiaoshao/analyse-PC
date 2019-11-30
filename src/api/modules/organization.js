@@ -254,5 +254,11 @@ export default {
     keepOriginResponse: true, // 是否保留后端返回数据格式
     serve: 'organizationManagePC',
     mock: '/findUserByParams.json' // development模式下，本地mock数据
+  },
+  [urlNames.findEntityChangeLoggerList]: {
+    type: 'get',
+    url: '/api/jg_manage/entityChangeLogger/findEntityChangeLoggerList',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    serve: 'organizationManagePC'
   }
 }

@@ -170,5 +170,6 @@ export default {
   // 查询用户可用配置
   option: 'option',
   setClientOptions: 'setClientOptions', // 提交配置信息
-  getSystemParameterlevel: 'getSystemParameterlevel'// 配置级别的配置信息
+  getSystemParameterlevel: 'getSystemParameterlevel', // 配置级别的配置信息
+  findEntityChangeLoggerList: 'findEntityChangeLoggerList'// 操作日志
 }

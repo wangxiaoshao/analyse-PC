@@ -107,6 +107,7 @@ import PersonList from '../components/PersonList/index'
 import leaderList from '../components/LeaderList/index'
 import { mapState, mapMutations } from 'vuex'
 export default {
+  name: 'OrganizationContent',
   mixins: [organizationEdit],
   components: {
     ContentList, PersonList, leaderList
@@ -282,7 +283,7 @@ export default {
     },
     // 跳转日志
     toLogData () {
-      this.$router.push({ path: '/data-log' })
+      this.$router.push({ path: `/organization/operate-log/${this.$route.params.nodeId}`, query: { type: this.nodeInfo.nodeType, title: `${this.content[0].name}` } })
     }
   },
   watch: {
