@@ -171,5 +171,7 @@ export default {
   option: 'option',
   setClientOptions: 'setClientOptions', // 提交配置信息
   getSystemParameterlevel: 'getSystemParameterlevel', // 配置级别的配置信息
-  findEntityChangeLoggerList: 'findEntityChangeLoggerList'// 操作日志
+  findEntityChangeLoggerList: 'findEntityChangeLoggerList', // 操作日志
+  exportUser: 'exportUser', // 导出用户
+  importUser: 'importUser' // 导入用户
 }

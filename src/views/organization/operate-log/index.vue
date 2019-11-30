@@ -1,7 +1,7 @@
 <template>
 <div class="operate-log">
   <el-table
-    :data="tableData"
+    :data="logList"
     border
     style="width: 100%">
     <el-table-column
@@ -15,24 +15,29 @@
 <!--      width="55">-->
 <!--    </el-table-column>-->
     <el-table-column
-      prop="date"
+      prop="actionUserName"
       label="更改人员"
       align="center"
-      width="180">
+      width="140">
     </el-table-column>
     <el-table-column
-      prop="name"
       label="更改动作"
       align="center"
-      width="180">
+      width="80">
+      <template slot-scope="scope">
+        <span v-if="scope.row.actionType === 1">新增</span>
+        <span v-if="scope.row.actionType === 2">修改</span>
+        <span v-if="scope.row.actionType === 3">删除</span>
+      </template>
     </el-table-column>
     <el-table-column
-      prop="address"
+      prop="actionTime"
       align="center"
-      label="更改时间">
+      label="更改时间"
+      width="160">
     </el-table-column>
     <el-table-column
-      prop="address"
+      prop="changeContent"
       align="center"
       label="更改内容">
     </el-table-column>
@@ -49,6 +54,7 @@ export default {
   name: 'OperateLog',
   data () {
     return {
+      logList: [],
       tableData: [{
         date: '2016-05-02',
         name: '王小虎',
@@ -69,7 +75,7 @@ export default {
     }
   },
   created () {
-    this.findEntityChangeLoggerList(this.$route.params.id, this.$route.query.type)
+    this.findEntityChangeLoggerList(this.$route.params.id, this.$route.query.type, 1, 10)
   },
   mounted () {
     this.pushBreadcrumb({
@@ -86,12 +92,17 @@ export default {
     })
   },
   methods: {
-    findEntityChangeLoggerList (id, type) {
+    findEntityChangeLoggerList (id, type, page, limit) {
       api[urlNames['findEntityChangeLoggerList']]({
         entityType: type,
-        entityId: id
+        entityId: id,
+        page: page,
+        limit: limit
       }).then((res) => {
-        console.log(res.data)
+        if (res.status === 0) {
+          this.$message.success('请求成功')
+          this.logList = res.data
+        }
       }, (error) => {
       })
     }

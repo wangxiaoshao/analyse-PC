@@ -82,6 +82,7 @@
               :contentPage="currentPage"
               :id="content[0].bindId"
               :type="content[0].nodeType"
+              :exportData="content[0]"
               @cancel="getSortAction"
             ></person-list>
           </el-tab-pane>

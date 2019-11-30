@@ -53,7 +53,20 @@
       </el-form>
     </el-dialog>
     <div class="button-wrap">
-      <el-button @click="sortList">调整排序</el-button>
+      <el-button  @click="sortList">调整排序</el-button>
+      <el-button  @click="exportUser">导出人员</el-button>
+      <el-form  class="uploadForm" :model="formFile" ref="formFile" enctype="multipart/form-data">
+      <el-upload
+        class="uploadMembers"
+        :show-file-list="false"
+        :auto-upload="false"
+        :limit="1"
+        action="http://jg-dev.lonmo.com/api/jg_manage/import/userImport"
+        :on-change="fileHandleChange"
+        :file-list="fileList">
+        <el-button size="small" type="primary">导入人员</el-button>
+      </el-upload>
+      </el-form>
     </div>
     <div class="sort-do" v-if="sortFlag">
       按住左键上下拖动调整排序
@@ -139,10 +152,12 @@ import { api, urlNames } from '@src/api'
 import organizationEdit from '@src/mixins/organization'
 export default {
   mixins: [handleTable, organizationEdit],
-  props: ['contentPage', 'id', 'sortFlag', 'type'],
+  props: ['contentPage', 'id', 'sortFlag', 'type', 'exportData'],
   components: { CandidateDialog },
   data () {
     return {
+      formFile: {},
+      fileList: [],
       loading: true,
       list: [],
       sortListFlag: false,
@@ -196,6 +211,44 @@ export default {
     }
   },
   methods: {
+    fileHandleChange () {
+      this.loading = true
+      this.$confirm('确认导入当前文件吗, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.fileSubmit()
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消'
+        })
+      })
+    },
+    fileSubmit () {
+      let that = this
+      let form = that.$refs['formFile'].$el
+      let formData = new FormData(form)
+      formData.append('file', this.fileList[0])
+      if (this.type === 3) {
+        formData.append('deptId', this.id)
+      }
+      if (this.type === 2) {
+        formData.append('orgId', this.id)
+      }
+      api[urlNames['importUser']](formData).then((res) => {
+        if (res.status === 0) {
+          this.$message.success('导入文件成功')
+          this.loading = false
+          this.fileList = []
+        }
+      }, () => {
+        this.loading = false
+        this.list = []
+        this.fileList = []
+      })
+    },
     getGrid () {
       this.loading = true
       // let bindId = this.$route.params.bindId
@@ -358,6 +411,28 @@ export default {
       this.selectDialog.isSingleSelect = true
       this.selectDialog.notOnlyPerson = true
       this.selectDialog.isAllData = true
+    },
+    exportUser () {
+      console.log(api[urlNames['exportUser']], 'urlNames[\'exportUser\']')
+      if (this.type === 2) {
+        api[urlNames['exportUser']]({
+          orgId: this.id
+        }).then((res) => {
+          console.log(res.data)
+          window.open(res.data)
+          console.log(res)
+        }, (error) => {
+        })
+      }
+      if (this.type === 3) {
+        api[urlNames['exportUser']]({
+          orgId: this.id,
+          deptId: this.id
+        }).then((res) => {
+          console.log(res)
+        }, (error) => {
+        })
+      }
     }
   },
   watch: {

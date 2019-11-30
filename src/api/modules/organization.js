@@ -260,5 +260,17 @@ export default {
     url: '/api/jg_manage/entityChangeLogger/findEntityChangeLoggerList',
     keepOriginResponse: true, // 是否保留后端返回数据格式
     serve: 'organizationManagePC'
+  },
+  [urlNames.exportUser]: {
+    type: 'get',
+    url: '/api/jg_manage/user/exportUser',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    serve: 'organizationManagePC'
+  },
+  [urlNames.importUser]: {
+    type: 'post',
+    url: '/api/jg_manage/import/userImport',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    serve: 'organizationManagePC'
   }
 }

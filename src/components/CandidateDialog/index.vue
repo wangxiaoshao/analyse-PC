@@ -13,10 +13,46 @@
            <el-button type="primary" @click="selectCategory = false" :plain="selectCategory">单位/部门</el-button>
            <el-button type="primary" @click="selectCategory = true" :plain="!selectCategory">人员</el-button>
          </p>
-          <p>
-            <el-input placeholder="请输入内容" v-model="searchKeyWord" class="input-with-select">
-              <el-button slot="append" icon="el-icon-search"></el-button>
-            </el-input>
+          <p class="search">
+            <el-popover
+              ref="popover"
+              placement="bottom-start"
+              trigger="manual"
+              v-model="resultFlag"
+              width="300">
+              <div class="back-btn">
+                <el-button size="mini" @click="goBackTree">返回</el-button>
+              </div>
+              <div class="result-list">
+                <el-table v-loading="loadFlag" :data="gridData" :show-header="false" @selection-change="handleSelectionChange">
+                  <el-table-column
+                    type="selection"
+                    width="55">
+                  </el-table-column>
+                  <el-table-column property="name">
+                    <template slot-scope="scope">
+                      <span :title="scope.row.name" class="table-span" @click="setNodeId(scope.row)">{{scope.row.name}}</span>
+                    </template>
+                  </el-table-column>
+                </el-table>
+              </div>
+            </el-popover>
+            <el-row>
+              <el-input
+                v-popover:popover
+                placeholder="请输入内容"
+                v-model="searchKeyWord"
+                @input="getResult"
+                @blur="blur"
+                @keyup.enter.native="getResult"
+                class="input-with-select">
+                <el-select v-model="searchType" style="width: 80px" @change="getType" slot="prepend" placeholder="请选择">
+                  <el-option label="单位" value="2">单位</el-option>
+                  <el-option label="部门" value="3">部门</el-option>
+                </el-select>
+                <el-button slot="append" @click.native="getResult" icon="el-icon-search"></el-button>
+              </el-input>
+            </el-row>
           </p>
         </div>
         <div class="panel">
@@ -105,7 +141,17 @@ export default {
   props: ['seleceDialog'],
   data () {
     return {
+      // 搜索信息
       searchKeyWord: '',
+      searchType: '2',
+      resultFlag: false,
+      loadFlag: false,
+      gridData: [],
+      timer: null,
+      restaurants: [],
+      searchOrgTemp: [], // 搜索选中中间变量
+      selectOrgTemp: [], // 搜索选中中间变量
+      selectMemberTemp: [], // 搜索选中中间变量
       selectCategory: false,
       nodeTree: [], // 机构树
       nodeSonTree: [], // 子节点
@@ -183,6 +229,7 @@ export default {
         parentId: parentId
       }).then((res) => {
         this.orgList = []
+        this.checkAllOrg = false
         res.data.forEach(item => {
           if (item.nodeType === 2 || item.nodeType === 3) {
             this.orgList.push(item)
@@ -213,6 +260,7 @@ export default {
         deptId: deptId
       }).then((res) => {
         this.memberList = res.data
+        this.checkAllMember = false
       })
     },
     // 查询单位下的所有人员
@@ -221,6 +269,7 @@ export default {
         orgId: orgId
       }).then((res) => {
         this.memberList = res.data
+        this.checkAllMember = false
       })
     },
     // 节点被点击时
@@ -272,32 +321,59 @@ export default {
       this.orgList.forEach(item => {
         ids.push(item.id)
       })
+      // if (val) {
+      //   this.checkedOrgList = ids
+      //   this.selectedOrgID = this.selectedOrgID.concat(ids) // 全选ID
+      //   this.selectedOrgID = this.selectedOrgID.filter(function (element, index, self) {
+      //     return self.indexOf(element) === index
+      //   })
+      //   this.selectedOrg = this.selectedOrg.concat(this.orgList) // q全选
+      // } else {
+      //   this.checkedOrgList = []
+      //   this.selectedOrgID = this.selectedOrgID.splice((this.selectedOrgID.length - ids.length), ids.length)
+      //   console.log(this.selectedOrg.length,'------------')
+      //   this.selectedOrg = this.selectedOrg.splice((this.selectedOrg.length - ids.length), ids.length)
+      // }
+      this.selectedOrg = this.selectedOrg.filter(function (element, index, self) {
+        return self.indexOf(element.id) === index.id
+      })
       this.checkedOrgList = this.selectedOrgID = val ? ids : [] // 全选ID
-      // this.checkedOrgList =this.selectedOrgID= this.selectedOrgID.concat(val ? ids : []) // 全选ID
       this.selectedOrg = val ? this.orgList : [] // q全选
-      // this.selectedOrg=this.selectedOrg.concat(val ? this.orgList : []) // q全选
       this.isIndeterminateOrg = false
     },
     // 选择框单选--到达已选框单位部门
-    handleCheckedOrgChange (val) {
-      // let selectIds = val.concat(this.selectedOrgID)
-      // selectIds = selectIds.filter(function (element, index, self) {
-      //   return self.indexOf(element) === index
-      // })
-      this.selectedOrg = this.selectedOrgID = []
-      val.forEach(item => {
-        let list = this.orgList.filter(function (x) {
-          return x.id === item
+    handleCheckedOrgChange (val, e) {
+      let that = this
+      if (that.selectOrgTemp.length + 1 === val.length) {
+        that.selectedOrgID.push(val[val.length - 1])
+        let list = that.orgList.filter(function (x) {
+          return x.id === val[val.length - 1]
         })
-        this.selectedOrg = this.selectedOrg.concat(list)
-      })
-      this.selectedOrgID = val
-      if (val.length === 0) {
-        this.selectedOrg = []
+        that.selectedOrg = that.selectedOrg.concat(list)
+        that.selectOrgTemp = val
+      } else if (that.selectOrgTemp.length - 1 === val.length) {
+        that.selectedOrgID = that.selectedOrgID.filter(function (item) {
+          return item !== that.selectOrgTemp[that.selectOrgTemp.length - 1]
+        })
+        that.selectedOrg = that.selectedOrg.filter(function (item) {
+          return item.id !== that.selectOrgTemp[that.selectOrgTemp.length - 1]
+        })
+        that.selectOrgTemp = val
       }
+      // this.selectedOrg = this.selectedOrgID = []
+      // val.forEach(item => {
+      //   let list = this.orgList.filter(function (x) {
+      //     return x.id === item
+      //   })
+      //   this.selectedOrg = this.selectedOrg.concat(list)
+      // })
+      // this.selectedOrgID = val
+      // if (val.length === 0) {
+      //   this.selectedOrg = []
+      // }
       let checkedCount = val.length
-      this.checkAllOrg = checkedCount === this.orgList.length
-      this.isIndeterminateOrg = checkedCount > 0 && checkedCount < this.orgList.length
+      that.checkAllOrg = checkedCount === that.orgList.length
+      that.isIndeterminateOrg = checkedCount > 0 && checkedCount < that.orgList.length
     },
     handleCheckedSelectOrgChange (value) {
       // this.selectedOrg = this.selectedOrg.filter(item => value.indexOf(item.id) > -1)
@@ -321,6 +397,73 @@ export default {
         return x.id === that.selectedOrgID[0]
       })
       that.selectedOrg = { ...list }
+    },
+
+    // 获取搜索结果
+    getResult () {
+      let data = {
+        name: this.searchKeyWord,
+        nodeType: this.searchType
+      }
+      if (this.searchKeyWord.length > 1) {
+        if (this.timer) {
+          clearTimeout(this.timer)
+          this.timer = null
+        }
+        // this.timer = this.debounce(this.getResultList, 800)
+        this.timer = setTimeout(() => {
+          this.resultFlag = true
+          this.loadFlag = true
+          api[urlNames['searchViewNode']](data).then(res => {
+            this.gridData = res.data
+            this.loadFlag = false
+          })
+        }, 800)
+      } else {
+        this.resultFlag = false
+        this.timer = null
+      }
+    },
+    blur () {
+      this.timer = null
+    },
+    getType (el) {
+      this.searchType = el
+    },
+    goBackTree () {
+      this.searchKeyWord = ''
+      this.resultFlag = false
+    },
+    searchChack (e) {
+      console.log(e)
+    },
+    handleSelectionChange (val) {
+      let that = this
+      if (that.searchOrgTemp.length + 1 === val.length) {
+        if (that.searchType === '2' || that.searchType === '3') {
+          that.selectedOrgID.push(val[val.length - 1].id)
+          that.selectedOrg.push(val[val.length - 1])
+        }
+        that.searchOrgTemp = JSON.parse(JSON.stringify(val))
+      } else if (that.searchOrgTemp.length - 1 === val.length) {
+        if (that.searchType === '2' || that.searchType === '3') {
+          that.selectedOrgID = that.selectedOrgID.filter(function (item) {
+            return item !== that.searchOrgTemp[that.searchOrgTemp.length - 1].id
+          })
+          that.selectedOrg = that.selectedOrg.filter(function (item) {
+            return item.id !== that.searchOrgTemp[that.searchOrgTemp.length - 1].id
+          })
+        }
+        that.searchOrgTemp = val
+      }
+      console.log(JSON.parse(JSON.stringify(this.selectedOrgID)))
+      console.log(JSON.parse(JSON.stringify(this.selectedOrg)))
+    }
+  },
+  watch: {
+    searchType (newVal) {
+      this.searchType = newVal
+      this.getResult()
     }
   }
 }
