@@ -42,6 +42,7 @@ module.exports = function (options) {
       proxy: {
         "/api/": {
           target: "http://192.168.1.186",
+          // target: "http://jg-dev.lonmo.com",
           changeOrigin: false
           // http://jg-dev.lonmo.com
           // pathRewrite: {

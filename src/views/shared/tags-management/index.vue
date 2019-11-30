@@ -1,7 +1,8 @@
 <template>
   <div class="tags-mnagement">
     <div class="operate">
-      <el-select width="200px" @change="selectSearch" v-model="value" placeholder="请选择">
+      <el-select width="200px" @change="selectSearch" v-model="selectValue" placeholder="请选择">
+        <el-option label="全部" :value="0"></el-option>
         <el-option label="单位标签" :value="1"></el-option>
         <el-option label="部门标签" :value="2"></el-option>
         <el-option label="个人标签" :value="3"></el-option>
@@ -64,7 +65,7 @@ export default {
         label: 'name',
         id: ''
       },
-      value: ''
+      selectValue: 0
     }
   },
   created () {
@@ -134,7 +135,7 @@ export default {
       })
     },
     selectSearch () {
-      if (this.value === 0) {
+      if (this.selectValue === 0) {
         this.findLabelList('-1')
       } else {
         this.findLabelList('-1', this.value)

@@ -1,8 +1,13 @@
 .candidate {
   .el-dialog {
-    .panel {
+    .tree-inner{
       border: 1px solid #BBBBBB;
-      margin: 20px;
+      margin: 10px;
+      .operate{
+        padding: 5px;
+      }
+    }
+    .panel {
       padding: 5px;
       display: flex;
 
@@ -13,8 +18,9 @@
         border-radius: 4px;
         padding:0 0 0 5px;
         .member-panel,.dep-panel{
-          overflow-y: scroll;
+          overflow-y: auto;
           overflow-x: hidden;
+          height: 400px;
         }
       }
 
@@ -42,8 +48,9 @@
         padding:0 0 0 5px;
         margin-right: 5px;
         .member-panel,.dep-panel{
-          overflow-y: scroll;
+          overflow-y: auto;
           overflow-x: hidden;
+          height: 400px;
         }
 
       }

@@ -7,64 +7,77 @@
       :fullscreen="true"
       center
       :before-close="handleClose">
-      <div class="panel">
-        <div class="select-tree">
-          <el-tree
-            :data="nodeTree"
-            lazy
-            :load="loadNode"
-            :props="defaultProps"
-            @node-click="handleNodeClick">
+      <div class="tree-inner">
+        <div class="operate">
+         <p>
+           <el-button type="primary" @click="selectCategory = false" :plain="selectCategory">单位/部门</el-button>
+           <el-button type="primary" @click="selectCategory = true" :plain="!selectCategory">人员</el-button>
+         </p>
+          <p>
+            <el-input placeholder="请输入内容" v-model="searchKeyWord" class="input-with-select">
+              <el-button slot="append" icon="el-icon-search"></el-button>
+            </el-input>
+          </p>
+        </div>
+        <div class="panel">
+          <div class="select-tree">
+            <el-tree
+              :data="nodeTree"
+              lazy
+              :load="loadNode"
+              :props="defaultProps"
+              @node-click="handleNodeClick">
              <span class="custom-tree-node" slot-scope="{ node, data }">
                <i class="imenu-icon fa fa-sitemap" v-if="data.nodeType === 1"></i>
                <i class="imenu-icon fa fa-building-o" v-if="data.nodeType === 2"></i>
                <i class="imenu-icon fa fa-institution" v-if="data.nodeType === 3"></i>
                <span>{{node.label}}</span>
              </span>
-          </el-tree>
-        </div>
-        <div class="member-list">
-          <div v-if="!seleceDialog.isSingleSelect&&seleceDialog.notOnlyPerson" class="member-panel" :class="seleceDialog.notOnlyPerson&&seleceDialog.isOnlyOrg?memberstyle:noorgstyle">
-            <el-checkbox :indeterminate="isIndeterminate" v-model="checkAllMember" @change="handleCheckAllMemberChange">
-              选择人员
-            </el-checkbox>
-            <el-checkbox-group v-model="checkedMemberList" @change="handleCheckedMemberChange">
-              <el-checkbox v-for="item in memberList" :label="item.uid" :key="item.uid">{{item.name}}</el-checkbox>
-            </el-checkbox-group>
+            </el-tree>
           </div>
-          <div class="member-panel" v-if="seleceDialog.isSingleSelect&&seleceDialog.notOnlyPerson">
-            <p>选择人员</p>
-            <el-radio-group @change="singleChecked" :class="seleceDialog.notOnlyPerson?memberstyle:singlecheck"  v-model="checkedMemberList">
-              <el-radio :key="item.uid" v-for="item in memberList" :label="item.uid">{{item.name}}</el-radio>
-            </el-radio-group>
+          <div class="member-list">
+            <div v-if="selectCategory&&!seleceDialog.isSingleSelect" class="member-panel">
+              <el-checkbox :indeterminate="isIndeterminate" v-model="checkAllMember" @change="handleCheckAllMemberChange">
+                选择人员
+              </el-checkbox>
+              <el-checkbox-group v-model="checkedMemberList" @change="handleCheckedMemberChange">
+                <el-checkbox v-for="item in memberList" :label="item.uid" :key="item.uid">{{item.name}}</el-checkbox>
+              </el-checkbox-group>
+            </div>
+            <div class="member-panel" v-if="selectCategory&&seleceDialog.isSingleSelect">
+              <p>选择人员</p>
+              <el-radio-group @change="singleChecked" v-model="checkedMemberList">
+                <el-radio :key="item.uid" v-for="item in memberList" :label="item.uid">{{item.name}}</el-radio>
+              </el-radio-group>
+            </div>
+            <div class="dep-panel" v-if="!selectCategory&&!seleceDialog.isSingleOrgSelect">
+              <el-checkbox :indeterminate="isIndeterminateOrg" v-model="checkAllOrg" @change="handleCheckAllOrgChange">
+                选择单位/部门
+              </el-checkbox>
+              <el-checkbox-group v-model="checkedOrgList" @change="handleCheckedOrgChange">
+                <el-checkbox v-for="item in orgList" :label="item.id" :key="item.id">{{item.name}}</el-checkbox>
+              </el-checkbox-group>
+            </div>
+            <div class="dep-panel" v-if="!selectCategory&&seleceDialog.isSingleOrgSelect">
+              <p>选择单位/部门</p>
+              <el-radio-group @change="singleCheckedOrg"   v-model="checkedOrgList">
+                <el-radio :key="item.id" v-for="item in orgList" :label="item.id">{{item.name}}</el-radio>
+              </el-radio-group>
+            </div>
           </div>
-          <div class="dep-panel" v-if="!seleceDialog.isSingleOrgSelect&&seleceDialog.isOnlyOrg" :class="seleceDialog.notOnlyPerson&&seleceDialog.isOnlyOrg?orgstyle:noorgstyle">
-            <el-checkbox :indeterminate="isIndeterminateOrg" v-model="checkAllOrg" @change="handleCheckAllOrgChange">
-              选择单位/部门
-            </el-checkbox>
-            <el-checkbox-group v-model="checkedOrgList" @change="handleCheckedOrgChange">
-              <el-checkbox v-for="item in orgList" :label="item.id" :key="item.id">{{item.name}}</el-checkbox>
-            </el-checkbox-group>
-          </div>
-          <div class="dep-panel" v-if="seleceDialog.isSingleOrgSelect&&seleceDialog.isOnlyOrg">
-            <p>选择单位/部门</p>
-            <el-radio-group @change="singleCheckedOrg" :class="seleceDialog.notOnlyPerson?memberstyle:singlecheck"  v-model="checkedOrgList">
-              <el-radio :key="item.id" v-for="item in orgList" :label="item.id">{{item.name}}</el-radio>
-            </el-radio-group>
-          </div>
-        </div>
-        <div class="select-member">
-          <div class="member-panel" v-if="seleceDialog.notOnlyPerson" :class="seleceDialog.notOnlyPerson&&seleceDialog.isOnlyOrg?memberstyle:noorgstyle">
-            <p>已选人员:</p>
-            <el-checkbox-group v-model="selectedMenbersID" @change="handleCheckedSelectChange">
-              <el-checkbox  v-for="item in selectedMenbers" :label="item.uid" :key="item.uid">{{item.name}}</el-checkbox>
-            </el-checkbox-group>
-          </div>
-          <div class="dep-panel" v-if="seleceDialog.isOnlyOrg" :class="seleceDialog.notOnlyPerson&&seleceDialog.isOnlyOrg?orgstyle:noorgstyle">
-            <p>已选单位/部门:</p>
-            <el-checkbox-group v-model="selectedOrgID" @change="handleCheckedSelectOrgChange">
-              <el-checkbox v-for="item in selectedOrg" :label="item.id" :key="item.id">{{item.name}}</el-checkbox>
-            </el-checkbox-group>
+          <div class="select-member">
+            <div class="member-panel" v-if="selectCategory">
+              <p>已选人员:</p>
+              <el-checkbox-group v-model="selectedMenbersID" @change="handleCheckedSelectChange">
+                <el-checkbox  v-for="item in selectedMenbers" :label="item.uid" :key="item.uid">{{item.name}}</el-checkbox>
+              </el-checkbox-group>
+            </div>
+            <div class="dep-panel" v-if="!selectCategory">
+              <p>已选单位/部门:</p>
+              <el-checkbox-group v-model="selectedOrgID" @change="handleCheckedSelectOrgChange">
+                <el-checkbox v-for="item in selectedOrg" :label="item.id" :key="item.id">{{item.name}}</el-checkbox>
+              </el-checkbox-group>
+            </div>
           </div>
         </div>
       </div>
@@ -92,6 +105,8 @@ export default {
   props: ['seleceDialog'],
   data () {
     return {
+      searchKeyWord: '',
+      selectCategory: false,
       nodeTree: [], // 机构树
       nodeSonTree: [], // 子节点
       defaultProps: {
@@ -125,6 +140,10 @@ export default {
     this.findNodeTree()
   },
   methods: {
+    // 部门/人员/单位选择
+    selectCheck () {
+      this.selectCategory
+    },
     // 确定获取数据
     submit () {
       if (this.seleceDialog.isAllData) {

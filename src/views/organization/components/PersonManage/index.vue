@@ -562,13 +562,15 @@ export default {
       this.$emit('get-label', this.sendLabelId)
     },
     next (userDetail) {
+      if (userDetail.name === '') {
+        this.$message.success('请填写用户名称')
+      }
       this.$refs[userDetail].validate((valid) => {
         if (valid) {
           this.$emit('get-post', this.postFrom)
           this.$emit('get-user', this.personFrom)
         } else {
-          console.log('error submit!!')
-          // this.$message.error(`error submit!!`)
+          this.$message.warning(`请填写必填字段`)
           return false
         }
       })

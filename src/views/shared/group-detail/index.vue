@@ -135,6 +135,9 @@ export default {
     dialogReturnMembersInfo (memberData, orgdData) {
       console.log(JSON.parse(JSON.stringify(memberData)), 'this.$route.params.id')
       console.log(JSON.parse(JSON.stringify(orgdData)), 'this.$route.params.id')
+      if (true) {
+        return false
+      }
       memberData.forEach(item => {
         this.groupMemberInfo.push({
           memberId: item.uid,

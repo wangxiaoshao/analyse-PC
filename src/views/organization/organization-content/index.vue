@@ -17,7 +17,7 @@
         <i v-if="content[0].nodeType === 2" class="imenu-icon fa fa-building-o big-icon" style="margin: 0px 5px;"></i>
         <i v-if="content[0].nodeType === 3" class="imenu-icon fa fa-institution big-icon" style="margin: 0px 5px;"></i>
         <span class="organization-value" v-html="content[0].name"></span>
-        <el-button>日志</el-button>
+        <el-button @click="toLogData">日志</el-button>
       </div>
      <!-- <div class="label-content">
         <span v-for="item in labelList" :key="item.id">{{item.name}}</span>
@@ -279,6 +279,10 @@ export default {
         console.log(res.data)
       }, (error) => {
       })
+    },
+    // 跳转日志
+    toLogData () {
+      this.$router.push({ path: '/data-log' })
     }
   },
   watch: {
