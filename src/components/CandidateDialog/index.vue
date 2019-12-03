@@ -15,28 +15,28 @@
          </p>
           <p class="search">
             <el-popover
-              ref="popover"
-              placement="bottom-start"
-              trigger="manual"
-              v-model="resultFlag"
-              width="300">
-              <div class="back-btn">
-                <el-button size="mini" @click="goBackTree">返回</el-button>
-              </div>
-              <div class="result-list">
-                <el-table v-loading="loadFlag" :data="gridData" :show-header="false" @selection-change="handleSelectionChange">
-                  <el-table-column
-                    type="selection"
-                    width="55">
-                  </el-table-column>
-                  <el-table-column property="name">
-                    <template slot-scope="scope">
-                      <span :title="scope.row.name" class="table-span" @click="setNodeId(scope.row)">{{scope.row.name}}</span>
-                    </template>
-                  </el-table-column>
-                </el-table>
-              </div>
-            </el-popover>
+            ref="popover"
+            placement="bottom-start"
+            trigger="manual"
+            v-model="resultFlag"
+            width="300">
+            <div class="back-btn">
+              <el-button size="mini" @click="goBackTree">返回</el-button>
+            </div>
+            <div class="result-list">
+              <el-table v-loading="loadFlag" :data="gridData" :show-header="false" @selection-change="handleSelectionChange">
+                <el-table-column
+                  type="selection"
+                  width="55">
+                </el-table-column>
+                <el-table-column property="name">
+                  <template slot-scope="scope">
+                    <span :title="scope.row.name" class="table-span" @click="setNodeId(scope.row)">{{scope.row.name}}</span>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </div>
+          </el-popover>
             <el-row>
               <el-input
                 v-popover:popover

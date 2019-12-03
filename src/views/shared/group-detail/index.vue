@@ -52,8 +52,9 @@
       layout="total, sizes, prev, pager, next, jumper"
       :total="total">
     </el-pagination>
-    <candidate-dialog @dialogReturnMembersInfo="dialogReturnMembersInfo" @closeselectMenmber="closeselectMenmber"
-                      :seleceDialog="seleceDialog"></candidate-dialog>
+    <select-members @dialogReturnMembersInfo="dialogReturnMembersInfo" @closeselectMenmber="closeselectMenmber" :seleceDialog="seleceDialog"></select-members>
+      <!--    <candidate-dialog @dialogReturnMembersInfo="dialogReturnMembersInfo" @closeselectMenmber="closeselectMenmber"-->
+<!--                      :seleceDialog="seleceDialog"></candidate-dialog>-->
   </div>
 </template>
 
@@ -62,12 +63,12 @@ import CandidateDialog from '@src/components/CandidateDialog/index.vue'
 import { api, urlNames } from '@src/api'
 import handleTable from '@src/mixins/handle-table'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
-
+import SelectMembers from '@src/components/SelectMembers/index'
 export default {
   name: 'GroupDetail',
   mixins: [handleTable, handleBreadcrumb],
   components: {
-    CandidateDialog
+    SelectMembers
   },
   data () {
     return {
@@ -132,32 +133,52 @@ export default {
     closeselectMenmber () {
       this.seleceDialog.selectMenmberFlag = false
     },
-    dialogReturnMembersInfo (memberData, orgdData) {
-      console.log(JSON.parse(JSON.stringify(memberData)), 'this.$route.params.id')
-      console.log(JSON.parse(JSON.stringify(orgdData)), 'this.$route.params.id')
-      if (true) {
-        return false
+    dialogReturnMembersInfo (Data, flag) {
+      // flag===1 单位
+      if (flag === 1) {
+        Data.forEach(item => {
+          let type = 2
+          if (item.nodeType === 2) {
+            type = 3
+          } else if (item.nodeType === 3) {
+            type = 2
+          }
+          this.groupMemberInfo.push({
+            memberId: item.bindId,
+            memberType: type,
+            groupId: this.groupId
+          })
+        })
+      } else if (flag === 0) {
+        Data.forEach(item => {
+          this.groupMemberInfo.push({
+            memberId: item.uid,
+            memberType: 1,
+            groupId: this.groupId
+          })
+        })
       }
-      memberData.forEach(item => {
-        this.groupMemberInfo.push({
-          memberId: item.uid,
-          memberType: 1,
-          groupId: this.groupId
-        })
-      })
-      orgdData.forEach(item => {
-        let type = 2
-        if (item.nodeType === 2) {
-          type = 3
-        } else if (item.nodeType === 3) {
-          type = 2
-        }
-        this.groupMemberInfo.push({
-          memberId: item.bindId,
-          memberType: type,
-          groupId: this.groupId
-        })
-      })
+      console.log(JSON.parse(JSON.stringify(this.groupMemberInfo)), 'this.groupMemberInfo')
+      // memberData.forEach(item => {
+      //   this.groupMemberInfo.push({
+      //     memberId: item.uid,
+      //     memberType: 1,
+      //     groupId: this.groupId
+      //   })
+      // })
+      // orgdData.forEach(item => {
+      //   let type = 2
+      //   if (item.nodeType === 2) {
+      //     type = 3
+      //   } else if (item.nodeType === 3) {
+      //     type = 2
+      //   }
+      //   this.groupMemberInfo.push({
+      //     memberId: item.bindId,
+      //     memberType: type,
+      //     groupId: this.groupId
+      //   })
+      // })
       this.addGroupUsers(this.groupMemberInfo)
       this.groupMemberInfo = []
     },

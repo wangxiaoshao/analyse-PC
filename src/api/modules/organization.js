@@ -264,6 +264,11 @@ export default {
   [urlNames.exportUser]: {
     type: 'get',
     url: '/api/jg_manage/user/exportUser',
+    timeout: 10000,
+    headers: {
+      'Content-Type': 'application/msexcel',
+      'responseType': 'blob'
+    },
     keepOriginResponse: true, // 是否保留后端返回数据格式
     serve: 'organizationManagePC'
   },

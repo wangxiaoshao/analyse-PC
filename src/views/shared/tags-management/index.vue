@@ -30,7 +30,7 @@
             type="text"
             size="mini"
             class="delete"
-            @click="deleteLabel(node.id)">
+            @click="deleteLabel(data.id)">
             删除
           </el-button>
         </span>

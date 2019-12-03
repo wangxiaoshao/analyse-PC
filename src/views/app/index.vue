@@ -21,6 +21,7 @@
         </el-container>
       </el-container>
     </el-container>
+<!--    <login></login>-->
   </div>
 </template>
 
@@ -32,7 +33,7 @@ import siteHead from '@src/components/SiteHead'
 import SiteBreadcrumb from '@src/components/SiteBreadcrumb.vue'
 import asideMenu from '@src/config/menu'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb'
-
+import login from '@src/views/login/index'
 export default {
   name: 'app',
   data () {
@@ -44,7 +45,7 @@ export default {
     }
   },
   mixins: [handleBreadcrumb],
-  components: { sideMenu, siteHead, SiteBreadcrumb },
+  components: { sideMenu, siteHead, SiteBreadcrumb ,login},
   watch: {
     $route (newVal, oldVal) {
       if (oldVal.path !== '/' && newVal.path !== '/') {

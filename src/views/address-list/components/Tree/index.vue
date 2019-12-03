@@ -3,7 +3,7 @@
     <el-tree
       :data="treeDate"
       node-key="id"
-      :props="props"      
+      :props="props"
       lazy
       :load="loadNode"
       :expand-on-click-node=false
@@ -16,7 +16,7 @@
         <i class="imenu-icon fa fa-institution" v-if="data.nodeType === 3"></i>
         <!-- <span style="margin-left:3px;" >{{ data.name }}</span> -->
         <span :class="[data.id===$route.params.nodeId ?'active':'noActive']" style="margin-left:3px;">{{node.label}}</span>
-        
+
       </span>
     </el-tree>
   </div>
@@ -28,10 +28,10 @@ export default {
   data () {
     return {
       props: {
-        label: 'name',
+        label: 'name'
       },
       active: 'active',
-      noActive: 'noActive',
+      noActive: 'noActive'
     }
   },
   computed: {
@@ -42,18 +42,12 @@ export default {
   created () {
   },
   methods: {
-    
-     // 追加子节点
-    loadNode (node, resolve) {
 
-      if (node.level === 0) {
-        let treeParent = [{ name: this.treeList.name, id: this.treeList.parentId }]
-        return resolve(treeParent)
-      }
+    // 追加子节点
+    loadNode (node, resolve) {
       api[urlNames['getAddressListTree']]({
         parentId: node.data.id
       }).then(res => {
-      
         if (res.data.length > 0) {
           resolve(res.data)
         } else {
@@ -65,9 +59,9 @@ export default {
     },
     handleNodeClick (data) {
       this.$emit('handle-node-click', data)
-    },  
-  },
- 
+    }
+  }
+
 }
 </script>
 <style lang="less">

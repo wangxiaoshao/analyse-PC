@@ -20,15 +20,30 @@
       </div>
     </el-popover>
     <el-row>
-      <el-input
-        placeholder="请输入人员姓名"
-        v-model="keyWord"
-        onFocus
-        @change="getResult"
-        class="input-with-select"
-      >
+      <el-input v-if="myOrgFlag===1" @change="getResult" placeholder="请输入内容" v-model="keyWord" class="input-with-select">
+        <el-select v-model="selectType"  style="width: 80px"  slot="prepend" placeholder="请选择">
+          <el-option label="部门" :value="1"></el-option>
+          <el-option label="人员" :value="0"></el-option>
+        </el-select>
         <el-button slot="append" @click="getResult" icon="el-icon-search"></el-button>
       </el-input>
+      <el-input v-if="myOrgFlag!==1" @change="getResult" placeholder="请输入内容" v-model="keyWord" class="input-with-select">
+        <el-select v-model="selectType"  style="width: 80px"    slot="prepend" placeholder="请选择">
+          <el-option label="单位" value="2"></el-option>
+          <el-option label="部门" value="3"></el-option>
+          <el-option label="人员" value="0"></el-option>
+        </el-select>
+        <el-button slot="append" @click="getResult" icon="el-icon-search"></el-button>
+      </el-input>
+<!--      <el-input-->
+<!--        placeholder="请输入人员姓名"-->
+<!--        v-model="keyWord"-->
+<!--        onFocus-->
+<!--        @change="getResult"-->
+<!--        class="input-with-select"-->
+<!--      >-->
+<!--        <el-button slot="append"  icon="el-icon-search"></el-button>-->
+<!--      </el-input>-->
     </el-row>
   </div>
 </template>
@@ -37,15 +52,16 @@
 import { api, urlNames } from '@src/api'
 import debounce from '@src/mixins/debounce'
 export default {
-  props: ['defaultNodeId'],
+  props: ['defaultNodeId', 'myOrgFlag'],
   data () {
     return {
+      selectType: 0,
       keyWord: '',
       value: '选择',
       gridData: [],
       nodeType: '',
       nodeTree: [],
-       debouncedSearch: null,
+      debouncedSearch: null,
       resultFlag: false,
       loadFlag: false,
       type: 2,
@@ -55,7 +71,7 @@ export default {
   },
 
   created () {
-  
+    console.log(this.defaultNodeId, 'defaultNodeId')
   },
   methods: {
 
@@ -64,11 +80,12 @@ export default {
     },
     // 获取搜索结果
     getResult () {
-        api[urlNames['getAddressListUserByName']]({
-          name:this.keyWord
+      console.log(this.selectType,'selectType')
+      api[urlNames['getAddressListUserByName']]({
+        name: this.keyWord
       }).then(res => {
-        this.getUserDetail=res.data
-          console.log(this.getUserDetail, '===人员姓名')
+        this.getUserDetail = res.data
+        console.log(this.getUserDetail, '===人员姓名')
       })
     },
 

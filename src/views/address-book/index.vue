@@ -13,9 +13,7 @@
               <address-book-tree v-if="thisUnit && isShow===1" @handle-nodeClick="handleNodeClickTree" :thisUnit="thisUnit"
               ></address-book-tree>
             </div>
-              
             <other-address-book-tree v-if="otherUnit&&isShow===2" @handle-nodeClick="handleNodeClickTree" :otherUnit='otherUnit'  ></other-address-book-tree>
-            
           </div>
         </el-col>
         <el-col :span="18" style="border-left: 1px solid #f2f2f2;height: 100%">
@@ -30,10 +28,10 @@
 
             <transition name="fade-transform" mode="out-in" style="height: 100%;border:1px solid red">
             <el-scrollbar>
-                <Department   
-                  :departmentList="departmentList" 
+                <Department
+                  :departmentList="departmentList"
                   :otherDepartmentList="otherDepartmentList"
-                  :treeList="treeList" 
+                  :treeList="treeList"
                   @handle-child-click="handleChildClick"></Department>
                   <div class="member-tab-content">
                     <member-table :member-props="memberProps" :table-data="memberList"></member-table>
@@ -58,7 +56,7 @@ import MemberTable from './components/Member/index'
 import otherAddressBookTree from './components/Maintree/index'
 import otherUnitAddressBook from './unit-address-book/index'
 import { api, urlNames } from '@src/api'
-import { type } from 'os';
+import { type } from 'os'
 export default {
   name: 'AddressBook',
   mixins: [handleTable],
@@ -79,13 +77,13 @@ export default {
         name: 'name',
         duty: 'dutyname',
         mobile: 'mobile',
-        portraitUrl:'portraitUrl'
+        portraitUrl: 'portraitUrl'
       },
       otherDepartmentMemberProp: {
         name: 'name',
         duty: 'dutyname',
         mobile: 'mobile',
-        portraitUrl:'portraitUrl'
+        portraitUrl: 'portraitUrl'
       },
       memberProps: {},
       defaultNodeId: null,
@@ -93,7 +91,7 @@ export default {
       thisUnit: null,
       userId: '1111111111111111111',
       departmentList: [],
-      otherDepartmentList:[],
+      otherDepartmentList: [],
       memberList: [],
       navigation: [],
       navigation1: [],
@@ -109,32 +107,31 @@ export default {
   },
   created () {
     this.getAddressBook(),
-    this.navigation1.name="本单位通讯录"
+    this.navigation1.name = '本单位通讯录'
     // this.findNodeTree(bindId)
   },
   methods: {
-      getAddressBook () {
-        api[urlNames['getAddressBookList']]({
-          uid: this.userId
-        }).then(res => {
-
-          this.thisUnit = res.data
-          this.handleNodeClickTree(this.thisUnit)
+    getAddressBook () {
+      api[urlNames['getAddressBookList']]({
+        uid: this.userId
+      }).then(res => {
+        this.thisUnit = res.data
+        this.handleNodeClickTree(this.thisUnit)
       })
     },
     findNodeTree (parentId) {
       api[urlNames['getTree']]({
         parentId: parentId,
         // viewId: -1,
-        id:-1
+        id: -1
       }).then((res) => {
-          this.otherUnit = res.data
-          for(let i;i<this.otherUnit.length;i++){
-            if(this.otherUnit[i].nodeType===3){
-              this.departmentList.push(this.otherUnit[i]);
-            }
+        this.otherUnit = res.data
+        for (let i; i < this.otherUnit.length; i++) {
+          if (this.otherUnit[i].nodeType === 3) {
+            this.departmentList.push(this.otherUnit[i])
           }
-          this.handleNodeClickTree(this.otherUnit)
+        }
+        this.handleNodeClickTree(this.otherUnit)
       })
     },
     //
@@ -148,7 +145,7 @@ export default {
       this.navigation = []
       this.navigation.push({ id: node.id, name: node.name })
       this.getDetail(node.id)
-      this.otherDepartmentList=[]
+      this.otherDepartmentList = []
     },
     // 选择其他单位通讯录
     handleNodeOtherClickTree (node) {
@@ -174,17 +171,17 @@ export default {
       })
     },
 
-    //其他单位通讯录-单位下人员
+    // 其他单位通讯录-单位下人员
     getOtherDepartmentMembers (id) {
       api[urlNames['findOrganizationMembers']]({
         orgId: id
       }).then((res) => {
-        console.log("1213213============",res)
+        console.log('1213213============', res)
         this.memberList = res.data
       })
     },
 
-    //本单位通讯录-单位下人员
+    // 本单位通讯录-单位下人员
     getPersonnelDepartmentMembers (orgId) {
       let data = {
         page: 1,
@@ -196,17 +193,17 @@ export default {
       })
     },
 
-  //本单位通讯录-部门下人员
-    getPersonnelmember(departmentId){
+    // 本单位通讯录-部门下人员
+    getPersonnelmember (departmentId) {
       api[urlNames['getDepartmentPersonList']]({
-        departmentId:departmentId
+        departmentId: departmentId
       }).then(res => {
-        console.log(res,'111')
+        console.log(res, '111')
         this.memberList = res.data
       }).catch(err => {
         console.log(err)
       })
-      },
+    },
 
     getMemberList (nodeId) {
       api[urlNames['getOrgDepartmentTxlList']]({
@@ -224,32 +221,32 @@ export default {
     getDefault (val) {
       this.defaultNodeId = val
     },
- 
-/** 
+
+    /**
  * 其他单位下部门
 */
-    findDepartmentList(nodeId){
+    findDepartmentList (nodeId) {
       api[urlNames['getTree']]
-      ({bindId:nodeId}).then(res=>{
-        console.log(JSON.parse(JSON.stringify(res.data)),'----------222222222222-')
-    this.otherDepartmentList=res.data
+      ({ bindId: nodeId }).then(res => {
+        console.log(JSON.parse(JSON.stringify(res.data)), '----------222222222222-')
+        this.otherDepartmentList = res.data
       })
     },
-    
-    /** 
+
+    /**
      * 其他单位--部门下所有人员[urlNames.findOrganizationMembers] [urlNames.findMemberList]
      *   // 查询部门下的所有人员findDepartmentMembers: 'findDepartmentMembers',
      * // 查询单位下的所有人员findOrganizationMembers: 'findOrganizationMembers',
     */
 
-/**
+    /**
  * 其他通讯录下-单位下人员
  */
-// findOrganizationMembers(){
+    // findOrganizationMembers(){
 
-// }
+    // }
 
-   
+
     /**
      * 切换通讯录
      */
@@ -260,23 +257,20 @@ export default {
         this.getAddressBook()
         this.navigation1.name = '本单位通讯录'
         // this.memberProps=personnelDepartmentMemberProp
-
       } else if (e === 2) {
         this.navigation1.name = '其他单位通讯录'
         // this.memberProps=otherDepartmentMemberProp
-        
-
       }
     },
 
-     findNodeTree (parentId) {
+    findNodeTree (parentId) {
       api[urlNames['getTree']]({
-        parentId: parentId,
+        parentId: parentId
       }).then((res) => {
         this.nodeTree = res.data
-          this.handleNodeClickTree(this.nodeTree[0])
+        this.handleNodeClickTree(this.nodeTree[0])
       })
-    },
+    }
   }
 
 }

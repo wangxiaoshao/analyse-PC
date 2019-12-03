@@ -33,6 +33,7 @@ export default {
     }
   },
   created () {
+    console.log(this.thisUnit,'this.thisUnit')
   // this.getDepartmentPerson()
   },
   methods: {
@@ -44,7 +45,7 @@ export default {
     },
     loadNode (node, resolve) {
       if (node.level === 0) {
-        let treeParent = [{ name: this.thisUnit.name, id: this.thisUnit.id }]
+        let treeParent = [{ name: '贵州省', id: '-1730833917365171641' }]
         return resolve(treeParent)
       }
       // if (node.level > 3) return resolve([]);

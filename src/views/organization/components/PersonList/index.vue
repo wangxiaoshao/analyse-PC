@@ -156,8 +156,8 @@ export default {
   components: { CandidateDialog },
   data () {
     return {
-      formFile: {},
-      fileList: [],
+      formFile: {}, // 文件form表单
+      fileList: [], // 文件列表
       loading: true,
       list: [],
       sortListFlag: false,
@@ -227,6 +227,7 @@ export default {
       })
     },
     fileSubmit () {
+      console.log(this.id, '--------')
       let that = this
       let form = that.$refs['formFile'].$el
       let formData = new FormData(form)
@@ -240,12 +241,12 @@ export default {
       api[urlNames['importUser']](formData).then((res) => {
         if (res.status === 0) {
           this.$message.success('导入文件成功')
+          this.getGrid()
           this.loading = false
           this.fileList = []
         }
       }, () => {
         this.loading = false
-        this.list = []
         this.fileList = []
       })
     },
@@ -413,25 +414,27 @@ export default {
       this.selectDialog.isAllData = true
     },
     exportUser () {
-      console.log(api[urlNames['exportUser']], 'urlNames[\'exportUser\']')
+      let host = window.location.href.split('#')[0]
       if (this.type === 2) {
-        api[urlNames['exportUser']]({
-          orgId: this.id
-        }).then((res) => {
-          console.log(res.data)
-          window.open(res.data)
-          console.log(res)
-        }, (error) => {
-        })
+        window.open(`${host}/api/jg_manage/user/exportUser?orgId=${this.id}`)
+        // api[urlNames['exportUser']]({
+        //   orgId: this.id
+        // }).then((res) => {
+        //   console.log(res.data)
+        //   window.open(res.data)
+        //   console.log(res)
+        // }, (error) => {
+        // })
       }
       if (this.type === 3) {
-        api[urlNames['exportUser']]({
-          orgId: this.id,
-          deptId: this.id
-        }).then((res) => {
-          console.log(res)
-        }, (error) => {
-        })
+        window.open(`${host}/api/jg_manage/user/exportUser?deptId=${this.id}`)
+        // api[urlNames['exportUser']]({
+        //   orgId: this.id,
+        //   deptId: this.id
+        // }).then((res) => {
+        //   console.log(res)
+        // }, (error) => {
+        // })
       }
     }
   },

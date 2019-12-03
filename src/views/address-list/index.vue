@@ -7,7 +7,7 @@
             <div class="top-one" :class="activeColor==1?'top-active':''" @click="onChange(1)">本单位通讯录</div>
             <div class="top-two" :class="activeColor==2?'top-active':''" @click="onChange(2)">其他单位通讯录</div>
           </div>
-         <search-result :defaultNodeId="defaultNodeId"></search-result>
+         <search-result :myOrgFlag="activeColor" :defaultNodeId="defaultNodeId"></search-result>
          <div class="tree-content">
            <address-list-tree :tree-list="treeList" @handle-node-click="handleNodeClickTree"></address-list-tree>
          </div>
@@ -41,39 +41,38 @@ import addressListTree from './components/Tree/index'
 import { mapState, mapMutations } from 'vuex'
 export default {
   components: {
-     searchResult,
-     department,
-     member,
-     addressListTree
+    searchResult,
+    department,
+    member,
+    addressListTree
   },
   data () {
     return {
-      isShow:1,
+      isShow: 1,
       activeColor: 1,
       defaultNodeId: '',
       navigation: [],
       navigation1: [],
-      departmentList:[],
-      memberList:[],
+      departmentList: [],
+      memberList: [],
       treeList: [],
       hasChildren: true,
-      name:''
+      name: ''
     }
   },
   created () {
-      if(this.app.option.user && this.app.option.user.orgId){
-        this.getAddressListUnitTree()
-        this.getAddressListOrganizationMembers()
-        this.getAddressListdepartment()
-
-      }
-        this.navigation1.name="本单位通讯录"
+    if (this.app.option.user && this.app.option.user.orgId) {
+      this.getAddressListUnitTree()
+      this.getAddressListOrganizationMembers()
+      this.getAddressListdepartment()
+    }
+    this.navigation1.name = '本单位通讯录'
   },
   computed: {
-   ...mapState(['app'])
+    ...mapState(['app'])
   },
   methods: {
-     /**
+    /**
      * 切换通讯录
      */
     onChange (e) {
@@ -86,8 +85,6 @@ export default {
         this.getAddressListOrganizationMembers()
         this.getAddressListdepartment()
         // this.getAddressListUnitUser()
-        
-       
       } else if (e === 2) {
         this.navigation1.name = '其他单位通讯录'
         this.getAddressListOthertTree()
@@ -96,28 +93,28 @@ export default {
       }
     },
 
-  /**通讯录视图 */
-  getAddressListUnitTree(){
+    /** 通讯录视图 */
+    getAddressListUnitTree () {
     // console.log(this.app.option.user,'wertyui12345====')
-    api[urlNames['getAddressListTree']]({
-       orgId: this.app.option.user.orgId
+      api[urlNames['getAddressListTree']]({
+        orgId: this.app.option.user.orgId
       // orgId:"-3631625248176780884"
-    }).then((res)=>{
-      console.log(res,'wwederfjodpasla')
-      this.treeList=res.data
-      // this.departmentList=res.data 
-      this.handleNodeClickTree(this.treeList[0])  
-    })
-  },
-  getAddressListOthertTree(){
-    api[urlNames['getAddressListTree']]({
-    }).then((res=>{
-    this.treeList=res.data 
-    this.handleNodeClickTree(this.treeList[0])
-    }))
-  },
+      }).then((res) => {
+        console.log(res, 'wwederfjodpasla')
+        this.treeList = res.data
+        // this.departmentList=res.data
+        this.handleNodeClickTree(this.treeList[0])
+      })
+    },
+    getAddressListOthertTree () {
+      api[urlNames['getAddressListTree']]({
+      }).then(res => {
+        this.treeList = res.data
+        this.handleNodeClickTree(this.treeList[0])
+      })
+    },
 
-   /**点击树节点显示内容 */
+    /** 点击树节点显示内容 */
     handleNodeClickTree (node) {
       this.navigation = []
       this.navigation.push({ id: node.id, name: node.name })
@@ -128,47 +125,45 @@ export default {
         this.getAddressListOrganizationMembers(node.id)
       }
 
-     this.getAddressListdepartment(node.id)
+      this.getAddressListdepartment(node.id)
     },
-     handleChildClick (node) {
+    handleChildClick (node) {
       this.navigation.push({ id: node.id, name: node.name })
       this.getAddressListOrganizationMembers(node.id)
       this.getAddressListdepartment(node.id)
       this.getAddressListDepartmentMembers(node.id)
-      
     },
-   
-   /** 单位下部门*/
-   getAddressListdepartment(id){
+
+    /** 单位下部门 */
+    getAddressListdepartment (id) {
       api[urlNames['getAddressListTree']]({
-        parentId: id      
-      }).then((res=>{
-        this.departmentList=res.data  
-      }))
-   },
+        parentId: id
+      }).then(res => {
+        this.departmentList = res.data
+      })
+    },
 
-   /** 单位下人员 getAddressListOrganizationMembers*/
-    getAddressListOrganizationMembers(){
-       api[urlNames['getAddressListOrganizationMembers']]({
-       orgId:this.app.option.user.orgId
-    }).then((res=>{
-    this.memberList=res.data 
-    }))
+    /** 单位下人员 getAddressListOrganizationMembers */
+    getAddressListOrganizationMembers () {
+      api[urlNames['getAddressListOrganizationMembers']]({
+        orgId: this.app.option.user.orgId
+      }).then(res => {
+        this.memberList = res.data
+      })
     },
 
 
-   /**部门下人员getAddressListDepartmentMembers*/ 
-    getAddressListDepartmentMembers(id){
+    /** 部门下人员getAddressListDepartmentMembers */
+    getAddressListDepartmentMembers (id) {
       api[urlNames['getAddressListDepartmentMembers']]({
-        deptId:id
-      }).then((res=>{
-      this.memberList=res.data 
-
-    }))
+        deptId: id
+      }).then(res => {
+        this.memberList = res.data
+      })
     },
 
-    /**点击回到当前 */
-     goCurrentNodeDetail (depid, index) {
+    /** 点击回到当前 */
+    goCurrentNodeDetail (depid, index) {
       let len = this.navigation.length
       this.navigation.splice(index + 1, len - index + 1)
       this.getAddressListdepartment(depid)
@@ -176,28 +171,28 @@ export default {
       this.getAddressListDepartmentMembers(id)
     },
 
-   /**人员搜索*/
-   getAddressListUnitUser(){
-     api[urlNames['getAddressListUserByName']]({
-       orgId: this.app.option.user.orgId,  
-       name:this.name
+    /** 人员搜索 */
+    getAddressListUnitUser () {
+      api[urlNames['getAddressListUserByName']]({
+        orgId: this.app.option.user.orgId,
+        name: this.name
       }).then(res => {
         console.log(res, '===1111111111')
         // this.gridData = res.data
       })
-   },
-  getAddressListOtherUser(){
-    api[urlNames['getAddressListUserByName']]({
-       name:this.name
+    },
+    getAddressListOtherUser () {
+      api[urlNames['getAddressListUserByName']]({
+        name: this.name
       }).then(res => {
         console.log(res, '========222222222222')
         // this.gridData = res.data
       })
-   },
+    }
   },
   watch: {
     'app.option.user.orgId': {
-      handler(val){
+      handler (val) {
         this.getAddressListUnitTree()
       }
     }
