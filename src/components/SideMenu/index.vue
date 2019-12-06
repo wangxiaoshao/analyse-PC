@@ -13,8 +13,8 @@
                  @open="open"
                  @close="close"
                  @select="select"
-                 background-color="#363F4E"
-                 text-color="#fff"
+                 background-color="#FFFFFF"
+                 text-color="#4A4A4A"
                  class="example"
                  :router="false"></menus>
         </div>

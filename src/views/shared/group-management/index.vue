@@ -60,7 +60,7 @@
           :total="total">
         </el-pagination>
       </div>
-      <create-group-dialog :groupFrom="groupFrom" @close="close" :creategroupdialogVisible="creategroupdialogVisible"></create-group-dialog>
+      <create-group-dialog :creatTitle="creatTitle" :groupFrom="groupFrom" @close="close" :creategroupdialogVisible="creategroupdialogVisible"></create-group-dialog>
     </div>
 </template>
 
@@ -76,6 +76,7 @@ export default {
     return {
       groupList: [],
       total: 0,
+      creatTitle:'',
       creategroupdialogVisible: false,
       currentPage: 1,
       pageSize: 10,
@@ -121,6 +122,7 @@ export default {
     // 打开创建弹窗
     openDialog () {
       // 创建初始化--防止修改数据覆盖
+      this.creatTitle = '创建分组'
       this.groupFrom.ownerType = 1 // 1用户、2部门、3单位
       this.groupFrom.name = ''
       this.groupFrom.description = ''
@@ -129,6 +131,7 @@ export default {
     },
     // 编辑分组
     handleEditGroup (row) {
+      this.creatTitle = '编辑分组'
       this.creategroupdialogVisible = true
       this.findGroupDetail(row.id)
     },
@@ -139,6 +142,7 @@ export default {
       }).then((res) => {
         if (res.status === 0) {
           this.groupFrom = res.data
+          this.groupFrom.removed = !res.data.removed
         }
       })
     },

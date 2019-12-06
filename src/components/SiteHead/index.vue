@@ -9,7 +9,7 @@
         <div class="site__head--right">
           <i class="ico fa fa-file-text-o"></i>
           <a href="">数据文档</a>
-<!--          <i class="ico fa fa-phone"></i>-->
+          <i class="ico fa fa-phone"></i>
 <!--          <a href="">联系我们</a>-->
           <span style="margin-right: 4px;">欢迎您!</span>
           <span>{{app.option.user.name}}</span>
@@ -23,6 +23,7 @@
 /**
    * Created by lxe on 2019-09-18.
    */
+import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
 export default {
   components: {},
@@ -46,12 +47,24 @@ export default {
   },
   data () {
     return {
+      logoutUrl: ''
     }
+  },
+  created () {
+    this.getLoginOutUrl()
   },
   methods: {
     ...mapMutations(['GET_OPTION']),
     goBack () {
       this.$emit('go-back')
+    },
+    getLoginOutUrl () {
+      api[urlNames['logoutUrl']]({
+      }).then((res) => {
+        if (res.status === 0) {
+          this.logoutUrl = res.data
+        }
+      })
     },
     handleCommand (command) {
       if (command === 'logout') {

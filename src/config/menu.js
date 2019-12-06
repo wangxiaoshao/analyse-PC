@@ -11,7 +11,7 @@ export default {
     'icon': 'fa fa-sitemap',
     'list': [{
       'menuId': '11',
-      'name': '组织机构管理',
+      'name': '组织管理',
       'path': '/organization',
       'type': 1
     },

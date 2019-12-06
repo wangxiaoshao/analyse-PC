@@ -24,6 +24,7 @@ export default {
     headers: {
       'Content-Type': 'application/json'
     },
+    showLoading: true,
     keepOriginResponse: false
   },
   /**
@@ -104,6 +105,7 @@ export default {
     headers: {
       'Content-Type': 'application/json'
     },
+    showLoading: true,
     keepOriginResponse: false,
     serve: 'organizationManagePC'
   },
@@ -116,6 +118,7 @@ export default {
     headers: {
       'Content-Type': 'application/json'
     },
+    showLoading: true,
     keepOriginResponse: false,
     serve: 'organizationManagePC'
   },
@@ -167,7 +170,7 @@ export default {
    */
   [urlNames.getGroupList]: {
     type: 'get',
-    url: 'api/group/getUserGroups',
+    url: '/api/group/getUserGroups',
     serve: 'organizationManagePC',
     keepOriginResponse: false
   },
@@ -181,6 +184,7 @@ export default {
     headers: {
       'Content-Type': 'application/json'
     },
+    showLoading: true,
     keepOriginResponse: false
   },
   /**

@@ -18,7 +18,14 @@
         :load="loadNode"
       >
       <span class="custom-tree-node" slot-scope="{ node, data }">
-        <span>{{ node.label }}</span>
+        <span>
+          <i class="tag-icon fa fa-building-o" v-if="data.type === 1"></i>
+          <i class="tag-icon fa fa-institution" v-if="data.type === 2"></i>
+          <i class="tag-icon fa fa-user-circle-o" v-if="data.type === 3"></i>
+          <span :title="data.type === 1?'单位':data.type === 2?'部门':'个人'">
+            {{ node.label }}
+          </span>
+        </span>
         <span class="custom-tree-float">
           <el-button
             type="text"
@@ -37,8 +44,8 @@
       </span>
       </el-tree>
     </div>
-<!-- fa   fa-tags-->
-<!--    user-circle-o-->
+    <!-- fa   fa-tags-->
+    <!--    user-circle-o-->
     <create-tag-form @updateLabelLiat="updateLabelLiat" @close="close" :flagdata="flagdata" :createData="createData"
                      :createTagDialogVisible="createTagDialogVisible"></create-tag-form>
   </div>
@@ -138,7 +145,7 @@ export default {
       if (this.selectValue === 0) {
         this.findLabelList('-1')
       } else {
-        this.findLabelList('-1', this.value)
+        this.findLabelList('-1', this.selectValue)
       }
     },
     createTag (data, flag) {

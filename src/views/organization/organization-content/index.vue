@@ -1,16 +1,16 @@
 <template>
   <div class="organization-content" v-loading="loading">
-    <el-dialog
-      title="添加下级"
-      :visible.sync="visible"
-      width="30%"
-      :center="true">
-      <div class="add-content">
-        <el-button @click="goAddNode" v-if="showAddNodeFlag">添加节点</el-button>
-        <el-button v-if="showAddDepartmentFlag" @click="goAddDepartment">添加内设机构</el-button>
-        <el-button v-if="showAddUnitFlag" @click="goAddUnit">添加单位</el-button>
-      </div>
-    </el-dialog>
+    <!--    <el-dialog-->
+    <!--      title="添加下级"-->
+    <!--      :visible.sync="visible"-->
+    <!--      width="30%"-->
+    <!--      :center="true">-->
+    <!--      <div class="add-content">-->
+    <!--        <el-button @click="goAddNode" v-if="showAddNodeFlag">添加节点</el-button>-->
+    <!--        <el-button v-if="showAddDepartmentFlag" @click="goAddDepartment">添加内设机构</el-button>-->
+    <!--        <el-button v-if="showAddUnitFlag" @click="goAddUnit">添加单位</el-button>-->
+    <!--      </div>-->
+    <!--    </el-dialog>-->
     <div class="organization-wrap" v-if="content[0]">
       <div class="organization-info">
         <i v-if="content[0].nodeType === 1" class="imenu-icon fa fa-sitemap big-icon" style="margin: 0px 5px;"></i>
@@ -19,16 +19,26 @@
         <span class="organization-value" v-html="content[0].name"></span>
         <el-button @click="toLogData">日志</el-button>
       </div>
-     <!-- <div class="label-content">
-        <span v-for="item in labelList" :key="item.id">{{item.name}}</span>
-      </div>-->
+      <!-- <div class="label-content">
+         <span v-for="item in labelList" :key="item.id">{{item.name}}</span>
+       </div>-->
       <div class="list-tab">
         <el-tabs v-model="activeName">
           <div class="content-title">
             {{activeName}}
           </div>
           <el-tab-pane label="下级设置" name="下级设置">
-            <el-button @click="openAddDialog" class="add-btn">添加下级</el-button>
+<!--            <el-button  v-popover:popover @click="openAddDialog" class="add-btn">添加下级</el-button>-->
+            <el-popover
+              placement="bottom"
+              width="100">
+              <div class="popover" style="text-align: center; margin: 0">
+                <div style="border-bottom: 1px solid rgba(0, 0, 0, 0.1);padding: 5px 0;cursor: pointer" @click="goAddNode" v-if="showAddNodeFlag">添加节点</div>
+                <div style="border-bottom: 1px solid rgba(0, 0, 0, 0.1);padding: 5px 0;cursor: pointer" v-if="showAddDepartmentFlag" @click="goAddDepartment">添加内设机构</div>
+                <div style="padding: 5px 0;cursor: pointer" v-if="showAddUnitFlag" @click="goAddUnit">添加单位</div>
+              </div>
+              <el-button class="add-btn" slot="reference">添加下级</el-button>
+            </el-popover>
             <!--下级列表-->
             <content-list
               v-if="activeName === '下级设置'"
@@ -53,20 +63,23 @@
                 </template>
               </el-table-column>
               <el-table-column prop="state" label="审核状态" width="100" align="center">
-                <template  slot-scope="scope">
+                <template slot-scope="scope">
                   <span v-show="scope.row.state === 0" style="color: #F56C6C">待审核</span>
                   <span v-show="scope.row.state === 1" style="color: #67C23A">已审核</span>
                 </template>
               </el-table-column>
               <el-table-column prop="act" label="操作" width="100" align="center">
                 <template slot-scope="scope">
-                  <el-button v-show="scope.row.nodeType === 1" @click.native="openEditNode(scope.row)" type="text" size="small">
+                  <el-button v-show="scope.row.nodeType === 1" @click.native="openEditNode(scope.row)" type="text"
+                             size="small">
                     修改
                   </el-button>
-                  <el-button v-show="scope.row.nodeType === 3" @click.native="openDepartmentEdit(scope.row)" type="text" size="small">
+                  <el-button v-show="scope.row.nodeType === 3" @click.native="openDepartmentEdit(scope.row)" type="text"
+                             size="small">
                     修改
                   </el-button>
-                  <el-button v-show="scope.row.nodeType === 2" @click.native="openEditUnit(scope.row)" type="text" size="small">
+                  <el-button v-show="scope.row.nodeType === 2" @click.native="openEditUnit(scope.row)" type="text"
+                             size="small">
                     修改
                   </el-button>
                 </template>
@@ -92,6 +105,7 @@
               :content-id="content[0].bindId"
               @getPage="getPage"
               :nodeInfo="nodeInfo"
+              :nodeData="nodeData"
             ></leader-list>
           </el-tab-pane>
         </el-tabs>
@@ -107,6 +121,7 @@ import ContentList from '../components/ContentList/index'
 import PersonList from '../components/PersonList/index'
 import leaderList from '../components/LeaderList/index'
 import { mapState, mapMutations } from 'vuex'
+
 export default {
   name: 'OrganizationContent',
   mixins: [organizationEdit],
@@ -129,6 +144,7 @@ export default {
       showAddDepartmentFlag: false,
       showAddUnitFlag: false,
       labelList: [],
+      nodeData: {}, // 用于弹窗
       nodeInfo: {
         title: '',
         openNodeFlag: false,
@@ -239,6 +255,7 @@ export default {
       api[urlNames['findViewNodeById']]({
         id: this.contentId
       }).then((res) => {
+        this.nodeData = res.data
         this.content[0] = res.data
         this.nodeType = res.data.nodeType
         this.selectType = this.content.nodeType
@@ -247,11 +264,11 @@ export default {
         this.loading = false
         if (this.content[0].bindId) {
           /* if (this.content[0].nodeType === 2) {
-            this.findLabel(1)
-          }
-          if (this.content[0].nodeType === 3) {
-            this.findLabel(2)
-          } */
+              this.findLabel(1)
+            }
+            if (this.content[0].nodeType === 3) {
+              this.findLabel(2)
+            } */
         }
         if (this.content[0].nodeType === 1) {
           this.showAddNodeFlag = true
@@ -284,7 +301,10 @@ export default {
     },
     // 跳转日志
     toLogData () {
-      this.$router.push({ path: `/organization/operate-log/${this.$route.params.nodeId}`, query: { type: this.nodeInfo.nodeType, title: `${this.content[0].name}` } })
+      this.$router.push({
+        path: `/organization/operate-log/${this.$route.params.nodeId}`,
+        query: { type: this.nodeInfo.nodeType, title: `${this.content[0].name}` }
+      })
     }
   },
   watch: {

@@ -65,13 +65,12 @@ export default {
     passExamine (form) {
       this.$refs[form].validate((valid) => {
         if (valid) {
-          let obj = {
+          this.$emit('close')
+          api[urlNames['saveAudit']]({
             message: this.form.desc,
             auditResult: this.auditResult,
             id: this.$route.params.id
-          }
-          this.$emit('close')
-          api[urlNames['saveAudit']](obj).then((res) => {
+          }).then((res) => {
             if (res && res.message === 'success') {
               this.$message({
                 message: '审批成功',

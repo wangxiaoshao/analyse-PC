@@ -135,7 +135,8 @@ export default {
    */
   // 查询通讯录视图
   getAddressListTree: 'getAddressListTree',
-
+  searchMyDep: 'searchMyDep', // 关键字搜索部门/单位
+  searchOtherDep: 'searchOtherDep',
   // 通讯录-查询单位下员
   getAddressListOrganizationMembers: 'getAddressListOrganizationMembers',
   // 通讯录-查询部门下人员
@@ -173,5 +174,6 @@ export default {
   getSystemParameterlevel: 'getSystemParameterlevel', // 配置级别的配置信息
   findEntityChangeLoggerList: 'findEntityChangeLoggerList', // 操作日志
   exportUser: 'exportUser', // 导出用户
-  importUser: 'importUser' // 导入用户
+  importUser: 'importUser', // 导入用户
+  logoutUrl: 'logoutUrl' // 登出地址
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="create-group">
     <el-dialog
-      title="创建分组"
+      :title="creatTitle"
       custom-class="right-dialog"
       :visible.sync="creategroupdialogVisible"
       :fullscreen="true"
@@ -15,8 +15,8 @@
           <el-form-item label="分组描述">
             <el-input v-model="groupFrom.description"></el-input>
           </el-form-item>
-          <el-form-item label="选择单位">
-            <el-select v-model="groupFrom.ownerType" placeholder="请选类型">
+          <el-form-item label="分组所属">
+            <el-select v-model="groupFrom.ownerType" placeholder="请选分组所属">
               <el-option label="本单位" :value="1"></el-option>
               <el-option label="本部门" :value="2"></el-option>
               <el-option label="本人" :value="3"></el-option>
@@ -40,7 +40,7 @@ import { api, urlNames } from '@src/api'
 
 export default {
   name: 'CreateGroupDialog',
-  props: ['creategroupdialogVisible', 'groupFrom'],
+  props: ['creategroupdialogVisible', 'groupFrom', 'creatTitle'],
   data () {
     return {
       rules: {
@@ -78,7 +78,7 @@ export default {
           ownerType: this.groupFrom.ownerType, // 1用户、2部门、3单位
           name: this.groupFrom.name,
           description: this.groupFrom.description,
-          removed: this.groupFrom.removed
+          removed: this.groupFrom.removed ? 0 : 1
         }).then((res) => {
           if (res.status === 0) {
             this.colseDialog()

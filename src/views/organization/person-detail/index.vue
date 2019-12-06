@@ -233,11 +233,11 @@ export default {
     // 绑定身份
     getPost (val) {
       this.userInfo.identity = val
-      console.log(val)
     },
     // 获取账号
     getAccount (val) {
       // this.userInfo.userAccount = val
+      console.log(JSON.parse(JSON.stringify(val)), '11111111----111157955-----11111')
       this.userInfo.userAccount = val
       this.submitForm()
     },

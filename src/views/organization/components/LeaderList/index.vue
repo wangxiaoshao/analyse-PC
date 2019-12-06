@@ -1,10 +1,13 @@
 <template>
   <div class="leader-list-content">
-    <candidate-dialog
-      :seleceDialog="selectDialog"
-      @dialogReturnMembersInfo="dialogReturnMembersInfo"
-      @closeselectMenmber="closeselectMenmber">
-    </candidate-dialog>
+<!--    <candidate-dialog-->
+<!--      :seleceDialog="selectDialog"-->
+<!--      @dialogReturnMembersInfo="dialogReturnMembersInfo"-->
+<!--      @closeselectMenmber="closeselectMenmber">-->
+<!--    </candidate-dialog>-->
+    <select-members :seleceDialog="selectDialog"
+    @dialogReturnMembersInfo="dialogReturnMembersInfo"
+    @closeselectMenmber="closeselectMenmber"></select-members>
     <el-dialog
       title="确认删除"
       :visible.sync="dialogVisible"
@@ -127,10 +130,11 @@ import CandidateDialog from '@src/components/CandidateDialog/index'
 import Sortable from 'sortablejs'
 import handleTable from '@src/mixins/handle-table'
 import { api, urlNames } from '@src/api'
+import SelectMembers from '@src/components/SelectMembers/index'
 export default {
   mixins: [handleTable],
-  props: ['nodeInfo', 'contentId'],
-  components: { CandidateDialog },
+  props: ['nodeInfo', 'contentId', 'nodeData'],
+  components: { CandidateDialog, SelectMembers },
   data () {
     return {
       dialogVisible: false,
@@ -140,11 +144,14 @@ export default {
       userVoList: [],
       personList: [],
       selectDialog: {
-        selectMenmberTitle: '选择单位', // 选人组件标题
+        nodeInfo: this.nodeData,
+        selectMenmberTitle: '选择领导', // 选人组件标题
         selectMenmberFlag: false, // 显示弹窗，
         isAllData: true, // 是否需完整数据-默认为不需要（false，只包含用户id）
-        notOnlyPerson: true, // 是否只选人，默认为false（只选人），true可以选择单位和部门
-        isSingleSelect: false // 是否为单选框  false为多选（默认），true为单选
+        notOnlyPerson: true, // 选人，默认为false（只选人）
+        isSingleSelect: false, // 是否为单选框  false为多选（默认）-人员单选(与notOnlyPerson一起使用，notOnlyPerson为true是有效
+        isSingleOrgSelect: false, // 是否为单选框  false为多选（默认），true为单选(与isOnlyOrg一起使用，isOnlyOrg为true时部门/单位单选)
+        isOnlyOrg: false //  是否选部门/单位 true为选部门
       },
       learderType: 1,
       mainLeaderList: [],
@@ -194,8 +201,9 @@ export default {
     },
     // 选人弹窗组件返回的人员信息
     dialogReturnMembersInfo (data) {
+      console.log(data, 'data')
       // 主要领导1，其他领导2
-      if (!JSON.parse(JSON.stringify(data)).length) {
+      if (this.learderType === 1) {
         let obj = {
           uid: JSON.parse(JSON.stringify(data))[0].uid,
           leaderType: this.learderType

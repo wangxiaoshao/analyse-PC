@@ -4,15 +4,15 @@
 import axios from 'axios'
 import { Loading, Message, MessageBox } from 'element-ui'
 import { urlPrefix } from './url-prefix'
-
 /**
  * 封装http异常
  * @param {object} resp - axios抛出的对象
  * @return {{messageCode: string, message: string}}
  */
 function wrapperHttpException (resp) {
+  console.log(resp.data.message, 'this.orgList')
   return {
-    message: '服务繁忙，请稍后再试',
+    message: resp.data.message,
     messageCode: 'NETWORK_FAILED',
     status: resp.status,
     statusText: resp.statusText
@@ -95,10 +95,29 @@ const appLogin = () => {
     })
   }
 }
+function dowloadFile (response) {
+  let headers = response.headers
+  let title = headers['content-disposition'].split('=')[1]
+  if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+    let blob = new Blob([response.data])
+    window.navigator.msSaveOrOpenBlob(blob, `${title}`)
+  } else {
+    let blob = new Blob([response.data], { type: headers['Content-Type'] })
+    let downloadElement = document.createElement('a')
+    let href = window.URL.createObjectURL(blob)
+    downloadElement.href = href
+    downloadElement.download = `${title}`
+    document.body.appendChild(downloadElement)
+    downloadElement.click()
+    document.body.removeChild(downloadElement)
+    window.URL.revokeObjectURL(href)
+  }
+}
 // response interceptor
 axios.interceptors.response.use((response) => {
   const { config, data } = response
   const contentType = response.headers['content-type'] || ''
+  const responseType = response.config.headers['Response-Type'] || ''
   const jsonLikeReg = /^application\/json/i
 
   // 判断单点登录未登录状态
@@ -136,6 +155,9 @@ axios.interceptors.response.use((response) => {
         return Promise.reject(response)
       }
     }
+  } else if (responseType) {
+    // return Promise.resolve(response.data)文件下载
+    dowloadFile(response)
   } else {
     Message({
       message: data.message || '服务器异常，请稍后重试',

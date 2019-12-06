@@ -29,7 +29,7 @@ export default {
     mock: 'examine/getInfoConfirmList.json'
   },
   [urlNames.insertConfirmInfo]: { // 信息确认
-    type: 'post',
+    type: 'get',
     url: '/api/jg_manage/confirmation/insertConfirmationOrgAndMember',
     keepOriginResponse: true,
     showLoading: true,
@@ -62,6 +62,9 @@ export default {
     type: 'post',
     url: '/api/jg_manage/audit/saveAudit',
     showLoading: true,
+    headers: {
+      'Content-Type': 'application/json'
+    },
     keepOriginResponse: true,
     serve: 'organizationManagePC',
     mock: 'examine/saveAudit.json'

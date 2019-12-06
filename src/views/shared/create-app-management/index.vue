@@ -46,7 +46,7 @@
         <el-col :span="12">
           <div class="grid-content bg-purple-light">
             <el-form-item label="接口账号密码" prop="apiPassword">
-              <el-input maxlength="18"  minlength="6" placeholder="请输入接口账号6-18位密码" v-model="appFrom.apiPassword" show-password></el-input>
+              <el-input maxlength="28"  minlength="6" placeholder="请输入接口账号6-18位密码" v-model="appFrom.apiPassword" show-password></el-input>
             </el-form-item>
           </div>
         </el-col>
@@ -248,6 +248,7 @@ export default {
         id: id
       }).then((res) => {
         this.appFrom = res.data
+        this.appFrom.removed = !res.data.removed
       })
     },
     // 搜索选择

@@ -467,7 +467,7 @@ export default {
         id: id
       }).then((res) => {
         this.ViewFrom.name = res.data.name
-        this.ViewFrom.removed = res.data.removed
+        this.ViewFrom.removed = !res.data.removed
         this.ViewFrom.roleBindUserIds = []
         res.data.list.forEach(item => {
           this.ViewFrom.roleBindUserIds.push(item.uid)

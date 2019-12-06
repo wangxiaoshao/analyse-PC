@@ -65,13 +65,13 @@
               </div>
             </div>
           </el-form-item>
-          <el-form-item label="职务" prop="professionalTitle" :rules="[{ required: true, message: '职务不能为空'}]">
+          <el-form-item label="职务" prop="dutyName" :rules="dutyName">
             <el-input
               placeholder="请输入职务"
-              v-model="userDetail.professionalTitle"></el-input>
+              v-model="postDetail.dutyName"></el-input>
             <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
               <div class="tip-msg"
-                   v-show="this.app.option.options.userAuditFields.indexOf('professionalTitle') > -1 && userDetail.professionalTitle !== oldUserInfo.user.professionalTitle">
+                   v-show="this.app.option.options.userAuditFields.indexOf('dutyName') > -1 && postDetail.dutyName !== oldUserInfo.identity.dutyName">
                 添加或修改该字段需要提交审核
               </div>
             </div>
@@ -120,8 +120,9 @@
               <el-upload
                 :disabled="disabledFlag"
                 class="avatar-uploader"
-                :action="'http://' + uploadHost + '/api/jg_manage/image/upload'"
+                :action="'http://' + uploadHost + '/api/jg_manage/image/upload?_='+downloadBinaryFile()[0]+'&sign='+downloadBinaryFile()[1]"
                 :show-file-list="false"
+                name="files"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload">
                 <img v-if="personFrom.portraitUrl" :src="personFrom.portraitUrl" class="avatar">
@@ -382,15 +383,17 @@
 import { api, urlNames } from '@src/api'
 import addTags from '../AddTags/index'
 import dicOption from '@src/mixins/dic-options.js'
+import uploadFile from '@src/mixins/uploadFile.js'
 import { mapState, mapMutations } from 'vuex'
 export default {
   props: ['disabledFlag', 'isShowEditFlag', 'userDetail', 'postDetail', 'isDefaultFlag', 'userAuditFields', 'oldUserInfo', 'labelId', 'labelList'],
-  mixins: [dicOption],
+  mixins: [dicOption, uploadFile],
   components: {
     addTags
   },
   data () {
     return {
+      uploadUrl: '',
       uploadHost: window.location.host,
       openSearchFlag: false,
       option: [],
@@ -411,7 +414,12 @@ export default {
         type: 3 // 1.单位，2、部门，3、人员
       },
       timer: null,
-      showPopoverFlag: false
+      showPopoverFlag: false,
+      rules: {
+        dutyName: [
+          { required: true, message: '职务不能为空' }
+        ]
+      }
     }
   },
   created () {

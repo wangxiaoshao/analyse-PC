@@ -1,11 +1,16 @@
 <template>
   <div class="content-list">
     <!--选择单位/部门-->
-    <candidate-dialog
+<!--    <candidate-dialog-->
+<!--      :seleceDialog="selectDialog"-->
+<!--      @dialogReturnMembersInfo="dialogReturnMembersInfo"-->
+<!--      @closeselectMenmber="closeselectMenmber">-->
+<!--    </candidate-dialog>-->
+    <select-members
       :seleceDialog="selectDialog"
       @dialogReturnMembersInfo="dialogReturnMembersInfo"
-      @closeselectMenmber="closeselectMenmber">
-    </candidate-dialog>
+       @closeselectMenmber="closeselectMenmber">
+    </select-members>
     <!--解除兼职-->
     <el-dialog
       title="填写解除挂职说明"
@@ -150,10 +155,12 @@ import Sortable from 'sortablejs'
 import handleTable from '@src/mixins/handle-table'
 import { api, urlNames } from '@src/api'
 import organizationEdit from '@src/mixins/organization'
+import SelectMembers from '@src/components/SelectMembers/index'
+import downloadBinaryFile from '@src/mixins/downloadBinaryFile'
 export default {
-  mixins: [handleTable, organizationEdit],
+  mixins: [handleTable, organizationEdit, downloadBinaryFile],
   props: ['contentPage', 'id', 'sortFlag', 'type', 'exportData'],
-  components: { CandidateDialog },
+  components: { CandidateDialog, SelectMembers },
   data () {
     return {
       formFile: {}, // 文件form表单
@@ -192,11 +199,11 @@ export default {
         ]
       },
       selectDialog: {
-        selectMenmberTitle: '选择单位或部门', // 选人组件标题
+        selectMenmberTitle: '选择调出单位或部门', // 选人组件标题
         selectMenmberFlag: false, // 显示弹窗，
         isAllData: true, // 是否需完整数据-默认为不需要（false，只包含用户id）
-        notOnlyPerson: true, // 是否选人，默认为false（只选人）
-        isSingleSelect: true, // 是否为单选框  false为多选（默认）-人员单选
+        notOnlyPerson: false, // 是否选人，默认为false（只选人）
+        isSingleSelect: false, // 是否为单选框  false为多选（默认）-人员单选
         isSingleOrgSelect: true, // 是否为单选框  false为多选（默认），true为单选(isOnlyOrg为true时部门/单位单选)
         isOnlyOrg: true
       }
@@ -251,6 +258,7 @@ export default {
       })
     },
     getGrid () {
+      this.cancelSort()
       this.loading = true
       // let bindId = this.$route.params.bindId
       if (this.type === 3) {
@@ -409,33 +417,35 @@ export default {
     // 打开选人组件
     addMainLeader () {
       this.selectDialog.selectMenmberFlag = true
-      this.selectDialog.isSingleSelect = true
-      this.selectDialog.notOnlyPerson = true
+      this.selectDialog.isSingleSelect = false
+      this.selectDialog.notOnlyPerson = false
+      this.selectDialog.isSingleOrgSelect = true
+      this.selectDialog.isOnlyOrg = true
       this.selectDialog.isAllData = true
     },
     exportUser () {
       let host = window.location.href.split('#')[0]
-      if (this.type === 2) {
-        window.open(`${host}/api/jg_manage/user/exportUser?orgId=${this.id}`)
-        // api[urlNames['exportUser']]({
-        //   orgId: this.id
-        // }).then((res) => {
-        //   console.log(res.data)
-        //   window.open(res.data)
-        //   console.log(res)
-        // }, (error) => {
-        // })
-      }
-      if (this.type === 3) {
-        window.open(`${host}/api/jg_manage/user/exportUser?deptId=${this.id}`)
-        // api[urlNames['exportUser']]({
-        //   orgId: this.id,
-        //   deptId: this.id
-        // }).then((res) => {
-        //   console.log(res)
-        // }, (error) => {
-        // })
-      }
+      this.downloadBinaryFile(host, this.id, this.type)
+      // if (this.type === 2) {
+      //   downloadBinaryFile(host, { orgId: this.id })
+      //   // window.open(`${host}/api/jg_manage/user/exportUser?orgId=${this.id}_=${(new Date()).getTime()}`)
+      //   // api[urlNames['exportUser']]({
+      //   //   orgId: this.id
+      //   // }).then((res) => {
+      //   // }, (error) => {
+      //   // })
+      // }
+      // if (this.type === 3) {
+      //   downloadBinaryFile(host, { deptId: this.id, orgId: this.id })
+      //   // window.open(`${host}/api/jg_manage/user/exportUser?deptId=${this.id}`)
+      //   // api[urlNames['exportUser']]({
+      //   //   orgId: this.id,
+      //   //   deptId: this.id
+      //   // }).then((res) => {
+      //   //   console.log(res)
+      //   // }, (error) => {
+      //   // })
+      // }
     }
   },
   watch: {

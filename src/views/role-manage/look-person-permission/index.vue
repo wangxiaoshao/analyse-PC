@@ -10,11 +10,12 @@
         <el-button type="primary" @click="deleteRoleBindUser">确 定</el-button>
       </span>
       </el-dialog>
-      <candidate-dialog
-        :seleceDialog="selectDialog"
-        @dialogReturnMembersInfo="dialogReturnMembersInfo"
-        @closeselectMenmber="closeselectMenmber">
-      </candidate-dialog>
+<!--      <candidate-dialog-->
+<!--        :seleceDialog="selectDialog"-->
+<!--        @dialogReturnMembersInfo="dialogReturnMembersInfo"-->
+<!--        @closeselectMenmber="closeselectMenmber">-->
+<!--      </candidate-dialog>-->
+      <select-members :seleceDialog="selectDialog" @dialogReturnMembersInfo="dialogReturnMembersInfo" @closeselectMenmber="closeselectMenmber"></select-members>
       <div class="button-wrap">
         <el-button type="primary" @click="openselectMenmber">添加人员</el-button>
         <el-button @click="goPermission">权限配置</el-button>
@@ -63,10 +64,10 @@ import handleTable from '@src/mixins/handle-table'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
 import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
-
+import SelectMembers from '@src/components/SelectMembers/index'
 export default {
   mixins: [handleTable, handleBreadcrumb],
-  components: { CandidateDialog },
+  components: { SelectMembers },
   data () {
     return {
       list: [],
@@ -74,11 +75,13 @@ export default {
       loading: false,
       setFlag: false,
       selectDialog: {
-        selectMenmberTitle: '选择单位', // 选人组件标题
+        selectMenmberTitle: '添加管理员', // 选人组件标题
         selectMenmberFlag: false, // 显示弹窗，
-        isAllData: true, // 是否需完整数据-默认为不需要（false，只包含用户id）
-        notOnlyPerson: true, // 是否只选人，默认为false（只选人），true可以选择单位和部门
-        isSingleSelect: false // 是否为单选框  false为多选（默认），true为单选
+        isAllData: false, // 是否需完整数据-默认为不需要（false，只包含用户id）
+        notOnlyPerson: true, // 是否选人，默认为false（只选人）
+        isSingleSelect: false, // 是否为单选框  false为多选（默认）-人员单选(与notOnlyPerson一起使用，notOnlyPerson为true是有效
+        isSingleOrgSelect: false, // 是否为单选框  false为多选（默认），true为单选(与isOnlyOrg一起使用，isOnlyOrg为true时部门/单位单选)
+        isOnlyOrg: false //  是否选部门/单位 false为不是只选部门，true为只选部门
       },
       userId: [],
       dialogVisible: false
@@ -173,26 +176,28 @@ export default {
     getSetFlag (val) {
       this.setFlag = val
     },
-    dialogReturnMembersInfo (data) {
-      console.log(JSON.parse(JSON.stringify(data)))
-      JSON.parse(JSON.stringify(data)).forEach((item) => {
-        let obj = {
-          uid: item.uid
-        }
-        this.userId.push(obj)
-      })
-      // 保存
-      if (JSON.parse(JSON.stringify(data)) !== []) {
-        api[urlNames['saveRoleBindUser']]({
-          id: this.$route.params.id,
-          userList: this.userId
-        }).then((res) => {
-          this.$message.success(`添加成功`)
-          this.getGrid()
-          console.log(res)
-        }, (error) => {
-          this.$message.error(`保存失败，请重试`)
+    dialogReturnMembersInfo (data, flag) {
+      if (flag === 0) {
+        console.log(JSON.parse(JSON.stringify(data)))
+        JSON.parse(JSON.stringify(data)).forEach((item) => {
+          let obj = {
+            uid: item
+          }
+          this.userId.push(obj)
         })
+        // 保存
+        if (JSON.parse(JSON.stringify(data)) !== []) {
+          api[urlNames['saveRoleBindUser']]({
+            id: this.$route.params.id,
+            userList: this.userId
+          }).then((res) => {
+            this.$message.success(`添加成功`)
+            this.getGrid()
+            console.log(res)
+          }, (error) => {
+            this.$message.error(`保存失败，请重试`)
+          })
+        }
       }
     }
   }

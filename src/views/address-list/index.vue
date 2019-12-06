@@ -7,7 +7,7 @@
             <div class="top-one" :class="activeColor==1?'top-active':''" @click="onChange(1)">本单位通讯录</div>
             <div class="top-two" :class="activeColor==2?'top-active':''" @click="onChange(2)">其他单位通讯录</div>
           </div>
-         <search-result :myOrgFlag="activeColor" :defaultNodeId="defaultNodeId"></search-result>
+         <search-result @searchMyBack="searchMyBack" @searchListResult="searchListResult" :myOrgFlag="activeColor" :defaultNodeId="defaultNodeId"></search-result>
          <div class="tree-content">
            <address-list-tree :tree-list="treeList" @handle-node-click="handleNodeClickTree"></address-list-tree>
          </div>
@@ -76,7 +76,7 @@ export default {
      * 切换通讯录
      */
     onChange (e) {
-      this.activeColor = e,
+      this.activeColor = e
       this.isShow = e
       if (e === 1) {
         // alert(this.app.option.user.orgId)
@@ -113,7 +113,22 @@ export default {
         this.handleNodeClickTree(this.treeList[0])
       })
     },
-
+    // 搜索返回数据点击
+    searchListResult (data) {
+      this.treeList = this.departmentList = []
+      this.getAddressListDepartmentMembers(data.id)
+    },
+    // 我的搜索返回
+    searchMyBack () {
+      this.getAddressListUnitTree()
+      this.getAddressListOrganizationMembers()
+      this.getAddressListdepartment()
+    },
+    // 其他单位
+    searchOtherBack () {
+      this.getAddressListOthertTree()
+      this.getAddressListOrganizationMembers()
+    },
     /** 点击树节点显示内容 */
     handleNodeClickTree (node) {
       this.navigation = []
@@ -124,7 +139,6 @@ export default {
       } else if (node.nodeType === 2) {
         this.getAddressListOrganizationMembers(node.id)
       }
-
       this.getAddressListdepartment(node.id)
     },
     handleChildClick (node) {
@@ -168,7 +182,7 @@ export default {
       this.navigation.splice(index + 1, len - index + 1)
       this.getAddressListdepartment(depid)
       this.getAddressListOrganizationMembers(depid.id)
-      this.getAddressListDepartmentMembers(id)
+      this.getAddressListDepartmentMembers(depid.id)
     },
 
     /** 人员搜索 */

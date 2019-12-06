@@ -153,6 +153,16 @@ export default {
     keepOriginResponse: false,
     mock: 'getAppList.json'
   },
+
+  /**
+   * 获取登出地址
+   */
+  [urlNames.logoutUrl]: {
+    type: 'get',
+    url: '/api/jg_manage/logout/logout',
+    serve: 'organizationManagePC',
+    keepOriginResponse: false
+  },
   // 应用管理
   ...application,
   ...examine, // 申请审核

@@ -148,6 +148,7 @@ export default {
       this.$emit('getPage', this.contentPage)
     },
     getGrid () {
+      this.cancelSort()
       let data = {
         page: this.contentPage.current,
         parentId: this.nodeId,
