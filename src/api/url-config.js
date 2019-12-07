@@ -13,6 +13,7 @@ import shared from './modules/shared-management'
 import addressBook from './modules/address-book'
 import addressList from './modules/address-list'
 import roleManage from './modules/role-manage'
+
 export default {
   [urlNames.getUserInfo]: {
     type: 'get',
@@ -153,7 +154,15 @@ export default {
     keepOriginResponse: false,
     mock: 'getAppList.json'
   },
-
+  /*
+  *选人组件搜索人员 */
+  [urlNames.searchMember]: {
+    type: 'get',
+    url: '/api/jg_manage/user/findUserByParams',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    serve: 'organizationManagePC',
+    mock: '/findUserByParams.json' // development模式下，本地mock数据
+  },
   /**
    * 获取登出地址
    */

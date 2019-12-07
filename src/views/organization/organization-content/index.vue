@@ -17,6 +17,9 @@
         <i v-if="content[0].nodeType === 2" class="imenu-icon fa fa-building-o big-icon" style="margin: 0px 5px;"></i>
         <i v-if="content[0].nodeType === 3" class="imenu-icon fa fa-institution big-icon" style="margin: 0px 5px;"></i>
         <span class="organization-value" v-html="content[0].name"></span>
+        <el-button v-if="content[0].nodeType === 1" @click.native="openEditNode(content[0])">设置</el-button>
+        <el-button v-if="content[0].nodeType === 2" @click.native="openEditUnit(content[0])" >设置</el-button>
+        <el-button v-if="content[0].nodeType === 3" @click.native="openDepartmentEdit(content[0])">设置</el-button>
         <el-button @click="toLogData">日志</el-button>
       </div>
       <!-- <div class="label-content">
@@ -49,7 +52,7 @@
               :contentPage="currentPage"
             ></content-list>
           </el-tab-pane>
-          <el-tab-pane label="详细信息" name="详细信息" v-if="content[0]">
+          <el-tab-pane label="详细信息" name="详细信息" v-if="content[0]===0">
             <el-table
               :data="content"
               border
@@ -66,6 +69,7 @@
                 <template slot-scope="scope">
                   <span v-show="scope.row.state === 0" style="color: #F56C6C">待审核</span>
                   <span v-show="scope.row.state === 1" style="color: #67C23A">已审核</span>
+                  <span v-show="scope.row.state === 2" style="color: #67C23A">正常</span>
                 </template>
               </el-table-column>
               <el-table-column prop="act" label="操作" width="100" align="center">

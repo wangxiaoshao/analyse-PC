@@ -201,7 +201,11 @@ export default {
     },
     // 选人弹窗组件返回的人员信息
     dialogReturnMembersInfo (data) {
-      console.log(data, 'data')
+      if (data.length === 0) {
+        this.$message.info('您没有选择领导')
+        return false
+      }
+      console.log(JSON.parse(JSON.stringify(data)), '----------------------data')
       // 主要领导1，其他领导2
       if (this.learderType === 1) {
         let obj = {
@@ -232,6 +236,7 @@ export default {
           this.$message.error(`保存失败，请重试`)
         })
       }
+      this.personList = []
     },
     // 关闭选人弹窗
     closeselectMenmber () {

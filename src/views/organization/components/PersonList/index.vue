@@ -370,8 +370,9 @@ export default {
             this.calloutFlag = false
             this.getGrid()
             this.fromInit()
+            this.formCallout.deptId = this.formCallout.orgId = ''
+            this.orgName = this.depName = ''
           }, (error) => {
-
           })
         }
       })
@@ -392,15 +393,15 @@ export default {
       })
     },
     // 选人弹窗组件返回的人员信息
-    dialogReturnMembersInfo (data, id) {
-      if (id[0].nodeType === 2) {
-        this.formCallout.orgId = id[0].bindId
-        this.orgName = id[0].name
+    dialogReturnMembersInfo (data) {
+      if (data[0].nodeType === 2) {
+        this.formCallout.orgId = data[0].bindId
+        this.orgName = data[0].name
       }
-      if (id[0].nodeType === 3) {
-        this.formCallout.deptId = id[0].bindId
+      if (data[0].nodeType === 3) {
+        this.formCallout.deptId = data[0].bindId
         api[urlNames['findDepartmentById']]({
-          id: id[0].bindId
+          id: data[0].bindId
         }).then((res) => {
           console.log(33333, res.data)
           this.formCallout.orgId = res.data.orgId
@@ -409,6 +410,8 @@ export default {
         }, (error) => {
         })
       }
+      // this.orgName = res.data.orgName
+      // this.depName
     },
     // 关闭选人弹窗
     closeselectMenmber () {

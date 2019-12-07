@@ -272,5 +272,11 @@ export default {
     url: '/api/jg_manage/import/userImport',
     keepOriginResponse: true, // 是否保留后端返回数据格式
     serve: 'organizationManagePC'
+  },
+  [urlNames.deleteUserLabelOrDeptLabelOrOrgLabel]: {
+    type: 'get',
+    url: 'api/jg_manage/label/deleteUserLabelOrDeptLabelOrOrgLabel',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    serve: 'organizationManagePC'
   }
 }

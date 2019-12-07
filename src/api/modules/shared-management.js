@@ -97,6 +97,15 @@ export default {
     keepOriginResponse: false
   },
   /**
+   * 删除视图管理员
+   */
+  [urlNames.deleteViewAdmin]: {
+    type: 'get',
+    url: '/api/jg_manage/view/deleteViewAdmin',
+    serve: 'organizationManagePC',
+    keepOriginResponse: false
+  },
+  /**
    创建应用
    */
   [urlNames.createApp]: {

@@ -133,10 +133,14 @@ export default {
     closeselectMenmber () {
       this.seleceDialog.selectMenmberFlag = false
     },
-    dialogReturnMembersInfo (Data, flag) {
+    dialogReturnMembersInfo (data, flag) {
+      if (data.length === 0) {
+        this.$message.info('您没有选择成员')
+        return false
+      }
       // flag===1 单位
       if (flag === 1) {
-        Data.forEach(item => {
+        data.forEach(item => {
           let type = 2
           if (item.nodeType === 2) {
             type = 3
@@ -150,7 +154,7 @@ export default {
           })
         })
       } else if (flag === 0) {
-        Data.forEach(item => {
+        data.forEach(item => {
           this.groupMemberInfo.push({
             memberId: item.uid,
             memberType: 1,

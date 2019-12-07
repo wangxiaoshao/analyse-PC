@@ -96,7 +96,6 @@ export default {
           mobile2: '',
           name: '',
           professionalTitle: '',
-          type: null,
           userState: null,
           userType: null,
           ext01: '',
@@ -159,6 +158,7 @@ export default {
         id: id
       }).then((res) => {
         // this.userInfo = res.data
+        this.userInfo.userId = res.data.uid
         this.userInfo.user.name = res.data.name
         this.userInfo.user.idcard = res.data.idcard
         this.userInfo.user.mobile = res.data.mobile

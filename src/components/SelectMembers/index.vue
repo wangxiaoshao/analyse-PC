@@ -89,7 +89,7 @@
         </div>
       </div>
       <div class="submit">
-        <el-button type="primary" :disabled="submitDisable" @click="submitBackData">确定</el-button>
+        <el-button type="primary" @click="submitBackData">确定</el-button>
         <el-button @click="handleClose">取消</el-button>
       </div>
     </el-dialog>
@@ -353,6 +353,9 @@ export default {
     handleClose () {
       this.$emit('closeselectMenmber')
       this.goBackTree()
+      this.treeMemberSelected = this.treeOrgSelected = this.treeMemberSelectedAllData = this.treeOrgSelectedAllData = []
+      this.memberList = this.orgList = []
+      this.submitDisable = true
     },
     // 获取搜索结果
     getResult () {
@@ -366,7 +369,7 @@ export default {
         data = {
           name: this.searchKeyWord
         }
-        api[urlNames['findUserByParams']](data).then(res => {
+        api[urlNames['searchMember']](data).then(res => {
           this.gridData = res.data
           this.loadFlag = false
         })

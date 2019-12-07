@@ -34,6 +34,7 @@
         <template slot-scope="scope">
           <span v-show="scope.row.state === 0" style="color: #F56C6C">待审核</span>
           <span v-show="scope.row.state === 1" style="color: #67C23A">已审核</span>
+          <span v-show="scope.row.state === 2" style="color: #67C23A">正常</span>
         </template>
       </el-table-column>
       <el-table-column prop="act" label="操作" width="100" align="center">

@@ -23,135 +23,136 @@
       <el-menu class="el-menu-demo" mode="horizontal">
         <el-menu-item index="1">基础信息</el-menu-item>
       </el-menu>
-     <el-row>
-       <el-col :span="12">
-         <el-form-item label="单位名称" prop="organization.name" :rules="[{ required: true, message: '名称不能为空'}]">
-           <el-input v-model="ruleForm.organization.name"></el-input>
-           <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
-           <div class="tip-msg"
-                v-show="this.app.option.options.orgAuditFields.indexOf('name') > -1 && ruleForm.organization.name !== oldFrom.organization.name">
-             添加或修改该字段需要提交审核
-           </div>
-           </div>
-         </el-form-item>
-         <el-form-item label="单位其他名称" prop="organization.otherName">
-           <el-input v-model="ruleForm.organization.otherName"></el-input>
-           <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
-             <div class="tip-msg"
-                  v-show="this.app.option.options.orgAuditFields.indexOf('otherName') > -1 && ruleForm.organization.otherName !== oldFrom.organization.otherName">
-               添加或修改该字段需要提交审核
-             </div>
-           </div>
-         </el-form-item>
-         <el-form-item label="单位地址" prop="organization.address">
-           <el-input v-model="ruleForm.organization.address"></el-input>
-           <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
-           <div class="tip-msg"
-                v-show="this.app.option.options.orgAuditFields.indexOf('address') > -1 && ruleForm.organization.address !== oldFrom.organization.address">
-             添加或修改该字段需要提交审核
-           </div>
-           </div>
-         </el-form-item>
-         <el-form-item label="传真号码" prop="organization.fax">
-           <el-input v-model="ruleForm.organization.fax"></el-input>
-           <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
-           <div class="tip-msg"
-                v-show="this.app.option.options.orgAuditFields.indexOf('fax') > -1 && ruleForm.organization.fax !== oldFrom.organization.fax">
-             添加或修改该字段需要提交审核
-           </div>
-           </div>
-         </el-form-item>
-         <el-form-item label="统一单位信用编码" prop="organization.creditId">
-           <el-input v-model="ruleForm.organization.creditId" :disabled="true"></el-input>
-         </el-form-item>
-         <el-form-item label=" 上级单位">
-           <el-input v-model="parentName" :disabled="true"></el-input>
-         </el-form-item>
-         <el-form-item label=" 启用状态" prop="organization.removed">
-           <el-switch v-model="ruleForm.organization.removed"></el-switch>
-           <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
-             <div class="tip-msg"
-                  v-show="this.app.option.options.orgAuditFields.indexOf('removed') > -1 && ruleForm.organization.removed !== oldFrom.organization.removed">
-               添加或修改该字段需要提交审核
-             </div>
-           </div>
-         </el-form-item>
-       </el-col>
-       <el-col :span="12">
-         <el-form-item label="单位简称" prop="organization.shortName">
-           <el-input v-model="ruleForm.organization.shortName"></el-input>
-           <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
-             <div class="tip-msg"
-                  v-show="this.app.option.options.orgAuditFields.indexOf('shortName') > -1 && ruleForm.organization.shortName !== oldFrom.organization.shortName">
-               添加或修改该字段需要提交审核
-             </div>
-           </div>
-         </el-form-item>
-         <el-form-item label="单位电话" prop="organization.phone">
-           <el-input v-model="ruleForm.organization.phone"></el-input>
-           <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
-           <div class="tip-msg"
-                v-show="this.app.option.options.orgAuditFields.indexOf('phone') > -1 && ruleForm.organization.phone !== oldFrom.organization.phone">
-             添加或修改该字段需要提交审核
-           </div>
-           </div>
-         </el-form-item>
-         <el-form-item
-           label="邮编"
-           prop="organization.zipCode"
-         >
-           <el-input v-model="ruleForm.organization.zipCode" onkeyup="this.value=this.value.replace(/[^\d.]/g,'');" maxlength="6"></el-input>
-           <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
-           <div class="tip-msg"
-                v-show="this.app.option.options.orgAuditFields.indexOf('zipCode') > -1 && ruleForm.organization.zipCode !== oldFrom.organization.zipCode">
-             添加或修改该字段需要提交审核
-           </div>
-           </div>
-         </el-form-item>
-         <el-form-item label="所属区域" prop="areaId">
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="单位名称" prop="organization.name" :rules="[{ required: true, message: '名称不能为空'}]">
+            <el-input v-model="ruleForm.organization.name"></el-input>
+            <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
+              <div class="tip-msg"
+                   v-show="this.app.option.options.orgAuditFields.indexOf('name') > -1 && ruleForm.organization.name !== oldFrom.organization.name">
+                添加或修改该字段需要提交审核
+              </div>
+            </div>
+          </el-form-item>
+          <el-form-item label="单位其他名称" prop="organization.otherName">
+            <el-input v-model="ruleForm.organization.otherName"></el-input>
+            <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
+              <div class="tip-msg"
+                   v-show="this.app.option.options.orgAuditFields.indexOf('otherName') > -1 && ruleForm.organization.otherName !== oldFrom.organization.otherName">
+                添加或修改该字段需要提交审核
+              </div>
+            </div>
+          </el-form-item>
+          <el-form-item label="单位地址" prop="organization.address">
+            <el-input v-model="ruleForm.organization.address"></el-input>
+            <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
+              <div class="tip-msg"
+                   v-show="this.app.option.options.orgAuditFields.indexOf('address') > -1 && ruleForm.organization.address !== oldFrom.organization.address">
+                添加或修改该字段需要提交审核
+              </div>
+            </div>
+          </el-form-item>
+          <el-form-item label="传真号码" prop="organization.fax">
+            <el-input v-model="ruleForm.organization.fax"></el-input>
+            <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
+              <div class="tip-msg"
+                   v-show="this.app.option.options.orgAuditFields.indexOf('fax') > -1 && ruleForm.organization.fax !== oldFrom.organization.fax">
+                添加或修改该字段需要提交审核
+              </div>
+            </div>
+          </el-form-item>
+          <el-form-item label="统一单位信用编码" prop="organization.creditId">
+            <el-input v-model="ruleForm.organization.creditId" :disabled="true"></el-input>
+          </el-form-item>
+          <el-form-item label=" 上级单位">
+            <el-input v-model="parentName" :disabled="true"></el-input>
+          </el-form-item>
+          <el-form-item label=" 启用状态" prop="organization.removed">
+            <el-switch v-model="ruleForm.organization.removed"></el-switch>
+            <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
+              <div class="tip-msg"
+                   v-show="this.app.option.options.orgAuditFields.indexOf('removed') > -1 && ruleForm.organization.removed !== oldFrom.organization.removed">
+                添加或修改该字段需要提交审核
+              </div>
+            </div>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="单位简称" prop="organization.shortName">
+            <el-input v-model="ruleForm.organization.shortName"></el-input>
+            <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
+              <div class="tip-msg"
+                   v-show="this.app.option.options.orgAuditFields.indexOf('shortName') > -1 && ruleForm.organization.shortName !== oldFrom.organization.shortName">
+                添加或修改该字段需要提交审核
+              </div>
+            </div>
+          </el-form-item>
+          <el-form-item label="单位电话" prop="organization.phone">
+            <el-input v-model="ruleForm.organization.phone"></el-input>
+            <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
+              <div class="tip-msg"
+                   v-show="this.app.option.options.orgAuditFields.indexOf('phone') > -1 && ruleForm.organization.phone !== oldFrom.organization.phone">
+                添加或修改该字段需要提交审核
+              </div>
+            </div>
+          </el-form-item>
+          <el-form-item
+            label="邮编"
+            prop="organization.zipCode"
+          >
+            <el-input v-model="ruleForm.organization.zipCode" onkeyup="this.value=this.value.replace(/[^\d.]/g,'');"
+                      maxlength="6"></el-input>
+            <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
+              <div class="tip-msg"
+                   v-show="this.app.option.options.orgAuditFields.indexOf('zipCode') > -1 && ruleForm.organization.zipCode !== oldFrom.organization.zipCode">
+                添加或修改该字段需要提交审核
+              </div>
+            </div>
+          </el-form-item>
+          <el-form-item label="所属区域" prop="areaId">
             <!--选择区域组件-->
-           <el-input v-model="ruleForm.areaId" style="display: none"></el-input>
-           <el-input v-model="areaCheck" @focus="areaFlag = true"></el-input>
-           <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
-           <div class="tip-msg"
-                v-show="this.app.option.options.orgAuditFields.indexOf('areaId') > -1 && ruleForm.areaId !== oldFrom.areaId">
-             添加或修改该字段需要提交审核
-           </div>
-           </div>
-         </el-form-item>
-         <el-form-item label="所属系统" prop="organization.systemType">
-           <el-select v-model="ruleForm.organization.systemType" @change="getSystemType" placeholder="请选择所属系统">
-             <el-option
-               v-for="item in applicationOption"
-               :key="item.id"
-               :value="item.value"
-               :label="item.text"
-             ></el-option>
-           </el-select>
-           <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
-           <div class="tip-msg"
-                v-show="this.app.option.options.orgAuditFields.indexOf('systemType') > -1 && ruleForm.organization.systemType !== oldFrom.organization.systemType">
-             添加或修改该字段需要提交审核
-           </div>
-           </div>
-         </el-form-item>
-         <el-form-item label="所属类型" prop="organization.type">
-           <el-select v-model="ruleForm.organization.type" @change="getType" placeholder="请选择所属类型">
-             <el-option
-               v-for="item in classOption"
-               :key="item.id"
-               :label="item.text"
-               :value="item.value"></el-option>
-           </el-select>
-           <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
-             <div class="tip-msg"
-                  v-show="this.app.option.options.orgAuditFields.indexOf('type') > -1 && ruleForm.organization.type !== oldFrom.organization.type">
-               添加或修改该字段需要提交审核
-             </div>
-           </div>
-         </el-form-item>
-       </el-col>
-     </el-row>
+            <el-input v-model="ruleForm.areaId" style="display: none"></el-input>
+            <el-input v-model="areaCheck" @focus="areaFlag = true"></el-input>
+            <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
+              <div class="tip-msg"
+                   v-show="this.app.option.options.orgAuditFields.indexOf('areaId') > -1 && ruleForm.areaId !== oldFrom.areaId">
+                添加或修改该字段需要提交审核
+              </div>
+            </div>
+          </el-form-item>
+          <el-form-item label="所属系统" prop="organization.systemType">
+            <el-select v-model="ruleForm.organization.systemType" @change="getSystemType" placeholder="请选择所属系统">
+              <el-option
+                v-for="item in applicationOption"
+                :key="item.id"
+                :value="item.value"
+                :label="item.text"
+              ></el-option>
+            </el-select>
+            <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
+              <div class="tip-msg"
+                   v-show="this.app.option.options.orgAuditFields.indexOf('systemType') > -1 && ruleForm.organization.systemType !== oldFrom.organization.systemType">
+                添加或修改该字段需要提交审核
+              </div>
+            </div>
+          </el-form-item>
+          <el-form-item label="所属类型" prop="organization.type">
+            <el-select v-model="ruleForm.organization.type" @change="getType" placeholder="请选择所属类型">
+              <el-option
+                v-for="item in classOption"
+                :key="item.id"
+                :label="item.text"
+                :value="item.value"></el-option>
+            </el-select>
+            <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
+              <div class="tip-msg"
+                   v-show="this.app.option.options.orgAuditFields.indexOf('type') > -1 && ruleForm.organization.type !== oldFrom.organization.type">
+                添加或修改该字段需要提交审核
+              </div>
+            </div>
+          </el-form-item>
+        </el-col>
+      </el-row>
       <el-row>
         <el-form-item label="单位标签">
           <el-tag
@@ -171,10 +172,10 @@
             <i class="el-icon-plus"></i>添加标签
           </el-tag>
           <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
-          <div class="tip-msg"
-               v-show="this.app.option.options.orgAuditFields.indexOf('labelId') > -1 && ruleForm.labelId !== oldFrom.labelId">
-            添加或修改该字段需要提交审核
-          </div>
+            <div class="tip-msg"
+                 v-show="this.app.option.options.orgAuditFields.indexOf('labelId') > -1 && ruleForm.labelId !== oldFrom.labelId">
+              添加或修改该字段需要提交审核
+            </div>
           </div>
         </el-form-item>
       </el-row>
@@ -186,19 +187,19 @@
           <el-form-item label="单位介绍" prop="ext01">
             <el-input type="textarea" v-model="ruleForm.organization.ext01"></el-input>
             <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
-            <div class="tip-msg"
-                 v-show="this.app.option.options.orgAuditFields.indexOf('ext01') > -1 && ruleForm.organization.ext01 !== oldFrom.organization.ext01">
-              添加或修改该字段需要提交审核
-            </div>
+              <div class="tip-msg"
+                   v-show="this.app.option.options.orgAuditFields.indexOf('ext01') > -1 && ruleForm.organization.ext01 !== oldFrom.organization.ext01">
+                添加或修改该字段需要提交审核
+              </div>
             </div>
           </el-form-item>
           <el-form-item label="申请原因" prop="reason">
             <el-input type="textarea" v-model="ruleForm.reason"></el-input>
             <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
-            <div class="tip-msg"
-                 v-show="this.app.option.options.orgAuditFields.indexOf('reason') > -1 && ruleForm.reason !== oldFrom.reason">
-              添加或修改该字段需要提交审核
-            </div>
+              <div class="tip-msg"
+                   v-show="this.app.option.options.orgAuditFields.indexOf('reason') > -1 && ruleForm.reason !== oldFrom.reason">
+                添加或修改该字段需要提交审核
+              </div>
             </div>
           </el-form-item>
         </el-col>
@@ -206,10 +207,10 @@
           <el-form-item label="单位职责" prop="ext02">
             <el-input type="textarea" v-model="ruleForm.organization.ext02"></el-input>
             <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
-            <div class="tip-msg"
-                 v-show="this.app.option.options.orgAuditFields.indexOf('ext02') > -1 && ruleForm.organization.ext02 !== oldFrom.organization.ext02">
-              添加或修改该字段需要提交审核
-            </div>
+              <div class="tip-msg"
+                   v-show="this.app.option.options.orgAuditFields.indexOf('ext02') > -1 && ruleForm.organization.ext02 !== oldFrom.organization.ext02">
+                添加或修改该字段需要提交审核
+              </div>
             </div>
           </el-form-item>
         </el-col>
@@ -229,22 +230,23 @@ import dicOption from '@src/mixins/dic-options.js'
 import searchLable from '../components/AddTags/index'
 import areaList from '../components/AreaList/index'
 import { mapState, mapMutations } from 'vuex'
+
 export default {
   name: 'index',
-  mixins: [ handleBreadcrumb, dicOption],
+  mixins: [handleBreadcrumb, dicOption],
   components: { areaList, searchLable },
   /* props: {
-    // TODO breadcrumb可采用组件传参的模式替换路由判断，将配置权交给调用方
-    breadcrumb: {
-      type: Object,
-      default () {
-        return {
-          name: '部门详情',
-          parent: null
+      // TODO breadcrumb可采用组件传参的模式替换路由判断，将配置权交给调用方
+      breadcrumb: {
+        type: Object,
+        default () {
+          return {
+            name: '部门详情',
+            parent: null
+          }
         }
       }
-    }
-  }, */
+    }, */
   data () {
     return {
       breadcrumb: {
@@ -364,7 +366,7 @@ export default {
         if (this.$route.name === 'UnitAdd') {
         } else {
           this.ruleForm.areaId = res.data.areaId
-          this.ruleForm.labelId = res.data.labelId
+          // this.ruleForm.labelId = res.data.labelId
           this.ruleForm.organization.address = res.data.address
           this.ruleForm.organization.name = res.data.name
           this.ruleForm.organization.address = res.data.address
@@ -395,6 +397,7 @@ export default {
         type: type
       }).then((res) => {
         this.defaultList = res.data
+        console.log(JSON.parse(JSON.stringify(this.defaultList)),'--------------147')
         res.data.forEach((item) => {
           this.tagsName.push(item.name)
           this.ruleForm.labelId.push(item.id)
@@ -403,8 +406,39 @@ export default {
       })
     },
     removeTag (tag, index) {
-      this.tagsName.splice(index, 1)
-      this.ruleForm.labelId.splice(index, 1)
+      this.$confirm('此操作将永久删除该标签, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        api[urlNames['deleteUserLabelOrDeptLabelOrOrgLabel']]({
+          id: this.ruleForm.organization.id,
+          type: this.ruleForm.organization.type,
+          labelId: this.ruleForm.labelId[index]
+        }).then((res) => {
+          if (res.status === 0) {
+            this.$message.success('删除成功')
+            this.tagsName.splice(index, 1)
+            this.ruleForm.labelId.splice(index, 1)
+          }
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
+    deleteUserLabelOrDeptLabelOrOrgLabel (id, type, labelId) {
+      api[urlNames['deleteUserLabelOrDeptLabelOrOrgLabel']]({
+        id: id,
+        type: type,
+        labelId: labelId
+      }).then((res) => {
+        if (res.status === 0) {
+          this.$message.info('删除成功')
+        }
+      })
     },
     // 获取区域
     getArea (orgId) {

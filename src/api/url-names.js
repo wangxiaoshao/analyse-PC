@@ -175,5 +175,8 @@ export default {
   findEntityChangeLoggerList: 'findEntityChangeLoggerList', // 操作日志
   exportUser: 'exportUser', // 导出用户
   importUser: 'importUser', // 导入用户
-  logoutUrl: 'logoutUrl' // 登出地址
+  logoutUrl: 'logoutUrl', // 登出地址
+  deleteViewAdmin: 'deleteViewAdmin', // 删除视图管理员
+  deleteUserLabelOrDeptLabelOrOrgLabel: 'deleteUserLabelOrDeptLabelOrOrgLabel', // 删除单位/人员/部门绑定标签
+  searchMember: 'searchMember'// 选人组件搜索人员
 }

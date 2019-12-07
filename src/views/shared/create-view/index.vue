@@ -15,7 +15,7 @@
               <el-col :span="12">
                 <div class="grid-content bg-purple-light">
                   <el-form-item label="视图管理员">
-                    <el-select v-model="ViewFrom.roleBindUserIds" multiple placeholder="请选择">
+                    <el-select v-model="ViewFrom.roleBindUserIds" @remove-tag="removeManager" multiple placeholder="请选择">
                       <el-option
                         v-for="item in adminList"
                         :key="item.uid"
@@ -94,7 +94,6 @@
                   <el-form-item label="新机构视图">
                   <div class="select-org select-org123" ref="coordinates">
                     <el-tree
-                      class="left123"
                       :data="viewNodeTree"
                       node-key="id"
                       draggable
@@ -234,6 +233,30 @@ export default {
           console.log(res)
         }
       })
+    },
+    removeManager (uid) {
+      if (this.$route.params.id !== '0'){
+        this.$confirm('此操作将永久删除该管理员, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          api[urlNames['deleteViewAdmin']]({
+            viewId: this.returnViewId,
+            uid: uid
+          }).then((res) => {
+            if (res.status === 0) {
+              this.findViewById(this.$route.params.id)
+              this.$message.success('删除成功')
+            }
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+      }
     },
     // 获取管理员列表
     findViewAdmin () {

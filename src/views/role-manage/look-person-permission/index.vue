@@ -177,8 +177,11 @@ export default {
       this.setFlag = val
     },
     dialogReturnMembersInfo (data, flag) {
+      if (data.length === 0) {
+        this.$message.info('您没有选择成员')
+        return false
+      }
       if (flag === 0) {
-        console.log(JSON.parse(JSON.stringify(data)))
         JSON.parse(JSON.stringify(data)).forEach((item) => {
           let obj = {
             uid: item
@@ -199,6 +202,7 @@ export default {
           })
         }
       }
+      this.userId = []
     }
   }
 }
