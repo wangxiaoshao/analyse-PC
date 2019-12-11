@@ -1,13 +1,13 @@
 
 const tableConfig = {
-  applyName: {
-    key: 'applyName',
-    tooltip: false,
-    label: '申请人',
-    sortable: false,
-    showOverflowTooltip: false,
-    minWidth: 100
-  },
+  // applyName: {
+  //   key: 'applyName',
+  //   tooltip: false,
+  //   label: '申请人',
+  //   sortable: false,
+  //   showOverflowTooltip: false,
+  //   minWidth: 100
+  // },
   content: {
     key: 'content',
     tooltip: true,

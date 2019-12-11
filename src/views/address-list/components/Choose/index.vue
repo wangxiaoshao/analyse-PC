@@ -6,7 +6,7 @@
       v-if="resultFlag"
       width="300"
     >
-      <div class="back-btn">
+      <div class="back-btn-address">
         <el-button size="mini" @click="goBackTree">返回</el-button>
       </div>
       <div class="result-list" style="overflow-y: auto;height: 300px;">

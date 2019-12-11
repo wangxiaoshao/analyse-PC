@@ -3,6 +3,7 @@
     <el-tree
       :data="treeDate"
       node-key="id"
+      :default-expanded-keys="[treeDate[0]!==undefined?treeDate[0].id: '']"
       :props="props"
       lazy
       :load="loadNode"
@@ -28,8 +29,10 @@ export default {
   data () {
     return {
       props: {
+        children: 'children',
         label: 'name'
       },
+      sonNode: [],
       active: 'active',
       noActive: 'noActive'
     }
@@ -39,23 +42,23 @@ export default {
       return this.treeList
     }
   },
-  created () {
-  },
   methods: {
 
     // 追加子节点
     loadNode (node, resolve) {
-      api[urlNames['getAddressListTree']]({
-        parentId: node.data.id
-      }).then(res => {
-        if (res.data.length > 0) {
-          resolve(res.data)
-        } else {
-          resolve([])
-        }
-      }).catch(err => {
-        console.log(err)
-      })
+      if (node.level === 0) {
+        return resolve(this.treeDate)
+      } else {
+        api[urlNames['getAddressListTree']]({
+          parentId: node.data.id
+        }).then(res => {
+          if (res.status === 0) {
+            resolve(res.data)
+          }
+        })
+      }
+    },
+    getSonNode (id) {
     },
     handleNodeClick (data) {
       this.$emit('handle-node-click', data)

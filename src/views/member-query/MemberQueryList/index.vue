@@ -5,15 +5,15 @@
       <el-col :span="24">
         <el-row :gutter="10" type="flex">
           <el-col :span="7">
-            <el-input placeholder="人员名称" v-model="searchQuery.name" clearable>
+            <el-input placeholder="人员名称" v-model="searchQuery.name"  @clear="clearSearch()" clearable>
             </el-input>
           </el-col>
           <el-col :span="7">
-            <el-input placeholder="人员ID" v-model="searchQuery.uid" clearable>
+            <el-input placeholder="人员ID" v-model="searchQuery.uid"  @clear="clearSearch()" clearable>
             </el-input>
           </el-col>
           <el-col :span="7">
-            <el-input placeholder="登陆账号" v-model="searchQuery.account" clearable>
+            <el-input placeholder="登陆账号" v-model="searchQuery.account"  @clear="clearSearch()" clearable>
             </el-input>
           </el-col>
           <el-col :span="3" class="text-right">
@@ -38,6 +38,7 @@
               v-model="searchQuery.labelName"
               :trigger-on-focus=triggerOnFocus
               :fetch-suggestions="querySearchAsync"
+              @input="inputClear"
               placeholder="标签"
               @select="handleSelect">
               <template slot-scope="{ item }">
@@ -173,6 +174,15 @@ export default {
         this.page.current = 1
         this.getGrid()
       })
+    },
+    // 清空查询条件
+    clearSearch () {
+      this.getGrid()
+    },
+    inputClear () {
+      if (this.searchQuery.labelName === '') {
+        this.getGrid()
+      }
     },
     getGrid () {
       let data = {

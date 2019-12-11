@@ -27,6 +27,7 @@
        :isShowEditFlag="isShowEditFlag"
        :account-list="accountList"
        :user-info ="userInfo.user"
+       :user-account="userInfo.userAccount"
        :is-default-flag="isDefaultFlag"
        @get-account="getAccount"
        @get-back="getBack"

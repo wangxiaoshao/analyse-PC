@@ -5,15 +5,15 @@
       <el-col :span="24">
         <el-row :gutter="10" type="flex">
           <el-col :span="5">
-            <el-input placeholder="部门名称" v-model="searchQuery.name" clearable>
+            <el-input placeholder="部门名称" v-model="searchQuery.name"  @clear="clearSearch()" clearable>
             </el-input>
           </el-col>
           <el-col :span="5">
-            <el-input placeholder="部门ID" v-model="searchQuery.id" clearable>
+            <el-input placeholder="部门ID" v-model="searchQuery.id"  @clear="clearSearch()" clearable>
             </el-input>
           </el-col>
           <el-col :span="5">
-            <el-input placeholder="所属单位" v-model="searchQuery.orgName" clearable>
+            <el-input placeholder="所属单位" v-model="searchQuery.orgName"  @clear="clearSearch()" clearable>
             </el-input>
           </el-col>
           <el-col :span="5">
@@ -22,6 +22,7 @@
               :trigger-on-focus=triggerOnFocus
               :fetch-suggestions="querySearchAsync"
               placeholder="标签"
+              @input="inputClear"
               @select="handleSelect">
               <template slot-scope="{ item }">
                 <div class="name">{{ item.name }}</div>
@@ -154,6 +155,14 @@ export default {
         this.page.current = 1
         this.getGrid()
       })
+    },
+    clearSearch () {
+      this.getGrid()
+    },
+    inputClear () {
+      if (this.searchQuery.labelName === '') {
+        this.getGrid()
+      }
     },
     getGrid () {
       this.loading = true

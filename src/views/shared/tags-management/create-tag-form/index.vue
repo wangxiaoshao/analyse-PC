@@ -11,7 +11,7 @@
         <div class="panel">
           <el-form ref="form" :model="labelForm" label-width="80px">
             <el-form-item label="标签类别">
-              <el-select v-model="labelForm.type" placeholder="请选择分类">
+              <el-select v-model="createData.type === undefined?labelForm.type:labelForm.type = createData.type" placeholder="请选择分类">
                 <el-option label="单位标签" :value="1"></el-option>
                 <el-option label="部门标签" :value="2"></el-option>
                 <el-option label="个人标签" :value="3"></el-option>
@@ -41,21 +41,13 @@ export default {
   data () {
     return {
       labelForm: {
-        type: 1,
+        type: 2,
         parentId: '',
         name: ''
-      },
-      form: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
       }
     }
+  },
+  created () {
   },
   methods: {
     // 创建标签

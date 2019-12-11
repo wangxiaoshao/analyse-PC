@@ -27,7 +27,7 @@
               <el-button size="mini" type="primary" @click="sureSelect">确定</el-button>
             </div>
             <div class="result-list" style="overflow-y: auto;height: 280px">
-              <el-table v-loading="loadFlag" :data="gridData" :show-header="false"
+              <el-table :data="gridData" :show-header="false"
                         @selection-change="handleSelectionChange">
                 <el-table-column
                   type="selection"
@@ -89,7 +89,7 @@
         </div>
       </div>
       <div class="submit">
-        <el-button type="primary" @click="submitBackData">确定</el-button>
+        <el-button :disabled="submitDisable" type="primary" @click="submitBackData">确定</el-button>
         <el-button @click="handleClose">取消</el-button>
       </div>
     </el-dialog>
@@ -111,7 +111,6 @@ export default {
       searchKeyWord: '', // 搜索关键字
       searchType: '2',
       resultFlag: false,
-      loadFlag: false, // 加载loding
       gridData: [],
       nodeTree: [], // 父级树
       nodeSonTree: [], // 树子集
@@ -156,6 +155,14 @@ export default {
   methods: {
     // 返回数据
     submitBackData () {
+      if (this.treeMemberSelected.length === 0 && this.selectCategory === 0) {
+        this.$message.info('请选择添加人员')
+        return false
+      }
+      if (this.treeOrgSelected.length === 0 && this.selectCategory === 1) {
+        this.$message.info('请选择添加部门/单位')
+        return false
+      }
       // isAllData: true, // 是否需完整数据-默认为不需要（false，只包含用户id）
       //   notOnlyPerson: true, // 选人，默认为false（只选人）
       //   isSingleSelect: false, // 是否为单选框  false为多选（默认）-人员单选(与notOnlyPerson一起使用，notOnlyPerson为true是有效
@@ -186,24 +193,18 @@ export default {
         this.nodeTree = res.data
       })
     },
-    // 获取机构树--加载子节点
-    findSonNodeTree (parentId) {
-      api[urlNames['getTree']]({
-        parentId: parentId
-      }).then((res) => {
-        this.nodeSonTree = res.data
-      })
-    },
     // 加载下一级
     loadNode (node, resolve) {
       if (node.level === 0) {
         return resolve(this.nodeTree)
       }
-      this.findSonNodeTree(node.data.id)
-      setTimeout(() => {
-        resolve(this.nodeSonTree)
-      }, 500)
-      this.nodeSonTree = []
+      api[urlNames['getTree']]({
+        parentId: node.data.id
+      }).then((res) => {
+        if (res.status === 0) {
+          resolve(res.data)
+        }
+      })
     },
     // 获取机构树-加载可选
     findcheckNodeTree (parentId) {
@@ -216,8 +217,12 @@ export default {
             this.orgList.push(item)
           }
         })
-        this.orgList = this.orgList.concat(this.treeOrgSelectedAllData)
-        this.treeMemberSelected = this.treeMemberSelectedAllData = []
+        let obj = {}
+        this.orgList = this.orgList.concat(this.treeOrgSelectedAllData).reduce((cur, next) => {
+          obj[next.id] ? '' : obj[next.id] = true && cur.push(next)
+          return cur
+        }, [])
+        // this.treeMemberSelected = this.treeMemberSelectedAllData = []
       })
     },
     // 节点被点击时
@@ -241,7 +246,12 @@ export default {
         deptId: deptId
       }).then((res) => {
         this.memberList = res.data
-        this.memberList = this.memberList.concat(this.treeMemberSelectedAllData)
+        console.log(this.treeMemberSelectedAllData, '------312---------')
+        let obj = {}
+        this.memberList = (this.memberList.concat(this.treeMemberSelectedAllData)).reduce((cur, next) => {
+          obj[next.uid] ? '' : obj[next.uid] = true && cur.push(next)
+          return cur
+        }, [])
       })
     },
     // 查询单位下的所有人员
@@ -250,7 +260,11 @@ export default {
         orgId: orgId
       }).then((res) => {
         this.memberList = res.data
-        this.memberList = this.memberList.concat(this.treeMemberSelectedAllData)
+        let obj = {}
+        this.memberList = (this.memberList.concat(this.treeMemberSelectedAllData)).reduce((cur, next) => {
+          obj[next.uid] ? '' : obj[next.uid] = true && cur.push(next)
+          return cur
+        }, [])
       })
     },
     treeOrgChange (value, direction, movedKeys) {
@@ -261,62 +275,60 @@ export default {
           })
           this.treeOrgSelectedAllData = this.treeOrgSelectedAllData.concat(list)
         })
+        if (this.treeOrgSelected.length !== 0) {
+          this.submitDisable = false
+        }
       } else if (direction === 'left') {
         movedKeys.forEach(item => {
           this.treeOrgSelectedAllData = this.treeOrgSelectedAllData.filter(function (listItem) {
             return listItem.id !== item
           })
         })
-      }
-      if (this.treeOrgSelected.length !== 0) {
-        this.submitDisable = false
+        if (this.treeOrgSelected.length === 0) {
+          this.submitDisable = true
+        }
       }
     },
     // 人员穿梭处理
     treeMemberChange (value, direction, movedKeys) {
       if (direction === 'right') {
-        // if (this.seleceDialog.isSingleSelect === true && this.treeMemberSelected.length < 1) {
-        //   this.treeMemberSelected = value[0]
-        //   let list = this.memberList.filter(function (listItem) {
-        //     return listItem.uid === this.treeMemberSelected[0]
-        //   })
-        //   this.treeMemberSelectedAllData = this.treeMemberSelectedAllData.concat(list)
-        // } else {
         movedKeys.forEach(item => {
           let list = this.memberList.filter(function (listItem) {
             return listItem.uid === item
           })
           this.treeMemberSelectedAllData = this.treeMemberSelectedAllData.concat(list)
         })
-        // }
+        if (this.treeMemberSelected.length !== 0) {
+          this.submitDisable = false
+        }
       } else if (direction === 'left') {
         movedKeys.forEach(item => {
           this.treeMemberSelectedAllData = this.treeMemberSelectedAllData.filter(function (listItem) {
             return listItem.uid !== item
           })
         })
-      }
-      if (this.treeOrgSelected.length !== 0) {
-        this.submitDisable = false
+        if (this.treeMemberSelected.length === 0) {
+          this.submitDisable = true
+        }
       }
     },
     singleSelectMember (value, direction, movedKeys) {
       if (this.seleceDialog.isSingleSelect) {
-        if (value.length === 0) {
-          for (let i = 0; i < this.memberList.length; i++) {
-            this.memberList[i].disabled = false
-          }
-        } else {
-          for (let i = 0; i < this.memberList.length; i++) {
-            if (this.memberList[i].id === value[0]) {
-              this.memberList[i].disabled = true
-              if (this.orgList[i].id === value[0]) {
-                this.memberList[i].disabled = false
-              }
-            }
-          }
-        }
-        if (value.length > 1 && this.seleceDialog.isSingleSelect === true) {
+        // if (value.length === 0) {
+        //   for (let i = 0; i < this.memberList.length; i++) {
+        //     this.memberList[i].disabled = false
+        //   }
+        // } else {
+        //   console.log(this.seleceDialog.isSingleSelect, '---------xxxxxxxxx--11798----')
+        //   for (let i = 0; i < this.memberList.length; i++) {
+        //     this.memberList[i].disabled = true
+        //     if (this.orgList[i].id === value[0]) {
+        //       this.memberList[i].disabled = false
+        //     }
+        //   }
+        // }
+        console.log()
+        if ((value.length > 1 || this.treeMemberSelected.length !== 0) && this.seleceDialog.isSingleSelect === true) {
           this.$message.info('抱歉您只能选择一个人员')
           return false
         }
@@ -327,20 +339,19 @@ export default {
     },
     singleSelectOrg (value, direction, movedKeys) {
       if (this.seleceDialog.isSingleOrgSelect) {
-        if (value.length === 0) {
-          for (let i = 0; i < this.orgList.length; i++) {
-            this.orgList[i].disabled = false
-          }
-        } else {
-          for (let i = 0; i < this.orgList.length; i++) {
-            this.orgList[i].disabled = true
-            if (this.orgList[i].id === value[0]) {
-              this.orgList[i].disabled = false
-            }
-          }
-        }
-        console.log(JSON.parse(JSON.stringify(this.orgList)), '--------------')
-        if (value.length > 1 && this.seleceDialog.isOnlyOrg === true) {
+        // if (value.length === 0) {
+        //   for (let i = 0; i < this.orgList.length; i++) {
+        //     this.orgList[i].disabled = false
+        //   }
+        // } else {
+        //   for (let i = 0; i < this.orgList.length; i++) {
+        //     this.orgList[i].disabled = true
+        //     if (this.orgList[i].id === value[0]) {
+        //       this.orgList[i].disabled = false
+        //     }
+        //   }
+        // }
+        if ((value.length > 1 || this.treeOrgSelected.length !== 0) && this.seleceDialog.isOnlyOrg === true) {
           this.$message.info('抱歉您只能选择一个单位或部门')
           return false
         }
@@ -371,7 +382,6 @@ export default {
         }
         api[urlNames['searchMember']](data).then(res => {
           this.gridData = res.data
-          this.loadFlag = false
         })
       }
 
@@ -383,11 +393,9 @@ export default {
         // this.timer = this.debounce(this.getResultList, 800)
         this.timer = setTimeout(() => {
           this.resultFlag = true
-          this.loadFlag = true
           if (this.searchType === '2' || this.searchType === '3') {
             api[urlNames['searchViewNode']](data).then(res => {
               this.gridData = res.data
-              this.loadFlag = false
             })
           }
         }, 800)
@@ -417,18 +425,24 @@ export default {
     },
     // 确认搜索选中
     sureSelect () {
-      if (this.searchType === '2' || this.searchType === '3') {
+      if ((this.searchType === '2' || this.searchType === '3') && this.selectCategory === 1) {
         this.searchOrgData.forEach(item => {
           this.treeOrgSelected.push(item.id)
         })
         this.treeOrgSelectedAllData = this.treeOrgSelectedAllData.concat(this.searchOrgData)
         this.orgList = this.orgList.concat(this.searchOrgData)
-      } else {
+        if (this.treeOrgSelected.length !== 0 && this.selectCategory === 1) {
+          this.submitDisable = false
+        }
+      } else if ((this.searchType !== '2' || this.searchType !== '3') && this.selectCategory === 0) {
         this.searchMemberData.forEach(item => {
           this.treeMemberSelected.push(item.uid)
         })
         this.treeMemberSelectedAllData = this.treeMemberSelectedAllData.concat(this.searchMemberData)
         this.memberList = this.memberList.concat(this.searchMemberData)
+        if (this.treeMemberSelected.length !== 0 && this.selectCategory === 0) {
+          this.submitDisable = false
+        }
       }
       this.goBackTree()
     }

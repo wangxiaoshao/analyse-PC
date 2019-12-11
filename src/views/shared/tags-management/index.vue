@@ -27,19 +27,8 @@
           </span>
         </span>
         <span class="custom-tree-float">
-          <el-button
-            type="text"
-            size="mini"
-            @click="createTag(data, {flag:0,title:node.label})">
-            新增
-          </el-button>
-          <el-button
-            type="text"
-            size="mini"
-            class="delete"
-            @click="deleteLabel(data.id)">
-            删除
-          </el-button>
+          <span class="tag-icon-operate fa fa-plus-circle" @click="createTag(data, {flag:0,title:node.label})"></span>
+          <span class="tag-icon-operate fa fa-trash-o" @click="deleteLabel(data.id)"></span>
         </span>
       </span>
       </el-tree>

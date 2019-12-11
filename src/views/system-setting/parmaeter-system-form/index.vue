@@ -247,6 +247,7 @@
 </template>
 <script>
 import { api, urlNames } from '@src/api'
+
 const nodeAuditList = [{ name: 'name', checkname: '结点名称' }]
 const orgAuditList = [{ name: 'name', checkname: '单位全称' }, { name: 'shortName', checkname: '单位简称' }, {
   name: 'address',
@@ -329,12 +330,20 @@ export default {
           }
           if (item.name === 'systemUserSecuritySettings') {
             this.systemUserSecuritySettings = JSON.parse(item.value)
-          } if (item.name === 'systemMessageRemind') {
+          }
+          if (item.name === 'systemMessageRemind') {
             this.systemMessageRemind = JSON.parse(item.value)
           }
-          if (item.name === 'systemCheckedAuditList') {
-            this.systemAuditField = JSON.parse(item.value)
+          if (item.name === 'userAuditFields') {
+            this.systemAuditField.checkedUserAuditList = item.value
           }
+          if (item.name === 'departmentAuditFields') {
+            this.systemAuditField.checkedDepAuditList = item.value
+          }
+          if (item.name === 'orgAuditFields') {
+            this.systemAuditField.checkedOrgAuditList = item.value
+          }
+          // checkedNodeAuditList: [], // 节点选中数据
         })
       })
     },
@@ -390,13 +399,17 @@ export default {
         list.name = 'systemMessageRemind'
         list.value = this.systemMessageRemind
       } else if (flag === 3) {
-        list.name = 'systemCheckedAuditList'
-        list.value = {
-          checkedNodeAuditList: this.systemAuditField.checkedNodeAuditList,
-          checkedOrgAuditList: this.systemAuditField.checkedOrgAuditList,
-          checkedDepAuditList: this.systemAuditField.checkedDepAuditList,
-          checkedUserAuditList: this.systemAuditField.checkedUserAuditList
-        }
+        list.name = 'nodeAuditFields'
+        list.value = this.systemAuditField.checkedNodeAuditList
+        this.setClientOptions(list)
+        list.name = 'userAuditFields'
+        list.value = this.systemAuditField.checkedUserAuditList
+        this.setClientOptions(list)
+        list.name = 'departmentAuditFields'
+        list.value = this.systemAuditField.checkedDepAuditList
+        this.setClientOptions(list)
+        list.name = 'orgAuditFields'
+        list.value = this.systemAuditField.checkedOrgAuditList
       }
       this.setClientOptions(list)
     },

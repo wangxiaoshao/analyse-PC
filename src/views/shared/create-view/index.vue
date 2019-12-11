@@ -5,15 +5,11 @@
         <div class="from">
           <el-form ref="form" :rules="rules" :model="ViewFrom" label-width="100px">
             <el-row>
-              <el-col :span="12">
+              <el-col :span="8">
                 <div class="grid-content bg-purple">
                   <el-form-item label="视图名称" prop="name">
                     <el-input v-model="ViewFrom.name"></el-input>
                   </el-form-item>
-                </div>
-              </el-col>
-              <el-col :span="12">
-                <div class="grid-content bg-purple-light">
                   <el-form-item label="视图管理员">
                     <el-select v-model="ViewFrom.roleBindUserIds" @remove-tag="removeManager" multiple placeholder="请选择">
                       <el-option
@@ -24,39 +20,28 @@
                       </el-option>
                     </el-select>
                   </el-form-item>
-                </div>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="12">
-                <div class="grid-content bg-purple">
                   <el-form-item label="启用状态">
                     <el-switch v-model="ViewFrom.removed"></el-switch>
                   </el-form-item>
-                </div>
-              </el-col>
-              <el-col :span="12">
-                <div class="grid-content bg-purple-light">
-<!--                暂时隐藏  <el-form-item label="备注">-->
-<!--                    <el-input v-model="ViewFrom.remark"></el-input>-->
-<!--                  </el-form-item>-->
+                  <!--                暂时隐藏  <el-form-item label="备注">-->
+                  <!--                    <el-input v-model="ViewFrom.remark"></el-input>-->
+                  <!--                  </el-form-item>-->
                 </div>
               </el-col>
             </el-row>
-            <el-form-item align="center">
+            <el-form-item>
               <el-button type="primary" @click="createView">保存视图基本信息</el-button>
               <el-button @click="backToList">取消</el-button>
             </el-form-item>
           </el-form>
         </div>
       </el-tab-pane>
-      <el-tab-pane  label="视图组织机构" name="second">
+      <el-tab-pane :disabled="tabDisable" label="视图组织机构" name="second">
         <div class="from">
-          <el-form ref="form" :model="form" label-width="100px">
-            <el-row :gutter="10">
-              <el-col :span="10">
-                <div class="grid-content bg-purple">
-                  <el-form-item label="选择组织机构">
+          <el-form ref="form" :model="form">
+                <div class="grid-content">
+                  <div class="tree-title">选择组织机构</div>
+                  <el-form-item label="">
                     <div class="select-org">
                       <el-tree
                         ref="selecttree"
@@ -83,15 +68,14 @@
                     </div>
                   </el-form-item>
                 </div>
-              </el-col>
-              <el-col :span="10" :offset="2">
-                <div class="grid-content bg-purple-light">
+                <div class="grid-content">
+                  <div class="tree-title">新机构视图</div>
 <!--                select-org-panel   <div class="select-btn">-->
 <!--                    <p style="font-size: 14px;color: #606266;padding: 0 10px;">新机构视图</p>-->
 <!--                                          <p><el-button type="primary" size="small">新机构视图</el-button></p>-->
 <!--                                          <p><el-button size="small">旧机构视图</el-button></p>-->
 <!--                  </div>-->
-                  <el-form-item label="新机构视图">
+                  <el-form-item>
                   <div class="select-org select-org123" ref="coordinates">
                     <el-tree
                       :data="viewNodeTree"
@@ -115,8 +99,6 @@
                   </div>
                   </el-form-item>
                 </div>
-              </el-col>
-            </el-row>
             <el-form-item>
               <el-button style="margin-left: 267px" type="primary" @click="synchronizedNode">保存视图</el-button>
               <el-button @click="backToList">取消</el-button>
@@ -139,6 +121,7 @@ export default {
   data () {
     return {
       activeName: 'first',
+      tabDisable: true,
       adminList: [],
       ViewFrom: {
         name: '',
@@ -197,6 +180,7 @@ export default {
     this.findViewAdmin()
     this.findNodeTree()
     if (this.$route.params.id !== '0') {
+      this.tabDisable = false
       this.findNodeDraftList('-1')
       this.findViewById(this.$route.params.id)
     }
@@ -229,13 +213,14 @@ export default {
         if (res.status === 0) {
           this.returnViewId = res.data
           this.activeName = 'second'
+          this.tabDisable = false
           this.$message.success('基本信息保存成功')
           console.log(res)
         }
       })
     },
     removeManager (uid) {
-      if (this.$route.params.id !== '0'){
+      if (this.$route.params.id !== '0') {
         this.$confirm('此操作将永久删除该管理员, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -368,9 +353,7 @@ export default {
       x:浏览器的位置-左侧
       y:浏览器的位置-顶部
       */
-      console.log((window.innerWidth - 240) / 2, 'window.innerWidth')
-      console.log(window.innerWidth, 'window.innerWidth')
-      if (e.screenX > (window.innerWidth - 240) / 2 + 240 + coordinates.x && e.screenX < (window.innerWidth - 240) / 2 + 240 + coordinates.x + window.innerWidth * 0.5) {
+      if (e.screenX > 500 + coordinates.x && e.screenX < 1200 + coordinates.x) {
         this.viewNodeDraft.id = Node.data.id
         Node.data.parentId = this.viewNodeDraft.parentId = '-1'
         this.viewNodeDraft.name = Node.data.name

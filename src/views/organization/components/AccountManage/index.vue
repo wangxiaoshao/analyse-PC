@@ -19,7 +19,7 @@
     </div>
     <el-collapse v-model="activeAccount" accordion class="account-list">
       <el-collapse-item v-for="item in accountList" :key="item.id" :title="item.name + ' ' + userInfo.name">
-        <bind-system @get-app="getAppId"></bind-system>
+        <bind-system :user-account="userAccount" @get-app="getAppId"></bind-system>
       </el-collapse-item>
     </el-collapse>
     <div class="creat-account-content" v-if="this.$route.name === 'PersonAdd' || this.$route.name === 'PersonEdit'">
@@ -59,7 +59,7 @@
 import bindSystem from '../BindSystem/index'
 export default {
   components: { bindSystem },
-  props: ['disabledFlag', 'isShowEditFlag', 'accountList', 'userInfo', 'isDefaultFlag'],
+  props: ['disabledFlag', 'isShowEditFlag', 'accountList', 'userInfo', 'isDefaultFlag','userAccount'],
   data () {
     return {
       addAccount: {
@@ -139,6 +139,7 @@ export default {
     },
     getAppId (val) {
       this.addAccount.appId = val
+      console.log(this.addAccount.appId, '---1111111111111111----')
     }
   }
 }

@@ -48,12 +48,17 @@ export default {
       if (node.level === 0) {
         return resolve(this.treeList)
       } else {
-        this.findTreeSonList(node.data.id)
-        this.id = node.data.id
-        setTimeout(() => {
-          resolve(this.treeSonList)
-        }, 800)
-        this.treeSonList = []
+        api[urlNames['getTree']]({
+          parentId: node.data.id
+        }).then((res) => {
+          resolve(res.data)
+        })
+        // this.findTreeSonList(node.data.id)
+        // this.id = node.data.id
+        // setTimeout(() => {
+        //   resolve(this.treeSonList)
+        // }, 800)
+        // this.treeSonList = []
       }
     },
     findTreeList (parentId) {

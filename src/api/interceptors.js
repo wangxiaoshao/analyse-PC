@@ -10,7 +10,6 @@ import { urlPrefix } from './url-prefix'
  * @return {{messageCode: string, message: string}}
  */
 function wrapperHttpException (resp) {
-  console.log(resp.data.message, 'this.orgList')
   return {
     message: resp.data.message,
     messageCode: 'NETWORK_FAILED',

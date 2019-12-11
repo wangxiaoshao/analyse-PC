@@ -66,6 +66,7 @@
         :show-file-list="false"
         :auto-upload="false"
         :limit="1"
+        name="file"
         action="http://jg-dev.lonmo.com/api/jg_manage/import/userImport"
         :on-change="fileHandleChange"
         :file-list="fileList">
@@ -247,7 +248,7 @@ export default {
       }
       api[urlNames['importUser']](formData).then((res) => {
         if (res.status === 0) {
-          this.$message.success('导入文件成功')
+          this.$message.success('导入人员成功')
           this.getGrid()
           this.loading = false
           this.fileList = []

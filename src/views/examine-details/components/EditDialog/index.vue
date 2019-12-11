@@ -6,7 +6,7 @@
                :close-on-click-modal="false"
                :close-on-press-escape="false"
                :show-close="false">
-      <div class="dialog-close" @click="closeDialog"><i class="el-icon-close"></i></div>
+      <div class="dialog-close" @click="closeDialog('form')"><i class="el-icon-close"></i></div>
         <h2 class="dialog-title">{{dialogTitle}}</h2>
         <!--表单-->
 
@@ -59,8 +59,8 @@ export default {
   },
   methods: {
     closeDialog (form) {
-      this.$refs[form].resetFields()
       this.$emit('close')
+      this.$refs[form].resetFields()
     },
     passExamine (form) {
       this.$refs[form].validate((valid) => {

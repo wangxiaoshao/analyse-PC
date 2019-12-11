@@ -98,9 +98,7 @@ export default {
     // console.log(this.app.option.user,'wertyui12345====')
       api[urlNames['getAddressListTree']]({
         orgId: this.app.option.user.orgId
-      // orgId:"-3631625248176780884"
       }).then((res) => {
-        console.log(res, 'wwederfjodpasla')
         this.treeList = res.data
         // this.departmentList=res.data
         this.handleNodeClickTree(this.treeList[0])
@@ -135,13 +133,14 @@ export default {
       this.navigation.push({ id: node.id, name: node.name })
 
       if (node.nodeType === 3) {
-        this.getAddressListDepartmentMembers(node.id)
+        this.getAddressListDepartmentMembers(node.bindId)
       } else if (node.nodeType === 2) {
-        this.getAddressListOrganizationMembers(node.id)
+        this.getAddressListOrganizationMembers(node.bindId)
       }
       this.getAddressListdepartment(node.id)
     },
     handleChildClick (node) {
+      console.log(JSON.parse(JSON.stringify(node)),'-------------node')
       this.navigation.push({ id: node.id, name: node.name })
       this.getAddressListOrganizationMembers(node.id)
       this.getAddressListdepartment(node.id)
@@ -202,13 +201,6 @@ export default {
         console.log(res, '========222222222222')
         // this.gridData = res.data
       })
-    }
-  },
-  watch: {
-    'app.option.user.orgId': {
-      handler (val) {
-        this.getAddressListUnitTree()
-      }
     }
   }
 }
