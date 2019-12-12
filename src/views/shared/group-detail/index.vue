@@ -29,7 +29,7 @@
         <template slot-scope="scope">
             <div>
               <span v-if="scope.row.memberType ===3">单位</span>
-              <span v-if="scope.row.memberType ===2">部门</span>
+              <span v-if="scope.row.memberType ===2">内设机构</span>
               <span v-if="scope.row.memberType ===1">人员</span>
             </div>
         </template>

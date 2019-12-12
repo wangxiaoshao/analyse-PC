@@ -8,7 +8,7 @@
     ></search-lable>
     <el-form :model="ruleForm" :disabled="disabledFlag" ref="ruleForm" label-width="100px" class="demo-ruleForm">
       <div class="detail-title">
-        <i class="imenu-icon fa fa-institution big-icon" style="margin: 0px 5px;"></i>部门信息
+        <i class="imenu-icon fa fa-institution big-icon" style="margin: 0px 5px;"></i>内设机构信息
       </div>
       <el-menu class="el-menu-demo" mode="horizontal">
         <el-menu-item index="1">基础信息</el-menu-item>
@@ -16,7 +16,7 @@
       <el-row>
         <el-col :span="12">
           <el-form-item
-            label="部门名称"
+            label="内设机构名称"
             prop="department.name"
             :rules="[{ required: true, message: '名称不能为空'}]"
           >
@@ -28,7 +28,7 @@
               </div>
             </div>
           </el-form-item>
-          <el-form-item label=" 上级部门" prop="parentDep">
+          <el-form-item label=" 上级内设机构" prop="parentDep">
             <el-input v-model="parentDep" :disabled="true"></el-input>
           </el-form-item>
           <el-form-item label=" 启用状态" prop="department.removed">
@@ -46,7 +46,7 @@
             <el-input v-model="ruleForm.department.shortName"></el-input>
           </el-form-item>-->
           <el-form-item
-            label="部门电话"
+            label="内设机构电话"
             prop="department.phone"
           >
             <el-input v-model="ruleForm.department.phone"></el-input>
@@ -149,7 +149,7 @@ export default {
       type: Object,
       default () {
         return {
-          name: '部门详情',
+          name: '内设机构详情',
           parent: null
         }
       }
@@ -158,7 +158,7 @@ export default {
   data () {
     return {
       breadcrumb: {
-        name: '部门详情',
+        name: '内设机构详情',
         parent: null
       },
       openSearchFlag: false,
@@ -347,14 +347,14 @@ export default {
         this.isShowEditFlag = true
         this.disabledFlag = false
         if (this.$route.name === 'DepartmentEdit') {
-          this.breadcrumb.name = '编辑部门'
+          this.breadcrumb.name = '编辑内设机构'
         } else {
           this.breadcrumb.name = '添加内设机构'
         }
       } else {
         this.isShowEditFlag = false
         this.disabledFlag = true
-        this.breadcrumbTitle = '部门详情'
+        this.breadcrumbTitle = '内设机构详情'
       }
       this.pushBreadcrumb(this.breadcrumb)
     },

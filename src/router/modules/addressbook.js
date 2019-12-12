@@ -22,7 +22,11 @@ export default [
         name: 'MemberList',
         component: MemberList
       }
-    ]
+    ],
+    meta: {
+      key: '',
+      name: ''
+    }
   },
   {
     path: '/department',

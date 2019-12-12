@@ -1,6 +1,6 @@
 <template>
   <div class="content-list">
-    <!--选择单位/部门-->
+    <!--选择单位/内设机构-->
 <!--    <candidate-dialog-->
 <!--      :seleceDialog="selectDialog"-->
 <!--      @dialogReturnMembersInfo="dialogReturnMembersInfo"-->
@@ -46,7 +46,7 @@
         <el-form-item label="调出单位">
           <span class="name-span">{{orgName}}</span>
           <span class="name-span" v-if="depName !== ''">/{{depName}}</span>
-          <el-button @click="addMainLeader">选择调出单位/部门</el-button>
+          <el-button @click="addMainLeader">选择调出单位/内设机构</el-button>
         </el-form-item>
         <el-form-item label="申请原因" prop="reason">
           <el-input type="textarea" v-model="formCallout.reason"></el-input>
@@ -200,7 +200,7 @@ export default {
         ]
       },
       selectDialog: {
-        selectMenmberTitle: '选择调出单位或部门', // 选人组件标题
+        selectMenmberTitle: '选择调出单位或内设机构', // 选人组件标题
         selectMenmberFlag: false, // 显示弹窗，
         isAllData: true, // 是否需完整数据-默认为不需要（false，只包含用户id）
         notOnlyPerson: false, // 是否选人，默认为false（只选人）

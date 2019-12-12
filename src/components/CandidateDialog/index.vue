@@ -48,7 +48,7 @@
                 class="input-with-select">
                 <el-select v-model="searchType" style="width: 80px" @change="getType" slot="prepend" placeholder="请选择">
                   <el-option label="单位" value="2">单位</el-option>
-                  <el-option label="部门" value="3">部门</el-option>
+                  <el-option label="内设机构" value="3">部门</el-option>
                 </el-select>
                 <el-button slot="append" @click.native="getResult" icon="el-icon-search"></el-button>
               </el-input>
@@ -88,14 +88,14 @@
             </div>
             <div class="dep-panel" v-if="!selectCategory&&!seleceDialog.isSingleOrgSelect">
               <el-checkbox :indeterminate="isIndeterminateOrg" v-model="checkAllOrg" @change="handleCheckAllOrgChange">
-                选择单位/部门
+                选择单位/内设机构
               </el-checkbox>
               <el-checkbox-group v-model="checkedOrgList" @change="handleCheckedOrgChange">
                 <el-checkbox v-for="item in orgList" :label="item.id" :key="item.id">{{item.name}}</el-checkbox>
               </el-checkbox-group>
             </div>
             <div class="dep-panel" v-if="!selectCategory&&seleceDialog.isSingleOrgSelect">
-              <p>选择单位/部门</p>
+              <p>选择单位/内设机构</p>
               <el-radio-group @change="singleCheckedOrg"   v-model="checkedOrgList">
                 <el-radio :key="item.id" v-for="item in orgList" :label="item.id">{{item.name}}</el-radio>
               </el-radio-group>
@@ -109,7 +109,7 @@
               </el-checkbox-group>
             </div>
             <div class="dep-panel" v-if="!selectCategory">
-              <p>已选单位/部门:</p>
+              <p>已选单位/内设机构:</p>
               <el-checkbox-group v-model="selectedOrgID" @change="handleCheckedSelectOrgChange">
                 <el-checkbox v-for="item in selectedOrg" :label="item.id" :key="item.id">{{item.name}}</el-checkbox>
               </el-checkbox-group>

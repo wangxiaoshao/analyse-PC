@@ -4,7 +4,7 @@
       <el-select width="200px" @change="selectSearch" v-model="selectValue" placeholder="请选择">
         <el-option label="全部" :value="0"></el-option>
         <el-option label="单位标签" :value="1"></el-option>
-        <el-option label="部门标签" :value="2"></el-option>
+        <el-option label="内设机构标签" :value="2"></el-option>
         <el-option label="个人标签" :value="3"></el-option>
       </el-select>
       <el-button type="primary" @click="createTag('',{flag:1,title:'新增'})">新增</el-button>
@@ -22,7 +22,7 @@
           <i class="tag-icon fa fa-building-o" v-if="data.type === 1"></i>
           <i class="tag-icon fa fa-institution" v-if="data.type === 2"></i>
           <i class="tag-icon fa fa-user-circle-o" v-if="data.type === 3"></i>
-          <span :title="data.type === 1?'单位':data.type === 2?'部门':'个人'">
+          <span :title="data.type === 1?'单位':data.type === 2?'内设机构':'个人'">
             {{ node.label }}
           </span>
         </span>

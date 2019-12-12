@@ -15,6 +15,7 @@
         .tag-icon-operate{
           color: #8c939d;
           padding: 0 10px;
+          display: none;
         }
       }
       .custom-tree-node {
@@ -29,4 +30,9 @@
         }
       }
     }
+  .el-tree-node__content:hover{
+    .tag-icon-operate{
+      display: inline-block;
+    }
+  }
 }

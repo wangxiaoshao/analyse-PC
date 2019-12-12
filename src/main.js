@@ -14,11 +14,18 @@ import './ext/font-awesome-4.7.0/css/font-awesome.css'
 import echarts from 'echarts'
 import VueCookies from 'vue-cookie'
 import './filters'
-
+import { api, urlNames } from '@src/api'
+// import initRouter from '@src/router/index'
 Vue.use(VueCookies)
 Vue.use(elementUI, { size: 'medium' })
 
 Vue.prototype.$echarts = echarts
+// 请求权限配置参数
+let menusCtrl = []
+// api[urlNames['option']]().then((res) => {
+//   initRouter(res.data.menus)
+//   menusCtrl = res.data
+// })
 
 new Vue({
   router,
