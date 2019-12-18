@@ -1,0 +1,37 @@
+{
+  "id": "1568136",
+  "name": "组织机构",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon",
+  "description": "用于企业组织项目",
+  "glyphs": [
+    {
+      "icon_id": "5831392",
+      "name": "排序",
+      "font_class": "paixu",
+      "unicode": "e66c",
+      "unicode_decimal": 58988
+    },
+    {
+      "icon_id": "6264939",
+      "name": "部门",
+      "font_class": "bumen",
+      "unicode": "e629",
+      "unicode_decimal": 58921
+    },
+    {
+      "icon_id": "7974097",
+      "name": "组织机构",
+      "font_class": "zuzhijigou",
+      "unicode": "e606",
+      "unicode_decimal": 58886
+    },
+    {
+      "icon_id": "9448554",
+      "name": "单位",
+      "font_class": "danwei",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
+    }
+  ]
+}

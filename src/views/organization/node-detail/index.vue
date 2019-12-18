@@ -19,6 +19,25 @@
       <el-form-item label="申请原因" prop="reason">
         <el-input type="textarea" v-model="ruleForm.reason"></el-input>
       </el-form-item>
+      <el-form-item label="所属系统" prop="areaId">
+         <el-select v-model="ruleForm.areaId" @change="getSystemType" placeholder="请选择所属系统">
+              <el-option
+                v-for="item in applicationOption"
+                :key="item.id"
+                :value="item.value"
+                :label="item.text"
+          ></el-option>
+          </el-select>
+      </el-form-item>
+      <el-form-item label="所属类型"  prop="systemType">
+        <el-select  v-model="ruleForm.systemType"  @change="getType"  placeholder="请选择所属类型">
+              <el-option
+                v-for="item in classOption"
+                :key="item.id"
+                :label="item.text"
+                :value="item.value"></el-option>
+            </el-select>
+      </el-form-item>
       <el-form-item v-if="isShowEditFlag">
         <el-button type="primary" @click="submitForm('ruleForm')">{{submitHtml}}</el-button>
         <el-button @click="goBack">取消</el-button>
@@ -29,10 +48,12 @@
 
 <script>
 import { api, urlNames } from '@src/api'
+import dicOption from '@src/mixins/dic-options.js'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
+
 export default {
   name: 'index',
-  mixins: [ handleBreadcrumb ],
+  mixins: [ handleBreadcrumb,dicOption],
   data () {
     return {
       loading: false,
@@ -48,7 +69,8 @@ export default {
         removed: true,
         parentName: '',
         id: '',
-        parentId: ''
+        areaId: '',
+        systemType:'',  
       },
       rules: {
         name: [
@@ -70,6 +92,12 @@ export default {
     this.getNodeDetail()
   },
   methods: {
+    getSystemType (el) {
+      this.ruleForm.systemType = el
+    },
+    getType (el) {
+      this.ruleForm.areaId = el
+    },
     getNodeDetail () {
       let data = {
         id: this.$route.params.id || this.$route.params.parentId
@@ -86,6 +114,8 @@ export default {
           this.ruleForm.name = res.data.name
           this.ruleForm.id = res.data.id
           this.ruleForm.removed = !res.data.removed
+          this.ruleForm.systemType = res.data.systemType
+          this.ruleForm.areaId = res.data.areaId
         }
         if (this.ruleForm.parentId === '-1') {
           this.backId = this.ruleForm.id
@@ -134,12 +164,13 @@ export default {
               parentId: this.ruleForm.parentId || this.$route.params.parentId,
               name: this.ruleForm.name,
               removed: this.ruleForm.removed ? 0 : 1
+              // areaId: this.ruleForm.areaId,
+              // systemType:this.ruleForm.systemType,
             }
           }
           api[urlNames['createViewNode']](data).then((res) => {
             this.$message.success(`保存成功`)
             this.goBack()
-            console.log(res)
           }, (error) => {
 
           })

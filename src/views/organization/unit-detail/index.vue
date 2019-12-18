@@ -397,7 +397,7 @@ export default {
         type: type
       }).then((res) => {
         this.defaultList = res.data
-        console.log(JSON.parse(JSON.stringify(this.defaultList)),'--------------147')
+        // console.log(JSON.parse(JSON.stringify(this.defaultList)),'--------------147')
         res.data.forEach((item) => {
           this.tagsName.push(item.name)
           this.ruleForm.labelId.push(item.id)

@@ -41,8 +41,6 @@
                 :operateWidth="operateWidth"
                 :operate="operate"
                 :tableData="tableData">
-      <template slot-scope="{slotScope}" slot="status">
-      </template>
       <template slot-scope="{slotScope}" slot="operate">
         <el-button size="mini" type="text" @click="goDetails(slotScope.row)">查看明细</el-button>
       </template>

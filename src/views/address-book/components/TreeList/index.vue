@@ -10,11 +10,20 @@
       :load="loadNode"
       @node-click="handleNodeClick"
     >
-      <span class="custom-tree-node" slot-scope="{ node, data }">
+      <!-- <span class="custom-tree-node" slot-scope="{ node, data }">
         <i class="imenu-icon fa fa-sitemap" v-if="data.nodeType === 1"></i>
         <i class="imenu-icon fa fa-building-o" v-if="data.nodeType === 2"></i>
         <i class="imenu-icon fa fa-institution" v-if="data.nodeType === 3"></i>
-        <span>{{ node.label }}</span>
+        <span>{{ node.label }}</span> -->
+
+       <span class=" svg-container" slot-scope="{ node, data }">
+          <span class="iconfont iconzuzhijigou" v-if="data.nodeType === 1"></span>
+          <span class="iconfont icondanwei" v-if="data.nodeType === 2"></span>
+          <span class="iconfont iconbumen" v-if="data.nodeType === 3"></span>
+          <span>{{node.label}}</span>
+      </span>
+
+
         <!--<span class="custom-tree-float">
           <el-button
             type="text"
@@ -30,7 +39,7 @@
             删除
           </el-button>
         </span>-->
-      </span>
+     
     </el-tree>
   </div>
 </template>
