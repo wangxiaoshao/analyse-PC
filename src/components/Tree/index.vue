@@ -10,7 +10,7 @@
     ref="treeList"
     :load="loadNode"
     @node-click="handleNodeClick"
-   >
+  >
       <span class="custom-tree-node" slot-scope="{ node, data }">
         <i class="imenu-icon fa fa-sitemap" v-if="data.nodeType === 1"></i>
         <i class="imenu-icon fa fa-building-o" v-if="data.nodeType === 2"></i>
@@ -22,6 +22,7 @@
 
 <script>
 import { api, urlNames } from '@src/api'
+
 export default {
   data () {
     return {
@@ -33,7 +34,8 @@ export default {
       treeSonList: [],
       defaultProps: {
         children: 'children',
-        label: 'name'
+        label: 'name',
+        isLeaf: 'leaf'
       },
       id: '',
       parentId: ''
@@ -51,7 +53,14 @@ export default {
         api[urlNames['getTree']]({
           parentId: node.data.id
         }).then((res) => {
-          resolve(res.data)
+          let treeData = []
+          res.data.forEach(item => {
+            if (item.hasChildren === 0) {
+              item.leaf = true
+            }
+            treeData.push(item)
+          })
+          resolve(treeData)
         })
         // this.findTreeSonList(node.data.id)
         // this.id = node.data.id
@@ -89,10 +98,10 @@ export default {
     handleNodeClick (node) {
       this.$emit('handle-node-click', node)
       /* if (node) {
-        this.$emit('handle-node-click', node.bindId)
-      } else {
-        this.$emit('handle-node-click', node.id)
-      } */
+          this.$emit('handle-node-click', node.bindId)
+        } else {
+          this.$emit('handle-node-click', node.id)
+        } */
     }
   }
 }

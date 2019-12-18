@@ -48,7 +48,7 @@
                 class="input-with-select">
                 <el-select v-model="searchType" style="width: 80px" @change="getType" slot="prepend" placeholder="请选择">
                   <el-option label="单位" value="2">单位</el-option>
-                  <el-option label="内设机构" value="3">部门</el-option>
+                  <el-option label="内设机构" value="3">内设机构</el-option>
                 </el-select>
                 <el-button slot="append" @click.native="getResult" icon="el-icon-search"></el-button>
               </el-input>

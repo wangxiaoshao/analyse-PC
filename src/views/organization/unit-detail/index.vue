@@ -16,7 +16,7 @@
         @close="close"
         v-model="ruleForm.areaId"></area-list>
     </el-drawer>
-    <el-form :model="ruleForm" :disabled="disabledFlag" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+    <el-form :model="ruleForm" :disabled="disabledFlag" ref="ruleForm" label-width="130px" class="demo-ruleForm">
       <div class="detail-title">
         <i class="imenu-icon fa fa-building-o big-icon" style="margin: 0px 5px;"></i>单位信息
       </div>
@@ -61,7 +61,7 @@
               </div>
             </div>
           </el-form-item>
-          <el-form-item label="统一单位信用编码" prop="organization.creditId">
+          <el-form-item label="统一社会信用代码" prop="organization.creditId">
             <el-input v-model="ruleForm.organization.creditId" :disabled="true"></el-input>
           </el-form-item>
           <el-form-item label=" 上级单位">

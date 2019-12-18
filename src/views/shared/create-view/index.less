@@ -1,8 +1,5 @@
 .create-view {
   .from {
-    .grid-content {
-      display: inline-block;
-    }
     .grid-content:nth-of-type(2){
       padding-left: 30px;
     }
@@ -21,10 +18,10 @@
 
     .select-org {
       border: 1px solid #BBBBBB;
-      height: 350px;
-      overflow-y: scroll;
+      height: 420px;
+      overflow-y: auto;
       overflow-x: hidden;
-      width: 300px;
+      width: 350px;
 
       .el-tree {
         height: 350px;
@@ -32,7 +29,14 @@
       }
     }
   }
-
+.tree-form{
+  .el-form-item{
+    margin-bottom: 0px;
+  }
+  .el-row{
+    margin-bottom: 20px;
+  }
+}
   .imenu-icon {
     font-size: 16px;
     margin: 0 5px;

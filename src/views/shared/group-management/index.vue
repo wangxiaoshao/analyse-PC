@@ -76,7 +76,7 @@ export default {
     return {
       groupList: [],
       total: 0,
-      creatTitle:'',
+      creatTitle: '',
       creategroupdialogVisible: false,
       currentPage: 1,
       pageSize: 10,
@@ -86,8 +86,11 @@ export default {
         description: '',
         removed: true
       },
-      groupType: '1',
+      groupType: '',
       options: [{
+        value: '',
+        label: '全部'
+      }, {
         value: '1',
         label: '本单位'
       }, {
@@ -101,7 +104,7 @@ export default {
     }
   },
   created () {
-    this.getGroupList(1, 10, '1')
+    this.getGroupList(1, 10, '')
   },
   methods: {
     getGroupList (page, limt, type) {

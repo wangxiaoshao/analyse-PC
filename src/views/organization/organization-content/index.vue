@@ -17,9 +17,9 @@
         <i v-if="content[0].nodeType === 2" class="imenu-icon fa fa-building-o big-icon" style="margin: 0px 5px;"></i>
         <i v-if="content[0].nodeType === 3" class="imenu-icon fa fa-institution big-icon" style="margin: 0px 5px;"></i>
         <span class="organization-value" v-html="content[0].name"></span>
-        <el-button v-if="content[0].nodeType === 1" @click.native="openEditNode(content[0])">设置</el-button>
-        <el-button v-if="content[0].nodeType === 2" @click.native="openEditUnit(content[0])" >设置</el-button>
-        <el-button v-if="content[0].nodeType === 3" @click.native="openDepartmentEdit(content[0])">设置</el-button>
+        <el-button v-if="content[0].nodeType === 1" @click.native="openEditNode(content[0])">编辑</el-button>
+        <el-button v-if="content[0].nodeType === 2" @click.native="openEditUnit(content[0])" >编辑</el-button>
+        <el-button v-if="content[0].nodeType === 3" @click.native="openDepartmentEdit(content[0])">编辑</el-button>
         <el-button @click="toLogData">日志</el-button>
       </div>
       <!-- <div class="label-content">
@@ -103,7 +103,7 @@
               @cancel="getSortAction"
             ></person-list>
           </el-tab-pane>
-          <el-tab-pane label="部门领导" name="单位主要领导" v-if="content[0].nodeType !== 1">
+          <el-tab-pane label="内设机构领导" name="单位主要领导" v-if="content[0].nodeType !== 1">
             <leader-list
               v-if="activeName === '单位主要领导'"
               :content-id="content[0].bindId"

@@ -30,7 +30,7 @@
         class="input-with-select">
         <el-select v-model="value" style="width: 80px" @change="getType" slot="prepend" placeholder="请选择">
           <el-option label="单位" value="2"></el-option>
-          <el-option label="部门" value="3"></el-option>
+          <el-option label="内设机构" value="3"></el-option>
           <el-option label="节点" value="1"></el-option>
         </el-select>
         <el-button slot="append" icon="el-icon-search"></el-button>

@@ -35,7 +35,6 @@
                   若您是为同一个人开通兼职帐号，直接选择以下人员进行帐号开通
                 </div>
                 <el-table
-                  v-loading="loadFlag"
                   max-height="200"
                   :data="list"
                   @row-click="selectRow"
@@ -455,6 +454,7 @@ export default {
           api[urlNames['findUserByParams']]({
             name: this.personFrom.name
           }).then((res) => {
+            if(res.data.length !== 0){}
             this.loadFlag = false
             this.list = res.data
             console.log(this.list)

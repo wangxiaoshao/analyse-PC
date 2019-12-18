@@ -4,10 +4,7 @@
     <el-table
       v-loading="loading"
       :data="list"
-      stripe
       border
-      highlight-current-row
-      :max-height="tableMaxHeight"
       style="width: 100%">
       <el-table-column prop="name" label="角色名称">
       </el-table-column>

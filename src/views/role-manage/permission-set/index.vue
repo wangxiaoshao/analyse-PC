@@ -35,7 +35,7 @@ export default {
       ManageList: [], // 权限列表
       defaultProps: {
         children: 'children',
-        label: 'name'
+        label: 'title'
       },
       authorityManageList: [],
       checked: true,

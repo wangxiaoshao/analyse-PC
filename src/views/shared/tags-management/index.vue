@@ -28,7 +28,7 @@
         </span>
         <span class="custom-tree-float">
           <span class="tag-icon-operate fa fa-plus-circle" @click="createTag(data, {flag:0,title:node.label})"></span>
-          <span class="tag-icon-operate fa fa-trash-o" @click="deleteLabel(data.id)"></span>
+          <span class="tag-icon-operate fa fa-trash-o delete" @click="deleteLabel(data.id)"></span>
         </span>
       </span>
       </el-tree>

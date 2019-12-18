@@ -78,7 +78,7 @@ export default {
         {
           'id': 2,
           'code': '2',
-          'name': '部门'
+          'name': '内设机构'
         },
         {
           'id': 3,

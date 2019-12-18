@@ -2,18 +2,18 @@
   <div class="member-tab">
     <el-table
       :data="tableData"
-      border
+      :show-header="false"
       style="width: 100%"
     >
       <el-table-column
-        prop="portraitUrl"
-        label="头像"
         align="center"
-        width="100">
+        width="120"
+      height="40">
         <template slot-scope="scope">
-          <span class="portrait-url">
-            <img :src="scope.row.portraitUrl">
-          </span>
+<!--            <span v-if="scope.row.portraitUrl !== '0'&&scope.row.portraitUrl!==undefined"><img  :src="scope.row.portraitUrl"></span>-->
+            <span>
+              <span class="header-img">{{scope.row.name.slice(-2,scope.row.name.length)}}</span>
+            </span>
         </template>
       </el-table-column>
       <el-table-column
@@ -44,6 +44,6 @@ export default {
   methods: {}
 }
 </script>
-<style lang="less">
-  @import 'index';
+<style scoped lang="less">
+  @import './index';
 </style>

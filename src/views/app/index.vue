@@ -182,4 +182,7 @@ export default {
 
 <style lang="less">
   @import "./index";
+  .site-main{
+    background: #FFF;
+  }
 </style>

@@ -248,7 +248,7 @@
 <script>
 import { api, urlNames } from '@src/api'
 
-const nodeAuditList = [{ name: 'name', checkname: '结点名称' }]
+const nodeAuditList = [{ name: 'name', checkname: '节点名称' }]
 const orgAuditList = [{ name: 'name', checkname: '单位全称' }, { name: 'shortName', checkname: '单位简称' }, {
   name: 'address',
   checkname: '单位地址'

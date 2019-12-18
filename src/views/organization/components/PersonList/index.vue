@@ -266,11 +266,12 @@ export default {
         let data = {
           deptId: this.id,
           page: this.contentPage.current,
-          pageSize: this.contentPage.limit
+          limit: this.contentPage.limit
         }
         api[urlNames['findDepartmentMembers']](data).then((res) => {
           this.loading = false
           this.list = res.data
+          this.contentPage.total = res.data.total
         }, () => {
           this.loading = false
           this.list = []
@@ -281,11 +282,12 @@ export default {
         let data = {
           orgId: this.id,
           page: this.contentPage.current,
-          pageSize: this.contentPage.limit
+          limit: this.contentPage.limit
         }
         api[urlNames['findOrganizationMembers']](data).then((res) => {
           this.loading = false
           this.list = res.data
+          this.contentPage.total = res.data.total
         }, () => {
           this.loading = false
           this.list = []

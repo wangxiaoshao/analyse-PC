@@ -17,11 +17,6 @@
           align="center">
         </el-table-column>
         <el-table-column
-          property="id"
-          label="视图ID"
-          align="center">
-        </el-table-column>
-        <el-table-column
           property="createTime"
           align="center"
           label="创建时间">

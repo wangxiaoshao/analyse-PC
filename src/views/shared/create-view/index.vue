@@ -1,17 +1,18 @@
 <template>
   <div class="create-view">
     <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane  label="视图基本信息" name="first">
+      <el-tab-pane label="视图基本信息" name="first">
         <div class="from">
           <el-form ref="form" :rules="rules" :model="ViewFrom" label-width="100px">
             <el-row>
-              <el-col :span="8">
+              <el-col :span="12">
                 <div class="grid-content bg-purple">
                   <el-form-item label="视图名称" prop="name">
                     <el-input v-model="ViewFrom.name"></el-input>
                   </el-form-item>
                   <el-form-item label="视图管理员">
-                    <el-select v-model="ViewFrom.roleBindUserIds" @remove-tag="removeManager" multiple placeholder="请选择">
+                    <el-select v-model="ViewFrom.roleBindUserIds" @remove-tag="removeManager" multiple
+                               placeholder="请选择">
                       <el-option
                         v-for="item in adminList"
                         :key="item.uid"
@@ -37,68 +38,75 @@
         </div>
       </el-tab-pane>
       <el-tab-pane :disabled="tabDisable" label="视图组织机构" name="second">
-        <div class="from">
+        <div class="from tree-form">
           <el-form ref="form" :model="form">
+            <el-row>
+              <el-col :span="12">
                 <div class="grid-content">
                   <div class="tree-title">选择组织机构</div>
                   <el-form-item label="">
                     <div class="select-org">
-                      <el-tree
-                        ref="selecttree"
-                        :data="nodeTree"
-                        node-key="id"
-                        draggable
-                        lazy
-                        :props="defaultProps"
-                        :load="loadNode"
-                        @check-change="currentchange"
-                        :check-strictly="true"
-                        :allow-drop="allowDrop"
-                        @node-drag-end="nodeDragEnd"
-                        @node-drag-over="handleDragOver"
-                        :expand-on-click-node="false"
-                        :default-checked-keys="checkedKeys">
+                        <el-tree
+                          ref="selecttree"
+                          :data="nodeTree"
+                          node-key="id"
+                          draggable
+                          lazy
+                          :props="defaultProps"
+                          :load="loadNode"
+                          @check-change="currentchange"
+                          :check-strictly="true"
+                          :allow-drop="allowDrop"
+                          @node-drag-end="nodeDragEnd"
+                          @node-drag-over="handleDragOver"
+                          :default-expanded-keys="[defaultexpandedkeys]"
+                          :expand-on-click-node="false"
+                          :default-checked-keys="checkedKeys">
                           <span class="custom-tree-node" slot-scope="{ node, data }">
                             <i class="imenu-icon fa fa-sitemap" v-if="data.nodeType === 1"></i>
                             <i class="imenu-icon fa fa-building-o" v-if="data.nodeType === 2"></i>
                             <i class="imenu-icon fa fa-institution" v-if="data.nodeType === 3"></i>
                             <span>{{node.label}}</span>
                           </span>
+                        </el-tree>
+                    </div>
+                  </el-form-item>
+                </div>
+              </el-col>
+              <el-col :span="12">
+                <div class="grid-content">
+                  <div class="tree-title">新机构视图</div>
+                  <!--                select-org-panel   <div class="select-btn">-->
+                  <!--                    <p style="font-size: 14px;color: #606266;padding: 0 10px;">新机构视图</p>-->
+                  <!--                                          <p><el-button type="primary" size="small">新机构视图</el-button></p>-->
+                  <!--                                          <p><el-button size="small">旧机构视图</el-button></p>-->
+                  <!--                  </div>-->
+                  <el-form-item>
+                    <div class="select-org select-org123" ref="coordinates">
+                      <el-tree
+                        :data="viewNodeTree"
+                        node-key="id"
+                        draggable
+                        lazy
+                        :load="loadOrgNode"
+                        :props="defaultProps"
+                        :check-strictly="true"
+                        @node-drag-end="nodeSelectDragEnd"
+                        :expand-on-click-node="false"
+                        :default-checked-keys="checkedKeys">
+                        <div class="custom-tree-node" slot-scope="{ node, data }">
+                          <i class="imenu-icon fa fa-sitemap" v-if="data.nodeType === 1"></i>
+                          <i class="imenu-icon fa fa-building-o" v-if="data.nodeType === 2"></i>
+                          <i class="imenu-icon fa fa-institution" v-if="data.nodeType === 3"></i>
+                          <span>{{node.label}}</span>
+                          <span @click="deleteNodeTree(data.id)" class="delete-icon fa fa-trash-o"></span>
+                        </div>
                       </el-tree>
                     </div>
                   </el-form-item>
                 </div>
-                <div class="grid-content">
-                  <div class="tree-title">新机构视图</div>
-<!--                select-org-panel   <div class="select-btn">-->
-<!--                    <p style="font-size: 14px;color: #606266;padding: 0 10px;">新机构视图</p>-->
-<!--                                          <p><el-button type="primary" size="small">新机构视图</el-button></p>-->
-<!--                                          <p><el-button size="small">旧机构视图</el-button></p>-->
-<!--                  </div>-->
-                  <el-form-item>
-                  <div class="select-org select-org123" ref="coordinates">
-                    <el-tree
-                      :data="viewNodeTree"
-                      node-key="id"
-                      draggable
-                      lazy
-                      :load="loadOrgNode"
-                      :props="defaultProps"
-                      :check-strictly="true"
-                      @node-drag-end="nodeSelectDragEnd"
-                      :expand-on-click-node="false"
-                      :default-checked-keys="checkedKeys">
-                        <div class="custom-tree-node" slot-scope="{ node, data }">
-                            <i class="imenu-icon fa fa-sitemap" v-if="data.nodeType === 1"></i>
-                            <i class="imenu-icon fa fa-building-o" v-if="data.nodeType === 2"></i>
-                            <i class="imenu-icon fa fa-institution" v-if="data.nodeType === 3"></i>
-                            <span>{{node.label}}</span>
-                          <span @click="deleteNodeTree(data.id)" class="delete-icon fa fa-trash-o"></span>
-                         </div>
-                    </el-tree>
-                  </div>
-                  </el-form-item>
-                </div>
+              </el-col>
+            </el-row>
             <el-form-item>
               <el-button style="margin-left: 267px" type="primary" @click="synchronizedNode">保存视图</el-button>
               <el-button @click="backToList">取消</el-button>
@@ -120,6 +128,7 @@ export default {
   mixins: [handleTable, handleBreadcrumb],
   data () {
     return {
+      defaultexpandedkeys: '-1730833917365171641',
       activeName: 'first',
       tabDisable: true,
       adminList: [],
@@ -141,7 +150,8 @@ export default {
       defaultProps: {
         children: 'children',
         label: 'name',
-        id: null
+        id: null,
+        isLeaf: 'leaf'
       }, // 树形渲染规则
       nodeDraftTree: [], // 机构草稿树
       viewNodeSonTree: [], // 机构草稿树子节点
@@ -253,9 +263,11 @@ export default {
     },
     // 获取机构树--初始化
     findNodeTree (parentId) {
-      api[urlNames['getTree']]({
-      }).then((res) => {
+      api[urlNames['getTree']]({}).then((res) => {
         this.nodeTree = res.data
+        if (res.data.length !== 0) {
+          this.defaultexpandedkeys = res.data[0].id
+        }
       })
     },
     // 创建视图草稿
@@ -291,11 +303,18 @@ export default {
       if (node.level === 0) {
         return resolve(this.nodeTree)
       }
-      this.findSonNodeTree(node.data.id)
-      setTimeout(() => {
-        resolve(this.nodeSonTree)
-      }, 500)
-      this.nodeSonTree = []
+      api[urlNames['getTree']]({
+        parentId: node.data.id
+      }).then((res) => {
+        let treeData = []
+        res.data.forEach(item => {
+          if (item.hasChildren === 0) {
+            item.leaf = true
+          }
+          treeData.push(item)
+        })
+        resolve(treeData)
+      })
     },
     // 获取视图草稿
     findNodeDraftList (parentId) {
@@ -347,13 +366,14 @@ export default {
     nodeDragEnd (Node, lastNode, lastTree, e) {
       let coordinates = this.getCoordinates()
       /*
-      coordinates
-      top:coordinates元素距离顶部的距离
-      left:coordinates元素距离左侧的距离
-      x:浏览器的位置-左侧
-      y:浏览器的位置-顶部
-      */
-      if (e.screenX > 500 + coordinates.x && e.screenX < 1200 + coordinates.x) {
+        coordinates
+        top:coordinates元素距离顶部的距离
+        left:coordinates元素距离左侧的距离
+        x:浏览器的位置-左侧
+        y:浏览器的位置-顶部
+        */
+      // if (e.screenX > 500 + coordinates.x && e.screenX < 1200 + coordinates.x) {
+      if (e.screenX > (window.innerWidth - 240) / 2 + 240 + coordinates.x && e.screenX < (window.innerWidth - 240) / 2 + 240 + coordinates.x + window.innerWidth * 0.5) {
         this.viewNodeDraft.id = Node.data.id
         Node.data.parentId = this.viewNodeDraft.parentId = '-1'
         this.viewNodeDraft.name = Node.data.name
@@ -486,8 +506,9 @@ export default {
 
 <style scoped lang="less">
   @import "./index";
-  .el-tree-node__content:hover{
-    .fa-trash-o{
+
+  .el-tree-node__content:hover {
+    .fa-trash-o {
       display: block;
     }
   }
