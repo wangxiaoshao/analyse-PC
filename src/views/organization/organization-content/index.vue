@@ -58,6 +58,12 @@
               border
               size="medium"
             >
+              <template slot="empty">
+                <div class="empty">
+                  <p><img class="data-pic" src="@src/common/images/no-data.png" alt=""/></p>
+                  <p><span style="padding-left: 8px">暂无数据！</span></p>
+                </div>
+              </template>
               <el-table-column label="名称" prop="name"></el-table-column>
               <el-table-column label="启用状态" prop="removed" align="center">
                 <template slot-scope="scope">
@@ -323,4 +329,22 @@ export default {
 
 <style lang="less">
   @import "index";
+  .empty {
+    p {
+      margin: 0;
+      font-size: 0px;
+      text-align: center;
+      line-height: 16px!important;
+    }
+
+    span {
+      font-size: 12px;
+    }
+  }
+
+  .data-pic {
+    padding-top: 20px;
+    width: 60px;
+    height: auto;
+  }
 </style>

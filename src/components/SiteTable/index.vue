@@ -1,39 +1,45 @@
 <template>
-    <el-table
-            :data="tableData"
-            @sort-change="sort"
-            :height="tableHeight"
-            :col-merge-config="mergeConfig"
-            :span-method="openColMerge"
-            v-loading = "tableLoading"
-            border
-            @selection-change="selectionChange"
-            style="width: 100%">
-        <el-table-column type="selection" v-if="tableCheckbox" width="50" align="center"></el-table-column>
-        <el-table-column type="index" v-if="tableIndex" width="60" align="center" label="#">
-            <template slot-scope="scope">{{scope.$index+(pageConfig.page - 1) * pageConfig.limit + 1}}</template>
-        </el-table-column>
-      <slot name="prePersonalColumn"></slot>
-        <template v-for="item in tableConfig">
-          <el-table-column
-                        :prop="item.key"
-                        align="center"
-                        label-class-name="black"
-                        :formatter="item.formatter"
-                        :label="item.label"
-                        :key="item.key"
-                        :sortable="item.sortable"
-                        :show-overflow-tooltip="item.showOverflowTooltip || false"
-                        :min-width="item.minWidth || null">
-        </el-table-column>
-        </template>
-      <slot></slot>
-      <el-table-column label="操作" align="center" fixed="right" v-if="operate" :width="operateWidth">
-        <template slot-scope="scope">
-          <slot name="operate" :slot-scope="scope"></slot>
-        </template>
+  <el-table
+    :data="tableData"
+    @sort-change="sort"
+    :height="tableHeight"
+    :col-merge-config="mergeConfig"
+    :span-method="openColMerge"
+    v-loading="tableLoading"
+    border
+    @selection-change="selectionChange"
+    style="width: 100%">
+    <template slot="empty">
+     <div class="empty">
+       <p><img class="data-pic" src="@src/common/images/no-data.png" alt=""/></p>
+       <p><span style="padding-left: 8px">暂无数据！</span></p>
+     </div>
+    </template>
+    <el-table-column type="selection" v-if="tableCheckbox" width="50" align="center"></el-table-column>
+    <el-table-column type="index" v-if="tableIndex" width="60" align="center" label="#">
+      <template slot-scope="scope">{{scope.$index+(pageConfig.page - 1) * pageConfig.limit + 1}}</template>
+    </el-table-column>
+    <slot name="prePersonalColumn"></slot>
+    <template v-for="item in tableConfig">
+      <el-table-column
+        :prop="item.key"
+        align="center"
+        label-class-name="black"
+        :formatter="item.formatter"
+        :label="item.label"
+        :key="item.key"
+        :sortable="item.sortable"
+        :show-overflow-tooltip="item.showOverflowTooltip || false"
+        :min-width="item.minWidth || null">
       </el-table-column>
-    </el-table>
+    </template>
+    <slot></slot>
+    <el-table-column label="操作" align="center" v-if="operate" :width="operateWidth">
+      <template slot-scope="scope">
+        <slot name="operate" :slot-scope="scope"></slot>
+      </template>
+    </el-table-column>
+  </el-table>
 </template>
 <script>
 
@@ -90,15 +96,15 @@ export default {
   },
   methods: {
     /*
-  * @openColMerge：开启表格合并功能
-  * @param：
-  *  mergeConfig: {
-          ele: 'row' 或 'col' 合并行还是列
-          eleIndex: 2, 需要合并的元素的索引值
-          rowspan: 1, 行合并数
-          colspan: 2, 列合并数
-        },
-  */
+      * @openColMerge：开启表格合并功能
+      * @param：
+      *  mergeConfig: {
+              ele: 'row' 或 'col' 合并行还是列
+              eleIndex: 2, 需要合并的元素的索引值
+              rowspan: 1, 行合并数
+              colspan: 2, 列合并数
+            },
+      */
     openColMerge ({ rowIndex, columnIndex }) {
       let len = this.mergeConfig ? this.mergeConfig.length : 0
       for (let i = 0; i < len; i++) {
@@ -120,14 +126,35 @@ export default {
   }
 }
 </script>
-<style>
-  .black{
+<style scoped lang="less">
+  .empty {
+    p {
+      margin: 0;
+      font-size: 0px;
+      text-align: center;
+      line-height: 16px!important;
+    }
+
+    span {
+      font-size: 12px;
+    }
+  }
+
+  .data-pic {
+    padding-top: 20px;
+    width: 60px;
+    height: auto;
+  }
+
+  .black {
     color: black;
   }
-  .red{
+
+  .red {
     color: #F56C6C;
   }
-  .green{
+
+  .green {
     color: #67C23A;
   }
 </style>
