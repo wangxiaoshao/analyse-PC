@@ -19,8 +19,8 @@
       <el-form-item label="申请原因" prop="reason">
         <el-input type="textarea" v-model="ruleForm.reason"></el-input>
       </el-form-item>
-      <el-form-item label="所属系统" prop="areaId">
-         <el-select v-model="ruleForm.areaId" @change="getSystemType" placeholder="请选择所属系统">
+      <el-form-item label="所属系统" prop="systemType">
+         <el-select v-model="ruleForm.systemType" @change="getSystemType" placeholder="请选择所属系统">
               <el-option
                 v-for="item in applicationOption"
                 :key="item.id"
@@ -29,14 +29,16 @@
           ></el-option>
           </el-select>
       </el-form-item>
-      <el-form-item label="所属类型"  prop="systemType">
-        <el-select  v-model="ruleForm.systemType"  @change="getType"  placeholder="请选择所属类型">
+      <el-form-item label="所属区域"  prop="areaId">
+        <!-- <el-select  v-model="ruleForm.areaId"  @change="getType"  placeholder="请选择所属区域">
               <el-option
                 v-for="item in classOption"
                 :key="item.id"
                 :label="item.text"
                 :value="item.value"></el-option>
-            </el-select>
+            </el-select> -->
+            <el-input v-model="ruleForm.areaId" style="display: none"></el-input>
+            <el-input v-model="areaCheck"></el-input>
       </el-form-item>
       <el-form-item v-if="isShowEditFlag">
         <el-button type="primary" @click="submitForm('ruleForm')">{{submitHtml}}</el-button>
@@ -62,6 +64,7 @@ export default {
       current: false,
       breadcrumbTitle: '添加节点',
       submitHtml: '保存',
+      areaCheck:'',
       oldFrom: {},
       ruleForm: {
         reason: '',
@@ -90,6 +93,7 @@ export default {
     }
     this.oldFrom = JSON.parse(JSON.stringify(obj))
     this.getNodeDetail()
+    
   },
   methods: {
     getSystemType (el) {
@@ -115,7 +119,7 @@ export default {
           this.ruleForm.id = res.data.id
           this.ruleForm.removed = !res.data.removed
           this.ruleForm.systemType = res.data.systemType
-          this.ruleForm.areaId = res.data.areaId
+          this.ruleForm.areaId = res.data.areaId  
         }
         if (this.ruleForm.parentId === '-1') {
           this.backId = this.ruleForm.id
@@ -163,9 +167,9 @@ export default {
               id: this.$route.params.id,
               parentId: this.ruleForm.parentId || this.$route.params.parentId,
               name: this.ruleForm.name,
-              removed: this.ruleForm.removed ? 0 : 1
+              removed: this.ruleForm.removed ? 0 : 1,
               // areaId: this.ruleForm.areaId,
-              // systemType:this.ruleForm.systemType,
+              systemType:this.ruleForm.systemType
             }
           }
           api[urlNames['createViewNode']](data).then((res) => {
