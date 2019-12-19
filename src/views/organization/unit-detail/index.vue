@@ -9,6 +9,7 @@
     ></search-lable>
     <el-drawer
       title="选择区域"
+      style="width:1500px;height:800px"
       :visible.sync="areaFlag"
       :direction="'rtl'">
       <area-list
@@ -16,6 +17,7 @@
         @close="close"
         v-model="ruleForm.areaId"></area-list>
     </el-drawer>
+   
     <el-form :model="ruleForm" :disabled="disabledFlag" ref="ruleForm" label-width="130px" class="demo-ruleForm">
       <div class="detail-title">
         <i class="imenu-icon fa fa-building-o big-icon" style="margin: 0px 5px;"></i>单位信息
@@ -112,7 +114,7 @@
           <el-form-item label="所属区域" prop="areaId">
             <!--选择区域组件-->
             <el-input v-model="ruleForm.areaId" style="display: none"></el-input>
-            <el-input v-model="areaCheck" @focus="areaFlag = true"></el-input>
+            <el-input v-model="areaCheck" @focus="openarea"></el-input>
             <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
               <div class="tip-msg"
                    v-show="this.app.option.options.orgAuditFields.indexOf('areaId') > -1 && ruleForm.areaId !== oldFrom.areaId">
@@ -220,6 +222,7 @@
         <el-button @click="goBack">取消</el-button>
       </el-form-item>
     </el-form>
+    
   </div>
 </template>
 
@@ -328,7 +331,7 @@ export default {
         api[urlNames['findViewNodeById']]({
           id: this.$route.params.parentId || this.$route.params.id
         }).then((res) => {
-          if (res.data.bindId) {
+          if (res.data.bindId) {          
             this.parentName = res.data.name
             this.bindId = res.data.bindId
             if (this.$route.name !== 'UnitAdd') {
@@ -355,6 +358,10 @@ export default {
         this.findLabel(1)
         this.getDetail()
       }
+    },
+    openarea(e){
+      this.areaFlag=true;
+      e.target.blur();
     },
     getDetail () {
       let data = {
@@ -442,6 +449,7 @@ export default {
     },
     // 获取区域
     getArea (orgId) {
+      console.log(orgId);
       api[urlNames['findOrgAreaList']]({
         orgId: orgId
       }).then((res) => {
@@ -496,7 +504,6 @@ export default {
     },
     getAreaId (val) {
       this.areaCheck = val.name
-      console.log(val)
       this.ruleForm.areaId = val.id
       // this.ruleForm.areaId = val
     },
@@ -516,8 +523,8 @@ export default {
     goBack () {
       this.$router.go(-1)
     },
-    close () {
-      this.areaFlag = false
+    close (val) {
+      this.areaFlag = val
     },
     findMenuByPath (list) {
       for (let item of list) {

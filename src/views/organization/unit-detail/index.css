@@ -1,0 +1,48 @@
+.form-content {
+  padding: 0 40px;
+}
+.form-content /deep/ .el-cascader-panel {
+  display: none !important;
+}
+.form-content .el-cascader-menu__list {
+  display: none !important;
+}
+.form-content .el-menu-demo {
+  margin-bottom: 20px;
+}
+.form-content .fa-sitemap {
+  color: #FC7049;
+}
+.form-content .fa-institution {
+  color: #FC7049;
+}
+.form-content .fa-building-o {
+  color: #FC7049;
+}
+.form-content .fa-user-o {
+  color: #FC7049;
+}
+.form-content .el-form-item__label {
+  overflow: hidden !important;
+  height: 36px;
+}
+.form-content .detail-title {
+  padding: 10px 0;
+  font-size: 24px;
+}
+.form-content .el-tag {
+  margin: 5px 10px 10px 10px;
+  max-width: 120px;
+  overflow: hidden;
+}
+.form-content .tag-content {
+  padding: 20px 0;
+}
+.form-content .tag-content .el-checkbox__input {
+  display: none !important;
+}
+.form-content .tag-content .el-checkbox {
+  margin: 10px;
+  max-width: 120px;
+  overflow: hidden;
+}

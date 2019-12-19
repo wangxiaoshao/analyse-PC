@@ -1,5 +1,16 @@
 <template>
   <div v-loading="loading">
+    <el-drawer
+      title="选择区域"
+      style="width:1500px;height:700px"
+      :visible.sync="areaFlag"
+      :direction="'rtl'">
+        <area-list
+        @get-area="getAreaId"
+        @close="close"
+        v-model="ruleForm.areaId"></area-list>
+    </el-drawer>
+
     <el-form
       :model="ruleForm"
       :rules="rules"
@@ -30,15 +41,8 @@
           </el-select>
       </el-form-item>
       <el-form-item label="所属区域"  prop="areaId">
-        <!-- <el-select  v-model="ruleForm.areaId"  @change="getType"  placeholder="请选择所属区域">
-              <el-option
-                v-for="item in classOption"
-                :key="item.id"
-                :label="item.text"
-                :value="item.value"></el-option>
-            </el-select> -->
-            <el-input v-model="ruleForm.areaId" style="display: none"></el-input>
-            <el-input v-model="areaCheck"></el-input>
+          <el-input v-model="ruleForm.areaId" style="display: none"></el-input>
+          <el-input v-model="areaCheck"  @focus="openarea"></el-input>
       </el-form-item>
       <el-form-item v-if="isShowEditFlag">
         <el-button type="primary" @click="submitForm('ruleForm')">{{submitHtml}}</el-button>
@@ -52,9 +56,10 @@
 import { api, urlNames } from '@src/api'
 import dicOption from '@src/mixins/dic-options.js'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
-
+import areaList from '../components/AreaList/index'
 export default {
   name: 'index',
+  components:{areaList},
   mixins: [ handleBreadcrumb,dicOption],
   data () {
     return {
@@ -66,6 +71,9 @@ export default {
       submitHtml: '保存',
       areaCheck:'',
       oldFrom: {},
+      areaFlag:false,
+      areaOption:[],
+      allAreaList:[],
       ruleForm: {
         reason: '',
         name: '',
@@ -99,8 +107,25 @@ export default {
     getSystemType (el) {
       this.ruleForm.systemType = el
     },
-    getType (el) {
-      this.ruleForm.areaId = el
+   getAreaId (val) {
+      this.areaCheck = val.name
+      this.ruleForm.areaId = val.id
+    },
+    close (val) {
+      this.areaFlag = val
+    },
+    openarea(e){
+      this.areaFlag=true;
+      e.target.blur();
+    },
+    findMenuByPath (list) {
+      for (let item of list) {
+        this.areaOption.push(item)
+        if (item.children && item.children.length > 0) {
+          this.findMenuByPath(item.children)
+        } else {
+        }
+      }
     },
     getNodeDetail () {
       let data = {
@@ -111,15 +136,22 @@ export default {
         this.loading = false
         if (this.$route.name === 'NodeAdd') {
           this.ruleForm.parentName = res.data.name
-          this.ruleForm.parentId = res.data.id
+          this.ruleForm.parentId = res.data.id 
         } else {
+           this.findMenuByPath(res.data.nodeArea);
+            if(res.data.nodeArea.length>0){
+              this.ruleForm.areaId = this.areaOption[this.areaOption.length - 1].id
+              this.areaOption.forEach((item) => {
+              this.areaCheck += item.name + '/'
+            })
+            }  
           this.ruleForm.parentName = res.data.parentName
           this.ruleForm.parentId = res.data.parentId
           this.ruleForm.name = res.data.name
           this.ruleForm.id = res.data.id
           this.ruleForm.removed = !res.data.removed
           this.ruleForm.systemType = res.data.systemType
-          this.ruleForm.areaId = res.data.areaId  
+          this.ruleForm.areaId=res.data.areaId
         }
         if (this.ruleForm.parentId === '-1') {
           this.backId = this.ruleForm.id
@@ -168,7 +200,7 @@ export default {
               parentId: this.ruleForm.parentId || this.$route.params.parentId,
               name: this.ruleForm.name,
               removed: this.ruleForm.removed ? 0 : 1,
-              // areaId: this.ruleForm.areaId,
+              areaId: this.ruleForm.areaId,
               systemType:this.ruleForm.systemType
             }
           }
