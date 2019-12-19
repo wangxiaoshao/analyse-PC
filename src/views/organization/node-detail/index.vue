@@ -28,27 +28,20 @@
       <el-form-item label="申请原因" prop="reason">
         <el-input type="textarea" v-model="ruleForm.reason"></el-input>
       </el-form-item>
-<!--      <el-form-item label="所属系统" prop="areaId">-->
-<!--        <el-input v-model="ruleForm.areaId" style="display: none"></el-input>-->
-<!--        <el-input v-model="areaCheck" @focus="areaFlag = true"></el-input>-->
-<!--&lt;!&ndash;         <el-select v-model="ruleForm.areaId" @change="getSystemType" placeholder="请选择所属系统">&ndash;&gt;-->
-<!--&lt;!&ndash;              <el-option&ndash;&gt;-->
-<!--&lt;!&ndash;                v-for="item in applicationOption"&ndash;&gt;-->
-<!--&lt;!&ndash;                :key="item.id"&ndash;&gt;-->
-<!--&lt;!&ndash;                :value="item.value"&ndash;&gt;-->
-<!--&lt;!&ndash;                :label="item.text"&ndash;&gt;-->
-<!--&lt;!&ndash;          ></el-option>&ndash;&gt;-->
-<!--&lt;!&ndash;          </el-select>&ndash;&gt;-->
-<!--      </el-form-item>-->
-<!--      <el-form-item label="所属区域"  prop="systemType">-->
-<!--        <el-select  v-model="ruleForm.systemType"  @change="getType"  placeholder="请选择所属类型">-->
-<!--              <el-option-->
-<!--                v-for="item in classOption"-->
-<!--                :key="item.id"-->
-<!--                :label="item.text"-->
-<!--                :value="item.value"></el-option>-->
-<!--            </el-select>-->
-<!--      </el-form-item>-->
+      <el-form-item label="所属系统" prop="systemType">
+         <el-select v-model="ruleForm.systemType" @change="getSystemType" placeholder="请选择所属系统">
+              <el-option
+                v-for="item in applicationOption"
+                :key="item.id"
+                :value="item.value"
+                :label="item.text"
+          ></el-option>
+          </el-select>
+      </el-form-item>
+      <el-form-item label="所属区域"  prop="areaId">
+          <el-input v-model="ruleForm.areaId" style="display: none"></el-input>
+          <el-input v-model="areaCheck"  @focus="openarea"></el-input>
+      </el-form-item>
       <el-form-item v-if="isShowEditFlag">
         <el-button type="primary" @click="submitForm('ruleForm')">{{submitHtml}}</el-button>
         <el-button @click="goBack">取消</el-button>
@@ -61,10 +54,11 @@
 import { api, urlNames } from '@src/api'
 import dicOption from '@src/mixins/dic-options.js'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
-
+import areaList from '../components/AreaList/index'
 export default {
   name: 'index',
-  mixins: [ handleBreadcrumb, dicOption],
+  components:{areaList},
+  mixins: [ handleBreadcrumb,dicOption],
   data () {
     return {
       loading: false,
@@ -73,7 +67,11 @@ export default {
       current: false,
       breadcrumbTitle: '添加节点',
       submitHtml: '保存',
+      areaCheck:'',
       oldFrom: {},
+      areaFlag:false,
+      areaOption:[],
+      allAreaList:[],
       ruleForm: {
         reason: '',
         name: '',
@@ -81,7 +79,7 @@ export default {
         parentName: '',
         id: '',
         areaId: '',
-        systemType: ''
+        systemType:''
       },
       rules: {
         name: [
@@ -106,8 +104,25 @@ export default {
     getSystemType (el) {
       this.ruleForm.systemType = el
     },
-    getType (el) {
-      this.ruleForm.areaId = el
+   getAreaId (val) {
+      this.areaCheck = val.name
+      this.ruleForm.areaId = val.id
+    },
+    close (val) {
+      this.areaFlag = val
+    },
+    openarea(e){
+      this.areaFlag=true;
+      e.target.blur();
+    },
+    findMenuByPath (list) {
+      for (let item of list) {
+        this.areaOption.push(item)
+        if (item.children && item.children.length > 0) {
+          this.findMenuByPath(item.children)
+        } else {
+        }
+      }
     },
     getNodeDetail () {
       let data = {
@@ -120,13 +135,20 @@ export default {
           this.ruleForm.parentName = res.data.name
           this.ruleForm.parentId = res.data.id
         } else {
+           this.findMenuByPath(res.data.nodeArea);
+            if(res.data.nodeArea.length>0){
+              this.ruleForm.areaId = this.areaOption[this.areaOption.length - 1].id
+              this.areaOption.forEach((item) => {
+              this.areaCheck += item.name + '/'
+            })
+            }
           this.ruleForm.parentName = res.data.parentName
           this.ruleForm.parentId = res.data.parentId
           this.ruleForm.name = res.data.name
           this.ruleForm.id = res.data.id
           this.ruleForm.removed = !res.data.removed
           this.ruleForm.systemType = res.data.systemType
-          this.ruleForm.areaId = res.data.areaId
+          this.ruleForm.areaId=res.data.areaId
         }
         if (this.ruleForm.parentId === '-1') {
           this.backId = this.ruleForm.id
@@ -174,9 +196,9 @@ export default {
               id: this.$route.params.id,
               parentId: this.ruleForm.parentId || this.$route.params.parentId,
               name: this.ruleForm.name,
-              removed: this.ruleForm.removed ? 0 : 1
-              // areaId: this.ruleForm.areaId,
-              // systemType:this.ruleForm.systemType,
+              removed: this.ruleForm.removed ? 0 : 1,
+              areaId: this.ruleForm.areaId,
+              systemType:this.ruleForm.systemType
             }
           }
           api[urlNames['createViewNode']](data).then((res) => {

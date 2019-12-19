@@ -117,7 +117,6 @@ export default {
       })
     },
     handleNodeClick (data) {
-      console.log(data, 415415)
       this.checkOption = data
     },
     submitArea () {
