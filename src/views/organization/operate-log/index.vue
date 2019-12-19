@@ -12,7 +12,7 @@
     </template>
     <el-table-column
       type="index"
-      width="50"
+      width="65"
       label="序号"
     align="center">
     </el-table-column>
@@ -22,12 +22,12 @@
 <!--    </el-table-column>-->
     <el-table-column
       prop="actionUserName"
-      label="更改人员"
+      label="操作人员"
       align="center"
       width="140">
     </el-table-column>
     <el-table-column
-      label="更改动作"
+      label="操作动作"
       align="center"
       width="80">
       <template slot-scope="scope">
@@ -39,13 +39,13 @@
     <el-table-column
       prop="actionTime"
       align="center"
-      label="更改时间"
+      label="操作时间"
       width="160">
     </el-table-column>
     <el-table-column
       prop="changeContent"
       align="center"
-      label="更改内容">
+      label="操作内容">
     </el-table-column>
   </el-table>
 </div>

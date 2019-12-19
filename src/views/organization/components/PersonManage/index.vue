@@ -64,10 +64,20 @@
               </div>
             </div>
           </el-form-item>
-          <el-form-item label="职务" prop="dutyName" :rules="dutyName">
+          <el-form-item label="职务" prop="dutyName">
             <el-input
               placeholder="请输入职务"
-              v-model="postDetail.dutyName"></el-input>
+              v-model="postDetail.dutyName" @change="aaaaa" @focus="showdutyNameList"></el-input>
+<!--            <el-popover-->
+<!--              placement="top"-->
+<!--              width="160"-->
+<!--              v-model="dutyNameSelectVisible">-->
+<!--              <div style="margin-top: 20px">-->
+<!--                <el-checkbox-group @change="ssssse123" v-model="ssssse" size="medium">-->
+<!--                  <el-checkbox-button v-for="item in userTypeOptions" :value="item.text" :label="item.text" :key="item.id"></el-checkbox-button>-->
+<!--                </el-checkbox-group>-->
+<!--              </div>-->
+<!--            </el-popover>-->
             <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
               <div class="tip-msg"
                    v-show="this.app.option.options.userAuditFields.indexOf('dutyName') > -1 && postDetail.dutyName !== oldUserInfo.identity.dutyName">
@@ -127,6 +137,7 @@
                 <img v-if="personFrom.portraitUrl" :src="personFrom.portraitUrl" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
+              <div style="font-size: 10px;color: #606266"><span style="color: #FC7049">*</span>只支持jpg格式，100*100像素的图片</div>
             </el-form-item>
           </el-row>
           <el-row class="row-item">
@@ -392,6 +403,8 @@ export default {
   },
   data () {
     return {
+      ssssse: '',
+      dutyNameSelectVisible: false,
       uploadUrl: '',
       uploadHost: window.location.host,
       openSearchFlag: false,
@@ -454,7 +467,7 @@ export default {
           api[urlNames['findUserByParams']]({
             name: this.personFrom.name
           }).then((res) => {
-            if(res.data.length !== 0){}
+            if (res.data.length !== 0) {}
             this.loadFlag = false
             this.list = res.data
             console.log(this.list)
@@ -605,6 +618,22 @@ export default {
     },
     goBack () {
       this.$router.go(-1)
+    },
+    handleSelect (item) {
+      console.log(item)
+    },
+    showdutyNameList () {
+      this.dutyNameSelectVisible = true
+    },
+    hidedutyNameList () {
+      this.dutyNameSelectVisible = false
+    },
+    aaaaa () {
+      console.log(this.ssssse, 'this.postDetail.dutyName')
+    },
+    ssssse123 () {
+      console.log(JSON.parse(JSON.stringify(this.userTypeOptions)),'userTypeOptions')
+      console.log(this.ssssse, 'tssssssssssssss')
     }
   },
   watch: {

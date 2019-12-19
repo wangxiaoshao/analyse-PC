@@ -256,7 +256,7 @@ const orgAuditList = [{ name: 'name', checkname: '单位全称' }, { name: 'shor
   name: 'type',
   checkname: '所属类型'
 }, { name: 'removed', checkname: '启用禁用' }]
-const depAuditList = [{ name: 'name', checkname: '内设机构名称' }, { name: 'type', checkname: '部门类型' }, {
+const depAuditList = [{ name: 'name', checkname: '内设机构名称' },{
   name: 'phone',
   checkname: '电话'
 }, { name: 'duty', checkname: '内设机构职责' }, { name: 'removed', checkname: '启用禁用' }]

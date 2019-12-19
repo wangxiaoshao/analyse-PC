@@ -7,7 +7,7 @@
       center
       :before-close="handleClose">
       <div class="top-operate">
-        <div class="operate">
+        <div class="operate" v-if="!orgDisable&&!personPisable">
           <el-button type="primary" :disabled="orgDisable" @click="selectCategory = 1" :plain="selectCategory!==1">
             单位/部门
           </el-button>
@@ -64,26 +64,32 @@
       <div class="tree">
         <div class="view-tree">
           <div class="views">
-              <el-tree
-                :data="nodeTree"
-                lazy
-                :load="loadNode"
-                :props="defaultProps"
-                @node-click="handleNodeClick">
-             <span class="custom-tree-node" slot-scope="{ node, data }">
+            <el-tree
+              :data="nodeTree"
+              lazy
+              :load="loadNode"
+              :props="defaultProps"
+              @node-click="handleNodeClick">
+             <!-- <span class="custom-tree-node" slot-scope="{ node, data }">
                <i class="imenu-icon fa fa-sitemap" v-if="data.nodeType === 1"></i>
                <i class="imenu-icon fa fa-building-o" v-if="data.nodeType === 2"></i>
                <i class="imenu-icon fa fa-institution" v-if="data.nodeType === 3"></i>
                <span>{{node.label}}</span>
-             </span>
-              </el-tree>
+             </span> -->
+              <span class=" svg-container" slot-scope="{ node, data }">
+                <span class="iconfont iconzuzhijigou" v-if="data.nodeType === 1"></span>
+                <span class="iconfont icondanwei" v-if="data.nodeType === 2"></span>
+                <span class="iconfont iconbumen" v-if="data.nodeType === 3"></span>
+                <span>{{node.label}}</span>
+              </span>
+            </el-tree>
           </div>
         </div>
         <div class="transfer">
-          <el-transfer  v-if="selectCategory===1" @left-check-change="singleSelectOrg" @change="treeOrgChange"
+          <el-transfer v-if="selectCategory===1" @left-check-change="singleSelectOrg" @change="treeOrgChange"
                        v-model="treeOrgSelected" :titles="['选择单位/部门', '已选单位/部门']" :data="orgList"
                        :props="{key: 'id',label: 'name'}"></el-transfer>
-          <el-transfer  v-if="selectCategory!==1" @left-check-change="singleSelectMember" @change="treeMemberChange"
+          <el-transfer v-if="selectCategory!==1" @left-check-change="singleSelectMember" @change="treeMemberChange"
                        v-model="treeMemberSelected" :titles="['选择人员', '已选人员']" :data="memberList"
                        :props="{key: 'uid',label: 'name'}"></el-transfer>
         </div>
@@ -117,7 +123,8 @@ export default {
       defaultProps: {
         children: 'children',
         label: 'name',
-        id: ''
+        id: '',
+        isLeaf: 'leaf'
       },
       orgList: [], // 单位部门
       memberList: [], // 单位部门下的人员数据
@@ -202,7 +209,14 @@ export default {
         parentId: node.data.id
       }).then((res) => {
         if (res.status === 0) {
-          resolve(res.data)
+          let treeData = []
+          res.data.forEach(item => {
+            if (item.hasChildren === 0) {
+              item.leaf = true
+            }
+            treeData.push(item)
+          })
+          resolve(treeData)
         }
       })
     },
@@ -452,26 +466,4 @@ export default {
 
 <style scoped lang="less">
   @import "./index";
-  /deep/.select-members .tree .view-tree .views::-webkit-scrollbar
-  {
-    width:16px;
-    height:16px;
-    background-color:#F5F5F5;
-  }
-  /*定义滚动条轨道
-   内阴影+圆角*/
-  /deep/.select-members .tree .view-tree .views::-webkit-scrollbar-track
-  {
-    -webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.3);
-    border-radius:10px;
-    background-color:#F5F5F5;
-  }
-  /*定义滑块
-   内阴影+圆角*/
-  /deep/.select-members .tree .view-tree .views::-webkit-scrollbar-thumb
-  {
-    border-radius:10px;
-    -webkit-box-shadow:inset 0 0 6px rgba(0,0,0,.3);
-    background-color:#555;
-  }
 </style>

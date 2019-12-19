@@ -25,7 +25,7 @@
       </template>
       <el-table-column prop="description" width="60" align="center" v-if="sortFlag">
         <template>
-          <i class="sortBtnDo menu-icon fa fa-bars" style="font-size: 25px"></i>
+          <i class="sortBtnDo menu-icon iconfont iconpaixu" style="font-size: 25px"></i>
           <!--<span :title="scope" v-else>{{scope.$index + 1}}</span>-->
         </template>
       </el-table-column>

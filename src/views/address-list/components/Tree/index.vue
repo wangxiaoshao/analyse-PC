@@ -10,14 +10,17 @@
       :expand-on-click-node=false
       @node-click="handleNodeClick"
     >
-      <span class="custom-tree-node" slot-scope="{ node, data }">
-        <!-- <i class="imenu-icon fa fa-sitemap" v-if="data"></i> -->
+      <!-- <span class="custom-tree-node" slot-scope="{ node, data }">
         <i class="imenu-icon fa fa-sitemap" v-if="data.nodeType === 1"></i>
         <i class="imenu-icon fa fa-building-o" v-if="data.nodeType === 2"></i>
         <i class="imenu-icon fa fa-institution" v-if="data.nodeType === 3"></i>
-        <!-- <span style="margin-left:3px;" >{{ data.name }}</span> -->
         <span :class="[data.id===$route.params.nodeId ?'active':'noActive']" style="margin-left:3px;">{{node.label}}</span>
-
+      </span> -->
+      <span class=" svg-container" slot-scope="{ node, data }">
+        <span class="iconfont iconzuzhijigou" v-if="data.nodeType === 1"></span>
+        <span class="iconfont icondanwei" v-if="data.nodeType === 2"></span>
+        <span class="iconfont iconbumen" v-if="data.nodeType === 3"></span>
+        <span :class="[data.id===$route.params.nodeId ?'active':'noActive']" style="margin-left:3px;">{{node.label}}</span>
       </span>
     </el-tree>
   </div>
@@ -30,7 +33,8 @@ export default {
     return {
       props: {
         children: 'children',
-        label: 'name'
+        label: 'name',
+        isLeaf: 'leaf'
       },
       sonNode: [],
       active: 'active',
@@ -53,7 +57,14 @@ export default {
           parentId: node.data.id
         }).then(res => {
           if (res.status === 0) {
-            resolve(res.data)
+            let treeData = []
+            res.data.forEach(item => {
+              if (item.hasChildren === 0) {
+                item.leaf = true
+              }
+              treeData.push(item)
+            })
+            resolve(treeData)
           }
         })
       }

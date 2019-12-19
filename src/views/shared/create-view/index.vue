@@ -24,6 +24,9 @@
                   <el-form-item label="启用状态">
                     <el-switch v-model="ViewFrom.removed"></el-switch>
                   </el-form-item>
+                  <el-form-item v-if="returnViewId!=='0'" label="视图ID">
+                    <el-input  disabled v-model="returnViewId"></el-input>
+                  </el-form-item>
                   <!--                暂时隐藏  <el-form-item label="备注">-->
                   <!--                    <el-input v-model="ViewFrom.remark"></el-input>-->
                   <!--                  </el-form-item>-->
@@ -40,73 +43,86 @@
       <el-tab-pane :disabled="tabDisable" label="视图组织机构" name="second">
         <div class="from tree-form">
           <el-form ref="form" :model="form">
-            <div class="tree-panel">
-              <div class="grid-content">
-                <div class="tree-title">选择组织机构</div>
-                <el-form-item label="">
-                  <div class="select-org">
-                    <el-tree
-                      ref="selecttree"
-                      :data="nodeTree"
-                      node-key="id"
-                      draggable
-                      lazy
-                      :props="defaultProps"
-                      :load="loadNode"
-                      @check-change="currentchange"
-                      :check-strictly="true"
-                      :allow-drop="allowDrop"
-                      @node-drag-end="nodeDragEnd"
-                      @node-drag-over="handleDragOver"
-                      :default-expanded-keys="[defaultexpandedkeys]"
-                      :expand-on-click-node="false"
-                      :default-checked-keys="checkedKeys">
-                          <span class="custom-tree-node" slot-scope="{ node, data }">
+          <div class="tree-panel">
+                <div class="grid-content">
+                  <div class="tree-title">选择组织机构</div>
+                  <el-form-item label="">
+                    <div class="select-org">
+                        <el-tree
+                          ref="selecttree"
+                          :data="nodeTree"
+                          node-key="id"
+                          draggable
+                          lazy
+                          :props="defaultProps"
+                          :load="loadNode"
+                          @check-change="currentchange"
+                          :check-strictly="true"
+                          :allow-drop="allowDrop"
+                          @node-drag-end="nodeDragEnd"
+                          @node-drag-over="handleDragOver"
+                          :default-expanded-keys="[defaultexpandedkeys]"
+                          :expand-on-click-node="false"
+                          :default-checked-keys="checkedKeys">
+                          <!-- <span class="custom-tree-node" slot-scope="{ node, data }">
                             <i class="imenu-icon fa fa-sitemap" v-if="data.nodeType === 1"></i>
                             <i class="imenu-icon fa fa-building-o" v-if="data.nodeType === 2"></i>
                             <i class="imenu-icon fa fa-institution" v-if="data.nodeType === 3"></i>
                             <span>{{node.label}}</span>
-                          </span>
-                    </el-tree>
-                  </div>
-                </el-form-item>
-              </div>
-              <div class="grid-content drag-tips">
-                <p class="tips-img"><img src="@src/common/images/drag-drop.png"></p>
-                <p class="tips-title"><span>选择左边的组织机构视图，拖动至右边的视图区域，可以组合成你想要的组织机构树形。</span></p>
-              </div>
-              <div class="grid-content">
-                <div class="tree-title">新机构视图</div>
-                <!--                select-org-panel   <div class="select-btn">-->
-                <!--                    <p style="font-size: 14px;color: #606266;padding: 0 10px;">新机构视图</p>-->
-                <!--                                          <p><el-button type="primary" size="small">新机构视图</el-button></p>-->
-                <!--                                          <p><el-button size="small">旧机构视图</el-button></p>-->
-                <!--                  </div>-->
-                <el-form-item>
-                  <div class="select-org select-org123" ref="coordinates">
-                    <el-tree
-                      :data="viewNodeTree"
-                      node-key="id"
-                      draggable
-                      lazy
-                      :load="loadOrgNode"
-                      :props="defaultProps"
-                      :check-strictly="true"
-                      @node-drag-end="nodeSelectDragEnd"
-                      :expand-on-click-node="false"
-                      :default-checked-keys="checkedKeys">
-                      <div class="custom-tree-node" slot-scope="{ node, data }">
-                        <i class="imenu-icon fa fa-sitemap" v-if="data.nodeType === 1"></i>
-                        <i class="imenu-icon fa fa-building-o" v-if="data.nodeType === 2"></i>
-                        <i class="imenu-icon fa fa-institution" v-if="data.nodeType === 3"></i>
-                        <span>{{node.label}}</span>
-                        <span @click="deleteNodeTree(data.id)" class="delete-icon fa fa-trash-o"></span>
-                      </div>
-                    </el-tree>
-                  </div>
-                </el-form-item>
-              </div>
-            </div>
+                          </span> -->
+                              <span class="svg-container" slot-scope="{ node, data }">
+                                <span class="iconfont iconzuzhijigou" v-if="data.nodeType === 1"></span>
+                                <span class="iconfont icondanwei" v-if="data.nodeType === 2"></span>
+                                <span class="iconfont iconbumen" v-if="data.nodeType === 3"></span>
+                                <span>{{node.label}}</span>
+                              </span>
+                        </el-tree>
+                    </div>
+                  </el-form-item>
+                </div>
+                <div class="grid-content drag-tips">
+                  <p class="tips-img"><img src="@src/common/images/drag-drop.svg"></p>
+                  <p class="tips-title"><span>选择左边的组织机构视图，拖动至右边的视图区域，可以组合成你想要的组织机构树形。</span></p>
+                </div>
+                <div class="grid-content">
+                  <div class="tree-title">新机构视图</div>
+                  <!--                select-org-panel   <div class="select-btn">-->
+                  <!--                    <p style="font-size: 14px;color: #606266;padding: 0 10px;">新机构视图</p>-->
+                  <!--                                          <p><el-button type="primary" size="small">新机构视图</el-button></p>-->
+                  <!--                                          <p><el-button size="small">旧机构视图</el-button></p>-->
+                  <!--                  </div>-->
+                  <el-form-item>
+                    <div class="select-org select-org123" ref="coordinates">
+                      <el-tree
+                        :data="viewNodeTree"
+                        node-key="id"
+                        draggable
+                        lazy
+                        :load="loadOrgNode"
+                        :props="defaultProps"
+                        :check-strictly="true"
+                        @node-drag-end="nodeSelectDragEnd"
+                        :expand-on-click-node="false"
+                        :default-checked-keys="checkedKeys">
+                        <!-- <div class="custom-tree-node" slot-scope="{ node, data }">
+                          <i class="imenu-icon fa fa-sitemap" v-if="data.nodeType === 1"></i>
+                          <i class="imenu-icon fa fa-building-o" v-if="data.nodeType === 2"></i>
+                          <i class="imenu-icon fa fa-institution" v-if="data.nodeType === 3"></i>
+                          <span>{{node.label}}</span>
+                          <span @click="deleteNodeTree(data.id)" class="delete-icon fa fa-trash-o"></span>
+                        </div> -->
+                          <div class="svg-container" slot-scope="{ node, data }">
+                            <span class="iconfont iconzuzhijigou" v-if="data.nodeType === 1"></span>
+                            <span class="iconfont icondanwei" v-if="data.nodeType === 2"></span>
+                            <span class="iconfont iconbumen" v-if="data.nodeType === 3"></span>
+                            <span>{{node.label}}</span>
+                            <span @click="deleteNodeTree(data.id)" class="delete-icon fa fa-trash-o"></span>
+                          </div>
+                      </el-tree>
+                    </div>
+                  </el-form-item>
+                </div>
+          </div>
             <el-form-item>
               <el-button style="margin-left: 267px" type="primary" @click="synchronizedNode">保存视图</el-button>
               <el-button @click="backToList">取消</el-button>
@@ -325,24 +341,24 @@ export default {
         this.viewNodeTree = res.data
       })
     },
-    // 获取视图草稿--子节点调用
-    findNodeDraftSonList (parentId) {
-      api[urlNames['findNodeDraftList']]({
-        parentId: parentId,
-        viewId: this.returnViewId
-      }).then((res) => {
-        this.viewNodeSonTree = res.data
-      })
-    },
     // 视图草稿追加子节点
     loadOrgNode (node, resolve) {
       if (node.level === 0) {
         return resolve(this.viewNodeTree)
       }
-      this.findNodeDraftSonList(node.data.id)
-      setTimeout(() => {
-        resolve(this.viewNodeSonTree)
-      }, 500)
+      api[urlNames['findNodeDraftList']]({
+        parentId: node.data.id,
+        viewId: this.returnViewId
+      }).then((res) => {
+        let treeData = []
+        res.data.forEach(item => {
+          if (item.hasChildren === 0) {
+            item.leaf = true
+          }
+          treeData.push(item)
+        })
+        resolve(treeData)
+      })
       this.viewNodeSonTree = []
     },
     // tab点击切换
@@ -366,12 +382,12 @@ export default {
     nodeDragEnd (Node, lastNode, lastTree, e) {
       let coordinates = this.getCoordinates()
       /*
-          coordinates
-          top:coordinates元素距离顶部的距离
-          left:coordinates元素距离左侧的距离
-          x:浏览器的位置-左侧
-          y:浏览器的位置-顶部
-          */
+        coordinates
+        top:coordinates元素距离顶部的距离
+        left:coordinates元素距离左侧的距离
+        x:浏览器的位置-左侧
+        y:浏览器的位置-顶部
+        */
       // if (e.screenX > 500 + coordinates.x && e.screenX < 1200 + coordinates.x) {
       if (e.screenX > (window.innerWidth - 240) / 2 + 240 + coordinates.x && e.screenX < (window.innerWidth - 240) / 2 + 240 + coordinates.x + window.innerWidth * 0.5) {
         this.viewNodeDraft.id = Node.data.id

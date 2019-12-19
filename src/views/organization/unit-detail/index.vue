@@ -18,7 +18,7 @@
     </el-drawer>
     <el-form :model="ruleForm" :disabled="disabledFlag" ref="ruleForm" label-width="130px" class="demo-ruleForm">
       <div class="detail-title">
-        <i class="imenu-icon fa fa-building-o big-icon" style="margin: 0px 5px;"></i>单位信息
+        <i class="imenu-icon iconfont icondanwei big-icon" style="margin: 0px 5px;"></i>单位信息
       </div>
       <el-menu class="el-menu-demo" mode="horizontal">
         <el-menu-item index="1">基础信息</el-menu-item>
@@ -397,7 +397,7 @@ export default {
         type: type
       }).then((res) => {
         this.defaultList = res.data
-        console.log(JSON.parse(JSON.stringify(this.defaultList)),'--------------147')
+        // console.log(JSON.parse(JSON.stringify(this.defaultList)),'--------------147')
         res.data.forEach((item) => {
           this.tagsName.push(item.name)
           this.ruleForm.labelId.push(item.id)

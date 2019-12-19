@@ -58,6 +58,7 @@
         width="140">
         <template slot-scope="scope">
           <el-button @click="handleClick(scope.row)" type="text" size="small">编辑</el-button>
+          <el-button  @click="toDataLog" type="text" size="small">日志</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -90,6 +91,9 @@ export default {
     this.getAppList(1, 10)
   },
   methods: {
+    toDataLog () {
+      this.$router.push({ path: '/data-log' })
+    },
     //  获取应用
     getAppList (page, limt) {
       api[urlNames['getAppList']]({

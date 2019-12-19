@@ -8,15 +8,15 @@
             <el-input placeholder="人员名称" v-model="searchQuery.name"  @clear="clearSearch()" clearable>
             </el-input>
           </el-col>
-          <el-col :span="7">
-            <el-input placeholder="人员ID" v-model="searchQuery.uid"  @clear="clearSearch()" clearable>
-            </el-input>
-          </el-col>
+<!--          <el-col :span="7">-->
+<!--            <el-input placeholder="人员ID" v-model="searchQuery.uid"  @clear="clearSearch()" clearable>-->
+<!--            </el-input>-->
+<!--          </el-col>-->
           <el-col :span="7">
             <el-input placeholder="登陆账号" v-model="searchQuery.account"  @clear="clearSearch()" clearable>
             </el-input>
           </el-col>
-          <el-col :span="3" class="text-right">
+          <el-col :span="7" class="text-right">
             <el-button type="primary" plain @click="getGrid">查询</el-button>
           </el-col>
         </el-row>

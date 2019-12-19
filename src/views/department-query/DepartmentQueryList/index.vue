@@ -8,10 +8,10 @@
             <el-input placeholder="部门名称" v-model="searchQuery.name"  @clear="clearSearch()" clearable>
             </el-input>
           </el-col>
-          <el-col :span="5">
-            <el-input placeholder="部门ID" v-model="searchQuery.id"  @clear="clearSearch()" clearable>
-            </el-input>
-          </el-col>
+<!--          <el-col :span="5">-->
+<!--            <el-input placeholder="部门ID" v-model="searchQuery.id"  @clear="clearSearch()" clearable>-->
+<!--            </el-input>-->
+<!--          </el-col>-->
           <el-col :span="5">
             <el-input placeholder="所属单位" v-model="searchQuery.orgName"  @clear="clearSearch()" clearable>
             </el-input>
@@ -41,8 +41,6 @@
                 :operateWidth="operateWidth"
                 :operate="operate"
                 :tableData="tableData">
-      <template slot-scope="{slotScope}" slot="status">
-      </template>
       <template slot-scope="{slotScope}" slot="operate">
         <el-button size="mini" type="text" @click="goDetails(slotScope.row)">查看明细</el-button>
       </template>

@@ -69,7 +69,7 @@
       </el-table>
     </div>
     <div class="content-title">
-      单位其他领导
+      其他领导
     </div>
     <div class="list-ground">
       <div class="button-wrap">
@@ -98,7 +98,7 @@
         </template>
         <el-table-column prop="description" label="序号" width="60" align="center">
           <template slot-scope="scope">
-            <i class="sortBtnDo menu-icon fa fa-bars"  v-if="sortFlag" style="font-size: 25px"></i>
+            <i class="sortBtnDo menu-icon iconfont iconpaixu"  v-if="sortFlag" style="font-size: 25px"></i>
             <span :title="scope" v-else>{{scope.$index + 1}}</span>
           </template>
         </el-table-column>

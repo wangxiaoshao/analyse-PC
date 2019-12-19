@@ -9,9 +9,13 @@
     :load="loadNode"
     @node-click="handleNodeOtherClickTree"
    >
-      <span class="custom-tree-node " slot-scope="{ node, data }">
+      <!-- <span class="custom-tree-node " slot-scope="{ node, data }">
         <i class="imenu-icon fa fa-sitemap" v-if="data"></i>
         <span :class="[data.id===$route.params.nodeId ?'active':'noActive']">{{node.label}}</span>
+      </span> -->
+       <span class=" svg-container" slot-scope="{ node, data }">
+        <span class="iconfont iconzuzhijigou" v-if="data"></span>
+        <span :class="[data.id===$route.params.nodeId ?'active':'noActive']" >{{node.label}}</span>
       </span>
   </el-tree>
 </template>

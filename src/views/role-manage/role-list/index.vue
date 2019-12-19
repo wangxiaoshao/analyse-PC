@@ -12,9 +12,9 @@
           <p><span style="padding-left: 8px">暂无数据！</span></p>
         </div>
       </template>
-      <el-table-column prop="name" label="角色名称">
+      <el-table-column prop="title" label="角色名称">
       </el-table-column>
-      <el-table-column prop="title" label="角色描述">
+      <el-table-column prop="description" label="角色描述">
       </el-table-column>
       <el-table-column prop="createTime" label="创建时间" width="150" align="center">
       </el-table-column>

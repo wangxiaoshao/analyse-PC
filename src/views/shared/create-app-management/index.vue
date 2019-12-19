@@ -1,8 +1,8 @@
 <template>
   <div class="create-app-management">
-    <div class="to-log">
-      <el-button type="primary" @click="toDataLog">查看数据推送日志</el-button>
-    </div>
+<!--    <div class="to-log">-->
+<!--      <el-button type="primary" @click="toDataLog">查看数据推送日志</el-button>-->
+<!--    </div>-->
     <el-form ref="ruleForm"   :rules="rules" :model="appFrom" label-width="120px">
       <el-row :gutter="80">
         <el-col :span="12">

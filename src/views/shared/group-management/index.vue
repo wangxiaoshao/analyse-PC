@@ -31,6 +31,15 @@
             align="center">
           </el-table-column>
           <el-table-column
+            label="分组所属"
+            align="center">
+            <template slot-scope="scope">
+              <span v-if="scope.row.ownerType===1">本单位</span>
+              <span v-if="scope.row.ownerType===2">本部门</span>
+              <span v-if="scope.row.ownerType===3">本人</span>
+            </template>
+          </el-table-column>
+          <el-table-column
             property="description"
             label="分组描述"
             align="center">
