@@ -67,24 +67,37 @@
           <el-form-item label="职务" prop="dutyName">
             <el-input
               placeholder="请输入职务"
-              v-model="postDetail.dutyName" @change="aaaaa" @focus="showdutyNameList"></el-input>
-<!--            <el-popover-->
-<!--              placement="top"-->
-<!--              width="160"-->
-<!--              v-model="dutyNameSelectVisible">-->
-<!--              <div style="margin-top: 20px">-->
-<!--                <el-checkbox-group @change="ssssse123" v-model="ssssse" size="medium">-->
-<!--                  <el-checkbox-button v-for="item in userTypeOptions" :value="item.text" :label="item.text" :key="item.id"></el-checkbox-button>-->
-<!--                </el-checkbox-group>-->
-<!--              </div>-->
-<!--            </el-popover>-->
+              v-model="postDetail.dutyName"  @focus="showdutyNameList"></el-input>
+            <span style="font-size: 12px;position: relative;top:-7px;color: #8c939d;">请先选择再输入,职务以逗号隔开</span>
+            <el-popover
+              placement="bottom"
+              width="160"
+              v-model="dutyNameSelectVisible">
+              <div>
+                <el-button size="mini" @click="dutyNameSelectVisible = false">关闭</el-button>
+                <el-checkbox-group  @change="selectDutyName" size="medium" v-model="dutyNameCheckd">
+                  <el-checkbox style="display: block" v-for="item in dutyNameTypeOptions" :value="item.text" :label="item.text"  :key="item.text"></el-checkbox>
+                </el-checkbox-group>
+              </div>
+            </el-popover>
             <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
-              <div class="tip-msg"
+              <div class="tip-msg" style="right: 0"
                    v-show="this.app.option.options.userAuditFields.indexOf('dutyName') > -1 && postDetail.dutyName !== oldUserInfo.identity.dutyName">
                 添加或修改该字段需要提交审核
               </div>
             </div>
           </el-form-item>
+          <el-form-item label="身份证号" prop="idcard">
+              <el-input placeholder="请输入内容" :disabled="isDefaultFlag" v-model="userDetail.idcard">
+                <el-button slot="append" v-if="!disabledFlag" type="success" class="form-btn">点击实名认证</el-button>
+              </el-input>
+              <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
+                <div class="tip-msg"
+                     v-show="this.app.option.options.userAuditFields.indexOf('idcard') > -1 && userDetail.idcard !== oldUserInfo.user.idcard">
+                  添加或修改该字段需要提交审核
+                </div>
+              </div>
+            </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item
@@ -247,17 +260,6 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="身份证号" prop="idcard">
-                <el-input placeholder="请输入内容" :disabled="isDefaultFlag" v-model="userDetail.idcard">
-                  <el-button slot="append" v-if="!disabledFlag" type="success" class="form-btn">点击实名认证</el-button>
-                </el-input>
-                <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
-                  <div class="tip-msg"
-                       v-show="this.app.option.options.userAuditFields.indexOf('idcard') > -1 && userDetail.idcard !== oldUserInfo.user.idcard">
-                    添加或修改该字段需要提交审核
-                  </div>
-                </div>
-              </el-form-item>
               <el-form-item label="学历" prop="qualification">
                 <el-select
                   placeholder="请选择学历"
@@ -403,7 +405,7 @@ export default {
   },
   data () {
     return {
-      ssssse: '',
+      dutyNameCheckd: [],
       dutyNameSelectVisible: false,
       uploadUrl: '',
       uploadHost: window.location.host,
@@ -628,12 +630,8 @@ export default {
     hidedutyNameList () {
       this.dutyNameSelectVisible = false
     },
-    aaaaa () {
-      console.log(this.ssssse, 'this.postDetail.dutyName')
-    },
-    ssssse123 () {
-      console.log(JSON.parse(JSON.stringify(this.userTypeOptions)),'userTypeOptions')
-      console.log(this.ssssse, 'tssssssssssssss')
+    selectDutyName () {
+      this.postDetail.dutyName = JSON.parse(JSON.stringify(this.dutyNameCheckd)).toString()
     }
   },
   watch: {

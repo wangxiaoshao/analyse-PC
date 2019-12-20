@@ -27,7 +27,8 @@
               :fetch-suggestions="querySearchAsync"
               @input="inputClear"
               placeholder="标签"
-              @select="handleSelect">
+              @select="handleSelect"
+              clearable>
               <template slot-scope="{ item }">
                 <div class="name">{{ item.name }}</div>
               </template>

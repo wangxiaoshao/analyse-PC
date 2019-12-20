@@ -52,8 +52,8 @@
           <el-input type="textarea" v-model="formCallout.reason"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button @click="calloutFlag = false">取 消</el-button>
           <el-button type="primary" @click="submitForm('formCallout')">确定</el-button>
+          <el-button @click="calloutFlag = false">取 消</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
