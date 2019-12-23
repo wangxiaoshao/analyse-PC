@@ -24,6 +24,9 @@
                   <el-form-item label="启用状态">
                     <el-switch v-model="ViewFrom.removed"></el-switch>
                   </el-form-item>
+                  <el-form-item v-if="returnViewId!=='0'" label="视图ID">
+                    <el-input  disabled v-model="returnViewId"></el-input>
+                  </el-form-item>
                   <!--                暂时隐藏  <el-form-item label="备注">-->
                   <!--                    <el-input v-model="ViewFrom.remark"></el-input>-->
                   <!--                  </el-form-item>-->
@@ -40,8 +43,7 @@
       <el-tab-pane :disabled="tabDisable" label="视图组织机构" name="second">
         <div class="from tree-form">
           <el-form ref="form" :model="form">
-            <el-row>
-              <el-col :span="12">
+          <div class="tree-panel">
                 <div class="grid-content">
                   <div class="tree-title">选择组织机构</div>
                   <el-form-item label="">
@@ -78,8 +80,10 @@
                     </div>
                   </el-form-item>
                 </div>
-              </el-col>
-              <el-col :span="12">
+                <div class="grid-content drag-tips">
+                  <p class="tips-img"><img src="@src/common/images/drag-drop.svg"></p>
+                  <p class="tips-title"><span>选择左边的组织机构视图，拖动至右边的视图区域，可以组合成你想要的组织机构树形。</span></p>
+                </div>
                 <div class="grid-content">
                   <div class="tree-title">新机构视图</div>
                   <!--                select-org-panel   <div class="select-btn">-->
@@ -118,8 +122,7 @@
                     </div>
                   </el-form-item>
                 </div>
-              </el-col>
-            </el-row>
+          </div>
             <el-form-item>
               <el-button style="margin-left: 267px" type="primary" @click="synchronizedNode">保存视图</el-button>
               <el-button @click="backToList">取消</el-button>
@@ -338,24 +341,24 @@ export default {
         this.viewNodeTree = res.data
       })
     },
-    // 获取视图草稿--子节点调用
-    findNodeDraftSonList (parentId) {
-      api[urlNames['findNodeDraftList']]({
-        parentId: parentId,
-        viewId: this.returnViewId
-      }).then((res) => {
-        this.viewNodeSonTree = res.data
-      })
-    },
     // 视图草稿追加子节点
     loadOrgNode (node, resolve) {
       if (node.level === 0) {
         return resolve(this.viewNodeTree)
       }
-      this.findNodeDraftSonList(node.data.id)
-      setTimeout(() => {
-        resolve(this.viewNodeSonTree)
-      }, 500)
+      api[urlNames['findNodeDraftList']]({
+        parentId: node.data.id,
+        viewId: this.returnViewId
+      }).then((res) => {
+        let treeData = []
+        res.data.forEach(item => {
+          if (item.hasChildren === 0) {
+            item.leaf = true
+          }
+          treeData.push(item)
+        })
+        resolve(treeData)
+      })
       this.viewNodeSonTree = []
     },
     // tab点击切换

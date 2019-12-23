@@ -8,18 +8,18 @@
             <el-input placeholder="单位名称" v-model="searchQuery.name" @clear="clearSearch()" clearable>
             </el-input>
           </el-col>
-          <el-col :span="4">
-            <el-input placeholder="单位ID" v-model="searchQuery.id"  @clear="clearSearch()" clearable>
-            </el-input>
-          </el-col>
+<!--          <el-col :span="4">-->
+<!--            <el-input placeholder="单位ID" v-model="searchQuery.id"  @clear="clearSearch()" clearable>-->
+<!--            </el-input>-->
+<!--          </el-col>-->
           <el-col :span="4">
             <el-input placeholder="上级名称" v-model="searchQuery.parentName"  @clear="clearSearch()" clearable>
             </el-input>
           </el-col>
-          <el-col :span="4">
-            <el-input placeholder="上级ID" v-model="searchQuery.parentId"  @clear="clearSearch()" clearable>
-            </el-input>
-          </el-col>
+<!--          <el-col :span="4">-->
+<!--            <el-input placeholder="上级ID" v-model="searchQuery.parentId"  @clear="clearSearch()" clearable>-->
+<!--            </el-input>-->
+<!--          </el-col>-->
           <el-col :span="4">
             <el-autocomplete
               v-model="searchQuery.labelName"
@@ -27,7 +27,8 @@
               :fetch-suggestions="querySearchAsync"
               @input="inputClear"
               placeholder="标签"
-              @select="handleSelect">
+              @select="handleSelect"
+              clearable>
               <template slot-scope="{ item }">
                 <div class="name">{{ item.name }}</div>
               </template>

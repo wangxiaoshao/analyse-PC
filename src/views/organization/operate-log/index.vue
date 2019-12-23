@@ -4,9 +4,15 @@
     :data="logList"
     border
     style="width: 100%">
+    <template slot="empty">
+      <div class="empty">
+        <p><img class="data-pic" src="@src/common/images/no-data.png" alt=""/></p>
+        <p><span style="padding-left: 8px">暂无数据！</span></p>
+      </div>
+    </template>
     <el-table-column
       type="index"
-      width="50"
+      width="65"
       label="序号"
     align="center">
     </el-table-column>
@@ -16,12 +22,12 @@
 <!--    </el-table-column>-->
     <el-table-column
       prop="actionUserName"
-      label="更改人员"
+      label="操作人员"
       align="center"
       width="140">
     </el-table-column>
     <el-table-column
-      label="更改动作"
+      label="操作动作"
       align="center"
       width="80">
       <template slot-scope="scope">
@@ -33,13 +39,13 @@
     <el-table-column
       prop="actionTime"
       align="center"
-      label="更改时间"
+      label="操作时间"
       width="160">
     </el-table-column>
     <el-table-column
       prop="changeContent"
       align="center"
-      label="更改内容">
+      label="操作内容">
     </el-table-column>
   </el-table>
 </div>
@@ -100,4 +106,22 @@ export default {
 
 <style scoped lang="less">
 @import "./index";
+.empty {
+  p {
+    margin: 0;
+    font-size: 0px;
+    text-align: center;
+    line-height: 16px!important;
+  }
+
+  span {
+    font-size: 12px;
+  }
+}
+
+.data-pic {
+  padding-top: 20px;
+  width: 60px;
+  height: auto;
+}
 </style>

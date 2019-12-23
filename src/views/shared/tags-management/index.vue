@@ -29,9 +29,9 @@
       </span> -->
        <span class=" svg-container" slot-scope="{ node, data }">
         <span>
-          <span class="iconfont iconzuzhijigou" v-if="data.type === 1"></span>
-          <span class="iconfont icondanwei" v-if="data.type === 2"></span>
-          <span class="iconfont iconbumen" v-if="data.type === 3"></span>
+          <span class="iconfont icondanwei" v-if="data.type === 1"></span>
+          <span class="iconfont iconbumen" v-if="data.type === 2"></span>
+          <span class="fa fa-user-circle-o" v-if="data.type === 3"></span>
           <span :title="data.type === 1?'单位':data.type === 2?'内设机构':'个人'">
               {{ node.label }}
           </span>
@@ -39,7 +39,7 @@
         <span class="custom-tree-float">
           <span class="tag-icon-operate fa fa-plus-circle" @click="createTag(data, {flag:0,title:node.label})"></span>
           <span class="tag-icon-operate fa fa-trash-o delete" @click="deleteLabel(data.id)"></span>
-        </span>  
+        </span>
       </span>
       </el-tree>
     </div>

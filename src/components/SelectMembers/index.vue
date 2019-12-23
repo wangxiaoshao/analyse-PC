@@ -6,92 +6,94 @@
       :visible.sync="seleceDialog.selectMenmberFlag"
       center
       :before-close="handleClose">
-      <div class="top-operate">
-        <div class="operate">
-          <el-button type="primary" :disabled="orgDisable" @click="selectCategory = 1" :plain="selectCategory!==1">
-            单位/部门
-          </el-button>
-          <el-button type="primary" :disabled="personPisable" @click="selectCategory = 0" :plain="selectCategory===1">
-            人员
-          </el-button>
-        </div>
-        <div class="search">
-          <el-popover
-            ref="popover"
-            placement="bottom-start"
-            trigger="manual"
-            v-model="resultFlag"
-            width="300">
-            <div class="back-btn">
-              <el-button size="mini" @click="goBackTree">返回</el-button>
-              <el-button size="mini" type="primary" @click="sureSelect">确定</el-button>
-            </div>
-            <div class="result-list" style="overflow-y: auto;height: 280px">
-              <el-table :data="gridData" :show-header="false"
-                        @selection-change="handleSelectionChange">
-                <el-table-column
-                  type="selection"
-                  width="55">
-                </el-table-column>
-                <el-table-column property="name">
-                  <template slot-scope="scope">
-                    <span :title="scope.row.name" class="table-span"
-                          @click="setNodeId(scope.row)">{{scope.row.name}}</span>
-                  </template>
-                </el-table-column>
-              </el-table>
-            </div>
-          </el-popover>
-          <el-row>
-            <el-input
-              v-popover:popover
-              placeholder="请输入内容"
-              v-model="searchKeyWord"
-              @input="getResult"
-              @blur="blur"
-              @keyup.enter.native="getResult"
-              class="input-with-select">
-              <el-select v-model="searchType" style="width: 80px" @change="getType" slot="prepend" placeholder="请选择">
-                <el-option label="单位" value="2">单位</el-option>
-                <el-option label="部门" value="3">部门</el-option>
-                <el-option label="人员" value="14">人员</el-option>
-              </el-select>
-              <el-button slot="append" @click="getResult" icon="el-icon-search"></el-button>
-            </el-input>
-          </el-row>
-        </div>
+      <div class="select-category"
+           v-if="this.seleceDialog.notOnlyPerson === true&&this.seleceDialog.isOnlyOrg === true">
+        <el-button type="primary" @click="selectCategory = 1;searchType = '2'" :plain="selectCategory!==1">
+          单位/部门
+        </el-button>
+        <el-button type="primary" @click="selectCategory = 0;searchType = '12'" :plain="selectCategory===1">
+          人员
+        </el-button>
       </div>
-      <div class="tree">
-        <div class="view-tree">
-          <div class="views">
-            <el-tree
-              :data="nodeTree"
-              lazy
-              :load="loadNode"
-              :props="defaultProps"
-              @node-click="handleNodeClick">
-             <!-- <span class="custom-tree-node" slot-scope="{ node, data }">
-               <i class="imenu-icon fa fa-sitemap" v-if="data.nodeType === 1"></i>
-               <i class="imenu-icon fa fa-building-o" v-if="data.nodeType === 2"></i>
-               <i class="imenu-icon fa fa-institution" v-if="data.nodeType === 3"></i>
-               <span>{{node.label}}</span>
-             </span> -->
-              <span class=" svg-container" slot-scope="{ node, data }">
+      <div class="search"><el-input
+        placeholder="请输入内容"
+        v-model="searchKeyWord"
+        @input="getResult"
+        @blur="blur"
+        @keyup.enter.native="getResult"
+        class="input-with-select">
+        <el-select v-model="searchType" style="width: 80px" @change="getType" slot="prepend" placeholder="请选择">
+          <el-option v-if="selectCategory!==0" label="单位" value="2">单位</el-option>
+          <el-option v-if="selectCategory!==0" label="部门" value="3">部门</el-option>
+          <el-option v-if="selectCategory===0"  label="人员" value="12">人员</el-option>
+        </el-select>
+        <el-button slot="append" @click="getResult" icon="el-icon-search"></el-button>
+      </el-input></div>
+      <div class="select-panel" style="display: flex">
+        <div class="tree">
+          <el-tree
+            :data="nodeTree"
+            lazy
+            :load="loadNode"
+            :props="defaultProps"
+            @node-click="handleNodeClick">
+            <span class=" svg-container" slot-scope="{ node, data }">
                 <span class="iconfont iconzuzhijigou" v-if="data.nodeType === 1"></span>
                 <span class="iconfont icondanwei" v-if="data.nodeType === 2"></span>
                 <span class="iconfont iconbumen" v-if="data.nodeType === 3"></span>
                 <span>{{node.label}}</span>
               </span>
-            </el-tree>
+          </el-tree>
+        </div>
+        <div class="wait-select">
+          <div v-if="selectCategory === 0">
+            <el-checkbox class="member-item" @change="toggleAllMembers">全选</el-checkbox>
+            <el-checkbox-group v-model="membersModel" @change="toggleMember">
+              <el-checkbox style="display: block" class="member-item text-ellipsis"
+                           v-for="member in memberList"
+                           :key="member.uid"
+                           :label="JSON.stringify(member)">
+                {{member.name}}
+              </el-checkbox>
+            </el-checkbox-group>
+          </div>
+          <div v-if="selectCategory === 1">
+            <el-checkbox class="member-item" @change="toggleAllOrgs">全选</el-checkbox>
+            <el-checkbox-group v-model="orgsModel" @change="toggleOrg">
+              <el-checkbox style="display: block" class="member-item text-ellipsis"
+                           v-for="org in orgList"
+                           :key="org.id"
+                           :label="JSON.stringify(org)">
+                {{org.name}}
+              </el-checkbox>
+            </el-checkbox-group>
           </div>
         </div>
-        <div class="transfer">
-          <el-transfer v-if="selectCategory===1" @left-check-change="singleSelectOrg" @change="treeOrgChange"
-                       v-model="treeOrgSelected" :titles="['选择单位/部门', '已选单位/部门']" :data="orgList"
-                       :props="{key: 'id',label: 'name'}"></el-transfer>
-          <el-transfer v-if="selectCategory!==1" @left-check-change="singleSelectMember" @change="treeMemberChange"
-                       v-model="treeMemberSelected" :titles="['选择人员', '已选人员']" :data="memberList"
-                       :props="{key: 'uid',label: 'name'}"></el-transfer>
+        <div class="container">
+          <div v-if="selectCategory === 0">
+            <el-button size="small"
+                       type="text"
+                       v-show="selectedMembers.length > 0"
+                       @click="removeAllSelected">取消全部
+            </el-button>
+            <el-checkbox-group v-model="selectedMembersModel" @change="toggleSelectedOrg">
+              <el-checkbox style="display: block" v-for="member in selectedMembers" :label="JSON.stringify(member)"
+                           :key="member.uid"> {{member.name}}
+              </el-checkbox>
+            </el-checkbox-group>
+          </div>
+          <div v-if="selectCategory === 1">
+            <el-button size="small"
+                       type="text"
+                       v-show="selectedOrgs.length > 0"
+                       @click="removeAllSelectedOrg">取消全部
+            </el-button>
+            <el-checkbox-group v-model="selectedOrgsModel" @change="toggleSelectedOrg">
+              <el-checkbox style="display: block" v-for="org in selectedOrgs" :label="JSON.stringify(org)"
+                           :key="org.id"> {{org.name}}
+              </el-checkbox>
+            </el-checkbox-group>
+          </div>
         </div>
       </div>
       <div class="submit">
@@ -110,47 +112,33 @@ export default {
   props: ['seleceDialog'],
   data () {
     return {
-      submitDisable: true,
-      selectCategory: 1,
-      personPisable: false,
-      orgDisable: false,
-      searchKeyWord: '', // 搜索关键字
-      searchType: '2',
-      resultFlag: false,
-      gridData: [],
-      nodeTree: [], // 父级树
-      nodeSonTree: [], // 树子集
+      searchType: '12', // 搜索类型
+      selectCategory: 0, // 0 人员 ，1 部门/单位
+      nodeTree: [], // 树
       defaultProps: {
         children: 'children',
         label: 'name',
-        id: ''
+        uid: '',
+        isLeaf: 'leaf'
       },
-      orgList: [], // 单位部门
-      memberList: [], // 单位部门下的人员数据
-      treeOrgSelected: [], // 单位部门选中数据
-      treeOrgSelectedAllData: [], // 单位部门完成选中数据
-      treeMemberSelected: [], // 人员选中ID
-      treeMemberSelectedAllData: [], // 人员选中完整数据
-      searchMemberData: [], // 搜索选中人员数据
-      searchOrgData: [] // 搜索选中单位数据
+      // 中间待选择的成员数据，可能是人员，也可能是单位
+      memberList: [], // 人员
+      membersModel: [], // 人员
+      orgList: [], // 部门
+      orgsModel: [], // 部门
+      // 右侧已经选择的成员数据
+      selectedMembers: [],
+      selectedMembersModel: [],
+      selectedOrgs: [],
+      selectedOrgsModel: []
     }
   },
   created () {
-    // isAllData: true, // 是否需完整数据-默认为不需要（false，只包含用户id）
-    //   notOnlyPerson: true, // 选人，默认为false（选人）
-    //   isSingleSelect: false, // 是否为单选框  false为多选（默认）-人员单选(与notOnlyPerson一起使用，notOnlyPerson为true是有效
-    //   isSingleOrgSelect: false, // 是否为单选框  false为多选（默认），true为单选(与isOnlyOrg一起使用，isOnlyOrg为true时部门/单位单选)
-    //   isOnlyOrg: false //  是否选部门/单位 true为选部门
-    if (this.seleceDialog.notOnlyPerson === true && this.seleceDialog.isOnlyOrg === true) {
-      this.personPisable = this.orgDisable = false
-    } else if (this.seleceDialog.notOnlyPerson === true && this.seleceDialog.isOnlyOrg === false) {
-      this.personPisable = false
-      this.orgDisable = true
+    if (this.seleceDialog.notOnlyPerson === true && this.seleceDialog.isOnlyOrg === false) {
       this.selectCategory = 0
     } else if (this.seleceDialog.notOnlyPerson === false && this.seleceDialog.isOnlyOrg === true) {
-      this.personPisable = true
-      this.orgDisable = false
       this.selectCategory = 1
+      this.searchType = '2'
     }
     if (this.seleceDialog.nodeInfo) {
       this.nodeTree.push(this.seleceDialog.nodeInfo)
@@ -159,39 +147,45 @@ export default {
     }
   },
   methods: {
+    /*
+  seleceDialog: {
+  selectMenmberTitle: '分组成员添加', // 选人组件标题
+  selectMenmberFlag: false, // 显示弹窗，
+  isAllData: true, // 是否需完整数据-默认为不需要（false，只包含用户id）
+  notOnlyPerson: true, // 选人，默认为false（只选人）
+  isSingleSelect: false, // 是否为单选框  false为多选（默认）-人员单选(与notOnlyPerson一起使用，notOnlyPerson为true是有效
+  isSingleOrgSelect: false, // 是否为单选框  false为多选（默认），true为单选(与isOnlyOrg一起使用，isOnlyOrg为true时部门/单位单选)
+  isOnlyOrg: true //  是否选部门/单位 true为选部门
+  }
+  */
     // 返回数据
     submitBackData () {
-      if (this.treeMemberSelected.length === 0 && this.selectCategory === 0) {
-        this.$message.info('请选择添加人员')
-        return false
-      }
-      if (this.treeOrgSelected.length === 0 && this.selectCategory === 1) {
-        this.$message.info('请选择添加部门/单位')
-        return false
-      }
-      // isAllData: true, // 是否需完整数据-默认为不需要（false，只包含用户id）
-      //   notOnlyPerson: true, // 选人，默认为false（只选人）
-      //   isSingleSelect: false, // 是否为单选框  false为多选（默认）-人员单选(与notOnlyPerson一起使用，notOnlyPerson为true是有效
-      //   isSingleOrgSelect: false, // 是否为单选框  false为多选（默认），true为单选(与isOnlyOrg一起使用，isOnlyOrg为true时部门/单位单选)
-      //   isOnlyOrg: false //  是否选部门/单位 true为选部门
-      if (this.seleceDialog.isAllData) {
-        // 1单位 0选择人员
-        if (this.selectCategory === 1) {
-          this.$emit('dialogReturnMembersInfo', this.treeOrgSelectedAllData, this.selectCategory)
+      if (this.selectCategory === 0) {
+        console.log(JSON.parse(JSON.stringify(this.selectedMembers)), '---------123')
+        if (this.seleceDialog.isAllData) {
+          this.$emit('dialogReturnMembersInfo', this.selectedMembers, this.selectCategory)
         } else {
-          this.$emit('dialogReturnMembersInfo', this.treeMemberSelectedAllData, this.selectCategory)
+          let ids = []
+          this.selectedMembers.forEach(item => {
+            ids.push(item.uid)
+          })
+          this.$emit('dialogReturnMembersInfo', ids, this.selectCategory)
         }
-      } else {
-        if (this.selectCategory === 1) {
-          this.$emit('dialogReturnMembersInfo', this.treeOrgSelected, this.selectCategory)
+      } else if (this.selectCategory === 1) {
+        if (this.seleceDialog.isAllData) {
+          this.$emit('dialogReturnMembersInfo', this.selectedOrgs, this.selectCategory)
         } else {
-          this.$emit('dialogReturnMembersInfo', this.treeMemberSelected, this.selectCategory)
+          let ids = []
+          this.selectedOrgs.forEach(item => {
+            ids.push(item.uid)
+          })
+          this.$emit('dialogReturnMembersInfo', ids, this.selectCategory)
         }
       }
-      this.treeMemberSelected = this.treeOrgSelected = this.treeMemberSelectedAllData = this.treeOrgSelectedAllData = []
-      this.memberList = this.orgList = []
-      this.submitDisable = true
-      this.handleClose()
+    },
+    // 关闭选人弹窗组件
+    handleClose () {
+      this.$emit('closeselectMenmber')
     },
     // 获取机构树--初始化
     findNodeTree () {
@@ -208,27 +202,15 @@ export default {
         parentId: node.data.id
       }).then((res) => {
         if (res.status === 0) {
-          resolve(res.data)
+          let treeData = []
+          res.data.forEach(item => {
+            if (item.hasChildren === 0) {
+              item.leaf = true
+            }
+            treeData.push(item)
+          })
+          resolve(treeData)
         }
-      })
-    },
-    // 获取机构树-加载可选
-    findcheckNodeTree (parentId) {
-      api[urlNames['getTree']]({
-        parentId: parentId
-      }).then((res) => {
-        this.orgList = []
-        res.data.forEach(item => {
-          if (item.nodeType === 2 || item.nodeType === 3) {
-            this.orgList.push(item)
-          }
-        })
-        let obj = {}
-        this.orgList = this.orgList.concat(this.treeOrgSelectedAllData).reduce((cur, next) => {
-          obj[next.id] ? '' : obj[next.id] = true && cur.push(next)
-          return cur
-        }, [])
-        // this.treeMemberSelected = this.treeMemberSelectedAllData = []
       })
     },
     // 节点被点击时
@@ -243,7 +225,6 @@ export default {
         } else if (node.nodeType === 2) {
           this.findOrganizationMembers(node.bindId)
         }
-        this.treeOrgSelected = this.treeOrgSelectedAllData = []
       }
     },
     // 查询部门下的所有人员
@@ -252,12 +233,6 @@ export default {
         deptId: deptId
       }).then((res) => {
         this.memberList = res.data
-        console.log(this.treeMemberSelectedAllData, '------312---------')
-        let obj = {}
-        this.memberList = (this.memberList.concat(this.treeMemberSelectedAllData)).reduce((cur, next) => {
-          obj[next.uid] ? '' : obj[next.uid] = true && cur.push(next)
-          return cur
-        }, [])
       })
     },
     // 查询单位下的所有人员
@@ -266,113 +241,191 @@ export default {
         orgId: orgId
       }).then((res) => {
         this.memberList = res.data
-        let obj = {}
-        this.memberList = (this.memberList.concat(this.treeMemberSelectedAllData)).reduce((cur, next) => {
-          obj[next.uid] ? '' : obj[next.uid] = true && cur.push(next)
-          return cur
-        }, [])
       })
     },
-    treeOrgChange (value, direction, movedKeys) {
-      if (direction === 'right') {
-        movedKeys.forEach(item => {
-          let list = this.orgList.filter(function (listItem) {
-            return listItem.id === item
-          })
-          this.treeOrgSelectedAllData = this.treeOrgSelectedAllData.concat(list)
+    // 获取机构树-加载可选
+    findcheckNodeTree (parentId) {
+      api[urlNames['getTree']]({
+        parentId: parentId
+      }).then((res) => {
+        this.orgList = []
+        res.data.forEach(item => {
+          if (item.nodeType === 2 || item.nodeType === 3) {
+            this.orgList.push(item)
+          }
         })
-        if (this.treeOrgSelected.length !== 0) {
-          this.submitDisable = false
-        }
-      } else if (direction === 'left') {
-        movedKeys.forEach(item => {
-          this.treeOrgSelectedAllData = this.treeOrgSelectedAllData.filter(function (listItem) {
-            return listItem.id !== item
-          })
+      })
+    },
+    // 人员处理
+    // 全选
+    toggleAllMembers (selected) {
+      let that = this
+      if (selected) {
+        that.memberList.forEach((member) => {
+          const label = JSON.stringify(member)
+          that.addToSelectedModel(label)
+          that.addSelectedMember(member)
+          if (!that.membersModel.includes(label)) {
+            that.membersModel.push(label)
+          }
         })
-        if (this.treeOrgSelected.length === 0) {
-          this.submitDisable = true
+      } else {
+        that.memberList.forEach((member) => {
+          const label = JSON.stringify(member)
+          that.removeFromMemberModel(label)
+          that.removeSelectedMember(member)
+
+          const indexOf = that.membersModel.indexOf(label)
+          if (indexOf !== -1) {
+            that.membersModel.splice(indexOf, 1)
+          }
+        })
+      }
+      console.log(JSON.parse(JSON.stringify(this.selectedMembers)), '------------')
+    },
+    toggleMember (members) {
+      this.selectedMembers = members.map((member) => {
+        const label = JSON.parse(member)
+        this.addToSelectedModel(member)
+        return label
+      })
+    },
+    toggleSelectedMember (members) {
+      this.membersModel.forEach((member) => {
+        if (!members.includes(member)) {
+          this.removeFromMemberModel(member)
+          this.removeSelectedMember(JSON.parse(member))
         }
+      })
+    },
+    addToSelectedModel (label) {
+      if (!this.selectedMembersModel.includes(label)) {
+        this.selectedMembersModel.push(label)
       }
     },
-    // 人员穿梭处理
-    treeMemberChange (value, direction, movedKeys) {
-      if (direction === 'right') {
-        movedKeys.forEach(item => {
-          let list = this.memberList.filter(function (listItem) {
-            return listItem.uid === item
-          })
-          this.treeMemberSelectedAllData = this.treeMemberSelectedAllData.concat(list)
+    removeFromMemberModel (label) {
+      const index = this.membersModel.indexOf(label)
+      if (index !== -1) {
+        this.membersModel.splice(index, 1)
+      }
+    },
+    addSelectedMember (member) {
+      console.log(JSON.parse(JSON.stringify(this.selectedMembers)), 'this.selectedMembers---123')
+      let i = this.selectedMembers.length - 1
+      while (i >= 0) {
+        const current = this.selectedMembers[i]
+        if (current.uid === member.uid && current.type === member.type) {
+          return
+        }
+
+        i -= 1
+      }
+
+      this.selectedMembers.push(member)
+    },
+    removeSelectedMember (member) {
+      let i = this.selectedMembers.length - 1
+      while (i >= 0) {
+        const current = this.selectedMembers[i]
+        if (current.id === member.id && current.memberType === member.memberType) {
+          this.selectedMembers.splice(i, 1)
+          return
+        }
+
+        i -= 1
+      }
+    },
+    removeAllSelected () {
+      this.selectedMembers = []
+      this.selectedMembersModel = []
+      this.membersModel = []
+    },
+    getSelectedMembers () {
+      return [...this.selectedMembers]
+    },
+    // 部门/单位处理
+    // 全选
+    toggleAllOrgs (selected) {
+      let that = this
+      if (selected) {
+        that.orgList.forEach((org) => {
+          const label = JSON.stringify(org)
+          that.addToSelectedOrgModel(label)
+          that.addSelectedOrg(org)
+          if (!that.orgsModel.includes(label)) {
+            that.orgsModel.push(label)
+          }
         })
-        if (this.treeMemberSelected.length !== 0) {
-          this.submitDisable = false
-        }
-      } else if (direction === 'left') {
-        movedKeys.forEach(item => {
-          this.treeMemberSelectedAllData = this.treeMemberSelectedAllData.filter(function (listItem) {
-            return listItem.uid !== item
-          })
+      } else {
+        that.orgList.forEach((org) => {
+          const label = JSON.stringify(org)
+          that.removeFromOrgModel(label)
+          that.removeSelectedOrg(org)
+
+          const indexOf = that.orgsModel.indexOf(label)
+          if (indexOf !== -1) {
+            that.orgsModel.splice(indexOf, 1)
+          }
         })
-        if (this.treeMemberSelected.length === 0) {
-          this.submitDisable = true
+      }
+      console.log(JSON.parse(JSON.stringify(this.selectedOrgs)), '------------')
+    },
+    toggleOrg (orgs) {
+      this.selectedOrgs = orgs.map((org) => {
+        const label = JSON.parse(org)
+        this.addToSelectedModel(org)
+        return label
+      })
+    },
+    toggleSelectedOrg (orgs) {
+      this.orgsModel.forEach((org) => {
+        if (!orgs.includes(org)) {
+          this.removeFromOrgModel(org)
+          this.removeSelectedOrg(JSON.parse(org))
         }
+      })
+    },
+    addToSelectedOrgModel (label) {
+      if (!this.selectedOrgsModel.includes(label)) {
+        this.selectedOrgsModel.push(label)
       }
     },
-    singleSelectMember (value, direction, movedKeys) {
-      if (this.seleceDialog.isSingleSelect) {
-        // if (value.length === 0) {
-        //   for (let i = 0; i < this.memberList.length; i++) {
-        //     this.memberList[i].disabled = false
-        //   }
-        // } else {
-        //   console.log(this.seleceDialog.isSingleSelect, '---------xxxxxxxxx--11798----')
-        //   for (let i = 0; i < this.memberList.length; i++) {
-        //     this.memberList[i].disabled = true
-        //     if (this.orgList[i].id === value[0]) {
-        //       this.memberList[i].disabled = false
-        //     }
-        //   }
-        // }
-        console.log()
-        if ((value.length > 1 || this.treeMemberSelected.length !== 0) && this.seleceDialog.isSingleSelect === true) {
-          this.$message.info('抱歉您只能选择一个人员')
-          return false
-        }
-      }
-      if (this.treeMemberSelected.length !== 0) {
-        this.submitDisable = false
+    removeFromOrgModel (label) {
+      const index = this.orgsModel.indexOf(label)
+      if (index !== -1) {
+        this.orgsModel.splice(index, 1)
       }
     },
-    singleSelectOrg (value, direction, movedKeys) {
-      if (this.seleceDialog.isSingleOrgSelect) {
-        // if (value.length === 0) {
-        //   for (let i = 0; i < this.orgList.length; i++) {
-        //     this.orgList[i].disabled = false
-        //   }
-        // } else {
-        //   for (let i = 0; i < this.orgList.length; i++) {
-        //     this.orgList[i].disabled = true
-        //     if (this.orgList[i].id === value[0]) {
-        //       this.orgList[i].disabled = false
-        //     }
-        //   }
-        // }
-        if ((value.length > 1 || this.treeOrgSelected.length !== 0) && this.seleceDialog.isOnlyOrg === true) {
-          this.$message.info('抱歉您只能选择一个单位或部门')
-          return false
+    addSelectedOrg (org) {
+      console.log(JSON.parse(JSON.stringify(this.selectedOrgs)), 'this.selectedOrgs---123')
+      let i = this.selectedOrgs.length - 1
+      while (i >= 0) {
+        const current = this.selectedOrgs[i]
+        if (current.id === org.id && current.type === org.type) {
+          return
         }
+
+        i -= 1
       }
-      if (this.treeMemberSelected.length !== 0) {
-        this.submitDisable = false
+
+      this.selectedOrgs.push(org)
+    },
+    removeSelectedOrg (org) {
+      let i = this.selectedOrgs.length - 1
+      while (i >= 0) {
+        const current = this.selectedOrgs[i]
+        if (current.id === org.id && current.orgType === org.orgType) {
+          this.selectedOrgs.splice(i, 1)
+          return
+        }
+
+        i -= 1
       }
     },
-    // 关闭选人弹窗组件
-    handleClose () {
-      this.$emit('closeselectMenmber')
-      this.goBackTree()
-      this.treeMemberSelected = this.treeOrgSelected = this.treeMemberSelectedAllData = this.treeOrgSelectedAllData = []
-      this.memberList = this.orgList = []
-      this.submitDisable = true
+    removeAllSelectedOrg () {
+      this.selectedOrgs = []
+      this.selectedOrgsModel = []
+      this.orgsModel = []
     },
     // 获取搜索结果
     getResult () {
@@ -387,7 +440,7 @@ export default {
           name: this.searchKeyWord
         }
         api[urlNames['searchMember']](data).then(res => {
-          this.gridData = res.data
+          this.memberList = res.data
         })
       }
 
@@ -398,7 +451,6 @@ export default {
         }
         // this.timer = this.debounce(this.getResultList, 800)
         this.timer = setTimeout(() => {
-          this.resultFlag = true
           if (this.searchType === '2' || this.searchType === '3') {
             api[urlNames['searchViewNode']](data).then(res => {
               this.gridData = res.data
@@ -406,7 +458,6 @@ export default {
           }
         }, 800)
       } else {
-        this.resultFlag = false
         this.timer = null
       }
     },
@@ -415,42 +466,6 @@ export default {
     },
     blur () {
       this.timer = null
-    },
-    goBackTree () {
-      this.searchKeyWord = ''
-      this.resultFlag = false
-    },
-    // 搜索选中
-    handleSelectionChange (val) {
-      this.searchOrgData = []
-      if (this.searchType === '2' || this.searchType === '3') {
-        this.searchOrgData = val
-      } else {
-        this.searchMemberData = val
-      }
-    },
-    // 确认搜索选中
-    sureSelect () {
-      if ((this.searchType === '2' || this.searchType === '3') && this.selectCategory === 1) {
-        this.searchOrgData.forEach(item => {
-          this.treeOrgSelected.push(item.id)
-        })
-        this.treeOrgSelectedAllData = this.treeOrgSelectedAllData.concat(this.searchOrgData)
-        this.orgList = this.orgList.concat(this.searchOrgData)
-        if (this.treeOrgSelected.length !== 0 && this.selectCategory === 1) {
-          this.submitDisable = false
-        }
-      } else if ((this.searchType !== '2' || this.searchType !== '3') && this.selectCategory === 0) {
-        this.searchMemberData.forEach(item => {
-          this.treeMemberSelected.push(item.uid)
-        })
-        this.treeMemberSelectedAllData = this.treeMemberSelectedAllData.concat(this.searchMemberData)
-        this.memberList = this.memberList.concat(this.searchMemberData)
-        if (this.treeMemberSelected.length !== 0 && this.selectCategory === 0) {
-          this.submitDisable = false
-        }
-      }
-      this.goBackTree()
     }
   }
 }

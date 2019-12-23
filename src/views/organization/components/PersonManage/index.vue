@@ -64,17 +64,40 @@
               </div>
             </div>
           </el-form-item>
-          <el-form-item label="职务" prop="dutyName" :rules="dutyName">
+          <el-form-item label="职务" prop="dutyName">
             <el-input
               placeholder="请输入职务"
-              v-model="postDetail.dutyName"></el-input>
+              v-model="postDetail.dutyName"  @focus="showdutyNameList"></el-input>
+            <span style="font-size: 12px;position: relative;top:-7px;color: #8c939d;">请先选择再输入,职务以逗号隔开</span>
+            <el-popover
+              placement="bottom"
+              width="160"
+              v-model="dutyNameSelectVisible">
+              <div>
+                <el-button size="mini" @click="dutyNameSelectVisible = false">关闭</el-button>
+                <el-checkbox-group  @change="selectDutyName" size="medium" v-model="dutyNameCheckd">
+                  <el-checkbox style="display: block" v-for="item in dutyNameTypeOptions" :value="item.text" :label="item.text"  :key="item.text"></el-checkbox>
+                </el-checkbox-group>
+              </div>
+            </el-popover>
             <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
-              <div class="tip-msg"
+              <div class="tip-msg" style="right: 0"
                    v-show="this.app.option.options.userAuditFields.indexOf('dutyName') > -1 && postDetail.dutyName !== oldUserInfo.identity.dutyName">
                 添加或修改该字段需要提交审核
               </div>
             </div>
           </el-form-item>
+          <el-form-item label="身份证号" prop="idcard">
+              <el-input placeholder="请输入内容" :disabled="isDefaultFlag" v-model="userDetail.idcard">
+                <el-button slot="append" v-if="!disabledFlag" type="success" class="form-btn">点击实名认证</el-button>
+              </el-input>
+              <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
+                <div class="tip-msg"
+                     v-show="this.app.option.options.userAuditFields.indexOf('idcard') > -1 && userDetail.idcard !== oldUserInfo.user.idcard">
+                  添加或修改该字段需要提交审核
+                </div>
+              </div>
+            </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item
@@ -128,6 +151,7 @@
                 <img v-if="personFrom.portraitUrl" :src="personFrom.portraitUrl" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
+              <div style="font-size: 10px;color: #606266"><span style="color: #FC7049">*</span>只支持jpg格式，100*100像素的图片</div>
             </el-form-item>
           </el-row>
           <el-row class="row-item">
@@ -237,17 +261,6 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="身份证号" prop="idcard">
-                <el-input placeholder="请输入内容" :disabled="isDefaultFlag" v-model="userDetail.idcard">
-                  <el-button slot="append" v-if="!disabledFlag" type="success" class="form-btn">点击实名认证</el-button>
-                </el-input>
-                <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
-                  <div class="tip-msg"
-                       v-show="this.app.option.options.userAuditFields.indexOf('idcard') > -1 && userDetail.idcard !== oldUserInfo.user.idcard">
-                    添加或修改该字段需要提交审核
-                  </div>
-                </div>
-              </el-form-item>
               <el-form-item label="学历" prop="qualification">
                 <el-select
                   placeholder="请选择学历"
@@ -394,6 +407,8 @@ export default {
   },
   data () {
     return {
+      dutyNameCheckd: [],
+      dutyNameSelectVisible: false,
       uploadUrl: '',
       uploadHost: window.location.host,
       openSearchFlag: false,
@@ -456,7 +471,7 @@ export default {
           api[urlNames['findUserByParams']]({
             name: this.personFrom.name
           }).then((res) => {
-            if(res.data.length !== 0){}
+            if (res.data.length !== 0) {}
             this.loadFlag = false
             this.list = res.data
             console.log(this.list)
@@ -607,6 +622,18 @@ export default {
     },
     goBack () {
       this.$router.go(-1)
+    },
+    handleSelect (item) {
+      console.log(item)
+    },
+    showdutyNameList () {
+      this.dutyNameSelectVisible = true
+    },
+    hidedutyNameList () {
+      this.dutyNameSelectVisible = false
+    },
+    selectDutyName () {
+      this.postDetail.dutyName = JSON.parse(JSON.stringify(this.dutyNameCheckd)).toString()
     }
   },
   watch: {

@@ -2,18 +2,16 @@
   <el-container class="organization-content">
     <el-row class="organization-row">
       <el-col :span="6" style="height: 100%">
-        <el-scrollbar class="site-scroll">
-         <search-result :defaultNodeId="defaultNodeId"></search-result>
-         <div class="tree-content" style="overflow: auto">
-           <organization-tree @handle-node-click="handleNodeClick" @get-default-node="getDefaultNode"></organization-tree>
-         </div>
-        </el-scrollbar>
+        <div class="site-scroll">
+          <search-result :defaultNodeId="defaultNodeId"></search-result>
+          <div class="tree-content">
+            <organization-tree @handle-node-click="handleNodeClick" @get-default-node="getDefaultNode"></organization-tree>
+          </div>
+        </div>
       </el-col>
       <el-col :span="18" class="organization-container" >
         <transition name="fade-transform" mode="out-in" style="height: 100%">
-          <el-scrollbar class="site-scroll">
             <router-view></router-view>
-          </el-scrollbar>
         </transition>
       </el-col>
     </el-row>

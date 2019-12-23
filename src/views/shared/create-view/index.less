@@ -1,9 +1,27 @@
 .create-view {
   .from {
-    .grid-content:nth-of-type(2){
-      padding-left: 30px;
+    .tree-panel{
+      display: flex;
+      margin-bottom: 20px;
     }
-
+    .drag-tips{
+      width: 160px;
+      p{
+        padding: 0 30px;
+      }
+      .tips-img{
+        padding-top: 100px;
+        text-align: center;
+      }
+      .tips-title{
+       span{
+         color: #6D7278;
+       }
+      }
+      img{
+        width: 28px;
+      }
+    }
     .select-org-panel {
       display: flex;
 
@@ -17,6 +35,7 @@
     }
 
     .select-org {
+      padding: 5px;
       border: 1px solid #BBBBBB;
       height: 420px;
       overflow-y: auto;

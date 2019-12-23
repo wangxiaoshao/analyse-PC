@@ -22,10 +22,10 @@
               </el-breadcrumb-item>
             </el-breadcrumb>
         <transition name="fade-transform" mode="out-in" style="height: 100%">
-          <el-scrollbar class="site-scroll">
-             <department :departmentList="departmentList" :treeList="treeList" @handle-child-click="handleChildClick"></department>
-             <member :table-data="memberList"></member>
-          </el-scrollbar>
+             <div style="padding: 0 20px">
+               <department :departmentList="departmentList" :treeList="treeList" @handle-child-click="handleChildClick"></department>
+               <member :table-data="memberList"></member>
+             </div>
         </transition>
       </el-col>
     </el-row>

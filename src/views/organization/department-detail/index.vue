@@ -8,7 +8,7 @@
     ></search-lable>
     <el-form :model="ruleForm" :disabled="disabledFlag" ref="ruleForm" label-width="100px" class="demo-ruleForm">
       <div class="detail-title">
-        <i class="imenu-icon fa fa-institution big-icon" style="margin: 0px 5px;"></i>内设机构信息
+        <i class="imenu-icon iconfont iconbumen big-icon" style="margin: 0px 5px;"></i>内设机构信息
       </div>
       <el-menu class="el-menu-demo" mode="horizontal">
         <el-menu-item index="1">基础信息</el-menu-item>

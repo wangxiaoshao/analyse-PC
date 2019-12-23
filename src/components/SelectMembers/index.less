@@ -1,47 +1,19 @@
-.select-members {
-  .tree {
-    display: flex;
-
-    .view-tree {
-      flex: 1;
-
-      .views {
-        width: 230px;
-        overflow: auto;
-        height: 287px;
-        border: 1px solid #EBEEF5;
-      }
-
-      .el-tree {
-        width: 100%;
-        min-width: 100%;
-        border-radius: 2px;
-        display: ruby-base-container;
-        .imenu-icon {
-          font-size: 16px;
-          margin: 0 5px;
-        }
-      }
-    }
-
-    .transfer {
-      flex: 2;
-    }
+.select-members{
+  .wait-select{
+    margin: 0px 20px;
   }
-
-  .top-operate {
-    /deep/ .result-list {
-      height: 280px;
-      overflow-y: auto;
-    }
-
-    .search {
-      padding: 15px 0;
-    }
+  .tree,.wait-select,.container{
+    flex: 1;
+    height: 320px;
+    border: 1px solid #DCDFE6;
+    overflow: auto;
+    padding: 5px;
   }
-
-  .submit {
-    text-align: center;
+  .search{
+    padding: 15px 0;
+  }
+  .submit{
     padding-top: 15px;
+    text-align: center;
   }
 }

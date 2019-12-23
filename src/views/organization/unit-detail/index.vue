@@ -9,7 +9,6 @@
     ></search-lable>
     <el-drawer
       title="选择区域"
-      style="width:1500px;height:800px"
       :visible.sync="areaFlag"
       :direction="'rtl'">
       <area-list
@@ -17,10 +16,9 @@
         @close="close"
         v-model="ruleForm.areaId"></area-list>
     </el-drawer>
-   
     <el-form :model="ruleForm" :disabled="disabledFlag" ref="ruleForm" label-width="130px" class="demo-ruleForm">
       <div class="detail-title">
-        <i class="imenu-icon fa fa-building-o big-icon" style="margin: 0px 5px;"></i>单位信息
+        <i class="imenu-icon iconfont icondanwei big-icon" style="margin: 0px 5px;"></i>单位信息
       </div>
       <el-menu class="el-menu-demo" mode="horizontal">
         <el-menu-item index="1">基础信息</el-menu-item>
@@ -222,7 +220,7 @@
         <el-button @click="goBack">取消</el-button>
       </el-form-item>
     </el-form>
-    
+
   </div>
 </template>
 
@@ -331,7 +329,7 @@ export default {
         api[urlNames['findViewNodeById']]({
           id: this.$route.params.parentId || this.$route.params.id
         }).then((res) => {
-          if (res.data.bindId) {          
+          if (res.data.bindId) {
             this.parentName = res.data.name
             this.bindId = res.data.bindId
             if (this.$route.name !== 'UnitAdd') {
@@ -359,9 +357,9 @@ export default {
         this.getDetail()
       }
     },
-    openarea(e){
-      this.areaFlag=true;
-      e.target.blur();
+    openarea (e) {
+      this.areaFlag = true
+      e.target.blur()
     },
     getDetail () {
       let data = {
@@ -449,7 +447,7 @@ export default {
     },
     // 获取区域
     getArea (orgId) {
-      console.log(orgId);
+      console.log(orgId)
       api[urlNames['findOrgAreaList']]({
         orgId: orgId
       }).then((res) => {

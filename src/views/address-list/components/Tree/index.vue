@@ -33,7 +33,8 @@ export default {
     return {
       props: {
         children: 'children',
-        label: 'name'
+        label: 'name',
+        isLeaf: 'leaf'
       },
       sonNode: [],
       active: 'active',
@@ -56,7 +57,14 @@ export default {
           parentId: node.data.id
         }).then(res => {
           if (res.status === 0) {
-            resolve(res.data)
+            let treeData = []
+            res.data.forEach(item => {
+              if (item.hasChildren === 0) {
+                item.leaf = true
+              }
+              treeData.push(item)
+            })
+            resolve(treeData)
           }
         })
       }

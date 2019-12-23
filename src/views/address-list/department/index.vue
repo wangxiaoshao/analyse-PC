@@ -6,8 +6,14 @@
                 class="eltab"
                 v-show="departmentList.length!==0"
       >
+        <template slot="empty">
+          <div class="empty">
+            <p><img class="data-pic" src="@src/common/images/no-data.png" alt=""/></p>
+            <p><span style="padding-left: 8px">暂无数据！</span></p>
+          </div>
+        </template>
         <el-table-column prop="name" label width="100" align="left" height="0"></el-table-column>
-        <el-table-column label="内设电话" width="100">内设电话:</el-table-column>
+        <el-table-column label="内设机构电话" width="115">内设机构电话:</el-table-column>
         <el-table-column prop="phone" label></el-table-column>
         <el-table-column label="下级" align="right" width class-name="next-btn">
           <template slot-scope="scope">
@@ -44,5 +50,22 @@ export default {
 </script>
 <style lang="less">
 @import 'index';
+.empty {
+  p {
+    margin: 0;
+    font-size: 0px;
+    text-align: center;
+    line-height: 16px!important;
+  }
 
+  span {
+    font-size: 12px;
+  }
+}
+
+.data-pic {
+  padding-top: 20px;
+  width: 60px;
+  height: auto;
+}
 </style>

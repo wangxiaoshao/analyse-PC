@@ -96,9 +96,20 @@
     }
   }
   &-scroll{
+    .el-scrollbar__wrap {
+      margin: 0;
+    }
+    .el-main{
+      overflow-x: hidden;
+    }
     .site-main{
       width: 100%;
+      padding: 15px;
       height: 100%;
+      position: absolute;
+      right: 0;
+      top: 0px;
+      bottom: 0;
       background: #fff;
     }
   }

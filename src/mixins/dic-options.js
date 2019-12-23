@@ -49,6 +49,9 @@ export default {
     },
     userBusinessTypeOptions () { // 单位行业类型
       return this.app.dicList.filter(column => +column.type === 41)
+    },
+    dutyNameTypeOptions () { // 职务
+      return this.app.dicList.filter(column => +column.type === 29)
     }
   },
   methods: {

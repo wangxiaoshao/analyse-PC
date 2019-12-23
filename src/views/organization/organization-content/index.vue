@@ -13,14 +13,14 @@
     <!--    </el-dialog>-->
     <div class="organization-wrap" v-if="content[0]">
       <div class="organization-info">
-        <i v-if="content[0].nodeType === 1" class="imenu-icon fa fa-sitemap big-icon" style="margin: 0px 5px;"></i>
-        <i v-if="content[0].nodeType === 2" class="imenu-icon fa fa-building-o big-icon" style="margin: 0px 5px;"></i>
-        <i v-if="content[0].nodeType === 3" class="imenu-icon fa fa-institution big-icon" style="margin: 0px 5px;"></i>
+        <span v-if="content[0].nodeType === 1" class="content-ico iconfont iconzuzhijigou"></span>
+        <span v-if="content[0].nodeType === 2" class="content-ico iconfont icondanwei"></span>
+        <span v-if="content[0].nodeType === 3" class="content-ico iconfont iconbumen"></span>
         <span class="organization-value" v-html="content[0].name"></span>
         <el-button v-if="content[0].nodeType === 1" @click.native="openEditNode(content[0])">编辑</el-button>
         <el-button v-if="content[0].nodeType === 2" @click.native="openEditUnit(content[0])" >编辑</el-button>
         <el-button v-if="content[0].nodeType === 3" @click.native="openDepartmentEdit(content[0])">编辑</el-button>
-        <el-button @click="toLogData">日志</el-button>
+        <el-button @click="toLogData" style="margin-left: 5px">日志</el-button>
       </div>
       <!-- <div class="label-content">
          <span v-for="item in labelList" :key="item.id">{{item.name}}</span>
@@ -57,6 +57,12 @@
               border
               size="medium"
             >
+              <template slot="empty">
+                <div class="empty">
+                  <p><img class="data-pic" src="@src/common/images/no-data.png" alt=""/></p>
+                  <p><span style="padding-left: 8px">暂无数据！</span></p>
+                </div>
+              </template>
               <el-table-column label="名称" prop="name"></el-table-column>
               <el-table-column label="启用状态" prop="removed" align="center">
                 <template slot-scope="scope">
@@ -111,9 +117,18 @@
             :id="content[0].bindId"
              :type="content[0].nodeType"></export-Person>
           </el-tab-pane>
-          <el-tab-pane label="内设机构领导" name="单位主要领导" v-if="content[0].nodeType !== 1">
+          <el-tab-pane label="单位领导" name="单位主要领导" v-if="content[0].nodeType === 2">
             <leader-list
               v-if="activeName === '单位主要领导'"
+              :content-id="content[0].bindId"
+              @getPage="getPage"
+              :nodeInfo="nodeInfo"
+              :nodeData="nodeData"
+            ></leader-list>
+          </el-tab-pane>
+          <el-tab-pane label="内设机构领导" name="内设机构主要领导" v-if="content[0].nodeType === 3">
+            <leader-list
+              v-if="activeName === '内设机构主要领导'"
               :content-id="content[0].bindId"
               @getPage="getPage"
               :nodeInfo="nodeInfo"
@@ -338,4 +353,22 @@ export default {
 
 <style lang="less">
   @import "index";
+  .empty {
+    p {
+      margin: 0;
+      font-size: 0px;
+      text-align: center;
+      line-height: 16px!important;
+    }
+
+    span {
+      font-size: 12px;
+    }
+  }
+
+  .data-pic {
+    padding-top: 20px;
+    width: 60px;
+    height: auto;
+  }
 </style>

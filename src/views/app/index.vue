@@ -38,6 +38,7 @@ export default {
   name: 'app',
   data () {
     return {
+      scrollPage: true,
       user: null,
       userInfo: {},
       asideMenu: asideMenu,
@@ -45,7 +46,7 @@ export default {
     }
   },
   mixins: [handleBreadcrumb],
-  components: { sideMenu, siteHead, SiteBreadcrumb ,login},
+  components: { sideMenu, siteHead, SiteBreadcrumb, login },
   watch: {
     $route (newVal, oldVal) {
       if (oldVal.path !== '/' && newVal.path !== '/') {
@@ -56,6 +57,11 @@ export default {
           this.init(newVal.path)
         }
       }
+      // if (newVal.matched[0].path === '/organization') {
+      //   this.scrollPage = false
+      // } else {
+      //   this.scrollPage = true
+      // }
     }
   },
   computed: {

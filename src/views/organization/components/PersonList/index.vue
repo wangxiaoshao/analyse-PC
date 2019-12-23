@@ -48,8 +48,8 @@
           <el-input type="textarea" v-model="formCallout.reason"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button @click="calloutFlag = false">取 消</el-button>
           <el-button type="primary" @click="submitForm('formCallout')">确定</el-button>
+          <el-button @click="calloutFlag = false">取 消</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -92,9 +92,15 @@
       size="medium"
       id="personTable"
     >
+      <template slot="empty">
+        <div class="empty">
+          <p><img class="data-pic" src="@src/common/images/no-data.png" alt=""/></p>
+          <p><span style="padding-left: 8px">暂无数据！</span></p>
+        </div>
+      </template>
       <el-table-column prop="description" width="60" align="center" v-if="sortFlag">
         <template>
-          <i class="sortBtnDo menu-icon fa fa-bars" style="font-size: 25px"></i>
+          <i class="sortBtnDo menu-icon iconfont iconpaixu" style="font-size: 25px"></i>
           <!--<span :title="scope" v-else>{{scope.$index + 1}}</span>-->
         </template>
       </el-table-column>
@@ -517,5 +523,23 @@ export default {
 </script>
 
 <style lang="less">
-@import "index";
+  @import "index";
+  .empty {
+    p {
+      margin: 0;
+      font-size: 0px;
+      text-align: center;
+      line-height: 16px!important;
+    }
+
+    span {
+      font-size: 12px;
+    }
+  }
+
+  .data-pic {
+    padding-top: 20px;
+    width: 60px;
+    height: auto;
+  }
 </style>
