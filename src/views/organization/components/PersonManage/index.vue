@@ -135,6 +135,7 @@
           </el-form-item>
         </el-col>
       </el-row>
+
       <el-collapse>
         <el-collapse-item name="1" title="完善其他信息">
           <el-row>
@@ -187,7 +188,7 @@
                   </div>
                 </div>
               </el-form-item>
-              <el-form-item label="性别"  prop="sex">
+              <el-form-item label="性别" prop="sex">
                 <el-select
                   placeholder="请选择性别"
                   :disabled="isDefaultFlag"
@@ -300,7 +301,7 @@
                   </div>
                 </div>
               </el-form-item>
-              <el-form-item label=" 人员状态" prop="action">
+              <el-form-item label=" 人员状态" prop="userState">
                 <el-select
                   placeholder="请选择人员状态"
                   :disabled="isDefaultFlag"
@@ -382,6 +383,7 @@
         </el-collapse-item>
       </el-collapse>
     </el-form>
+
     <el-footer class="add-person-footer">
      <span v-if="this.$route.name === 'PersonAdd' || this.$route.name === 'PersonEdit'">
         <el-button type="primary" @click="next('userDetail')" :disabled="false">下一步</el-button>
@@ -445,7 +447,7 @@ export default {
   methods: {
     ...mapMutations(['GET_OPTION']),
     init () {
-
+  
     },
     // 搜索表格点击当前行
     selectRow (val) {
