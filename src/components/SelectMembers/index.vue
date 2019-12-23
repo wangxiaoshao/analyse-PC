@@ -397,7 +397,6 @@ export default {
       }
     },
     addSelectedOrg (org) {
-      console.log(JSON.parse(JSON.stringify(this.selectedOrgs)), 'this.selectedOrgs---123')
       let i = this.selectedOrgs.length - 1
       while (i >= 0) {
         const current = this.selectedOrgs[i]
