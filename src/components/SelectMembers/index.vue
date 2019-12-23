@@ -112,6 +112,8 @@ export default {
   props: ['seleceDialog'],
   data () {
     return {
+      submitDisable:'',
+      searchKeyWord:'',
       searchType: '12', // 搜索类型
       selectCategory: 0, // 0 人员 ，1 部门/单位
       nodeTree: [], // 树

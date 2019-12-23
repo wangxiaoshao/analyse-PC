@@ -383,12 +383,14 @@
         </el-collapse-item>
       </el-collapse>
     </el-form>
-
     <el-footer class="add-person-footer">
-     <span v-if="this.$route.name === 'PersonAdd' || this.$route.name === 'PersonEdit'">
+     <span v-if="this.$route.name === 'PersonAdd' || this.$route.name === 'PersonEdit' && !hidefooter">
         <el-button type="primary" @click="next('userDetail')" :disabled="false">下一步</el-button>
         <el-button @click="goBack">取消</el-button>
      </span>
+      <span v-if="this.$route.name==='PassChange' && hidefooter==false">
+          <el-button type="primary">立即更改</el-button>
+      </span>
     </el-footer>
   </div>
 </template>
@@ -407,6 +409,7 @@ export default {
   },
   data () {
     return {
+      hidefooter:false,
       dutyNameCheckd: [],
       dutyNameSelectVisible: false,
       uploadUrl: '',
@@ -507,7 +510,6 @@ export default {
     // 选择职级
     getPositionClass (val) {
       this.personFrom.positionClass = val
-      console.log(this.personFrom.positionClass)
     },
     // 选择党派
     getPolicalParty (val) {

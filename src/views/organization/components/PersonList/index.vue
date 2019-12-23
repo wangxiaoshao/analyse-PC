@@ -59,7 +59,7 @@
       </span>
       <el-button @click="sortList">调整排序</el-button>
       <el-button @click="exportUser">导出人员</el-button>
-      <el-button size="small" type="primary" @click="exportPerson">111导入人员</el-button>
+      <el-button size="small" type="primary" @click="exportPerson">导入人员</el-button>
       
       <!-- <el-form class="uploadForm" :model="formFile" ref="formFile" enctype="multipart/form-data">
         <el-upload
@@ -213,7 +213,7 @@ export default {
   },
   methods: {
     exportPerson() {
-      this.$emit("goExportPerson", false);
+      this.$emit("goExportPerson");
     },
     
     /*
@@ -424,7 +424,6 @@ export default {
           id: data[0].bindId
         }).then(
           res => {
-            console.log(33333, res.data);
             this.formCallout.orgId = res.data.orgId;
             this.orgName = res.data.orgName;
             this.depName = res.data.name;

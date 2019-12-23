@@ -174,25 +174,9 @@ export default {
             res.data.politicalParty=parseInt(res.data.politicalParty);
         }
        let doUserDetail= Object.assign(this.userInfo.user, res.data);
+
        this.userInfo.user=doUserDetail;
-        /*
-        this.userInfo.userId = res.data.uid
-        this.userInfo.user.name = res.data.name
-        this.userInfo.user.idcard = res.data.idcard
-        this.userInfo.user.mobile = res.data.mobile
-        this.userInfo.user.mobile2 = res.data.mobile2
-        this.userInfo.user.officePhone = res.data.officePhone
-        this.userInfo.user.sex = res.data.sex
-        this.userInfo.user.birthday = res.data.birthday
-        this.userInfo.user.portraitUrl = res.data.portraitUrl
-        this.userInfo.user.qualification = parseInt(res.data.qualification)
-        this.userInfo.user.professionalTitle = res.data.professionalTitle
-        this.userInfo.user.positionClass = parseInt(res.data.positionClass)
-        this.userInfo.user.politicalParty = parseInt(res.data.politicalParty)
-        this.userInfo.user.signed = res.data.signed
-        this.userInfo.user.userState = res.data.userState
-        this.userInfo.user.userType = parseInt(res.data.userType)
-        */
+       
         if (this.$route.name === 'PersonEdit') {
           this.oldUserInfo = JSON.parse(JSON.stringify(this.userInfo))
           this.userInfo.userId = res.data.uid
