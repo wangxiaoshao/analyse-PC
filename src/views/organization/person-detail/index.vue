@@ -158,7 +158,24 @@ export default {
       api[urlNames['findUserById']]({
         id: id
       }).then((res) => {
-        // this.userInfo = res.data
+        if(res.data.sex){
+            res.data.sex=parseInt(res.data.sex);
+        }
+        if(res.data.positionClass){
+            res.data.positionClass=parseInt(res.data.positionClass);
+        }
+        if(res.data.nation){
+            res.data.nation=parseInt(res.data.nation);
+        }
+        if(res.data.qualification){
+            res.data.qualification=parseInt(res.data.qualification);
+        }
+        if(res.data.politicalParty){
+            res.data.politicalParty=parseInt(res.data.politicalParty);
+        }
+       let doUserDetail= Object.assign(this.userInfo.user, res.data);
+       this.userInfo.user=doUserDetail;
+        /*
         this.userInfo.userId = res.data.uid
         this.userInfo.user.name = res.data.name
         this.userInfo.user.idcard = res.data.idcard
@@ -171,13 +188,11 @@ export default {
         this.userInfo.user.qualification = parseInt(res.data.qualification)
         this.userInfo.user.professionalTitle = res.data.professionalTitle
         this.userInfo.user.positionClass = parseInt(res.data.positionClass)
-        this.userInfo.user.nation = parseInt(res.data.nation)
         this.userInfo.user.politicalParty = parseInt(res.data.politicalParty)
         this.userInfo.user.signed = res.data.signed
-        /* this.userInfo.identity.type = parseInt(res.data.userType)
-        this.userInfo.identity.postName = res.data.postName */
         this.userInfo.user.userState = res.data.userState
         this.userInfo.user.userType = parseInt(res.data.userType)
+        */
         if (this.$route.name === 'PersonEdit') {
           this.oldUserInfo = JSON.parse(JSON.stringify(this.userInfo))
           this.userInfo.userId = res.data.uid
@@ -189,13 +204,21 @@ export default {
         this.$message.error(`保存失败，请重试`)
       })
     },
+    filterUserDetail(data){
+      // console.log(data)
+      let detailData=Object.keys(this.userInfo.user);
+      // detailData.forEach((val,index)=>{
+        // if(!data.hasOwnPr){
+      //    this.userInfo.user.val=null
+      //  }
+      // })
+    },
     getUserAccount (userId) {
       api[urlNames['findUserAccountByUid']]({
         userId: userId
       }).then((res) => {
         this.userInfo.userAccount = res.data
         this.accountList = res.data
-        console.log(res.data)
       }, (error) => {
       })
     },
@@ -203,12 +226,12 @@ export default {
       api[urlNames['findIdentityById']]({
         identityId: this.$route.params.identityId
       }).then((res) => {
-        console.log(res.data)
         this.userInfo.identity.departmentId = res.data.departmentId
         this.userInfo.identity.id = res.data.id
         this.userInfo.identity.orgId = res.data.orgId
         this.userInfo.identity.postName = res.data.postName
         this.userInfo.identity.type = parseInt(res.data.type)
+
         this.userInfo.identity.dutyName = res.data.dutyName
       }, (error) => {
         /* this.$message.error(`没有内容`) */
@@ -238,7 +261,7 @@ export default {
     // 获取账号
     getAccount (val) {
       // this.userInfo.userAccount = val
-      console.log(JSON.parse(JSON.stringify(val)), '11111111----111157955-----11111')
+      // console.log(JSON.parse(JSON.stringify(val)), '11111111----111157955-----11111')
       this.userInfo.userAccount = val
       this.submitForm()
     },

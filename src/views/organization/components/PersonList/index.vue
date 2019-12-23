@@ -1,28 +1,26 @@
 <template>
   <div class="content-list">
     <!--选择单位/内设机构-->
-<!--    <candidate-dialog-->
-<!--      :seleceDialog="selectDialog"-->
-<!--      @dialogReturnMembersInfo="dialogReturnMembersInfo"-->
-<!--      @closeselectMenmber="closeselectMenmber">-->
-<!--    </candidate-dialog>-->
+    <!--    <candidate-dialog-->
+    <!--      :seleceDialog="selectDialog"-->
+    <!--      @dialogReturnMembersInfo="dialogReturnMembersInfo"-->
+    <!--      @closeselectMenmber="closeselectMenmber">-->
+    <!--    </candidate-dialog>-->
     <select-members
       :seleceDialog="selectDialog"
       @dialogReturnMembersInfo="dialogReturnMembersInfo"
-       @closeselectMenmber="closeselectMenmber">
-    </select-members>
+      @closeselectMenmber="closeselectMenmber"
+    ></select-members>
     <!--解除兼职-->
-    <el-dialog
-      title="填写解除挂职说明"
-      :visible.sync="removeFlag"
-      width="40%">
+    <el-dialog title="填写解除挂职说明" :visible.sync="removeFlag" width="40%">
       <span class="remove-des">您确定解除该人员在本单位的挂职身份？解除之后该人员将无法使用该身份下的账号使用应用系统。</span>
       <el-form
         :model="ruleForm"
         :rules="rules"
         ref="ruleForm"
         label-width="100px"
-        class="demo-ruleForm">
+        class="demo-ruleForm"
+      >
         <el-form-item label="申请原因" prop="reason">
           <el-input type="textarea" v-model="ruleForm.reason"></el-input>
         </el-form-item>
@@ -33,16 +31,14 @@
       </el-form>
     </el-dialog>
     <!--人员调出弹窗-->
-    <el-dialog
-      title="填写调出说明"
-      :visible.sync="calloutFlag"
-      width="50%">
+    <el-dialog title="填写调出说明" :visible.sync="calloutFlag" width="50%">
       <el-form
         :model="formCallout"
         :rules="rulesCallou"
         ref="formCallout"
         label-width="100px"
-        class="demo-ruleForm">
+        class="demo-ruleForm"
+      >
         <el-form-item label="调出单位">
           <span class="name-span">{{orgName}}</span>
           <span class="name-span" v-if="depName !== ''">/{{depName}}</span>
@@ -58,21 +54,28 @@
       </el-form>
     </el-dialog>
     <div class="button-wrap">
-      <el-button  @click="sortList">调整排序</el-button>
-      <el-button  @click="exportUser">导出人员</el-button>
-      <el-form  class="uploadForm" :model="formFile" ref="formFile" enctype="multipart/form-data">
-      <el-upload
-        class="uploadMembers"
-        :show-file-list="false"
-        :auto-upload="false"
-        :limit="1"
-        name="file"
-        action="http://jg-dev.lonmo.com/api/jg_manage/import/userImport"
-        :on-change="fileHandleChange"
-        :file-list="fileList">
-        <el-button size="small" type="primary">导入人员</el-button>
-      </el-upload>
-      </el-form>
+      <span>
+        <slot name="AddBtn"></slot>
+      </span>
+      <el-button @click="sortList">调整排序</el-button>
+      <el-button @click="exportUser">导出人员</el-button>
+      <el-button size="small" type="primary" @click="exportPerson">111导入人员</el-button>
+      
+      <!-- <el-form class="uploadForm" :model="formFile" ref="formFile" enctype="multipart/form-data">
+        <el-upload
+          class="uploadMembers"
+          :show-file-list="false"
+          :auto-upload="false"
+          :limit="1"
+          name="file"
+          action="http://jg-dev.lonmo.com/api/jg_manage/import/userImport"
+          :on-change="fileHandleChange"
+          :file-list="fileList"
+        >
+          <el-button size="small" type="primary">导入人员</el-button>
+        </el-upload>
+      </el-form> -->
+  
     </div>
     <div class="sort-do" v-if="sortFlag">
       按住左键上下拖动调整排序
@@ -108,32 +111,20 @@
       </el-table-column>
       <el-table-column prop="act" label="操作" width="200" align="center">
         <template slot-scope="scope">
-          <el-button
-            @click.native.prevent="openEiditPerson(scope.row)"
-            type="text"
-            size="small">
-            修改
-          </el-button>
-          <el-button
-            @click.native.prevent="calloutDialog(scope.row)"
-            type="text"
-            size="small">
-            调出
-          </el-button>
+          <el-button @click.native.prevent="openEiditPerson(scope.row)" type="text" size="small">修改</el-button>
+          <el-button @click.native.prevent="calloutDialog(scope.row)" type="text" size="small">调出</el-button>
           <el-button
             v-if="scope.row.type === 1 || scope.row.type === '1'"
             @click.native.prevent="removeDuty(scope.row)"
             type="text"
-            size="small">
-            解除兼职
-          </el-button>
+            size="small"
+          >解除兼职</el-button>
           <el-button
             v-if="scope.row.type === 2 || scope.row.type === '2'"
             @click.native.prevent="removeDuty(scope.row)"
             type="text"
-            size="small">
-            解除挂职
-          </el-button>
+            size="small"
+          >解除挂职</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -145,24 +136,24 @@
       :page-sizes="[10, 30, 50, 100]"
       :page-size="page.limit"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="contentPage.total">
-    </el-pagination>
+      :total="contentPage.total"
+    ></el-pagination>
   </div>
 </template>
 
 <script>
-import CandidateDialog from '@src/components/CandidateDialog/index'
-import Sortable from 'sortablejs'
-import handleTable from '@src/mixins/handle-table'
-import { api, urlNames } from '@src/api'
-import organizationEdit from '@src/mixins/organization'
-import SelectMembers from '@src/components/SelectMembers/index'
-import downloadBinaryFile from '@src/mixins/downloadBinaryFile'
+import CandidateDialog from "@src/components/CandidateDialog/index";
+import Sortable from "sortablejs";
+import handleTable from "@src/mixins/handle-table";
+import { api, urlNames } from "@src/api";
+import organizationEdit from "@src/mixins/organization";
+import SelectMembers from "@src/components/SelectMembers/index";
+import downloadBinaryFile from "@src/mixins/downloadBinaryFile";
 export default {
   mixins: [handleTable, organizationEdit, downloadBinaryFile],
-  props: ['contentPage', 'id', 'sortFlag', 'type', 'exportData'],
+  props: ["contentPage", "id", "sortFlag", "type", "exportData"],
   components: { CandidateDialog, SelectMembers },
-  data () {
+  data() {
     return {
       formFile: {}, // 文件form表单
       fileList: [], // 文件列表
@@ -172,35 +163,31 @@ export default {
       isShowEditFlag: true,
       removeFlag: false,
       calloutFlag: false,
-      orgName: '',
-      depName: '',
+      orgName: "",
+      depName: "",
       ruleForm: {
-        identityId: '',
-        reason: ''
+        identityId: "",
+        reason: ""
       },
       // 人员调出表单
       formCallout: {
-        identityId: '',
-        uid: '',
-        deptId: '',
-        orgId: '',
-        reason: ''
+        identityId: "",
+        uid: "",
+        deptId: "",
+        orgId: "",
+        reason: ""
       },
       rulesCallou: {
         /* reason: [
           { required: true, message: '请填写申请原因', trigger: 'blur' }
         ], */
-        orgId: [
-          { required: true, message: '请选择调出单位', trigger: 'blur' }
-        ]
+        orgId: [{ required: true, message: "请选择调出单位", trigger: "blur" }]
       },
       rules: {
-        reason: [
-          { required: true, message: '请填写申请原因', trigger: 'blur' }
-        ]
+        reason: [{ required: true, message: "请填写申请原因", trigger: "blur" }]
       },
       selectDialog: {
-        selectMenmberTitle: '选择调出单位或内设机构', // 选人组件标题
+        selectMenmberTitle: "选择调出单位或内设机构", // 选人组件标题
         selectMenmberFlag: false, // 显示弹窗，
         isAllData: true, // 是否需完整数据-默认为不需要（false，只包含用户id）
         notOnlyPerson: false, // 是否选人，默认为false（只选人）
@@ -208,230 +195,256 @@ export default {
         isSingleOrgSelect: true, // 是否为单选框  false为多选（默认），true为单选(isOnlyOrg为true时部门/单位单选)
         isOnlyOrg: true
       }
-    }
+    };
   },
-  created () {
-    this.getGrid()
-    if (this.$route.name === 'OrganizationContent') {
-      this.isShowEditFlag = true
+  created() {
+    this.getGrid();
+    if (this.$route.name === "OrganizationContent") {
+      this.isShowEditFlag = true;
     } else {
-      this.isShowEditFlag = false
+      this.isShowEditFlag = false;
     }
   },
   methods: {
-    fileHandleChange () {
-      this.loading = true
-      this.$confirm('确认导入当前文件吗, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.fileSubmit()
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消'
-        })
-      })
+    exportPerson() {
+      this.$emit("goExportPerson", false);
     },
-    fileSubmit () {
-      console.log(this.id, '--------')
-      let that = this
-      let form = that.$refs['formFile'].$el
-      let formData = new FormData(form)
-      formData.append('file', this.fileList[0])
+    
+    /*
+    fileHandleChange() {
+      this.loading = true;
+      this.$confirm("确认导入当前文件吗, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.fileSubmit();
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消"
+          });
+        });
+    },
+    fileSubmit() {
+      console.log(this.id, "--------");
+      let that = this;
+      let form = that.$refs["formFile"].$el;
+      let formData = new FormData(form);
+      formData.append("file", this.fileList[0]);
       if (this.type === 3) {
-        formData.append('deptId', this.id)
+        formData.append("deptId", this.id);
       }
       if (this.type === 2) {
-        formData.append('orgId', this.id)
+        formData.append("orgId", this.id);
       }
-      api[urlNames['importUser']](formData).then((res) => {
-        if (res.status === 0) {
-          this.$message.success('导入人员成功')
-          this.getGrid()
-          this.loading = false
-          this.fileList = []
+      api[urlNames["importUser"]](formData).then(
+        res => {
+          if (res.status === 0) {
+            this.$message.success("导入人员成功");
+            this.getGrid();
+            this.loading = false;
+            this.fileList = [];
+          }
+        },
+        () => {
+          this.loading = false;
+          this.fileList = [];
         }
-      }, () => {
-        this.loading = false
-        this.fileList = []
-      })
+      );
     },
-    getGrid () {
-      this.cancelSort()
-      this.loading = true
+    */
+    
+    getGrid() {
+      this.cancelSort();
+      this.loading = true;
       // let bindId = this.$route.params.bindId
       if (this.type === 3) {
         let data = {
           deptId: this.id,
           page: this.contentPage.current,
           limit: this.contentPage.limit
-        }
-        api[urlNames['findDepartmentMembers']](data).then((res) => {
-          this.loading = false
-          this.list = res.data
-          this.contentPage.total = res.data.total
-        }, () => {
-          this.loading = false
-          this.list = []
-          this.contentPage.total = 0
-        })
+        };
+        api[urlNames["findDepartmentMembers"]](data).then(
+          res => {
+            this.loading = false;
+            this.list = res.data;
+            this.contentPage.total = res.data.total;
+          },
+          () => {
+            this.loading = false;
+            this.list = [];
+            this.contentPage.total = 0;
+          }
+        );
       }
       if (this.type === 2) {
         let data = {
           orgId: this.id,
           page: this.contentPage.current,
           limit: this.contentPage.limit
-        }
-        api[urlNames['findOrganizationMembers']](data).then((res) => {
-          this.loading = false
-          this.list = res.data
-          this.contentPage.total = res.data.total
-        }, () => {
-          this.loading = false
-          this.list = []
-          this.contentPage.total = 0
-        })
+        };
+        api[urlNames["findOrganizationMembers"]](data).then(
+          res => {
+            this.loading = false;
+            this.list = res.data;
+            this.contentPage.total = res.data.total;
+          },
+          () => {
+            this.loading = false;
+            this.list = [];
+            this.contentPage.total = 0;
+          }
+        );
       }
     },
     // 保存排序
-    sublimeSort () {
-      let sortList = []
+    sublimeSort() {
+      let sortList = [];
       this.list.forEach((item, index) => {
         const sortObj = {
           id: item.uid,
           sort: index
-        }
-        sortList.push(sortObj)
-      })
+        };
+        sortList.push(sortObj);
+      });
       let data = {
         page: this.contentPage.current,
         limit: this.contentPage.limit,
         sortList
-      }
-      api[urlNames['setUserSort']](data).then((res) => {
-        this.$message.success(`保存成功`)
-        this.cancelSort()
-      }, () => {
-        this.$message.error(`保存失败，请重试`)
-      })
+      };
+      api[urlNames["setUserSort"]](data).then(
+        res => {
+          this.$message.success(`保存成功`);
+          this.cancelSort();
+        },
+        () => {
+          this.$message.error(`保存失败，请重试`);
+        }
+      );
     },
-    handleSizeChange (val) {
-      this.contentPage.current = 1
-      this.contentPage.limit = val
-      this.getGrid()
-      this.$emit('getPage', this.contentPage)
+    handleSizeChange(val) {
+      this.contentPage.current = 1;
+      this.contentPage.limit = val;
+      this.getGrid();
+      this.$emit("getPage", this.contentPage);
     },
-    handleCurrentChange (val) {
-      this.contentPage.current = val
-      this.getGrid()
-      this.$emit('getPage', this.contentPage)
+    handleCurrentChange(val) {
+      this.contentPage.current = val;
+      this.getGrid();
+      this.$emit("getPage", this.contentPage);
     },
-    cancelSort () {
-      this.$emit('cancel', false)
+    cancelSort() {
+      this.$emit("cancel", false);
     },
-    sortList () {
-      this.$emit('cancel', true)
+    sortList() {
+      this.$emit("cancel", true);
     },
     // 表单初始化
-    fromInit () {
-      this.calloutFlag = false
-      this.removeFlag = false
+    fromInit() {
+      this.calloutFlag = false;
+      this.removeFlag = false;
       this.formCallout = {
-        identityId: '',
-        uid: '',
-        deptId: '',
-        orgId: '',
-        reason: ''
-      }
+        identityId: "",
+        uid: "",
+        deptId: "",
+        orgId: "",
+        reason: ""
+      };
       this.ruleForm = {
-        identityId: '',
-        reason: ''
-      }
+        identityId: "",
+        reason: ""
+      };
     },
     // 调出
-    calloutDialog (row) {
-      this.formCallout.identityId = row.identityId
-      this.formCallout.uid = row.uid
-      this.calloutFlag = true
-      this.$emit('cancel', false)
+    calloutDialog(row) {
+      this.formCallout.identityId = row.identityId;
+      this.formCallout.uid = row.uid;
+      this.calloutFlag = true;
+      this.$emit("cancel", false);
     },
     // 解除
-    removeDuty (row) {
-      this.removeFlag = true
-      this.$emit('cancel', false)
-      this.ruleForm.identityId = row.identityId
+    removeDuty(row) {
+      this.removeFlag = true;
+      this.$emit("cancel", false);
+      this.ruleForm.identityId = row.identityId;
       // this.ruleForm.type = row.type
     },
     // 提交调出
-    submitForm (formCallout) {
-      this.$refs[formCallout].validate((valid) => {
+    submitForm(formCallout) {
+      this.$refs[formCallout].validate(valid => {
         if (valid) {
-          api[urlNames['calloutUser']](this.formCallout).then((res) => {
-            this.$message.success(`调出成功`)
-            this.calloutFlag = false
-            this.getGrid()
-            this.fromInit()
-            this.formCallout.deptId = this.formCallout.orgId = ''
-            this.orgName = this.depName = ''
-          }, (error) => {
-          })
+          api[urlNames["calloutUser"]](this.formCallout).then(
+            res => {
+              this.$message.success(`调出成功`);
+              this.calloutFlag = false;
+              this.getGrid();
+              this.fromInit();
+              this.formCallout.deptId = this.formCallout.orgId = "";
+              this.orgName = this.depName = "";
+            },
+            error => {}
+          );
         }
-      })
+      });
     },
     // 提交解除兼职
-    submitRemoveDuty (ruleForm) {
-      this.$refs[ruleForm].validate((valid) => {
+    submitRemoveDuty(ruleForm) {
+      this.$refs[ruleForm].validate(valid => {
         if (valid) {
-          api[urlNames['removeDuty']](this.ruleForm).then((res) => {
-            this.$message.success(`解除成功`)
-            this.calloutFlag = false
-            this.fromInit()
-            this.getGrid()
-          }, (error) => {
-
-          })
+          api[urlNames["removeDuty"]](this.ruleForm).then(
+            res => {
+              this.$message.success(`解除成功`);
+              this.calloutFlag = false;
+              this.fromInit();
+              this.getGrid();
+            },
+            error => {}
+          );
         }
-      })
+      });
     },
     // 选人弹窗组件返回的人员信息
-    dialogReturnMembersInfo (data) {
+    dialogReturnMembersInfo(data) {
       if (data[0].nodeType === 2) {
-        this.formCallout.orgId = data[0].bindId
-        this.orgName = data[0].name
+        this.formCallout.orgId = data[0].bindId;
+        this.orgName = data[0].name;
       }
       if (data[0].nodeType === 3) {
-        this.formCallout.deptId = data[0].bindId
-        api[urlNames['findDepartmentById']]({
+        this.formCallout.deptId = data[0].bindId;
+        api[urlNames["findDepartmentById"]]({
           id: data[0].bindId
-        }).then((res) => {
-          console.log(33333, res.data)
-          this.formCallout.orgId = res.data.orgId
-          this.orgName = res.data.orgName
-          this.depName = res.data.name
-        }, (error) => {
-        })
+        }).then(
+          res => {
+            console.log(33333, res.data);
+            this.formCallout.orgId = res.data.orgId;
+            this.orgName = res.data.orgName;
+            this.depName = res.data.name;
+          },
+          error => {}
+        );
       }
       // this.orgName = res.data.orgName
       // this.depName
     },
     // 关闭选人弹窗
-    closeselectMenmber () {
-      this.selectDialog.selectMenmberFlag = false
+    closeselectMenmber() {
+      this.selectDialog.selectMenmberFlag = false;
     },
     // 打开选人组件
-    addMainLeader () {
-      this.selectDialog.selectMenmberFlag = true
-      this.selectDialog.isSingleSelect = false
-      this.selectDialog.notOnlyPerson = false
-      this.selectDialog.isSingleOrgSelect = true
-      this.selectDialog.isOnlyOrg = true
-      this.selectDialog.isAllData = true
+    addMainLeader() {
+      this.selectDialog.selectMenmberFlag = true;
+      this.selectDialog.isSingleSelect = false;
+      this.selectDialog.notOnlyPerson = false;
+      this.selectDialog.isSingleOrgSelect = true;
+      this.selectDialog.isOnlyOrg = true;
+      this.selectDialog.isAllData = true;
     },
-    exportUser () {
-      let host = window.location.href.split('#')[0]
-      this.downloadBinaryFile(host, this.id, this.type)
+    exportUser() {
+      let host = window.location.href.split("#")[0];
+      this.downloadBinaryFile(host, this.id, this.type);
       // if (this.type === 2) {
       //   downloadBinaryFile(host, { orgId: this.id })
       //   // window.open(`${host}/api/jg_manage/user/exportUser?orgId=${this.id}_=${(new Date()).getTime()}`)
@@ -456,53 +469,53 @@ export default {
   },
   watch: {
     sortFlag: {
-      handler (val) {
-        const tbody = document.querySelector('#personTable tbody')
-        const items = this.list
+      handler(val) {
+        const tbody = document.querySelector("#personTable tbody");
+        const items = this.list;
         if (val) {
           Sortable.create(tbody, {
-            handle: '.sortBtnDo',
+            handle: ".sortBtnDo",
             animation: 150,
-            onUpdate: function (evt) {
-              const newIndex = evt.newIndex
-              const oldIndex = evt.oldIndex
-              const $li = tbody.children[newIndex]
-              const $oldLi = tbody.children[oldIndex]
+            onUpdate: function(evt) {
+              const newIndex = evt.newIndex;
+              const oldIndex = evt.oldIndex;
+              const $li = tbody.children[newIndex];
+              const $oldLi = tbody.children[oldIndex];
               if (newIndex > oldIndex) {
-                tbody.insertBefore($li, $oldLi)
+                tbody.insertBefore($li, $oldLi);
               } else {
-                tbody.insertBefore($li, $oldLi.nextSibling)
+                tbody.insertBefore($li, $oldLi.nextSibling);
               }
-              const item = items.splice(oldIndex, 1)
-              items.splice(newIndex, 0, item[0])
-              this.list = items // 排序后列表
+              const item = items.splice(oldIndex, 1);
+              items.splice(newIndex, 0, item[0]);
+              this.list = items; // 排序后列表
             }
-          })
+          });
         } else {
-          this.sortListFlag = false
-          this.getGrid()
+          this.sortListFlag = false;
+          this.getGrid();
         }
       },
       deep: true
     },
     calloutFlag: {
-      handler (val) {
+      handler(val) {
         if (val === false) {
-          this.fromInit()
+          this.fromInit();
         }
       }
     },
     removeFlag: {
-      handler (val) {
+      handler(val) {
         if (val === false) {
-          this.fromInit()
+          this.fromInit();
         }
       }
     }
   }
-}
+};
 </script>
 
 <style lang="less">
-  @import "index";
+@import "index";
 </style>

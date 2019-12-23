@@ -31,7 +31,6 @@
             {{activeName}}
           </div>
           <el-tab-pane label="下级设置" name="下级设置">
-<!--            <el-button  v-popover:popover @click="openAddDialog" class="add-btn">添加下级</el-button>-->
             <el-popover
               placement="bottom"
               width="100">
@@ -91,9 +90,8 @@
             </el-table>
           </el-tab-pane>
           <el-tab-pane label="人员管理" name="人员管理" v-if="content[0].nodeType !== 1">
-            <el-button class="add-btn" @click="openAddPerson">添加人员</el-button>
             <person-list
-              v-if="activeName === '人员管理'"
+              v-if="activeName === '人员管理' && !showExportPage"
               :sortFlag="sortShowFlag"
               @getPage="getPage"
               :contentPage="currentPage"
@@ -101,7 +99,17 @@
               :type="content[0].nodeType"
               :exportData="content[0]"
               @cancel="getSortAction"
-            ></person-list>
+              @goExportPerson="goExportPerson"
+            > 
+              <template slot="AddBtn">
+                <el-button class="add-btn" @click="openAddPerson" >添加人员</el-button>
+              </template>
+            </person-list>
+            <export-Person 
+            v-if="showExportPage"
+            @cancel="goExportPerson" 
+            :id="content[0].bindId"
+             :type="content[0].nodeType"></export-Person>
           </el-tab-pane>
           <el-tab-pane label="内设机构领导" name="单位主要领导" v-if="content[0].nodeType !== 1">
             <leader-list
@@ -124,19 +132,21 @@ import { api, urlNames } from '@src/api'
 import ContentList from '../components/ContentList/index'
 import PersonList from '../components/PersonList/index'
 import leaderList from '../components/LeaderList/index'
+import ExportPerson from '../components/ExportPerson/index'
 import { mapState, mapMutations } from 'vuex'
 
 export default {
   name: 'OrganizationContent',
   mixins: [organizationEdit],
   components: {
-    ContentList, PersonList, leaderList
+    ContentList, PersonList, leaderList, ExportPerson
   },
   data () {
     return {
       contentId: this.$route.params.nodeId,
       loading: true,
       fullscreenLoading: true,
+      showExportPage: false,
       showDialogFlag: false,
       activeName: '下级设置',
       sortShowFlag: false,
@@ -186,6 +196,10 @@ export default {
   },
   methods: {
     ...mapMutations(['SET_ORGANIZATION_PAGE', 'SET_ORGANIZATION_BACK_INFO']),
+
+    goExportPerson(val) {
+      this.showExportPage = !this.showExportPage
+    },
     init (type) {
       if (type === 'back') {
         this.currentPage = Object.assign(this.currentPage, this.organization.page)
@@ -200,6 +214,7 @@ export default {
       this.SET_ORGANIZATION_PAGE(this.currentPage)
     },
     getPage (val) {
+      this.goExportPerson()
       this.currentPage = val
       this.SET_ORGANIZATION_PAGE(this.currentPage)
     },
