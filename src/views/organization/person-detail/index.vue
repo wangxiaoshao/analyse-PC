@@ -176,10 +176,9 @@ export default {
        let doUserDetail= Object.assign(this.userInfo.user, res.data);
 
        this.userInfo.user=doUserDetail;
-       
         if (this.$route.name === 'PersonEdit') {
+           this.userInfo.userId = res.data.uid
           this.oldUserInfo = JSON.parse(JSON.stringify(this.userInfo))
-          this.userInfo.userId = res.data.uid
         }
         this.getUserAccount(res.data.uid)
         this.findLabel(res.data.uid, 3)
@@ -187,15 +186,6 @@ export default {
       }, (error) => {
         this.$message.error(`保存失败，请重试`)
       })
-    },
-    filterUserDetail(data){
-      // console.log(data)
-      let detailData=Object.keys(this.userInfo.user);
-      // detailData.forEach((val,index)=>{
-        // if(!data.hasOwnPr){
-      //    this.userInfo.user.val=null
-      //  }
-      // })
     },
     getUserAccount (userId) {
       api[urlNames['findUserAccountByUid']]({
@@ -215,7 +205,6 @@ export default {
         this.userInfo.identity.orgId = res.data.orgId
         this.userInfo.identity.postName = res.data.postName
         this.userInfo.identity.type = parseInt(res.data.type)
-
         this.userInfo.identity.dutyName = res.data.dutyName
       }, (error) => {
         /* this.$message.error(`没有内容`) */
@@ -244,6 +233,7 @@ export default {
     },
     // 获取账号
     getAccount (val) {
+      console.log(val)
       // this.userInfo.userAccount = val
       // console.log(JSON.parse(JSON.stringify(val)), '11111111----111157955-----11111')
       this.userInfo.userAccount = val

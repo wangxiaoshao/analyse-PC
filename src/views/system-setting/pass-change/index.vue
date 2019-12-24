@@ -20,8 +20,11 @@
               :post-detail="userInfo.identity"
               :label-id="userInfo.labelId"
               :label-list="fromLabelList"
+              :old-user-info="oldUserInfo"
               @get-user="getUser"
               @get-post="getPost"
+              @get-label="getLabelId"
+              @goModifieUserInfo='goModifieUserInfo'
             ></person-manage>
           </el-tab-pane>
           <el-tab-pane label="修改密码">
@@ -67,10 +70,18 @@
               </el-form>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="重置密码"></el-tab-pane>
-          <!--<el-tab-pane label="重置密码" name="second">-->
-          <!--重置密码-->
-          <!--</el-tab-pane>-->
+          <el-tab-pane label="重置密码">
+              <div class="resetPwd">
+                <div :style="{margin: '20px'}" class="account-name">
+                  <i class="el-icon-user" :style="{marginRight: '20px'}">{{currentSetAccount.name}}</i>
+                </div>
+                <p style="margin:10px 0;">
+                  <i class="el-icon-info" :style="{fontSize: '16px',color:'#FC7049'}"></i>
+                  忘记原有密码，点击以下按钮进行重置，请确保该账号的手机号能正常接收信息！</p>
+                  <el-button type="primary">重置密码</el-button>
+               
+              </div>
+          </el-tab-pane>
         </el-tabs>
       </el-col>
     </el-row>
@@ -135,6 +146,7 @@ export default {
         checkPass: [{ validator: validateCheckPass, trigger: "blur" }],
         newPass: [{ validator: validateNewPass, trigger: "blur" }]
       },
+      oldUserInfo:{},
       userInfo: {
         userAccount: [], // 账户
         labelId: [],
@@ -168,7 +180,7 @@ export default {
           ext03: ""
         }
       },
-      fromLabelList: [],
+      fromLabelList: []
     };
   },
   created() {
@@ -177,7 +189,12 @@ export default {
         if (res && res.data) {
           this.accountInfoList = res.data;
           this.currentSetAccount = res.data[0];
-          this.getUserDetail(res.data[0].id)
+          this.userInfo.userAccount=res.data;
+          this.getUserDetail(res.data[0].id);
+          if(!res.data[0].identityId){
+            res.data[0].identityId=5897
+          }
+          this.getIdentity (res.data[0].identityId)
         }
       },
       () => {
@@ -189,33 +206,77 @@ export default {
     ...mapState(["app"])
   },
   methods: {
-      getUserDetail (id) {
-      this.loading = true
-      api[urlNames['findUserById']]({
-        id: id
+    getLabelId (val) {
+      this.userInfo.labelId = val.map(Number)
+    },
+     findLabel (id, type) {
+      api[urlNames['findLabel']]({
+        id: id,
+        type: type
       }).then((res) => {
-        if(res.data.sex){
-            res.data.sex=parseInt(res.data.sex);
+        this.fromLabelList = res.data
+      }, (error) => {
+      })
+    },
+     getIdentity (id) {
+      api[urlNames['findIdentityById']]({
+        identityId:id
+      }).then((res) => {
+        this.userInfo.identity.departmentId = res.data.departmentId
+        this.userInfo.identity.id = res.data.id
+        this.userInfo.identity.orgId = res.data.orgId
+        this.userInfo.identity.postName = res.data.postName
+        this.userInfo.identity.type = parseInt(res.data.type)
+        this.userInfo.identity.dutyName = res.data.dutyName
+      }, (error) => {
+        /* this.$message.error(`没有内容`) */
+      })
+    },
+    getUserDetail(id) {
+      this.loading = true;
+      api[urlNames["findUserById"]]({
+        id: id
+      }).then(
+        res => {
+          if (res.data.sex) {
+            res.data.sex = parseInt(res.data.sex);
+          }
+          if (res.data.positionClass) {
+            res.data.positionClass = parseInt(res.data.positionClass);
+          }
+          if (res.data.nation) {
+            res.data.nation = parseInt(res.data.nation);
+          }
+          if (res.data.qualification) {
+            res.data.qualification = parseInt(res.data.qualification);
+          }
+          if (res.data.politicalParty) {
+            res.data.politicalParty = parseInt(res.data.politicalParty);
+          }
+          let doUserDetail = Object.assign(this.userInfo.user, res.data);
+          this.userInfo.user = doUserDetail;
+          this.loading = false;
+          this.userInfo.userId = res.data.uid;
+          this.oldUserInfo = JSON.parse(JSON.stringify(this.userInfo))
+          
+          this.findLabel(res.data.uid, 3)
+        },
+        error => {
+          this.$message.error(`保存失败，请重试`);
         }
-        if(res.data.positionClass){
-            res.data.positionClass=parseInt(res.data.positionClass);
-        }
-        if(res.data.nation){
-            res.data.nation=parseInt(res.data.nation);
-        }
-        if(res.data.qualification){
-            res.data.qualification=parseInt(res.data.qualification);
-        }
-        if(res.data.politicalParty){
-            res.data.politicalParty=parseInt(res.data.politicalParty);
-        }
-       let doUserDetail= Object.assign(this.userInfo.user, res.data);
-
-       this.userInfo.user=doUserDetail;
-        this.loading = false
+      );
+    },
+    
+    goModifieUserInfo(val){
+       // 保存createUser
+      this.userInfo.user=val;
+      this.userInfo.userId=val.uid;
+      api[urlNames['createUser']](this.userInfo).then((res) => {
+        this.$message.success(`保存成功`)
       }, (error) => {
         this.$message.error(`保存失败，请重试`)
       })
+    
     },
     getUser(val) {
       // 获取用户信息
@@ -223,7 +284,6 @@ export default {
       this.stepTwoFlag = true;
       this.activeIndex = 1;
       this.sendUserFlag = true;
-      console.log(val)
       // this.submitForm()
     },
     // 绑定身份
@@ -239,6 +299,7 @@ export default {
     handleClick(tab, event) {
       // console.log(tab, event)
     },
+
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {

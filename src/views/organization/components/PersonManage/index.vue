@@ -380,21 +380,23 @@
               </el-form-item>
             </el-col>
           </el-row>
+
         </el-collapse-item>
       </el-collapse>
     </el-form>
+
     <el-footer class="add-person-footer">
      <span v-if="this.$route.name === 'PersonAdd' || this.$route.name === 'PersonEdit' && !hidefooter">
         <el-button type="primary" @click="next('userDetail')" :disabled="false">下一步</el-button>
         <el-button @click="goBack">取消</el-button>
      </span>
       <span v-if="this.$route.name==='PassChange' && hidefooter==false">
-          <el-button type="primary">立即更改</el-button>
+          <el-button type="primary" @click="modifieUserInfo">立即更改</el-button>
       </span>
     </el-footer>
   </div>
 </template>
-
+  
 <script>
 import { api, urlNames } from '@src/api'
 import addTags from '../AddTags/index'
@@ -451,6 +453,9 @@ export default {
     ...mapMutations(['GET_OPTION']),
     init () {
   
+    },
+    modifieUserInfo(){
+      this.$emit("goModifieUserInfo",this.personFrom)
     },
     // 搜索表格点击当前行
     selectRow (val) {
