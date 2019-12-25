@@ -37,7 +37,7 @@
 <script>
 import { api, urlNames } from '@src/api'
 export default {
-  props: ['addInfo', 'openSearchFlag', 'defaultList'],
+  props: ['addInfo', 'openSearchFlag', 'defaultList', 'delSelectLabelId'],
   data () {
     return {
       loading: true,
@@ -93,8 +93,13 @@ export default {
       if (val === true) {
         this.tagKeyWord = ''
         this.searchTag()
-        //this.checkTagGroup = this.defaultList
+        // this.checkTagGroup = this.defaultList
       }
+    },
+    delSelectLabelId (val, old) {
+      this.checkTagGroup = this.checkTagGroup.filter(function (item) {
+        return item !== val
+      })
     }
   }
 }

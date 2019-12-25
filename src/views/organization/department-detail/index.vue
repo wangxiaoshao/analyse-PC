@@ -5,8 +5,9 @@
       :addInfo="addInfo"
       @close="getClose"
       @getTag="getTag"
+      :delSelectLabelId="delSelectLabelId"
     ></search-lable>
-    <el-form :model="ruleForm" :disabled="disabledFlag" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+    <el-form :model="ruleForm" :disabled="disabledFlag" ref="ruleForm" label-width="110px" class="demo-ruleForm">
       <div class="detail-title">
         <i class="imenu-icon iconfont iconbumen big-icon" style="margin: 0px 5px;"></i>内设机构信息
       </div>
@@ -69,7 +70,7 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-form-item label="单位标签" prop="labelId">
+        <el-form-item label="内设机构标签" prop="labelId">
           <el-tag
             v-model="ruleForm.labelId"
             v-for="(tag,index) in tagsName"
@@ -95,7 +96,7 @@
       </el-menu>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="单位介绍" prop="department.duty">
+          <el-form-item label="内设机构介绍" prop="department.duty">
             <el-input type="textarea" v-model="ruleForm.department.duty"></el-input>
             <div v-if="this.$route.name === 'DepartmentEdit' ||  this.$route.name === 'DepartmentAdd'">
               <div class="tip-msg"
@@ -115,7 +116,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="单位职责" prop="department.description">
+          <el-form-item label="内设机构职责" prop="department.description">
             <el-input type="textarea" v-model="ruleForm.department.description"></el-input>
             <div v-if="this.$route.name === 'DepartmentEdit' ||  this.$route.name === 'DepartmentAdd'">
               <div class="tip-msg"
@@ -164,7 +165,7 @@ export default {
       openSearchFlag: false,
       addInfo: {
         searchFlag: false,
-        type: 2 // 1.单位，2、部门，3、人员
+        type: 2 // 1.单位，2、内设机构，3、人员
       },
       loading: false,
       isShowEditFlag: true,
@@ -178,6 +179,8 @@ export default {
       parentDep: '',
       parentName: '',
       bindId: '',
+      tempLabelId: [], // 存储label中间变量
+      delSelectLabelId: null,
       ruleForm: {
         reason: '',
         nodeId: '',
@@ -300,29 +303,39 @@ export default {
       })
     },
     removeTag (tag, index) {
-      console.log(this.ruleForm.department.orgId)
-      this.$confirm('此操作将永久删除该标签, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        api[urlNames['deleteUserLabelOrDeptLabelOrOrgLabel']]({
-          id: this.ruleForm.department.id,
-          type: 2,
-          labelId: this.ruleForm.labelId[index]
-        }).then((res) => {
-          if (res.status === 0) {
-            this.$message.success('删除成功')
-            this.tagsName.splice(index, 1)
-            this.ruleForm.labelId.splice(index, 1)
-          }
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        })
+      let that = this
+      let lIds = []
+      lIds = that.tempLabelId.filter(function (item) {
+        return item === that.ruleForm.labelId[index]
       })
+      if (lIds.length !== 0) {
+        this.$confirm('此操作将永久删除该标签, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          api[urlNames['deleteUserLabelOrDeptLabelOrOrgLabel']]({
+            id: this.ruleForm.department.id,
+            type: 2,
+            labelId: this.ruleForm.labelId[index]
+          }).then((res) => {
+            if (res.status === 0) {
+              this.$message.success('删除成功')
+              this.tagsName.splice(index, 1)
+              this.ruleForm.labelId.splice(index, 1)
+            }
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+      } else {
+        that.delSelectLabelId = that.ruleForm.labelId[index] + '|' + that.tagsName[index]
+        that.ruleForm.labelId.splice(index, 1)
+        that.tagsName.splice(index, 1)
+      }
     },
     getClose (val) {
       this.openSearchFlag = val
@@ -334,12 +347,13 @@ export default {
       val.forEach((item) => {
         this.tagsName.push(item.split('|')[1])
         tag.push(item.split('|')[0])
-        console.log(item.split('|')[0])
       })
       this.tagsName = this.tagsName.filter(a => !res.has(a) && res.set(a, 1))
       let tagIdList = []
       tagIdList = tag.filter(a => !res.has(a) && res.set(a, 1))
-      this.ruleForm.labelId = tagIdList
+      tagIdList.forEach(item => {
+        this.ruleForm.labelId.push(parseInt(item))
+      })
     },
     setBreadcrumbTitle () { // 设置面包屑title
       // TODO breadcrumbTitle可采用组件传参的模式替换路由判断，将配置权交给调用方

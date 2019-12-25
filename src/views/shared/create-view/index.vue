@@ -279,7 +279,7 @@ export default {
     },
     // 获取机构树--初始化
     findNodeTree (parentId) {
-      api[urlNames['getTree']]({}).then((res) => {
+      api[urlNames['getViewTree']]({}).then((res) => {
         this.nodeTree = res.data
         if (res.data.length !== 0) {
           this.defaultexpandedkeys = res.data[0].id
@@ -308,7 +308,7 @@ export default {
     },
     // 获取机构树--加载子节点
     findSonNodeTree (parentId) {
-      api[urlNames['getTree']]({
+      api[urlNames['getViewTree']]({
         parentId: parentId
       }).then((res) => {
         this.nodeSonTree = res.data
@@ -319,7 +319,7 @@ export default {
       if (node.level === 0) {
         return resolve(this.nodeTree)
       }
-      api[urlNames['getTree']]({
+      api[urlNames['getViewTree']]({
         parentId: node.data.id
       }).then((res) => {
         let treeData = []

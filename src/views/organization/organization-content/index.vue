@@ -327,8 +327,14 @@ export default {
     },
     // 跳转日志
     toLogData () {
+      let path = ''
+      if (this.nodeData.nodeType === 1) {
+        path = `/organization/operate-log/${this.nodeData.id}`
+      } else {
+        path = `/organization/operate-log/${this.nodeData.bindId}`
+      }
       this.$router.push({
-        path: `/organization/operate-log/${this.$route.params.nodeId}`,
+        path: path,
         query: { type: this.nodeInfo.nodeType, title: `${this.content[0].name}` }
       })
     }

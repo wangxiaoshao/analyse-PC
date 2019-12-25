@@ -139,14 +139,13 @@ export default {
     closeselectMenmber () {
       this.seleceDialog.selectMenmberFlag = false
     },
-    dialogReturnMembersInfo (data, flag) {
-      if (data.length === 0) {
+    dialogReturnMembersInfo (memberData, orgData) {
+      if (memberData.length === 0 && orgData.length === 0) {
         this.$message.info('您没有选择成员')
         return false
       }
-      // flag===1 单位
-      if (flag === 1) {
-        data.forEach(item => {
+      if (orgData.length !== 0) {
+        orgData.forEach(item => {
           let type = 2
           if (item.nodeType === 2) {
             type = 3
@@ -159,8 +158,9 @@ export default {
             groupId: this.groupId
           })
         })
-      } else if (flag === 0) {
-        data.forEach(item => {
+      }
+      if (memberData.length !== 0) {
+        memberData.forEach(item => {
           this.groupMemberInfo.push({
             memberId: item.uid,
             memberType: 1,
@@ -168,7 +168,6 @@ export default {
           })
         })
       }
-      console.log(JSON.parse(JSON.stringify(this.groupMemberInfo)), 'this.groupMemberInfo')
       // memberData.forEach(item => {
       //   this.groupMemberInfo.push({
       //     memberId: item.uid,

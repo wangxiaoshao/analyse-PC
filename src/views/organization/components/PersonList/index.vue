@@ -61,7 +61,7 @@
       <el-button @click="sortList">调整排序</el-button>
       <el-button @click="exportUser">导出人员</el-button>
       <el-button size="small" type="primary" @click="exportPerson">导入人员</el-button>
-      
+
       <!-- <el-form class="uploadForm" :model="formFile" ref="formFile" enctype="multipart/form-data">
         <el-upload
           class="uploadMembers"
@@ -76,7 +76,7 @@
           <el-button size="small" type="primary">导入人员</el-button>
         </el-upload>
       </el-form> -->
-  
+
     </div>
     <div class="sort-do" v-if="sortFlag">
       按住左键上下拖动调整排序
@@ -215,9 +215,9 @@ export default {
   },
   methods: {
     exportPerson() {
-      this.$emit("goExportPerson");
+      this.$emit("goExportPerson", false);
     },
-    
+
     /*
     fileHandleChange() {
       this.loading = true;
@@ -264,7 +264,7 @@ export default {
       );
     },
     */
-    
+
     getGrid() {
       this.cancelSort();
       this.loading = true;
@@ -274,12 +274,12 @@ export default {
           deptId: this.id,
           page: this.contentPage.current,
           limit: this.contentPage.limit
-        };
-        api[urlNames["findDepartmentMembers"]](data).then(
+        }
+        api[urlNames['findDepartmentMembers']](data).then(
           res => {
-            this.loading = false;
-            this.list = res.data;
-            this.contentPage.total = res.data.total;
+            this.loading = false
+            this.list = res.data
+            this.contentPage.total = res.data.total
           },
           () => {
             this.loading = false;
@@ -426,52 +426,32 @@ export default {
           id: data[0].bindId
         }).then(
           res => {
-            this.formCallout.orgId = res.data.orgId;
-            this.orgName = res.data.orgName;
-            this.depName = res.data.name;
+            this.formCallout.orgId = res.data.orgId
+            this.orgName = res.data.orgName
+            this.depName = res.data.name
           },
           error => {}
-        );
+        )
       }
       // this.orgName = res.data.orgName
       // this.depName
     },
     // 关闭选人弹窗
-    closeselectMenmber() {
-      this.selectDialog.selectMenmberFlag = false;
+    closeselectMenmber () {
+      this.selectDialog.selectMenmberFlag = false
     },
     // 打开选人组件
-    addMainLeader() {
-      this.selectDialog.selectMenmberFlag = true;
-      this.selectDialog.isSingleSelect = false;
-      this.selectDialog.notOnlyPerson = false;
-      this.selectDialog.isSingleOrgSelect = true;
-      this.selectDialog.isOnlyOrg = true;
-      this.selectDialog.isAllData = true;
+    addMainLeader () {
+      this.selectDialog.selectMenmberFlag = true
+      this.selectDialog.isSingleSelect = false
+      this.selectDialog.notOnlyPerson = false
+      this.selectDialog.isSingleOrgSelect = true
+      this.selectDialog.isOnlyOrg = true
+      this.selectDialog.isAllData = true
     },
-    exportUser() {
-      let host = window.location.href.split("#")[0];
-      this.downloadBinaryFile(host, this.id, this.type);
-      // if (this.type === 2) {
-      //   downloadBinaryFile(host, { orgId: this.id })
-      //   // window.open(`${host}/api/jg_manage/user/exportUser?orgId=${this.id}_=${(new Date()).getTime()}`)
-      //   // api[urlNames['exportUser']]({
-      //   //   orgId: this.id
-      //   // }).then((res) => {
-      //   // }, (error) => {
-      //   // })
-      // }
-      // if (this.type === 3) {
-      //   downloadBinaryFile(host, { deptId: this.id, orgId: this.id })
-      //   // window.open(`${host}/api/jg_manage/user/exportUser?deptId=${this.id}`)
-      //   // api[urlNames['exportUser']]({
-      //   //   orgId: this.id,
-      //   //   deptId: this.id
-      //   // }).then((res) => {
-      //   //   console.log(res)
-      //   // }, (error) => {
-      //   // })
-      // }
+    exportUser () {
+      let host = window.location.href.split('#')[0]
+      this.downloadBinaryFile(host, this.id, this.type)
     }
   },
   watch: {

@@ -5,6 +5,7 @@
       :addInfo="addInfo"
       @close="getClose"
       @getTag="getTag"
+      :delSelectLabelId="delSelectLabelId"
     ></add-tags>
     <!--人员管理-->
     <el-form
@@ -454,6 +455,8 @@ export default {
       postFrom: this.postDetail,
       imageUrl: '',
       tagsName: [],
+      delSelectLabelId: null, // 添加后未提交到后台移除的标签
+      tempLabelId: [],
       sendLabelId: this.labelId,
       list: [],
       searchFlag: false,
@@ -687,6 +690,7 @@ export default {
         this.tagsName.push(item.name)
         this.sendLabelId.push(item.id)
       })
+      this.tempLabelId = JSON.parse(JSON.stringify(this.sendLabelId))
     }
   }
 }
