@@ -95,15 +95,15 @@
               :exportData="content[0]"
               @cancel="getSortAction"
               @goExportPerson="goExportPerson"
-            > 
+            >
               <template slot="AddBtn">
                 <el-button class="add-btn" @click="openAddPerson" >添加人员</el-button>
               </template>
             </person-list>
              <transition name="fade-transform" mode="out-in">
-                 <import-person 
+                 <import-person
                   v-if="showExportPage"
-                  @cancel="goExportPerson" 
+                  @cancel="goExportPerson"
                   :id="content[0].bindId"
                   :organizationName='content[0].name'
                   :type="content[0].nodeType"></import-person>
@@ -204,7 +204,7 @@ export default {
   methods: {
     ...mapMutations(['SET_ORGANIZATION_PAGE', 'SET_ORGANIZATION_BACK_INFO']),
 
-    goExportPerson() {
+    goExportPerson () {
       this.showExportPage = !this.showExportPage
     },
     init (type) {
@@ -311,7 +311,7 @@ export default {
           this.showAddDepartmentFlag = true
           this.showAddUnitFlag = true
         }
-      }, (error) => {
+      }, () => {
         this.$message.error(`没有内容`)
       })
     },
@@ -322,7 +322,7 @@ export default {
       }).then((res) => {
         this.labelList = res.data
         console.log(res.data)
-      }, (error) => {
+      }, () => {
       })
     },
     // 跳转日志

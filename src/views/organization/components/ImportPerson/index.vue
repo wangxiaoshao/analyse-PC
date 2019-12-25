@@ -42,41 +42,42 @@
           </div>
         </el-step>
       </el-steps>
-    </div> 
+    </div>
     <div class="submitBtn">
         <el-button size="small" type="primary" round @click="fileSubmit">提交</el-button>
         <el-button size="small" round @click="cancel">返回</el-button>
     </div>
-    
+
   </div>
 </template>
 <script>
-import { api, urlNames } from "@src/api";
-import downloadBinaryFile from "@src/mixins/downloadBinaryFile";
+import { api, urlNames } from '@src/api'
+import downloadBinaryFile from '@src/mixins/downloadBinaryFile'
 export default {
-  data() {
+  data () {
     return {
-         formFile: {}, 
-         fileList: [] // 文件列表
-    };
+      formFile: {},
+      fileList: [] // 文件列表
+    }
   },
-  mixins:[downloadBinaryFile],
-  props:['type','id','organizationName'],
+  mixins: [downloadBinaryFile],
+  props: ['type', 'id', 'organizationName'],
   methods: {
-      cancel() {
-          this.$emit('cancel')
-      },
-      downLoad(){
-        console.log(this.id,this.type)
-        let host = window.location.href.split("#")[0];
-        // this.downloadBinaryFile(host, '', this.type);
-      },
-     fileSubmit () { 
+    cancel () {
+      this.$emit('cancel')
+    },
+    downLoad () {
+      console.log(this.id, this.type)
+      // eslint-disable-next-line no-unused-vars
+      let host = window.location.href.split('#')[0]
+      // this.downloadBinaryFile(host, '', this.type);
+    },
+    fileSubmit () {
       let that = this
       let form = that.$refs['formFile'].$el
-      let formData = new FormData(form);
+      let formData = new FormData(form)
       formData.append('file', this.fileList[0])
-     
+
       if (this.type === 3) {
         formData.append('deptId', this.id)
       }
@@ -93,11 +94,11 @@ export default {
         this.loading = false
         this.fileList = []
       })
-    },
-    
-    
+    }
+
+
   }
-};
+}
 </script>
 <style lang="less">
 @import "index";

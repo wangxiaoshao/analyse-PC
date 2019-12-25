@@ -53,6 +53,7 @@
         </el-form-item>
       </el-form>
     </el-dialog>
+    
     <div class="button-wrap">
       <span>
         <slot name="AddBtn"></slot>
@@ -201,6 +202,7 @@ export default {
         isSingleOrgSelect: true, // 是否为单选框  false为多选（默认），true为单选(isOnlyOrg为true时部门/单位单选)
         isOnlyOrg: true
       }
+      
     };
   },
   created() {

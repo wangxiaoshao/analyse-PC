@@ -37,3 +37,8 @@
 .pass-change .add-person-footer {
   margin: 20px 0;
 }
+.person-manage-content .form-btn1,
+.pass-change .form-btn1 {
+  background: #FC7049 !important;
+  color: #ffffff !important;
+}

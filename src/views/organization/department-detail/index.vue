@@ -245,7 +245,7 @@ export default {
               this.getDetail()
             }
           }
-        }, (error) => {
+        }, () => {
           this.$message.error(`没有内容`)
         })
       } else {
@@ -282,7 +282,7 @@ export default {
             this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
           }
         }
-      }, (error) => {
+      }, () => {
         this.$message.error(`没有内容`)
       })
     },
@@ -296,7 +296,7 @@ export default {
           this.tagsName.push(item.name)
           this.ruleForm.labelId.push(item.id)
         })
-      }, (error) => {
+      }, () => {
       })
     },
     removeTag (tag, index) {
@@ -374,7 +374,7 @@ export default {
           api[urlNames['createDepartment']](this.ruleForm).then((res) => {
             this.$message.success(`保存成功`)
             this.goBack()
-          }, (error) => {
+          }, () => {
 
           })
         }

@@ -97,7 +97,7 @@
         </div>
       </div>
       <div class="submit">
-        <el-button :disabled="submitDisable" type="primary" @click="submitBackData">确定</el-button>
+        <el-button type="primary" @click="submitBackData">确定</el-button>
         <el-button @click="handleClose">取消</el-button>
       </div>
     </el-dialog>
@@ -112,8 +112,8 @@ export default {
   props: ['seleceDialog'],
   data () {
     return {
-      submitDisable:'',
-      searchKeyWord:'',
+      submitDisable: '',
+      searchKeyWord: '',
       searchType: '12', // 搜索类型
       selectCategory: 0, // 0 人员 ，1 部门/单位
       nodeTree: [], // 树
@@ -184,6 +184,7 @@ export default {
           this.$emit('dialogReturnMembersInfo', ids, this.selectCategory)
         }
       }
+      this.handleClose()
     },
     // 关闭选人弹窗组件
     handleClose () {
