@@ -95,4 +95,3 @@ package-lock.json
 *.sln
 .DS_Store
 /.DS_Store/
-*.css
