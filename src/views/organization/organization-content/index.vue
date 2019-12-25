@@ -1,16 +1,5 @@
 <template>
   <div class="organization-content" v-loading="loading">
-    <!--    <el-dialog-->
-    <!--      title="添加下级"-->
-    <!--      :visible.sync="visible"-->
-    <!--      width="30%"-->
-    <!--      :center="true">-->
-    <!--      <div class="add-content">-->
-    <!--        <el-button @click="goAddNode" v-if="showAddNodeFlag">添加节点</el-button>-->
-    <!--        <el-button v-if="showAddDepartmentFlag" @click="goAddDepartment">添加内设机构</el-button>-->
-    <!--        <el-button v-if="showAddUnitFlag" @click="goAddUnit">添加单位</el-button>-->
-    <!--      </div>-->
-    <!--    </el-dialog>-->
     <div class="organization-wrap" v-if="content[0]">
       <div class="organization-info">
         <span v-if="content[0].nodeType === 1" class="content-ico iconfont iconzuzhijigou"></span>
@@ -111,11 +100,14 @@
                 <el-button class="add-btn" @click="openAddPerson" >添加人员</el-button>
               </template>
             </person-list>
-            <export-Person
-            v-if="showExportPage"
-            @cancel="goExportPerson"
-            :id="content[0].bindId"
-             :type="content[0].nodeType"></export-Person>
+             <transition name="fade-transform" mode="out-in">
+                 <import-person
+                  v-if="showExportPage"
+                  @cancel="goExportPerson"
+                  :id="content[0].bindId"
+                  :organizationName='content[0].name'
+                  :type="content[0].nodeType"></import-person>
+              </transition>
           </el-tab-pane>
           <el-tab-pane label="单位领导" name="单位主要领导" v-if="content[0].nodeType === 2">
             <leader-list
@@ -147,14 +139,14 @@ import { api, urlNames } from '@src/api'
 import ContentList from '../components/ContentList/index'
 import PersonList from '../components/PersonList/index'
 import leaderList from '../components/LeaderList/index'
-import ExportPerson from '../components/ExportPerson/index'
+import ImportPerson from '../components/ImportPerson/index'
 import { mapState, mapMutations } from 'vuex'
 
 export default {
   name: 'OrganizationContent',
   mixins: [organizationEdit],
   components: {
-    ContentList, PersonList, leaderList, ExportPerson
+    ContentList, PersonList, leaderList, ImportPerson
   },
   data () {
     return {
@@ -212,7 +204,7 @@ export default {
   methods: {
     ...mapMutations(['SET_ORGANIZATION_PAGE', 'SET_ORGANIZATION_BACK_INFO']),
 
-    goExportPerson (val) {
+    goExportPerson() {
       this.showExportPage = !this.showExportPage
     },
     init (type) {
@@ -351,6 +343,7 @@ export default {
     isSort: {
       handler () {
         this.sortShowFlag = false
+        this.showExportPage = false
       }
     }
   }

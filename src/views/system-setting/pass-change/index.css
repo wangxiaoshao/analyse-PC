@@ -1,0 +1,127 @@
+.person-detail-content,
+.pass-change {
+  position: relative;
+  padding: 0 20px;
+}
+.person-detail-content /deep/ .el-form-item__error,
+.pass-change /deep/ .el-form-item__error {
+  display: none !important;
+}
+.person-detail-content .el-menu-demo,
+.pass-change .el-menu-demo {
+  margin-bottom: 20px;
+}
+.person-detail-content .fa-sitemap,
+.pass-change .fa-sitemap {
+  color: #FC7049;
+}
+.person-detail-content .fa-institution,
+.pass-change .fa-institution {
+  color: #FC7049;
+}
+.person-detail-content .fa-building-o,
+.pass-change .fa-building-o {
+  color: #FC7049;
+}
+.person-detail-content .fa-user-o,
+.pass-change .fa-user-o {
+  color: #FC7049;
+}
+.person-detail-content .step-content,
+.pass-change .step-content {
+  padding-bottom: 20px;
+}
+.person-detail-content .avatar-uploader .el-upload,
+.pass-change .avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.person-detail-content .avatar-uploader .el-upload:hover,
+.pass-change .avatar-uploader .el-upload:hover {
+  border-color: #FC7049;
+}
+.person-detail-content .avatar-uploader-icon,
+.pass-change .avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 120px;
+  height: 120px;
+  line-height: 120px;
+  text-align: center;
+}
+.person-detail-content .avatar,
+.pass-change .avatar {
+  width: 120px;
+  height: 120px;
+  display: block;
+}
+.person-detail-content .form-btn,
+.pass-change .form-btn {
+  background: #FC7049 !important;
+  padding: 10px 5px !important;
+  color: #ffffff !important;
+}
+.person-detail-content .add-person-footer,
+.pass-change .add-person-footer {
+  text-align: center;
+}
+.person-detail-content .set-default,
+.pass-change .set-default {
+  padding-bottom: 20px;
+}
+.person-detail-content .set-default .default-warn,
+.pass-change .set-default .default-warn {
+  padding-bottom: 20px;
+  color: #FF6633;
+}
+.person-detail-content .account-list,
+.pass-change .account-list {
+  margin-bottom: 20px;
+}
+.person-detail-content .el-checkbox__input,
+.pass-change .el-checkbox__input {
+  display: none !important;
+}
+.person-detail-content .el-checkbox,
+.pass-change .el-checkbox {
+  margin: 10px;
+  max-width: 120px;
+  overflow: hidden;
+}
+.pass-change .modifiePwd {
+  padding-top: 20px;
+}
+.pass-change .modifiePwd .account-info {
+  text-align: center;
+}
+.pass-change .modifiePwd .account-info p {
+  text-align: center;
+  font-size: 18px;
+}
+.pass-change .modifiePwd .el-button {
+  border: none;
+  margin-top: 10px;
+}
+.pass-change .modifiePwd .account-name {
+  font-size: 14px;
+}
+.pass-change .modifiePwd .el-icon-user {
+  font-size: 16px;
+}
+.pass-change .modifiePwd .el-icon-user:before {
+  margin-right: 10px;
+}
+.pass-change .modifiePwd .el-form-item {
+  margin-right: 350px;
+}
+.pass-change .modifiePwd .pass-rule {
+  padding-left: 20px;
+  height: 50px;
+  line-height: 40px;
+}
+.pass-change .modifiePwd .el-icon-warning {
+  margin-right: 5px;
+}

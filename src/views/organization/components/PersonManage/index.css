@@ -1,0 +1,39 @@
+.person-manage-content,
+.pass-change {
+  width: 100%;
+}
+.person-manage-content .row-item,
+.pass-change .row-item {
+  padding-top: 20px;
+}
+.person-manage-content .default-warn,
+.pass-change .default-warn {
+  padding-bottom: 5px;
+  border-bottom: 1px solid #f2f2f2;
+  color: #FF6633 !important;
+}
+.person-manage-content .el-table__row,
+.pass-change .el-table__row {
+  cursor: pointer;
+}
+.person-manage-content .el-tag,
+.pass-change .el-tag {
+  margin: 5px !important;
+}
+.person-manage-content .from-title,
+.pass-change .from-title {
+  cursor: pointer;
+}
+.person-manage-content .from-title .icon-right,
+.pass-change .from-title .icon-right {
+  float: right;
+}
+.person-manage-content .el-menu-item,
+.pass-change .el-menu-item {
+  padding: 0 0 !important;
+  color: #333333;
+}
+.person-manage-content .add-person-footer,
+.pass-change .add-person-footer {
+  margin: 20px 0;
+}

@@ -1,13 +1,13 @@
 <template>
   <div class="exportPersonPage">
     <div class="abtn">
-      <a href>贵州省</a>
-      <span>&lt;批量导入导出</span>
+      <a href="#" v-html="organizationName+ ' &gt;'" style="color:#159cf6"></a>
+      <span> 批量导入</span>
     </div>
-    <div class="abtn">
+    <!-- <div class="abtn">
       <el-button size="small" type="primary">批量导入</el-button>
       <el-button size="small">批量导出</el-button>
-    </div>
+    </div> -->
     <div class="info">
       <i class="el-icon-info"></i>
       <div class="message">
@@ -21,7 +21,7 @@
         <el-step>
           <div slot="description">
             下载人员信息模板，批量填写人员信息
-            <el-button size="mini" type="primary" round>下载</el-button>
+            <el-button size="mini" type="primary" round @click="downLoad">下载</el-button>
           </div>
         </el-step>
         <el-step>
@@ -35,7 +35,6 @@
                   :limit="1"
                   name="file"
                   action="http://jg-dev.lonmo.com/api/jg_manage/import/userImport"
-                  :on-change="fileHandleChange"
                   :file-list="fileList">
                   <el-button size="small" type="primary" round>导入人员</el-button>
               </el-upload>
@@ -45,7 +44,7 @@
       </el-steps>
     </div>
     <div class="submitBtn">
-        <el-button size="small" type="primary" round>提交</el-button>
+        <el-button size="small" type="primary" round @click="fileSubmit">提交</el-button>
         <el-button size="small" round @click="cancel">返回</el-button>
     </div>
 
@@ -53,6 +52,7 @@
 </template>
 <script>
 import { api, urlNames } from "@src/api";
+import downloadBinaryFile from "@src/mixins/downloadBinaryFile";
 export default {
   data() {
     return {
@@ -60,27 +60,17 @@ export default {
          fileList: [] // 文件列表
     };
   },
-  props:['type','id'],
+  mixins:[downloadBinaryFile],
+  props:['type','id','organizationName'],
   methods: {
       cancel() {
           this.$emit('cancel')
       },
-
-    fileHandleChange () {
-      this.loading = true
-      this.$confirm('确认导入当前文件吗, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.fileSubmit()
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消'
-        })
-      })
-    },
+      downLoad(){
+        console.log(this.id,this.type)
+        let host = window.location.href.split("#")[0];
+        // this.downloadBinaryFile(host, '', this.type);
+      },
      fileSubmit () {
       let that = this
       let form = that.$refs['formFile'].$el
