@@ -7,7 +7,7 @@
       center
       :before-close="handleClose">
       <div class="select-category"
-           v-if="this.seleceDialog.notOnlyPerson === true&&this.seleceDialog.isOnlyOrg === true">
+           v-if="seleceDialog.notOnlyPerson === true&&seleceDialog.isOnlyOrg === true">
         <el-button type="primary" @click="selectCategory = 1;searchType = '2'" :plain="selectCategory!==1">
           单位/部门
         </el-button>
@@ -15,11 +15,11 @@
           人员
         </el-button>
       </div>
-      <div class="search"><el-input
+      <div class="search">
+        <el-input
         placeholder="请输入内容"
         v-model="searchKeyWord"
         @input="getResult"
-        @blur="blur"
         @keyup.enter.native="getResult"
         class="input-with-select">
         <el-select v-model="searchType" style="width: 80px" @change="getType" slot="prepend" placeholder="请选择">
@@ -47,18 +47,35 @@
         </div>
         <div class="wait-select">
           <div v-if="selectCategory === 0">
-            <el-checkbox class="member-item" @change="toggleAllMembers">全选</el-checkbox>
-            <el-checkbox-group v-model="membersModel" @change="toggleMember">
-              <el-checkbox style="display: block" class="member-item text-ellipsis"
-                           v-for="member in memberList"
-                           :key="member.uid"
-                           :label="JSON.stringify(member)">
-                {{member.name}}
-              </el-checkbox>
-            </el-checkbox-group>
+            <div v-if="seleceDialog.isSingleSelect!==true">
+              <el-checkbox v-model="member" class="member-item" @change="toggleAllMembers">全选</el-checkbox>
+              <el-checkbox-group v-model="membersModel" @change="toggleMember">
+                <el-checkbox style="display: block" class="member-item text-ellipsis"
+                             v-for="member in memberList"
+                             :key="member.uid"
+                             :label="JSON.stringify(member)">
+                  {{member.name}}
+                </el-checkbox>
+              </el-checkbox-group>
+            </div>
+            <div v-if="seleceDialog.isSingleSelect===true">
+              <el-radio-group v-model="radio">
+                <el-radio style="display: block" :label="3">备选项</el-radio>
+                <el-radio  style="display: block"  :label="6">备选项</el-radio>
+                <el-radio style="display: block"  :label="9">备选项</el-radio>
+              </el-radio-group>
+              <el-checkbox-group v-model="membersModel" @change="toggleMember">
+                <el-checkbox style="display: block" class="member-item text-ellipsis"
+                             v-for="member in memberList"
+                             :key="member.uid"
+                             :label="JSON.stringify(member)">
+                  {{member.name}}
+                </el-checkbox>
+              </el-checkbox-group>
+            </div>
           </div>
           <div v-if="selectCategory === 1">
-            <el-checkbox class="member-item" @change="toggleAllOrgs">全选</el-checkbox>
+            <el-checkbox v-model="org" class="member-item" @change="toggleAllOrgs">全选</el-checkbox>
             <el-checkbox-group v-model="orgsModel" @change="toggleOrg">
               <el-checkbox style="display: block" class="member-item text-ellipsis"
                            v-for="org in orgList"
@@ -97,7 +114,7 @@
         </div>
       </div>
       <div class="submit">
-        <el-button :disabled="submitDisable" type="primary" @click="submitBackData">确定</el-button>
+        <el-button type="primary" @click="submitBackData">确定</el-button>
         <el-button @click="handleClose">取消</el-button>
       </div>
     </el-dialog>
@@ -112,6 +129,9 @@ export default {
   props: ['seleceDialog'],
   data () {
     return {
+      member: false,
+      org: false,
+      searchKeyWord: '',
       searchType: '12', // 搜索类型
       selectCategory: 0, // 0 人员 ，1 部门/单位
       nodeTree: [], // 树
@@ -160,31 +180,39 @@ export default {
   */
     // 返回数据
     submitBackData () {
-      if (this.selectCategory === 0) {
-        console.log(JSON.parse(JSON.stringify(this.selectedMembers)), '---------123')
-        if (this.seleceDialog.isAllData) {
-          this.$emit('dialogReturnMembersInfo', this.selectedMembers, this.selectCategory)
-        } else {
-          let ids = []
-          this.selectedMembers.forEach(item => {
-            ids.push(item.uid)
-          })
-          this.$emit('dialogReturnMembersInfo', ids, this.selectCategory)
-        }
-      } else if (this.selectCategory === 1) {
-        if (this.seleceDialog.isAllData) {
-          this.$emit('dialogReturnMembersInfo', this.selectedOrgs, this.selectCategory)
-        } else {
-          let ids = []
-          this.selectedOrgs.forEach(item => {
-            ids.push(item.uid)
-          })
-          this.$emit('dialogReturnMembersInfo', ids, this.selectCategory)
+      if (this.seleceDialog.isOnlyOrg && this.seleceDialog.notOnlyPerson) {
+        this.$emit('dialogReturnMembersInfo', this.selectedMembers, this.selectedOrgs)
+      } else {
+        // 单独选人或者单独选部门
+        if (this.selectCategory === 0) {
+          if (this.seleceDialog.isAllData) {
+            this.$emit('dialogReturnMembersInfo', this.selectedMembers, this.selectCategory)
+          } else {
+            let ids = []
+            this.selectedMembers.forEach(item => {
+              ids.push(item.uid)
+            })
+            this.$emit('dialogReturnMembersInfo', ids, this.selectCategory)
+          }
+        } else if (this.selectCategory === 1) {
+          if (this.seleceDialog.isAllData) {
+            this.$emit('dialogReturnMembersInfo', this.selectedOrgs, this.selectCategory)
+          } else {
+            let ids = []
+            this.selectedOrgs.forEach(item => {
+              ids.push(item.uid)
+            })
+            this.$emit('dialogReturnMembersInfo', ids, this.selectCategory)
+          }
         }
       }
+      this.handleClose()
     },
     // 关闭选人弹窗组件
     handleClose () {
+      this.selectedMembers.length = this.selectedMembersModel.length = this.selectedOrgs.length = this.selectedOrgsModel.length = 0
+      this.removeAllSelected()
+      this.removeAllSelectedOrg()
       this.$emit('closeselectMenmber')
     },
     // 获取机构树--初始化
@@ -434,6 +462,9 @@ export default {
           name: this.searchKeyWord,
           nodeType: this.searchType
         }
+        api[urlNames['searchViewNode']](data).then(res => {
+          this.orgList = res.data
+        })
       } else {
         data = {
           name: this.searchKeyWord
@@ -442,29 +473,9 @@ export default {
           this.memberList = res.data
         })
       }
-
-      if (this.searchKeyWord.length > 1) {
-        if (this.timer) {
-          clearTimeout(this.timer)
-          this.timer = null
-        }
-        // this.timer = this.debounce(this.getResultList, 800)
-        this.timer = setTimeout(() => {
-          if (this.searchType === '2' || this.searchType === '3') {
-            api[urlNames['searchViewNode']](data).then(res => {
-              this.gridData = res.data
-            })
-          }
-        }, 800)
-      } else {
-        this.timer = null
-      }
     },
     getType (el) {
       this.searchType = el
-    },
-    blur () {
-      this.timer = null
     }
   }
 }

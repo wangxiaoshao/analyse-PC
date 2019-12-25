@@ -94,7 +94,6 @@ export default {
         limit: limit
       }).then((res) => {
         if (res.status === 0) {
-          this.$message.success('请求成功')
           this.logList = res.data
         }
       }, (error) => {

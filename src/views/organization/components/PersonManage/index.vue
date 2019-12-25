@@ -5,6 +5,7 @@
       :addInfo="addInfo"
       @close="getClose"
       @getTag="getTag"
+      :delSelectLabelId="delSelectLabelId"
     ></add-tags>
     <!--人员管理-->
     <el-form
@@ -420,6 +421,8 @@ export default {
       postFrom: this.postDetail,
       imageUrl: '',
       tagsName: [],
+      delSelectLabelId: null, // 添加后未提交到后台移除的标签
+      tempLabelId: [],
       sendLabelId: this.labelId,
       list: [],
       searchFlag: false,
@@ -447,7 +450,6 @@ export default {
   methods: {
     ...mapMutations(['GET_OPTION']),
     init () {
-  
     },
     // 搜索表格点击当前行
     selectRow (val) {
@@ -474,7 +476,6 @@ export default {
             if (res.data.length !== 0) {}
             this.loadFlag = false
             this.list = res.data
-            console.log(this.list)
           }, (error) => {
             this.list = []
           })
@@ -507,7 +508,6 @@ export default {
     // 选择职级
     getPositionClass (val) {
       this.personFrom.positionClass = val
-      console.log(this.personFrom.positionClass)
     },
     // 选择党派
     getPolicalParty (val) {
@@ -582,29 +582,40 @@ export default {
       this.$emit('get-label', this.sendLabelId)
     },
     removeTag (tag, index) {
-      this.$confirm('此操作将永久删除该标签, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        api[urlNames['deleteUserLabelOrDeptLabelOrOrgLabel']]({
-          id: this.oldUserInfo.userId,
-          type: 3,
-          labelId: this.sendLabelId[index]
-        }).then((res) => {
-          if (res.status === 0) {
-            this.$message.success('删除成功')
-            this.tagsName.splice(index, 1)
-            this.sendLabelId.splice(index, 1)
-          }
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        })
+      let that = this
+      let lIds = []
+      lIds = that.tempLabelId.filter(function (item) {
+        return item === that.sendLabelId[index]
       })
-      this.$emit('get-label', this.sendLabelId)
+      if (lIds.length !== 0) {
+        that.$confirm('此操作将永久删除该标签, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          api[urlNames['deleteUserLabelOrDeptLabelOrOrgLabel']]({
+            id: that.oldUserInfo.userId,
+            type: 3,
+            labelId: that.sendLabelId[index]
+          }).then((res) => {
+            if (res.status === 0) {
+              that.$message.success('删除成功')
+              that.tagsName.splice(index, 1)
+              that.sendLabelId.splice(index, 1)
+            }
+          })
+        }).catch(() => {
+          that.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+      } else {
+        that.delSelectLabelId = that.sendLabelId[index] + '|' + that.tagsName[index]
+        that.sendLabelId.splice(index, 1)
+        that.tagsName.splice(index, 1)
+      }
+      that.$emit('get-label', that.sendLabelId)
     },
     next (userDetail) {
       if (userDetail.name === '') {
@@ -642,6 +653,7 @@ export default {
         this.tagsName.push(item.name)
         this.sendLabelId.push(item.id)
       })
+      this.tempLabelId = JSON.parse(JSON.stringify(this.sendLabelId))
     }
   }
 }

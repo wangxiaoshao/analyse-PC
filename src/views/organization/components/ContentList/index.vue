@@ -133,6 +133,7 @@ export default {
   },
   methods: {
     init () {
+      this.contentPage.current = 1
       this.getGrid()
       if (this.succese) {
         this.getGrid()

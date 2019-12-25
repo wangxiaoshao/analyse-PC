@@ -11,9 +11,9 @@
     <div class="info">
       <i class="el-icon-info"></i>
       <div class="message">
-        <p>提示：为了您更好的体验</p>
-        <p>1.导入表若存在重复的人员信息</p>
-        <p>2.请严格按照模板填写员工信息，否则</p>
+        <p>提示：为了您更好的体验，批量导入功能展示只支持50条以内的人员数据，如有超出，请分两次导入。</p>
+        <p>1.导入表若存在重复人员信息，系统不会过滤，请自行修改删除人员信息。</p>
+        <p>2.请严格按照模板填写员工信息，否则会存在信息不准确的人员数据入库。</p>
       </div>
     </div>
     <div class="abtn stepNav">
@@ -43,12 +43,12 @@
           </div>
         </el-step>
       </el-steps>
-    </div> 
+    </div>
     <div class="submitBtn">
         <el-button size="small" type="primary" round>提交</el-button>
         <el-button size="small" round @click="cancel">返回</el-button>
     </div>
-    
+
   </div>
 </template>
 <script>
@@ -56,7 +56,7 @@ import { api, urlNames } from "@src/api";
 export default {
   data() {
     return {
-         formFile: {}, 
+         formFile: {},
          fileList: [] // 文件列表
     };
   },
@@ -65,7 +65,7 @@ export default {
       cancel() {
           this.$emit('cancel')
       },
-      
+
     fileHandleChange () {
       this.loading = true
       this.$confirm('确认导入当前文件吗, 是否继续?', '提示', {
@@ -81,12 +81,12 @@ export default {
         })
       })
     },
-     fileSubmit () { 
+     fileSubmit () {
       let that = this
       let form = that.$refs['formFile'].$el
       let formData = new FormData(form);
       formData.append('file', this.fileList[0])
-     
+
       if (this.type === 3) {
         formData.append('deptId', this.id)
       }
@@ -104,8 +104,8 @@ export default {
         this.fileList = []
       })
     },
-    
-    
+
+
   }
 };
 </script>

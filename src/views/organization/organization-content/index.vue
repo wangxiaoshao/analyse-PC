@@ -106,14 +106,14 @@
               :exportData="content[0]"
               @cancel="getSortAction"
               @goExportPerson="goExportPerson"
-            > 
+            >
               <template slot="AddBtn">
                 <el-button class="add-btn" @click="openAddPerson" >添加人员</el-button>
               </template>
             </person-list>
-            <export-Person 
+            <export-Person
             v-if="showExportPage"
-            @cancel="goExportPerson" 
+            @cancel="goExportPerson"
             :id="content[0].bindId"
              :type="content[0].nodeType"></export-Person>
           </el-tab-pane>
@@ -212,7 +212,7 @@ export default {
   methods: {
     ...mapMutations(['SET_ORGANIZATION_PAGE', 'SET_ORGANIZATION_BACK_INFO']),
 
-    goExportPerson(val) {
+    goExportPerson (val) {
       this.showExportPage = !this.showExportPage
     },
     init (type) {
@@ -335,8 +335,14 @@ export default {
     },
     // 跳转日志
     toLogData () {
+      let path = ''
+      if (this.nodeData.nodeType === 1) {
+        path = `/organization/operate-log/${this.nodeData.id}`
+      } else {
+        path = `/organization/operate-log/${this.nodeData.bindId}`
+      }
       this.$router.push({
-        path: `/organization/operate-log/${this.$route.params.nodeId}`,
+        path: path,
         query: { type: this.nodeInfo.nodeType, title: `${this.content[0].name}` }
       })
     }
