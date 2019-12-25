@@ -19,7 +19,7 @@ const tableConfig = {
   account: {
     key: 'account',
     tooltip: false,
-    label: '登陆账号',
+    label: '登录账号',
     sortable: false,
     showOverflowTooltip: false,
     minWidth: 100
