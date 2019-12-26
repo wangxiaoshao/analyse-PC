@@ -113,6 +113,7 @@
             <leader-list
               v-if="activeName === '单位主要领导'"
               :content-id="content[0].bindId"
+              :nodeType = '1'
               @getPage="getPage"
               :nodeInfo="nodeInfo"
               :nodeData="nodeData"
@@ -123,6 +124,7 @@
               v-if="activeName === '内设机构主要领导'"
               :content-id="content[0].bindId"
               @getPage="getPage"
+              :nodeType = '2'
               :nodeInfo="nodeInfo"
               :nodeData="nodeData"
             ></leader-list>

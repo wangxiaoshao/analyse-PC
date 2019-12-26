@@ -247,7 +247,7 @@
 </template>
 <script>
 import { api, urlNames } from '@src/api'
-
+import { mapState, mapMutations } from 'vuex'
 const nodeAuditList = [{ name: 'name', checkname: '节点名称' }]
 const orgAuditList = [{ name: 'name', checkname: '单位全称' }, { name: 'shortName', checkname: '单位简称' }, {
   name: 'address',
@@ -320,6 +320,7 @@ export default {
     this.getSystemParameterlevel(1)
   },
   methods: {
+    ...mapMutations(['GET_OPTION']),
     getSystemParameterlevel (level) {
       api[urlNames['getSystemParameterlevel']]({
         level: level
@@ -413,9 +414,15 @@ export default {
       }
       this.setClientOptions(list)
     },
+    getOption () {
+      api[urlNames['option']]().then((res) => {
+        this.GET_OPTION(res.data)
+      })
+    },
     setClientOptions (list) {
       api[urlNames['setClientOptions']](list).then((res) => {
         if (res.status === 0) {
+          this.getOption()
           this.$message.success('设置成功')
         }
       })

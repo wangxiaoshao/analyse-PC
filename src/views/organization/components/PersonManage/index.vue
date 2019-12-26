@@ -397,7 +397,7 @@
     </el-footer>
   </div>
 </template>
-  
+
 <script>
 import { api, urlNames } from '@src/api'
 import addTags from '../AddTags/index'
@@ -412,7 +412,7 @@ export default {
   },
   data () {
     return {
-      hidefooter:false,
+      hidefooter: false,
       dutyNameCheckd: [],
       dutyNameSelectVisible: false,
       uploadUrl: '',
@@ -449,15 +449,15 @@ export default {
   created () {
     this.init()
   },
-  comments: {
+  computed: {
     ...mapState(['app'])
   },
   methods: {
     ...mapMutations(['GET_OPTION']),
     init () {
     },
-    modifieUserInfo(){
-      this.$emit("goModifieUserInfo",this.personFrom)
+    modifieUserInfo () {
+      this.$emit('goModifieUserInfo', this.personFrom)
     },
     // 搜索表格点击当前行
     selectRow (val) {

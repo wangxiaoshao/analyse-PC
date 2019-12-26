@@ -144,7 +144,7 @@ import { api, urlNames } from '@src/api'
 import SelectMembers from '@src/components/SelectMembers/index'
 export default {
   mixins: [handleTable],
-  props: ['nodeInfo', 'contentId', 'nodeData'],
+  props: ['nodeInfo', 'contentId', 'nodeData','nodeType'],
   components: { SelectMembers },
   data () {
     return {
@@ -216,7 +216,6 @@ export default {
         this.$message.info('您没有选择领导')
         return false
       }
-      console.log(JSON.parse(JSON.stringify(data)), '----------------------data')
       // 主要领导1，其他领导2
       if (this.learderType === 1) {
         let obj = {
@@ -237,7 +236,7 @@ export default {
       if (JSON.parse(JSON.stringify(data)) !== []) {
         api[urlNames['createLeader']]({
           nodeId: this.contentId,
-          nodeType: this.nodeInfo.nodeType,
+          nodeType: this.nodeType,
           leaders: this.personList
         }).then((res) => {
           this.$message.success(`保存成功`)
