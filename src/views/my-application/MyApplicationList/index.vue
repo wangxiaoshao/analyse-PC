@@ -1,9 +1,40 @@
+/* eslint-disable handle-callback-err */
 <template>
   <div class="site-module mod-dictionary">
     <!--操作row-->
+     <!--人员调出弹窗-->
+     <select-members
+      :seleceDialog="selectDialog"
+      @dialogReturnMembersInfo="dialogReturnMembersInfo"
+      @closeselectMenmber="closeselectMenmber"
+    ></select-members>
+    <el-dialog title="填写调出说明" :visible.sync="calloutFlag" width="50%">
+      <el-form
+        :model="formCallout"
+        :rules="rulesCallou"
+        ref="formCallout"
+        label-width="100px"
+        class="demo-ruleForm"
+      >
+        <el-form-item label="调出单位">
+          <span class="name-span">{{orgName}}</span>
+          <span class="name-span" v-if="depName !== ''">/{{depName}}</span>
+          <el-button @click="addMainLeader">选择调出单位/内设机构</el-button>
+        </el-form-item>
+        <el-form-item label="申请原因" prop="reason">
+          <el-input type="textarea" v-model="formCallout.reason"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="submitFormCallout('formCallout')">确定</el-button>
+          <el-button @click="calloutFlag = false">取 消</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+
     <el-row class="operator-row">
-      <el-col :span="18">
+      <el-col :span="24">
         <el-row :gutter="10" type="flex">
+          <el-button type="primary" class="right-btn" @click="calloutDialog">申请调出</el-button>
           <!--<el-col :span="6">-->
           <!--<el-select v-model="searchQuery.id" filterable clearable @change="search" placeholder="单位">-->
           <!--<el-option-->
@@ -56,19 +87,44 @@ import handleTable from '@src/mixins/handle-table'
 import SiteTable from '@src/components/SiteTable/index.vue'
 import { api, urlNames } from '@src/api'
 import tableConfig from './tableConfig'
+import SelectMembers from '@src/components/SelectMembers/index'
 import { mapState, mapMutations } from 'vuex'
 
 export default {
-  components: { SiteTable },
+  components: { SiteTable, SelectMembers },
   mixins: [handleTable],
   data () {
     return {
       tableConfig,
+      calloutFlag: false,
+      orgName: '',
+      depName: '',
+      selectDialog: {
+        selectMenmberTitle: '选择调出单位或内设机构', // 选人组件标题
+        selectMenmberFlag: false, // 显示弹窗，
+        isAllData: true, // 是否需完整数据-默认为不需要（false，只包含用户id）
+        notOnlyPerson: false, // 是否选人，默认为false（只选人）
+        isSingleSelect: false, // 是否为单选框  false为多选（默认）-人员单选
+        isSingleOrgSelect: true, // 是否为单选框  false为多选（默认），true为单选(isOnlyOrg为true时部门/单位单选)
+        isOnlyOrg: true
+      },
+      // 人员调出表单
+      formCallout: {
+        identityId: '',
+        uid: '',
+        deptId: '',
+        orgId: '',
+        reason: ''
+      },
+      rulesCallou: {
+        orgId: [{ required: true, message: '请选择调出单位', trigger: 'blur' }]
+      },
       searchQuery: {
         id: '',
         status: '',
         keyword: ''
       },
+
       areaList: [
         {
           'id': 1,
@@ -94,7 +150,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['application', 'examine'])
+    ...mapState(['application', 'examine', 'app'])
   },
   created () {
     if (this.$route.query.type === 'back') {
@@ -130,6 +186,68 @@ export default {
           this.searchQuery[key] = value
         }
       }
+    },
+    // 提交调出
+    submitFormCallout (formCallout) {
+      this.$refs[formCallout].validate(valid => {
+        if (valid) {
+          api[urlNames['calloutUser']](this.formCallout).then(
+            res => {
+              this.$message.success(`调出成功`)
+              this.calloutFlag = false
+              this.getGrid()
+              this.fromInit()
+              this.formCallout.deptId = this.formCallout.orgId = ''
+              this.orgName = this.depName = ''
+            },
+            () => {}
+          )
+        }
+      })
+    },
+    // 选人弹窗组件返回的人员信息
+    dialogReturnMembersInfo (data) {
+      console.log(data)
+      if (data[0].nodeType === 2) {
+        this.formCallout.orgId = data[0].bindId
+        this.orgName = data[0].name
+      }
+      if (data[0].nodeType === 3) {
+        this.formCallout.deptId = data[0].bindId
+        api[urlNames['findDepartmentById']]({
+          id: data[0].bindId
+        }).then(
+          res => {
+            this.formCallout.orgId = res.data.orgId
+            this.orgName = res.data.orgName
+            this.depName = res.data.name
+          },
+          // eslint-disable-next-line handle-callback-err
+          error => {}
+        )
+      }
+    },
+    // 关闭选人弹窗
+    closeselectMenmber () {
+      this.selectDialog.selectMenmberFlag = false
+    },
+    addMainLeader () {
+      this.selectDialog.selectMenmberFlag = true
+      this.selectDialog.isSingleSelect = false
+      this.selectDialog.notOnlyPerson = false
+      this.selectDialog.isSingleOrgSelect = true
+      this.selectDialog.isOnlyOrg = true
+      this.selectDialog.isAllData = true
+      this.$emit('clear')
+    },
+    // 调出
+    calloutDialog () {
+      this.formCallout.deptId = this.app.option.user.deptId
+      this.formCallout.identityId = this.app.option.user.identityId
+      this.formCallout.uid = this.app.option.user.uid
+      this.formCallout.orgId = this.app.option.user.orgId
+      this.calloutFlag = true
+      this.$emit('cancel', false)
     },
     search () {
       this.$nextTick(() => {

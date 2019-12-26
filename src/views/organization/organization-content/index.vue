@@ -206,7 +206,7 @@ export default {
   methods: {
     ...mapMutations(['SET_ORGANIZATION_PAGE', 'SET_ORGANIZATION_BACK_INFO']),
 
-    goExportPerson() {
+    goExportPerson () {
       this.showExportPage = !this.showExportPage
     },
     init (type) {
@@ -313,7 +313,7 @@ export default {
           this.showAddDepartmentFlag = true
           this.showAddUnitFlag = true
         }
-      }, (error) => {
+      }, () => {
         this.$message.error(`没有内容`)
       })
     },
@@ -324,7 +324,7 @@ export default {
       }).then((res) => {
         this.labelList = res.data
         console.log(res.data)
-      }, (error) => {
+      }, () => {
       })
     },
     // 跳转日志
