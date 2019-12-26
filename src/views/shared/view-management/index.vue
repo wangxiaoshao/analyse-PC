@@ -62,18 +62,14 @@
         :total="total">
       </el-pagination>
     </div>
-<!--    <el-button @click="seleceDialog.selectMenmberFlag = true">选人组件</el-button>-->
-    <candidate-dialog @dialogReturnMembersInfo="dialogReturnMembersInfo" @closeselectMenmber="closeselectMenmber" :seleceDialog="seleceDialog"></candidate-dialog>
   </div>
 </template>
 
 <script>
-import CandidateDialog from '@src/components/CandidateDialog/index.vue'
 import { api, urlNames } from '@src/api'
 export default {
   name: 'ViewManagement',
   components: {
-    CandidateDialog
   },
   data () {
     return {
@@ -81,14 +77,7 @@ export default {
       viewList: [],
       currentPage: 1,
       pageSize: 10,
-      currentRow: null,
-      seleceDialog: {
-        selectMenmberTitle: '选人组件', // 选人组件标题
-        selectMenmberFlag: false, // 显示弹窗，
-        isAllData: true, // 是否需完整数据-默认为不需要（false，只包含用户id）
-        notOnlyPerson: false, // 是否只选人，默认为false（只选人），true可以选择单位和部门
-        isSingleSelect: false // 是否为单选框  false为多选（默认），true为单选
-      }
+      currentRow: null
     }
   },
   created () {
@@ -107,14 +96,6 @@ export default {
     // 跳转创建视图
     createView () {
       this.$router.push({ path: '/view-management/create-view/0' })
-    },
-    // 关闭选人弹窗
-    closeselectMenmber () {
-      this.seleceDialog.selectMenmberFlag = false
-    },
-    // 选人弹窗组件返回的人员信息
-    dialogReturnMembersInfo (data) {
-      console.log(JSON.parse(JSON.stringify(data)))
     },
     handleCurrentChange (val) {
       this.currentRow = val

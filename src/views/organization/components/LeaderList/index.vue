@@ -138,7 +138,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-import CandidateDialog from '@src/components/CandidateDialog/index'
 import Sortable from 'sortablejs'
 import handleTable from '@src/mixins/handle-table'
 import { api, urlNames } from '@src/api'
@@ -146,7 +145,7 @@ import SelectMembers from '@src/components/SelectMembers/index'
 export default {
   mixins: [handleTable],
   props: ['nodeInfo', 'contentId', 'nodeData'],
-  components: { CandidateDialog, SelectMembers },
+  components: { SelectMembers },
   data () {
     return {
       dialogVisible: false,
