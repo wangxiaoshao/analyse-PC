@@ -66,10 +66,6 @@ export default {
       this.$emit('cancel')
     },
     downLoad () {
-<<<<<<< HEAD
-=======
-      console.log(this.id, this.type)
->>>>>>> 921fe1a8cd9333b4888a659d54d1c99aff8030f2
       let host = window.location.href.split('#')[0]
       this.downloadBinaryFile(host, '', this.type)
     },
