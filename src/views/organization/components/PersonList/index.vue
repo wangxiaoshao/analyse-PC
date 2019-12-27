@@ -148,7 +148,10 @@
 </template>
 
 <script>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 921fe1a8cd9333b4888a659d54d1c99aff8030f2
 import Sortable from 'sortablejs'
 import handleTable from '@src/mixins/handle-table'
 import { api, urlNames } from '@src/api'
@@ -184,6 +187,12 @@ export default {
         reason: ''
       },
       rulesCallou: {
+<<<<<<< HEAD
+=======
+        /* reason: [
+          { required: true, message: '请填写申请原因', trigger: 'blur' }
+        ], */
+>>>>>>> 921fe1a8cd9333b4888a659d54d1c99aff8030f2
         orgId: [{ required: true, message: '请选择调出单位', trigger: 'blur' }]
       },
       rules: {
@@ -387,7 +396,11 @@ export default {
               this.formCallout.deptId = this.formCallout.orgId = ''
               this.orgName = this.depName = ''
             },
+<<<<<<< HEAD
             () => {}
+=======
+            error => {}
+>>>>>>> 921fe1a8cd9333b4888a659d54d1c99aff8030f2
           )
         }
       })
@@ -403,7 +416,11 @@ export default {
               this.fromInit()
               this.getGrid()
             },
+<<<<<<< HEAD
             () => {}
+=======
+            error => {}
+>>>>>>> 921fe1a8cd9333b4888a659d54d1c99aff8030f2
           )
         }
       })

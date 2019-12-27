@@ -16,7 +16,7 @@
           <div class="grid-content bg-purple-light">
             <el-form-item label="绑定视图" prop="viewId">
               <el-select
-                v-model="value"
+                v-model="appFrom.viewId"
                 filterable
                 remote
                 reserve-keyword
@@ -209,7 +209,7 @@ export default {
     createApp () {
       api[urlNames['createApp']]({
         name: this.appFrom.name,
-        viewId: 1,
+        viewId: this.viewId,
         apiAccount: this.appFrom.apiAccount,
         apiPassword: this.appFrom.apiPassword,
         concatUser: this.appFrom.concatUser,
