@@ -1,6 +1,6 @@
 /* eslint-disable handle-callback-err */
 <template>
-  <div v-data-4122  class="person-detail-content" v-loading="loading">
+  <div class="person-detail-content" v-loading="loading">
     <!--步骤条-->
     <step :active="activeIndex" @getActive="getActive"></step>
    <el-container>

@@ -1,9 +1,8 @@
-/* eslint-disable handle-callback-err */
 <template>
   <div class="site-module mod-dictionary">
     <!--操作row-->
-     <!--人员调出弹窗-->
-     <select-members
+    <!--人员调出弹窗-->
+    <select-members
       :seleceDialog="selectDialog"
       @dialogReturnMembersInfo="dialogReturnMembersInfo"
       @closeselectMenmber="closeselectMenmber"
@@ -33,8 +32,8 @@
 
     <el-row class="operator-row">
       <el-col :span="24">
-        <el-row :gutter="10" type="flex">
-          <el-button type="primary" class="right-btn" @click="calloutDialog">申请调出</el-button>
+        <el-row :gutter="10" >
+            <el-button type="primary" size='mini' @click="calloutDialog">申请调出</el-button>
           <!--<el-col :span="6">-->
           <!--<el-select v-model="searchQuery.id" filterable clearable @change="search" placeholder="单位">-->
           <!--<el-option-->
@@ -47,18 +46,20 @@
           <!--</el-col>-->
           <el-col :span="8">
             <!--<el-input placeholder="请输入关键字搜索" v-model="searchQuery.keyword" clearable @change="getGrid">-->
-              <!--<el-button slot="append" icon="el-icon-search" @click="search"></el-button>-->
+            <!--<el-button slot="append" icon="el-icon-search" @click="search"></el-button>-->
             <!--</el-input>-->
           </el-col>
         </el-row>
       </el-col>
     </el-row>
     <!--表格-->
-    <site-table :tableConfig="tableConfig"
-                :tableHeight="tableHeight"
-                :operateWidth="operateWidth"
-                :operate="operate"
-                :tableData="tableData">
+    <site-table
+      :tableConfig="tableConfig"
+      :tableHeight="tableHeight"
+      :operateWidth="operateWidth"
+      :operate="operate"
+      :tableData="tableData"
+    >
       <el-table-column label="状态" align="center">
         <template slot-scope="scope">
           <span v-show="scope.row.auditState === 1" class="text-green">已审核</span>
@@ -77,8 +78,8 @@
       :page-sizes="[10, 30, 50, 100]"
       :page-size="page.limit"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="page.total">
-    </el-pagination>
+      :total="page.total"
+    ></el-pagination>
   </div>
 </template>
 
@@ -127,19 +128,19 @@ export default {
 
       areaList: [
         {
-          'id': 1,
-          'code': '1',
-          'name': '单位'
+          id: 1,
+          code: '1',
+          name: '单位'
         },
         {
-          'id': 2,
-          'code': '2',
-          'name': '内设机构'
+          id: 2,
+          code: '2',
+          name: '内设机构'
         },
         {
-          'id': 3,
-          'code': '3',
-          'name': '人员'
+          id: 3,
+          code: '3',
+          name: '人员'
         }
       ],
       tableData: [],
@@ -155,7 +156,10 @@ export default {
   created () {
     if (this.$route.query.type === 'back') {
       this.page = Object.assign(this.page, this.application.page)
-      this.searchQuery = Object.assign(this.searchQuery, this.examine.searchQuery)
+      this.searchQuery = Object.assign(
+        this.searchQuery,
+        this.examine.searchQuery
+      )
       this.tableData = Object.assign(this.tableData, this.examine.tableData)
     } else {
       this.SET_APPLICATION_PAGE({})
@@ -173,7 +177,8 @@ export default {
       'SET_EXAMINE_TABLEDATA',
       'SET_EXAMINE_DETAIL',
       'SET_EXAMINE_SEARCH_QUERY',
-      'SET_EXAMINE_BACKPATH']),
+      'SET_EXAMINE_BACKPATH'
+    ]),
     initQuery () {
       let keys = Object.assign({}, this.$route.query)
       let len = keys.length
@@ -267,20 +272,25 @@ export default {
         let key = keys[i]
         let value = this.searchQuery[key]
         if (typeof value !== 'number') {
-          if (value) { data[key] = value }
+          if (value) {
+            data[key] = value
+          }
         } else {
           data[key] = value
         }
       }
-      api[urlNames['getMyApplyAuditList']](data).then((res) => {
-        this.loading = false
-        this.tableData = res.data
-        this.page.total = res.total
-      }, () => {
-        this.loading = false
-        this.tableData = []
-        this.page.total = 0
-      })
+      api[urlNames['getMyApplyAuditList']](data).then(
+        res => {
+          this.loading = false
+          this.tableData = res.data
+          this.page.total = res.total
+        },
+        () => {
+          this.loading = false
+          this.tableData = []
+          this.page.total = 0
+        }
+      )
     },
     goConfig (row) {
       this.SET_APPLICATION_PAGE(this.page)
@@ -300,7 +310,7 @@ export default {
 }
 </script>
 <style lang="less">
-  @import "index";
+@import "index";
 </style>
 
 

@@ -3,8 +3,8 @@
     <div class="site__head">
       <div class="site__head-content">
         <div class="site__head--center">
-         <div class="logo"><img src="@src/common/images/logo.png"></div>
-          <div class="name"><h2>组织机构人员管控平台</h2></div>
+         <div class="logo"><img :src="app.option.options.systemLogo"></div>
+          <div class="name"><h2>{{app.option.options.systemName}}</h2></div>
         </div>
         <div class="site__head--right">
           <i class="ico fa fa-file-text-o"></i>
@@ -26,11 +26,8 @@
 import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
 export default {
-  components: {},
-  computed: {
-    ...mapState(['app'])
-  },
   name: 'Head',
+  components: {},
   props: {
     breadcrumb: {
       type: Array,
@@ -50,8 +47,18 @@ export default {
       logoutUrl: ''
     }
   },
+  computed: {
+    ...mapState(['app'])
+    // systemName () {
+    //   // return this.app.option.options.systemName
+    //   return this.$store.state.app.option.options.systemName
+    // }
+  },
   created () {
     this.getLoginOutUrl()
+    // console.log('----------', this.$store)
+    // console.log('this.$store.state.app.option.options', this.$store.state.app.option.options)
+    // console.log('>>>> systemName', this.systemName)
   },
   methods: {
     ...mapMutations(['GET_OPTION']),
