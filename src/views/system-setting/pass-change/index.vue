@@ -125,12 +125,10 @@ import { api, urlNames } from '@src/api'
 import { mapState } from 'vuex'
 import personManage from '../../organization/components/PersonManage'
 import SelectMembers from '@src/components/SelectMembers/index'
-import CandidateDialog from '@src/components/CandidateDialog/index'
 export default {
   components: {
     personManage,
-    SelectMembers,
-    CandidateDialog
+    SelectMembers
   },
   data () {
     var validateOldPass = (rule, value, callback) => {

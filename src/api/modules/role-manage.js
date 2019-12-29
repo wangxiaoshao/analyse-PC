@@ -59,5 +59,15 @@ export default {
     headers: {
       'Content-Type': 'application/json'
     }
+  },
+  [urlNames.insertAuthorizedEntity]: {
+    type: 'post',
+    url: '/api/jg_manage/authorizedEntity/insertAuthorizedEntity ',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    serve: 'organizationManagePC',
+    showLoading: true,
+    headers: {
+      'Content-Type': 'application/json'
+    }
   }
 }

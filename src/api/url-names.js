@@ -179,5 +179,6 @@ export default {
   deleteViewAdmin: 'deleteViewAdmin', // 删除视图管理员
   deleteUserLabelOrDeptLabelOrOrgLabel: 'deleteUserLabelOrDeptLabelOrOrgLabel', // 删除单位/人员/部门绑定标签
   searchMember: 'searchMember', // 选人组件搜索人员
-  deleteAppBindAccount: 'deleteAppBindAccount'
+  deleteAppBindAccount: 'deleteAppBindAccount',
+  insertAuthorizedEntity: 'insertAuthorizedEntity' // 添加区域管理员
 }

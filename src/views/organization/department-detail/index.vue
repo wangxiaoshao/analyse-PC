@@ -208,7 +208,7 @@ export default {
       ]
     }
   },
-  comments: {
+  computed: {
     ...mapState(['app'])
   },
   mounted () {

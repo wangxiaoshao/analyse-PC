@@ -8,7 +8,6 @@ function resolve (dir) {
 
 // 正是环境地址前缀，最好是绝对地址
 const publicPath= '';
-
 module.exports = function (options) {
   options = options || {}
   return {
@@ -19,19 +18,19 @@ module.exports = function (options) {
       config.resolve.alias
         .set('@src', resolve('src'))
     },
-
+    productionSourceMap: true,
     // 开启gzip压缩，需要服务端也开启gzip压缩，目前服务端未开启
-    configureWebpack: config => {
-      if (process.env.NODE_ENV === 'production') {
-        return {
-          plugins: [new CompressionPlugin({
-            test: /\.js$|\.html$|\.css/, //匹配文件名
-            threshold: 10240, //对超过10k的数据进行压缩
-            deleteOriginalAssets: false //是否删除原文件
-          })]
-        }
-      }
-    },
+    // configureWebpack: config => {
+    //   if (process.env.NODE_ENV === 'production') {
+    //     return {
+    //       plugins: [new CompressionPlugin({
+    //         test: /\.js$|\.html$|\.css/, //匹配文件名
+    //         threshold: 10240, //对超过10k的数据进行压缩
+    //         deleteOriginalAssets: false //是否删除原文件
+    //       })]
+    //     }
+    //   }
+    // },
     // development 环境默认走前端mock数据，test连接测试环境
     devServer: {
       //publicPath: publicPath,

@@ -13,7 +13,7 @@
 <!--          <a href="">联系我们</a>-->
           <span style="margin-right: 4px;">欢迎您!</span>
           <span>{{app.option.user.name}}</span>
-          <a href="http://cas.gz.cegn.cn/cas/logout" class="ico fa fa-sign-in"></a>
+          <a href="/api/gate/logout" class="ico fa fa-sign-in"></a>
         </div>
       </div>
     </div>

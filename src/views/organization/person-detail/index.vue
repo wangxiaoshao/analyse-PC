@@ -113,7 +113,7 @@ export default {
   created () {
     this.init()
   },
-  comments: {
+  computed: {
     ...mapState(['app'])
   },
   methods: {

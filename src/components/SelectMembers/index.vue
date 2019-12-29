@@ -405,7 +405,7 @@ export default {
     toggleOrg (orgs) {
       this.selectedOrgs = orgs.map((org) => {
         const label = JSON.parse(org)
-        this.addToSelectedModel(org)
+        this.addToSelectedOrgModel(org)
         return label
       })
     },
