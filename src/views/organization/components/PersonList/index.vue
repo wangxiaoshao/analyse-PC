@@ -183,9 +183,6 @@ export default {
         reason: ''
       },
       rulesCallou: {
-        /* reason: [
-          { required: true, message: '请填写申请原因', trigger: 'blur' }
-        ], */
         orgId: [{ required: true, message: '请选择调出单位', trigger: 'blur' }]
       },
       rules: {
@@ -214,7 +211,6 @@ export default {
     exportPerson () {
       this.$emit('goExportPerson', false)
     },
-
     /*
     fileHandleChange() {
       this.loading = true;
@@ -390,7 +386,7 @@ export default {
               this.formCallout.deptId = this.formCallout.orgId = ''
               this.orgName = this.depName = ''
             },
-            error => {}
+            () => {}
           )
         }
       })
@@ -406,7 +402,7 @@ export default {
               this.fromInit()
               this.getGrid()
             },
-            error => {}
+            () => {}
           )
         }
       })
@@ -427,7 +423,7 @@ export default {
             this.orgName = res.data.orgName
             this.depName = res.data.name
           },
-          error => {}
+          () => {}
         )
       }
       // this.orgName = res.data.orgName
@@ -442,7 +438,7 @@ export default {
       this.selectDialog.selectMenmberFlag = true
       this.selectDialog.isSingleSelect = false
       this.selectDialog.notOnlyPerson = false
-      this.selectDialog.isSingleOrgSelect = true
+      this.selectDialog.isSingleOrgSelect = false
       this.selectDialog.isOnlyOrg = true
       this.selectDialog.isAllData = true
     },

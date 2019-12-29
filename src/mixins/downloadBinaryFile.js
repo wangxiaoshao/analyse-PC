@@ -16,9 +16,7 @@ export default {
       console.log(type)
       if (type === 2) {
         openUrl = url + 'api/jg_manage/user/exportUser' + '?_=' + timestamp + '&orgId=' + param + '&sign=' + this.getSign({ orgId: param }, timestamp)
-      }else if( type === 3){
-        openUrl = url + 'api/jg_manage/user/exportUser' + '?_=' + timestamp + '&sign=' + this.getSign('', timestamp)
-      }else{
+      } else {
         openUrl = url + 'api/jg_manage/user/exportUser' + '?_=' + timestamp + '&deptId=' + param + '&sign=' + this.getSign({ deptId: param }, timestamp)
       }
       window.open(openUrl)

@@ -243,11 +243,70 @@
         </el-form-item>
       </el-form>
     </div>
+    <div class="parameter-item">
+      <div class="header">申请系统配置</div>
+        <el-form label-width="auto" :model="systemNameLogoIcon">
+          <el-row :gutter="8">
+            <el-col>
+              <el-form-item label="系统名称">
+                <el-col :span="5">
+                  <el-input placeholder="系统名称" v-model="systemNameLogoIcon.systemName">
+                </el-input>
+                </el-col>
+                <el-col :span="2"><el-button type="primary"  size="small" @click="updateSystemName">提交</el-button></el-col>
+              </el-form-item>
+               <el-form-item label="系统图标">
+                 <el-upload
+                    class="avatar-uploader"
+                    :show-file-list="false"
+                    name="systemLogo"
+                    action=""
+                    :on-success="handleSystemLogo"
+                    :before-upload="beforeUpload"
+                    :on-change='systemLogoFileChange'
+                    :auto-upload="false"
+                    list-type="picture"
+                  >
+                <img v-if="systemNameLogoIcon.systemLogo" :src="systemNameLogoIcon.systemLogo" class="avatar" />
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                 <div slot="tip" style="font-size: 10px;color: #606266">
+                  <span style="color: #FC7049">*</span>只支持jpg格式，100*100像素的图片
+                  <el-button type="primary" size="small" @click="updateSystemLogo">提交</el-button>
+                  </div>
+              </el-upload>
+              </el-form-item>
+               <el-form-item label="favicon图标">
+                <el-upload
+                    class="avatar-uploader"
+                    action=""
+                    :show-file-list="false"
+                    name="favicon"
+                    :on-change='systemFaviconFileChange'
+                    :auto-upload="false"
+                    :before-upload="beforeUpload"
+                    :on-success="handleSystemFavicon"
+                    list-type="picture"
+                  >
+                <img v-if="systemNameLogoIcon.favicon" :src="systemNameLogoIcon.favicon" class="avatar" />
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                <div slot="tip" style="font-size: 10px;color: #606266">
+                    <span style="color: #FC7049">*</span>只支持jpg格式，100*100像素的图片
+                    <el-button type="primary" size="small" @click="updateSystemFavicon">提交</el-button>
+                  </div>
+              </el-upload>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-form>
+
+    </div>
   </div>
 </template>
 <script>
 import { api, urlNames } from '@src/api'
-import { mapState, mapMutations } from 'vuex'
+import { mapState } from 'vuex'
+import uploadFile from '@src/mixins/uploadFile.js'
+
 const nodeAuditList = [{ name: 'name', checkname: '节点名称' }]
 const orgAuditList = [{ name: 'name', checkname: '单位全称' }, { name: 'shortName', checkname: '单位简称' }, {
   name: 'address',
@@ -256,7 +315,7 @@ const orgAuditList = [{ name: 'name', checkname: '单位全称' }, { name: 'shor
   name: 'type',
   checkname: '所属类型'
 }, { name: 'removed', checkname: '启用禁用' }]
-const depAuditList = [{ name: 'name', checkname: '内设机构名称' },{
+const depAuditList = [{ name: 'name', checkname: '内设机构名称' }, {
   name: 'phone',
   checkname: '电话'
 }, { name: 'duty', checkname: '内设机构职责' }, { name: 'removed', checkname: '启用禁用' }]
@@ -266,6 +325,7 @@ const userAuditList = [{ name: 'name', checkname: '用户姓名' }, { name: 'mob
 }, { name: 'type', checkname: '身份类型' }]
 export default {
   name: 'parmaeterFrom',
+  mixins: [uploadFile],
   data () {
     return {
       systemUserSecuritySettings: {// 用户安全
@@ -285,7 +345,13 @@ export default {
         userDetail: 0,
         depPhone: 0
       },
-      systemMessageRemind: [], // 消息提醒
+      systemNameLogoIcon: {
+        systemName: '',
+        systemLogo: '',
+        favicon: ''
+      },
+      uploadHost: window.location.host,
+      systemMessageRemind: {}, // 消息提醒
       modeAuditList: [],
       orgAuditList: orgAuditList, // 单位审核字段数据
       nodeAuditList: nodeAuditList,
@@ -317,10 +383,13 @@ export default {
     }
   },
   created () {
+    this.getSystemNameLogoIon()
     this.getSystemParameterlevel(1)
   },
+  computed: {
+    ...mapState(['app'])
+  },
   methods: {
-    ...mapMutations(['GET_OPTION']),
     getSystemParameterlevel (level) {
       api[urlNames['getSystemParameterlevel']]({
         level: level
@@ -347,6 +416,64 @@ export default {
           // checkedNodeAuditList: [], // 节点选中数据
         })
       })
+    },
+    handleSystemLogo (res, file) {
+      this.systemNameLogoIcon.systemLogo = URL.createObjectURL(file.raw)
+    },
+    handleSystemFavicon (res, file) {
+      console.log(res)
+      this.systemNameLogoIcon.favicon = URL.createObjectURL(file.raw)
+    },
+    beforeUpload (file) {
+      const isJPG = file.type === 'image/jpeg'
+      const isLt2M = file.size / 1024 / 1024 < 2
+
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!')
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!')
+      }
+      return isJPG && isLt2M
+    },
+    // 获取系统名称，系统图标
+    getSystemNameLogoIon () {
+      this.systemNameLogoIcon.systemName = this.app.option.options.systemName
+      this.systemNameLogoIcon.systemLogo = this.app.option.options.systemLogo
+      this.systemNameLogoIcon.favicon = this.app.option.options.favicon
+    },
+    systemLogoFileChange (file, fileList) {
+      this.systemNameLogoIcon.systemLogo = file.url
+    },
+    systemFaviconFileChange (file, fileList) {
+      this.systemNameLogoIcon.favicon = file.url
+    },
+    // 更新系统名称
+    updateSystemName () {
+      let list = {
+        level: 1,
+        name: 'systemName',
+        value: this.systemNameLogoIcon.systemName
+      }
+      this.setClientOptions(list)
+    },
+    // 更新系统图标
+    updateSystemLogo () {
+      let list = {
+        level: 1,
+        name: 'systemLogo',
+        value: this.systemNameLogoIcon.systemLogo
+      }
+      this.setClientOptions(list)
+    },
+    // 更新favicon图标
+    updateSystemFavicon () {
+      let list = {
+        level: 1,
+        name: 'favicon',
+        value: this.systemNameLogoIcon.favicon
+      }
+      this.setClientOptions(list)
     },
     getSystemParameter () {
       // getSystemParameter

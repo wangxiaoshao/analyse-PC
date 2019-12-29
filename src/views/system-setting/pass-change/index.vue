@@ -245,7 +245,6 @@ export default {
     }
   },
   created () {
-    // console.log()
     this.getUserDetail(this.app.option.user.uid)
     this.getIdentity(this.app.option.user.identityId)
     api[urlNames['findUserAccountByUid']]().then(
@@ -260,6 +259,10 @@ export default {
         this.accountInfoList = []
       }
     )
+  },
+  mounted () {
+    this.getUserDetail(this.app.option.user.uid)
+    this.getIdentity(this.app.option.user.identityId)
   },
   computed: {
     ...mapState(['app'])
@@ -283,7 +286,7 @@ export default {
             this.orgName = res.data.orgName
             this.depName = res.data.name
           },
-          error => {}
+          () => {}
         )
       }
     },
@@ -311,7 +314,7 @@ export default {
         type: type
       }).then((res) => {
         this.fromLabelList = res.data
-      }, (error) => {
+      }, () => {
       })
     },
     getIdentity (id) {
@@ -327,7 +330,7 @@ export default {
         this.formCallout.identityId = res.data.id
         this.formCallout.orgId = res.data.orgId
         this.orgName = res.data.organizationName
-      }, (error) => {
+      }, () => {
         /* this.$message.error(`没有内容`) */
       })
     },
@@ -360,7 +363,7 @@ export default {
           this.formCallout.uid = res.data.uid
           this.findLabel(res.data.uid, 3)
         },
-        error => {
+        () => {
           this.$message.error(`保存失败，请重试`)
         }
       )
@@ -372,7 +375,7 @@ export default {
       // this.userInfo.userId=val.uid;
       api[urlNames['createUser']](this.userInfo).then((res) => {
         this.$message.success(`保存成功`)
-      }, (error) => {
+      }, () => {
         this.$message.error(`保存失败，请重试`)
       })
     },
@@ -438,7 +441,7 @@ export default {
               this.formCallout.deptId = this.formCallout.orgId = ''
               this.orgName = this.depName = ''
             },
-            error => {}
+            () => {}
           )
         }
       })
