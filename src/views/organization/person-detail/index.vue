@@ -1,3 +1,4 @@
+/* eslint-disable handle-callback-err */
 <template>
   <div class="person-detail-content" v-loading="loading">
     <!--步骤条-->
@@ -112,7 +113,7 @@ export default {
   created () {
     this.init()
   },
-  comments: {
+  computed: {
     ...mapState(['app'])
   },
   methods: {
@@ -131,6 +132,7 @@ export default {
               id: res.data.bindId
             }).then((res) => {
               this.userInfo.identity.orgId = res.data.id
+            // eslint-disable-next-line handle-callback-err
             }, (error) => {
               this.$message.error(`没有内容`)
             })
@@ -141,10 +143,12 @@ export default {
             }).then((res) => {
               this.userInfo.identity.departmentId = res.data.id
               this.userInfo.identity.orgId = res.data.orgId
+            // eslint-disable-next-line handle-callback-err
             }, (error) => {
               this.$message.error(`没有内容`)
             })
           }
+        // eslint-disable-next-line handle-callback-err
         }, (error) => {
           this.$message.error(`没有内容`)
         })
@@ -158,44 +162,35 @@ export default {
       api[urlNames['findUserById']]({
         id: id
       }).then((res) => {
-        if(res.data.sex){
-            res.data.sex=parseInt(res.data.sex);
+        if (res.data.sex) {
+          res.data.sex = parseInt(res.data.sex)
         }
-        if(res.data.positionClass){
-            res.data.positionClass=parseInt(res.data.positionClass);
+        if (res.data.positionClass) {
+          res.data.positionClass = parseInt(res.data.positionClass)
         }
-        if(res.data.nation){
-            res.data.nation=parseInt(res.data.nation);
+        if (res.data.nation) {
+          res.data.nation = parseInt(res.data.nation)
         }
-        if(res.data.qualification){
-            res.data.qualification=parseInt(res.data.qualification);
+        if (res.data.qualification) {
+          res.data.qualification = parseInt(res.data.qualification)
         }
-        if(res.data.politicalParty){
-            res.data.politicalParty=parseInt(res.data.politicalParty);
+        if (res.data.politicalParty) {
+          res.data.politicalParty = parseInt(res.data.politicalParty)
         }
-       let doUserDetail= Object.assign(this.userInfo.user, res.data);
+        let doUserDetail = Object.assign(this.userInfo.user, res.data)
 
-       this.userInfo.user=doUserDetail;
-       
+        this.userInfo.user = doUserDetail
         if (this.$route.name === 'PersonEdit') {
-          this.oldUserInfo = JSON.parse(JSON.stringify(this.userInfo))
           this.userInfo.userId = res.data.uid
+          this.oldUserInfo = JSON.parse(JSON.stringify(this.userInfo))
         }
         this.getUserAccount(res.data.uid)
         this.findLabel(res.data.uid, 3)
         this.loading = false
+      // eslint-disable-next-line handle-callback-err
       }, (error) => {
         this.$message.error(`保存失败，请重试`)
       })
-    },
-    filterUserDetail(data){
-      // console.log(data)
-      let detailData=Object.keys(this.userInfo.user);
-      // detailData.forEach((val,index)=>{
-        // if(!data.hasOwnPr){
-      //    this.userInfo.user.val=null
-      //  }
-      // })
     },
     getUserAccount (userId) {
       api[urlNames['findUserAccountByUid']]({
@@ -203,6 +198,7 @@ export default {
       }).then((res) => {
         this.userInfo.userAccount = res.data
         this.accountList = res.data
+      // eslint-disable-next-line handle-callback-err
       }, (error) => {
       })
     },
@@ -215,8 +211,8 @@ export default {
         this.userInfo.identity.orgId = res.data.orgId
         this.userInfo.identity.postName = res.data.postName
         this.userInfo.identity.type = parseInt(res.data.type)
-
         this.userInfo.identity.dutyName = res.data.dutyName
+      // eslint-disable-next-line handle-callback-err
       }, (error) => {
         /* this.$message.error(`没有内容`) */
       })
@@ -227,6 +223,7 @@ export default {
         type: type
       }).then((res) => {
         this.fromLabelList = res.data
+      // eslint-disable-next-line handle-callback-err
       }, (error) => {
       })
     },
@@ -244,6 +241,7 @@ export default {
     },
     // 获取账号
     getAccount (val) {
+      console.log(val)
       // this.userInfo.userAccount = val
       // console.log(JSON.parse(JSON.stringify(val)), '11111111----111157955-----11111')
       this.userInfo.userAccount = val
@@ -265,6 +263,7 @@ export default {
         this.$message.success(`保存成功`)
         this.goBack()
         console.log(res)
+      // eslint-disable-next-line handle-callback-err
       }, (error) => {
         this.$message.error(`保存失败，请重试`)
       })
@@ -325,5 +324,7 @@ export default {
 </script>
 
 <style lang="less">
+
   @import "index";
+
 </style>

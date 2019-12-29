@@ -284,7 +284,7 @@ export default {
         userDetail: false,
         depPhone: false
       },
-      orgMessageRemind: [], // 消息提醒
+      orgMessageRemind: {}, // 消息提醒
       modeAuditList: [],
       orgAuditList: orgAuditList, // 单位审核字段数据
       nodeAuditList: nodeAuditList,

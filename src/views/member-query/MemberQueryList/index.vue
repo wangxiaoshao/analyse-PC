@@ -13,7 +13,7 @@
 <!--            </el-input>-->
 <!--          </el-col>-->
           <el-col :span="7">
-            <el-input placeholder="登陆账号" v-model="searchQuery.account"  @clear="clearSearch()" clearable>
+            <el-input placeholder="登录账号" v-model="searchQuery.account"  @clear="clearSearch()" clearable>
             </el-input>
           </el-col>
           <el-col :span="7" class="text-right">

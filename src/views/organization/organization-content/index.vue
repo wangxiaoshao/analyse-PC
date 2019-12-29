@@ -95,15 +95,15 @@
               :exportData="content[0]"
               @cancel="getSortAction"
               @goExportPerson="goExportPerson"
-            > 
+            >
               <template slot="AddBtn">
                 <el-button class="add-btn" @click="openAddPerson" >添加人员</el-button>
               </template>
             </person-list>
              <transition name="fade-transform" mode="out-in">
-                 <import-person 
+                 <import-person
                   v-if="showExportPage"
-                  @cancel="goExportPerson" 
+                  @cancel="goExportPerson"
                   :id="content[0].bindId"
                   :organizationName='content[0].name'
                   :type="content[0].nodeType"></import-person>
@@ -113,6 +113,7 @@
             <leader-list
               v-if="activeName === '单位主要领导'"
               :content-id="content[0].bindId"
+              :nodeType = '1'
               @getPage="getPage"
               :nodeInfo="nodeInfo"
               :nodeData="nodeData"
@@ -123,6 +124,7 @@
               v-if="activeName === '内设机构主要领导'"
               :content-id="content[0].bindId"
               @getPage="getPage"
+              :nodeType = '2'
               :nodeInfo="nodeInfo"
               :nodeData="nodeData"
             ></leader-list>
@@ -204,7 +206,7 @@ export default {
   methods: {
     ...mapMutations(['SET_ORGANIZATION_PAGE', 'SET_ORGANIZATION_BACK_INFO']),
 
-    goExportPerson() {
+    goExportPerson () {
       this.showExportPage = !this.showExportPage
     },
     init (type) {
@@ -311,7 +313,7 @@ export default {
           this.showAddDepartmentFlag = true
           this.showAddUnitFlag = true
         }
-      }, (error) => {
+      }, () => {
         this.$message.error(`没有内容`)
       })
     },
@@ -322,13 +324,19 @@ export default {
       }).then((res) => {
         this.labelList = res.data
         console.log(res.data)
-      }, (error) => {
+      }, () => {
       })
     },
     // 跳转日志
     toLogData () {
+      let path = ''
+      if (this.nodeData.nodeType === 1) {
+        path = `/organization/operate-log/${this.nodeData.id}`
+      } else {
+        path = `/organization/operate-log/${this.nodeData.bindId}`
+      }
       this.$router.push({
-        path: `/organization/operate-log/${this.$route.params.nodeId}`,
+        path: path,
         query: { type: this.nodeInfo.nodeType, title: `${this.content[0].name}` }
       })
     }

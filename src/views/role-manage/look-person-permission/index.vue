@@ -45,8 +45,9 @@
             <span class="text-red" v-show="scope.row.enable === 0">停用</span>
           </template>
         </el-table-column>-->
-        <el-table-column label="操作" width="80" align="center">
+        <el-table-column label="操作" width="160" align="center">
           <template slot-scope="scope">
+            <el-button size="mini" type="text" @click="toAuthorization(scope.row.uid)">授权范围</el-button>
             <el-button size="mini" type="text" @click="getDelete(scope.row)">删除</el-button>
           </template>
         </el-table-column>
@@ -65,13 +66,13 @@
 </template>
 
 <script>
-import CandidateDialog from '@src/components/CandidateDialog/index'
 import handleTable from '@src/mixins/handle-table'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
 import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
 import SelectMembers from '@src/components/SelectMembers/index'
 export default {
+  name: 'LookPersonPermission',
   mixins: [handleTable, handleBreadcrumb],
   components: { SelectMembers },
   data () {
@@ -125,6 +126,9 @@ export default {
   },
   methods: {
     ...mapMutations(['PERSON_PAGE', 'ROLE_ID']),
+    toAuthorization (id) {
+      this.$router.push({ path: `/role-manage/scope-authorization/${id}` })
+    },
     getGrid () {
       let data = {
         page: this.page.current,

@@ -114,7 +114,6 @@ export default {
           this.accountSend.push(item)
         }
       })
-      console.log(val)
     },
     fromSublime () {
       let accountObj = {

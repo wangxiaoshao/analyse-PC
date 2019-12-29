@@ -3,6 +3,7 @@
     <search-lable
       :openSearchFlag="openSearchFlag"
       :addInfo="addInfo"
+      :delSelectLabelId="delSelectLabelId"
       :default-list="defaultList"
       @close="getClose"
       @getTag="getTag"
@@ -280,6 +281,8 @@ export default {
       areaOption: [],
       allAreaList: [],
       defaultList: [],
+      delSelectLabelId: null, // 添加后未提交到后台移除的标签
+      tempLabelId: [],
       ruleForm: {
         reason: '',
         nodeId: '', // 节点id
@@ -306,7 +309,7 @@ export default {
       }
     }
   },
-  comments: {
+  computed: {
     ...mapState(['app'])
   },
   mounted () {
@@ -402,37 +405,48 @@ export default {
         type: type
       }).then((res) => {
         this.defaultList = res.data
-        // console.log(JSON.parse(JSON.stringify(this.defaultList)),'--------------147')
         res.data.forEach((item) => {
           this.tagsName.push(item.name)
           this.ruleForm.labelId.push(item.id)
         })
+        this.tempLabelId = JSON.parse(JSON.stringify(this.ruleForm.labelId))
       }, (error) => {
       })
     },
     removeTag (tag, index) {
-      this.$confirm('此操作将永久删除该标签, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        api[urlNames['deleteUserLabelOrDeptLabelOrOrgLabel']]({
-          id: this.ruleForm.organization.id,
-          type: this.ruleForm.organization.type,
-          labelId: this.ruleForm.labelId[index]
-        }).then((res) => {
-          if (res.status === 0) {
-            this.$message.success('删除成功')
-            this.tagsName.splice(index, 1)
-            this.ruleForm.labelId.splice(index, 1)
-          }
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        })
+      let that = this
+      let lIds = []
+      lIds = that.tempLabelId.filter(function (item) {
+        return item === that.ruleForm.labelId[index]
       })
+      if (lIds.length !== 0) {
+        that.$confirm('此操作将永久删除该标签, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          api[urlNames['deleteUserLabelOrDeptLabelOrOrgLabel']]({
+            id: that.ruleForm.organization.id,
+            type: that.ruleForm.organization.type,
+            labelId: that.ruleForm.labelId[index]
+          }).then((res) => {
+            if (res.status === 0) {
+              that.$message.success('删除成功')
+              that.tagsName.splice(index, 1)
+              that.ruleForm.labelId.splice(index, 1)
+            }
+          })
+        }).catch(() => {
+          that.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+      } else {
+        that.delSelectLabelId = that.ruleForm.labelId[index] + '|' + that.tagsName[index]
+        that.ruleForm.labelId.splice(index, 1)
+        that.tagsName.splice(index, 1)
+      }
     },
     deleteUserLabelOrDeptLabelOrOrgLabel (id, type, labelId) {
       api[urlNames['deleteUserLabelOrDeptLabelOrOrgLabel']]({
@@ -447,7 +461,6 @@ export default {
     },
     // 获取区域
     getArea (orgId) {
-      console.log(orgId)
       api[urlNames['findOrgAreaList']]({
         orgId: orgId
       }).then((res) => {
@@ -465,18 +478,18 @@ export default {
     },
     // 获取选中的标签
     getTag (val) {
-      console.log('标签', val)
       const res = new Map()
       let tag = []
       val.forEach((item) => {
         this.tagsName.push(item.split('|')[1])
         tag.push(item.split('|')[0])
-        console.log(item.split('|')[0])
       })
       this.tagsName = this.tagsName.filter(a => !res.has(a) && res.set(a, 1))
       let tagIdList = []
       tagIdList = tag.filter(a => !res.has(a) && res.set(a, 1))
-      this.ruleForm.labelId = tagIdList
+      tagIdList.forEach(item => {
+        this.ruleForm.labelId.push(parseInt(item))
+      })
     },
     setBreadcrumbTitle () { // 设置面包屑title
       if (this.$route.name === 'UnitEdit' || this.$route.name === 'UnitAdd') {

@@ -19,7 +19,7 @@
           <el-col :span="5">
             <el-autocomplete
               v-model="searchQuery.labelName"
-              :trigger-on-focus=triggerOnFocus
+              :trigger-on-focus="triggerOnFocus"
               :fetch-suggestions="querySearchAsync"
               placeholder="标签"
               @input="inputClear"

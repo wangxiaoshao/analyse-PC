@@ -43,7 +43,7 @@ export default {
   getStatistiscManageDto: 'getStatistiscManageDto',
   getParameter: 'getParameter',
   getDataLogList: 'getDataLogList',
-  // 获取视图--机构树
+  getViewTree: 'getViewTree', // 获取视图--机构树
   getTree: 'getTree',
   // 搜索视图
   searchViewNode: 'searchViewNode',
