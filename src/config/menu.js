@@ -159,6 +159,12 @@ export default {
     },
     {
       'menuId': '54',
+      'name': '权限配置',
+      'path': '/authority-setting',
+      'type': 1
+    },
+    {
+      'menuId': '55',
       'name': '偏好设置',
       'path': '/parameter-setting',
       'type': 1

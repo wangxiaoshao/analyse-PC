@@ -9,12 +9,20 @@ const SystemSetting = () => import('@src/views/system-setting/index.vue')
 // 参数配置
 const ParameterSetting = () => import('@src/views/system-setting/parameter-setting/index.vue')
 const PassChange = () => import('@src/views/system-setting/pass-change/index.vue')
+// 菜单权限配置
+const AuthoritySetting = () => import('@src/views/system-setting/authority-setting/index.vue')
 export default [
   // 权限管理
   {
     path: '/parameter-setting',
     name: 'ParameterSettings',
     component: ParameterSetting
+  },
+  // 权限配置
+  {
+    path: '/authority-setting',
+    name: 'AuthoritySetting',
+    component: AuthoritySetting
   },
   // 角色管理
   {

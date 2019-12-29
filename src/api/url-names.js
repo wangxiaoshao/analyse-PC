@@ -179,5 +179,18 @@ export default {
   deleteViewAdmin: 'deleteViewAdmin', // 删除视图管理员
   deleteUserLabelOrDeptLabelOrOrgLabel: 'deleteUserLabelOrDeptLabelOrOrgLabel', // 删除单位/人员/部门绑定标签
   searchMember: 'searchMember', // 选人组件搜索人员
-  deleteAppBindAccount: 'deleteAppBindAccount'
+  deleteAppBindAccount: 'deleteAppBindAccount',
+  /**
+   * 权限配置相关
+   */
+  // 获取所有菜单
+  getModuleList: 'getModuleList',
+  // 获取所有操作
+  getAuthorityList: 'getAuthorityList',
+  // 根据菜单获取所属操作
+  getAuthorityByModuleId: 'indAuthorityByModuleId',
+  // 给菜单添加操作
+  addAuthorityToModule: 'addAuthorityToModule',
+  // 给角色菜单增删操作
+  editAuthorityManage: 'editAuthorityManage'
 }

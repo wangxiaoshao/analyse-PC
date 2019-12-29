@@ -13,6 +13,7 @@ import shared from './modules/shared-management'
 import addressBook from './modules/address-book'
 import addressList from './modules/address-list'
 import roleManage from './modules/role-manage'
+import authoritySetting from './modules/authority-setting'
 
 export default {
   [urlNames.getUserInfo]: {
@@ -181,5 +182,6 @@ export default {
   ...system, // 系统管理
   ...addressBook, // 通讯录
   ...addressList, // 通讯录(后)
-  ...roleManage // 角色管理
+  ...roleManage, // 角色管理
+  ...authoritySetting, // 权限配置
 }
