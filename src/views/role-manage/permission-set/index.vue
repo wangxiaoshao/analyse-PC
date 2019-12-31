@@ -1,186 +1,166 @@
 <template>
-  <div class="permission-setting">
-      <el-tree
-        :data="ManageList"
-        node-key="id"
-        show-checkbox
-        :expand-on-click-node="false"
-        @check-change="handleCheckChange"
-        :check-strictly="true"
-        :props="defaultProps"
-        v-model="chexk"
-        :default-checked-keys="isAuthorityCheck">
-<!--                <span class="custom-tree-node" slot-scope="{ node, data }">-->
-<!--                  <span class="tree-check">-->
-<!--                     <el-checkbox v-model="data.isAuthority"></el-checkbox>-->
-<!--                  </span>-->
-<!--                    <span>{{node.label}}</span>-->
-<!--                </span>-->
-
-      </el-tree>
-      <el-footer class="permission-setting-footer">
-        <el-button type="primary" @click="saveAuthorityManage">保存</el-button>
-        <el-button @click="goBack">取消</el-button>
-      </el-footer>
-  </div>
+  <el-container class="authority-role-setting">
+    <el-row class="authority-row">
+      <el-col :span="6" style="height: 100%">
+        <h2 style="margin-bottom: 20px">菜单列表:</h2>
+        <el-tree
+          ref="moduleTree"
+          :data="moduleList"
+          node-key="id"
+          :props="{label: 'title'}"
+          :default-checked-keys="[1]"
+          @node-click="selectTreeNode"
+        >
+        </el-tree>
+      </el-col>
+      <el-col :span="18" class="authority-content" >
+        <el-table
+          ref="authorityTable"
+          border
+          stripe
+          :data="authorityList"
+          size="medium"
+          @selection-change="handleSelectionChange"
+          style="width: 100%">
+          <el-table-column
+            type="selection"
+            width="55">
+          </el-table-column>
+          <el-table-column
+            type="index"
+            label="序号"
+            width="50">
+          </el-table-column>
+          <el-table-column
+            property="name"
+            label="操作标识"
+            align="center">
+          </el-table-column>
+          <el-table-column
+            property="title"
+            label="操作名称"
+            align="center">
+          </el-table-column>
+        </el-table>
+      </el-col>
+    </el-row>
+    <el-footer class="authority-setting-footer">
+      <el-button type="primary" @click="saveAuthorityManage">保存</el-button>
+      <el-button @click="cancel">取消</el-button>
+    </el-footer>
+  </el-container>
 </template>
 
 <script>
-import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
-import { api, urlNames } from '@src/api'
-export default {
-  mixins: [handleBreadcrumb],
-  props: ['setFlag'],
-  data () {
-    return {
-      ManageList: [], // 权限列表
-      defaultProps: {
-        children: 'children',
-        label: 'title'
-      },
-      authorityManageList: [],
-      checked: true,
-      isAuthorityCheck: [],
-      list: {
-        authorityManageVos: [],
-        roleId: this.$route.params.id
-      },
-      chexk: []
-    }
-  },
-  created () {
-    this.init()
-  },
-  mounted () {
-    this.pushBreadcrumb({
-      name: '权限配置',
-      parent: {
-        name: 'lookPersonPermission',
-        query: {
-          type: 'back'
-        }
+  import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
+  import { api, urlNames } from '@src/api'
+  export default {
+    mixins: [handleBreadcrumb],
+    data () {
+      return {
+        selectTreeId: -1, // 默认选中id
+        moduleList: [], // 菜单列表
+        authorityList: [], // 操作列表
+        treeSelectData: {},
+        tableSelectData: [],
       }
-    })
-  },
-  methods: {
-    init () {
-      this.findAuthorityManageList(this.$route.params.id)
     },
-    closeDialog () {
-      this.$emit('getSetFlag', false)
+    created () {
+      this.getModuleList();
     },
-    findAuthorityManageList (roleId) {
-      api[urlNames['findAuthorityManageList']]({
-        roleId: roleId
-      }).then((res) => {
-        if (res.status === 0) {
-          res.data.forEach(item => {
-            if (item.isAuthority) {
-              this.isAuthorityCheck.push(item.id)
+    mounted () {
+      this.pushBreadcrumb({
+        name: '权限配置',
+        parent: {
+          name: 'lookPersonPermission',
+          query: {
+            type: 'back'
+          }
+        }
+      })
+    },
+    computed: {
+    },
+    methods: {
+      // 获取所有菜单
+      getModuleList () {
+        api[urlNames['getModuleList']]().then(res => {
+          this.moduleList = res.data;
+          if(this.moduleList.length > 0) {
+            this.selectTreeId = this.moduleList[0].id;
+            this.treeSelectData = this.moduleList[0];
+            this.getAuthorityList(this.selectTreeId);
+          }
+        })
+      },
+
+      // 获取所有权限
+      getAuthorityList(val) {
+        api[urlNames['getAuthorityList']]({
+          moduleId: val
+        }).then(res => {
+          // this.tableSelectData = [];
+          this.authorityList = res.data;
+          this.authorityList.forEach(item => {
+            if(item.isAuthority) {
+              this.tableSelectData.push(item);
             }
           })
-          this.ManageList = this.listToTree(res.data)
-        }
-      })
-    },
-    //  树结构转换
-    listToTree (list) {
-      let map = {}
-      let node
-      let roots = []
-      for (let i = 0; i < list.length; i++) {
-        map[list[i].id] = i // initialize the map
-        list[i].children = [] // initialize the children
-      }
-      for (let i = 0; i < list.length; i++) {
-        node = list[i]
-        if (node.parentId !== -1) {
-          // node.titleS = list[map[node.parentId]].title
-          list[map[node.parentId]].children.push(node)
-        } else {
-          roots.push(node)
-        }
-      }
-      return roots
-    },
-    // 复选框选中
-    handleCheckChange (data, checked, indeterminate) {
-      if (checked) {
-        let dataitem = {
-          id: data.id,
-          isAuthority: true
-        }
-        let item = this.isAuthorityCheck.filter(function (item) {
-          return item === data.id
+          // 更新DOM之后
+          this.$nextTick(function(){
+            this.initTableSelect(this.tableSelectData);
+          });
         })
-        if (item.length !== 0) {
-          return false
-        } else {
-          this.list.authorityManageVos.push(dataitem)
-        }
-      } else {
-        this.list.authorityManageVos.forEach((item, i) => {
-          if (item.id === data.id) {
-            this.list.authorityManageVos = this.list.authorityManageVos.splice(i - 1, 1)
-          } else {
-            let dataitem = {
-              id: data.id,
-              isAuthority: false
-            }
-            this.list.authorityManageVos.push(dataitem)
-          }
-        })
-        this.isAuthorityCheck.forEach(item => {
-          if (item === data.id) {
-            let dataitem = {
-              id: data.id,
-              isAuthority: false
-            }
-            this.list.authorityManageVos.push(dataitem)
-          }
-        })
-      }
-      console.log(JSON.parse(JSON.stringify(this.list.authorityManageVos)), '---------')
-    },
-    saveAuthorityManage () {
-      if (this.list.authorityManageVos.length === 0) {
-        this.$message.warning('您没有选择要修改的权限')
-        return false
-      }
-      api[urlNames['saveAuthorityManage']](this.list).then((res) => {
-        if (res.status === 0) {
-          this.$message.success(`配置成功`)
-        }
-      }, (error) => {
-        this.$message.error(`保存失败，请重试`)
-      })
-    },
-    goBack () {
-      this.$router.go(-1)
-    }
+      },
 
+      // 初始化默认选中权限
+      initTableSelect(data) {
+        data.forEach(item => {
+          this.$refs.authorityTable.toggleRowSelection(item,true);
+        })
+      },
+      // 切换tree节点
+      selectTreeNode(data) {
+        if(this.selectTreeId !== data.id) {
+          this.selectTreeId = data.id;
+          this.treeSelectData = data;
+          this.getAuthorityList(this.selectTreeId);
+        }
+      },
+
+      // 勾选数据
+      handleSelectionChange(data) {
+        this.tableSelectData = data
+      },
+
+      // 保存
+      saveAuthorityManage() {
+        console.log(this.tableSelectData)
+        if(this.tableSelectData.length<=0) {
+          this.$message.error(`至少勾选一个操作！`)
+        } else {
+          let selectData = this.tableSelectData.map(item => {
+            return {authorityId: item.id}
+          })
+          api[urlNames['addAuthorityToModule']]({
+            moduleId: this.selectTreeId,
+            moduleAuthorityEntityList: selectData
+          }).then(res => {
+            if(res.status === 0) {
+              this.$message.success(`保存成功`)
+            }
+          })
+        }
+      },
+
+      // 取消
+      cancel() {
+        this.getAuthorityList(this.selectTreeId)
+      }
+    }
   }
-}
 </script>
 
 <style lang="less">
-@import "index";
-.empty {
-  p {
-    margin: 0;
-    font-size: 0px;
-    text-align: center;
-    line-height: 16px!important;
-  }
-
-  span {
-    font-size: 12px;
-  }
-}
-
-.data-pic {
-  padding-top: 20px;
-  width: 60px;
-  height: auto;
-}
+  @import "index";
 </style>

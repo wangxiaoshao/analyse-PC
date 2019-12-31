@@ -2,41 +2,69 @@
   <el-container class="authority-setting">
     <el-row class="authority-row">
       <el-col :span="6" style="height: 100%">
+        <h2 style="margin-bottom: 20px">菜单列表:</h2>
         <el-tree
-          :data="ModuleList"
+          ref="moduleTree"
+          :data="moduleList"
           node-key="id"
           :props="{label: 'title'}"
-          :expand-on-click-node="false"
+          :default-checked-keys="[1]"
           @node-click="selectTreeNode"
         >
         </el-tree>
       </el-col>
       <el-col :span="18" class="authority-content" >
-        <authority-table :tableId="selectTreeId" :tableData="AuthorityList" @changeSelection="changeTableSelection()"></authority-table>
+        <el-table
+          ref="authorityTable"
+          border
+          stripe
+          :data="authorityList"
+          size="medium"
+          @selection-change="handleSelectionChange"
+          style="width: 100%">
+          <el-table-column
+            type="selection"
+            width="55">
+          </el-table-column>
+          <el-table-column
+            type="index"
+            label="序号"
+            width="50">
+          </el-table-column>
+          <el-table-column
+            property="name"
+            label="操作标识"
+            align="center">
+          </el-table-column>
+          <el-table-column
+            property="title"
+            label="操作名称"
+            align="center">
+          </el-table-column>
+        </el-table>
       </el-col>
     </el-row>
+    <el-footer class="authority-setting-footer">
+      <el-button type="primary" @click="saveAuthorityManage">保存</el-button>
+      <el-button @click="cancel">取消</el-button>
+    </el-footer>
   </el-container>
 </template>
 
 <script>
   import { api, urlNames } from '@src/api'
-  import authorityTable from './authority-table/index'
-  import { mapState, mapMutations } from 'vuex'
   export default {
-    components: {
-      authorityTable,
-    },
     data () {
       return {
         selectTreeId: -1, // 默认选中id
-        ModuleList: [], // 菜单列表
-        AuthorityList: [], // 操作列表
-        tableSelectionList: {}, // table中选中的项
+        moduleList: [], // 菜单列表
+        authorityList: [], // 操作列表
+        treeSelectData: {},
+        tableSelectData: [],
       }
     },
     created () {
       this.getModuleList();
-      this.getAuthorityList();
     },
     computed: {
     },
@@ -44,34 +72,77 @@
       // 获取所有菜单
       getModuleList () {
         api[urlNames['getModuleList']]().then(res => {
-          this.ModuleList = res.data;
-          if(this.ModuleList.length > 0) {
-            this.selectTreeId = this.ModuleList[0].id;
-            let tempId = this.selectTreeId;
-            this.tableSelectionList.tempId = [];
+          this.moduleList = res.data;
+          if(this.moduleList.length > 0) {
+            this.selectTreeId = this.moduleList[0].id;
+            this.treeSelectData = this.moduleList[0];
+            this.getAuthorityList(this.selectTreeId);
           }
         })
       },
 
       // 获取所有权限
-      getAuthorityList() {
-        api[urlNames['getAuthorityList']]().then(res => {
-          this.AuthorityList = res.data;
+      getAuthorityList(val) {
+        api[urlNames['getAuthorityList']]({
+          moduleId: val
+        }).then(res => {
+          // this.tableSelectData = [];
+          this.authorityList = res.data;
+          this.authorityList.forEach(item => {
+            if(item.isAuthority) {
+              this.tableSelectData.push(item);
+            }
+          })
+          // 更新DOM之后
+          this.$nextTick(function(){
+            this.initTableSelect(this.tableSelectData);
+          });
         })
       },
 
-      // 选中tree节点
+      // 初始化默认选中权限
+      initTableSelect(data) {
+        data.forEach(item => {
+          this.$refs.authorityTable.toggleRowSelection(item,true);
+        })
+      },
+      // 切换tree节点
       selectTreeNode(data) {
-        this.selectTreeId = data.id;
-        let tempId = this.selectTreeId;
-        if(!this.tableSelectionList.hasOwnProperty(this.selectTreeId)) {
-          this.tableSelectionList.tempId = [];
+        if(this.selectTreeId !== data.id) {
+          this.selectTreeId = data.id;
+          this.treeSelectData = data;
+          this.getAuthorityList(this.selectTreeId);
         }
       },
 
-      // 选中table行
-      changeTableSelection(data, id) {
-        this.tableSelectionList.id = data;
+      // 勾选数据
+      handleSelectionChange(data) {
+        this.tableSelectData = data
+      },
+
+      // 保存
+      saveAuthorityManage() {
+        console.log(this.tableSelectData)
+        if(this.tableSelectData.length<=0) {
+          this.$message.error(`至少勾选一个操作！`)
+        } else {
+          let selectData = this.tableSelectData.map(item => {
+            return {authorityId: item.id}
+          })
+          api[urlNames['addAuthorityToModule']]({
+            moduleId: this.selectTreeId,
+            moduleAuthorityEntityList: selectData
+          }).then(res => {
+            if(res.status === 0) {
+              this.$message.success(`保存成功`)
+            }
+          })
+        }
+      },
+
+      // 取消
+      cancel() {
+        this.getAuthorityList(this.selectTreeId)
       }
     }
   }
