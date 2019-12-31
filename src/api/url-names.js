@@ -194,6 +194,9 @@ export default {
   // 给菜单添加操作
   addAuthorityToModule: 'addAuthorityToModule',
   // 给角色菜单增删操作
-  editAuthorityManage: 'editAuthorityManage'
+  editAuthorityManage: 'editAuthorityManage',
+  // 授权区域
+  insertAuthorizedEntity: 'insertAuthorizedEntity',
+  findAuthorizedEntityByUid: 'findAuthorizedEntityByUid'
 
 }
