@@ -50,6 +50,8 @@ export default {
   getChildList: 'getChildList',
   getPersonList: 'getPersonList',
   // 共享视图
+  createShareFiled: 'createShareFiled', // 获取审核字段操作
+  findShareFiledByAppId: 'findShareFiledByAppId', // 修改审核字段
   getViewList: 'getViewList', // 视图列表
   createView: 'createView', // 创建视图
   deleteViewById: 'deleteViewById', // 删除视图
@@ -192,5 +194,9 @@ export default {
   // 给菜单添加操作
   addAuthorityToModule: 'addAuthorityToModule',
   // 给角色菜单增删操作
-  editAuthorityManage: 'editAuthorityManage'
+  editAuthorityManage: 'editAuthorityManage',
+  // 授权区域
+  insertAuthorizedEntity: 'insertAuthorizedEntity',
+  findAuthorizedEntityByUid: 'findAuthorizedEntityByUid'
+
 }

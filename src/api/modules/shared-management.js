@@ -141,6 +141,25 @@ export default {
     keepOriginResponse: false,
     mock: 'getAppDetail.json'
   },
+  // 修改字段分享
+  [urlNames.createShareFiled]: {
+    type: 'post',
+    url: '/api/jg_share/app/createShareFiled',
+    keepOriginResponse: true,
+    // showLoading: true,
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    serve: 'organizationManagePC'
+  },
+  // 字段分享
+  [urlNames.findShareFiledByAppId]: {
+    type: 'get',
+    url: '/api/jg_share/app/findShareFiledByAppId',
+    keepOriginResponse: true,
+    // showLoading: true,
+    serve: 'organizationManagePC'
+  },
   /**
    标签列表
    */

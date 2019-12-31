@@ -304,7 +304,7 @@
 </template>
 <script>
 import { api, urlNames } from '@src/api'
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import uploadFile from '@src/mixins/uploadFile.js'
 
 const nodeAuditList = [{ name: 'name', checkname: '节点名称' }]
@@ -320,9 +320,7 @@ const depAuditList = [{ name: 'name', checkname: '内设机构名称' }, {
   checkname: '电话'
 }, { name: 'duty', checkname: '内设机构职责' }, { name: 'removed', checkname: '启用禁用' }]
 const userAuditList = [{ name: 'name', checkname: '用户姓名' }, { name: 'mobile', checkname: '手机号' }, {
-  name: 'dutyName',
-  checkname: '职务'
-}, { name: 'type', checkname: '身份类型' }]
+  name: 'dutyName', checkname: '职务' }, { name: 'type', checkname: '身份类型' }]
 export default {
   name: 'parmaeterFrom',
   mixins: [uploadFile],
@@ -390,6 +388,7 @@ export default {
     ...mapState(['app'])
   },
   methods: {
+    ...mapMutations(['GET_OPTION']),
     getSystemParameterlevel (level) {
       api[urlNames['getSystemParameterlevel']]({
         level: level
@@ -413,7 +412,6 @@ export default {
           if (item.name === 'orgAuditFields') {
             this.systemAuditField.checkedOrgAuditList = item.value
           }
-          // checkedNodeAuditList: [], // 节点选中数据
         })
       })
     },

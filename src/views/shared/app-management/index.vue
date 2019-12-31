@@ -59,6 +59,7 @@
         <template slot-scope="scope">
           <el-button @click="handleClick(scope.row)" type="text" size="small">编辑</el-button>
           <el-button  @click="toDataLog" type="text" size="small">日志</el-button>
+          <el-button  @click="toSetFields(scope.row)" type="text" size="small">审核</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -110,6 +111,9 @@ export default {
     // 创建应用
     createApp () {
       this.$router.push({ name: 'CreateAppManagement' })
+    },
+    toSetFields (row) {
+      this.$router.push({ name: 'FieldsManagement', query: { id: row.id } })
     },
     // 每一页请求条数
     handleSizeChange (val) {
