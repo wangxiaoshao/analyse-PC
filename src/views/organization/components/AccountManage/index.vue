@@ -59,7 +59,7 @@
 import bindSystem from '../BindSystem/index'
 export default {
   components: { bindSystem },
-  props: ['disabledFlag', 'isShowEditFlag', 'accountList', 'userInfo', 'isDefaultFlag','userAccount'],
+  props: ['disabledFlag', 'isShowEditFlag', 'accountList', 'userInfo', 'isDefaultFlag', 'userAccount'],
   data () {
     return {
       addAccount: {

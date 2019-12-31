@@ -32,41 +32,35 @@
 </template>
 
 <script>
-  export default {
-    name: 'AuthorityTable',
-    props: {
-      tableData: [],
-      selectData: [],
-      tableId: -1
-    },
-    data () {
-      return {}
-    },
-    created () {
-    },
-    methods: {
-      // 勾选数据
-      handleSelectionChange(data) {
-        console.log(data)
-        this.$emit('changeSelection', data, this.tableId)
-      }
-    },
-    watch: {
-      tableId: {
-        handle(val) {
-          if(this.selectData.length > 0) {
-            this.selectData.forEach(item => {
-              this.$refs.multipleTable.toggleRowSelection(item, true);
-            })
-          }
-        },
-        deep: true
-      }
+export default {
+  name: 'AuthorityTable',
+  props: ['tableData', 'selectData', 'tableId'],
+  data () {
+    return {}
+  },
+  created () {
+
+  },
+  methods: {
+    // 勾选数据
+    handleSelectionChange (data) {
+      this.$emit('changeSelection', data, this.tableId)
     }
+  },
+  watch: {
+    // tableId: {
+    //   handle (val) {
+    //     if (this.selectData.length > 0) {
+    //       this.selectData.forEach(item => {
+    //         this.$refs.multipleTable.toggleRowSelection(item, true)
+    //       })
+    //     }
+    //   },
+    //   deep: true
+    // }
   }
+}
 </script>
 
 <style lang="less">
-  .index {
-  }
 </style>

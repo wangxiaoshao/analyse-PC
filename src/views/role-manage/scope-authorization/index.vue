@@ -7,6 +7,26 @@
       <el-button @click="addDep" type="primary">授权单位</el-button>
     </div>
   </div>
+  <div class="table">
+    <el-table
+          :data="AuthorizedList"
+          border
+          size="medium"
+        >
+          <template slot="empty">
+            <div class="empty">
+              <p><img class="data-pic" src="@src/common/images/no-data.png" alt=""/></p>
+              <p><span style="padding-left: 8px">暂无数据！</span></p>
+            </div>
+          </template>
+          <el-table-column label="名称" prop="name">
+
+          </el-table-column>
+          <el-table-column label="上级" prop="removed" align="center"></el-table-column>
+          <el-table-column label="区域" prop="state" align="center">
+          </el-table-column>
+        </el-table>
+      </div>
   <select-org :openSelectOrg="openSelectOrg" @dialogReturnOrg="dialogReturnOrg" @closeSelectOrg="closeSelectOrg"></select-org>
   <select-area :openSelectArea="openSelectArea" @dialogReturnArea="dialogReturnArea" @closeSelectArea="closeSelectArea"></select-area>
 </div>
@@ -25,7 +45,8 @@ export default {
   data () {
     return {
       openSelectOrg: false,
-      openSelectArea: false
+      openSelectArea: false,
+      AuthorizedList: []
     }
   },
   components: {
@@ -65,7 +86,6 @@ export default {
       }
       api[urlNames['insertAuthorizedEntity']](parmas).then((res) => {
       })
-      console.log(JSON.parse(JSON.stringify(data)))
     },
     dialogReturnArea (data) {
       let parmas = {
@@ -75,7 +95,7 @@ export default {
       }
       api[urlNames['insertAuthorizedEntity']](parmas).then((res) => {
       })
-      console.log(JSON.parse(JSON.stringify(data)))
+      // console.log(JSON.parse(JSON.stringify(data)))
     }
   }
 }

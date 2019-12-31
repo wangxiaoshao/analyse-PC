@@ -47,5 +47,5 @@ export default {
     },
     serve: 'organizationManagePC',
     mock: 'system-setting/dictionaryList.json'
-  },
+  }
 }
