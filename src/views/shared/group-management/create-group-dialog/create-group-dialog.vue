@@ -37,10 +37,12 @@
 
 <script>
 import { api, urlNames } from '@src/api'
+import hasRight from '@src/mixins/has-right'
 
 export default {
   name: 'CreateGroupDialog',
   props: ['creategroupdialogVisible', 'groupFrom', 'creatTitle'],
+  mixins: [hasRight],
   data () {
     return {
       rules: {
@@ -60,15 +62,15 @@ export default {
         return false
       }
       let ownerType = this.groupFrom.ownerType + 0 // 1单位、2部门、3个人
-      if (ownerType === 0 && !this.hasRight('orgGroupCreate')) {
+      if (ownerType === 1 && !this.hasRight('orgGroupCreate')) {
         this.$message.warning('您没有创建单位分组的权限')
-        return
-      } else if (ownerType === 1 && !this.hasRight('departmentGroupCreate')) {
+        return false
+      } else if (ownerType === 2 && !this.hasRight('departmentGroupCreate')) {
         this.$message.warning('您没有创建部门分组的权限')
-        return
-      } else if (ownerType === 2 && !this.hasRight('userGroupCreate')) {
+        return false
+      } else if (ownerType === 3 && !this.hasRight('userGroupCreate')) {
         this.$message.warning('您没有创建个人分组的权限')
-        return
+        return false
       }
       if (this.groupFrom.id === undefined || this.groupFrom.id === '') {
         api[urlNames['createGroup']]({
