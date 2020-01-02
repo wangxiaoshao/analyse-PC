@@ -54,7 +54,7 @@
                 </el-table>
               </div>
             </el-popover>
-            <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
+            <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd' " >
               <div
                 class="tip-msg"
                 v-show="this.app.option.options.userAuditFields.indexOf('name') > -1 && userDetail.name !== oldUserInfo.user.name"
@@ -155,6 +155,7 @@
                 name="files"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload"
+                 list-type="picture"
               >
                 <img v-if="personFrom.portraitUrl" :src="personFrom.portraitUrl" class="avatar" />
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -172,7 +173,7 @@
                   :disabled="isDefaultFlag"
                   v-model="userDetail.mobile2"
                 ></el-input>
-                <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
+                <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'" >
                   <div
                     class="tip-msg"
                     v-show="this.app.option.options.userAuditFields.indexOf('mobile2') > -1 && userDetail.mobile2 !== oldUserInfo.user.mobile2"

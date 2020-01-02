@@ -85,10 +85,10 @@ export default {
           let that = this
           res.data.forEach(val => {
             if (val.authorizedType === 1) {
-              that.areaNameList.push(val.authorizedOid + '、')
+              that.areaNameList.push(val.name + '、')
             }
             if (val.authorizedType === 3) {
-              that.orgNameList.push(val.authorizedOid + '、')
+              that.orgNameList.push(val.name + '、')
             }
           })
           let lastStr = this.areaNameList[this.areaNameList.length - 1]

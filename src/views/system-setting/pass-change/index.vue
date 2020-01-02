@@ -245,6 +245,7 @@ export default {
     }
   },
   created () {
+    console.log(this.$route)
     this.getUserDetail(this.app.option.user.uid)
     this.getIdentity(this.app.option.user.identityId)
     api[urlNames['findUserAccountByUid']]().then(
