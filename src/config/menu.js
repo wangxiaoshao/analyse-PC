@@ -157,7 +157,7 @@ export default {
     'path': '',
     'type': 1,
     'icon': 'fa fa-cogs',
-    'key': ['menuRoles', 'menuDictionary', 'personalInfo', 'menuDictionary', 'preferencesSetting'],
+    'key': ['menuRoles', 'menuDictionary', 'menuPersonalInfo', 'menuRightSetting', 'menuPreferencesSetting'],
     'list': [{
       'menuId': '51',
       'name': '角色权限',
@@ -177,21 +177,21 @@ export default {
       'name': '个人信息',
       'path': '/pass-change',
       'type': 1,
-      'key': 'personalInfo'
+      'key': 'menuPersonalInfo'
     },
     {
       'menuId': '54',
       'name': '权限配置',
       'path': '/authority-setting',
       'type': 1,
-      'key': 'menuDictionary'
+      'key': 'menuRightSetting'
     },
     {
       'menuId': '55',
       'name': '偏好设置',
       'path': '/parameter-setting',
       'type': 1,
-      'key': 'preferencesSetting'
+      'key': 'menuPreferencesSetting'
     }
     ]
   }
