@@ -9,8 +9,8 @@ export default {
   },
   methods: {
     hasRight (rightKey) {
-      if (this.$store.state.app.option && this.$store.state.app.option.actions.legnth > 0) {
-        return this.$store.state.app.option.actions.indexOf(rightKey) > -1
+      if (this.$store.state.app.option && this.$store.state.app.option.actions.length > 0) {
+        return (this.$store.state.app.option.actions.indexOf(rightKey) > -1)
       } else {
         return false
       }

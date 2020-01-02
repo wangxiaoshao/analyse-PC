@@ -2,7 +2,8 @@
   <div class="group-detail">
     <div class="add-member">
       <el-button type="primary"
-                 @click="seleceDialog.selectMenmberFlag = true">添加成员</el-button>
+                 @click="seleceDialog.selectMenmberFlag = true"
+                 :disabled="!hasAddRight()">添加成员</el-button>
     </div>
     <el-table
       ref="singleTable"
@@ -101,6 +102,22 @@ export default {
     this.getGroupUsers(1, 10)
   },
   methods: {
+    /*
+        @des：是否具有添加权限
+        @type：1(单位分组),2（部门分组）,3（个人分组）
+     */
+    hasAddRight () {
+      let type = this.$route.query.type + 0
+      let rightKey = ''
+      if (type === 1) {
+        rightKey = 'orgGroupAddMember'
+      } else if (type === 2) {
+        rightKey = 'departmentGroupAddMember'
+      } else if (type === 3) {
+        rightKey = 'userGroupAddMember'
+      }
+      return this.hasRight(rightKey)
+    },
     // 获取成员列表
     getGroupUsers (page, limt) {
       api[urlNames['getGroupUsers']]({

@@ -17,7 +17,7 @@
               <el-input v-model="form.text" placeholder="请输入名称" clearable></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="addDic('form')">{{type || '创建'}}</el-button>
+              <el-button type="primary" @click="addDic('form')" v-show="hasRight('dictItemCreate')">{{type || '创建'}}</el-button>
               <!--<el-button type="primary" @click="addDic('form')">创建</el-button>-->
             </el-form-item>
           </el-form>
@@ -52,7 +52,7 @@
           <el-button
             type="primary"
             @click="addAllDic"
-            :disabled="foundDicList && foundDicList.length === 0">批量添加</el-button>
+            :disabled="foundDicList && foundDicList.length === 0" v-show="hasRight('dictItemCreate')">批量添加</el-button>
           <el-button @click="closeDialog('form')" :style="{marginLeft: '60px'}">取消</el-button>
         </el-col>
       </el-row>
@@ -62,11 +62,13 @@
 
 <script type="text/ecmascript-6">
 import { mapState, mapMutations } from 'vuex'
+import hasRight from '@src/mixins/has-right'
 import { api, urlNames } from '@src/api'
 
 export default {
   props: ['visible', 'close', 'dialogTitle', 'dictionaryType'],
   components: {},
+  mixins: [hasRight],
   data () {
     var checkAge = (rule, value, callback) => {
       if (!value) {

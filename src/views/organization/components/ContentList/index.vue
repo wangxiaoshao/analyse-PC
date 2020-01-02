@@ -1,7 +1,7 @@
 <template>
   <div class="content-list">
     <div class="button-wrap">
-      <el-button @click="sortBtnFlag">调整排序</el-button>
+      <el-button @click="sortBtnFlag" :disabled="!hasRight('departmentOrder')">调整排序</el-button>
     </div>
     <div class="sort-do" v-if="sortFlag">
       按住左键上下拖动调整排序
@@ -74,9 +74,10 @@
 import organizationEdit from '@src/mixins/organization'
 import Sortable from 'sortablejs'
 import handleTable from '@src/mixins/handle-table'
+import hasRight from '@src/mixins/has-right'
 import { api, urlNames } from '@src/api'
 export default {
-  mixins: [handleTable, organizationEdit],
+  mixins: [handleTable, organizationEdit, hasRight],
   data () {
     return {
       loading: true,

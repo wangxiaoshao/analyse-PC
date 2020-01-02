@@ -16,14 +16,6 @@ import roleManage from './modules/role-manage'
 import authoritySetting from './modules/authority-setting'
 
 export default {
-  [urlNames.getUserInfo]: {
-    type: 'get',
-    url: '/work/user/getCurrentUser',
-    keepOriginResponse: true, // 是否保留后端返回数据格式
-    showLoading: false, // 该请求发送时，是否显示全局loading
-    serve: 'organizationManagePC',
-    mock: '/getUserInfo.json' // development模式下，本地mock数据
-  },
   [urlNames.option]: {
     type: 'get',
     url: '/api/jg_manage/option',

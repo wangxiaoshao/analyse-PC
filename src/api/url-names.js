@@ -3,7 +3,7 @@
  * @description：api name mapping
  */
 export default {
-  getUserInfo: 'getUserInfo',
+  option: 'option', // 查询用户配置
   popupWindow: 'popupWindow',
   // application
   getApplicationList: 'getApplicationList',
@@ -172,7 +172,6 @@ export default {
   // 查询单位下的区域
   findOrgAreaList: 'findOrgAreaList',
   // 查询用户可用配置
-  option: 'option',
   setClientOptions: 'setClientOptions', // 提交配置信息
   getSystemParameterlevel: 'getSystemParameterlevel', // 配置级别的配置信息
   findEntityChangeLoggerList: 'findEntityChangeLoggerList', // 操作日志
@@ -194,6 +193,8 @@ export default {
   getAuthorityByModuleId: 'indAuthorityByModuleId',
   // 给菜单添加操作
   addAuthorityToModule: 'addAuthorityToModule',
+  // 根据角色查询菜单
+  getModuleAuthorityByRoleId: 'getModuleAuthorityByRoleId',
   // 给角色菜单增删操作
   editAuthorityManage: 'editAuthorityManage',
   // 授权区域

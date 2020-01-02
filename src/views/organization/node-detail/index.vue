@@ -47,7 +47,7 @@
         <el-input v-model="areaCheck" @focus="openArea"></el-input>
       </el-form-item>
       <el-form-item v-if="isShowEditFlag">
-        <el-button type="primary" @click="submitForm('ruleForm')">{{submitHtml}}</el-button>
+        <el-button type="primary" @click="submitForm('ruleForm')" :disabled="!hasRight('viewNodeSetting')">{{submitHtml}}</el-button>
         <el-button @click="goBack">取消</el-button>
       </el-form-item>
     </el-form>
@@ -55,14 +55,15 @@
 </template>
 
 <script>
-import { api, urlNames } from '@src/api'
-import dicOption from '@src/mixins/dic-options.js'
-import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
-import areaList from '../components/AreaList/index'
+import { api, urlNames } from "@src/api";
+import dicOption from "@src/mixins/dic-options.js";
+import handleBreadcrumb from "@src/mixins/handle-breadcrumb.js";
+import hasRight from '@src/mixins/has-right'
+import areaList from "../components/AreaList/index";
 export default {
   name: 'index',
   components: { areaList },
-  mixins: [handleBreadcrumb, dicOption],
+  mixins: [handleBreadcrumb, dicOption, hasRight],
   data () {
     return {
       loading: false,
