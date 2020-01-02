@@ -24,8 +24,7 @@ export default [
       }
     ],
     meta: {
-      key: '',
-      name: ''
+      key: 'menuAddrBook'
     }
   },
   {

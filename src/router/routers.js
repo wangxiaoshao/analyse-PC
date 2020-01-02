@@ -6,11 +6,16 @@ import system from './modules/system'
 import roleManage from './modules/role-manage'
 import addressbook from './modules/addressbook'
 import addresslist from './modules/addresslist'
-import newAddressBooks from './modules/new-address-books'
 
+const noRight = () => import('@src/views/no-right/index.vue')
 
 /* 路由 */
 export default [
+  {
+    path: '/no-right',
+    name: 'noRight',
+    component: noRight
+  },
   ...organization,
   ...examine,
   ...statistics,
@@ -18,6 +23,5 @@ export default [
   ...share,
   ...addressbook,
   ...roleManage,
-  ...addresslist,
-  ...newAddressBooks
+  ...addresslist
 ]

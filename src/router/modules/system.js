@@ -16,13 +16,19 @@ export default [
   {
     path: '/parameter-setting',
     name: 'ParameterSettings',
-    component: ParameterSetting
+    component: ParameterSetting,
+    meta: {
+      key: 'preferencesSetting'
+    }
   },
   // 权限配置
   {
     path: '/authority-setting',
     name: 'AuthoritySetting',
-    component: AuthoritySetting
+    component: AuthoritySetting,
+    meta: {
+      key: 'menuDictionary'
+    }
   },
   // 角色管理
   {
@@ -42,11 +48,13 @@ export default [
       }
     ]
   },
-  // 系统设置
   {
     path: '/dictionary-manage',
     name: 'DictionaryManage',
-    component: DictionaryManage
+    component: DictionaryManage,
+    meta: {
+      key: 'menuDictionary'
+    }
   },
   {
     path: '/parameter-setting',
@@ -56,7 +64,10 @@ export default [
   {
     path: '/pass-change',
     name: 'PassChange',
-    component: PassChange
+    component: PassChange,
+    meta: {
+      key: 'personalInfo'
+    }
   }
 ]
 

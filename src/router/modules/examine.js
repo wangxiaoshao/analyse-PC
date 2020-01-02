@@ -39,7 +39,10 @@ export default [
       {
         path: 'detail/:type/:id',
         name: 'WaitApprovalDetail',
-        meta: { prePath: 'wait-approval' },
+        meta: {
+          prePath: 'wait-approval',
+          key: 'menuAuditWait'
+        },
         component: WaitApprovalDetail
       },
       // 单位详情
@@ -67,6 +70,9 @@ export default [
     path: '/approved',
     name: 'Approved',
     component: Approved,
+    meta: {
+      key: 'menuAudited'
+    },
     children: [
       {
         path: '/',
@@ -103,6 +109,9 @@ export default [
     path: '/my-application',
     name: 'MyApplication',
     component: MyApplication,
+    meta: {
+      key: 'menuMyAudit'
+    },
     children: [
       {
         path: '/',
@@ -139,6 +148,9 @@ export default [
     path: '/confirm-info',
     name: 'ConfirmInfo',
     component: ConfirmInfo,
+    meta: {
+      key: 'menuOrgConfirm'
+    },
     children: [
       {
         path: '/',
