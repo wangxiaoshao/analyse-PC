@@ -8,7 +8,7 @@
       @close="getClose"
       @getTag="getTag"
     ></search-lable>
-    <el-drawer
+    <!-- <el-drawer
       title="选择区域"
       :visible.sync="areaFlag"
       :direction="'rtl'">
@@ -16,7 +16,16 @@
         @get-area="getAreaId"
         @close="close"
         v-model="ruleForm.areaId"></area-list>
-    </el-drawer>
+    </el-drawer> -->
+     <el-dialog
+      title="选择区域"
+      :visible.sync="areaFlag"
+      >
+      <area-list
+        @get-area="getAreaId"
+        @close="close"
+        v-model="ruleForm.areaId"></area-list>
+     </el-dialog>
     <el-form :model="ruleForm" :disabled="disabledFlag" ref="ruleForm" label-width="130px" class="demo-ruleForm">
       <div class="detail-title">
         <i class="imenu-icon iconfont icondanwei big-icon" style="margin: 0px 5px;"></i>单位信息

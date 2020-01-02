@@ -191,5 +191,5 @@ export default {
   ...addressBook, // 通讯录
   ...addressList, // 通讯录(后)
   ...roleManage, // 角色管理
-  ...authoritySetting, // 权限配置
+  ...authoritySetting// 权限配置
 }
