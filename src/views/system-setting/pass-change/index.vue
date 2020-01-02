@@ -43,12 +43,12 @@
           <el-dropdown>
           <span class="el-dropdown-link">
             <el-button type="primary">
-              {{defaultName}}
+              当前身份: {{defaultDutyName}}
               <i class="el-icon-arrow-down el-icon--right"></i>
             </el-button>
           </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item @click="changeSessionUser(item.userId)" :key="index" v-for="(item, index) in userList">{{item.name}}</el-dropdown-item>
+              <el-dropdown-item @click.native="changeSessionUser(item.userId)" :key="index" v-for="(item, index) in userList">{{item.dutyName}}</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
@@ -173,8 +173,9 @@ export default {
       }
     }
     return {
-      defaultName: '', // 默认身份
+      defaultName: '', // 默认名字
       userList: [], // 用户身份列表
+      defaultDutyName: '', // 默认身份
       calloutFlag: false,
       showexportIdentityType: true,
       currentIndex: 0,
@@ -310,12 +311,12 @@ export default {
       api[urlNames['findSessionUserList']]().then((res) => {
         this.userList = res.data
         this.defaultName = res.data[0].name;
+        this.defaultDutyName = res.data[0].dutyName
       })
     },
 
     // 切换用户身份
     changeSessionUser(id) {
-      debugger
       api[urlNames['changeSessionUserId']]({
         userId: id
       }).then((res) => {
