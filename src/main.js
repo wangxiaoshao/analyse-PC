@@ -4,7 +4,7 @@
 import 'babel-polyfill'
 import Vue from 'vue'
 import App from './views/app'
-import router from './router'
+// import router from './router'
 import store from './store'
 import elementUI from 'element-ui'
 import '@src/common/element-style/index.css'
@@ -18,7 +18,7 @@ import echarts from 'echarts'
 import VueCookies from 'vue-cookie'
 import './filters'
 import { api, urlNames } from '@src/api'
-// import initRouter from '@src/router/index'
+import initRouter from '@src/router/index'
 Vue.use(VueCookies)
 Vue.use(elementUI, { size: 'medium' })
 
@@ -26,8 +26,7 @@ Vue.prototype.$echarts = echarts
 // 请求权限配置参数
 // let menusCtrl = []
 api[urlNames['option']]().then((res) => {
-  // initRouter(res.data.menus)
-  // menusCtrl = res.data
+  let router = initRouter(res.data.menus)
   if (res.status === 0) {
     initVueInstance(router, res.data)
   } else {

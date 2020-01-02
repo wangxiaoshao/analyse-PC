@@ -306,6 +306,7 @@
 import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
 import uploadFile from '@src/mixins/uploadFile.js'
+import hasRight from '@src/mixins/has-right'
 
 const nodeAuditList = [{ name: 'name', checkname: '节点名称' }]
 const orgAuditList = [{ name: 'name', checkname: '单位全称' }, { name: 'shortName', checkname: '单位简称' }, {
@@ -323,7 +324,7 @@ const userAuditList = [{ name: 'name', checkname: '用户姓名' }, { name: 'mob
   name: 'dutyName', checkname: '职务' }, { name: 'type', checkname: '身份类型' }]
 export default {
   name: 'parmaeterFrom',
-  mixins: [uploadFile],
+  mixins: [uploadFile, hasRight],
   data () {
     return {
       systemUserSecuritySettings: {// 用户安全

@@ -103,7 +103,7 @@
                        @click="removeAllSelectedOrg">取消全部
             </el-button>
             <el-checkbox-group v-model="selectedOrgsModel" @change="toggleSelectedOrg">
-              <el-checkbox style="display: block" v-for="org in selectedOrgs" :label="JSON.stringify(org)"
+              <el-checkbox style="display: block" v-for="org in selectedOrgs" :label="org"
                            :key="org.id"> {{org.name}}
               </el-checkbox>
             </el-checkbox-group>
@@ -308,7 +308,6 @@ export default {
           }
         })
       }
-      console.log(JSON.parse(JSON.stringify(this.selectedMembers)), '------------')
     },
     toggleMember (members) {
       this.selectedMembers = members.map((member) => {
@@ -342,7 +341,6 @@ export default {
       }
     },
     addSelectedMember (member) {
-      console.log(JSON.parse(JSON.stringify(this.selectedMembers)), 'this.selectedMembers---123')
       let i = this.selectedMembers.length - 1
       while (i >= 0) {
         const current = this.selectedMembers[i]
@@ -400,7 +398,6 @@ export default {
           }
         })
       }
-      console.log(JSON.parse(JSON.stringify(this.selectedOrgs)), '------------')
     },
     toggleOrg (orgs) {
       this.selectedOrgs = orgs.map((org) => {
@@ -411,8 +408,8 @@ export default {
     },
     toggleSingleOrg (org) {
       this.selectedOrgsModel = []
-      this.selectedOrgs[0] = this.orgSingleModel
-      this.selectedOrgsModel.push(org)
+      this.selectedOrgs[0] = JSON.parse(this.orgSingleModel)
+      this.selectedOrgsModel.push(JSON.parse(org))
     },
     toggleSelectedOrg (orgs) {
       this.orgsModel.forEach((org) => {

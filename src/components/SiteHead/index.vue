@@ -55,7 +55,7 @@ export default {
     // }
   },
   created () {
-    this.getLoginOutUrl()
+    // this.getLoginOutUrl()
     // console.log('----------', this.$store)
     // console.log('this.$store.state.app.option.options', this.$store.state.app.option.options)
     // console.log('>>>> systemName', this.systemName)

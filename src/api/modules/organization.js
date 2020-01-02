@@ -284,5 +284,17 @@ export default {
     url: 'api/jg_manage/user/deleteAppBindAccount',
     keepOriginResponse: true, // 是否保留后端返回数据格式
     serve: 'organizationManagePC'
+  },
+  [urlNames.changeSessionUserId]: {
+    type: 'get',
+    url: '/api/gate/sessionUser/changeUserId',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    serve: 'organizationManagePC'
+  },
+  [urlNames.findSessionUserList]: {
+    type: 'get',
+    url: '/api/jg_manage/user/sessionUserIdList',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    serve: 'organizationManagePC'
   }
 }
