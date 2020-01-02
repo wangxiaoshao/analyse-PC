@@ -13,7 +13,7 @@
         </template>
         <sub-menu v-for="(groupItem, index) in menuItem.list" :key="index" :menu-item="groupItem" :showIcon="false"></sub-menu>
     </el-menu-item-group>
-    <el-menu-item v-else-if="menuItem" :index="menuItem.menuId.toString()">
+    <el-menu-item v-else-if="menuItem" :index="menuItem.menuId.toString()" v-show="$store.state.app.option.menus.indexOf(menuItem.key) > -1">
         <template>
             <i v-show="showIcon" class="menu-icon" :class="menuItem.icon"></i>
             <span slot="title">{{menuItem.name}}</span>
