@@ -66,7 +66,7 @@ export default [
     name: 'PassChange',
     component: PassChange,
     meta: {
-      key: 'personalInfo'
+      key: 'menuPersonalInfo'
     }
   }
 ]
