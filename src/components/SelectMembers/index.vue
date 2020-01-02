@@ -54,7 +54,7 @@
                              v-for="member in memberList"
                              :key="member.uid"
                              :label="JSON.stringify(member)">
-                  {{member.name}}222
+                  {{member.name}}
                 </el-checkbox>
               </el-checkbox-group>
             </div>
@@ -72,7 +72,7 @@
                             v-for="org in orgList"
                             :key="org.id"
                             :label="JSON.stringify(org)">
-                 {{org.name}}111
+                 {{org.name}}
                </el-checkbox>
              </el-checkbox-group>
            </div>
@@ -308,7 +308,6 @@ export default {
           }
         })
       }
-      console.log(JSON.parse(JSON.stringify(this.selectedMembers)), '------------')
     },
     toggleMember (members) {
       this.selectedMembers = members.map((member) => {
@@ -318,7 +317,6 @@ export default {
       })
     },
     singleSelectMember (members) {
-      console.log(members)
       this.selectedMembersModel = []
       this.selectedMembers[0] = JSON.parse(this.memberSingleModel)
       this.selectedMembersModel.push(members)
@@ -343,7 +341,6 @@ export default {
       }
     },
     addSelectedMember (member) {
-      console.log(JSON.parse(JSON.stringify(this.selectedMembers)), 'this.selectedMembers---123')
       let i = this.selectedMembers.length - 1
       while (i >= 0) {
         const current = this.selectedMembers[i]
@@ -401,7 +398,6 @@ export default {
           }
         })
       }
-      console.log(JSON.parse(JSON.stringify(this.selectedOrgs)), '------------')
     },
     toggleOrg (orgs) {
       this.selectedOrgs = orgs.map((org) => {
