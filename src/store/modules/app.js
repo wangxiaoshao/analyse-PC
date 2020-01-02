@@ -2,19 +2,20 @@ import * as types from '../mutation-types'
 
 const app = {
   state: {
-    userInfo: null,
     windowHeight: document.body.offsetHeight,
     windowWidth: document.body.offsetWidth,
     breadcrumb: [],
     pageBreadcrumb: [],
     dicList: [],
-    option: {},
+    option: {
+      actions: [],
+      menus: [],
+      options: [],
+      user: []
+    },
     confirmState: ''
   },
   mutations: {
-    [types.SET_USER_INFO] (state, user) {
-      state.userInfo = user
-    },
     [types.SET_WINDOWHEIGHT] (state, val) {
       state.windowHeight = val
     },
@@ -30,7 +31,7 @@ const app = {
     [types.DIC_LIST] (state, val) {
       state.dicList = val
     },
-    [types.GET_OPTION] (state, val) {
+    [types.SET_OPTION] (state, val) {
       state.option = val
     },
     [types.GET_CONFIRM_INFO] (state, val) {

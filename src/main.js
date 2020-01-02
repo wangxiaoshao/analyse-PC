@@ -24,24 +24,24 @@ Vue.use(elementUI, { size: 'medium' })
 
 Vue.prototype.$echarts = echarts
 // 请求权限配置参数
-let menusCtrl = []
-// api[urlNames['option']]().then((res) => {
-//   initRouter(res.data.menus)
-//   menusCtrl = res.data
-// })
-
-new Vue({
-  router,
-  store,
-  render: h => h(App),
-  created () {
-    // TODO 后端跳过单点登录，需要加上DEBUG_USER参数，正式环境需要去掉
-    // this.$cookie.set('DEBUG_USER', '')
-    // this.$cookie.set('SESSION', 'MWU5MTVhZGQtMDUyNy00MTZkLThlYjctOTcwOGVhNzE0YmE5')
-    // if (process.env.NODE_ENV !== 'production') {
-    //   this.$cookie.set('DEBUG_USER', '')
-    // } else {
-    //   this.$cookie.delete('DEBUG_USER')
-    // }
+// let menusCtrl = []
+api[urlNames['option']]().then((res) => {
+  // initRouter(res.data.menus)
+  // menusCtrl = res.data
+  if (res.status === 0) {
+    initVueInstance(router, res.data)
+  } else {
+    alert(res.message)
   }
-}).$mount('#app')
+})
+
+const initVueInstance = (router, options) => {
+  new Vue({
+    router,
+    store,
+    render: h => h(App),
+    created () {
+      this.$store.commit('SET_OPTION', options || {})
+    }
+  }).$mount('#app')
+}

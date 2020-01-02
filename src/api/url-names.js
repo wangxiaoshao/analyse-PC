@@ -129,6 +129,7 @@ export default {
   addDictionary: 'addDictionary',
   getDicListByType: 'getDicListByType',
   updatePwd: 'updatePwd',
+  resetPwd: 'resetPwd',
   getSystemParameter: 'getSystemParameter', // 参数设置
   // 标签查询
 

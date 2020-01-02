@@ -17,8 +17,10 @@
 <!--      </candidate-dialog>-->
       <select-members :seleceDialog="selectDialog" @dialogReturnMembersInfo="dialogReturnMembersInfo" @closeselectMenmber="closeselectMenmber"></select-members>
       <div class="button-wrap">
-        <el-button type="primary" @click="openselectMenmber">添加人员</el-button>
-        <el-button @click="goPermission">权限配置</el-button>
+        <el-button type="primary"
+                   @click="openselectMenmber"
+                   :disabled="!hasRight('roleAddMember')">添加人员</el-button>
+        <el-button @click="goPermission" :disabled="!hasRight('roleSetAuthority')">权限配置</el-button>
       </div>
       <!--表格-->
       <el-table v-loading="loading" :data="list" :max-height="tableMaxHeight" border style="width: 100%">
@@ -48,7 +50,7 @@
         <el-table-column label="操作" width="160" align="center">
           <template slot-scope="scope">
             <el-button size="mini" type="text" @click="toAuthorization(scope.row.uid)">授权范围</el-button>
-            <el-button size="mini" type="text" @click="getDelete(scope.row)">删除</el-button>
+            <el-button size="mini" type="text" @click="getDelete(scope.row)" :disabled="!hasRight('roleRemoveMember')">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -68,12 +70,13 @@
 <script>
 import handleTable from '@src/mixins/handle-table'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
+import hasRight from '@src/mixins/has-right'
 import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
 import SelectMembers from '@src/components/SelectMembers/index'
 export default {
   name: 'LookPersonPermission',
-  mixins: [handleTable, handleBreadcrumb],
+  mixins: [handleTable, handleBreadcrumb, hasRight],
   components: { SelectMembers },
   data () {
     return {

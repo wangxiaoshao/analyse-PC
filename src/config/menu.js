@@ -13,12 +13,13 @@ export default {
       'menuId': '11',
       'name': '组织管理',
       'path': '/organization',
+      'value': 'menuOrg',
       'type': 1
     },
     {
       'menuId': '12',
       'name': '通讯录',
-
+      'value': 'menuAddrBook',
       'path': '/address-list',
       // 'path': '/new-address-books',
       'type': 1
@@ -29,31 +30,36 @@ export default {
     'menuId': '2',
     'name': '申请审核',
     'path': '',
+    'value': 'menuAudit',
     'type': 1,
     'icon': 'fa fa-check-square-o',
     'list': [{
       'menuId': '21',
       'name': '待我审核',
       'path': '/wait-approval',
-      'type': 1
+      'type': 1,
+      'value': 'menuAuditWait'
     },
     {
       'menuId': '22',
       'name': '我已审核',
       'path': '/approved',
-      'type': 1
+      'type': 1,
+      'value': 'menuAudited'
     },
     {
       'menuId': '23',
       'name': '我的申请',
       'path': '/my-application',
-      'type': 1
+      'type': 1,
+      'value': 'menuMyAudit'
     },
     {
       'menuId': '24',
       'name': '信息确认',
       'path': '/confirm-info',
-      'type': 1
+      'type': 1,
+      'value': 'menuOrgConfirm'
     }
     ]
   },
@@ -62,30 +68,35 @@ export default {
     'name': '共享管理',
     'path': '',
     'type': 1,
+    'value': 'menuShare',
     'icon': 'fa fa-address-card-o',
     'list': [{
       'menuId': '31',
       'name': '视图管理',
       'path': '/view-management',
-      'type': 1
+      'type': 1,
+      'value': 'menuShareViews'
     },
     {
       'menuId': '32',
       'name': '分组管理',
       'path': '/group-management',
-      'type': 1
+      'type': 1,
+      'value': 'menuGroups'
     },
     {
       'menuId': '33',
       'name': '标签管理',
       'path': '/tags-mnagement',
-      'type': 1
+      'type': 1,
+      'value': 'menuLabels'
     },
     {
       'menuId': '34',
       'name': '应用管理',
       'path': '/app-management',
-      'type': 1
+      'type': 1,
+      'value': 'menuShareApplication'
     }
     ]
   },
@@ -95,33 +106,39 @@ export default {
     'path': '',
     'type': 1,
     'icon': 'fa fa-bar-chart-o',
+    'value': 'menuStatistics',
     'list': [{
       'menuId': '41',
       'name': '数据统计',
       'path': '/data-statistics',
-      'type': 1
+      'type': 1,
+      'value': 'menuStatisticsData'
     },
     {
       'menuId': '42',
       'name': '数据查询',
+      'value': 'menuSearchData',
       'path': '/data-query',
       'list': [{
         'menuId': '421',
         'name': '单位查询',
         'path': '/unit-query',
-        'type': 1
+        'type': 1,
+        'value': 'menuSearchOrg'
       },
       {
         'menuId': '422',
         'name': '部门查询',
         'path': '/department-query',
-        'type': 1
+        'type': 1,
+        'value': 'menuSearchDepartment'
       },
       {
         'menuId': '423',
         'name': '人员查询',
         'path': '/member-query',
-        'type': 1
+        'type': 1,
+        'value': 'menuSearchUser'
       }
       ]
     },
@@ -129,7 +146,8 @@ export default {
       'menuId': '43',
       'name': '系统日志',
       'path': '/data-log',
-      'type': 1
+      'type': 1,
+      'value': 'menuLogging'
     }
     ]
   },
@@ -139,35 +157,41 @@ export default {
     'path': '',
     'type': 1,
     'icon': 'fa fa-cogs',
+    'value': 'menuSettings',
     'list': [{
       'menuId': '51',
       'name': '角色权限',
       'path': '/role-manage',
-      'type': 1
+      'type': 1,
+      'value': 'menuRoles'
     },
     {
       'menuId': '52',
       'name': '字典管理',
       'path': '/dictionary-manage',
-      'type': 1
+      'type': 1,
+      'value': 'menuDictionary'
     },
     {
       'menuId': '53',
       'name': '个人信息',
       'path': '/pass-change',
-      'type': 1
+      'type': 1,
+      'value': 'personalInfo'
     },
     {
       'menuId': '54',
       'name': '权限配置',
       'path': '/authority-setting',
-      'type': 1
+      'type': 1,
+      'value': 'menuDictionary'
     },
     {
       'menuId': '55',
       'name': '偏好设置',
       'path': '/parameter-setting',
-      'type': 1
+      'type': 1,
+      'value': 'preferencesSetting'
     }
     ]
   }
