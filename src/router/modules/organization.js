@@ -52,6 +52,9 @@ export default [
     path: '/organization',
     name: 'Organization',
     component: Organization,
+    meta: {
+      key: 'menuOrg'
+    },
     children: [
       {
         path: 'organization-content/:nodeId',
