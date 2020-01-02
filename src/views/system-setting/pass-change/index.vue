@@ -312,7 +312,6 @@ export default {
         this.userList = res.data
         this.defaultName = res.data[0].name;
         this.userList.forEach(item => {
-          debugger
           if(item.userId === this.app.option.user.identityId) {
             this.defaultDutyName = item.dutyName;
           }
