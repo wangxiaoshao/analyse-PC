@@ -7,10 +7,15 @@
           ref="moduleTree"
           :data="moduleList"
           node-key="id"
+          :highlight-current="true"
           :props="{label: 'title'}"
-          :default-checked-keys="[1]"
+          :default-checked-keys="defaultNode"
           @node-click="selectTreeNode"
         >
+           <span class=" svg-container" slot-scope="{ node, data }">
+            <span :class="[data.id===selectTreeId ?'active':'noActive']" class="iconfont icondanwei"></span>
+            <span :class="[data.id===selectTreeId ?'active':'noActive']" style="margin-left:3px;">{{node.label}}</span>
+        </span>
         </el-tree>
       </el-col>
       <el-col :span="18" class="authority-content" >
@@ -20,7 +25,7 @@
           stripe
           :data="authorityList"
           size="medium"
-          @selection-change="handleSelectionChange"
+          @select="handleSelectionChange"
           style="width: 100%">
           <el-table-column
             type="selection"
@@ -63,6 +68,8 @@
         authorityList: [], // 操作列表
         treeSelectData: {},
         tableSelectData: [],
+        roleId: this.$route.params.id,
+        defaultNode: [],
       }
     },
     created () {
@@ -84,22 +91,26 @@
     methods: {
       // 获取所有菜单
       getModuleList () {
-        api[urlNames['getModuleList']]().then(res => {
+        api[urlNames['getModuleAuthorityByRoleId']]({
+          roleId: this.roleId
+        }).then(res => {
           this.moduleList = res.data;
           if(this.moduleList.length > 0) {
             this.selectTreeId = this.moduleList[0].id;
+            this.defaultNode.push(this.moduleList[0].id);
             this.treeSelectData = this.moduleList[0];
             this.getAuthorityList(this.selectTreeId);
           }
         })
       },
 
-      // 获取所有权限
+      // 获取菜单下的权限
       getAuthorityList(val) {
-        api[urlNames['getAuthorityList']]({
-          moduleId: val
+        api[urlNames['getAuthorityByModuleId']]({
+          moduleId: val,
+          roleId: this.roleId
         }).then(res => {
-          // this.tableSelectData = [];
+          this.tableSelectData = [];
           this.authorityList = res.data;
           this.authorityList.forEach(item => {
             if(item.isAuthority) {
@@ -107,7 +118,7 @@
             }
           })
           // 更新DOM之后
-          this.$nextTick(function(){
+          this.$nextTick(()=>{
             this.initTableSelect(this.tableSelectData);
           });
         })
@@ -135,22 +146,23 @@
 
       // 保存
       saveAuthorityManage() {
-        console.log(this.tableSelectData)
-        if(this.tableSelectData.length<=0) {
-          this.$message.error(`至少勾选一个操作！`)
-        } else {
-          let selectData = this.tableSelectData.map(item => {
-            return {authorityId: item.id}
-          })
-          api[urlNames['addAuthorityToModule']]({
-            moduleId: this.selectTreeId,
-            moduleAuthorityEntityList: selectData
-          }).then(res => {
-            if(res.status === 0) {
-              this.$message.success(`保存成功`)
+        this.authorityList.forEach((item)=>{
+          this.tableSelectData.forEach((item2)=> {
+            if(item.id === item2.id) {
+              item.isAuthority = true;
+            }else {
+              item.isAuthority = false;
             }
-          })
-        }
+          });
+        });
+        api[urlNames['editAuthorityManage']]({
+          roleId: this.roleId,
+          authorityManageVos: this.authorityList
+        }).then(res => {
+          if(res.status === 0) {
+            this.$message.success(`保存成功`)
+          }
+        })
       },
 
       // 取消

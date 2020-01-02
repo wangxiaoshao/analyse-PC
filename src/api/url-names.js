@@ -193,6 +193,8 @@ export default {
   getAuthorityByModuleId: 'indAuthorityByModuleId',
   // 给菜单添加操作
   addAuthorityToModule: 'addAuthorityToModule',
+  // 根据角色查询菜单
+  getModuleAuthorityByRoleId: 'getModuleAuthorityByRoleId',
   // 给角色菜单增删操作
   editAuthorityManage: 'editAuthorityManage',
   // 授权区域

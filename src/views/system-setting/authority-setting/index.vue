@@ -8,9 +8,13 @@
           :data="moduleList"
           node-key="id"
           :props="{label: 'title'}"
-          :default-checked-keys="[1]"
+          :default-checked-keys="defaultNode"
           @node-click="selectTreeNode"
         >
+          <span class=" svg-container" slot-scope="{ node, data }">
+            <span :class="[data.id===selectTreeId ?'active':'noActive']" class="iconfont icondanwei"></span>
+            <span :class="[data.id===selectTreeId ?'active':'noActive']" style="margin-left:3px;">{{node.label}}</span>
+          </span>
         </el-tree>
       </el-col>
       <el-col :span="18" class="authority-content" >
@@ -20,7 +24,7 @@
           stripe
           :data="authorityList"
           size="medium"
-          @selection-change="handleSelectionChange"
+          @select="handleSelectionChange"
           style="width: 100%">
           <el-table-column
             type="selection"
@@ -61,12 +65,11 @@
         authorityList: [], // 操作列表
         treeSelectData: {},
         tableSelectData: [],
+        defaultNode: [],
       }
     },
     created () {
       this.getModuleList();
-    },
-    computed: {
     },
     methods: {
       // 获取所有菜单
@@ -75,6 +78,7 @@
           this.moduleList = res.data;
           if(this.moduleList.length > 0) {
             this.selectTreeId = this.moduleList[0].id;
+            this.defaultNode.push(this.moduleList[0].id);
             this.treeSelectData = this.moduleList[0];
             this.getAuthorityList(this.selectTreeId);
           }
@@ -86,7 +90,7 @@
         api[urlNames['getAuthorityList']]({
           moduleId: val
         }).then(res => {
-          // this.tableSelectData = [];
+          this.tableSelectData = [];
           this.authorityList = res.data;
           this.authorityList.forEach(item => {
             if(item.isAuthority) {
@@ -94,10 +98,13 @@
             }
           })
           // 更新DOM之后
-          this.$nextTick(function(){
-            this.initTableSelect(this.tableSelectData);
-          });
+          this.toggleSelection();
         })
+      },
+      // 异步选中
+      async toggleSelection() {
+        await this.$nextTick();
+        this.initTableSelect(this.tableSelectData)
       },
 
       // 初始化默认选中权限
