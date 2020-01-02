@@ -54,7 +54,7 @@
                              v-for="member in memberList"
                              :key="member.uid"
                              :label="JSON.stringify(member)">
-                  {{member.name}}
+                  {{member.name}}222
                 </el-checkbox>
               </el-checkbox-group>
             </div>
@@ -72,7 +72,7 @@
                             v-for="org in orgList"
                             :key="org.id"
                             :label="JSON.stringify(org)">
-                 {{org.name}}
+                 {{org.name}}111
                </el-checkbox>
              </el-checkbox-group>
            </div>
@@ -103,7 +103,7 @@
                        @click="removeAllSelectedOrg">取消全部
             </el-button>
             <el-checkbox-group v-model="selectedOrgsModel" @change="toggleSelectedOrg">
-              <el-checkbox style="display: block" v-for="org in selectedOrgs" :label="JSON.stringify(org)"
+              <el-checkbox style="display: block" v-for="org in selectedOrgs" :label="org"
                            :key="org.id"> {{org.name}}
               </el-checkbox>
             </el-checkbox-group>
@@ -318,6 +318,7 @@ export default {
       })
     },
     singleSelectMember (members) {
+      console.log(members)
       this.selectedMembersModel = []
       this.selectedMembers[0] = JSON.parse(this.memberSingleModel)
       this.selectedMembersModel.push(members)
@@ -411,8 +412,8 @@ export default {
     },
     toggleSingleOrg (org) {
       this.selectedOrgsModel = []
-      this.selectedOrgs[0] = this.orgSingleModel
-      this.selectedOrgsModel.push(org)
+      this.selectedOrgs[0] = JSON.parse(this.orgSingleModel)
+      this.selectedOrgsModel.push(JSON.parse(org))
     },
     toggleSelectedOrg (orgs) {
       this.orgsModel.forEach((org) => {
