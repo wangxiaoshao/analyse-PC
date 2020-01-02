@@ -9,6 +9,7 @@ export default {
     'path': '',
     'type': 1,
     'icon': 'fa fa-sitemap',
+    'key': ['menuAddrBook', 'menuOrg'],
     'list': [{
       'menuId': '11',
       'name': '组织管理',
@@ -29,7 +30,7 @@ export default {
     'menuId': '2',
     'name': '申请审核',
     'path': '',
-    'key': 'menuAudit',
+    'key': ['menuAuditWait', 'menuAudited', 'menuMyAudit', 'menuOrgConfirm'],
     'type': 1,
     'icon': 'fa fa-check-square-o',
     'list': [{
@@ -67,7 +68,7 @@ export default {
     'name': '共享管理',
     'path': '',
     'type': 1,
-    'key': 'menuShare',
+    'key': ['menuShareViews', 'menuGroups', 'menuLabels', 'menuShareApplication'],
     'icon': 'fa fa-address-card-o',
     'list': [{
       'menuId': '31',
@@ -105,7 +106,7 @@ export default {
     'path': '',
     'type': 1,
     'icon': 'fa fa-bar-chart-o',
-    'key': 'menuStatistics',
+    'key': ['menuStatisticsData', 'menuSearchOrg', 'menuSearchDepartment', 'menuSearchUser', 'menuLogging'],
     'list': [{
       'menuId': '41',
       'name': '数据统计',
@@ -116,7 +117,7 @@ export default {
     {
       'menuId': '42',
       'name': '数据查询',
-      'key': 'menuSearchData',
+      'key': ['menuSearchOrg', 'menuSearchDepartment', 'menuSearchUser'],
       'path': '/data-query',
       'list': [{
         'menuId': '421',
@@ -156,7 +157,7 @@ export default {
     'path': '',
     'type': 1,
     'icon': 'fa fa-cogs',
-    'key': 'menuSettings',
+    'key': ['menuRoles', 'menuDictionary', 'personalInfo', 'menuDictionary', 'preferencesSetting'],
     'list': [{
       'menuId': '51',
       'name': '角色权限',
