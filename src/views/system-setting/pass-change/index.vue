@@ -34,12 +34,23 @@
       <el-col :span="6">
         <div class="account-info">
           <p>账号信息</p>
-          <div v-for="(item, index) in accountInfoList" :key="item.id">
-            <el-button
-              @click="selectAccount(item, index)"
-              :type="currentIndex === index ? 'primary' : ''"
-            >{{item.name}}</el-button>
-          </div>
+          <!--<div v-for="(item, index) in accountInfoList" :key="item.id">-->
+            <!--<el-button-->
+              <!--@click="selectAccount(item, index)"-->
+              <!--:type="currentIndex === index ? 'primary' : ''"-->
+            <!--&gt;{{item.name}}</el-button>-->
+          <!--</div>-->
+          <el-dropdown>
+          <span class="el-dropdown-link">
+            <el-button type="primary">
+              {{defaultName}}
+              <i class="el-icon-arrow-down el-icon--right"></i>
+            </el-button>
+          </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item @click="changeSessionUser(item.userId)" :key="index" v-for="(item, index) in userList">{{item.name}}</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </div>
       </el-col>
       <el-col :span="18">
@@ -162,6 +173,8 @@ export default {
       }
     }
     return {
+      defaultName: '', // 默认身份
+      userList: [], // 用户身份列表
       calloutFlag: false,
       showexportIdentityType: true,
       currentIndex: 0,
@@ -260,6 +273,7 @@ export default {
         this.accountInfoList = []
       }
     )
+    this.findSessionUserList();
   },
   mounted () {
     this.getUserDetail(this.app.option.user.uid)
@@ -289,6 +303,26 @@ export default {
           () => {}
         )
       }
+    },
+
+    // 获取用户身份列表
+    findSessionUserList() {
+      api[urlNames['findSessionUserList']]().then((res) => {
+        this.userList = res.data
+        this.defaultName = res.data[0].name;
+      })
+    },
+
+    // 切换用户身份
+    changeSessionUser(id) {
+      debugger
+      api[urlNames['changeSessionUserId']]({
+        userId: id
+      }).then((res) => {
+        this.$message.success('切换成功')
+        this.$router.go(0) // 刷新页面
+      }, () => {
+      })
     },
     // 关闭选人弹窗
     closeselectMenmber () {
