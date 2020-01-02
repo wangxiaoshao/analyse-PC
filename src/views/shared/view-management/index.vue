@@ -1,7 +1,7 @@
 <template>
   <div class="view-management">
     <div class="create-btn">
-      <el-button type="primary" @click="createView">创建视图</el-button>
+      <el-button type="primary" @click="createView" :disabled="!hasRight('viewCreate')">创建视图</el-button>
     </div>
     <div class="table">
       <el-table
@@ -48,7 +48,9 @@
             <el-button
               size="mini"
               type="text"
-              @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+              @click="handleEdit(scope.$index, scope.row)"
+               :disabled="!hasRight('viewSetting')"
+              >编辑</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -67,8 +69,11 @@
 
 <script>
 import { api, urlNames } from '@src/api'
+import HasRight from '@src/mixins/has-right'
+
 export default {
   name: 'ViewManagement',
+  mixins: [HasRight],
   components: {
   },
   data () {
