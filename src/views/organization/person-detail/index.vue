@@ -117,7 +117,7 @@ export default {
     ...mapState(['app'])
   },
   methods: {
-    ...mapMutations(['GET_OPTION']),
+    ...mapMutations(['SET_OPTION']),
     init () {
       if (this.$route.name === 'PersonAdd') {
         this.oldUserInfo = JSON.parse(JSON.stringify(this.userInfo))

@@ -60,7 +60,7 @@ export default {
     this.getfindAuthorizedEntity()
   },
   methods: {
-    ...mapMutations(['GET_OPTION']),
+    ...mapMutations(['SET_OPTION']),
     addArea () {
       this.openSelectArea = true
     },

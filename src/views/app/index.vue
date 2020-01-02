@@ -79,13 +79,11 @@ export default {
   },
   mounted () {
     this.addEventListenForResize()
-    // this.getUserInfo()
     this.getDicList()
-    this.getOption()
     this.confirmInfo()
   },
   methods: {
-    ...mapMutations(['SET_USER_INFO', 'SET_WINDOWHEIGHT', 'SET_WINDOWWIDTH', 'SET_PAGE_BREADCRUMB', 'DIC_LIST', 'GET_OPTION', 'GET_CONFIRM_INFO']),
+    ...mapMutations(['SET_USER_INFO', 'SET_WINDOWHEIGHT', 'SET_WINDOWWIDTH', 'SET_PAGE_BREADCRUMB', 'DIC_LIST', 'GET_CONFIRM_INFO']),
     init (path) {
       // 在初始化菜单是，手动将breakLoop置为false，否则findMenuByPath不进入循环
       this.breakLoop = false
@@ -108,21 +106,9 @@ export default {
         this.$router.go(-1)
       }
     },
-    getUserInfo () {
-      api[urlNames.getUserInfo]().then((res) => {
-        this.user = res.user
-        this.SET_USER_INFO(res.user)
-      }).catch((e) => {
-      })
-    },
     getDicList () {
       api[urlNames['dicList']]().then((res) => {
         this.DIC_LIST(res.data)
-      })
-    },
-    getOption () {
-      api[urlNames['option']]().then((res) => {
-        this.GET_OPTION(res.data)
       })
     },
     setWindowSize () {

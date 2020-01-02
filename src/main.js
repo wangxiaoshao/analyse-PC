@@ -25,13 +25,23 @@ Vue.use(elementUI, { size: 'medium' })
 Vue.prototype.$echarts = echarts
 // 请求权限配置参数
 // let menusCtrl = []
-// api[urlNames['option']]().then((res) => {
-//   initRouter(res.data.menus)
-//   menusCtrl = res.data
-// })
+api[urlNames['option']]().then((res) => {
+  // initRouter(res.data.menus)
+  // menusCtrl = res.data
+  if (res.status === 0) {
+    initVueInstance(router, res.data)
+  } else {
+    alert(res.message)
+  }
+})
 
-new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount('#app')
+const initVueInstance = (router, options) => {
+  new Vue({
+    router,
+    store,
+    render: h => h(App),
+    created () {
+      this.$store.commit('SET_OPTION', options || {})
+    }
+  }).$mount('#app')
+}

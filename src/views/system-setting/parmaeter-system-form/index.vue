@@ -388,7 +388,7 @@ export default {
     ...mapState(['app'])
   },
   methods: {
-    ...mapMutations(['GET_OPTION']),
+    ...mapMutations(['SET_OPTION']),
     getSystemParameterlevel (level) {
       api[urlNames['getSystemParameterlevel']]({
         level: level
@@ -541,7 +541,7 @@ export default {
     },
     getOption () {
       api[urlNames['option']]().then((res) => {
-        this.GET_OPTION(res.data)
+        this.SET_OPTION(res.data)
       })
     },
     setClientOptions (list) {

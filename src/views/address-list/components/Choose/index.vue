@@ -78,7 +78,7 @@ export default {
     ...mapState(['app'])
   },
   methods: {
-    ...mapMutations(['GET_OPTION']),
+    ...mapMutations(['SET_OPTION']),
     onFocus () {
       this.getResult()
     },

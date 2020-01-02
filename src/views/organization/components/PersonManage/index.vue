@@ -480,7 +480,7 @@ export default {
     ...mapState(['app'])
   },
   methods: {
-    ...mapMutations(['GET_OPTION']),
+    ...mapMutations(['SET_OPTION']),
     init () {},
     exportOrg () {
       this.$emit('exportOrg')

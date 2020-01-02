@@ -323,7 +323,7 @@ export default {
     next()
   },
   methods: {
-    ...mapMutations(['GET_OPTION']),
+    ...mapMutations(['SET_OPTION']),
     init () {
       if (this.$route.name === 'UnitAdd' || this.$route.name === 'UnitEdit') {
         if (this.$route.name === 'UnitAdd') {

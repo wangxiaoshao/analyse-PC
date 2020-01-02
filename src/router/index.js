@@ -26,6 +26,6 @@ Vue.use(Router)
 // }
 export default new Router({
   base: 'static/work/admin',
-  allRoutes,
+  routes: allRoutes,
   mode: 'hash'
 })

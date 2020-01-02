@@ -9,7 +9,11 @@ export default {
   },
   methods: {
     hasRight (rightKey) {
-      return (str + '').replace(/(\s+)$/g, '').replace(/^\s+/g, '')
+      if (this.$store.state.app.option && this.$store.state.app.option.actions.legnth > 0) {
+        return this.$store.state.app.option.actions.indexOf(rightKey) > -1
+      } else {
+        return false
+      }
     }
   }
 }
