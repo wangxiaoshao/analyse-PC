@@ -62,12 +62,19 @@ export default {
   },
   [urlNames.insertAuthorizedEntity]: {
     type: 'post',
-    url: '/api/jg_manage/authorizedEntity/insertAuthorizedEntity ',
+    url: '/api/jg_manage/authorizedEntity/insertAuthorizedEntity',
     keepOriginResponse: true, // 是否保留后端返回数据格式
     serve: 'organizationManagePC',
     showLoading: true,
     headers: {
       'Content-Type': 'application/json'
     }
+  },
+  // 授权区域查询
+  [urlNames.findAuthorizedEntityByUid]: {
+    type: 'get',
+    url: '/api/jg_manage/authorizedEntity/findAuthorizedEntityByUid',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    serve: 'organizationManagePC'
   }
 }

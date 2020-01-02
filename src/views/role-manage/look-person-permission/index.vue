@@ -81,6 +81,7 @@ export default {
       permissionId: '',
       loading: false,
       setFlag: false,
+      roleId: this.$route.params.id,
       selectDialog: {
         selectMenmberTitle: '添加管理员', // 选人组件标题
         selectMenmberFlag: false, // 显示弹窗，
@@ -98,6 +99,7 @@ export default {
     ...mapState(['roleManage'])
   },
   created () {
+    //
     if (this.$route.query.type === 'back') {
       this.page = Object.assign(this.page, this.roleManage.page)
       this.$router.push({
@@ -127,7 +129,7 @@ export default {
   methods: {
     ...mapMutations(['PERSON_PAGE', 'ROLE_ID']),
     toAuthorization (id) {
-      this.$router.push({ path: `/role-manage/scope-authorization/${id}` })
+      this.$router.push({ path: `/role-manage/scope-authorization/${id}?roleId=${this.roleId}` })
     },
     getGrid () {
       let data = {

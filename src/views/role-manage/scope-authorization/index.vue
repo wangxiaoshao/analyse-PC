@@ -8,27 +8,19 @@
     </div>
   </div>
   <div class="table">
-    <el-table
-          :data="AuthorizedList"
-          border
-          size="medium"
-        >
-          <template slot="empty">
-            <div class="empty">
-              <p><img class="data-pic" src="@src/common/images/no-data.png" alt=""/></p>
-              <p><span style="padding-left: 8px">暂无数据！</span></p>
-            </div>
-          </template>
-          <el-table-column label="名称" prop="name">
-
-          </el-table-column>
-          <el-table-column label="上级" prop="removed" align="center"></el-table-column>
-          <el-table-column label="区域" prop="state" align="center">
-          </el-table-column>
-        </el-table>
-      </div>
+          <table>
+            <tr>
+              <td>区域</td>
+              <td><span v-for="(item,index) in orgNameList" :key="index">{{item}}</span></td>
+            </tr>
+            <tr>
+              <td>单位</td>
+              <td><span v-for="(item,index) in areaNameList" :key="index">{{item}}</span></td>
+            </tr>
+          </table>
+   </div>
   <select-org :openSelectOrg="openSelectOrg" @dialogReturnOrg="dialogReturnOrg" @closeSelectOrg="closeSelectOrg"></select-org>
-  <select-area :openSelectArea="openSelectArea" @dialogReturnArea="dialogReturnArea" @closeSelectArea="closeSelectArea"></select-area>
+  <select-area :openSelectArea="openSelectArea"  @updateReturnArea='getfindAuthorizedEntity' @dialogReturnArea="dialogReturnArea" @closeSelectArea="closeSelectArea"></select-area>
 </div>
 </template>
 
@@ -46,7 +38,9 @@ export default {
     return {
       openSelectOrg: false,
       openSelectArea: false,
-      AuthorizedList: []
+      areaNameList: [],
+      orgNameList: []
+
     }
   },
   components: {
@@ -63,6 +57,7 @@ export default {
         path: '/role-manage/look-person-permission/1'
       }
     })
+    this.getfindAuthorizedEntity()
   },
   methods: {
     ...mapMutations(['GET_OPTION']),
@@ -78,24 +73,48 @@ export default {
     closeSelectArea () {
       this.openSelectArea = false
     },
+    getfindAuthorizedEntity () {
+      api[urlNames['findAuthorizedEntityByUid']]({
+        uid: parseInt(this.$route.params.id),
+        roleId: parseInt(this.$route.query.roleId)
+      }).then((res) => {
+        if (res.data.length > 0) {
+          res.data.forEach(val => {
+            if (val.authorizedType === 1) {
+              this.areaNameList.push(val.authorizedOid + '、')
+            }
+            if (val.authorizedType === 3) {
+              this.orgNameList.push(val.authorizedOid + '、')
+            }
+          })
+          let lastStr = this.areaNameList[this.areaNameList.length - 1]
+          let lastStr1 = this.orgNameList[this.orgNameList.length - 1]
+          this.areaNameList.splice(this.areaNameList.length - 1, 1, lastStr.substring(0, lastStr.length - 1))
+          this.orgNameList.splice(this.orgNameList.length - 1, 1, lastStr1.substring(0, lastStr1.length - 1))
+        }
+      })
+    },
     dialogReturnOrg (data) {
       let parmas = {
-        uid: this.app.option.user.uid,
+        uid: parseInt(this.$route.params.id),
         authorizedType: 1,
-        userAuthorizedEntityList: data
+        userAuthorizedEntityList: data,
+        roleId: parseInt(this.$route.query.roleId)
       }
       api[urlNames['insertAuthorizedEntity']](parmas).then((res) => {
+        this.$message.success(`授权成功`)
       })
     },
     dialogReturnArea (data) {
       let parmas = {
-        uid: this.app.option.user.uid,
+        uid: parseInt(this.$route.params.id),
         authorizedType: 3,
-        userAuthorizedEntityList: data
+        userAuthorizedEntityList: data,
+        roleId: parseInt(this.$route.query.roleId)
       }
       api[urlNames['insertAuthorizedEntity']](parmas).then((res) => {
+        this.$message.success(`授权成功`)
       })
-      // console.log(JSON.parse(JSON.stringify(data)))
     }
   }
 }
