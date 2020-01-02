@@ -59,9 +59,20 @@ export default {
         this.$message.warning('请输入分组名称')
         return false
       }
+      let ownerType = this.groupFrom.ownerType + 0 // 1单位、2部门、3个人
+      if (ownerType === 0 && !this.hasRight('orgGroupCreate')) {
+        this.$message.warning('您没有创建单位分组的权限')
+        return
+      } else if (ownerType === 1 && !this.hasRight('departmentGroupCreate')) {
+        this.$message.warning('您没有创建部门分组的权限')
+        return
+      } else if (ownerType === 2 && !this.hasRight('userGroupCreate')) {
+        this.$message.warning('您没有创建个人分组的权限')
+        return
+      }
       if (this.groupFrom.id === undefined || this.groupFrom.id === '') {
         api[urlNames['createGroup']]({
-          ownerType: this.groupFrom.ownerType, // 1用户、2部门、3单位
+          ownerType: ownerType,
           name: this.groupFrom.name,
           description: this.groupFrom.description,
           removed: this.groupFrom.removed ? 0 : 1
@@ -75,7 +86,7 @@ export default {
       } else {
         api[urlNames['renameGroup']]({
           id: this.groupFrom.id,
-          ownerType: this.groupFrom.ownerType, // 1用户、2部门、3单位
+          ownerType: this.groupFrom.ownerType, // 1单位、2部门、3个人
           name: this.groupFrom.name,
           description: this.groupFrom.description,
           removed: this.groupFrom.removed ? 0 : 1
