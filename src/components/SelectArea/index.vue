@@ -109,9 +109,7 @@ export default {
         }
         idList.push(itemId)
       })
-
       this.$emit('dialogReturnArea', idList)
-      this.$emit('updateReturnArea')
       this.handleClose()
     },
     // 关闭选人弹窗组件

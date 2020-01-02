@@ -381,8 +381,8 @@ export default {
     }
   },
   created () {
-    this.getSystemNameLogoIon()
     this.getSystemParameterlevel(1)
+    this.getSystemNameLogoIon()
   },
   computed: {
     ...mapState(['app'])

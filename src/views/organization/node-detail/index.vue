@@ -1,12 +1,17 @@
 <template>
   <div v-loading="loading">
-     <el-drawer
-    style="width:1500px;height:600px"
+     <!-- <el-drawer
     title="选择区域"
     :visible.sync="areaFlag"
     :direction="'rtl'">
       <area-list @get-area="getAreaId" @close="close" v-model="ruleForm.areaId"></area-list>
-    </el-drawer>
+    </el-drawer> -->
+      <el-dialog
+    title="选择区域"
+    :visible.sync="areaFlag"
+   >
+      <area-list @get-area="getAreaId" @close="close" v-model="ruleForm.areaId"></area-list>
+      </el-dialog>
     <el-form
       :model="ruleForm"
       :rules="rules"
@@ -56,141 +61,139 @@ import handleBreadcrumb from "@src/mixins/handle-breadcrumb.js";
 import hasRight from '@src/mixins/has-right'
 import areaList from "../components/AreaList/index";
 export default {
-  name: "index",
+  name: 'index',
   components: { areaList },
   mixins: [handleBreadcrumb, dicOption, hasRight],
-  data() {
+  data () {
     return {
       loading: false,
       isShowEditFlag: true,
       disabledFlag: false,
       current: false,
-      breadcrumbTitle: "添加节点",
-      submitHtml: "保存",
-      areaCheck: "",
+      breadcrumbTitle: '添加节点',
+      submitHtml: '保存',
+      areaCheck: '',
       oldFrom: {},
       areaFlag: false,
       areaOption: [],
       allAreaList: [],
       ruleForm: {
-        reason: "",
-        name: "",
+        reason: '',
+        name: '',
         removed: true,
-        parentName: "",
-        id: "",
-        areaId: "",
-        systemType: ""
+        parentName: '',
+        id: '',
+        areaId: '',
+        systemType: ''
       },
       rules: {
-        name: [{ required: true, message: "请输入节点名称", trigger: "blur" }]
+        name: [{ required: true, message: '请输入节点名称', trigger: 'blur' }]
       },
-      backId: ""
-    };
+      backId: ''
+    }
   },
-  mounted() {
-    this.setBreadcrumbTitle();
+  mounted () {
+    this.setBreadcrumbTitle()
   },
-  created() {
+  created () {
     const obj = {
       enable: this.ruleForm.enable,
       reason: this.ruleForm.reason
-    };
-    this.oldFrom = JSON.parse(JSON.stringify(obj));
-    this.getNodeDetail();
+    }
+    this.oldFrom = JSON.parse(JSON.stringify(obj))
+    this.getNodeDetail()
   },
   methods: {
-    getSystemType(el) {
-      this.ruleForm.systemType = el;
+    getSystemType (el) {
+      this.ruleForm.systemType = el
     },
-    getAreaId(val) {
-      this.areaCheck = val.name;
-      this.ruleForm.areaId = val.id;
+    getAreaId (val) {
+      this.areaCheck = val.name
+      this.ruleForm.areaId = val.id
     },
-    close(val) {
-      this.areaFlag = val;
+    close (val) {
+      this.areaFlag = val
     },
-    openArea(e) {
-      this.areaFlag = true;
-      e.target.blur();
+    openArea (e) {
+      this.areaFlag = true
+      e.target.blur()
     },
-    findMenuByPath(list) {
+    findMenuByPath (list) {
       for (let item of list) {
-        this.areaOption.push(item);
+        this.areaOption.push(item)
         if (item.children && item.children.length > 0) {
-          this.findMenuByPath(item.children);
+          this.findMenuByPath(item.children)
         } else {
         }
       }
     },
-    getNodeDetail() {
+    getNodeDetail () {
       let data = {
         id: this.$route.params.id || this.$route.params.parentId
-      };
-      this.loading = true;
-      api[urlNames["findViewNodeById"]](data).then(
+      }
+      this.loading = true
+      api[urlNames['findViewNodeById']](data).then(
         res => {
-          this.loading = false;
-          if (this.$route.name === "NodeAdd") {
-            this.ruleForm.parentName = res.data.name;
-            this.ruleForm.parentId = res.data.id;
+          this.loading = false
+          if (this.$route.name === 'NodeAdd') {
+            this.ruleForm.parentName = res.data.name
+            this.ruleForm.parentId = res.data.id
           } else {
-            this.findMenuByPath(res.data.nodeArea);
+            this.findMenuByPath(res.data.nodeArea)
             if (res.data.nodeArea.length > 0) {
-              this.ruleForm.areaId = this.areaOption[
-                this.areaOption.length - 1
-              ].id;
+              this.ruleForm.areaId = this.areaOption[this.areaOption.length - 1].id
               this.areaOption.forEach(item => {
-                this.areaCheck += item.name + "/";
-              });
+                this.areaCheck += item.name + '/'
+              })
             }
-            this.ruleForm.parentName = res.data.parentName;
-            this.ruleForm.parentId = res.data.parentId;
-            this.ruleForm.name = res.data.name;
-            this.ruleForm.id = res.data.id;
-            this.ruleForm.removed = !res.data.removed;
-            this.ruleForm.systemType = res.data.systemType;
-            this.ruleForm.areaId = res.data.areaId;
+            this.ruleForm.parentName = res.data.parentName
+            this.ruleForm.parentId = res.data.parentId
+            this.ruleForm.name = res.data.name
+            this.ruleForm.id = res.data.id
+            this.ruleForm.removed = !res.data.removed
+            this.ruleForm.systemType = res.data.systemType
+            this.ruleForm.areaId = res.data.areaId
           }
-          if (this.ruleForm.parentId === "-1") {
-            this.backId = this.ruleForm.id;
+          if (this.ruleForm.parentId === '-1') {
+            this.backId = this.ruleForm.id
           } else {
-            this.backId = this.ruleForm.parentId;
+            this.backId = this.ruleForm.parentId
           }
           this.pushBreadcrumb({
             name: this.breadcrumbTitle,
             parent: {
-              name: "OrganizationContent",
+              name: 'OrganizationContent',
               params: {
                 nodeId: this.backId
               },
               query: {
-                type: "back"
+                type: 'back'
               }
             }
-          });
+          })
         },
-        error => {
-          this.$message.error(`没有内容`);
+        () => {
+          this.$message.error(`没有内容`)
         }
-      );
+      )
     },
-    setBreadcrumbTitle() {
+    setBreadcrumbTitle () {
       // 设置面包屑title
-      if (this.$route.name === "NodeEdit" || this.$route.name === "NodeAdd") {
-        this.isShowEditFlag = true;
-        this.disabledFlag = false;
-        if (this.$route.name === "NodeEdit") {
-          this.breadcrumbTitle = "编辑节点";
+      if (this.$route.name === 'NodeEdit' || this.$route.name === 'NodeAdd') {
+        this.isShowEditFlag = true
+        this.disabledFlag = false
+        if (this.$route.name === 'NodeEdit') {
+          this.breadcrumbTitle = '编辑节点'
         } else {
-          this.breadcrumbTitle = "添加节点";
+          this.breadcrumbTitle = '添加节点'
         }
       } else {
-        this.isShowEditFlag = false;
-        this.disabledFlag = true;
-        this.breadcrumbTitle = "节点详情";
+        this.isShowEditFlag = false
+        this.disabledFlag = true
+        this.breadcrumbTitle = '节点详情'
       }
     },
-    submitForm(ruleForm) {
+    submitForm (ruleForm) {
       this.$refs[ruleForm].validate(valid => {
         if (valid) {
           const data = {
@@ -204,43 +207,43 @@ export default {
               areaId: this.ruleForm.areaId,
               systemType: this.ruleForm.systemType
             }
-          };
-          api[urlNames["createViewNode"]](data).then(
+          }
+          api[urlNames['createViewNode']](data).then(
             res => {
-              this.$message.success(`保存成功`);
-              this.goBack();
+              this.$message.success(`保存成功`)
+              this.goBack()
             },
-            error => {}
-          );
+            () => {}
+          )
         }
-      });
+      })
     },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
+    resetForm (formName) {
+      this.$refs[formName].resetFields()
     },
     /*
      * 返回上一页
      * */
-    goBack() {
-      let breadcrumb = [...this.app.pageBreadcrumb];
-      let currentPage = breadcrumb[breadcrumb.length - 1];
-      breadcrumb.splice(-1, 1);
-      this.SET_PAGE_BREADCRUMB(breadcrumb);
-      this.$router.push(currentPage.parent);
+    goBack () {
+      let breadcrumb = [...this.app.pageBreadcrumb]
+      let currentPage = breadcrumb[breadcrumb.length - 1]
+      breadcrumb.splice(-1, 1)
+      this.SET_PAGE_BREADCRUMB(breadcrumb)
+      this.$router.push(currentPage.parent)
     }
   },
   computed: {
-    newValue() {
+    newValue () {
       const obj = {
         enable: this.ruleForm.enable,
         reason: this.ruleForm.reason
-      };
-      return obj;
+      }
+      return obj
     }
   },
-  beforeRouteUpdate(to, from, next) {
-    next();
-    this.setBreadcrumbTitle();
+  beforeRouteUpdate (to, from, next) {
+    next()
+    this.setBreadcrumbTitle()
   },
   watch: {
     /* newValue: {
@@ -254,7 +257,7 @@ export default {
       deep: true
     } */
   }
-};
+}
 </script>
 
 <style lang="less">

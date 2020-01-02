@@ -111,7 +111,7 @@
                 <p style="margin:10px 0;">
                   <i class="el-icon-info" :style="{fontSize: '16px',color:'#FC7049'}"></i>
                   忘记原有密码，点击以下按钮进行重置，请确保该账号的手机号能正常接收信息！</p>
-                  <el-button type="primary">重置密码</el-button>
+                  <el-button type="primary" @click="resetPwd">重置密码</el-button>
               </div>
           </el-tab-pane>
         </el-tabs>
@@ -271,7 +271,6 @@ export default {
 
     // 选人弹窗组件返回的人员信息
     dialogReturnMembersInfo (data) {
-      console.log(data)
       if (data[0].nodeType === 2) {
         this.formCallout.orgId = data[0].bindId
         this.orgName = data[0].name
@@ -334,6 +333,7 @@ export default {
         /* this.$message.error(`没有内容`) */
       })
     },
+
     getUserDetail (id) {
       this.loading = true
       api[urlNames['findUserById']]({
@@ -425,6 +425,17 @@ export default {
           return false
         }
       })
+    },
+
+    // 重置密码
+    resetPwd () {
+      api[urlNames['resetPwd']]({
+        id: this.currentSetAccount.id
+      }).then(
+        res => {
+        },
+        () => {}
+      )
     },
 
     // 提交调出

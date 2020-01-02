@@ -37,6 +37,12 @@ export default {
     },
     mock: 'system-setting/updatePassword.json'
   },
+  [urlNames.resetPwd]: {
+    type: 'get',
+    url: '/api/jg_manage/system/resetPwd',
+    keepOriginResponse: true,
+    serve: 'organizationManagePC'
+  },
 
   /*
   * 参数设置 */

@@ -74,7 +74,7 @@ export default {
         }).then((res) => {
           this.searchTags = res.data
           this.loading = false
-        }, (error) => {
+        }, () => {
           this.loading = false
           this.searchTags = []
         })

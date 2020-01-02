@@ -20,7 +20,7 @@
           </table>
    </div>
   <select-org :openSelectOrg="openSelectOrg" @dialogReturnOrg="dialogReturnOrg" @closeSelectOrg="closeSelectOrg"></select-org>
-  <select-area :openSelectArea="openSelectArea"  @updateReturnArea='getfindAuthorizedEntity' @dialogReturnArea="dialogReturnArea" @closeSelectArea="closeSelectArea"></select-area>
+  <select-area :openSelectArea="openSelectArea"  @dialogReturnArea="dialogReturnArea" @closeSelectArea="closeSelectArea"></select-area>
 </div>
 </template>
 
@@ -75,17 +75,20 @@ export default {
       this.openSelectArea = false
     },
     getfindAuthorizedEntity () {
+      this.areaNameList = []
+      this.orgNameList = []
       api[urlNames['findAuthorizedEntityByUid']]({
         uid: parseInt(this.$route.params.id),
         roleId: parseInt(this.$route.query.roleId)
       }).then((res) => {
         if (res.data.length > 0) {
+          let that = this
           res.data.forEach(val => {
             if (val.authorizedType === 1) {
-              this.areaNameList.push(val.authorizedOid + '、')
+              that.areaNameList.push(val.authorizedOid + '、')
             }
             if (val.authorizedType === 3) {
-              this.orgNameList.push(val.authorizedOid + '、')
+              that.orgNameList.push(val.authorizedOid + '、')
             }
           })
           let lastStr = this.areaNameList[this.areaNameList.length - 1]
@@ -104,6 +107,7 @@ export default {
       }
       api[urlNames['insertAuthorizedEntity']](parmas).then((res) => {
         this.$message.success(`授权成功`)
+        this.getfindAuthorizedEntity()
       })
     },
     dialogReturnArea (data) {
@@ -115,6 +119,7 @@ export default {
       }
       api[urlNames['insertAuthorizedEntity']](parmas).then((res) => {
         this.$message.success(`授权成功`)
+        this.getfindAuthorizedEntity()
       })
     }
   }
