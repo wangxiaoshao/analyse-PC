@@ -146,14 +146,20 @@
 
       // 保存
       saveAuthorityManage() {
+       console.log(this.authorityList)
+       console.log(this.tableSelectData)
         this.authorityList.forEach((item)=>{
-          this.tableSelectData.forEach((item2)=> {
-            if(item.id === item2.id) {
+          for(let i =0;i<this.tableSelectData.length;i++) {
+            if(item.id === this.tableSelectData[i].id) {
               item.isAuthority = true;
+              break;
             }else {
               item.isAuthority = false;
             }
-          });
+          }
+          if(this.tableSelectData.length === 0) {
+            item.isAuthority = false;
+          }
         });
         api[urlNames['editAuthorityManage']]({
           roleId: this.roleId,
