@@ -568,7 +568,6 @@ export default {
       this.personFrom.portraitUrl =
         res.data[0] || URL.createObjectURL(file.raw)
     },
-    
     submitForm (form) {
       this.$refs[form].validate(valid => {
         if (valid) {

@@ -1,5 +1,5 @@
 <template>
-    <el-submenu v-if="isSubMenu" :index="menuItem.menuId.toString()">
+    <el-submenu v-if="isSubMenu && isShowMenu()" :index="menuItem.menuId.toString()">
         <template slot="title">
             <i v-show="showIcon" class="menu-icon" :class="menuItem.icon"></i>
             <span slot="title">{{menuItem.name}}</span>
@@ -13,7 +13,7 @@
         </template>
         <sub-menu v-for="(groupItem, index) in menuItem.list" :key="index" :menu-item="groupItem" :showIcon="false"></sub-menu>
     </el-menu-item-group>
-    <el-menu-item v-else-if="menuItem" :index="menuItem.menuId.toString()">
+    <el-menu-item v-else-if="menuItem && isShowMenu()" :index="menuItem.menuId.toString()">
         <template>
             <i v-show="showIcon" class="menu-icon" :class="menuItem.icon"></i>
             <span slot="title">{{menuItem.name}}</span>
@@ -48,7 +48,24 @@ export default {
   created () {
 
   },
-  methods: {},
+  methods: {
+    isShowMenu () {
+      if (Array.isArray(this.menuItem.key)) {
+        let hasRight = false
+        let len = this.menuItem.key.length
+        for (let i = 0; i < len; i++) {
+          let key = this.menuItem.key[i]
+          if (this.$store.state.app.option.menus && this.$store.state.app.option.menus.indexOf(key) > -1) {
+            hasRight = true
+            break
+          }
+        }
+        return hasRight
+      } else {
+        return this.$store.state.app.option.menus.indexOf(this.menuItem.key) > -1
+      }
+    }
+  },
   computed: {
     isItem () {
       return util.isEmptyArray(this.menuItem.list) && util.isEmptyArray(this.menuItem.list)

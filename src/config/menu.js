@@ -9,19 +9,19 @@ export default {
     'path': '',
     'type': 1,
     'icon': 'fa fa-sitemap',
+    'key': ['menuAddrBook', 'menuOrg'],
     'list': [{
       'menuId': '11',
       'name': '组织管理',
       'path': '/organization',
-      'value': 'menuOrg',
+      'key': 'menuOrg',
       'type': 1
     },
     {
       'menuId': '12',
       'name': '通讯录',
-      'value': 'menuAddrBook',
+      'key': 'menuAddrBook',
       'path': '/address-list',
-      // 'path': '/new-address-books',
       'type': 1
     }
     ]
@@ -30,7 +30,7 @@ export default {
     'menuId': '2',
     'name': '申请审核',
     'path': '',
-    'value': 'menuAudit',
+    'key': ['menuAuditWait', 'menuAudited', 'menuMyAudit', 'menuOrgConfirm'],
     'type': 1,
     'icon': 'fa fa-check-square-o',
     'list': [{
@@ -38,28 +38,28 @@ export default {
       'name': '待我审核',
       'path': '/wait-approval',
       'type': 1,
-      'value': 'menuAuditWait'
+      'key': 'menuAuditWait'
     },
     {
       'menuId': '22',
       'name': '我已审核',
       'path': '/approved',
       'type': 1,
-      'value': 'menuAudited'
+      'key': 'menuAudited'
     },
     {
       'menuId': '23',
       'name': '我的申请',
       'path': '/my-application',
       'type': 1,
-      'value': 'menuMyAudit'
+      'key': 'menuMyAudit'
     },
     {
       'menuId': '24',
       'name': '信息确认',
       'path': '/confirm-info',
       'type': 1,
-      'value': 'menuOrgConfirm'
+      'key': 'menuOrgConfirm'
     }
     ]
   },
@@ -68,35 +68,35 @@ export default {
     'name': '共享管理',
     'path': '',
     'type': 1,
-    'value': 'menuShare',
+    'key': ['menuShareViews', 'menuGroups', 'menuLabels', 'menuShareApplication'],
     'icon': 'fa fa-address-card-o',
     'list': [{
       'menuId': '31',
       'name': '视图管理',
       'path': '/view-management',
       'type': 1,
-      'value': 'menuShareViews'
+      'key': 'menuShareViews'
     },
     {
       'menuId': '32',
       'name': '分组管理',
       'path': '/group-management',
       'type': 1,
-      'value': 'menuGroups'
+      'key': 'menuGroups'
     },
     {
       'menuId': '33',
       'name': '标签管理',
       'path': '/tags-mnagement',
       'type': 1,
-      'value': 'menuLabels'
+      'key': 'menuLabels'
     },
     {
       'menuId': '34',
       'name': '应用管理',
       'path': '/app-management',
       'type': 1,
-      'value': 'menuShareApplication'
+      'key': 'menuShareApplication'
     }
     ]
   },
@@ -106,39 +106,39 @@ export default {
     'path': '',
     'type': 1,
     'icon': 'fa fa-bar-chart-o',
-    'value': 'menuStatistics',
+    'key': ['menuStatisticsData', 'menuSearchOrg', 'menuSearchDepartment', 'menuSearchUser', 'menuLogging'],
     'list': [{
       'menuId': '41',
       'name': '数据统计',
       'path': '/data-statistics',
       'type': 1,
-      'value': 'menuStatisticsData'
+      'key': 'menuStatisticsData'
     },
     {
       'menuId': '42',
       'name': '数据查询',
-      'value': 'menuSearchData',
+      'key': ['menuSearchOrg', 'menuSearchDepartment', 'menuSearchUser'],
       'path': '/data-query',
       'list': [{
         'menuId': '421',
         'name': '单位查询',
         'path': '/unit-query',
         'type': 1,
-        'value': 'menuSearchOrg'
+        'key': 'menuSearchOrg'
       },
       {
         'menuId': '422',
         'name': '部门查询',
         'path': '/department-query',
         'type': 1,
-        'value': 'menuSearchDepartment'
+        'key': 'menuSearchDepartment'
       },
       {
         'menuId': '423',
         'name': '人员查询',
         'path': '/member-query',
         'type': 1,
-        'value': 'menuSearchUser'
+        'key': 'menuSearchUser'
       }
       ]
     },
@@ -147,7 +147,7 @@ export default {
       'name': '系统日志',
       'path': '/data-log',
       'type': 1,
-      'value': 'menuLogging'
+      'key': 'menuLogging'
     }
     ]
   },
@@ -157,41 +157,41 @@ export default {
     'path': '',
     'type': 1,
     'icon': 'fa fa-cogs',
-    'value': 'menuSettings',
+    'key': ['menuRoles', 'menuDictionary', 'personalInfo', 'menuDictionary', 'preferencesSetting'],
     'list': [{
       'menuId': '51',
       'name': '角色权限',
       'path': '/role-manage',
       'type': 1,
-      'value': 'menuRoles'
+      'key': 'menuRoles'
     },
     {
       'menuId': '52',
       'name': '字典管理',
       'path': '/dictionary-manage',
       'type': 1,
-      'value': 'menuDictionary'
+      'key': 'menuDictionary'
     },
     {
       'menuId': '53',
       'name': '个人信息',
       'path': '/pass-change',
       'type': 1,
-      'value': 'personalInfo'
+      'key': 'personalInfo'
     },
     {
       'menuId': '54',
       'name': '权限配置',
       'path': '/authority-setting',
       'type': 1,
-      'value': 'menuDictionary'
+      'key': 'menuDictionary'
     },
     {
       'menuId': '55',
       'name': '偏好设置',
       'path': '/parameter-setting',
       'type': 1,
-      'value': 'preferencesSetting'
+      'key': 'preferencesSetting'
     }
     ]
   }
