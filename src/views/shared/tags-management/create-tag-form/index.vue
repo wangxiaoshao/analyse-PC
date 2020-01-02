@@ -26,7 +26,7 @@
           </el-form>
         </div>
         <span slot="footer" class="dialog-footer">
-    <el-button type="primary" @click="onSubmit">确 定</el-button>
+    <el-button type="primary" @click="onSubmit" :disabled="disabledBtn()">确 定</el-button>
     <el-button @click="handleClose">取 消</el-button>
   </span>
       </el-dialog>
@@ -35,11 +35,18 @@
 
 <script>
 import { api, urlNames } from '@src/api'
+import hasRight from '@src/mixins/has-right'
 export default {
   name: 'CreateTagForm',
   props: ['createTagDialogVisible', 'createData', 'flagdata'],
+  mixins: [hasRight],
   data () {
     return {
+      rightKey: {
+        1: 'labelOrgCreate',
+        2: 'labelDepartmentCreate',
+        3: 'labelUserCreate'
+      },
       labelForm: {
         type: 2,
         parentId: '',
@@ -50,6 +57,9 @@ export default {
   created () {
   },
   methods: {
+    disabledBtn () {
+      return !this.hasRight(this.rightKey[this.labelForm.type])
+    },
     // 创建标签
     onSubmit () {
       let parentId = null

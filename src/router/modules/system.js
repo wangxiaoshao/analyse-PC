@@ -27,7 +27,7 @@ export default [
     name: 'AuthoritySetting',
     component: AuthoritySetting,
     meta: {
-      key: 'menuDictionary'
+      key: 'menuRightSetting'
     }
   },
   // 角色管理
