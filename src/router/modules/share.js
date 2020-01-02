@@ -32,7 +32,7 @@ export default [
         component: GroupManagement
       },
       {
-        path: '/group-management/group-detail/:id',
+        path: '/group-management/group-detail/:id/:type',
         name: 'GroupDetail',
         component: GroupDetail
       },

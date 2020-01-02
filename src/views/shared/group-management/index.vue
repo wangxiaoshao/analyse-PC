@@ -172,7 +172,7 @@ export default {
       console.log(row)
     },
     handleClickToDetail (row) {
-      this.$router.push({ path: `/group-management/group-detail/${row.id}` })
+      this.$router.push({ path: `/group-management/group-detail/${row.id}/${row.ownerType}` })
     },
     // typeChange
     // 单位部门
