@@ -57,9 +57,9 @@
       <span>
         <slot name="AddBtn"></slot>
       </span>
-      <el-button @click="sortList">调整排序</el-button>
-      <el-button @click="exportUser">导出人员</el-button>
-      <el-button size="small" type="primary" @click="exportPerson">导入人员</el-button>
+      <el-button @click="sortList" :disabled="!hasRight('userOrder')">调整排序</el-button>
+      <el-button @click="exportUser" :disabled="!hasRight('userExport')">导出人员</el-button>
+      <el-button size="small" type="primary" @click="exportPerson" :disabled="!hasRight('userImport')">导入人员</el-button>
 
       <!-- <el-form class="uploadForm" :model="formFile" ref="formFile" enctype="multipart/form-data">
         <el-upload
@@ -117,8 +117,8 @@
       </el-table-column>
       <el-table-column prop="act" label="操作" width="200" align="center">
         <template slot-scope="scope">
-          <el-button @click.native.prevent="openEiditPerson(scope.row)" type="text" size="small">修改</el-button>
-          <el-button @click.native.prevent="calloutDialog(scope.row)" type="text" size="small">调出</el-button>
+          <el-button @click.native.prevent="openEiditPerson(scope.row)" type="text" size="small"  :disabled="!hasRight('userSetting')">修改</el-button>
+          <el-button @click.native.prevent="calloutDialog(scope.row)" type="text" size="small"  :disabled="!hasRight('userIdTransfe')">调出</el-button>
           <el-button
             v-if="scope.row.type === 1 || scope.row.type === '1'"
             @click.native.prevent="removeDuty(scope.row)"
@@ -130,6 +130,7 @@
             @click.native.prevent="removeDuty(scope.row)"
             type="text"
             size="small"
+            :disabled="!hasRight('userIdRemove')"
           >解除挂职</el-button>
         </template>
       </el-table-column>
@@ -154,8 +155,10 @@ import { api, urlNames } from '@src/api'
 import organizationEdit from '@src/mixins/organization'
 import SelectMembers from '@src/components/SelectMembers/index'
 import downloadBinaryFile from '@src/mixins/downloadBinaryFile'
+import HasRight from '@src/mixins/has-right'
+
 export default {
-  mixins: [handleTable, organizationEdit, downloadBinaryFile],
+  mixins: [handleTable, organizationEdit, downloadBinaryFile, HasRight],
   props: ['contentPage', 'id', 'sortFlag', 'type', 'exportData'],
   components: { SelectMembers },
   data () {

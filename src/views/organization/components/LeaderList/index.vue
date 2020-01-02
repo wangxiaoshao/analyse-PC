@@ -19,7 +19,7 @@
       </span>
     </el-dialog>
     <div class="button-wrap" v-if="mainLeaderList.length === 0">
-      <el-button type="primary" @click="addMainLeader(true,true,1)">添加主要领导</el-button>
+      <el-button type="primary" @click="addMainLeader(true,true,1)" :disabled="!hasRight('orgLeaderAdd')">添加主要领导</el-button>
     </div>
     <div class="list-ground">
       <el-table
@@ -73,7 +73,7 @@
     </div>
     <div class="list-ground">
       <div class="button-wrap">
-        <el-button type="primary" @click="addMainLeader(false,true,2)">添加领导</el-button>
+        <el-button type="primary" @click="addMainLeader(false,true,2)" :disabled="!hasRight('orgLeaderAdd')">添加领导</el-button>
        <!-- <el-button @click="sortFlag = true">调整排序</el-button>-->
       </div>
       <!--<div class="sort-do" v-if="sortFlag">
@@ -142,9 +142,11 @@ import Sortable from 'sortablejs'
 import handleTable from '@src/mixins/handle-table'
 import { api, urlNames } from '@src/api'
 import SelectMembers from '@src/components/SelectMembers/index'
+import HasRight from '@src/mixins/has-right'
+
 export default {
-  mixins: [handleTable],
-  props: ['nodeInfo', 'contentId', 'nodeData','nodeType'],
+  mixins: [handleTable, HasRight],
+  props: ['nodeInfo', 'contentId', 'nodeData', 'nodeType'],
   components: { SelectMembers },
   data () {
     return {

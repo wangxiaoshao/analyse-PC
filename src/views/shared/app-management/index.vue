@@ -1,7 +1,7 @@
 <template>
 <div class="app-management">
   <div class="create-app">
-    <el-button class="create-btn" type="primary" @click="createApp">创建应用</el-button>
+    <el-button class="create-btn" type="primary" @click="createApp" :disabled="!hasRight('shareAppCreate')">创建应用</el-button>
   </div>
   <div class="table">
     <el-table
@@ -57,9 +57,9 @@
         align="center"
         width="140">
         <template slot-scope="scope">
-          <el-button @click="handleClick(scope.row)" type="text" size="small">编辑</el-button>
-          <el-button  @click="toDataLog" type="text" size="small">日志</el-button>
-          <el-button  @click="toSetFields(scope.row)" type="text" size="small">配置</el-button>
+          <el-button @click="handleClick(scope.row)" type="text" size="small" :disabled="!hasRight('shareAppSetting')">编辑</el-button>
+          <el-button  @click="toDataLog" type="text" size="small" :disabled="!hasRight('shareAppLoggingAccess')">日志</el-button>
+          <el-button  @click="toSetFields(scope.row)" type="text" size="small">审核</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -78,8 +78,10 @@
 
 <script>
 import { api, urlNames } from '@src/api'
+import HasRight from '@src/mixins/has-right'
 export default {
   name: 'AppManagement',
+  mixins: [HasRight],
   data () {
     return {
       appList: [],

@@ -26,7 +26,7 @@
               <div class="popover" style="text-align: center; margin: 0">
                 <div style="border-bottom: 1px solid rgba(0, 0, 0, 0.1);padding: 5px 0;cursor: pointer" @click="goAddNode" v-if="showAddNodeFlag">添加节点</div>
                 <div style="border-bottom: 1px solid rgba(0, 0, 0, 0.1);padding: 5px 0;cursor: pointer" v-if="showAddDepartmentFlag" @click="goAddDepartment">添加内设机构</div>
-                <div style="padding: 5px 0;cursor: pointer" v-if="showAddUnitFlag" @click="goAddUnit">添加单位</div>
+                <div style="padding: 5px 0;cursor: pointer" v-if="showAddUnitFlag && hasRight('orgCreate')" @click="goAddUnit" >添加单位</div>
               </div>
               <el-button class="add-btn" slot="reference" :disabled="!hasRight('departmentCreate')">添加下级</el-button>
             </el-popover>
@@ -97,7 +97,7 @@
               @goExportPerson="goExportPerson"
             >
               <template slot="AddBtn">
-                <el-button class="add-btn" @click="openAddPerson" >添加人员</el-button>
+                <el-button class="add-btn" @click="openAddPerson" :disabled="!hasRight('userCreate')" >添加人员</el-button>
               </template>
             </person-list>
              <transition name="fade-transform" mode="out-in">
