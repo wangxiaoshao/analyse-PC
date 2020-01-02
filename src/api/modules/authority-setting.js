@@ -28,6 +28,13 @@ export default {
     serve: 'organizationManagePC',
     mock: 'system-setting/getDicListByType.json'
   },
+  [urlNames.getModuleAuthorityByRoleId]: {
+    type: 'get',
+    url: '/api/jg_manage/authority/findModuleAuthorityByRoleId',
+    keepOriginResponse: true,
+    serve: 'organizationManagePC',
+    mock: 'system-setting/updatePassword.json'
+  },
   [urlNames.addAuthorityToModule]: {
     type: 'post',
     url: '/api/jg_manage/authority/insertModuleAuthority',
