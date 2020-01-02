@@ -222,7 +222,7 @@ export default {
     this.setBreadcrumbTitle()
   },
   methods: {
-    ...mapMutations(['GET_OPTION']),
+    ...mapMutations(['SET_OPTION']),
     init () {
       if (this.$route.name === 'DepartmentAdd' || this.$route.name === 'DepartmentEdit') {
         if (this.$route.name === 'DepartmentAdd') {

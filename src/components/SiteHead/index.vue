@@ -4,7 +4,7 @@
       <div class="site__head-content">
         <div class="site__head--center">
          <div class="logo"><img :src="app.option.options.systemLogo"></div>
-          <div class="name"><h2>{{app.option.options.systemName}}</h2></div>
+          <div class="name"><h2>{{app.option.options.systemName || ''}}</h2></div>
         </div>
         <div class="site__head--right">
           <i class="ico fa fa-file-text-o"></i>
@@ -12,7 +12,7 @@
 <!--          <i class="ico fa fa-phone"></i>-->
 <!--          <a href="">联系我们</a>-->
           <span style="margin-right: 4px;">欢迎您!</span>
-          <span>{{app.option.user.name}}</span>
+          <span>{{app.option.user.name || ''}}</span>
           <a href="/api/gate/logout" class="ico fa fa-sign-in"></a>
         </div>
       </div>
@@ -61,7 +61,6 @@ export default {
     // console.log('>>>> systemName', this.systemName)
   },
   methods: {
-    ...mapMutations(['GET_OPTION']),
     goBack () {
       this.$emit('go-back')
     },

@@ -1,7 +1,8 @@
 <template>
   <div class="group-detail">
     <div class="add-member">
-      <el-button type="primary" @click="seleceDialog.selectMenmberFlag = true">添加成员</el-button>
+      <el-button type="primary"
+                 @click="seleceDialog.selectMenmberFlag = true">添加成员</el-button>
     </div>
     <el-table
       ref="singleTable"
@@ -67,11 +68,13 @@
 <script>
 import { api, urlNames } from '@src/api'
 import handleTable from '@src/mixins/handle-table'
+import hasRight from '@src/mixins/has-right'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
 import SelectMembers from '@src/components/SelectMembers/index'
+
 export default {
   name: 'GroupDetail',
-  mixins: [handleTable, handleBreadcrumb],
+  mixins: [handleTable, handleBreadcrumb, hasRight],
   components: {
     SelectMembers
   },
