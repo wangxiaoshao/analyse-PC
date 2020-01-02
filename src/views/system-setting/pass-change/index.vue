@@ -311,7 +311,12 @@ export default {
       api[urlNames['findSessionUserList']]().then((res) => {
         this.userList = res.data
         this.defaultName = res.data[0].name;
-        this.defaultDutyName = res.data[0].dutyName
+        this.userList.forEach(item => {
+          debugger
+          if(item.userId === this.app.option.user.identityId) {
+            this.defaultDutyName = item.dutyName;
+          }
+        })
       })
     },
 
@@ -321,8 +326,9 @@ export default {
         userId: id
       }).then((res) => {
         this.$message.success('切换成功')
-        this.$router.go(0) // 刷新页面
-      }, () => {
+        window.setTimeout(() => {
+          this.$router.go(0) // 刷新页面
+        }, 500)
       })
     },
     // 关闭选人弹窗
