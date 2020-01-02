@@ -24,7 +24,7 @@ Vue.use(elementUI, { size: 'medium' })
 
 Vue.prototype.$echarts = echarts
 // 请求权限配置参数
-let menusCtrl = []
+// let menusCtrl = []
 // api[urlNames['option']]().then((res) => {
 //   initRouter(res.data.menus)
 //   menusCtrl = res.data
@@ -33,15 +33,5 @@ let menusCtrl = []
 new Vue({
   router,
   store,
-  render: h => h(App),
-  created () {
-    // TODO 后端跳过单点登录，需要加上DEBUG_USER参数，正式环境需要去掉
-    // this.$cookie.set('DEBUG_USER', '')
-    // this.$cookie.set('SESSION', 'MWU5MTVhZGQtMDUyNy00MTZkLThlYjctOTcwOGVhNzE0YmE5')
-    // if (process.env.NODE_ENV !== 'production') {
-    //   this.$cookie.set('DEBUG_USER', '')
-    // } else {
-    //   this.$cookie.delete('DEBUG_USER')
-    // }
-  }
+  render: h => h(App)
 }).$mount('#app')
