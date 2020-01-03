@@ -199,6 +199,12 @@ export default {
   editAuthorityManage: 'editAuthorityManage',
   // 授权区域
   insertAuthorizedEntity: 'insertAuthorizedEntity',
-  findAuthorizedEntityByUid: 'findAuthorizedEntityByUid'
+  findAuthorizedEntityByUid: 'findAuthorizedEntityByUid',
+
+  /**
+   * 用户切换身份
+   */
+  changeSessionUserId: 'changeSessionUserId',
+  findSessionUserList: 'findSessionUserList',
 
 }

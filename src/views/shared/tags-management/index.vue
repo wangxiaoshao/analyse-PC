@@ -37,8 +37,12 @@
           </span>
         </span>
         <span class="custom-tree-float">
-          <span class="tag-icon-operate fa fa-plus-circle" @click="createTag(data, {flag:0,title:node.label})"></span>
-          <span class="tag-icon-operate fa fa-trash-o delete" @click="deleteLabel(data.id)"></span>
+          <span class="tag-icon-operate fa fa-plus-circle"
+                v-show="hasCreateRight(data.type)"
+                @click="createTag(data, {flag:0,title:node.label})"></span>
+          <span v-show="hasDeleteRight(data.type)"
+                class="tag-icon-operate fa fa-trash-o delete"
+                @click="deleteLabel(data.id)"></span>
         </span>
       </span>
       </el-tree>
@@ -52,6 +56,7 @@
 
 <script>
 import CreateTagForm from '@src/views/shared/tags-management/create-tag-form/index'
+import hasRight from '@src/mixins/has-right'
 import { api, urlNames } from '@src/api'
 
 export default {
@@ -59,6 +64,7 @@ export default {
   components: {
     CreateTagForm
   },
+  mixins: [hasRight],
   data () {
     return {
       createTagDialogVisible: false,
@@ -78,6 +84,26 @@ export default {
     this.findLabelList('-1', '')
   },
   methods: {
+    hasCreateRight (type) {
+      type = type + 0
+      if (type === 1) {
+        return this.hasRight('labelOrgCreate')
+      } else if (type === 2) {
+        return this.hasRight('labelDepartmentCreate')
+      } else if (type === 3) {
+        return this.hasRight('labelUserCreate')
+      }
+    },
+    hasDeleteRight (type) {
+      type = type + 0
+      if (type === 1) {
+        return this.hasRight('labelOrgRemove')
+      } else if (type === 2) {
+        return this.hasRight('labelDepartmentRemove')
+      } else if (type === 3) {
+        return this.hasRight('labelUserRemove')
+      }
+    },
     // 获取标签列表
     findLabelList (parentId, type) {
       api[urlNames['findLabelList']]({

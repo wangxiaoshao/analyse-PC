@@ -12,7 +12,10 @@ export default [
   {
     path: '/',
     name: 'default',
-    redirect: '/organization'
+    redirect: '/organization',
+    meta: {
+      'key': 'menuOrg'
+    }
   },
   // 组织机构详情页
   {
@@ -49,6 +52,9 @@ export default [
     path: '/organization',
     name: 'Organization',
     component: Organization,
+    meta: {
+      key: 'menuOrg'
+    },
     children: [
       {
         path: 'organization-content/:nodeId',

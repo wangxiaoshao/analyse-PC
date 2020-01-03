@@ -35,7 +35,18 @@
         </template>
       </el-table-column>
       <template slot-scope="{slotScope}" slot="operate">
-        <el-button size="mini" type="text" @click="goDetail(slotScope.row)">去审核</el-button>
+        <el-button size="mini" type="text" @click="goDetail(slotScope.row)"
+          :disabled="!(hasRight('auditUserCreate')
+          && hasRight('auditUserUpdate')
+          && hasRight('auditUserRemove')
+          && hasRight('auditOrgCreate')
+          && hasRight('auditOrgUpdate')
+          && hasRight('auditDepartmentCreate')
+          && hasRight('auditDepartmentUpdate')
+          && hasRight('auditOrgRemove')
+          && hasRight('auditDepartmentRemove')
+        )"
+      >去审核</el-button>
       </template>
     </site-table>
     <!--分页-->
@@ -57,10 +68,10 @@ import SiteTable from '@src/components/SiteTable/index.vue'
 import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
 import tableConfig from './tableConfig'
-
+import HasRight from '@src/mixins/has-right'
 export default {
   components: { SiteTable },
-  mixins: [handleTable],
+  mixins: [handleTable, HasRight],
   data () {
     return {
       tableConfig,

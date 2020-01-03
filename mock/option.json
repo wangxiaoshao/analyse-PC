@@ -57,6 +57,9 @@
       "userImport",
       "userIdTransfe",
       "viewNodeCreate",
+      "viewCreate",
+      "viewSetting",
+      "viewSettingMembers",
       "searchOrg",
       "auditOrgCreate"
     ],
@@ -69,8 +72,19 @@
       "orgId": "-3631625248176780884",
       "deptId": "5308292219674707254"
     },
-    "menus": []
+    "menus": [
+      "menuOrg",
+      "menuAudit",
+      "menuShare",
+      "menuStatistics",
+      "menuOrgManage",
+      "menuAddrBook",
+      "menuAudited",
+      "menuOrgConfirm",
+      "menuShareViews",
+      "preferencesSetting"
+    ]
   },
   "status": 0,
-  "timestamp": "2020-01-02 15:17:18"
+  "timestamp": "2020-01-02 20:28:15"
 }

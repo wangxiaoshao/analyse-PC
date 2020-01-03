@@ -20,12 +20,18 @@ export default [
   { // 数据统计
     path: '/data-statistics',
     name: 'DataStatistics',
-    component: DataStatistics
+    component: DataStatistics,
+    meta: {
+      key: 'menuStatisticsData'
+    }
   },
   { // 单位查询
     path: '/unit-query',
     name: 'UnitQuery',
     component: UnitQuery,
+    meta: {
+      key: 'menuSearchOrg'
+    },
     children: [
       {
         path: '/',
@@ -45,6 +51,9 @@ export default [
     path: '/department-query',
     name: 'DepartmentQuery',
     component: DepartmentQuery,
+    meta: {
+      key: 'menuSearchDepartment'
+    },
     children: [
       {
         path: '/',
@@ -64,6 +73,9 @@ export default [
     path: '/member-query',
     name: 'MemberQuery',
     component: MemberQuery,
+    meta: {
+      key: 'menuSearchUser'
+    },
     children: [
       {
         path: '/',
@@ -82,7 +94,10 @@ export default [
   { // 系统日志
     path: '/data-log',
     name: 'DataLog',
-    component: DataLog
+    component: DataLog,
+    meta: {
+      key: 'menuLogging'
+    }
   }
 ]
 

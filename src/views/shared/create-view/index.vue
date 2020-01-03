@@ -10,8 +10,10 @@
                   <el-form-item label="视图名称" prop="name">
                     <el-input v-model="ViewFrom.name"></el-input>
                   </el-form-item>
-                  <el-form-item label="视图管理员">
-                    <el-select v-model="ViewFrom.roleBindUserIds" @remove-tag="removeManager" multiple
+                  <el-form-item label="视图管理员" >
+                    <el-select
+                      :disabled="!hasRight('viewSettingManager')"
+                     v-model="ViewFrom.roleBindUserIds" @remove-tag="removeManager" multiple
                                placeholder="请选择">
                       <el-option
                         v-for="item in adminList"
@@ -138,10 +140,11 @@
 import handleTable from '@src/mixins/handle-table'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
 import { api, urlNames } from '@src/api'
+import HasRight from '@src/mixins/has-right'
 
 export default {
   name: 'CreateView',
-  mixins: [handleTable, handleBreadcrumb],
+  mixins: [handleTable, handleBreadcrumb, HasRight],
   data () {
     return {
       defaultexpandedkeys: '-1730833917365171641',

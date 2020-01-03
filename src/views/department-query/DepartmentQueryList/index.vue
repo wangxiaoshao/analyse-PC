@@ -31,7 +31,9 @@
             </el-autocomplete>
           </el-col>
           <el-col :span="5" class="text-right">
-            <el-button type="primary" plain @click="getGrid">查询</el-button>
+            <el-button type="primary" plain @click="getGrid"
+              :disabled="!hasRight('searchDepartment')"
+            >查询</el-button>
           </el-col>
         </el-row>
       </el-col>
@@ -65,10 +67,11 @@ import SiteTable from '@src/components/SiteTable/index.vue'
 import tableConfig from './tableConfig'
 import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
+import HasRight from '@src/mixins/has-right'
 
 export default {
   components: { SiteTable },
-  mixins: [handleTable],
+  mixins: [handleTable, HasRight],
   data () {
     return {
       tableConfig,

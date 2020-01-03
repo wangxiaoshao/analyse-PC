@@ -5,7 +5,7 @@
       <el-button
         size="small"
         type="primary"
-        :disabled="!app.confirmState"
+        :disabled="!app.confirmState || !hasRight('orgMemberConfirm')"
         @click="getConfirmMemberList"
         >确认机构人员信息
       </el-button>
@@ -52,7 +52,7 @@
         </template>
       </el-table-column>
       <template slot-scope="{slotScope}" slot="operate">
-        <el-button size="mini" type="text" @click="goConfig(slotScope.row)">人员明细</el-button>
+        <el-button size="mini" type="text" @click="goConfig(slotScope.row)" :disabled="!hasRight('orgMemberConfirmAccess')">人员明细</el-button>
       </template>
     </site-table>
     <!--编辑dialog-->
@@ -86,10 +86,11 @@ import confirmedTable from './confirmedTable'
 import unconfirmedTable from './unconfirmedTable'
 import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
+import HasRight from '@src/mixins/has-right'
 
 export default {
   components: { SiteTable },
-  mixins: [handleTable],
+  mixins: [handleTable, HasRight],
   data () {
     return {
       reRenderTable: true,

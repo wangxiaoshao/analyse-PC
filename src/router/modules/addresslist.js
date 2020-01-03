@@ -12,6 +12,9 @@ export default [
     path: '/address-list',
     name: 'AddressList',
     component: AddressList,
+    meta: {
+      key: 'menuAddrBook'
+    }
   },
   {
     path: '/department',

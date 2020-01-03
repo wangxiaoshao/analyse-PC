@@ -19,7 +19,10 @@ export default [
       {
         path: '/view-management',
         name: 'ViewManagement',
-        component: ViewManagement
+        component: ViewManagement,
+        meta: {
+          key: 'menuShareViews'
+        }
       },
       {
         path: '/view-management/create-view/:id',
@@ -29,7 +32,10 @@ export default [
       {
         path: '/group-management',
         name: 'GroupManagement',
-        component: GroupManagement
+        component: GroupManagement,
+        meta: {
+          key: 'menuGroups'
+        }
       },
       {
         path: '/group-management/group-detail/:id/:type',
@@ -39,7 +45,10 @@ export default [
       {
         path: '/app-management',
         name: 'AppManagement',
-        component: AppManagement
+        component: AppManagement,
+        meta: {
+          key: 'menuShareApplication'
+        }
       },
       {
         path: '/app-management/create-app-management',
@@ -54,7 +63,10 @@ export default [
       {
         path: '/tags-mnagement',
         name: 'TagsManagement',
-        component: TagsManagement
+        component: TagsManagement,
+        meta: {
+          key: 'menuLabels'
+        }
       }
     ]
   }

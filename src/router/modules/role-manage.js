@@ -10,6 +10,9 @@ export default [
     path: '/role-manage',
     name: 'RoleManage',
     component: RoleManage,
+    meta: {
+      key: 'menuRoles'
+    },
     children: [
       {
         path: '',
