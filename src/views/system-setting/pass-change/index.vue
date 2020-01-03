@@ -29,7 +29,6 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-
     <el-row :gutter="20">
       <el-col :span="6">
         <div class="account-info">
@@ -245,7 +244,6 @@ export default {
     }
   },
   created () {
-    console.log(this.$route)
     this.getUserDetail(this.app.option.user.uid)
     this.getIdentity(this.app.option.user.identityId)
     api[urlNames['findUserAccountByUid']]().then(
@@ -394,7 +392,6 @@ export default {
     },
 
     selectAccount (item, index) {
-      console.log(item, index)
       this.currentIndex = index
       this.currentSetAccount = item
     },
