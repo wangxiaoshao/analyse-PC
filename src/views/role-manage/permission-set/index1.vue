@@ -69,6 +69,7 @@ import { mapState } from 'vuex'
 export default {
   data () {
     return {
+      menuAuthList: [],
 
       tableList: [
         {
@@ -122,23 +123,40 @@ export default {
   },
   created () {
     // this.moduleTitleList = this.$store.state.app.option.menus
-    this.getModuleList()
+    this.sortModuleList()
   },
   computed: {
     ...mapState(['app'])
   },
   methods: {
+    // 对菜单进行分类
     sortModuleList () {
-      let obj = {}
-      this.$store.state.app.option.menus.forEach(item => {
-        if (obj.hasOwnProperty(item.moduleName)) {
-          obj.menus.id = item.moduleName
-          obj.menus.moduleNamelist.push(item.authorityName)
+      let menuList = this.$store.state.app.option.menus;
+      let obj = {};
+      menuList.forEach(item => {
+        if (obj[item.moduleName])  {
+          obj[item.moduleName].authorityList.push({
+            authorityName: item.authorityName,
+            authorityTitle: item.authorityTitle,
+          })
         } else {
-          obj.menusId = item.moduleName
-          obj.list.push(item.authorityName)
+          obj[item.moduleName] = {
+            menuList: {
+              moduleName: item.authorityName,
+              moduleTitle: item.moduleTitle,
+            },
+            authorityList : [{
+              authorityName: item.authorityName,
+              authorityTitle: item.authorityTitle,
+            }]
+          }
         }
       })
+      Object.keys(obj).forEach((key) => {
+        this.menuAuthList.push(obj[key]);
+      })
+      console.log(obj)
+      console.log(this.menuAuthList)
     },
     getModuleList () {
       let that = this
