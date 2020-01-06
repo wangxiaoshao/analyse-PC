@@ -56,14 +56,19 @@ export default {
         let len = this.menuItem.key.length
         for (let i = 0; i < len; i++) {
           let key = this.menuItem.key[i]
-          if (this.$store.state.app.option.menus && this.$store.state.app.option.menus.indexOf(key) > -1) {
+          let hasKey = this.$store.state.app.option.menus.find(item => {
+            return item.moduleName === key;
+          });
+          if (this.$store.state.app.option.menus && hasKey) {
             hasRight = true
             break
           }
         }
         return hasRight
       } else {
-        return this.$store.state.app.option.menus.indexOf(this.menuItem.key) > -1
+        return this.$store.state.app.option.menus.find(item => {
+          return item.moduleName === this.menuItem.key;
+        });
       }
     }
   },
