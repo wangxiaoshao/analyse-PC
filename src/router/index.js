@@ -12,7 +12,10 @@ const initRouter = (menus) => {
   router.beforeEach((to, from, next) => {
     let route = to.matched[0]
     if (route.meta && route.meta.key) {
-      if (menus.indexOf(route.meta.key) > -1) {
+      let flag = menus.find(item => {
+        return item.moduleName === route.meta.key;
+      });
+      if (flag) {
         next()
       } else {
         next('/no-right')
