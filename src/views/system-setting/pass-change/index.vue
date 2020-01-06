@@ -29,7 +29,6 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-
     <el-row :gutter="20">
       <el-col :span="6">
         <div class="account-info">
@@ -42,8 +41,9 @@
           <!--</div>-->
           <el-dropdown>
           <span class="el-dropdown-link">
+             当前身份:
             <el-button type="primary">
-              当前身份: {{defaultDutyName}}
+              {{defaultDutyName}}
               <i class="el-icon-arrow-down el-icon--right"></i>
             </el-button>
           </span>
@@ -259,7 +259,6 @@ export default {
     }
   },
   created () {
-    console.log(this.$route)
     this.getUserDetail(this.app.option.user.uid)
     this.getIdentity(this.app.option.user.identityId)
     api[urlNames['findUserAccountByUid']]().then(
@@ -274,7 +273,7 @@ export default {
         this.accountInfoList = []
       }
     )
-    this.findSessionUserList();
+    this.findSessionUserList()
   },
   mounted () {
     this.getUserDetail(this.app.option.user.uid)
@@ -307,20 +306,20 @@ export default {
     },
 
     // 获取用户身份列表
-    findSessionUserList() {
+    findSessionUserList () {
       api[urlNames['findSessionUserList']]().then((res) => {
         this.userList = res.data
-        this.defaultName = res.data[0].name;
+        this.defaultName = res.data[0].name
         this.userList.forEach(item => {
-          if(item.userId === this.app.option.user.identityId) {
-            this.defaultDutyName = item.dutyName;
+          if (item.userId === this.app.option.user.identityId) {
+            this.defaultDutyName = item.dutyName
           }
         })
       })
     },
 
     // 切换用户身份
-    changeSessionUser(id) {
+    changeSessionUser (id) {
       api[urlNames['changeSessionUserId']]({
         userId: id
       }).then((res) => {
@@ -434,7 +433,6 @@ export default {
     },
 
     selectAccount (item, index) {
-      console.log(item, index)
       this.currentIndex = index
       this.currentSetAccount = item
     },

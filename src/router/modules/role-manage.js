@@ -1,7 +1,7 @@
 const RoleManage = () => import('@src/views/role-manage/index.vue')
 const RoleList = () => import('@src/views/role-manage/role-list/index.vue')
 const lookPersonPermission = () => import('@src/views/role-manage/look-person-permission/index.vue')
-const PermissionSet = () => import('@src/views/role-manage/permission-set/index.vue')
+const PermissionSet = () => import('@src/views/role-manage/permission-set/index1.vue')
 const ScopeAuthorization = () => import('@src/views/role-manage/scope-authorization/index.vue')
 /* 路由 */
 export default [

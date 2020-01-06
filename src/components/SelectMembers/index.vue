@@ -301,7 +301,6 @@ export default {
           const label = JSON.stringify(member)
           that.removeFromMemberModel(label)
           that.removeSelectedMember(member)
-
           const indexOf = that.membersModel.indexOf(label)
           if (indexOf !== -1) {
             that.membersModel.splice(indexOf, 1)

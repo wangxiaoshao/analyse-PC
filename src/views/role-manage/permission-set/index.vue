@@ -57,126 +57,126 @@
 </template>
 
 <script>
-  import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
-  import { api, urlNames } from '@src/api'
-  export default {
-    mixins: [handleBreadcrumb],
-    data () {
-      return {
-        selectTreeId: -1, // 默认选中id
-        moduleList: [], // 菜单列表
-        authorityList: [], // 操作列表
-        treeSelectData: {},
-        tableSelectData: [],
-        roleId: this.$route.params.id,
-        defaultNode: [],
+import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
+import { api, urlNames } from '@src/api'
+export default {
+  mixins: [handleBreadcrumb],
+  data () {
+    return {
+      selectTreeId: -1, // 默认选中id
+      moduleList: [], // 菜单列表
+      authorityList: [], // 操作列表
+      treeSelectData: {},
+      tableSelectData: [],
+      roleId: this.$route.params.id,
+      defaultNode: []
+    }
+  },
+  created () {
+    this.getModuleList()
+  },
+  mounted () {
+    this.pushBreadcrumb({
+      name: '权限配置',
+      parent: {
+        name: 'lookPersonPermission',
+        query: {
+          type: 'back'
+        }
       }
-    },
-    created () {
-      this.getModuleList();
-    },
-    mounted () {
-      this.pushBreadcrumb({
-        name: '权限配置',
-        parent: {
-          name: 'lookPersonPermission',
-          query: {
-            type: 'back'
-          }
+    })
+  },
+  computed: {
+  },
+  methods: {
+    // 获取所有菜单
+    getModuleList () {
+      api[urlNames['getModuleAuthorityByRoleId']]({
+        roleId: this.roleId
+      }).then(res => {
+        this.moduleList = res.data
+        if (this.moduleList.length > 0) {
+          this.selectTreeId = this.moduleList[0].id
+          this.defaultNode.push(this.moduleList[0].id)
+          this.treeSelectData = this.moduleList[0]
+          this.getAuthorityList(this.selectTreeId)
         }
       })
     },
-    computed: {
+
+    // 获取菜单下的权限
+    getAuthorityList (val) {
+      api[urlNames['getAuthorityByModuleId']]({
+        moduleId: val,
+        roleId: this.roleId
+      }).then(res => {
+        this.tableSelectData = []
+        this.authorityList = res.data
+        this.authorityList.forEach(item => {
+          if (item.isAuthority) {
+            this.tableSelectData.push(item)
+          }
+        })
+        // 更新DOM之后
+        this.$nextTick(() => {
+          this.initTableSelect(this.tableSelectData)
+        })
+      })
     },
-    methods: {
-      // 获取所有菜单
-      getModuleList () {
-        api[urlNames['getModuleAuthorityByRoleId']]({
-          roleId: this.roleId
-        }).then(res => {
-          this.moduleList = res.data;
-          if(this.moduleList.length > 0) {
-            this.selectTreeId = this.moduleList[0].id;
-            this.defaultNode.push(this.moduleList[0].id);
-            this.treeSelectData = this.moduleList[0];
-            this.getAuthorityList(this.selectTreeId);
-          }
-        })
-      },
 
-      // 获取菜单下的权限
-      getAuthorityList(val) {
-        api[urlNames['getAuthorityByModuleId']]({
-          moduleId: val,
-          roleId: this.roleId
-        }).then(res => {
-          this.tableSelectData = [];
-          this.authorityList = res.data;
-          this.authorityList.forEach(item => {
-            if(item.isAuthority) {
-              this.tableSelectData.push(item);
-            }
-          })
-          // 更新DOM之后
-          this.$nextTick(()=>{
-            this.initTableSelect(this.tableSelectData);
-          });
-        })
-      },
-
-      // 初始化默认选中权限
-      initTableSelect(data) {
-        data.forEach(item => {
-          this.$refs.authorityTable.toggleRowSelection(item,true);
-        })
-      },
-      // 切换tree节点
-      selectTreeNode(data) {
-        if(this.selectTreeId !== data.id) {
-          this.selectTreeId = data.id;
-          this.treeSelectData = data;
-          this.getAuthorityList(this.selectTreeId);
-        }
-      },
-
-      // 勾选数据
-      handleSelectionChange(data) {
-        this.tableSelectData = data
-      },
-
-      // 保存
-      saveAuthorityManage() {
-       console.log(this.authorityList)
-       console.log(this.tableSelectData)
-        this.authorityList.forEach((item)=>{
-          for(let i =0;i<this.tableSelectData.length;i++) {
-            if(item.id === this.tableSelectData[i].id) {
-              item.isAuthority = true;
-              break;
-            }else {
-              item.isAuthority = false;
-            }
-          }
-          if(this.tableSelectData.length === 0) {
-            item.isAuthority = false;
-          }
-        });
-        api[urlNames['editAuthorityManage']]({
-          roleId: this.roleId,
-          authorityManageVos: this.authorityList
-        }).then(res => {
-          if(res.status === 0) {
-            this.$message.success(`保存成功`)
-          }
-        })
-      },
-
-      // 取消
-      cancel() {
+    // 初始化默认选中权限
+    initTableSelect (data) {
+      data.forEach(item => {
+        this.$refs.authorityTable.toggleRowSelection(item, true)
+      })
+    },
+    // 切换tree节点
+    selectTreeNode (data) {
+      if (this.selectTreeId !== data.id) {
+        this.selectTreeId = data.id
+        this.treeSelectData = data
         this.getAuthorityList(this.selectTreeId)
       }
+    },
+
+    // 勾选数据
+    handleSelectionChange (data) {
+      this.tableSelectData = data
+    },
+
+    // 保存
+    saveAuthorityManage () {
+      console.log(this.authorityList)
+      console.log(this.tableSelectData)
+      this.authorityList.forEach((item) => {
+        for (let i = 0; i < this.tableSelectData.length; i++) {
+          if (item.id === this.tableSelectData[i].id) {
+            item.isAuthority = true
+            break
+          } else {
+            item.isAuthority = false
+          }
+        }
+        if (this.tableSelectData.length === 0) {
+          item.isAuthority = false
+        }
+      })
+      api[urlNames['editAuthorityManage']]({
+        roleId: this.roleId,
+        authorityManageVos: this.authorityList
+      }).then(res => {
+        if (res.status === 0) {
+          this.$message.success(`保存成功`)
+        }
+      })
+    },
+
+    // 取消
+    cancel () {
+      this.getAuthorityList(this.selectTreeId)
     }
   }
+}
 </script>
 
 <style lang="less">
