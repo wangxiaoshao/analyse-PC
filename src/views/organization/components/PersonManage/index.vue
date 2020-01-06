@@ -516,7 +516,6 @@ export default {
               }
               this.loadFlag = false
               this.list = res.data
-              console.log(this.list)
             },
             () => {
               this.list = []
