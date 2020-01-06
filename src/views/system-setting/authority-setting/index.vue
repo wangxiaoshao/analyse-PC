@@ -2,7 +2,7 @@
   <el-container class="authority-setting">
     <el-row class="authority-row">
       <el-col :span="6" style="height: 100%">
-        <h2 style="margin-bottom: 20px">菜单列表:</h2>
+        <h2 style="margin-bottom: 20px">全部模块:</h2>
         <el-tree
           ref="moduleTree"
           :data="moduleList"
