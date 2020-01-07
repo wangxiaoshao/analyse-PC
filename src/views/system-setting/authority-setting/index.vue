@@ -11,7 +11,7 @@
           :default-checked-keys="defaultNode"
           @node-click="selectTreeNode"
         >
-          <span class=" svg-container" slot-scope="{ node, data }">
+          <span class="svg-container" slot-scope="{ node, data }">
             <span :class="[data.id===selectTreeId ?'active':'noActive']" class="iconfont icondanwei"></span>
             <span :class="[data.id===selectTreeId ?'active':'noActive']" style="margin-left:3px;">{{node.label}}</span>
           </span>

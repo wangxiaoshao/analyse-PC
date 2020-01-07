@@ -54,6 +54,7 @@ export default {
     // systemName () {
     //   // return this.app.option.options.systemName
     //   return this.$store.state.app.option.options.systemName
+
     // }
   },
   created () {
