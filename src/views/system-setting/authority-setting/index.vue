@@ -134,9 +134,11 @@ export default {
         for (let i = 0; i < that.tableSelectData.length; i++) {
           if (item.id === that.tableSelectData[i].id) {
             item.isAuthority = true
+            item.authorityId = item.id
             break
           } else {
             item.isAuthority = false
+            item.authorityId = item.id
           }
         }
         if (that.tableSelectData.length === 0) {
