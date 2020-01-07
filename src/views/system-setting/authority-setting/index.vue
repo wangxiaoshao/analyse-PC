@@ -149,7 +149,6 @@ export default {
         // let selectData = this.tableSelectData.map(item => {
         //   return { authorityId: item.id }
         // })
-        console.log(this.authorityList)
         api[urlNames['addAuthorityToModule']]({
           moduleId: this.selectTreeId,
           moduleAuthorityEntityList: this.authorityList
