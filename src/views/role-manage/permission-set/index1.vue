@@ -152,3 +152,4 @@ export default {
 <style lang="less">
   @import "index1";
 </style>
+

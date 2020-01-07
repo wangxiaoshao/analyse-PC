@@ -207,6 +207,7 @@ export default {
    * 用户切换身份
    */
   changeSessionUserId: 'changeSessionUserId',
-  findSessionUserList: 'findSessionUserList'
+  findSessionUserList: 'findSessionUserList',
+  logout: 'logout'
 
 }
