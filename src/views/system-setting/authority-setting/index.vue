@@ -56,8 +56,10 @@
 </template>
 
 <script>
+  import getUserInfo from '@src/mixins/getUserInfo'
 import { api, urlNames } from '@src/api'
 export default {
+  mixins: [getUserInfo],
   data () {
     return {
       selectTreeId: -1, // 默认选中id
@@ -131,35 +133,28 @@ export default {
     saveAuthorityManage () {
       let that = this
       this.authorityList.forEach((item) => {
+        item.authorityId = item.id
         for (let i = 0; i < that.tableSelectData.length; i++) {
           if (item.id === that.tableSelectData[i].id) {
             item.isAuthority = true
-            item.authorityId = item.id
             break
           } else {
             item.isAuthority = false
-            item.authorityId = item.id
           }
         }
         if (that.tableSelectData.length === 0) {
           item.isAuthority = false
         }
       })
-      if (this.tableSelectData.length <= 0) {
-        this.$message.error(`至少勾选一个操作！`)
-      } else {
-        // let selectData = this.tableSelectData.map(item => {
-        //   return { authorityId: item.id }
-        // })
-        api[urlNames['addAuthorityToModule']]({
-          moduleId: this.selectTreeId,
-          moduleAuthorityEntityList: this.authorityList
-        }).then(res => {
-          if (res.status === 0) {
-            this.$message.success(`保存成功`)
-          }
-        })
-      }
+      api[urlNames['addAuthorityToModule']]({
+        moduleId: this.selectTreeId,
+        moduleAuthorityEntityList: this.authorityList
+      }).then(res => {
+        if (res.status === 0) {
+          // this.getGlobalInfo();
+          this.$message.success(`保存成功`)
+        }
+      })
     },
 
     // 取消

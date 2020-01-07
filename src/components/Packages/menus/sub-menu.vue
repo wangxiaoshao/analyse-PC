@@ -50,25 +50,47 @@ export default {
   },
   methods: {
     isShowMenu () {
-      // return true
+      let menuList = this.$store.state.app.option.menus
+      let actionList = this.$store.state.app.option.actions
       if (Array.isArray(this.menuItem.key)) {
-        let hasRight = false
+        let flag = false
         let len = this.menuItem.key.length
         for (let i = 0; i < len; i++) {
           let key = this.menuItem.key[i]
-          let hasKey = this.$store.state.app.option.menus.find(item => {
+          if(key === 'menuAddrBook') {
+            return true;
+          }
+          let tempMenu = menuList.filter(item => {
             return item.moduleName === key
           })
-          if (this.$store.state.app.option.menus && hasKey) {
-            hasRight = true
-            break
-          }
+          tempMenu.forEach(item => {
+            for(let j = 0; j < actionList.length; j++) {
+              if(item.authorityName === actionList[j]) {
+                flag = true;
+                break;
+              }
+            }
+          })
         }
-        return hasRight
+        return flag
       } else {
-        return this.$store.state.app.option.menus.find(item => {
+        let flag = false;
+        if(this.menuItem.key === 'menuAddrBook') {// 显示通信录
+          return true;
+        }
+
+        let tempMenu = menuList.filter(item => {
           return item.moduleName === this.menuItem.key
         })
+        tempMenu.forEach(item => {
+          for(let j = 0; j < actionList.length; j++) {
+            if(item.authorityName === actionList[j]) {
+              flag = true;
+              break;
+            }
+          }
+        })
+        return flag;
       }
     }
   },
@@ -77,6 +99,7 @@ export default {
       return util.isEmptyArray(this.menuItem.list) && util.isEmptyArray(this.menuItem.list)
     },
     isGroup () {
+      console.log(this.menuItem.group && this.menuItem.group.length > 0)
       return this.menuItem.group && this.menuItem.group.length > 0
     },
     isSubMenu () {

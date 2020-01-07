@@ -18,7 +18,7 @@ export default [
     name: 'ParameterSettings',
     component: ParameterSetting,
     meta: {
-      key: 'preferencesSetting'
+      key: 'menuPreferencesSetting'
     }
   },
   // 权限配置

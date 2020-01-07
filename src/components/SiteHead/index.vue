@@ -14,7 +14,12 @@
           <span style="margin-right: 4px;">欢迎您!</span>
           <span>{{app.option.user.name || ''}}</span>
 
-          <a class="ico fa fa-sign-in" title="退出登录"  @click.prevent="goLogout"></a>
+          <a
+            style="cursor: pointer"
+            class="ico fa fa-sign-in"
+            title="退出登录"
+            target="_self"
+            :href="logoutURL"></a>
         </div>
       </div>
     </div>
@@ -45,40 +50,22 @@ export default {
   },
   data () {
     return {
-      logoutUrl: '',
+      logoutURL: '',
       url: window.location.host
     }
   },
   computed: {
     ...mapState(['app'])
-    // systemName () {
-    //   // return this.app.option.options.systemName
-    //   return this.$store.state.app.option.options.systemName
-    // }
+
   },
   created () {
-    // this.getLoginOutUrl()
-    // console.log('----------', this.$store)
-    // console.log('this.$store.state.app.option.options', this.$store.state.app.option.options)
-    // console.log('>>>> systemName', this.systemName)
+   this.logoutURL = '/api/gate/logout';
   },
   methods: {
     goBack () {
       this.$emit('go-back')
     },
-    goLogout () {
-      api[urlNames['logout']]().then((res) => {
 
-      })
-    },
-    getLoginOutUrl () {
-      api[urlNames['logoutUrl']]({
-      }).then((res) => {
-        if (res.status === 0) {
-          this.logoutUrl = res.data
-        }
-      })
-    },
     handleCommand (command) {
       if (command === 'logout') {
         this.$store.dispatch('Logout').then(() => {

@@ -44,11 +44,13 @@
 </template>
 <script>
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
+import getUserInfo from '@src/mixins/getUserInfo'
 import { api, urlNames } from '@src/api'
 export default {
-  mixins: [handleBreadcrumb],
+  mixins: [handleBreadcrumb, getUserInfo],
   data () {
     return {
+      menuList: [],
       menuAuthList: [], // 分类后的菜单
       defaultSelect: this.$store.state.app.option.actions, // 默认选中操作
       allAction: [], // 所有操作
@@ -57,7 +59,7 @@ export default {
     }
   },
   created () {
-    this.sortModuleList()
+    this.getMenuList()
   },
   mounted () {
     this.pushBreadcrumb({
@@ -72,8 +74,7 @@ export default {
   },
   methods: {
     // 对菜单进行分类
-    sortModuleList () {
-      let menuList = this.$store.state.app.option.menus
+    sortModuleList (menuList) {
       let obj = {}
       menuList.forEach(item => {
         if (item.authorityId) {
@@ -119,6 +120,14 @@ export default {
       this.checkboxtSelect = val
     },
 
+    // 获取菜单
+    getMenuList() {
+      api[urlNames['option']]().then((res) => {
+        this.menuList = res.data.menus;
+        this.sortModuleList(this.menuList)
+      })
+    },
+
     // 保存
     saveAuthorityManage () {
       this.allAction.forEach(item => {
@@ -138,6 +147,7 @@ export default {
           this.$message.success(`保存成功`)
           this.allAction = []
           this.sortModuleList()
+          this.getGlobalInfo()
         }
       })
     },
