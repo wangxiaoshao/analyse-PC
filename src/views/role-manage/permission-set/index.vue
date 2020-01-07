@@ -115,6 +115,7 @@ export default {
       Object.keys(obj).forEach((key) => {
         this.menuAuthList.push(obj[key])
       })
+      console.log(this.menuAuthList)
     },
     selectChange (val) {
       this.checkboxtSelect = val

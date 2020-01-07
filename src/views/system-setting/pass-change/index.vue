@@ -472,8 +472,10 @@ export default {
         id: this.currentSetAccount.id
       }).then(
         res => {
+          this.$message.success('重置密码')
         },
-        () => {}
+        () => {
+        }
       )
     },
 
