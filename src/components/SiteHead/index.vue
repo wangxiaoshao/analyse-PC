@@ -13,7 +13,8 @@
 <!--          <a href="">联系我们</a>-->
           <span style="margin-right: 4px;">欢迎您!</span>
           <span>{{app.option.user.name || ''}}</span>
-          <a href="/api/gate/logout" class="ico fa fa-sign-in"></a>
+
+          <a class="ico fa fa-sign-in" title="退出登录"  @click.prevent="goLogout"></a>
         </div>
       </div>
     </div>
@@ -44,7 +45,8 @@ export default {
   },
   data () {
     return {
-      logoutUrl: ''
+      logoutUrl: '',
+      url: window.location.host
     }
   },
   computed: {
@@ -63,6 +65,11 @@ export default {
   methods: {
     goBack () {
       this.$emit('go-back')
+    },
+    goLogout () {
+      api[urlNames['logout']]().then((res) => {
+
+      })
     },
     getLoginOutUrl () {
       api[urlNames['logoutUrl']]({

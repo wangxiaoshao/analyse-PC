@@ -69,7 +69,6 @@ import { mapState } from 'vuex'
 export default {
   data () {
     return {
-
       tableList: [
         {
           modelName: '组织机构',
@@ -141,27 +140,7 @@ export default {
       })
     },
     getModuleList () {
-      let that = this
-      let newAry = []
-
-      let obj1 = {
-        authorityTitle: [],
-        authorityName: []
-      }
-      let obj = {
-      }
       this.moduleTitleList = this.$store.state.app.option.menus
-      this.moduleTitleList.forEach(function (item) {
-        if (obj.hasOwnProperty(item.moduleName)) {
-          obj1.authorityTitle.push(item.authorityTitle)
-          obj1.authorityName.push(item.authorityName)
-        } else {
-          let obj2 = {}
-          obj2.moduleName = item.moduleName
-          obj2.moduleTitle = item.moduleTitle
-          newAry.push(obj2)
-        }
-      })
     },
     selectChange (val) {
 

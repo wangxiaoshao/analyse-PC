@@ -129,16 +129,30 @@ export default {
 
     // 保存
     saveAuthorityManage () {
-      console.log(this.tableSelectData)
+      let that = this
+      this.authorityList.forEach((item) => {
+        for (let i = 0; i < that.tableSelectData.length; i++) {
+          if (item.id === that.tableSelectData[i].id) {
+            item.isAuthority = true
+            break
+          } else {
+            item.isAuthority = false
+          }
+        }
+        if (that.tableSelectData.length === 0) {
+          item.isAuthority = false
+        }
+      })
       if (this.tableSelectData.length <= 0) {
         this.$message.error(`至少勾选一个操作！`)
       } else {
-        let selectData = this.tableSelectData.map(item => {
-          return { authorityId: item.id }
-        })
+        // let selectData = this.tableSelectData.map(item => {
+        //   return { authorityId: item.id }
+        // })
+        console.log(this.authorityList)
         api[urlNames['addAuthorityToModule']]({
           moduleId: this.selectTreeId,
-          moduleAuthorityEntityList: selectData
+          moduleAuthorityEntityList: this.authorityList
         }).then(res => {
           if (res.status === 0) {
             this.$message.success(`保存成功`)

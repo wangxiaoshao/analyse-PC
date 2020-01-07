@@ -146,8 +146,6 @@ export default {
 
     // 保存
     saveAuthorityManage () {
-      console.log(this.authorityList)
-      console.log(this.tableSelectData)
       this.authorityList.forEach((item) => {
         for (let i = 0; i < this.tableSelectData.length; i++) {
           if (item.id === this.tableSelectData[i].id) {

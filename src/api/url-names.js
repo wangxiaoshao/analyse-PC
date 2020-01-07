@@ -206,5 +206,6 @@ export default {
    */
   changeSessionUserId: 'changeSessionUserId',
   findSessionUserList: 'findSessionUserList',
+  logout: 'logout'
 
 }

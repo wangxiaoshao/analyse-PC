@@ -291,6 +291,12 @@ export default {
     keepOriginResponse: true, // 是否保留后端返回数据格式
     serve: 'organizationManagePC'
   },
+  [urlNames.logout]: {
+    type: 'get',
+    url: '/api/gate/logout',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    serve: 'organizationManagePC'
+  },
   [urlNames.findSessionUserList]: {
     type: 'get',
     url: '/api/jg_manage/user/sessionUserIdList',
