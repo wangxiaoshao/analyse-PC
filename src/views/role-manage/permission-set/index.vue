@@ -150,6 +150,6 @@ export default {
 }
 </script>
 <style lang="less">
-  @import "index1";
+  @import "index";
 </style>
 
