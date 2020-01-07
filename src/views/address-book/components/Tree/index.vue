@@ -44,7 +44,7 @@ export default {
     }
   },
   created () {
-    console.log(this.thisUnit,'this.thisUnit')
+    console.log(this.thisUnit, 'this.thisUnit')
   // this.getDepartmentPerson()
   },
   methods: {

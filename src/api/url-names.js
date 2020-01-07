@@ -197,6 +197,8 @@ export default {
   getModuleAuthorityByRoleId: 'getModuleAuthorityByRoleId',
   // 给角色菜单增删操作
   editAuthorityManage: 'editAuthorityManage',
+  // 查询角色操作
+  getRoleAuthorityList: 'getRoleAuthorityList',
   // 授权区域
   insertAuthorizedEntity: 'insertAuthorizedEntity',
   findAuthorizedEntityByUid: 'findAuthorizedEntityByUid',
@@ -205,6 +207,6 @@ export default {
    * 用户切换身份
    */
   changeSessionUserId: 'changeSessionUserId',
-  findSessionUserList: 'findSessionUserList',
+  findSessionUserList: 'findSessionUserList'
 
 }

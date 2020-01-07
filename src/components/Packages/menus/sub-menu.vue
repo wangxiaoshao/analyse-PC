@@ -57,8 +57,8 @@ export default {
         for (let i = 0; i < len; i++) {
           let key = this.menuItem.key[i]
           let hasKey = this.$store.state.app.option.menus.find(item => {
-            return item.moduleName === key;
-          });
+            return item.moduleName === key
+          })
           if (this.$store.state.app.option.menus && hasKey) {
             hasRight = true
             break
@@ -67,8 +67,8 @@ export default {
         return hasRight
       } else {
         return this.$store.state.app.option.menus.find(item => {
-          return item.moduleName === this.menuItem.key;
-        });
+          return item.moduleName === this.menuItem.key
+        })
       }
     }
   },

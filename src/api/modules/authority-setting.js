@@ -54,5 +54,12 @@ export default {
     },
     serve: 'organizationManagePC',
     mock: 'system-setting/dictionaryList.json'
+  },
+  [urlNames.getRoleAuthorityList]: {
+    type: 'get',
+    url: '/api/jg_manage/role/findAuthorityManageList',
+    keepOriginResponse: true,
+    serve: 'organizationManagePC',
+    mock: 'system-setting/dictionaryList.json'
   }
 }

@@ -13,8 +13,8 @@ const initRouter = (menus) => {
     let route = to.matched[0]
     if (route.meta && route.meta.key) {
       let flag = menus.find(item => {
-        return item.moduleName === route.meta.key;
-      });
+        return item.moduleName === route.meta.key
+      })
       if (flag) {
         next()
       } else {

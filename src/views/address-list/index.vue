@@ -140,7 +140,7 @@ export default {
       this.getAddressListdepartment(node.id)
     },
     handleChildClick (node) {
-      console.log(JSON.parse(JSON.stringify(node)),'-------------node')
+      console.log(JSON.parse(JSON.stringify(node)), '-------------node')
       this.navigation.push({ id: node.id, name: node.name })
       this.getAddressListOrganizationMembers(node.id)
       this.getAddressListdepartment(node.id)

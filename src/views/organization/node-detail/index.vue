@@ -55,11 +55,11 @@
 </template>
 
 <script>
-import { api, urlNames } from "@src/api";
-import dicOption from "@src/mixins/dic-options.js";
-import handleBreadcrumb from "@src/mixins/handle-breadcrumb.js";
+import { api, urlNames } from '@src/api'
+import dicOption from '@src/mixins/dic-options.js'
+import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
 import hasRight from '@src/mixins/has-right'
-import areaList from "../components/AreaList/index";
+import areaList from '../components/AreaList/index'
 export default {
   name: 'index',
   components: { areaList },

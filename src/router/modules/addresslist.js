@@ -1,5 +1,5 @@
 // 通讯录
-const AddressList =()=>import('@src/views/address-list/index.vue')
+const AddressList = () => import('@src/views/address-list/index.vue')
 const Department = () => import('@src/views/address-list/department/index.vue')
 const Member = () => import('@src/views/address-list/member/index.vue')
 
