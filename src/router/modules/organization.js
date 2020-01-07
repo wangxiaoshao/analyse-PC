@@ -14,7 +14,7 @@ export default [
     name: 'default',
     redirect: '/organization',
     meta: {
-      'key': 'menuOrg'
+      'key': 'menuOrgManage'
     }
   },
   // 组织机构详情页
@@ -53,7 +53,7 @@ export default [
     name: 'Organization',
     component: Organization,
     meta: {
-      key: 'menuOrg'
+      key: 'menuOrgManage'
     },
     children: [
       {

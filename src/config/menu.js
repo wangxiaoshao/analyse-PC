@@ -9,12 +9,12 @@ export default {
     'path': '',
     'type': 1,
     'icon': 'fa fa-sitemap',
-    'key': ['menuAddrBook', 'menuOrg'],
+    'key': ['menuAddrBook', 'menuOrgManage'],
     'list': [{
       'menuId': '11',
       'name': '组织管理',
       'path': '/organization',
-      'key': 'menuOrg',
+      'key': 'menuOrgManage',
       'type': 1
     },
     {
@@ -181,7 +181,7 @@ export default {
     },
     {
       'menuId': '54',
-      'name': '权限配置',
+      'name': '功能配置',
       'path': '/authority-setting',
       'type': 1,
       'key': 'menuRightSetting'
