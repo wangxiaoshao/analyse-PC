@@ -94,7 +94,7 @@ export default {
           if (item.authorityId === undefined) {
             obj[item.moduleName] = {
               menu: {
-                moduleName: item.authorityName,
+                moduleName: item.moduleName,
                 moduleTitle: item.moduleTitle
               },
               authorityList: []
@@ -102,7 +102,7 @@ export default {
           } else {
             obj[item.moduleName] = {
               menu: {
-                moduleName: item.authorityName,
+                moduleName: item.moduleName,
                 moduleTitle: item.moduleTitle
               },
               authorityList: [{
@@ -116,7 +116,6 @@ export default {
       Object.keys(obj).forEach((key) => {
         this.menuAuthList.push(obj[key])
       })
-      console.log(this.menuAuthList)
     },
     selectChange (val) {
       this.checkboxtSelect = val
