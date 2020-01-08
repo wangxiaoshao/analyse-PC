@@ -52,7 +52,7 @@ export default {
     return {
       menuList: [],
       menuAuthList: [], // 分类后的菜单
-      defaultSelect: this.$store.state.app.option.actions, // 默认选中操作
+      defaultSelect: [], // 默认选中操作
       allAction: [], // 所有操作
       checkboxtSelect: [],
       roleId: this.$route.params.id
@@ -60,6 +60,7 @@ export default {
   },
   created () {
     this.getMenuList()
+    this.getActionList();
   },
   mounted () {
     this.pushBreadcrumb({
@@ -119,6 +120,16 @@ export default {
     },
     selectChange (val) {
       this.checkboxtSelect = val
+    },
+
+    getActionList() {
+      api[urlNames['getRoleAuthorityList']]({
+        roleId: this.$route.params.id
+        }).then((res) => {
+        this.defaultSelect = res.data.map(item => {
+          return item.name
+        })
+      })
     },
 
     // 获取菜单
