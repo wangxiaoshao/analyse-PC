@@ -60,7 +60,7 @@ export default {
   },
   created () {
     this.getMenuList()
-    this.getActionList();
+    this.getActionList()
   },
   mounted () {
     this.pushBreadcrumb({
@@ -121,10 +121,10 @@ export default {
       this.checkboxtSelect = val
     },
 
-    getActionList() {
+    getActionList () {
       api[urlNames['getRoleAuthorityList']]({
         roleId: this.$route.params.id
-        }).then((res) => {
+      }).then((res) => {
         this.defaultSelect = res.data.map(item => {
           return item.name
         })
@@ -157,7 +157,7 @@ export default {
         if (res.status === 0) {
           this.$message.success(`保存成功`)
           this.allAction = []
-          this.sortModuleList()
+          this.sortModuleList(this.menuList)
           this.getGlobalInfo()
         }
       })
@@ -165,7 +165,7 @@ export default {
 
     cancel () {
       this.allAction = []
-      this.sortModuleList()
+      this.sortModuleList(this.menuList)
     }
   }
 }
