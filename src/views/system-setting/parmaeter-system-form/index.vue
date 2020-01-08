@@ -259,12 +259,12 @@
                  <el-upload
                     class="avatar-uploader"
                     :show-file-list="false"
-                    name="systemLogo"
-                    action=""
+                    name="files"
+                    :action="'http://' + uploadHost + '/api/jg_manage/image/upload?_='+downloadBinaryFile()[0]+'&sign='+downloadBinaryFile()[1]"
                     :on-success="handleSystemLogo"
                     :before-upload="beforeUpload"
                     :on-change='systemLogoFileChange'
-                    :auto-upload="false"
+                    :auto-upload="true"
                     list-type="picture"
                   >
                 <img v-if="systemNameLogoIcon.systemLogo" :src="systemNameLogoIcon.systemLogo" class="avatar" />
@@ -418,7 +418,7 @@ export default {
     },
     handleSystemLogo (res, file) {
       console.log(res)
-      this.systemNameLogoIcon.systemLogo = URL.createObjectURL(file.raw)
+      this.systemNameLogoIcon.systemLogo = res.data[0];
     },
     handleSystemFavicon (res, file) {
       console.log(res)
@@ -443,7 +443,9 @@ export default {
       this.systemNameLogoIcon.favicon = this.app.option.options.favicon
     },
     systemLogoFileChange (file, fileList) {
-      this.systemNameLogoIcon.systemLogo = file.url
+      console.log(file)
+      // debugger
+      // this.systemNameLogoIcon.systemLogo = file.url
     },
     systemFaviconFileChange (file, fileList) {
       this.systemNameLogoIcon.favicon = file.url
