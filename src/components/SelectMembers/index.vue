@@ -19,8 +19,6 @@
         <el-input
         placeholder="请输入内容"
         v-model="searchKeyWord"
-        @input="getResult"
-        @keyup.enter.native="getResult"
         class="input-with-select">
         <el-select v-model="searchType" style="width: 80px" @change="getType" slot="prepend" placeholder="请选择">
           <el-option v-if="selectCategory!==0" label="单位" value="2">单位</el-option>

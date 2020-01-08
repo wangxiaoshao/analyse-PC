@@ -145,7 +145,6 @@ export default {
         this.loading = false
         this.list = res.data
         this.permissionId = res.roleId
-        console.log(res.data)
         this.page.total = res.total
       }, () => {
         this.loading = false
@@ -211,8 +210,7 @@ export default {
           }).then((res) => {
             this.$message.success(`添加成功`)
             this.getGrid()
-            console.log(res)
-          }, (error) => {
+          }, () => {
             this.$message.error(`保存失败，请重试`)
           })
         }
