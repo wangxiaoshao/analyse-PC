@@ -417,6 +417,7 @@ export default {
       })
     },
     handleSystemLogo (res, file) {
+      console.log(res)
       this.systemNameLogoIcon.systemLogo = URL.createObjectURL(file.raw)
     },
     handleSystemFavicon (res, file) {

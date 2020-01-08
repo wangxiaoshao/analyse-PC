@@ -105,7 +105,7 @@ export default {
       let itemId = {}
       this.selectedOrgs.forEach(item => {
         itemId = {
-          authorizedOid: item.id
+          authorizedOid: item.bindId
         }
         idList.push(itemId)
       })

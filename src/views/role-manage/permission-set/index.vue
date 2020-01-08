@@ -115,16 +115,15 @@ export default {
       Object.keys(obj).forEach((key) => {
         this.menuAuthList.push(obj[key])
       })
-      console.log(this.menuAuthList)
     },
     selectChange (val) {
       this.checkboxtSelect = val
     },
 
     // 获取菜单
-    getMenuList() {
+    getMenuList () {
       api[urlNames['option']]().then((res) => {
-        this.menuList = res.data.menus;
+        this.menuList = res.data.menus
         this.sortModuleList(this.menuList)
       })
     },

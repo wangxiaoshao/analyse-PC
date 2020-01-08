@@ -59,7 +59,7 @@ export default {
 
   },
   created () {
-   this.logoutURL = '/api/gate/logout';
+    this.logoutURL = '/api/gate/logout'
   },
   methods: {
     goBack () {
