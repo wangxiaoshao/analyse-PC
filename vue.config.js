@@ -24,6 +24,7 @@ module.exports = function (options) {
         config.devtool = 'source-map'
       }
     },
+    lintOnSave: true,
     devServer: {
       //publicPath: publicPath,
       contentBase: ['dist', 'mock'],
