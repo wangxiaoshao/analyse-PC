@@ -215,7 +215,6 @@ export default {
     goCurrentNodeDetail (depid, index) {
       let len = this.navigation.length
       this.navigation.splice(index + 1, len - index + 1)
-      // debugger
       this.getDetail(depid)
     },
     getDefault (val) {
