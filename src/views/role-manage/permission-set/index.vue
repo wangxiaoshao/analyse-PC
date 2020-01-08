@@ -76,6 +76,7 @@ export default {
   methods: {
     // 对菜单进行分类
     sortModuleList (menuList) {
+      debugger
       let obj = {}
       menuList.forEach(item => {
         if (item.authorityId) {
