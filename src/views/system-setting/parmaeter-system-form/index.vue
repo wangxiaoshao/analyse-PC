@@ -326,7 +326,6 @@ export default {
   mixins: [uploadFile, hasRight],
   data () {
     return {
-      uploadHost: window.location.host,
       systemUserSecuritySettings: {// 用户安全
         defaultPassword: '123456',
         loginFailNum: 10,
@@ -441,7 +440,9 @@ export default {
       this.systemNameLogoIcon.favicon = this.app.option.options.favicon
     },
     systemLogoFileChange (file, fileList) {
-      this.systemNameLogoIcon.systemLogo = file.url
+      console.log(file)
+      // debugger
+      // this.systemNameLogoIcon.systemLogo = file.url
     },
     systemFaviconFileChange (file, fileList) {
       this.systemNameLogoIcon.favicon = file.url
