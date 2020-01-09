@@ -312,7 +312,7 @@ export default {
     },
     mainLeaderList: {
       handler (val) {
-        console.log(3333, val)
+       
       }
     }
   }

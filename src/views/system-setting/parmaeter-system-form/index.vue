@@ -416,10 +416,10 @@ export default {
       })
     },
     handleSystemLogo (res, file) {
-      this.systemNameLogoIcon.systemLogo = URL.createObjectURL(file.raw)
+      this.systemNameLogoIcon.systemLogo = res.data[0]
     },
     handleSystemFavicon (res, file) {
-      this.systemNameLogoIcon.favicon = URL.createObjectURL(file.raw)
+      this.systemNameLogoIcon.favicon = res.data[0]
     },
     beforeUpload (file) {
       const isJPG = file.type === 'image/jpeg'
@@ -440,12 +440,11 @@ export default {
       this.systemNameLogoIcon.favicon = this.app.option.options.favicon
     },
     systemLogoFileChange (file, fileList) {
-      console.log(file)
       // debugger
       // this.systemNameLogoIcon.systemLogo = file.url
     },
     systemFaviconFileChange (file, fileList) {
-      this.systemNameLogoIcon.favicon = file.url
+      // this.systemNameLogoIcon.favicon = file.url
     },
     // 更新系统名称
     updateSystemName () {
