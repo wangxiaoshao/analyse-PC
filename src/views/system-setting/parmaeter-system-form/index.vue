@@ -3,7 +3,7 @@
   <div class="parmaeterFrom">
     <div class="parameter-item">
       <div class="header">用户密码安全设置</div>
-      <el-form ref="systemUserSecuritySettings" :model="systemUserSecuritySettings" label-width="160px">
+      <el-form ref="systemUserSecuritySettings"  label-width="160px">
         <el-row>
           <el-col :span="7">
             <div class="grid-content bg-purple">
@@ -117,7 +117,7 @@
     </div>
     <div class="parameter-item">
       <div class="header">通讯录权限设置</div>
-      <el-form ref="addressBookSet" :model="systemAddressBookSet" label-width="120px">
+      <el-form ref="addressBookSet"  label-width="120px">
         <el-form-item label="所有单位信息">
           <el-radio-group v-model="systemAddressBookSet.allOrgInfo">
             <el-radio :label="0">不可见</el-radio>
@@ -162,7 +162,7 @@
     </div>
     <div class="parameter-item">
       <div class="header">其他设置</div>
-      <el-form ref="systemMessageRemind" :model="systemMessageRemind" label-width="160px">
+      <el-form ref="systemMessageRemind" label-width="160px">
         <el-form-item label="设置信息确认弹窗提醒">
           <el-checkbox-group size="medium" v-model="systemMessageRemind">
             <el-checkbox-button label="7">每月最后七天</el-checkbox-button>
@@ -178,7 +178,7 @@
     </div>
     <div class="parameter-item">
       <div class="header">申请审核字段设置</div>
-      <el-form ref="systemAuditField" :model="systemAuditField" label-width="160px">
+      <el-form ref="systemAuditField"  label-width="160px">
         <div class="table">
           <div class="table-row">
             <div class="table-td" style="text-align: center">模块</div>
@@ -259,12 +259,11 @@
                  <el-upload
                     class="avatar-uploader"
                     :show-file-list="false"
-                    name="systemLogo"
-                    action=""
+                    name="files"
+                    :action="'http://' + uploadHost + '/api/jg_manage/image/upload?_='+downloadBinaryFile()[0]+'&sign='+downloadBinaryFile()[1]"
                     :on-success="handleSystemLogo"
                     :before-upload="beforeUpload"
-                    :on-change='systemLogoFileChange'
-                    :auto-upload="false"
+                    :auto-upload="true"
                     list-type="picture"
                   >
                 <img v-if="systemNameLogoIcon.systemLogo" :src="systemNameLogoIcon.systemLogo" class="avatar" />
@@ -327,6 +326,7 @@ export default {
   mixins: [uploadFile, hasRight],
   data () {
     return {
+      uploadHost: window.location.host,
       systemUserSecuritySettings: {// 用户安全
         defaultPassword: '123456',
         loginFailNum: 10,
@@ -417,11 +417,9 @@ export default {
       })
     },
     handleSystemLogo (res, file) {
-      console.log(res)
       this.systemNameLogoIcon.systemLogo = URL.createObjectURL(file.raw)
     },
     handleSystemFavicon (res, file) {
-      console.log(res)
       this.systemNameLogoIcon.favicon = URL.createObjectURL(file.raw)
     },
     beforeUpload (file) {
@@ -478,7 +476,6 @@ export default {
     getSystemParameter () {
       // getSystemParameter
       api[urlNames['getSystemParameter']]({}).then((res) => {
-        console.log(res, 'getSystemParameter')
       })
     },
     handleCheckAllChange (val) {
@@ -504,9 +501,6 @@ export default {
           this.$message.success('设置用户信息成功')
         }
       })
-    },
-    onSubmit (flag) {
-      console.log('submit!')
     },
     systemSubmit (flag) {
       // 0 用户安全设置
