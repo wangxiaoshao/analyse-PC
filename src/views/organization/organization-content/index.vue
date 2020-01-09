@@ -89,6 +89,7 @@
               v-if="activeName === '人员管理' & !showExportPage"
               :sortFlag="sortShowFlag"
               @getPage="getPage"
+              @cancel="getSortAction"
               :contentPage="currentPage"
               :id="content[0].bindId"
               :type="content[0].nodeType"
