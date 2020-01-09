@@ -1,4 +1,3 @@
-
 const tableConfig = {
   name: {
     key: 'name',
@@ -8,14 +7,14 @@ const tableConfig = {
     showOverflowTooltip: false,
     minWidth: 100
   },
-  id: {
-    key: 'id',
-    tooltip: true,
-    label: '单位ID',
-    sortable: false,
-    showOverflowTooltip: false,
-    minWidth: 100
-  },
+  // id: {
+  //   key: 'id',
+  //   tooltip: true,
+  //   label: '单位ID',
+  //   sortable: false,
+  //   showOverflowTooltip: false,
+  //   minWidth: 100
+  // },
   creditId: {
     key: 'creditId',
     tooltip: false,
@@ -40,14 +39,14 @@ const tableConfig = {
     showOverflowTooltip: false,
     minWidth: 100
   },
-  parentId: {
-    key: 'parentId',
-    tooltip: false,
-    label: '上级ID',
-    sortable: false,
-    showOverflowTooltip: false,
-    minWidth: 100
-  },
+  // parentId: {
+  //   key: 'parentId',
+  //   tooltip: false,
+  //   label: '上级ID',
+  //   sortable: false,
+  //   showOverflowTooltip: false,
+  //   minWidth: 100
+  // },
   labelName: {
     key: 'labelName',
     tooltip: false,
@@ -58,3 +57,4 @@ const tableConfig = {
   }
 }
 export default tableConfig
+

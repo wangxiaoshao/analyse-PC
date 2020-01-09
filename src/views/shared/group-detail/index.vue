@@ -107,7 +107,7 @@ export default {
         @type：1(单位分组),2（部门分组）,3（个人分组）
      */
     hasAddRight () {
-      let type = this.$route.query.type + 0
+      let type = parseInt(this.$route.params.type)
       let rightKey = ''
       if (type === 1) {
         rightKey = 'orgGroupAddMember'
