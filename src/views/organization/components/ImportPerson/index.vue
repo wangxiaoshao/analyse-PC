@@ -60,7 +60,7 @@ export default {
     }
   },
   mixins: [downloadBinaryFile],
-  props: ['type', 'id', 'organizationName'],
+  props: ['type', 'id', 'organizationName', 'showExportPage'],
   methods: {
     cancel () {
       this.$emit('cancel')

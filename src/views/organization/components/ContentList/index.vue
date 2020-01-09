@@ -197,7 +197,7 @@ export default {
       }
       api[urlNames['setViewNodeSort']](data).then((res) => {
         this.$message.success(`保存成功`)
-        this.cancelSort()
+        // this.cancelSort()
       }, () => {
         this.$message.error(`保存失败，请重试`)
       })

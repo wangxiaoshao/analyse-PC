@@ -141,7 +141,7 @@
       @current-change="handleCurrentChange"
       :current-page="contentPage.current"
       :page-sizes="[10, 30, 50, 100]"
-      :page-size="page.limit"
+      :page-size="contentPage.limit"
       layout="total, sizes, prev, pager, next, jumper"
       :total="contentPage.total"
     ></el-pagination>
@@ -204,6 +204,7 @@ export default {
   },
   created () {
     this.getGrid()
+    // console.log(this.contentPage)
     if (this.$route.name === 'OrganizationContent') {
       this.isShowEditFlag = true
     } else {
@@ -212,55 +213,8 @@ export default {
   },
   methods: {
     exportPerson () {
-      this.$emit('goExportPerson', false)
+      this.$emit('goExportPerson')
     },
-    /*
-    fileHandleChange() {
-      this.loading = true;
-      this.$confirm("确认导入当前文件吗, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.fileSubmit();
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消"
-          });
-        });
-    },
-    fileSubmit() {
-      console.log(this.id, "--------");
-      let that = this;
-      let form = that.$refs["formFile"].$el;
-      let formData = new FormData(form);
-      formData.append("file", this.fileList[0]);
-      if (this.type === 3) {
-        formData.append("deptId", this.id);
-      }
-      if (this.type === 2) {
-        formData.append("orgId", this.id);
-      }
-      api[urlNames["importUser"]](formData).then(
-        res => {
-          if (res.status === 0) {
-            this.$message.success("导入人员成功");
-            this.getGrid();
-            this.loading = false;
-            this.fileList = [];
-          }
-        },
-        () => {
-          this.loading = false;
-          this.fileList = [];
-        }
-      );
-    },
-    */
-
     getGrid () {
       this.cancelSort()
       this.loading = true
@@ -275,7 +229,7 @@ export default {
           res => {
             this.loading = false
             this.list = res.data
-            this.contentPage.total = res.data.total
+            this.contentPage.total = res.total
           },
           () => {
             this.loading = false
@@ -294,7 +248,7 @@ export default {
           res => {
             this.loading = false
             this.list = res.data
-            this.contentPage.total = res.data.total
+            this.contentPage.total = res.total
           },
           () => {
             this.loading = false

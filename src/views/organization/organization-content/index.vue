@@ -86,23 +86,22 @@
           </el-tab-pane>
           <el-tab-pane label="人员管理" name="人员管理" v-if="content[0].nodeType !== 1">
             <person-list
-              v-if="activeName === '人员管理' && !showExportPage"
+              v-if="activeName === '人员管理' & !showExportPage"
               :sortFlag="sortShowFlag"
               @getPage="getPage"
               :contentPage="currentPage"
               :id="content[0].bindId"
               :type="content[0].nodeType"
               :exportData="content[0]"
-              @cancel="getSortAction"
-              @goExportPerson="goExportPerson"
+               @goExportPerson="goExportPerson"
             >
               <template slot="AddBtn">
                 <el-button class="add-btn" @click="openAddPerson" :disabled="!hasRight('userCreate')" >添加人员</el-button>
               </template>
             </person-list>
              <transition name="fade-transform" mode="out-in">
-                 <import-person
-                  v-if="showExportPage"
+                 <import-person  v-if="showExportPage"
+                  :showExportPage="showExportPage"
                   @cancel="goExportPerson"
                   :id="content[0].bindId"
                   :organizationName='content[0].name'
@@ -224,7 +223,6 @@ export default {
       this.SET_ORGANIZATION_PAGE(this.currentPage)
     },
     getPage (val) {
-      this.goExportPerson()
       this.currentPage = val
       this.SET_ORGANIZATION_PAGE(this.currentPage)
     },
@@ -324,7 +322,6 @@ export default {
         type: type
       }).then((res) => {
         this.labelList = res.data
-        console.log(res.data)
       }, () => {
       })
     },
