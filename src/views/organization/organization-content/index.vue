@@ -89,7 +89,7 @@
               v-if="activeName === '人员管理' & !showExportPage"
               :sortFlag="sortShowFlag"
               @getPage="getPage"
-              @cancel="getSortAction"
+               @cancel="getSortAction"
               :contentPage="currentPage"
               :id="content[0].bindId"
               :type="content[0].nodeType"
@@ -100,14 +100,14 @@
                 <el-button class="add-btn" @click="openAddPerson" :disabled="!hasRight('userCreate')" >添加人员</el-button>
               </template>
             </person-list>
-             <transition name="fade-transform" mode="out-in">
+
                  <import-person  v-if="showExportPage"
                   :showExportPage="showExportPage"
                   @cancel="goExportPerson"
                   :id="content[0].bindId"
                   :organizationName='content[0].name'
                   :type="content[0].nodeType"></import-person>
-              </transition>
+
           </el-tab-pane>
           <el-tab-pane label="单位领导" name="单位主要领导" v-if="content[0].nodeType === 2">
             <leader-list

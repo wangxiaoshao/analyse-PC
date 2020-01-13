@@ -25,7 +25,7 @@
       </template>
       <el-table-column prop="description" width="60" align="center" v-if="sortFlag">
         <template>
-          <i class="sortBtnDo menu-icon iconfont iconpaixu" style="font-size: 25px"></i>
+          <i class="sortBtnDo menu-icon iconfont iconpaixu" style="font-size: 25px;cursor: move;"></i>
           <!--<span :title="scope" v-else>{{scope.$index + 1}}</span>-->
         </template>
       </el-table-column>
@@ -100,12 +100,13 @@ export default {
     sortFlag: {
       handler (val) {
         const tbody = document.querySelector('#contentTable tbody')
-        const items = this.list
+        let that = this
         if (val) {
           Sortable.create(tbody, {
             handle: '.sortBtnDo',
             animation: 150,
             onUpdate: function (evt) {
+              let items = that.list
               const newIndex = evt.newIndex
               const oldIndex = evt.oldIndex
               const $li = tbody.children[newIndex]
@@ -115,10 +116,14 @@ export default {
               } else {
                 tbody.insertBefore($li, $oldLi.nextSibling)
               }
-              const item = items.splice(oldIndex, 1)
+
+              let item = items.splice(oldIndex, 1)
+              // console.log(item)
               items.splice(newIndex, 0, item[0])
-              this.list = items // 排序后列表
+              // 排序后列表
+              that.list = items
             }
+
           })
         } else {
           this.sortListFlag = false
@@ -149,15 +154,19 @@ export default {
       this.contentPage.current = 1
       this.contentPage.limit = val
       this.getGrid()
+      // this.cancelSort()
+      this.$emit('cancel', false)
       this.$emit('getPage', this.contentPage)
     },
     handleCurrentChange (val) {
       this.contentPage.current = val
       this.getGrid()
+      // this.cancelSort()
+      this.$emit('cancel', false)
       this.$emit('getPage', this.contentPage)
     },
     getGrid () {
-      this.cancelSort()
+      // this.cancelSort()
       let data = {
         page: this.contentPage.current,
         parentId: this.nodeId,
@@ -175,6 +184,7 @@ export default {
       })
     },
     cancelSort () {
+      this.init()
       this.$emit('cancel', false)
     },
     sortBtnFlag () {

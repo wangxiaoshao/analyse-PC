@@ -17,7 +17,6 @@
     </el-row>
   </el-container>
 </template>
-
 <script>
 import organizationTree from '@src/components/Tree/index'
 import searchResult from './components/Result/index'

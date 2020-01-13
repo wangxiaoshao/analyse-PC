@@ -204,7 +204,6 @@ export default {
   },
   created () {
     this.getGrid()
-    // console.log(this.contentPage)
     if (this.$route.name === 'OrganizationContent') {
       this.isShowEditFlag = true
     } else {
@@ -216,7 +215,7 @@ export default {
       this.$emit('goExportPerson')
     },
     getGrid () {
-      this.cancelSort()
+      // this.cancelSort()
       this.loading = true
       // let bindId = this.$route.params.bindId
       if (this.type === 3) {
@@ -286,15 +285,18 @@ export default {
     handleSizeChange (val) {
       this.contentPage.current = 1
       this.contentPage.limit = val
-      this.getGrid()
+      this.cancelSort()
       this.$emit('getPage', this.contentPage)
     },
     handleCurrentChange (val) {
       this.contentPage.current = val
-      this.getGrid()
+      // this.getGrid()
+      // this.$emit('cancel', false)
+      this.cancelSort()
       this.$emit('getPage', this.contentPage)
     },
     cancelSort () {
+      this.getGrid()
       this.$emit('cancel', false)
     },
     sortList () {
@@ -408,12 +410,13 @@ export default {
     sortFlag: {
       handler (val) {
         const tbody = document.querySelector('#personTable tbody')
-        const items = this.list
+        let that = this
         if (val) {
           Sortable.create(tbody, {
             handle: '.sortBtnDo',
             animation: 150,
             onUpdate: function (evt) {
+              let items = that.list
               const newIndex = evt.newIndex
               const oldIndex = evt.oldIndex
               const $li = tbody.children[newIndex]
@@ -423,7 +426,7 @@ export default {
               } else {
                 tbody.insertBefore($li, $oldLi.nextSibling)
               }
-              const item = items.splice(oldIndex, 1)
+              let item = items.splice(oldIndex, 1)
               items.splice(newIndex, 0, item[0])
               this.list = items // 排序后列表
             }
