@@ -57,40 +57,40 @@ export default {
         let len = this.menuItem.key.length
         for (let i = 0; i < len; i++) {
           let key = this.menuItem.key[i]
-          if(key === 'menuAddrBook') {
-            return true;
+          if (key === 'menuAddrBook') {
+            return true
           }
           let tempMenu = menuList.filter(item => {
             return item.moduleName === key
           })
           tempMenu.forEach(item => {
-            for(let j = 0; j < actionList.length; j++) {
-              if(item.authorityName === actionList[j]) {
-                flag = true;
-                break;
+            for (let j = 0; j < actionList.length; j++) {
+              if (item.authorityName === actionList[j]) {
+                flag = true
+                break
               }
             }
           })
         }
         return flag
       } else {
-        let flag = false;
-        if(this.menuItem.key === 'menuAddrBook') {// 显示通信录
-          return true;
+        let flag = false
+        if (this.menuItem.key === 'menuAddrBook') { // 显示通信录
+          return true
         }
 
         let tempMenu = menuList.filter(item => {
           return item.moduleName === this.menuItem.key
         })
         tempMenu.forEach(item => {
-          for(let j = 0; j < actionList.length; j++) {
-            if(item.authorityName === actionList[j]) {
-              flag = true;
-              break;
+          for (let j = 0; j < actionList.length; j++) {
+            if (item.authorityName === actionList[j]) {
+              flag = true
+              break
             }
           }
         })
-        return flag;
+        return flag
       }
     }
   },
