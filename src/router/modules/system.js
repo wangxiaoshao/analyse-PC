@@ -11,6 +11,8 @@ const ParameterSetting = () => import('@src/views/system-setting/parameter-setti
 const PassChange = () => import('@src/views/system-setting/pass-change/index.vue')
 // 菜单权限配置
 const AuthoritySetting = () => import('@src/views/system-setting/authority-setting/index.vue')
+// 文档中心
+const WordCenter = () => import('@src/views/system-setting/word-center/index.vue')
 export default [
   // 权限管理
   {
@@ -67,6 +69,14 @@ export default [
     component: PassChange,
     meta: {
       key: 'menuPersonalInfo'
+    }
+  },
+  {
+    path: '/word-center',
+    name: 'WordCenter',
+    component: WordCenter,
+    meta: {
+      key: 'menuWordCenter'
     }
   }
 ]
