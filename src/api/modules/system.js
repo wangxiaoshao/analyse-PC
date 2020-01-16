@@ -27,6 +27,15 @@ export default {
     serve: 'organizationManagePC',
     mock: 'system-setting/getDicListByType.json'
   },
+  [urlNames.deleteDictItem]: {
+    type: 'post',
+    url: '/api/jg_manage/system/deleteDictItem',
+    keepOriginResponse: true,
+    serve: 'organizationManagePC',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  },
   [urlNames.updatePwd]: {
     type: 'post',
     url: '/api/jg_manage/system/updatePwd',
