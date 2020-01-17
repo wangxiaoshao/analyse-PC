@@ -1,4 +1,4 @@
-/* eslint-disable handle-callback-err */
+
 <template>
   <div class="person-detail-content" v-loading="loading">
     <!--步骤条-->
@@ -241,9 +241,6 @@ export default {
     },
     // 获取账号
     getAccount (val) {
-      console.log(val)
-      // this.userInfo.userAccount = val
-      // console.log(JSON.parse(JSON.stringify(val)), '11111111----111157955-----11111')
       this.userInfo.userAccount = val
       this.submitForm()
     },
@@ -262,9 +259,7 @@ export default {
       api[urlNames['createUser']](this.userInfo).then((res) => {
         this.$message.success(`保存成功`)
         this.goBack()
-        console.log(res)
-      // eslint-disable-next-line handle-callback-err
-      }, (error) => {
+      }, () => {
         this.$message.error(`保存失败，请重试`)
       })
     },

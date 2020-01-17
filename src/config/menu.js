@@ -5,7 +5,7 @@
 export default {
   list: [{
     'menuId': '1',
-    'name': '组织机构',
+    'name': '信息管理',
     'path': '',
     'type': 1,
     'icon': 'fa fa-sitemap',
@@ -28,7 +28,7 @@ export default {
   },
   {
     'menuId': '2',
-    'name': '申请审核',
+    'name': '信息审核',
     'path': '',
     'key': ['menuAuditWait', 'menuAudited', 'menuMyAudit', 'menuOrgConfirm'],
     'type': 1,

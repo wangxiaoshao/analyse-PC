@@ -1,14 +1,14 @@
 <template>
   <div class="choose-content">
-    <el-button v-popover:popover class="choose-btn" v-if="!disabledFlag && this.$route.name !== 'PersonDetail'" @click="openPopover">选择关联系统</el-button>
     <el-popover
       ref="popover"
       width="700"
       trigger="click"
       popper-class="system-popover"
       placement="bottom-start"
+      v-model="showPopover"
     >
-      <div class="app-content"  v-if="showPopover">
+      <div class="app-content">
         <el-checkbox-group v-model="checkSystem">
           <el-checkbox
             class="app-check"
@@ -24,29 +24,33 @@
           <el-button @click="showPopover = false">取消</el-button>
         </div>
       </div>
+      <el-button  class="choose-btn" slot="reference" v-if="!disabledFlag && this.$route.name !== 'PersonDetail'" >选择关联系统</el-button>
     </el-popover>
-    <el-tag
-      v-if="showSystemList.length ===0"
-      :key="tag"
-      type="info"
-      v-for="tag in systemList"
-      closable
-      :disable-transitions="false"
-      style="margin: 5px"
-      @close="handleClose(tag)">
-      {{tag}}
-    </el-tag> <el-tag
-      v-if="showSystemList.length !==0"
-      :key="tag"
-      type="info"
-      v-for="tag in showSystemList"
-      closable
-      :disable-transitions="false"
-      style="margin: 5px"
-      @close="handleCloseDel(tag.appId, tag.id)">
-      {{tag.appName}}
-    </el-tag>
-    <div v-if="showSystemList.length===0" style="color: #FC7049;font-size: 10px">请先填写账号和密码，否则关联系统无效</div>
+     <div  v-if="showSystemList.length">
+      <el-tag
+        :key="index"
+        type="info"
+        v-for="(tag,index) in showSystemList"
+        closable
+        :disable-transitions="false"
+        style="margin: 5px"
+        @close="handleCloseDel(tag.appId, tag.id)">
+        {{tag.appName+1111}}
+      </el-tag>
+    </div>
+    <div v-else-if="systemList.length">
+       <el-tag
+          type="info"
+          v-for="(tag,index) in systemList"
+          closable
+          :disable-transitions="false"
+          :key="index"
+          style="margin: 5px"
+          @close="handleClose(tag)">
+          {{tag+222}}
+        </el-tag>
+        <div style="color: #FC7049;font-size: 10px" >请先填写账号和密码，否则关联系统无效</div>
+    </div>
   </div>
 </template>
 
@@ -63,11 +67,17 @@ export default {
       showSystemList: []
     }
   },
-  created () {
-    this.getApp()
-  },
   mounted () {
-    this.showSystemList = this.userAccount[0].account4AppDtos
+    console.log('*'.repeat(30))
+    // console.log('', this.userAccount)
+    console.log(' this.userAccount:', this.userAccount)
+    this.getApp()
+
+    if (this.userAccount[0] && this.userAccount[0].account4AppDtos) {
+      this.showSystemList = this.userAccount[0].account4AppDtos
+    } else {
+      this.showSystemList = []
+    }
   },
   methods: {
     handleClose (tag) {
@@ -97,24 +107,24 @@ export default {
           let name = ''
           this.showSystemList.splice(this.showSystemList.indexOf(name), 1)
         }
-      }, (error) => {
+      }, () => {
       })
     },
     getApp () {
       api[urlNames['getAppList']]().then((res) => {
         this.appList = res.data
-      }, (error) => {
+      }, () => {
       })
     },
     openPopover () {
       this.showPopover = true
     },
     sendApp () {
-      console.log(JSON.parse(JSON.stringify(this.appList)), '--------------')
-      console.log(JSON.parse(JSON.stringify(this.systemList)), '-----1---------')
-      console.log(JSON.parse(JSON.stringify(this.checkSystem)), '-----33---------')
+      // console.log(JSON.parse(JSON.stringify(this.appList)), '--------------')
+      // console.log(JSON.parse(JSON.stringify(this.systemList)), '-----1---------')
+      // console.log(JSON.parse(JSON.stringify(this.checkSystem)), '-----33---------')
       const appIdList = []
-      const res = new Map()
+      // const res = new Map()
       this.checkSystem.forEach((item) => {
         this.systemList.push(item.split('|')[1])
         appIdList.push(item.split('|')[0])
@@ -122,11 +132,21 @@ export default {
       this.systemList = this.systemList.filter(function (element, index, self) {
         return self.indexOf(element) === index
       })
+      // if(showSystemList.length !== 0){
+      //   this.showSystemList.push({})
+      // }
       let sendId = appIdList.filter(function (element, index, self) {
         return self.indexOf(element) === index
       })
       // this.systemList = this.systemList.filter(a => !res.has(a) && res.set(a, 1))
       // let sendId = appIdList.filter(a => res.has(a) && !res.set(a, 1))
+
+      // 2020/1/17 ===============================
+      // this.showSystemList = this.showSystemList.filter(function (element, index, self) {
+      //   return self.indexOf(element) === index
+      // })
+      // 2020/1/17 ===============================
+
       this.$emit('get-app', sendId)
       this.showPopover = false
     }

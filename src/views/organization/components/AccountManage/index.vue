@@ -19,7 +19,7 @@
     </div>
     <el-collapse v-model="activeAccount" accordion class="account-list">
       <el-collapse-item v-for="item in accountList" :key="item.id" :title="item.name + ' ' + userInfo.name">
-        <bind-system :user-account="userAccount" @get-app="getAppId"></bind-system>
+          <bind-system :user-account="userAccount" @get-app="getAppId"></bind-system>
       </el-collapse-item>
     </el-collapse>
     <div class="creat-account-content" v-if="this.$route.name === 'PersonAdd' || this.$route.name === 'PersonEdit'">
@@ -31,11 +31,14 @@
         <el-form-item label="登录帐号" prop="name">
           <el-input v-model="addAccount.name"></el-input>
         </el-form-item>
+        <el-form-item label="登录别名" prop="nickName">
+          <el-input v-model="addAccount.nickName"></el-input>
+        </el-form-item>
         <el-form-item label="密码" prop="password">
           <el-input v-model="addAccount.password" show-password></el-input>
         </el-form-item>
         <el-form-item label="关联系统">
-         <bind-system @get-app="getAppId"></bind-system>
+         <bind-system :user-account="[]" @get-app="getAppId"></bind-system>
         </el-form-item>
         <el-form-item label="是否启用" prop="removed">
           <el-switch v-model="addAccount.removed"></el-switch>
@@ -67,6 +70,7 @@ export default {
         removed: true,
         appId: [],
         name: '',
+        nickName: '',
         id: '',
         defaultAccount: null,
         reason: ''
@@ -82,6 +86,8 @@ export default {
   },
   created () {
     this.init()
+    console.log('&'.repeat(20))
+    console.log(this.userAccount)
   },
   methods: {
     init () {
@@ -121,10 +127,12 @@ export default {
         removed: this.addAccount.removed ? 0 : 1,
         appId: this.addAccount.appId,
         name: this.addAccount.name,
+        nickName: this.addAccount.nickName,
         id: '',
         defaultAccount: null,
         reason: this.addAccount.reason
       }
+
       if (this.addAccount.name !== this.oldFrom.name && this.addAccount.password !== this.oldFrom.password) {
         this.accountSend.push(accountObj)
       }
@@ -138,7 +146,6 @@ export default {
     },
     getAppId (val) {
       this.addAccount.appId = val
-      console.log(this.addAccount.appId, '---1111111111111111----')
     }
   }
 }

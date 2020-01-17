@@ -6,7 +6,7 @@
       <el-col :span="6" style="height: 100%;overflow-y:scroll">
         <el-radio-group v-model="tabPosition" style="margin-bottom: 30px;">
        <el-radio-button label="本单位通讯录">本单位通讯录</el-radio-button>
-       <el-radio-button label="其他单位通讯录">其他单位通讯录</el-radio-button>
+       <el-radio-button label="全省通讯录" title="查阅全省各单位的通讯录信息">全省通讯录</el-radio-button>
     </el-radio-group>
        <div class="site-scroll" style="padding-right: 10px;margin-top:-20px;">
          <search-result :defaultNodeId="defaultNodeId"></search-result>

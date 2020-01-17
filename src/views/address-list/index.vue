@@ -5,7 +5,7 @@
        <div class="site-scroll">
            <div class="organ-top">
             <div class="top-one" :class="activeColor==1?'top-active':''" @click="onChange(1)">本单位通讯录</div>
-            <div class="top-two" :class="activeColor==2?'top-active':''" @click="onChange(2)">其他单位通讯录</div>
+            <div class="top-two" title="查阅全省各单位的通讯录信息" :class="activeColor==2?'top-active':''" @click="onChange(2)">全省通讯录</div>
           </div>
          <search-result @searchMyBack="searchMyBack" @searchListResult="searchListResult" :myOrgFlag="activeColor" :defaultNodeId="defaultNodeId"></search-result>
          <div class="tree-content">
@@ -86,7 +86,7 @@ export default {
         this.getAddressListdepartment()
         // this.getAddressListUnitUser()
       } else if (e === 2) {
-        this.navigation1.name = '其他单位通讯录'
+        this.navigation1.name = '全省通讯录'
         this.getAddressListOthertTree()
         this.getAddressListOrganizationMembers()
         // this.getAddressListOtherUser()
