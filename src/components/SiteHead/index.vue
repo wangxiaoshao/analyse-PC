@@ -8,7 +8,7 @@
         </div>
         <div class="site__head--right">
           <i class="ico fa fa-file-text-o"></i>
-          <a href="">数据文档</a>
+          <a style="cursor: pointer" @click="goToWordCenter()">数据文档</a>
 <!--          <i class="ico fa fa-phone"></i>-->
 <!--          <a href="">联系我们</a>-->
           <span style="margin-right: 4px;">欢迎您!</span>
@@ -66,6 +66,11 @@ export default {
       this.$emit('go-back')
     },
 
+    goToWordCenter () {
+      if (this.$route.name !== 'WordCenter') {
+        this.$router.push('word-center')
+      }
+    },
     handleCommand (command) {
       if (command === 'logout') {
         this.$store.dispatch('Logout').then(() => {

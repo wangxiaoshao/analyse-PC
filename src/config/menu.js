@@ -157,7 +157,7 @@ export default {
     'path': '',
     'type': 1,
     'icon': 'fa fa-cogs',
-    'key': ['menuRoles', 'menuDictionary', 'menuPersonalInfo', 'menuRightSetting', 'menuPreferencesSetting'],
+    'key': ['menuRoles', 'menuDictionary', 'menuPersonalInfo', 'menuRightSetting', 'menuPreferencesSetting', 'menuWordCenter'],
     'list': [{
       'menuId': '51',
       'name': '角色权限',
@@ -192,6 +192,13 @@ export default {
       'path': '/parameter-setting',
       'type': 1,
       'key': 'menuPreferencesSetting'
+    },
+    {
+      'menuId': '56',
+      'name': '文档中心',
+      'path': '/word-center',
+      'type': 1,
+      'key': 'menuWordCenter'
     }
     ]
   }

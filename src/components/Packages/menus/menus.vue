@@ -1,5 +1,5 @@
 <template>
-    <el-menu ref="menu"
+  <el-menu ref="menu"
              :default-active="defaultActive"
              :default-openeds="defaultOpeneds"
              :mode="mode"
@@ -14,7 +14,7 @@
              @close="closeMenu"
              @select="selectMenu">
         <sub-menu v-for="(menuItem, index) in innerMenus" :key="index" :menu-item="menuItem"></sub-menu>
-	</el-menu>
+  </el-menu>
 </template>
 <script type="text/ecmascript-6">
 

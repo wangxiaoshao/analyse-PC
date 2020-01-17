@@ -43,6 +43,19 @@
                   label="名称"
                   width="180">
                 </el-table-column>
+                <el-table-column 
+                  fixed
+                  align="center"
+                  prop="value"
+                  width="180"
+                  label="操作">
+                  <template slot-scope="scope">
+                    <el-button
+                    size="mini"
+                    type="danger"
+                    @click="deleteDic(scope.$index, scope.row)">删除</el-button>
+                  </template>
+                </el-table-column>
               </el-table>
             </template>
           </el-col>
@@ -64,6 +77,7 @@
 import { mapState, mapMutations } from 'vuex'
 import hasRight from '@src/mixins/has-right'
 import { api, urlNames } from '@src/api'
+import { constants } from 'zlib';
 
 export default {
   props: ['visible', 'close', 'dialogTitle', 'dictionaryType'],
@@ -94,7 +108,7 @@ export default {
       rules: {
         text: [{ validator: checkAge, trigger: 'blur' }],
         value: [{ validator: checkAge, trigger: 'blur' }]
-      }
+      },
     }
   },
   mounted () {
@@ -164,7 +178,26 @@ export default {
     closeDialog (form) {
       this.$refs[form].resetFields()
       this.$emit('close', 'dicDialogVisible')
-    }
+    },
+    deleteDic (index,rowData) {
+      let data = {
+        dictItemIds:[rowData.id],
+        dictId:this.dictionaryType
+      }
+      api[urlNames['deleteDictItem']](data).then(
+        res => {
+          if (res && res.status === 0) {
+            this.$message.success(`删除成功`)
+            this.getDicByTypeList()
+          }else{
+            this.$message.error(`删除失败`)
+          }
+        },
+        () => {
+          
+        }
+      )
+    },
   }
 }
 </script>

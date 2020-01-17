@@ -57,7 +57,8 @@ export default {
         let len = this.menuItem.key.length
         for (let i = 0; i < len; i++) {
           let key = this.menuItem.key[i]
-          if (key === 'menuAddrBook') {
+          // 显示通信录和文档中心
+          if (key === 'menuAddrBook' || key === 'menuWordCenter') {
             return true
           }
           let tempMenu = menuList.filter(item => {
@@ -75,10 +76,11 @@ export default {
         return flag
       } else {
         let flag = false
-        if (this.menuItem.key === 'menuAddrBook') { // 显示通信录
+        // 显示通信录和文档中心
+        if (this.menuItem.key === 'menuAddrBook' || this.menuItem.key === 'menuWordCenter') {
+          debugger
           return true
         }
-
         let tempMenu = menuList.filter(item => {
           return item.moduleName === this.menuItem.key
         })

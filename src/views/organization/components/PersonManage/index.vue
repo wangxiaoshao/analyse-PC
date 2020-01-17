@@ -92,6 +92,9 @@
             <el-input placeholder="请输入内容" :disabled="isDefaultFlag" v-model="userDetail.idcard">
               <el-button slot="append" v-if="!disabledFlag" type="success" class="form-btn">点击实名认证</el-button>
             </el-input>
+            <span
+              style="font-size: 12px;position: relative;top:-7px;color: #8c939d;"
+            >如果不录入不影响新帐号创建</span>
             <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
               <div
                 class="tip-msg"
