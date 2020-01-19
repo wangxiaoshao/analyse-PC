@@ -11,7 +11,8 @@ const app = {
       actions: [],
       menus: [],
       options: [],
-      user: []
+      // user: []
+      user: {}
     },
     confirmState: ''
   },

@@ -19,7 +19,8 @@
     </div>
     <el-collapse v-model="activeAccount" accordion class="account-list">
       <el-collapse-item v-for="item in accountList" :key="item.id" :title="item.name + ' ' + userInfo.name">
-          <bind-system :user-account="userAccount" @get-app="getAppId"></bind-system>
+          <!-- <bind-system :user-account="userAccount" @get-app="getAppId"></bind-system> -->
+          <bind-system :list="userAccount[0].account4AppDtos || []"  @app-change="getAppId"></bind-system>
       </el-collapse-item>
     </el-collapse>
     <div class="creat-account-content" v-if="this.$route.name === 'PersonAdd' || this.$route.name === 'PersonEdit'">
@@ -37,8 +38,12 @@
         <el-form-item label="密码" prop="password">
           <el-input v-model="addAccount.password" show-password></el-input>
         </el-form-item>
-        <el-form-item label="关联系统">
+        <!-- <el-form-item label="关联系统">
          <bind-system :user-account="[]" @get-app="getAppId"></bind-system>
+        </el-form-item> -->
+         <el-form-item label="关联系统">
+         <!-- <bind-system :user-account="[]" @change="getAppId"></bind-system> -->
+         <bind-system :list="[]" :isCreate="true" @app-change="getAppId"></bind-system>
         </el-form-item>
         <el-form-item label="是否启用" prop="removed">
           <el-switch v-model="addAccount.removed"></el-switch>

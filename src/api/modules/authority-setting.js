@@ -61,5 +61,17 @@ export default {
     keepOriginResponse: true,
     serve: 'organizationManagePC',
     mock: 'system-setting/dictionaryList.json'
+  },
+  [urlNames.findPersonalLoggerList]: {
+    type: 'get',
+    url: '/api/jg_manage/logger/findPersonalLoggerList',
+    keepOriginResponse: true,
+    serve: 'organizationManagePC'
+  },
+  [urlNames.findLoggerById]: {
+    type: 'get',
+    url: '/api/jg_manage/logger/findLoggerById',
+    keepOriginResponse: true,
+    serve: 'organizationManagePC'
   }
 }

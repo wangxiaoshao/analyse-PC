@@ -125,6 +125,9 @@
                   <el-button type="primary" @click="resetPwd">重置密码</el-button>
               </div>
           </el-tab-pane>
+          <el-tab-pane label="个人日志">
+            <personal-log></personal-log>
+          </el-tab-pane>
         </el-tabs>
       </el-col>
     </el-row>
@@ -135,11 +138,13 @@
 import { api, urlNames } from '@src/api'
 import { mapState } from 'vuex'
 import personManage from '../../organization/components/PersonManage'
+import PersonalLog from '../components/PersonalLog/index'
 import SelectMembers from '@src/components/SelectMembers/index'
 export default {
   components: {
     personManage,
-    SelectMembers
+    SelectMembers,
+    PersonalLog
   },
   data () {
     var validateOldPass = (rule, value, callback) => {

@@ -78,7 +78,7 @@ export default {
         let flag = false
         // 显示通信录和文档中心
         if (this.menuItem.key === 'menuAddrBook' || this.menuItem.key === 'menuWordCenter') {
-          debugger
+          // debugger
           return true
         }
         let tempMenu = menuList.filter(item => {

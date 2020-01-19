@@ -502,6 +502,7 @@ export default {
     // 搜索数据
     loadSearch () {
       this.searchFlag = false
+      // console.log(' this.personFrom.name:', this.personFrom.name)
       if (this.$route.name === 'PersonAdd' && this.personFrom.name.length > 1) {
         if (this.timer) {
           clearTimeout(this.timer)

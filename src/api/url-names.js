@@ -209,6 +209,11 @@ export default {
    */
   changeSessionUserId: 'changeSessionUserId',
   findSessionUserList: 'findSessionUserList',
-  logout: 'logout'
+  logout: 'logout',
+  /**
+   * 个人日志
+   */
+  findPersonalLoggerList: 'findPersonalLoggerList',
+  findLoggerById: 'findLoggerById'
 
 }
