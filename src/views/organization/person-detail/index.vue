@@ -198,8 +198,7 @@ export default {
       }).then((res) => {
         this.userInfo.userAccount = res.data
         this.accountList = res.data
-      // eslint-disable-next-line handle-callback-err
-      }, (error) => {
+      }, () => {
       })
     },
     getIdentity () {

@@ -29,7 +29,7 @@
           <!--<span :title="scope" v-else>{{scope.$index + 1}}</span>-->
         </template>
       </el-table-column>
-      <el-table-column label="名称" prop="name"></el-table-column>
+      <el-table-column label="名称" prop="name" ></el-table-column>
       <el-table-column label="启用状态" prop="removed" align="center">
         <template slot-scope="scope">
           <span class="text-able" v-show="scope.row.removed === 0">启用</span>

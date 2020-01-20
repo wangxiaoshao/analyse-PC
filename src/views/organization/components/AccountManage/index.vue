@@ -18,9 +18,9 @@
       </el-select>
     </div>
     <el-collapse v-model="activeAccount" accordion class="account-list">
-      <el-collapse-item v-for="item in accountList" :key="item.id" :title="item.name + ' ' + userInfo.name">
+      <el-collapse-item v-for="(item,index) in accountList" :key="item.id" :title="item.name + ' ' + userInfo.name">
           <!-- <bind-system :user-account="userAccount" @get-app="getAppId"></bind-system> -->
-          <bind-system :list="userAccount[0].account4AppDtos || []"  @app-change="getAppId"></bind-system>
+          <bind-system :list="item.account4AppDtos || []" :sysIndex='index'  @app-change="getAppId"></bind-system>
       </el-collapse-item>
     </el-collapse>
     <div class="creat-account-content" v-if="this.$route.name === 'PersonAdd' || this.$route.name === 'PersonEdit'">
@@ -85,18 +85,21 @@ export default {
       activeAccount: '1',
       tags: [], // 提交的标签
       options: [],
-      accountSend: this.accountList,
-      accountSelect: 1
+      accountSend: [],
+      accountSelect: 1,
+      doIndex: ''
     }
   },
   created () {
     this.init()
-    console.log('&'.repeat(20))
-    console.log(this.userAccount)
   },
   methods: {
     init () {
+      let that = this
       this.oldFrom = JSON.parse(JSON.stringify(this.addAccount))
+      this.accountList.forEach(function (item) {
+        that.accountSend.push(item)
+      })
     },
     handleClose (tag) {
       this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1)
@@ -137,10 +140,16 @@ export default {
         defaultAccount: null,
         reason: this.addAccount.reason
       }
-
       if (this.addAccount.name !== this.oldFrom.name && this.addAccount.password !== this.oldFrom.password) {
+        alert(111)
         this.accountSend.push(accountObj)
       }
+      if (this.doIndex || this.doIndex === 0) {
+        alert(222)
+        // this.accountSend = this.accountList
+        this.accountSend[this.doIndex].appId = this.addAccount.appId
+      }
+      console.log(' this.accountSend:', this.accountSend)
       this.$emit('get-account', this.accountSend)
     },
     lastStep () {
@@ -149,8 +158,9 @@ export default {
     goBack () {
       this.$router.go(-1)
     },
-    getAppId (val) {
+    getAppId (val, index) {
       this.addAccount.appId = val
+      this.doIndex = index
     }
   }
 }

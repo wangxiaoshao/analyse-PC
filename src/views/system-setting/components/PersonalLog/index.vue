@@ -44,6 +44,7 @@
      :data="tableData"
      stripe
      border
+     align='center'
     style="width: 100%">
     <el-table-column
       type="index"

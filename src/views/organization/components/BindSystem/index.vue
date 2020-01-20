@@ -67,6 +67,9 @@ export default {
     isCreate: { // 是否创建账号的时候
       type: Boolean,
       default: false
+    },
+    sysIndex: {
+      type: Number
     }
   },
   data () {
@@ -139,7 +142,7 @@ export default {
     handlePopoverConfirm () {
       this.changeSlectedList()
       let arr = this.selectedIds.map(id => id + '')
-      this.$emit('app-change', arr)
+      this.$emit('app-change', arr, this.sysIndex)
       this.showPopover = false
     },
 
