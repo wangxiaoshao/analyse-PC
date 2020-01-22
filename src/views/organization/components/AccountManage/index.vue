@@ -67,7 +67,7 @@
 import bindSystem from '../BindSystem/index'
 export default {
   components: { bindSystem },
-  props: ['disabledFlag', 'isShowEditFlag', 'accountList', 'userInfo', 'isDefaultFlag', 'userAccount'],
+  props: ['disabledFlag', 'isShowEditFlag', 'accountList', 'userInfo', 'isDefaultFlag', 'userAccount', 'isExit'],
   data () {
     return {
       addAccount: {
@@ -140,17 +140,29 @@ export default {
         defaultAccount: null,
         reason: this.addAccount.reason
       }
+      let that = this
+      let state = true
+
       if (this.addAccount.name !== this.oldFrom.name && this.addAccount.password !== this.oldFrom.password) {
-        alert(111)
-        this.accountSend.push(accountObj)
+        that.accountSend.forEach(function (item, index) {
+          if (accountObj.name === item.name) {
+            state = false
+            that.$message.error('该用户名已存在，请重新设置')
+          }
+        })
+
+        if (!this.isExit) {
+          that.accountSend.pop()
+        }
+        if (state) {
+          that.accountSend.push(accountObj)
+          this.$emit('get-account', this.accountSend)
+        }
       }
       if (this.doIndex || this.doIndex === 0) {
-        alert(222)
-        // this.accountSend = this.accountList
         this.accountSend[this.doIndex].appId = this.addAccount.appId
+        this.$emit('get-account', this.accountSend)
       }
-      console.log(' this.accountSend:', this.accountSend)
-      this.$emit('get-account', this.accountSend)
     },
     lastStep () {
       this.$emit('get-back', true)

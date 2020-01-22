@@ -53,6 +53,21 @@
         </el-form-item>
       </el-form>
     </el-dialog>
+     <!-- 提交调出申请弹框 -->
+     <el-dialog
+      :visible.sync="submitVisible" width='410px'>
+      <div slot='title' style="padding:20px; background-color: #fff;">
+        <span class="msg-title">调出申请提交</span>
+          <span class='svg-container' style="color:red"><span class='iconfont iconzuzhijigou'></span></span>
+      </div>
+      <div class="msg-box">
+        您的调出申请已提交，等待管理员审核通过后即可生效。
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitVisible = false" width='120px'>确 定</el-button>
+      </div>
+    </el-dialog>
+
     <div class="button-wrap">
       <span>
         <slot name="AddBtn"></slot>
@@ -100,7 +115,7 @@
       </template>
       <el-table-column prop="description" width="60" align="center" v-if="sortFlag">
         <template>
-          <i class="sortBtnDo menu-icon iconfont iconpaixu" style="font-size: 25px"></i>
+          <i class="sortBtnDo menu-icon iconfont iconpaixu" style="font-size: 25px; cursor: move;"></i>
           <!--<span :title="scope" v-else>{{scope.$index + 1}}</span>-->
         </template>
       </el-table-column>
@@ -169,6 +184,7 @@ export default {
       list: [],
       sortListFlag: false,
       isShowEditFlag: true,
+      submitVisible: false,
       removeFlag: false,
       calloutFlag: false,
       orgName: '',
@@ -260,10 +276,19 @@ export default {
     // 保存排序
     sublimeSort () {
       let sortList = []
-      this.list.forEach((item, index) => {
+      let newAry = []
+      let newAry1 = []
+      // 深拷贝原数组
+      newAry = JSON.parse(JSON.stringify(this.list))
+      newAry1 = JSON.parse(JSON.stringify(this.list))
+      // 对当前排序好的数组按sort重新做排序
+      newAry1.sort(this.doSort)
+      // 对之前已经排序好的
+      newAry.forEach(function (item, index) {
+        item.sort = newAry1[index].sort
         const sortObj = {
           id: item.uid,
-          sort: index
+          sort: item.sort
         }
         sortList.push(sortObj)
       })
@@ -338,14 +363,22 @@ export default {
         if (valid) {
           api[urlNames['calloutUser']](this.formCallout).then(
             res => {
-              this.$message.success(`调出成功`)
+              // this.$message.success(`调出成功`)
               this.calloutFlag = false
+              this.submitVisible = true
               this.getGrid()
               this.fromInit()
               this.formCallout.deptId = this.formCallout.orgId = ''
               this.orgName = this.depName = ''
             },
-            () => {}
+            (error) => {
+              if (error) {
+                this.calloutFlag = false
+                this.submitVisible = true
+                document.querySelector('.msg-title').innerHTML = '请勿重复提交调出申请'
+                document.querySelector('.msg-box').innerHTML = '在此之前，您已经提交过调出申请，请等待管理员审核完成后再操作！'
+              }
+            }
           )
         }
       })

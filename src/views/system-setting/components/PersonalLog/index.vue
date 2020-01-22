@@ -107,7 +107,7 @@
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="DetialInfoVisible = false" width='120px'>确 定</el-button>
       </div>
-  </el-dialog>
+    </el-dialog>
   </div>
   </div>
 </div>
@@ -174,7 +174,6 @@ export default {
       this.SET_APPLICATION_PAGE({})
       this.SET_APPLICATION_SEARCH_QUERY({})
     }
-
     this.getGrid()
   },
   methods: {

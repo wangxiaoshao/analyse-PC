@@ -5,8 +5,8 @@
     </div>
     <div class="sort-do" v-if="sortFlag">
       按住左键上下拖动调整排序
-      <a @click="sublimeSort">保存</a>
-      <a  @click="cancelSort">取消</a>
+      <a @click="sublimeSort" href="javascript:void(0)">保存</a>
+      <a  @click="cancelSort"  href="javascript:void(0)">取消</a>
     </div>
     <el-table
       v-loading="loading"
@@ -111,6 +111,7 @@ export default {
               const oldIndex = evt.oldIndex
               const $li = tbody.children[newIndex]
               const $oldLi = tbody.children[oldIndex]
+              tbody.removeChild($li)
               if (newIndex > oldIndex) {
                 tbody.insertBefore($li, $oldLi)
               } else {
@@ -118,10 +119,10 @@ export default {
               }
 
               let item = items.splice(oldIndex, 1)
-              // console.log(item)
+
               items.splice(newIndex, 0, item[0])
-              // 排序后列表
-              that.list = items
+
+              this.list = items
             }
 
           })
@@ -153,16 +154,16 @@ export default {
     handleSizeChange (val) {
       this.contentPage.current = 1
       this.contentPage.limit = val
-      this.getGrid()
-      // this.cancelSort()
-      this.$emit('cancel', false)
+      // this.getGrid()
+      this.cancelSort()
+      // this.$emit('cancel', false)
       this.$emit('getPage', this.contentPage)
     },
     handleCurrentChange (val) {
       this.contentPage.current = val
-      this.getGrid()
-      // this.cancelSort()
-      this.$emit('cancel', false)
+      // this.getGrid()
+      this.cancelSort()
+      // this.$emit('cancel', false)
       this.$emit('getPage', this.contentPage)
     },
     getGrid () {
@@ -184,22 +185,46 @@ export default {
       })
     },
     cancelSort () {
-      this.init()
+      this.getGrid()
       this.$emit('cancel', false)
     },
     sortBtnFlag () {
       this.$emit('cancel', true)
     },
+    // 排序处理
+    doSort (a, b) {
+      if (a.sort < b.sort) {
+        return a.sort - b.sort
+      }
+    },
     // 保存排序
     sublimeSort () {
       let sortList = []
-      this.list.forEach((item, index) => {
+      let newAry = []
+      let newAry1 = []
+      // 深拷贝原数组
+      newAry = JSON.parse(JSON.stringify(this.list))
+      newAry1 = JSON.parse(JSON.stringify(this.list))
+      // 对当前排序好的数组按sort重新做排序
+      newAry1.sort(this.doSort)
+      // 对之前已经排序好的
+      newAry.forEach(function (item, index) {
+        item.sort = newAry1[index].sort
         const sortObj = {
           id: item.id,
-          sort: index
+          sort: item.sort
         }
         sortList.push(sortObj)
       })
+
+      // this.list.forEach((item, index) => {
+      //   const sortObj = {
+      //     id: item.id,
+      //     sort: item.sort
+      //   }
+      //   sortList.push(sortObj)
+      // })
+
       let data = {
         page: this.contentPage.current,
         limit: this.contentPage.limit,

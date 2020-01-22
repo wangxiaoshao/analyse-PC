@@ -1,4 +1,4 @@
-/* eslint-disable vue/no-unused-components */
+
 <template>
   <div class="pass-change">
      <select-members
@@ -28,6 +28,21 @@
           <el-button @click="calloutFlag = false">取 消</el-button>
         </el-form-item>
       </el-form>
+    </el-dialog>
+
+    <!-- 提交调出申请弹框 -->
+     <el-dialog
+      :visible.sync="submitVisible" width='410px'>
+      <div slot='title' style="padding:20px; background-color: #fff;">
+        <span class="msg-title">调出申请提交</span>
+          <span class='svg-container' style="color:red"><span class='iconfont iconzuzhijigou'></span></span>
+      </div>
+      <div class="msg-box">
+        您的调出申请已提交，等待管理员审核通过后即可生效。
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitVisible = false" width='120px'>确 定</el-button>
+      </div>
     </el-dialog>
     <el-row :gutter="20">
       <el-col :span="6">
@@ -182,6 +197,7 @@ export default {
       userList: [], // 用户身份列表
       defaultDutyName: '', // 默认身份
       calloutFlag: false,
+      submitVisible: false,
       showexportIdentityType: true,
       currentIndex: 0,
       accountInfoList: [],
@@ -483,26 +499,45 @@ export default {
         }
       )
     },
+    // 表单初始化
+    fromInit () {
+      // this.calloutFlag = false
+      this.formCallout = {
+        identityId: '',
+        uid: '',
+        deptId: '',
+        orgId: '',
+        reason: ''
+      }
+    },
 
     // 提交调出
     submitFormCallout (formCallout) {
-      console.log(this.formCallout)
       this.$refs[formCallout].validate(valid => {
         if (valid) {
           api[urlNames['calloutUser']](this.formCallout).then(
             res => {
-              this.$message.success(`调出成功`)
+              // this.$message.success(`调出申请已提交`)
               this.calloutFlag = false
-              this.getGrid()
+              this.submitVisible = true
+              // this.getGrid()
               this.fromInit()
               this.formCallout.deptId = this.formCallout.orgId = ''
-              this.orgName = this.depName = ''
+              // this.orgName = this.depName = ''
             },
-            () => {}
+            (error) => {
+              if (error) {
+                this.calloutFlag = false
+                this.submitVisible = true
+                document.querySelector('.msg-title').innerHTML = '请勿重复提交调出申请'
+                document.querySelector('.msg-box').innerHTML = '在此之前，您已经提交过调出申请，请等待管理员审核完成后再操作！'
+              }
+            }
           )
         }
       })
     },
+
     resetForm (formName) {
       this.$refs[formName].resetFields()
     }

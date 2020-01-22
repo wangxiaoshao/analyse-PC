@@ -66,7 +66,8 @@
            <div v-if="seleceDialog.isSingleOrgSelect!==true">
              <el-checkbox v-model="org" class="member-item" @change="toggleAllOrgs">全选</el-checkbox>
              <el-checkbox-group v-model="orgsModel" @change="toggleOrg">
-               <el-checkbox style="display: block" class="member-item text-ellipsis"
+                <!-- class="member-item text-ellipsis" -->
+               <el-checkbox style="display: block"
                             v-for="org in orgList"
                             :key="org.id"
                             :label="JSON.stringify(org)">

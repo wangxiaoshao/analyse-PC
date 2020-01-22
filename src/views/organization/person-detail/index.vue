@@ -26,6 +26,7 @@
        v-if="stepTwoFlag"
        :disabledFlag="disabledFlag"
        :isShowEditFlag="isShowEditFlag"
+       :isExit='isExit'
        :account-list="accountList"
        :user-info ="userInfo.user"
        :user-account="userInfo.userAccount"
@@ -68,6 +69,7 @@ export default {
       openAddTagFlag: false,
       sendUserFlag: false,
       isDefaultFlag: false,
+      isExit: true,
       activeIndex: 0,
       accountList: [],
       oldUserInfo: {},
@@ -257,9 +259,13 @@ export default {
     submitForm () {
       api[urlNames['createUser']](this.userInfo).then((res) => {
         this.$message.success(`保存成功`)
+        this.isExit = true
         this.goBack()
-      }, () => {
-        this.$message.error(`保存失败，请重试`)
+      }, (error) => {
+        if (error) {
+          this.isExit = false
+          this.$message.error(`保存失败，请重试`)
+        }
       })
     },
     // TODO breadcrumb可采用组件传参的模式替换路由判断，将配置权交给调用方

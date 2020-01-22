@@ -1,70 +1,80 @@
 <template>
   <div class="data-log">
-    <!--时间轴-->
-    <el-row :style="{paddingLeft: '60px', paddingTop: '30px'}">
-      <el-col :span="4">
-        <div class="block">
-          <el-select v-model="selectValue"
-          slot="prepend"
-          align="center"
-          placeholder="今天"
-          @change="selectChange(selectValue)">
-          <el-option label="今天" :value="['today']"></el-option>
-          <el-option label="昨天" :value="['yesterday']"></el-option>
-          <el-option label="月" :value="['month', '月', 'yyyy-MM']"></el-option>
-          <el-option label="选择日期" :value="['date', '日期', 'yyyy-MM-dd']"></el-option>
-          </el-select>
-        </div>
-      </el-col>
-      <el-col :span="6" :style="{width: '220px'}">
-        <div class="block" v-if="openPicker">
-          <el-date-picker
-            slot="append"
-            v-model="currentDateVal"
-            :type="dateType"
-            :default-value="weekstart"
-            :format="format"
-            :value-format="format"
-            :placeholder="'选择'+value"
-            :picker-options="pickerOptions"
-            @change="dateChange">
-          </el-date-picker>
-        </div>
-        <div v-else>
-          <el-input v-model="inputValue" :placeholder="date" :disabled="true">
-            <i slot="prefix" class="el-input__icon el-icon-date"></i>
-          </el-input>
-        </div>
-      </el-col>
-    </el-row>
+    <div class="all-log">
+      <el-tabs v-model="activeName" @tab-click="handleClick">
+          <el-tab-pane label="系统日志" name="first">
+             <el-row :style="{paddingLeft: '60px', paddingTop: '30px'}">
+              <el-col :span="4">
+                <div class="block">
+                  <el-select v-model="selectValue"
+                  slot="prepend"
+                  align="center"
+                  placeholder="今天"
+                  @change="selectChange(selectValue)">
+                  <el-option label="今天" :value="['today']"></el-option>
+                  <el-option label="昨天" :value="['yesterday']"></el-option>
+                  <el-option label="月" :value="['month', '月', 'yyyy-MM']"></el-option>
+                  <el-option label="选择日期" :value="['date', '日期', 'yyyy-MM-dd']"></el-option>
+                  </el-select>
+                </div>
+              </el-col>
+              <el-col :span="6" :style="{width: '220px'}">
+                <div class="block" v-if="openPicker">
+                  <el-date-picker
+                    slot="append"
+                    v-model="currentDateVal"
+                    :type="dateType"
+                    :default-value="weekstart"
+                    :format="format"
+                    :value-format="format"
+                    :placeholder="'选择'+value"
+                    :picker-options="pickerOptions"
+                    @change="dateChange">
+                  </el-date-picker>
+                </div>
+                <div v-else>
+                  <el-input v-model="inputValue" :placeholder="date" :disabled="true">
+                    <i slot="prefix" class="el-input__icon el-icon-date"></i>
+                  </el-input>
+                </div>
+              </el-col>
+            </el-row>
+            <div v-if="newsList && newsList.length === 0" class="noDataList">暂无数据</div>
+            <el-row v-if="newsList && newsList.length > 0">
+              <el-col :span="14" :style="{ marginLeft: '80px', marginTop: '20px'}">
+                <div class="timeLine">
+                  <el-timeline :reverse="reverse">
+                    <el-timeline-item
+                      v-for="(activity, index) in newsList"
+                      :key="index"
+                      placement="top"
+                      :timestamp="activity.actionTime">
+                      {{activity.userName}}{{activity.description}}
+                    </el-timeline-item>
+                  </el-timeline>
+                </div>
+              </el-col>
+            </el-row>
 
-    <div v-if="newsList && newsList.length === 0" class="noDataList">暂无数据</div>
-    <el-row v-if="newsList && newsList.length > 0">
-      <el-col :span="14" :style="{ marginLeft: '80px', marginTop: '20px'}">
-        <div class="timeLine">
-          <el-timeline :reverse="reverse">
-            <el-timeline-item
-              v-for="(activity, index) in newsList"
-              :key="index"
-              placement="top"
-              :timestamp="activity.actionTime">
-              {{activity.userName}}{{activity.description}}
-            </el-timeline-item>
-          </el-timeline>
-        </div>
-      </el-col>
-    </el-row>
+            <!--分页-->
+            <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="page.current"
+              :page-sizes="[10, 30, 50, 100]"
+              :page-size="page.limit"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="page.total">
+            </el-pagination>
+          </el-tab-pane>
+           <el-tab-pane label="错误日志">
+          </el-tab-pane>
+           <el-tab-pane label="操作日志">
+          </el-tab-pane>
+        </el-tabs>
+    </div>
 
-    <!--分页-->
-    <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="page.current"
-      :page-sizes="[10, 30, 50, 100]"
-      :page-size="page.limit"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="page.total">
-    </el-pagination>
+
   </div>
 </template>
 
@@ -83,6 +93,7 @@ export default {
         keyword: ''
       },
       weekstart: '',
+      activeName: 'first',
       reverse: true,
       newsList: [],
       currentDateVal: '',
@@ -146,7 +157,7 @@ export default {
         this.getGrid()
       }
     },
-    getGrid (val) {
+    getGrid () {
       let data = {
         date: this.date,
         type: this.dateType === 'month' ? 4 : 0, // 后端需要传输的数据类型 月份type：4 || 天：0
@@ -160,6 +171,9 @@ export default {
         this.list = []
         this.page.total = 0
       })
+    },
+    handleClick (tab, event) {
+      // console.log(tab, event)
     }
   }
 }
