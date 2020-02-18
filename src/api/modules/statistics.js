@@ -14,12 +14,31 @@ export default {
     serve: 'organizationManagePC',
     mock: 'statistics/getStatistiscManageDto.json'
   },
-  [urlNames.getDataLogList]: { // 系统日志列表
+  // 操作日志列表
+  [urlNames.getDataLogList]: {
     type: 'get',
     url: '/api/jg_manage/logger/findLoggerList',
     keepOriginResponse: true,
     showLoading: true,
     serve: 'organizationManagePC',
     mock: 'statistics/getDataLogList.json'
+  },
+  // 系统日志列表
+  [urlNames.findLoggerApiAccessList]: {
+    type: 'get',
+    url: '/api/jg_manage/logger/findLoggerApiAccessList',
+    keepOriginResponse: true,
+    showLoading: true,
+    serve: 'organizationManagePC'
+
+  },
+  [urlNames.findLoggerApiAccessById]: {
+    type: 'get',
+    url: '/api/jg_manage/logger/findLoggerApiAccessById',
+    keepOriginResponse: true,
+    showLoading: true,
+    serve: 'organizationManagePC'
+
   }
+  // 登录日志列表
 }

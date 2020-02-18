@@ -201,6 +201,14 @@ export default {
       'key': 'menuWordCenter'
     }
     ]
+  },
+  {
+    'menuId': '6',
+    'name': '通知中心',
+    'path': '/notification',
+    'type': 1,
+    'icon': 'fa fa-cogs'
+    // 'key': ['notice']
   }
   ]
 }

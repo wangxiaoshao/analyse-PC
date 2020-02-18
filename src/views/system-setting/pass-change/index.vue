@@ -44,6 +44,7 @@
         <el-button type="primary" @click="submitVisible = false" width='120px'>确 定</el-button>
       </div>
     </el-dialog>
+
     <el-row :gutter="20">
       <el-col :span="6">
         <div class="account-info">
@@ -63,7 +64,7 @@
             </el-button>
           </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item @click.native="changeSessionUser(item.userId)" :key="index" v-for="(item, index) in userList">{{item.dutyName}}</el-dropdown-item>
+              <el-dropdown-item @click.native="changeSessionUser(item.userId,item.uid)" :key="index" v-for="(item, index) in userList"> {{item.name}}</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
@@ -83,6 +84,7 @@
               @get-label="getLabelId"
               @goModifieUserInfo='goModifieUserInfo'
               :showexportIdentityType="showexportIdentityType"
+              :showNickName='showNickName'
               @exportOrg='exportOrg'
             ></person-manage>
           </el-tab-pane>
@@ -153,7 +155,7 @@
 import { api, urlNames } from '@src/api'
 import { mapState } from 'vuex'
 import personManage from '../../organization/components/PersonManage'
-import PersonalLog from '../components/PersonalLog/index'
+import PersonalLog from '@src/components/PersonalLog/index'
 import SelectMembers from '@src/components/SelectMembers/index'
 export default {
   components: {
@@ -199,6 +201,7 @@ export default {
       calloutFlag: false,
       submitVisible: false,
       showexportIdentityType: true,
+      showNickName: true,
       currentIndex: 0,
       accountInfoList: [],
       currentSetAccount: {},
@@ -237,6 +240,7 @@ export default {
         },
         userId: '',
         user: {
+          nickName: 'cs11',
           birthday: '',
           nation: null,
           portraitUrl: '',
@@ -282,6 +286,7 @@ export default {
   created () {
     this.getUserDetail(this.app.option.user.uid)
     this.getIdentity(this.app.option.user.identityId)
+    // this.getNickName('')
     api[urlNames['findUserAccountByUid']]().then(
       res => {
         if (res && res.data) {
@@ -294,11 +299,8 @@ export default {
         this.accountInfoList = []
       }
     )
+
     this.findSessionUserList()
-  },
-  mounted () {
-    this.getUserDetail(this.app.option.user.uid)
-    this.getIdentity(this.app.option.user.identityId)
   },
   computed: {
     ...mapState(['app'])
@@ -334,20 +336,29 @@ export default {
         this.userList.forEach(item => {
           if (item.userId === this.app.option.user.identityId) {
             this.defaultDutyName = item.dutyName
+            this.getNickName(item.userId)
           }
         })
       })
     },
-
     // 切换用户身份
     changeSessionUser (id) {
+      this.getNickName(id)
       api[urlNames['changeSessionUserId']]({
         userId: id
       }).then((res) => {
-        this.$message.success('切换成功')
         window.setTimeout(() => {
           this.$router.go(0) // 刷新页面
+          this.message.success('切换成功')
         }, 500)
+      })
+    },
+    // 切换账号
+    getNickName (id) {
+      api[urlNames['findUserAccountNickName']]({
+        userIdentiyId: id
+      }).then((res) => {
+        // this.$message.success('切换成功')
       })
     },
     // 关闭选人弹窗
@@ -433,7 +444,9 @@ export default {
     goModifieUserInfo (val) {
       // 保存createUser
       this.userInfo.user = val
+      // this.userInfo.
       // this.userInfo.userId=val.uid;
+      // console.log(' this.userInfo.user:', this.userInfo.user)
       api[urlNames['createUser']](this.userInfo).then((res) => {
         this.$message.success(`保存成功`)
       }, () => {

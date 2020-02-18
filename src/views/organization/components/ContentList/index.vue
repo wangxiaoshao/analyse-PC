@@ -1,7 +1,7 @@
 <template>
   <div class="content-list">
     <div class="button-wrap">
-      <el-button @click="sortBtnFlag" :disabled="!hasRight('departmentOrder')">调整排序</el-button>
+      <el-button @click="sortBtnFlag" :disabled="!hasRight('departmentOrder')">调整排序111</el-button>
     </div>
     <div class="sort-do" v-if="sortFlag">
       按住左键上下拖动调整排序
@@ -16,6 +16,8 @@
       highlight-current-row
       size="medium"
       id="contentTable"
+      @current-change="handleRow"
+      :row-class-name='RowClassName'
     >
       <template slot="empty">
         <div class="empty">
@@ -29,7 +31,10 @@
           <!--<span :title="scope" v-else>{{scope.$index + 1}}</span>-->
         </template>
       </el-table-column>
-      <el-table-column label="名称" prop="name" ></el-table-column>
+      <el-table-column label="序号" type="index" align="center" width="60">
+        <template slot-scope="scope"><span v-text='getIndex(scope.$index)'></span></template>
+      </el-table-column>
+      <el-table-column label="名称" prop="name" align="center"></el-table-column>
       <el-table-column label="启用状态" prop="removed" align="center">
         <template slot-scope="scope">
           <span class="text-able" v-show="scope.row.removed === 0">启用</span>
@@ -54,6 +59,9 @@
           <el-button v-show="scope.row.nodeType === 2" @click.native="openEditUnit(scope.row)" type="text" size="small">
             修改
           </el-button>
+          <el-button  @click.native="goSort(scope.row)" type="text" size="small">
+            排序
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -67,6 +75,21 @@
       layout="total, sizes, prev, pager, next, jumper"
       :total="contentPage.total">
     </el-pagination>
+    <el-dialog :visible.sync="showSortDilog" width="420px">
+      <div slot="title">
+        <span>数值排序</span>
+        <i class="el-icon-document-copy" style="color:red;margin-left:6px"></i>
+      </div>
+      <div class="sort-ipt">
+        请输入排序目标序号：
+        <div style="display:inline-block">
+          <el-input v-model="sortValue" placeholder="请输入排序目标序号" ></el-input>
+        </div>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitNumSort" width="120px">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -78,6 +101,7 @@ import hasRight from '@src/mixins/has-right'
 import { api, urlNames } from '@src/api'
 export default {
   mixins: [handleTable, organizationEdit, hasRight],
+  props: ['sortFlag', 'contentPage', 'succese', 'contentId'],
   data () {
     return {
       loading: true,
@@ -85,10 +109,12 @@ export default {
       sortListFlag: false,
       isShowEditFlag: true,
       sortList: [],
-      nodeId: this.$route.params.nodeId
+      sortValue: null,
+      sortNum: null,
+      nodeId: this.$route.params.nodeId,
+      showSortDilog: false
     }
   },
-  props: ['sortFlag', 'contentPage', 'succese', 'contentId'],
   created () {
     this.init()
   },
@@ -150,6 +176,17 @@ export default {
       } else {
         this.isShowEditFlag = false
       }
+    },
+    getIndex ($index) {
+      return (this.contentPage.current - 1) * this.contentPage.limit + $index + 1
+    },
+    RowClassName ({ row, rowIndex }) {
+      rowIndex = this.getIndex(rowIndex)
+      row.index = rowIndex
+    },
+    handleRow (row) {
+      console.log(' row:', row)
+      console.log(' this.list:', this.list)
     },
     handleSizeChange (val) {
       this.contentPage.current = 1
@@ -230,6 +267,7 @@ export default {
         limit: this.contentPage.limit,
         sortList
       }
+
       api[urlNames['setViewNodeSort']](data).then((res) => {
         this.$message.success(`保存成功`)
         // this.cancelSort()
@@ -238,6 +276,16 @@ export default {
       }, () => {
         this.$message.error(`保存失败，请重试`)
       })
+    },
+
+    // 数值排序弹框
+    goSort (val) {
+      this.showSortDilog = true
+    },
+
+    // 保存数值排序
+    submitNumSort () {
+      this.showSortDilog = false
     }
   }
 }

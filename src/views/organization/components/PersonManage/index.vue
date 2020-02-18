@@ -143,6 +143,10 @@
               <el-button type="primary" slot="append" class="form-btn1" @click="exportOrg">调出</el-button>
             </el-input>
           </el-form-item>
+          <el-form-item label="登录别名" v-if="showNickName">
+            <!-- v-model="userDetail.nickName" -->
+            <el-input placeholder="请输入登录别名" v-model="userDetail.nickName"></el-input>
+          </el-form-item>
         </el-col>
       </el-row>
 
@@ -431,6 +435,7 @@ export default {
     'isShowEditFlag',
     'userDetail',
     'showexportIdentityType',
+    'showNickName',
     'postDetail',
     'isDefaultFlag',
     'userAuditFields',

@@ -62,6 +62,7 @@ export default {
     serve: 'organizationManagePC',
     mock: 'system-setting/dictionaryList.json'
   },
+  // 个人日志
   [urlNames.findPersonalLoggerList]: {
     type: 'get',
     url: '/api/jg_manage/logger/findPersonalLoggerList',

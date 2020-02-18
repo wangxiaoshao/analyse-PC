@@ -42,8 +42,16 @@ export default {
   // 数据统计 statistics
   getStatistiscManageDto: 'getStatistiscManageDto',
   getParameter: 'getParameter',
+  // 操作日志
   getDataLogList: 'getDataLogList',
-  getViewTree: 'getViewTree', // 获取视图--机构树
+  /**
+   * 系统日志
+   */
+  findLoggerApiAccessList: 'findLoggerApiAccessList',
+  findLoggerApiAccessById: 'findLoggerApiAccessById',
+  // findLoggerById: 'findLoggerById'
+  // 获取视图--机构树
+  getViewTree: 'getViewTree',
   getTree: 'getTree',
   // 搜索视图
   searchViewNode: 'searchViewNode',
@@ -93,6 +101,8 @@ export default {
   createUser: 'createUser',
   // 查询部门下的所有人员
   findDepartmentMembers: 'findDepartmentMembers',
+  // 部门下人员排序
+  setSortThroughNumberical: 'setSortThroughNumberical',
   // 查询单位下的所有人员
   findOrganizationMembers: 'findOrganizationMembers',
   // 人员调出
@@ -214,6 +224,10 @@ export default {
    * 个人日志
    */
   findPersonalLoggerList: 'findPersonalLoggerList',
-  findLoggerById: 'findLoggerById'
+  findLoggerById: 'findLoggerById',
+  /**
+   * 用户别名查询
+   */
+  findUserAccountNickName: 'findUserAccountNickName'
 
 }

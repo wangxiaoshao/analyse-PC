@@ -10,7 +10,7 @@
         <el-button size="mini" @click="goBackTree">返回</el-button>
       </div>
       <div class="result-list" style="overflow-y: auto;height: 300px;">
-        <el-table v-loading="loadFlag" :data="gridData" :show-header="false">
+        <el-table v-loading="loadFlag" :data="gridData" :show-header="false" @current-change="handleCurrentChange">
           <el-table-column property="name">
             <template slot-scope="scope">
               <span v-if="selectType!=='0'" :title="scope.row.name" class="table-span" @click="getDetail(scope.row)">{{scope.row.name}}</span>
@@ -92,6 +92,14 @@ export default {
           this.gridData = res.data
           this.resultFlag = true
         })
+      } else if (this.selectType === '2') {
+        api[urlNames['searchOtherDep']]({
+          name: this.keyWord,
+          nodeType: this.selectType
+        }).then(res => {
+          this.gridData = res.data
+          this.resultFlag = true
+        })
       } else if (this.selectType === '3') {
         console.log(this.app.option.user.deptId)
         api[urlNames['searchMyDep']]({
@@ -129,9 +137,14 @@ export default {
       } else {
         this.$emit('searchOtherBack')
       }
+      this.$emit('goBackTree')
     },
     getDetail (val) {
       this.$emit('searchListResult', val)
+    },
+    handleCurrentChange (val) {
+      console.log(' val:', val)
+      this.$emit('searchPeopleInfo', val)
     }
   },
   watch: {

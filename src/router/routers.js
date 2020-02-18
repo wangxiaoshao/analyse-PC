@@ -6,15 +6,21 @@ import system from './modules/system'
 import roleManage from './modules/role-manage'
 import addressbook from './modules/addressbook'
 import addresslist from './modules/addresslist'
-
 const noRight = () => import('@src/views/no-right/index.vue')
 
+// 通知中心
+const Notification = () => import('@src/views/notification/index.vue')
 /* 路由 */
 export default [
   {
     path: '/no-right',
     name: 'noRight',
     component: noRight
+  },
+  {
+    path: '/notification',
+    name: 'notification',
+    component: Notification
   },
   ...organization,
   ...examine,

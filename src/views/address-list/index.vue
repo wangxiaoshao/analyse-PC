@@ -7,7 +7,7 @@
             <div class="top-one" :class="activeColor==1?'top-active':''" @click="onChange(1)">本单位通讯录</div>
             <div class="top-two" title="查阅全省各单位的通讯录信息" :class="activeColor==2?'top-active':''" @click="onChange(2)">全省通讯录</div>
           </div>
-         <search-result @searchMyBack="searchMyBack" @searchListResult="searchListResult" :myOrgFlag="activeColor" :defaultNodeId="defaultNodeId"></search-result>
+         <search-result @searchMyBack="searchMyBack" @goBackTree="goBackTree"  @searchListResult="searchListResult" @searchPeopleInfo='searchPeopleInfo' :myOrgFlag="activeColor" :defaultNodeId="defaultNodeId"></search-result>
          <div class="tree-content">
            <address-list-tree :tree-list="treeList" @handle-node-click="handleNodeClickTree"></address-list-tree>
          </div>
@@ -16,15 +16,19 @@
       <el-col :span="18" class="address-container" >
          <el-breadcrumb separator="/" style="padding:20px;">
               <el-breadcrumb-item>{{navigation1.name}}</el-breadcrumb-item>
-              <el-breadcrumb-item v-for="(item,index) in navigation" :key="index" >
+              <template v-if="showBreadCrumb">
+                <el-breadcrumb-item v-for="(item,index) in navigation" :key="index" >
                 <a v-if="navigation.length-1!==index"  @click.prevent='goCurrentNodeDetail(item.id, index)'>{{item.name}}</a>
                 <span v-if="navigation.length-1===index" href="" disabled >{{item.name}}</span>
               </el-breadcrumb-item>
+              </template>
+              <el-breadcrumb-item v-if="!showBreadCrumb">个人通讯录</el-breadcrumb-item>
             </el-breadcrumb>
         <transition name="fade-transform" mode="out-in" style="height: 100%">
              <div style="padding: 0 20px">
-               <department :departmentList="departmentList" :treeList="treeList" @handle-child-click="handleChildClick"></department>
-               <member :table-data="memberList"></member>
+               <department :departmentList="departmentList" v-if="showDep" :treeList="treeList" @handle-child-click="handleChildClick"></department>
+               <member :table-data="memberList" v-if="!showDep && showBreadCrumb"></member>
+               <person-info :personInfoList='personInfoList' v-if="!showBreadCrumb"></person-info>
              </div>
         </transition>
       </el-col>
@@ -35,6 +39,7 @@
 <script>
 import { api, urlNames } from '@src/api'
 import searchResult from './components/Choose/index'
+import personInfo from './components/PersonInfo/index'
 import department from './department/index'
 import member from './member/index'
 import addressListTree from './components/Tree/index'
@@ -44,7 +49,8 @@ export default {
     searchResult,
     department,
     member,
-    addressListTree
+    addressListTree,
+    personInfo
   },
   data () {
     return {
@@ -57,7 +63,10 @@ export default {
       memberList: [],
       treeList: [],
       hasChildren: true,
-      name: ''
+      name: '',
+      personInfoList: {},
+      showDep: true,
+      showBreadCrumb: true
     }
   },
   created () {
@@ -116,30 +125,52 @@ export default {
       this.treeList = this.departmentList = []
       this.getAddressListDepartmentMembers(data.id)
     },
+    // 点击全省通讯录搜索人员行时显示面包屑
+    searchPeopleInfo (data) {
+      this.personInfoList = data
+      this.showBreadCrumb = false
+      this.showDep = false
+    },
     // 我的搜索返回
     searchMyBack () {
+      this.showDep = true
+      this.showBreadCrumb = true
       this.getAddressListUnitTree()
       this.getAddressListOrganizationMembers()
       this.getAddressListdepartment()
     },
     // 其他单位
     searchOtherBack () {
+      this.showDep = true
+      this.handleChildClick()
       this.getAddressListOthertTree()
       this.getAddressListOrganizationMembers()
     },
+    goBackTree () {
+      this.handleNodeClickTree(this.treeList[0])
+    },
     /** 点击树节点显示内容 */
     handleNodeClickTree (node) {
+      this.showDep = true
+      this.showBreadCrumb = true
+      // alert(node.nodeType)
       this.navigation = []
       this.navigation.push({ id: node.id, name: node.name })
-
       if (node.nodeType === 3) {
         this.getAddressListDepartmentMembers(node.bindId)
+        this.showDep = false
       } else if (node.nodeType === 2) {
         this.getAddressListOrganizationMembers(node.bindId)
       }
       this.getAddressListdepartment(node.id)
     },
     handleChildClick (node) {
+      // this.showDep = true
+
+      if (node.nodeType === 3) {
+        this.showDep = false
+        this.showBreadCrumb = true
+      }
       console.log(JSON.parse(JSON.stringify(node)), '-------------node')
       this.navigation.push({ id: node.id, name: node.name })
       this.getAddressListOrganizationMembers(node.id)
@@ -179,6 +210,7 @@ export default {
     goCurrentNodeDetail (depid, index) {
       let len = this.navigation.length
       this.navigation.splice(index + 1, len - index + 1)
+      console.log(' depid:', depid)
       this.getAddressListdepartment(depid)
       this.getAddressListOrganizationMembers(depid.id)
       this.getAddressListDepartmentMembers(depid.id)

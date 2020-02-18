@@ -28,7 +28,7 @@
                 <div style="border-bottom: 1px solid rgba(0, 0, 0, 0.1);padding: 5px 0;cursor: pointer" v-if="showAddDepartmentFlag" @click="goAddDepartment">添加内设机构</div>
                 <div style="padding: 5px 0;cursor: pointer" v-if="showAddUnitFlag && hasRight('orgCreate')" @click="goAddUnit" >添加单位</div>
               </div>
-              <el-button class="add-btn" slot="reference" :disabled="!hasRight('departmentCreate')">添加下级</el-button>
+              <el-button class="add-btn" slot="reference" :disabled="!hasRight('departmentCreate')">添加下级222</el-button>
             </el-popover>
             <!--下级列表-->
             <content-list

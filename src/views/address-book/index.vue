@@ -106,7 +106,7 @@ export default {
 
   },
   created () {
-    this.getAddressBook(),
+    this.getAddressBook()
     this.navigation1.name = '本单位通讯录'
     // this.findNodeTree(bindId)
   },

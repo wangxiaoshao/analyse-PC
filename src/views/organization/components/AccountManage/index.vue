@@ -142,7 +142,6 @@ export default {
       }
       let that = this
       let state = true
-
       if (this.addAccount.name !== this.oldFrom.name && this.addAccount.password !== this.oldFrom.password) {
         that.accountSend.forEach(function (item, index) {
           if (accountObj.name === item.name) {
@@ -150,7 +149,6 @@ export default {
             that.$message.error('该用户名已存在，请重新设置')
           }
         })
-
         if (!this.isExit) {
           that.accountSend.pop()
         }
@@ -159,8 +157,12 @@ export default {
           this.$emit('get-account', this.accountSend)
         }
       }
+      // console.log(' accountObj:', accountObj)
       if (this.doIndex || this.doIndex === 0) {
         this.accountSend[this.doIndex].appId = this.addAccount.appId
+        this.$emit('get-account', this.accountSend)
+      }
+      if (accountObj.name === '') {
         this.$emit('get-account', this.accountSend)
       }
     },

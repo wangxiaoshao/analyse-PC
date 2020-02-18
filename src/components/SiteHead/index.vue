@@ -7,6 +7,11 @@
           <div class="name"><h2>{{app.option.options.systemName || ''}}</h2></div>
         </div>
         <div class="site__head--right">
+          <div style="display:inline-block;"  @click="showNotice()" >
+            <el-badge :value="5" class="item" title="前往通知中心" style=" cursor: pointer;">
+            <i class="el-icon-bell"></i>
+          </el-badge>
+          </div>
           <i class="ico fa fa-file-text-o"></i>
           <a style="cursor: pointer" @click="goToWordCenter()" href="javascript:void(0)">数据文档</a>
 <!--          <i class="ico fa fa-phone"></i>-->
@@ -70,6 +75,9 @@ export default {
       if (this.$route.name !== 'WordCenter') {
         this.$router.push('/word-center')
       }
+    },
+    showNotice () {
+      this.$emit('showNotice', true)
     },
     handleCommand (command) {
       if (command === 'logout') {

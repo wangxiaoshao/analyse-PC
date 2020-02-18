@@ -2,9 +2,12 @@
   <div id="app">
     <el-container class="site-container">
       <el-header>
-        <site-head :user="user"></site-head>
+        <site-head :user="user" @showNotice='showNotice'></site-head>
       </el-header>
       <el-container>
+        <div class="notice-box" v-if="showNoticeDilog">
+          <notice @closeNotice='showNotice'></notice>
+        </div>
         <side-menu @select="select" :asideMenu="asideMenu" :defaultActive="asideMenuActive"></side-menu>
         <el-container class="site-block">
           <site-breadcrumb :breadcrumb="app.breadcrumb"
@@ -30,6 +33,7 @@ import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
 import sideMenu from '@src/components/SideMenu'
 import siteHead from '@src/components/SiteHead'
+import Notice from '@src/components/Notice'
 import SiteBreadcrumb from '@src/components/SiteBreadcrumb.vue'
 import asideMenu from '@src/config/menu'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb'
@@ -42,11 +46,12 @@ export default {
       user: null,
       userInfo: {},
       asideMenu: asideMenu,
-      asideMenuActive: 0
+      asideMenuActive: 0,
+      showNoticeDilog: true
     }
   },
   mixins: [handleBreadcrumb],
-  components: { sideMenu, siteHead, SiteBreadcrumb, login },
+  components: { sideMenu, siteHead, SiteBreadcrumb, login, Notice },
   watch: {
     $route (newVal, oldVal) {
       if (oldVal.path !== '/' && newVal.path !== '/') {
@@ -76,6 +81,10 @@ export default {
   created () {
     let path = location.hash.replace('#', '')
     this.init(path)
+    console.log(' this.$route.name:', this.$route.name)
+    // if (this.$route.name == null) {
+    //   this.showNoticeDilog = false
+    // }
   },
   mounted () {
     this.addEventListenForResize()
@@ -167,6 +176,9 @@ export default {
         isAlreadyShow: true
       }
       localStorage.setItem('isShowConfirmDialog', JSON.stringify(isShowConfirmDialog))
+    },
+    showNotice (val) {
+      this.showNoticeDilog = !this.showNoticeDilog
     }
   }
 }

@@ -119,6 +119,9 @@
           <!--<span :title="scope" v-else>{{scope.$index + 1}}</span>-->
         </template>
       </el-table-column>
+      <el-table-column label="序号" type="index" align="center" width="60">
+        <template slot-scope="scope"><span v-text='getIndex(scope.$index)'></span></template>
+      </el-table-column>
       <el-table-column label="姓名" prop="name"></el-table-column>
       <el-table-column label="登录账号" prop="account"></el-table-column>
       <el-table-column label="手机号" prop="mobile"></el-table-column>
@@ -147,6 +150,9 @@
             size="small"
             :disabled="!hasRight('userIdRemove')"
           >解除挂职</el-button>
+          <el-button  @click.native="goSort(scope.row)" type="text" size="small">
+            排序
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -160,6 +166,23 @@
       layout="total, sizes, prev, pager, next, jumper"
       :total="contentPage.total"
     ></el-pagination>
+
+    <!-- 数值排序弹框 -->
+    <el-dialog :visible.sync="showSortDilog" width="420px">
+      <div slot="title">
+        <span>数值排序</span>
+        <i class="el-icon-document-copy" style="color:red;margin-left:6px"></i>
+      </div>
+      <div class="sort-ipt">
+        请输入排序目标序号：
+        <div style="display:inline-block">
+          <el-input v-model="sortValue" placeholder="请输入排序目标序号" ></el-input>
+        </div>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitNumSort" width="120px">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -189,6 +212,7 @@ export default {
       calloutFlag: false,
       orgName: '',
       depName: '',
+      showSortDilog: false,
       ruleForm: {
         identityId: '',
         reason: ''
@@ -215,7 +239,10 @@ export default {
         isSingleSelect: false, // 是否为单选框  false为多选（默认）-人员单选
         isSingleOrgSelect: true, // 是否为单选框  false为多选（默认），true为单选(isOnlyOrg为true时部门/单位单选)
         isOnlyOrg: true
-      }
+      },
+      sortValue: null,
+      // 数值排序参数
+      sortParam: {}
     }
   },
   created () {
@@ -327,6 +354,57 @@ export default {
     sortList () {
       this.$emit('cancel', true)
     },
+    getIndex ($index) {
+      return (this.contentPage.current - 1) * this.contentPage.limit + $index + 1
+    },
+    // 数值排序弹框
+    goSort (val) {
+      console.log(' val:', val)
+      this.showSortDilog = true
+      this.sortParam.nowId = parseInt(val.identityId)
+      this.sortParam = {
+        // id: '',
+        nowId: parseInt(val.identityId),
+        orgId: val.orgId,
+        departmentId: val.deptId
+      }
+    },
+    // 保存数值排序
+    submitNumSort () {
+      // sortValue
+      console.log(' this.sortParam:', this.sortParam)
+      let data = {
+        deptId: this.id,
+        page: this.sortValue,
+        limit: 1
+      }
+      api[urlNames['findDepartmentMembers']](data).then(
+        res => {
+          this.loading = false
+          if (res.data.length > 0) {
+            this.sortParam.id = parseInt(res.data[0].identityId)
+            this.NumSortFun(this.sortParam)
+            // console.log(' this.sortParam:', this.sortParam)
+          }
+          if (res.data.length === 0) {
+            this.$message.error('找不到目标序号，请重新输入')
+            this.showSortDilog = false
+          }
+        },
+        () => {}
+      )
+    },
+    NumSortFun (data) {
+      api[urlNames['setSortThroughNumberical']](data).then(
+        res => {
+          if (res) {
+            this.$message.success('排序成功')
+            this.showSortDilog = false
+          }
+        })
+    },
+
+
     // 表单初始化
     fromInit () {
       this.calloutFlag = false
@@ -343,6 +421,7 @@ export default {
         reason: ''
       }
     },
+
     // 调出
     calloutDialog (row) {
       this.formCallout.identityId = row.identityId
@@ -439,6 +518,8 @@ export default {
       this.downloadBinaryFile(host, this.id, this.type)
     }
   },
+
+
   watch: {
     sortFlag: {
       handler (val) {

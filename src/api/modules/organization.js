@@ -96,6 +96,7 @@ export default {
     serve: 'organizationManagePC',
     mock: '/findDepartmentMembers.json' // development模式下，本地mock数据
   },
+
   [urlNames.findIdentityById]: {
     type: 'get',
     url: '/api/jg_manage/user/findIdentityById',
@@ -118,6 +119,17 @@ export default {
     showLoading: false, // 该请求发送时，是否显示全局loading
     serve: 'organizationManagePC',
     mock: '/setUserSort.json', // development模式下，本地mock数据
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  },
+  // 部门下人员排序
+  [urlNames.setSortThroughNumberical]: {
+    type: 'post',
+    url: '/api/jg_manage/user/setSortThroughNumberical',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    showLoading: true, // 该请求发送时，是否显示全局loading
+    serve: 'organizationManagePC',
     headers: {
       'Content-Type': 'application/json'
     }
@@ -300,6 +312,12 @@ export default {
   [urlNames.findSessionUserList]: {
     type: 'get',
     url: '/api/jg_manage/user/sessionUserIdList',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    serve: 'organizationManagePC'
+  },
+  [urlNames.findUserAccountNickName]: {
+    type: 'get',
+    url: '/api/jg_manage/user/findUserAccountNickName',
     keepOriginResponse: true, // 是否保留后端返回数据格式
     serve: 'organizationManagePC'
   }

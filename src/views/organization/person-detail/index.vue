@@ -257,6 +257,7 @@ export default {
     },
     // 保存createUser
     submitForm () {
+      // console.log(' this.userInfo:', this.userInfo)
       api[urlNames['createUser']](this.userInfo).then((res) => {
         this.$message.success(`保存成功`)
         this.isExit = true
