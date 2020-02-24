@@ -7,15 +7,9 @@
       :props="props"
       lazy
       :load="loadNode"
-      :expand-on-click-node=false
+      :expand-on-click-node='false'
       @node-click="handleNodeClick"
     >
-      <!-- <span class="custom-tree-node" slot-scope="{ node, data }">
-        <i class="imenu-icon fa fa-sitemap" v-if="data.nodeType === 1"></i>
-        <i class="imenu-icon fa fa-building-o" v-if="data.nodeType === 2"></i>
-        <i class="imenu-icon fa fa-institution" v-if="data.nodeType === 3"></i>
-        <span :class="[data.id===$route.params.nodeId ?'active':'noActive']" style="margin-left:3px;">{{node.label}}</span>
-      </span> -->
       <span class=" svg-container" slot-scope="{ node, data }">
         <span class="iconfont iconzuzhijigou" v-if="data.nodeType === 1"></span>
         <span class="iconfont icondanwei" v-if="data.nodeType === 2"></span>

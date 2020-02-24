@@ -17,7 +17,7 @@
       style="width: 100%"
     >
       <el-row class="row-item">
-        <el-col :span="12" style="position: relative">
+        <el-col :span="12" styl="position: relative">
           <el-form-item label="姓名" prop="name" :rules="[{ required: true, message: '姓名不能为空'}]">
             <el-popover placement="bottom-start" ref="popover" width="500">
               <el-input
@@ -442,7 +442,7 @@ export default {
     'oldUserInfo',
     'labelId',
     'labelList',
-    'orgName'
+    'orgName',
   ],
   mixins: [dicOption, uploadFile],
   components: {

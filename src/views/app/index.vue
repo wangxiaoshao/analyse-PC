@@ -2,7 +2,7 @@
   <div id="app">
     <el-container class="site-container">
       <el-header>
-        <site-head :user="user" @showNotice='showNotice'></site-head>
+        <site-head :user="user" @showNotice='showNotice'  :msgNum='msgNum'></site-head>
       </el-header>
       <el-container>
         <div class="notice-box" v-if="showNoticeDilog">
@@ -47,7 +47,8 @@ export default {
       userInfo: {},
       asideMenu: asideMenu,
       asideMenuActive: 0,
-      showNoticeDilog: true
+      showNoticeDilog: true,
+      msgNum:5
     }
   },
   mixins: [handleBreadcrumb],
@@ -74,14 +75,15 @@ export default {
     scrollStyle () {
       return {
         height: (this.app.windowHeight - 123) + 'px',
-        width: '100%'
+        width: '100%',
+        msgNum:5
       }
     }
   },
   created () {
     let path = location.hash.replace('#', '')
     this.init(path)
-    console.log(' this.$route.name:', this.$route.name)
+    // console.log(' this.$route.name:', this.$route.name)
     // if (this.$route.name == null) {
     //   this.showNoticeDilog = false
     // }
@@ -179,6 +181,9 @@ export default {
     },
     showNotice (val) {
       this.showNoticeDilog = !this.showNoticeDilog
+      // if(this.$route.name==='notification'){
+      //   this.showNoticeDilog=false
+      // }
     }
   }
 }

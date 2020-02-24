@@ -101,8 +101,10 @@ export default {
   createUser: 'createUser',
   // 查询部门下的所有人员
   findDepartmentMembers: 'findDepartmentMembers',
-  // 部门下人员排序
-  setSortThroughNumberical: 'setSortThroughNumberical',
+  // 部门下人员数值排序
+  setSortThroughNumerical: 'setSortThroughNumerical',
+  // 单位下数组排序
+  setViewNodeSortThroughNumerical: 'setViewNodeSortThroughNumerical',
   // 查询单位下的所有人员
   findOrganizationMembers: 'findOrganizationMembers',
   // 人员调出
@@ -228,6 +230,12 @@ export default {
   /**
    * 用户别名查询
    */
-  findUserAccountNickName: 'findUserAccountNickName'
+  findUserAccountNickName: 'findUserAccountNickName',
+  /**
+   *通知中心
+   */
+  notificationIndex:'notificationIndex',
+  notificationList:'notificationList',
+  notificationRead:'notificationRead'
 
 }

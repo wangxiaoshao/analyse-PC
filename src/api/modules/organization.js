@@ -115,18 +115,29 @@ export default {
   [urlNames.setUserSort]: {
     type: 'post',
     url: '/api/jg_manage/user/setUserSort',
-    keepOriginResponse: true, // 是否保留后端返回数据格式
-    showLoading: false, // 该请求发送时，是否显示全局loading
+    keepOriginResponse: true,
+    showLoading: false,
     serve: 'organizationManagePC',
-    mock: '/setUserSort.json', // development模式下，本地mock数据
+    mock: '/setUserSort.json', 
     headers: {
       'Content-Type': 'application/json'
     }
   },
-  // 部门下人员排序
-  [urlNames.setSortThroughNumberical]: {
+  // 部门下人员数值排序
+  [urlNames.setSortThroughNumerical]: {
     type: 'post',
-    url: '/api/jg_manage/user/setSortThroughNumberical',
+    url: '/api/jg_manage/user/setSortThroughNumerical',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    showLoading: true, // 该请求发送时，是否显示全局loading
+    serve: 'organizationManagePC',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  },
+  // 单位下数值排序
+  [urlNames.setViewNodeSortThroughNumerical]: {
+    type: 'post',
+    url: '/api/jg_manage/viewNode/setViewNodeSortThroughNumerical',
     keepOriginResponse: true, // 是否保留后端返回数据格式
     showLoading: true, // 该请求发送时，是否显示全局loading
     serve: 'organizationManagePC',

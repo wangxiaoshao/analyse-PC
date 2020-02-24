@@ -10,11 +10,11 @@
         <el-button size="mini" @click="goBackTree">返回</el-button>
       </div>
       <div class="result-list" style="overflow-y: auto;height: 300px;">
-        <el-table v-loading="loadFlag" :data="gridData" :show-header="false" @current-change="handleCurrentChange">
+        <el-table v-loading="loadFlag" :data="gridData" :show-header="false">
           <el-table-column property="name">
             <template slot-scope="scope">
               <span v-if="selectType!=='0'" :title="scope.row.name" class="table-span" @click="getDetail(scope.row)">{{scope.row.name}}</span>
-              <span v-if="selectType==='0'" :title="scope.row.orgName+'-'+scope.row.name" class="table-span">{{scope.row.name}}-{{scope.row.mobile}}</span>
+              <span v-if="selectType==='0'" :title="scope.row.orgName+'-'+scope.row.name" @click="handleCurrentChange(scope.row)" class="table-span">{{scope.row.name}}-{{scope.row.mobile}}</span>
             </template>
           </el-table-column>
         </el-table>
@@ -29,7 +29,7 @@
         <el-button slot="append" @click="getResult" icon="el-icon-search"></el-button>
       </el-input>
       <el-input v-if="myOrgFlag!==1" @change="getOtherResult" placeholder="请输入内容" v-model="keyWord" class="input-with-select">
-        <el-select v-model="selectType"  style="width: 80px"    slot="prepend" placeholder="请选择">
+        <el-select v-model="selectType"  style="width: 80px"  slot="prepend" placeholder="请选择">
           <el-option label="单位" value="2"></el-option>
           <!-- <el-option label="内设机构" value="3"></el-option> -->
           <el-option label="人员" value="0"></el-option>
@@ -134,17 +134,15 @@ export default {
       this.resultFlag = false
       if (this.myOrgFlag === 1) {
         this.$emit('searchMyBack')
-      } else {
+      } else{
         this.$emit('searchOtherBack')
       }
-      this.$emit('goBackTree')
     },
     getDetail (val) {
-      this.$emit('searchListResult', val)
+      this.$emit('searchListResult', val,this.selectType)
     },
     handleCurrentChange (val) {
-      console.log(' val:', val)
-      this.$emit('searchPeopleInfo', val)
+      this.$emit('searchPeopleInfo', val,this.selectType)
     }
   },
   watch: {

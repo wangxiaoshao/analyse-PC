@@ -14,6 +14,7 @@ import addressBook from './modules/address-book'
 import addressList from './modules/address-list'
 import roleManage from './modules/role-manage'
 import authoritySetting from './modules/authority-setting'
+import notification from './modules/notification'
 
 export default {
   [urlNames.option]: {
@@ -183,5 +184,6 @@ export default {
   ...addressBook, // 通讯录
   ...addressList, // 通讯录(后)
   ...roleManage, // 角色管理
-  ...authoritySetting// 权限配置
+  ...authoritySetting,// 权限配置
+  ...notification//通知中心
 }

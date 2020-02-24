@@ -1,7 +1,7 @@
 <template>
   <div class="content-list">
     <div class="button-wrap">
-      <el-button @click="sortBtnFlag" :disabled="!hasRight('departmentOrder')">调整排序111</el-button>
+      <el-button @click="sortBtnFlag" :disabled="!hasRight('departmentOrder')">调整排序</el-button>
     </div>
     <div class="sort-do" v-if="sortFlag">
       按住左键上下拖动调整排序
@@ -112,7 +112,8 @@ export default {
       sortValue: null,
       sortNum: null,
       nodeId: this.$route.params.nodeId,
-      showSortDilog: false
+      showSortDilog: false,
+      sortParam:{}
     }
   },
   created () {
@@ -185,8 +186,8 @@ export default {
       row.index = rowIndex
     },
     handleRow (row) {
-      console.log(' row:', row)
-      console.log(' this.list:', this.list)
+      // console.log(' row:', row)
+      // console.log(' this.list:', this.list)
     },
     handleSizeChange (val) {
       this.contentPage.current = 1
@@ -270,7 +271,6 @@ export default {
 
       api[urlNames['setViewNodeSort']](data).then((res) => {
         this.$message.success(`保存成功`)
-        // this.cancelSort()
         this.$emit('cancel', false)
         this.$emit('getPage', this.contentPage)
       }, () => {
@@ -281,11 +281,45 @@ export default {
     // 数值排序弹框
     goSort (val) {
       this.showSortDilog = true
+       this.sortParam = {
+        nowId: val.id,
+      }
+      
     },
 
     // 保存数值排序
     submitNumSort () {
       this.showSortDilog = false
+       let data = {
+        page: this.sortValue,
+        parentId: this.nodeId,
+        limit: 1
+      }
+      api[urlNames['findViewNodeList']](data).then(
+        res => {
+          this.loading = false
+          if (res.data.length > 0) {
+            this.sortParam.id = res.data[0].id
+            this.NumSortFun(this.sortParam)
+          }
+          if (res.data.length === 0) {
+            this.$message.error('找不到目标序号，请重新输入')
+            this.showSortDilog = false
+          }
+        },
+        () => {}
+      )
+    },
+    NumSortFun(data){
+      api[urlNames['setViewNodeSortThroughNumerical']](data).then(
+        res => {
+          if (res) {
+            this.showSortDilog = false
+            this.$message.success('排序成功')
+            this.sortValue=''
+            this.getGrid()
+          }
+        })
     }
   }
 }

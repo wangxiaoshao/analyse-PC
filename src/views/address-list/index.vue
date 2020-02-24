@@ -7,7 +7,7 @@
             <div class="top-one" :class="activeColor==1?'top-active':''" @click="onChange(1)">本单位通讯录</div>
             <div class="top-two" title="查阅全省各单位的通讯录信息" :class="activeColor==2?'top-active':''" @click="onChange(2)">全省通讯录</div>
           </div>
-         <search-result @searchMyBack="searchMyBack" @goBackTree="goBackTree"  @searchListResult="searchListResult" @searchPeopleInfo='searchPeopleInfo' :myOrgFlag="activeColor" :defaultNodeId="defaultNodeId"></search-result>
+         <search-result @searchMyBack="searchMyBack"  @searchOtherBack='searchOtherBack'  @searchListResult="searchListResult" @searchPeopleInfo='searchPeopleInfo' :myOrgFlag="activeColor" :defaultNodeId="defaultNodeId"></search-result>
          <div class="tree-content">
            <address-list-tree :tree-list="treeList" @handle-node-click="handleNodeClickTree"></address-list-tree>
          </div>
@@ -16,6 +16,7 @@
       <el-col :span="18" class="address-container" >
          <el-breadcrumb separator="/" style="padding:20px;">
               <el-breadcrumb-item>{{navigation1.name}}</el-breadcrumb-item>
+              
               <template v-if="showBreadCrumb">
                 <el-breadcrumb-item v-for="(item,index) in navigation" :key="index" >
                 <a v-if="navigation.length-1!==index"  @click.prevent='goCurrentNodeDetail(item.id, index)'>{{item.name}}</a>
@@ -26,9 +27,12 @@
             </el-breadcrumb>
         <transition name="fade-transform" mode="out-in" style="height: 100%">
              <div style="padding: 0 20px">
-               <department :departmentList="departmentList" v-if="showDep" :treeList="treeList" @handle-child-click="handleChildClick"></department>
+               <!-- <department :departmentList="departmentList" v-if="showDep" :treeList="treeList" @handle-child-click="handleChildClick"></department>
                <member :table-data="memberList" v-if="!showDep && showBreadCrumb"></member>
-               <person-info :personInfoList='personInfoList' v-if="!showBreadCrumb"></person-info>
+               <person-info :personInfoList='personInfoList' v-if="!showBreadCrumb"></person-info> -->
+                <department :departmentList="departmentList" :treeList="treeList" v-if="showDep" @handle-child-click="handleChildClick"></department>
+                <member :table-data="memberList"   v-if="selectType!='0' && !showDep"></member>
+               <person-info :personInfoList='personInfoList'  @showPhoneState='showPhoneState' :phoneState='phoneState'  v-if="selectType=='0' && !showBreadCrumb"></person-info>
              </div>
         </transition>
       </el-col>
@@ -66,7 +70,10 @@ export default {
       name: '',
       personInfoList: {},
       showDep: true,
-      showBreadCrumb: true
+      showBreadCrumb: true,
+      selectType:'',
+      phoneState:false
+
     }
   },
   created () {
@@ -87,6 +94,8 @@ export default {
     onChange (e) {
       this.activeColor = e
       this.isShow = e
+      this.showDep=true
+      this.navigation = []
       if (e === 1) {
         // alert(this.app.option.user.orgId)
         this.navigation1.name = '本单位通讯录'
@@ -121,15 +130,25 @@ export default {
       })
     },
     // 搜索返回数据点击
-    searchListResult (data) {
+    searchListResult (data,type) {
+      this.selectType=type
+      this.showDep = false
+      this.showBreadCrumb = false
       this.treeList = this.departmentList = []
       this.getAddressListDepartmentMembers(data.id)
     },
-    // 点击全省通讯录搜索人员行时显示面包屑
-    searchPeopleInfo (data) {
+
+    // 点击全省通讯录搜索人员
+    searchPeopleInfo (data,type) {
       this.personInfoList = data
+      this.phoneState=false
+      this.selectType=type
+      // console.log('selectType:',this.selectType)
       this.showBreadCrumb = false
       this.showDep = false
+    },
+    showPhoneState(){
+      this.phoneState=!this.phoneState
     },
     // 我的搜索返回
     searchMyBack () {
@@ -142,40 +161,43 @@ export default {
     // 其他单位
     searchOtherBack () {
       this.showDep = true
-      this.handleChildClick()
+      this.showBreadCrumb = true
       this.getAddressListOthertTree()
       this.getAddressListOrganizationMembers()
-    },
-    goBackTree () {
-      this.handleNodeClickTree(this.treeList[0])
+      //  this.handleChildClick()
     },
     /** 点击树节点显示内容 */
     handleNodeClickTree (node) {
-      this.showDep = true
-      this.showBreadCrumb = true
-      // alert(node.nodeType)
+      this.showDep=true
       this.navigation = []
       this.navigation.push({ id: node.id, name: node.name })
       if (node.nodeType === 3) {
+        this.showDep=false
         this.getAddressListDepartmentMembers(node.bindId)
-        this.showDep = false
       } else if (node.nodeType === 2) {
         this.getAddressListOrganizationMembers(node.bindId)
       }
       this.getAddressListdepartment(node.id)
     },
     handleChildClick (node) {
-      // this.showDep = true
-
+      // alert(this.selectType)
+       this.showDep=true
+       this.navigation.push({ id: node.id, name: node.name })
       if (node.nodeType === 3) {
-        this.showDep = false
-        this.showBreadCrumb = true
+        this.showDep=false
+        this.getAddressListDepartmentMembers(node.bindId)
+      } else if (node.nodeType === 2) {
+        this.getAddressListOrganizationMembers(node.bindId)
       }
-      console.log(JSON.parse(JSON.stringify(node)), '-------------node')
-      this.navigation.push({ id: node.id, name: node.name })
-      this.getAddressListOrganizationMembers(node.id)
       this.getAddressListdepartment(node.id)
-      this.getAddressListDepartmentMembers(node.id)
+
+      // this.showDep=false
+      // alert(node.nodeType)
+      // console.log(JSON.parse(JSON.stringify(node)), '-------------node')
+      // this.navigation.push({ id: node.id, name: node.name })
+      // this.getAddressListOrganizationMembers(node.id)
+      // this.getAddressListdepartment(node.id)
+      // this.getAddressListDepartmentMembers(node.id)
     },
 
     /** 单位下部门 */
@@ -195,7 +217,6 @@ export default {
         this.memberList = res.data
       })
     },
-
 
     /** 部门下人员getAddressListDepartmentMembers */
     getAddressListDepartmentMembers (id) {

@@ -11,25 +11,27 @@
       cursor: pointer;
     }
   }
+  
   .notice-content{
-    padding: 0px 12px 12px 12px;
+    padding: 0px 12px 0px 12px;
+    .el-table .cell{
+      padding: 0px;
+    }
     .notice-info{
-      padding: 5px 0;
-      border-bottom: 1px solid #EBEEF5;
+      padding: 2px 0;
+      position: relative;
+      .btn{
+        position: absolute;
+        top:30%;
+        right: 0px;
+      }
       .notice-msg{
-        position: relative;
         font-size: 12px;
-        padding: 3px 0;
-        span:nth-child(2){
-          position: absolute;
-          right:0px;
-          top:-5px;
-        }
       }
     }
     
     .nitoce-footer{
-      padding-top: 10px;
+      padding: 8px 0px;
       font-size: 12px;
       a{
         color:red;

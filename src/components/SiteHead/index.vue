@@ -7,13 +7,13 @@
           <div class="name"><h2>{{app.option.options.systemName || ''}}</h2></div>
         </div>
         <div class="site__head--right">
-          <div style="display:inline-block;"  @click="showNotice()" >
-            <el-badge :value="5" class="item" title="前往通知中心" style=" cursor: pointer;">
+          <div style="display:inline-block;"  @click="showNotice" >
+            <el-badge :value="msgNum" class="item" title="前往通知中心" style=" cursor: pointer;" >
             <i class="el-icon-bell"></i>
           </el-badge>
           </div>
           <i class="ico fa fa-file-text-o"></i>
-          <a style="cursor: pointer" @click="goToWordCenter()" href="javascript:void(0)">数据文档</a>
+          <a style="cursor: pointer" @click="goToWordCenter" href="javascript:void(0)">数据文档</a>
 <!--          <i class="ico fa fa-phone"></i>-->
 <!--          <a href="">联系我们</a>-->
           <span style="margin-right: 4px;">欢迎您!</span>
@@ -39,24 +39,28 @@ import { mapState, mapMutations } from 'vuex'
 export default {
   name: 'Head',
   components: {},
-  props: {
-    breadcrumb: {
-      type: Array,
-      default () {
-        return []
-      }
-    },
-    pageBreadcrumb: {
-      type: Array,
-      default () {
-        return []
-      }
-    }
-  },
+  props:['breadcrumb','pageBreadcrumb','msgNum'],
+  // props: {
+  //   breadcrumb: {
+  //     type: Array,
+  //     default () {
+  //       return []
+  //     }
+  //   },
+  //   pageBreadcrumb: {
+  //     type: Array,
+  //     default () {
+  //       return []
+  //     }
+  //   },
+  //    msgNum: {
+  //     type: Number
+  //   }
+  // },
   data () {
     return {
       logoutURL: '',
-      url: window.location.host
+      url: window.location.host,
     }
   },
   computed: {

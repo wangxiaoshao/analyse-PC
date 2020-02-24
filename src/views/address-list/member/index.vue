@@ -1,5 +1,6 @@
 <template>
-  <div class="member-tab">
+  <div  class="memberInfo">
+    <div class="member-tab">
     <el-table
       :data="tableData"
       :show-header="false"
@@ -34,6 +35,7 @@
         label="职位">
       </el-table-column>
     </el-table>
+  </div>
   </div>
 </template>
 <script>

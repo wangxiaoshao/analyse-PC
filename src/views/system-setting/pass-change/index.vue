@@ -45,6 +45,46 @@
       </div>
     </el-dialog>
 
+    <!-- 重置密码弹框 -->
+    <div class="dialog-box">
+      <el-dialog :visible.sync="resetPwdVisible"   width="420px"  :show-close='false'>
+        <div slot="title" class="header-title"  style="background-color: #fff;">
+          手机号验证
+          <i class="el-icon-document-copy" style="color:red"></i>
+        </div>
+        <div class="resetPwd-box">
+          <p>验证码已通过手机号：{{hideMobile(userInfo.user.mobile)}}发送请输入验证码：</p>
+          <div  style="padding:15px 0">
+            <el-row>
+            <el-col :span="12">
+              <el-input placeholder="请输入短信验证码" v-model="smsCode"></el-input>
+            </el-col>
+            <el-col :span="10" :offset="1">
+              <el-button type="primary" :disabled="smsTimerCount !== 0" @click="sendSmsCode"
+               :style="this.smsTimerCount === 0?'':'background-color:#d8d7d7;border-color:#d8d7d7;'">
+               {{this.smsTimerCount === 0 ? '重新发送' : this.smsTimerCount + '秒后重新发送'}}</el-button>
+            </el-col>
+          </el-row>
+          </div>
+        </div>
+        <div slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="beSureSmsCode" width="120px">确 定</el-button>
+        </div>
+      </el-dialog>
+    </div>
+    <!-- 重置密码成功弹框 -->
+    <el-dialog :visible.sync="successPwdVisible"   width="420px">
+        <div slot="title" class="header-title"  style="background-color: #fff;">
+          密码重置成功
+          <i class="el-icon-document-copy" style="color:red"></i>
+        </div>
+        <div class="sucessPwd-box">
+         验证通过，您的新密码已发送至手机号：{{hideMobile(userInfo.user.mobile)}}，请注意查收。
+        </div>
+        <div slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="successPwdVisible=false" width="120px">确 定</el-button>
+        </div>
+      </el-dialog>
     <el-row :gutter="20">
       <el-col :span="6">
         <div class="account-info">
@@ -64,7 +104,7 @@
             </el-button>
           </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item @click.native="changeSessionUser(item.userId,item.uid)" :key="index" v-for="(item, index) in userList"> {{item.name}}</el-dropdown-item>
+              <el-dropdown-item @click.native="changeSessionUser(item.userId,item.uid)" :key="index" v-for="(item, index) in userList"> {{item.dutyName}}</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
@@ -148,6 +188,7 @@
         </el-tabs>
       </el-col>
     </el-row>
+    
   </div>
 </template>
 
@@ -157,6 +198,9 @@ import { mapState } from 'vuex'
 import personManage from '../../organization/components/PersonManage'
 import PersonalLog from '@src/components/PersonalLog/index'
 import SelectMembers from '@src/components/SelectMembers/index'
+const SMS_TIMES_SECOND = 60
+// 定时器
+let smsTimer = null
 export default {
   components: {
     personManage,
@@ -195,6 +239,10 @@ export default {
       }
     }
     return {
+      resetPwdVisible:true,//重置密码弹框
+      smsTimerCount:0,//发送验证短信计时器
+       smsCode: '',
+       successPwdVisible:false,//重置密码成功弹框
       defaultName: '', // 默认名字
       userList: [], // 用户身份列表
       defaultDutyName: '', // 默认身份
@@ -227,6 +275,7 @@ export default {
         reason: [{ required: true, message: '请填写申请原因', trigger: 'blur' }]
       },
       oldUserInfo: {},
+       nickName: '',
       userInfo: {
         userAccount: [], // 账户
         labelId: [],
@@ -240,7 +289,7 @@ export default {
         },
         userId: '',
         user: {
-          nickName: 'cs11',
+          nickName:'',
           birthday: '',
           nation: null,
           portraitUrl: '',
@@ -358,6 +407,9 @@ export default {
       api[urlNames['findUserAccountNickName']]({
         userIdentiyId: id
       }).then((res) => {
+        if(res.data.length>0){
+           this.userInfo.user.nickName=res.data[0].nickName
+        }
         // this.$message.success('切换成功')
       })
     },
@@ -444,9 +496,7 @@ export default {
     goModifieUserInfo (val) {
       // 保存createUser
       this.userInfo.user = val
-      // this.userInfo.
-      // this.userInfo.userId=val.uid;
-      // console.log(' this.userInfo.user:', this.userInfo.user)
+      this.userInfo.userAccount[0].nickName=this.userInfo.user.nickName
       api[urlNames['createUser']](this.userInfo).then((res) => {
         this.$message.success(`保存成功`)
       }, () => {
@@ -499,19 +549,60 @@ export default {
         }
       })
     },
+    // 过滤手机号
+    hideMobile(phone){
+        return (phone+'').replace(/^(.{3})(?:\d+)(.{4})$/,"$1****$2")
+    },
+    
 
     // 重置密码
     resetPwd () {
-      api[urlNames['resetPwd']]({
-        id: this.currentSetAccount.id
-      }).then(
-        res => {
-          this.$message.success('重置密码')
-        },
-        () => {
-        }
-      )
+      this.resetPwdVisible=true
+      // this.sendSmsCode();
+      // console.log(this.userInfo.user.mobile)
+      // api[urlNames['resetPwd']]({
+      //   id: this.currentSetAccount.id
+      // }).then(
+      //   res => {
+      //     this.$message.success('重置密码')
+      //   },
+      //   () => {
+      //   }
+      // )
     },
+    /**
+     * 发送验证短信到用户绑定手机号
+     */
+    sendSmsCode() {
+      if (0 !== this.smsTimerCount) {
+        return
+      }
+
+      this.smsTimerCount = SMS_TIMES_SECOND
+      if (smsTimer) {
+        clearInterval(smsTimer)
+        smsTimer = null
+      }
+
+      // 开启计时器
+      let self = this
+      smsTimer = setInterval(() => {
+        if (0 === self.smsTimerCount) {
+          if (smsTimer) {
+            clearInterval(smsTimer)
+            smsTimer = null
+          }
+        } else {
+          self.smsTimerCount--
+        }
+      }, 1000)
+
+      // 发送短信
+    },
+    beSureSmsCode(){
+      this.resetPwdVisible=false
+    },
+
     // 表单初始化
     fromInit () {
       // this.calloutFlag = false

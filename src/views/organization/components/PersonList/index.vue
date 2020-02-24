@@ -364,7 +364,7 @@ export default {
       this.sortParam.nowId = parseInt(val.identityId)
       this.sortParam = {
         // id: '',
-        nowId: parseInt(val.identityId),
+        nowId: val.identityId,
         orgId: val.orgId,
         departmentId: val.deptId
       }
@@ -372,7 +372,7 @@ export default {
     // 保存数值排序
     submitNumSort () {
       // sortValue
-      console.log(' this.sortParam:', this.sortParam)
+      // console.log(' this.sortParam:', this.sortParam)
       let data = {
         deptId: this.id,
         page: this.sortValue,
@@ -382,7 +382,7 @@ export default {
         res => {
           this.loading = false
           if (res.data.length > 0) {
-            this.sortParam.id = parseInt(res.data[0].identityId)
+            this.sortParam.id = res.data[0].identityId
             this.NumSortFun(this.sortParam)
             // console.log(' this.sortParam:', this.sortParam)
           }
@@ -395,11 +395,13 @@ export default {
       )
     },
     NumSortFun (data) {
-      api[urlNames['setSortThroughNumberical']](data).then(
+      api[urlNames['setSortThroughNumerical']](data).then(
         res => {
           if (res) {
-            this.$message.success('排序成功')
             this.showSortDilog = false
+            this.$message.success('排序成功')
+            this.sortValue=''
+            this.getGrid()
           }
         })
     },
