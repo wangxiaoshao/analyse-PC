@@ -72,7 +72,19 @@
             </div>
           </el-form-item>
           <el-form-item label="统一社会信用代码" prop="organization.creditId">
-            <el-input v-model="ruleForm.organization.creditId" :disabled="true"></el-input>
+            <el-input v-model="ruleForm.organization.creditId" ref="credit" @blur='handleCredit'>
+            <i class="el-icon-loading iconload"  v-if="loadVisiable" slot="suffix"></i>
+            </el-input>
+            <div class="tip-msg">
+              <p v-if="loadVisiable">
+                <i class="el-icon-error"></i>
+              社会信用代码与单位名称不匹配。
+              </p>
+              <p style="color:green">
+                <i class="el-icon-success"></i>
+                社会信用代码验证成功
+              </p>
+            </div>
           </el-form-item>
           <el-form-item label=" 上级单位">
             <el-input v-model="parentName" :disabled="true"></el-input>
@@ -264,6 +276,7 @@ export default {
         name: '单位详情',
         parent: null
       },
+      loadVisiable:false,//信用代码加载图标
       areaFlag: false,
       areaCheck: '',
       areaOptions: [],
@@ -326,6 +339,7 @@ export default {
   },
   created () {
     // this.app.option.options.userAuditFields
+    // console.log('options:',this.app.option.options)
     this.init()
   },
   beforeRouteUpdate (to, from, next) {
@@ -554,6 +568,10 @@ export default {
         } else {
         }
       }
+    },
+    // 社会信用代码
+    handleCredit(){
+      this.loadVisiable=true
     }
   }
 }

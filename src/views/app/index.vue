@@ -6,7 +6,7 @@
       </el-header>
       <el-container>
         <div class="notice-box" v-if="showNoticeDilog">
-          <notice @closeNotice='showNotice'></notice>
+          <notice @closeNotice='showNotice' :noticeData='noticeData' @goAllRead='goAllRead' :showAllReadVisiable='showAllReadVisiable'></notice>
         </div>
         <side-menu @select="select" :asideMenu="asideMenu" :defaultActive="asideMenuActive"></side-menu>
         <el-container class="site-block">
@@ -47,8 +47,10 @@ export default {
       userInfo: {},
       asideMenu: asideMenu,
       asideMenuActive: 0,
-      showNoticeDilog: true,
-      msgNum:5
+      showNoticeDilog: false,
+      msgNum:null,
+      noticeData:[],
+      showAllReadVisiable:false
     }
   },
   mixins: [handleBreadcrumb],
@@ -76,17 +78,14 @@ export default {
       return {
         height: (this.app.windowHeight - 123) + 'px',
         width: '100%',
-        msgNum:5
+        msgNum:null
       }
     }
   },
   created () {
     let path = location.hash.replace('#', '')
     this.init(path)
-    // console.log(' this.$route.name:', this.$route.name)
-    // if (this.$route.name == null) {
-    //   this.showNoticeDilog = false
-    // }
+    this.getList()
   },
   mounted () {
     this.addEventListenForResize()
@@ -179,11 +178,37 @@ export default {
       }
       localStorage.setItem('isShowConfirmDialog', JSON.stringify(isShowConfirmDialog))
     },
+    // 消息通知
+    getList(){
+      api[urlNames['notificationIndex']]().then((res) => {
+        this.noticeData=res.data
+        this.msgNum=res.total
+         if(this.msgNum===0){
+          this.showAllReadVisiable=false
+          this.showNoticeDilog = false
+        }else{
+          this.showAllReadVisiable=true
+           this.showNoticeDilog = true
+        }
+      })
+     
+    },
+    // 标记全部已读
+    goAllRead(){
+      api[urlNames['notificationRead']]().then((res) => {
+        if(res){
+         this.showNoticeDilog = false
+         this.showAllReadVisiable=false
+         this.msgNum=0
+         this.noticeData=[]
+        }
+      })
+    },
     showNotice (val) {
       this.showNoticeDilog = !this.showNoticeDilog
-      // if(this.$route.name==='notification'){
-      //   this.showNoticeDilog=false
-      // }
+    },
+    changeNum(val){
+      this.msgNum=val
     }
   }
 }

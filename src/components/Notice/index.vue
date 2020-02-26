@@ -5,15 +5,20 @@
       <i class="el-icon-close"  @click="closeNotice"></i>
     </div>
     <div class="notice-content">
-      <el-table :show-header="false"  :data='tableData'>
+      <el-table :show-header="false"  :data='noticeData'>
+        <!-- <template slot="empty">
+          <div class="empty">
+            <span style="padding-left: 8px">暂无通知消息！</span>
+          </div>
+        </template> -->
           <el-table-column>
             <template slot-scope="scope">
               <div class="notice-info">
                 <el-badge :is-dot='scope.row.hasRead===0'>{{scope.row.typeText}}</el-badge>
                 <div class="notice-msg">
-                  <span>你有一条待审核的事件待处理，请尽快前往审核。</span>
+                  <p  :title="scope.row.content">{{scope.row.content}}</p>
                 </div>
-                <p>{{scope.row.creareTime}}</p>
+                <p>{{scope.row.createTime}}</p>
                 <span class="btn"><el-button type='primary' size="mini" 
                 :style="scope.row.hasRead===1?'background-color:#d8d7d7;border-color:#d8d7d7':''" 
                  @click="doFindNotice(scope.row)">{{scope.row.hasRead===1?'已查看':'去查看'}}</el-button></span>
@@ -22,8 +27,8 @@
           </el-table-column>
         </el-table>
       <div class="nitoce-footer">
-        <a href="javascript:void(0)"  @click="goAllRead">全部标记为已读</a>
-        <a href="javascript:void(0)" @click="goNotification">查看更多通知<i class="el-icon-d-arrow-right"></i></a>
+        <a href="javascript:void(0)"  @click="goAllRead" v-if="showAllReadVisiable">全部标记为已读</a>
+        <a href="javascript:void(0)" @click="goNotification"  class="findMore">查看更多通知<i class="el-icon-d-arrow-right"></i></a>
       </div>
     </div>
   </div>
@@ -31,25 +36,15 @@
 <script>
 import { api, urlNames } from '@src/api'
 export default {
+  props:['noticeData','showAllReadVisiable'],
   data () {
     return {
-      tableData:[
-        {
-          id:2,
-          content:'22',
-          typeText:"消息确认通知",
-          creareTime:'2020-2-24 14:19:20',
-          hasRead:0
-        },
-        {
-          id:1,
-          content:'11',
-          typeText:"审核通知",
-          creareTime:'2020-2-24 14:19:20',
-          hasRead:1
-        }
-        ]
+        total:null,
+        tableData:[]
     }
+  },
+  created(){
+    // this.getList()
   },
   methods: {
     closeNotice () {
@@ -61,6 +56,8 @@ export default {
     },
     doFindNotice(val){
       this.closeNotice()
+      api[urlNames['notificationRead']]({id:val.id}).then((res) => {
+      })
       if(val.typeText==='消息确认通知'){
           this.$router.push('/confirm-info')
       }else{
@@ -68,7 +65,7 @@ export default {
       }
     },
     goAllRead(){
-
+      this.$emit('goAllRead')
     }
   }
 }

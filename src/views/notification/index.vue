@@ -20,7 +20,7 @@
               <div class="notice-info">
                 <el-badge :is-dot='scope.row.hasRead===0'>{{scope.row.typeText}}</el-badge>
                 <div class="notice-msg">
-                  <span>你有一条待审核的事件待处理，请尽快前往审核。</span>
+                  <span>{{scope.row.content}}</span>
                 </div>
                 <p>{{scope.row.creareTime}}</p>
                 <span class="btn"><el-button type='primary' size="mini" 
@@ -74,6 +74,9 @@ export default {
       ]
     }
   },
+  created(){
+    this.getGrid()
+  },
   methods: {
     getGrid () {
       let data = {
@@ -81,16 +84,15 @@ export default {
         limit: this.page.limit
       }
       this.loading = true
-    //   api[urlNames['findViewNodeList']](data).then((res) => {
-    //     this.loading = false
-    //     this.list = res.data
-    //     this.contentPage.total = res.total
-    //   }, () => {
-    //     this.loading = false
-    //     this.list = []
-    //     this.contentPage.total = 0
-    //   })
-    // },
+      api[urlNames['notificationList']](data).then((res) => {
+        this.loading = false
+        this.tableData = res.data
+        this.page.total = res.total
+      }, () => {
+        this.loading = false
+        this.tableData = []
+        this.page.total = 0
+      })
     },
     doFindNotice(val){
       if(val.typeText==='消息确认通知'){

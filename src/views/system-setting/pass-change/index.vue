@@ -54,10 +54,10 @@
         </div>
         <div class="resetPwd-box">
           <p>验证码已通过手机号：{{hideMobile(userInfo.user.mobile)}}发送请输入验证码：</p>
-          <div  style="padding:15px 0">
+          <div  style="padding:15px 0;">
             <el-row>
             <el-col :span="12">
-              <el-input placeholder="请输入短信验证码" v-model="smsCode"></el-input>
+              <el-input placeholder="请输入短信验证码" v-model="smsCode" ref="smsCodeInput"></el-input>
             </el-col>
             <el-col :span="10" :offset="1">
               <el-button type="primary" :disabled="smsTimerCount !== 0" @click="sendSmsCode"
@@ -111,7 +111,7 @@
       </el-col>
       <el-col :span="18">
         <el-tabs v-model="activeName" @tab-click="handleClick">
-          <el-tab-pane label="我的信息" name="first">
+          <el-tab-pane label="我的信息" >
             <person-manage
               :user-detail="userInfo.user"
               :post-detail="userInfo.identity"
@@ -171,7 +171,7 @@
               </el-form>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="重置密码">
+          <el-tab-pane label="重置密码" name="first">
               <div class="resetPwd">
                 <div :style="{margin: '20px'}" class="account-name">
                   <i class="el-icon-user" :style="{marginRight: '20px'}">{{currentSetAccount.name}}</i>
@@ -188,7 +188,6 @@
         </el-tabs>
       </el-col>
     </el-row>
-    
   </div>
 </template>
 
@@ -239,7 +238,7 @@ export default {
       }
     }
     return {
-      resetPwdVisible:true,//重置密码弹框
+      resetPwdVisible:false,//重置密码弹框
       smsTimerCount:0,//发送验证短信计时器
        smsCode: '',
        successPwdVisible:false,//重置密码成功弹框
@@ -600,7 +599,16 @@ export default {
       // 发送短信
     },
     beSureSmsCode(){
-      this.resetPwdVisible=false
+      
+      if(this.smsCode===''){
+        this.$message.error('请输入有效验证码')
+        this.$refs.smsCodeInput.focus()
+      }else{
+        this.resetPwdVisible=false
+        this.successPwdVisible=true
+        this.smsCode=''
+      }
+      
     },
 
     // 表单初始化
