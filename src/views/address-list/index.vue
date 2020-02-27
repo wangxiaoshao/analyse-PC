@@ -172,6 +172,7 @@ export default {
       this.navigation = []
       this.navigation.push({ id: node.id, name: node.name })
       if (node.nodeType === 3) {
+        this.selectType=''
         this.showDep=false
         this.getAddressListDepartmentMembers(node.bindId)
       } else if (node.nodeType === 2) {
@@ -180,7 +181,7 @@ export default {
       this.getAddressListdepartment(node.id)
     },
     handleChildClick (node) {
-      // alert(this.selectType)
+       this.selectType=''
        this.showDep=true
        this.navigation.push({ id: node.id, name: node.name })
       if (node.nodeType === 3) {

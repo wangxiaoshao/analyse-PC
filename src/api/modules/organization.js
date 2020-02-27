@@ -331,5 +331,13 @@ export default {
     url: '/api/jg_manage/user/findUserAccountNickName',
     keepOriginResponse: true, // 是否保留后端返回数据格式
     serve: 'organizationManagePC'
+  },
+  // 社会信用代码
+  [urlNames.orgCreditId]: {
+    type: 'get',
+    url: '/api//jg_manage/orgCreditId',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    serve: 'organizationManagePC'
   }
+
 }

@@ -136,12 +136,21 @@ export default {
   createOrganization: 'createOrganization',
   // 查询单位
   findOrganizationById: 'findOrganizationById',
+  /**
+   * 社会信用代码
+   */
+  orgCreditId:'orgCreditId',
   // 系统设置
   getDictionaryList: 'getdDictionaryList',
   addDictionary: 'addDictionary',
   getDicListByType: 'getDicListByType',
   updatePwd: 'updatePwd',
+
+  // 重置密码
   resetPwd: 'resetPwd',
+  // 获取验证码
+  getVerifyCode:'getVerifyCode',
+
   deleteDictItem: 'deleteDictItem',
   getSystemParameter: 'getSystemParameter', // 参数设置
   // 标签查询

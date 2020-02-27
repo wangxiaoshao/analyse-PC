@@ -554,20 +554,11 @@ export default {
     },
     
 
-    // 重置密码
+    // 发送验证码
     resetPwd () {
       this.resetPwdVisible=true
-      // this.sendSmsCode();
-      // console.log(this.userInfo.user.mobile)
-      // api[urlNames['resetPwd']]({
-      //   id: this.currentSetAccount.id
-      // }).then(
-      //   res => {
-      //     this.$message.success('重置密码')
-      //   },
-      //   () => {
-      //   }
-      // )
+      this.sendSmsCode();
+      // console.log('currentSetAccount:',this.currentSetAccount)
     },
     /**
      * 发送验证短信到用户绑定手机号
@@ -596,17 +587,39 @@ export default {
         }
       }, 1000)
 
-      // 发送短信
+      // 发送短信获取验证码
+      api[urlNames['getVerifyCode']]({
+        id: this.currentSetAccount.id
+      }).then(
+        res => {
+        },
+        () => {
+        }
+      )
     },
+    // 验证验证码
     beSureSmsCode(){
-      
       if(this.smsCode===''){
         this.$message.error('请输入有效验证码')
         this.$refs.smsCodeInput.focus()
       }else{
-        this.resetPwdVisible=false
-        this.successPwdVisible=true
-        this.smsCode=''
+        let param={
+          id:this.currentSetAccount.id,
+          verifyCode:this.smsCode
+        }
+        api[urlNames['resetPwd']](param).then(
+        res => {
+          if(res){
+            this.resetPwdVisible=false
+            this.successPwdVisible=true
+            this.smsCode=''
+          }else{
+            this.$message.error('验证码已失效，请重新发送')
+          }
+        },
+        () => {
+        }
+      )
       }
       
     },

@@ -26,7 +26,7 @@
         @close="close"
         v-model="ruleForm.areaId"></area-list>
      </el-dialog>
-    <el-form :model="ruleForm" :disabled="disabledFlag" ref="ruleForm" label-width="130px" class="demo-ruleForm">
+    <el-form :model="ruleForm" :disabled="disabledFlag" ref="ruleForm" label-width="130px"  >
       <div class="detail-title">
         <i class="imenu-icon iconfont icondanwei big-icon" style="margin: 0px 5px;"></i>单位信息
       </div>
@@ -35,7 +35,7 @@
       </el-menu>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="单位名称" prop="organization.name" :rules="[{ required: true, message: '名称不能为空'}]">
+          <el-form-item label="单位名称" prop="organization.name" :rules="[{ required: true, message: '名称不能为空',trigger: 'blur'}]">
             <el-input v-model="ruleForm.organization.name"></el-input>
             <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
               <div class="tip-msg"
@@ -72,15 +72,15 @@
             </div>
           </el-form-item>
           <el-form-item label="统一社会信用代码" prop="organization.creditId">
-            <el-input v-model="ruleForm.organization.creditId" ref="credit" @blur='handleCredit'>
+            <el-input v-model="ruleForm.organization.creditId" @blur='handleCredit'>
             <i class="el-icon-loading iconload"  v-if="loadVisiable" slot="suffix"></i>
             </el-input>
             <div class="tip-msg">
-              <p v-if="loadVisiable">
+              <p v-if="errorVisiable">
                 <i class="el-icon-error"></i>
               社会信用代码与单位名称不匹配。
               </p>
-              <p style="color:green">
+              <p style="color:green" v-if="successVisiable">
                 <i class="el-icon-success"></i>
                 社会信用代码验证成功
               </p>
@@ -276,7 +276,9 @@ export default {
         name: '单位详情',
         parent: null
       },
-      loadVisiable:false,//信用代码加载图标
+      loadVisiable:false,//信用代码加载图标,
+      successVisiable:false,
+      errorVisiable:false,
       areaFlag: false,
       areaCheck: '',
       areaOptions: [],
@@ -305,6 +307,10 @@ export default {
       defaultList: [],
       delSelectLabelId: null, // 添加后未提交到后台移除的标签
       tempLabelId: [],
+       rules: {
+          "organization.name": [
+            { required: true, message: '请输入活动名称', trigger: 'blur' },
+          ]},
       ruleForm: {
         reason: '',
         nodeId: '', // 节点id
@@ -338,8 +344,6 @@ export default {
     this.setBreadcrumbTitle()
   },
   created () {
-    // this.app.option.options.userAuditFields
-    // console.log('options:',this.app.option.options)
     this.init()
   },
   beforeRouteUpdate (to, from, next) {
@@ -571,7 +575,36 @@ export default {
     },
     // 社会信用代码
     handleCredit(){
-      this.loadVisiable=true
+      // 51522300C58060003M
+      this.ruleForm.organization.creditId='51522300C580'
+      this.ruleForm.organization.name='黔西南布依族苗族自治州消费者协会'
+      if(this.ruleForm.organization.creditId!==''){
+        this.loadVisiable=true
+        let param={
+        orgName:this.ruleForm.organization.name,
+        creditId:this.ruleForm.organization.creditId
+      }
+         api[urlNames['orgCreditId']](param).then(
+        res => {
+          if(res.data==1){
+          window.setTimeout(() => {
+            this.successVisiable=true
+             this.loadVisiable=false
+        }, 2000)
+        }else{
+          this.errorVisiable=true
+          this.loadVisiable=false 
+        }
+        },
+        () => {
+        }
+      )
+      }else{
+        this.loadVisiable=false
+         this.successVisiable=false
+         this.errorVisiable=false
+      }
+      
     }
   }
 }

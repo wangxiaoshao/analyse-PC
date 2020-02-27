@@ -52,7 +52,12 @@ export default {
     keepOriginResponse: true,
     serve: 'organizationManagePC'
   },
-
+  [urlNames.getVerifyCode]: {
+    type: 'get',
+    url: '/api/jg_manage/system/getVerifyCode',
+    keepOriginResponse: true,
+    serve: 'organizationManagePC'
+  },
   /*
   * 参数设置 */
   [urlNames.getSystemParameter]: {
