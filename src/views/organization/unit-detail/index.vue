@@ -404,7 +404,6 @@ export default {
           // this.ruleForm.labelId = res.data.labelId
           this.ruleForm.organization.address = res.data.address
           this.ruleForm.organization.name = res.data.name
-          this.ruleForm.organization.address = res.data.address
           // this.ruleForm.nodeId = res.data.parentId
           // this.ruleForm.organization.parentId = ''
           this.ruleForm.organization.id = res.data.id
@@ -417,6 +416,7 @@ export default {
           this.ruleForm.organization.zipCode = res.data.zipCode
           this.ruleForm.organization.ext01 = res.data.ext01
           this.ruleForm.organization.ext02 = res.data.ext02
+          this.ruleForm.organization.creditId=res.data.creditId
           if (this.$route.name === 'UnitEdit') {
             this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
           }
@@ -546,8 +546,9 @@ export default {
       // this.ruleForm.areaId = val
     },
     submitForm (ruleForm) {
-      this.ruleForm.organization.removed = this.ruleForm.organization.removed ? 0 : 1
-      this.$refs[ruleForm].validate((valid) => {
+      if(this.successVisiable ||  this.ruleForm.organization.creditId==''){
+        this.ruleForm.organization.removed = this.ruleForm.organization.removed ? 0 : 1
+        this.$refs[ruleForm].validate((valid) => {
         if (valid) {
           api[urlNames['createOrganization']](this.ruleForm).then((res) => {
             this.$message.success(`保存成功`)
@@ -557,6 +558,10 @@ export default {
           })
         }
       })
+      }else{
+        this.$message.error('请填写正确的社会信用代码')
+      }
+      
     },
     goBack () {
       this.$router.go(-1)

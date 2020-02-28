@@ -169,7 +169,8 @@ export default {
 
   // 通讯录搜索
   getAddressListUserByName: 'getAddressListUserByName',
-
+  // 全省通讯录搜索人员结果查询电话
+  findMobileById:'findMobileById',
   // 查询用户所在单位
   getAddressBookList: '',
   // 查询部门下的下级部门

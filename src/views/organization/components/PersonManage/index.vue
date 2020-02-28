@@ -145,7 +145,7 @@
           </el-form-item>
           <el-form-item label="登录别名" v-if="showNickName">
             <!-- v-model="userDetail.nickName" -->
-            <el-input placeholder="请输入登录别名" v-model="userDetail.nickName"></el-input>
+            <el-input placeholder="请输入登录别名" v-model="currentSetAccount.nickName"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -443,6 +443,7 @@ export default {
     'labelId',
     'labelList',
     'orgName',
+    'currentSetAccount'
   ],
   mixins: [dicOption, uploadFile],
   components: {
@@ -495,7 +496,7 @@ export default {
       this.$emit('exportOrg')
     },
     modifieUserInfo () {
-      this.$emit('goModifieUserInfo', this.personFrom)
+      this.$emit('goModifieUserInfo', this.personFrom,this.currentSetAccount)
     },
     // 搜索表格点击当前行
     selectRow (val) {

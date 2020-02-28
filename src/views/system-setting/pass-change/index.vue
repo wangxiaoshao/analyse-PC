@@ -89,29 +89,36 @@
       <el-col :span="6">
         <div class="account-info">
           <p>账号信息</p>
-          <!--<div v-for="(item, index) in accountInfoList" :key="item.id">-->
-            <!--<el-button-->
-              <!--@click="selectAccount(item, index)"-->
-              <!--:type="currentIndex === index ? 'primary' : ''"-->
-            <!--&gt;{{item.name}}</el-button>-->
-          <!--</div>-->
+          <!-- <div v-for="(item, index) in accountInfoList" :key="item.id">
+            <el-button
+              @click="selectAccount(item, index)"
+              :type="currentIndex === index ? 'primary' : ''"
+            >{{item.name}}&gt;</el-button>
+          </div> -->
           <el-dropdown>
           <span class="el-dropdown-link">
-             当前身份:
-            <el-button type="primary">
+             当前账号:
+            <!-- <el-button type="primary">
               {{defaultDutyName}}
+              <i class="el-icon-arrow-down el-icon--right"></i>
+            </el-button> -->
+             <el-button type="primary">
+              {{currentSetAccount.name}}
               <i class="el-icon-arrow-down el-icon--right"></i>
             </el-button>
           </span>
-            <el-dropdown-menu slot="dropdown">
+            <!-- <el-dropdown-menu slot="dropdown">
               <el-dropdown-item @click.native="changeSessionUser(item.userId,item.uid)" :key="index" v-for="(item, index) in userList"> {{item.dutyName}}</el-dropdown-item>
+            </el-dropdown-menu> -->
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item @click.native="changeSessionUser(item.id)" :key="index" v-for="(item, index) in accountInfoList"> {{item.name}}</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
       </el-col>
       <el-col :span="18">
         <el-tabs v-model="activeName" @tab-click="handleClick">
-          <el-tab-pane label="我的信息" >
+          <el-tab-pane label="我的信息" name="first">
             <person-manage
               :user-detail="userInfo.user"
               :post-detail="userInfo.identity"
@@ -119,6 +126,7 @@
               :label-list="fromLabelList"
               :old-user-info="oldUserInfo"
               :orgName="orgName"
+              :currentSetAccount='currentSetAccount'
               @get-user="getUser"
               @get-post="getPost"
               @get-label="getLabelId"
@@ -171,7 +179,7 @@
               </el-form>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="重置密码" name="first">
+          <el-tab-pane label="重置密码" >
               <div class="resetPwd">
                 <div :style="{margin: '20px'}" class="account-name">
                   <i class="el-icon-user" :style="{marginRight: '20px'}">{{currentSetAccount.name}}</i>
@@ -407,7 +415,7 @@ export default {
         userIdentiyId: id
       }).then((res) => {
         if(res.data.length>0){
-           this.userInfo.user.nickName=res.data[0].nickName
+           this.currentSetAccount.nickName=res.data[0].nickName
         }
         // this.$message.success('切换成功')
       })
@@ -492,10 +500,11 @@ export default {
       )
     },
 
-    goModifieUserInfo (val) {
+    goModifieUserInfo (val,data) {
       // 保存createUser
       this.userInfo.user = val
-      this.userInfo.userAccount[0].nickName=this.userInfo.user.nickName
+      console.log('data:',data)
+      this.userInfo.userAccount[0].nickName=data.nickName
       api[urlNames['createUser']](this.userInfo).then((res) => {
         this.$message.success(`保存成功`)
       }, () => {

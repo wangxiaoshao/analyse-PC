@@ -3,7 +3,7 @@
     <div class="all-log">
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="登录日志">
-           <personal-log :loginLog='logAry[0]'></personal-log>
+           <!-- <personal-log :loginLog='logAry[0]'></personal-log> -->
         </el-tab-pane>
         <el-tab-pane label="操作日志" name="first">
           <!-- <div v-if="newsList && newsList.length === 0" class="noDataList">暂无数据</div> -->

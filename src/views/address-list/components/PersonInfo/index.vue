@@ -8,8 +8,8 @@
       </el-form-item>
       <el-form-item label="手机号码" >
         <div  style="position:relative">
-          <span> {{ phoneState ? personInfoList.mobile : hideMobile(personInfoList.mobile) }}</span>
-          <span style="color:red" class="find"  @click="findMobile" v-if="showBtn">{{ phoneState ? "隐藏" : "查看" }}</span>
+          <el-input v-model="personInfoList.mobile" placeholder="暂无数据"  disabled></el-input>
+          <span style="color:red" class="find"  @click="findMobile" v-if="phoneState&&personInfoList.isForeign==0&&personInfoList.mobile!=='无'">查看</span>
         </div>
       </el-form-item>
       <el-form-item label="座机号码">
@@ -26,31 +26,30 @@
   </div>
 </template>
 <script>
+import { api, urlNames } from '@src/api'
 export default {
   name: 'personInfo',
-  props: ['personInfoList','phoneState'],
+  props: ['personInfoList','phoneState','activeColor'],
   data(){
     return {
       state:'',
       showBtn:true,
-      personInfoValue:this.personInfoList,
       val:''
 
     }
   },
   methods:{
     findMobile(){
-      this.$emit('showPhoneState',true)
-    },
-     hideMobile(phone){
-      if(phone !==''){
-        this.showBtn=true
-        return (phone+'').replace(/^(.{3})(?:\d+)(.{4})$/,"$1****$2")
-      }else{
-        this.showBtn=false
-        return  '暂无数据'
-      }
-    },
+      api[urlNames['findMobileById']]({
+        uid: this.personInfoList.uid
+      }).then((res) => {
+        if(res){
+            this.personInfoList.mobile=res.data.mobile
+           this.$emit('showPhoneState')
+        }
+      })
+     
+    }
     
   },
   

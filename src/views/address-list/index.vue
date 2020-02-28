@@ -27,12 +27,9 @@
             </el-breadcrumb>
         <transition name="fade-transform" mode="out-in" style="height: 100%">
              <div style="padding: 0 20px">
-               <!-- <department :departmentList="departmentList" v-if="showDep" :treeList="treeList" @handle-child-click="handleChildClick"></department>
-               <member :table-data="memberList" v-if="!showDep && showBreadCrumb"></member>
-               <person-info :personInfoList='personInfoList' v-if="!showBreadCrumb"></person-info> -->
                 <department :departmentList="departmentList" :treeList="treeList" v-if="showDep" @handle-child-click="handleChildClick"></department>
                 <member :table-data="memberList"   v-if="selectType!='0' && !showDep"></member>
-               <person-info :personInfoList='personInfoList'  @showPhoneState='showPhoneState' :phoneState='phoneState'  v-if="selectType=='0' && !showBreadCrumb"></person-info>
+               <person-info :personInfoList='personInfoList'  @showPhoneState='showPhoneState' :activeColor='activeColor' :phoneState='phoneState'  v-if="selectType=='0' && !showBreadCrumb"></person-info>
              </div>
         </transition>
       </el-col>
@@ -72,7 +69,7 @@ export default {
       showDep: true,
       showBreadCrumb: true,
       selectType:'',
-      phoneState:false
+      phoneState:true
 
     }
   },
@@ -96,6 +93,7 @@ export default {
       this.isShow = e
       this.showDep=true
       this.navigation = []
+      this.showBreadCrumb=true
       if (e === 1) {
         // alert(this.app.option.user.orgId)
         this.navigation1.name = '本单位通讯录'
@@ -141,14 +139,17 @@ export default {
     // 点击全省通讯录搜索人员
     searchPeopleInfo (data,type) {
       this.personInfoList = data
-      this.phoneState=false
+      if(this.personInfoList.mobile==''){
+        this.phoneState=false
+      }else{
+        this.phoneState=true
+      }
       this.selectType=type
-      // console.log('selectType:',this.selectType)
       this.showBreadCrumb = false
       this.showDep = false
     },
     showPhoneState(){
-      this.phoneState=!this.phoneState
+      this.phoneState=false
     },
     // 我的搜索返回
     searchMyBack () {
