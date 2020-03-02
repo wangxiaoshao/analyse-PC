@@ -3,7 +3,7 @@
     <div class="all-log">
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="登录日志">
-           <!-- <personal-log :loginLog='logAry[0]'></personal-log> -->
+          <!-- <personal-log :loginLog='logAry[0]'></personal-log> -->
         </el-tab-pane>
         <el-tab-pane label="操作日志" name="first">
           <!-- <div v-if="newsList && newsList.length === 0" class="noDataList">暂无数据</div> -->
@@ -20,7 +20,7 @@
                 </el-timeline>
               </div>
             </el-col>
-          </el-row> -->
+          </el-row>-->
           <!-- <div class="log-table">
             <el-table :data="systemData" stripe border align="center" style="width: 100%">
               <el-table-column type="index" label="序号" width="80"></el-table-column>
@@ -46,11 +46,11 @@
             layout="total, sizes, prev, pager, next, jumper"
             :total="page.total"
             ></el-pagination>
-          </div> -->
-          <personal-log :loginLog='logAry[1]'></personal-log>
+          </div>-->
+          <personal-log :loginLog="logAry[1]"></personal-log>
         </el-tab-pane>
-        <el-tab-pane label="系统日志" >
-          <personal-log :loginLog='logAry[2]'></personal-log>
+        <el-tab-pane label="系统日志">
+          <personal-log :loginLog="logAry[2]"></personal-log>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -65,7 +65,7 @@ import PersonalLog from '@src/components/PersonalLog/index'
 export default {
   mixins: [handleTable],
   components: { PersonalLog },
-  data () {
+  data() {
     return {
       searchQuery: {
         areaId: '',
@@ -86,7 +86,7 @@ export default {
       dateType: '',
       format: '',
       pickerOptions: {
-        disabledDate (time) {
+        disabledDate(time) {
           return time.getTime() > Date.now() - 8.64e6
         },
         shortcuts: null
@@ -97,7 +97,7 @@ export default {
   computed: {
     ...mapState(['application'])
   },
-  created () {
+  created() {
     let datefilters = this.$options.filters['date'](
       new Date().getTime(),
       'yyyy-MM-dd'
@@ -118,10 +118,8 @@ export default {
   },
   methods: {
     ...mapMutations(['SET_APPLICATION_PAGE', 'SET_APPLICATION_SEARCH_QUERY']),
-    opensystemInfo () {
-
-    },
-    selectChange (val) {
+    opensystemInfo() {},
+    selectChange(val) {
       this.date = ''
       this.currentDateVal = ''
       this.openPicker = false
@@ -144,13 +142,13 @@ export default {
         this.getGrid()
       }
     },
-    dateChange (val) {
+    dateChange(val) {
       if (val) {
         this.date = val
         this.getGrid()
       }
     },
-    getGrid () {
+    getGrid() {
       let data = {
         date: this.date,
         type: this.dateType === 'month' ? 4 : 0, // 后端需要传输的数据类型 月份type：4 || 天：0
@@ -169,14 +167,14 @@ export default {
         }
       )
     },
-    handleClick (tab, event) {
+    handleClick(tab, event) {
       // console.log(tab, event)
     }
   }
 }
 </script>
 <style lang="less">
-@import "./index";
+@import './index';
 </style>
 
 

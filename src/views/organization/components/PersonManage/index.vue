@@ -54,7 +54,7 @@
                 </el-table>
               </div>
             </el-popover>
-            <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd' " >
+            <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd' ">
               <div
                 class="tip-msg"
                 v-show="this.app.option.options.userAuditFields.indexOf('name') > -1 && userDetail.name !== oldUserInfo.user.name"
@@ -92,9 +92,7 @@
             <el-input placeholder="请输入内容" :disabled="isDefaultFlag" v-model="userDetail.idcard">
               <el-button slot="append" v-if="!disabledFlag" type="success" class="form-btn">点击实名认证</el-button>
             </el-input>
-            <span
-              style="font-size: 12px;position: relative;top:-7px;color: #8c939d;"
-            >如果不录入不影响新帐号创建</span>
+            <span style="font-size: 12px;position: relative;top:-7px;color: #8c939d;">如果不录入不影响新帐号创建</span>
             <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
               <div
                 class="tip-msg"
@@ -162,7 +160,7 @@
                 name="files"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload"
-                 list-type="picture"
+                list-type="picture"
               >
                 <img v-if="personFrom.portraitUrl" :src="personFrom.portraitUrl" class="avatar" />
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -180,7 +178,7 @@
                   :disabled="isDefaultFlag"
                   v-model="userDetail.mobile2"
                 ></el-input>
-                <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'" >
+                <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
                   <div
                     class="tip-msg"
                     v-show="this.app.option.options.userAuditFields.indexOf('mobile2') > -1 && userDetail.mobile2 !== oldUserInfo.user.mobile2"
@@ -449,7 +447,7 @@ export default {
   components: {
     addTags
   },
-  data () {
+  data() {
     return {
       hidefooter: false,
       dutyNameCheckd: [],
@@ -483,7 +481,7 @@ export default {
       }
     }
   },
-  created () {
+  created() {
     this.init()
   },
   computed: {
@@ -491,22 +489,22 @@ export default {
   },
   methods: {
     ...mapMutations(['SET_OPTION']),
-    init () {},
-    exportOrg () {
+    init() {},
+    exportOrg() {
       this.$emit('exportOrg')
     },
-    modifieUserInfo () {
-      this.$emit('goModifieUserInfo', this.personFrom,this.currentSetAccount)
+    modifieUserInfo() {
+      this.$emit('goModifieUserInfo', this.personFrom, this.currentSetAccount)
     },
     // 搜索表格点击当前行
-    selectRow (val) {
+    selectRow(val) {
       let uid = val.uid
       this.searchFlag = false
       this.$emit('get-uid', uid)
       this.$emit('get-defauf', true)
     },
     // 搜索数据
-    loadSearch () {
+    loadSearch() {
       this.searchFlag = false
       // console.log(' this.personFrom.name:', this.personFrom.name)
       if (this.$route.name === 'PersonAdd' && this.personFrom.name.length > 1) {
@@ -538,46 +536,45 @@ export default {
         this.timer = null
       }
     },
-    blur () {
+    blur() {
       this.timer = null
     },
     // 选择身份类型
-    getIdentityType (val) {
+    getIdentityType(val) {
       this.postFrom.type = val
     },
     // 选择民族
-    getNation (val) {
+    getNation(val) {
       this.personFrom.nation = val
     },
     // 选择学历
-    getQualification (val) {
+    getQualification(val) {
       this.personFrom.qualification = val
     },
     // 选择性别
-    getSex (val) {
+    getSex(val) {
       this.personFrom.sex = val
     },
     // 选择职级
-    getPositionClass (val) {
+    getPositionClass(val) {
       this.personFrom.positionClass = val
     },
     // 选择党派
-    getPolicalParty (val) {
+    getPolicalParty(val) {
       this.personFrom.politicalParty = val
     },
     // 选择人员状态
-    getUserState (val) {
+    getUserState(val) {
       this.personFrom.userState = val
     },
     // 选择人员类型
-    getUserType (val) {
+    getUserType(val) {
       this.personFrom.userType = val
     },
-    handleAvatarSuccess (res, file) {
-      this.personFrom.portraitUrl =
-        res.data[0] || URL.createObjectURL(file.raw)
+    handleAvatarSuccess(res, file) {
+      this.personFrom.portraitUrl = res.data[0] || URL.createObjectURL(file.raw)
     },
-    submitForm (form) {
+    submitForm(form) {
       this.$refs[form].validate(valid => {
         if (valid) {
           let data = new FormData()
@@ -604,7 +601,7 @@ export default {
         }
       })
     },
-    beforeAvatarUpload (file) {
+    beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg'
       const isLt2M = file.size / 1024 / 1024 < 2
 
@@ -616,10 +613,10 @@ export default {
       }
       return isJPG && isLt2M
     },
-    getClose (val) {
+    getClose(val) {
       this.openSearchFlag = val
     },
-    getTag (val) {
+    getTag(val) {
       const res = new Map()
       let tag = []
       val.forEach(item => {
@@ -635,7 +632,7 @@ export default {
       }) */
       this.$emit('get-label', this.sendLabelId)
     },
-    removeTag (tag, index) {
+    removeTag(tag, index) {
       this.$confirm('此操作将永久删除该标签, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -662,7 +659,7 @@ export default {
         })
       this.$emit('get-label', this.sendLabelId)
     },
-    next (userDetail) {
+    next(userDetail) {
       if (userDetail.name === '') {
         this.$message.success('请填写用户名称')
       }
@@ -676,26 +673,26 @@ export default {
         }
       })
     },
-    goBack () {
+    goBack() {
       this.$router.go(-1)
     },
-    handleSelect (item) {
+    handleSelect(item) {
       console.log(item)
     },
-    showdutyNameList () {
+    showdutyNameList() {
       this.dutyNameSelectVisible = true
     },
-    hidedutyNameList () {
+    hidedutyNameList() {
       this.dutyNameSelectVisible = false
     },
-    selectDutyName () {
+    selectDutyName() {
       this.postDetail.dutyName = JSON.parse(
         JSON.stringify(this.dutyNameCheckd)
       ).toString()
     }
   },
   watch: {
-    labelList (val) {
+    labelList(val) {
       val.forEach(item => {
         this.tagsName.push(item.name)
         this.sendLabelId.push(item.id)
@@ -707,5 +704,5 @@ export default {
 </script>
 
 <style lang="less">
-@import "index";
+@import 'index';
 </style>

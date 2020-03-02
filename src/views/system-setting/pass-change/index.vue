@@ -1,12 +1,12 @@
 
 <template>
   <div class="pass-change">
-     <select-members
+    <select-members
       :seleceDialog="selectDialog"
       @dialogReturnMembersInfo="dialogReturnMembersInfo"
       @closeselectMenmber="closeselectMenmber"
     ></select-members>
-     <!--人员调出弹窗-->
+    <!--人员调出弹窗-->
     <el-dialog title="填写调出说明" :visible.sync="calloutFlag" width="50%">
       <el-form
         :model="formCallout"
@@ -31,40 +31,42 @@
     </el-dialog>
 
     <!-- 提交调出申请弹框 -->
-     <el-dialog
-      :visible.sync="submitVisible" width='410px'>
-      <div slot='title' style="padding:20px; background-color: #fff;">
+    <el-dialog :visible.sync="submitVisible" width="410px">
+      <div slot="title" style="padding:20px; background-color: #fff;">
         <span class="msg-title">调出申请提交</span>
-          <span class='svg-container' style="color:red"><span class='iconfont iconzuzhijigou'></span></span>
+        <span class="svg-container" style="color:red">
+          <span class="iconfont iconzuzhijigou"></span>
+        </span>
       </div>
-      <div class="msg-box">
-        您的调出申请已提交，等待管理员审核通过后即可生效。
-      </div>
+      <div class="msg-box">您的调出申请已提交，等待管理员审核通过后即可生效。</div>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitVisible = false" width='120px'>确 定</el-button>
+        <el-button type="primary" @click="submitVisible = false" width="120px">确 定</el-button>
       </div>
     </el-dialog>
 
     <!-- 重置密码弹框 -->
     <div class="dialog-box">
-      <el-dialog :visible.sync="resetPwdVisible"   width="420px"  :show-close='false'>
-        <div slot="title" class="header-title"  style="background-color: #fff;">
+      <el-dialog :visible.sync="resetPwdVisible" width="420px" :show-close="false">
+        <div slot="title" class="header-title" style="background-color: #fff;">
           手机号验证
           <i class="el-icon-document-copy" style="color:red"></i>
         </div>
         <div class="resetPwd-box">
           <p>验证码已通过手机号：{{hideMobile(userInfo.user.mobile)}}发送请输入验证码：</p>
-          <div  style="padding:15px 0;">
+          <div style="padding:15px 0;">
             <el-row>
-            <el-col :span="12">
-              <el-input placeholder="请输入短信验证码" v-model="smsCode" ref="smsCodeInput"></el-input>
-            </el-col>
-            <el-col :span="10" :offset="1">
-              <el-button type="primary" :disabled="smsTimerCount !== 0" @click="sendSmsCode"
-               :style="this.smsTimerCount === 0?'':'background-color:#d8d7d7;border-color:#d8d7d7;'">
-               {{this.smsTimerCount === 0 ? '重新发送' : this.smsTimerCount + '秒后重新发送'}}</el-button>
-            </el-col>
-          </el-row>
+              <el-col :span="12">
+                <el-input placeholder="请输入短信验证码" v-model="smsCode" ref="smsCodeInput"></el-input>
+              </el-col>
+              <el-col :span="10" :offset="1">
+                <el-button
+                  type="primary"
+                  :disabled="smsTimerCount !== 0"
+                  @click="sendSmsCode"
+                  :style="this.smsTimerCount === 0?'':'background-color:#d8d7d7;border-color:#d8d7d7;'"
+                >{{this.smsTimerCount === 0 ? '重新发送' : this.smsTimerCount + '秒后重新发送'}}</el-button>
+              </el-col>
+            </el-row>
           </div>
         </div>
         <div slot="footer" class="dialog-footer">
@@ -73,18 +75,16 @@
       </el-dialog>
     </div>
     <!-- 重置密码成功弹框 -->
-    <el-dialog :visible.sync="successPwdVisible"   width="420px">
-        <div slot="title" class="header-title"  style="background-color: #fff;">
-          密码重置成功
-          <i class="el-icon-document-copy" style="color:red"></i>
-        </div>
-        <div class="sucessPwd-box">
-         验证通过，您的新密码已发送至手机号：{{hideMobile(userInfo.user.mobile)}}，请注意查收。
-        </div>
-        <div slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="successPwdVisible=false" width="120px">确 定</el-button>
-        </div>
-      </el-dialog>
+    <el-dialog :visible.sync="successPwdVisible" width="420px">
+      <div slot="title" class="header-title" style="background-color: #fff;">
+        密码重置成功
+        <i class="el-icon-document-copy" style="color:red"></i>
+      </div>
+      <div class="sucessPwd-box">验证通过，您的新密码已发送至手机号：{{hideMobile(userInfo.user.mobile)}}，请注意查收。</div>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="successPwdVisible=false" width="120px">确 定</el-button>
+      </div>
+    </el-dialog>
     <el-row :gutter="20">
       <el-col :span="6">
         <div class="account-info">
@@ -94,24 +94,28 @@
               @click="selectAccount(item, index)"
               :type="currentIndex === index ? 'primary' : ''"
             >{{item.name}}&gt;</el-button>
-          </div> -->
+          </div>-->
           <el-dropdown>
-          <span class="el-dropdown-link">
-             当前账号:
-            <!-- <el-button type="primary">
+            <span class="el-dropdown-link">
+              当前账号:
+              <!-- <el-button type="primary">
               {{defaultDutyName}}
               <i class="el-icon-arrow-down el-icon--right"></i>
-            </el-button> -->
-             <el-button type="primary">
-              {{currentSetAccount.name}}
-              <i class="el-icon-arrow-down el-icon--right"></i>
-            </el-button>
-          </span>
+              </el-button>-->
+              <el-button type="primary">
+                {{currentSetAccount.name}}
+                <i class="el-icon-arrow-down el-icon--right"></i>
+              </el-button>
+            </span>
             <!-- <el-dropdown-menu slot="dropdown">
               <el-dropdown-item @click.native="changeSessionUser(item.userId,item.uid)" :key="index" v-for="(item, index) in userList"> {{item.dutyName}}</el-dropdown-item>
-            </el-dropdown-menu> -->
+            </el-dropdown-menu>-->
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item @click.native="changeSessionUser(item.id)" :key="index" v-for="(item, index) in accountInfoList"> {{item.name}}</el-dropdown-item>
+              <el-dropdown-item
+                @click.native="changeSessionUser(item.id)"
+                :key="index"
+                v-for="(item, index) in accountInfoList"
+              >{{item.name}}</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
@@ -126,14 +130,14 @@
               :label-list="fromLabelList"
               :old-user-info="oldUserInfo"
               :orgName="orgName"
-              :currentSetAccount='currentSetAccount'
+              :currentSetAccount="currentSetAccount"
               @get-user="getUser"
               @get-post="getPost"
               @get-label="getLabelId"
-              @goModifieUserInfo='goModifieUserInfo'
+              @goModifieUserInfo="goModifieUserInfo"
               :showexportIdentityType="showexportIdentityType"
-              :showNickName='showNickName'
-              @exportOrg='exportOrg'
+              :showNickName="showNickName"
+              @exportOrg="exportOrg"
             ></person-manage>
           </el-tab-pane>
           <el-tab-pane label="修改密码">
@@ -179,16 +183,17 @@
               </el-form>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="重置密码" >
-              <div class="resetPwd">
-                <div :style="{margin: '20px'}" class="account-name">
-                  <i class="el-icon-user" :style="{marginRight: '20px'}">{{currentSetAccount.name}}</i>
-                </div>
-                <p style="margin:10px 0;">
-                  <i class="el-icon-info" :style="{fontSize: '16px',color:'#FC7049'}"></i>
-                  忘记原有密码，点击以下按钮进行重置，请确保该账号的手机号能正常接收信息！</p>
-                  <el-button type="primary" @click="resetPwd">重置密码</el-button>
+          <el-tab-pane label="重置密码">
+            <div class="resetPwd">
+              <div :style="{margin: '20px'}" class="account-name">
+                <i class="el-icon-user" :style="{marginRight: '20px'}">{{currentSetAccount.name}}</i>
               </div>
+              <p style="margin:10px 0;">
+                <i class="el-icon-info" :style="{fontSize: '16px',color:'#FC7049'}"></i>
+                忘记原有密码，点击以下按钮进行重置，请确保该账号的手机号能正常接收信息！
+              </p>
+              <el-button type="primary" @click="resetPwd">重置密码</el-button>
+            </div>
           </el-tab-pane>
           <el-tab-pane label="个人日志">
             <personal-log></personal-log>
@@ -214,7 +219,7 @@ export default {
     SelectMembers,
     PersonalLog
   },
-  data () {
+  data() {
     var validateOldPass = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请输入原始密码'))
@@ -227,9 +232,7 @@ export default {
         callback(new Error('请输入新密码'))
       } else {
         let reg = /^(?!([a-zA-Z\d]*|[\d!@#\$%_\.*/]*|[a-zA-Z!@#\$%_\.*/]*)$)[a-zA-Z\d!@#\$%_\.*/]{8,}$/
-        reg.test(value)
-          ? callback()
-          : callback(new Error('请按照密码规则填写'))
+        reg.test(value) ? callback() : callback(new Error('请按照密码规则填写'))
         if (this.ruleForm.checkPass !== '') {
           this.$refs.ruleForm.validateField('checkPass')
         }
@@ -246,10 +249,10 @@ export default {
       }
     }
     return {
-      resetPwdVisible:false,//重置密码弹框
-      smsTimerCount:0,//发送验证短信计时器
-       smsCode: '',
-       successPwdVisible:false,//重置密码成功弹框
+      resetPwdVisible: false, //重置密码弹框
+      smsTimerCount: 0, //发送验证短信计时器
+      smsCode: '',
+      successPwdVisible: false, //重置密码成功弹框
       defaultName: '', // 默认名字
       userList: [], // 用户身份列表
       defaultDutyName: '', // 默认身份
@@ -282,7 +285,7 @@ export default {
         reason: [{ required: true, message: '请填写申请原因', trigger: 'blur' }]
       },
       oldUserInfo: {},
-       nickName: '',
+      nickName: '',
       userInfo: {
         userAccount: [], // 账户
         labelId: [],
@@ -296,7 +299,7 @@ export default {
         },
         userId: '',
         user: {
-          nickName:'',
+          nickName: '',
           birthday: '',
           nation: null,
           portraitUrl: '',
@@ -339,7 +342,7 @@ export default {
       }
     }
   },
-  created () {
+  created() {
     this.getUserDetail(this.app.option.user.uid)
     this.getIdentity(this.app.option.user.identityId)
     // this.getNickName('')
@@ -362,9 +365,8 @@ export default {
     ...mapState(['app'])
   },
   methods: {
-
     // 选人弹窗组件返回的人员信息
-    dialogReturnMembersInfo (data) {
+    dialogReturnMembersInfo(data) {
       if (data[0].nodeType === 2) {
         this.formCallout.orgId = data[0].bindId
         this.orgName = data[0].name
@@ -385,8 +387,8 @@ export default {
     },
 
     // 获取用户身份列表
-    findSessionUserList () {
-      api[urlNames['findSessionUserList']]().then((res) => {
+    findSessionUserList() {
+      api[urlNames['findSessionUserList']]().then(res => {
         this.userList = res.data
         this.defaultName = res.data[0].name
         this.userList.forEach(item => {
@@ -398,11 +400,11 @@ export default {
       })
     },
     // 切换用户身份
-    changeSessionUser (id) {
+    changeSessionUser(id) {
       this.getNickName(id)
       api[urlNames['changeSessionUserId']]({
         userId: id
-      }).then((res) => {
+      }).then(res => {
         window.setTimeout(() => {
           this.$router.go(0) // 刷新页面
           this.message.success('切换成功')
@@ -410,21 +412,21 @@ export default {
       })
     },
     // 切换账号
-    getNickName (id) {
+    getNickName(id) {
       api[urlNames['findUserAccountNickName']]({
         userIdentiyId: id
-      }).then((res) => {
-        if(res.data.length>0){
-           this.currentSetAccount.nickName=res.data[0].nickName
+      }).then(res => {
+        if (res.data.length > 0) {
+          this.currentSetAccount.nickName = res.data[0].nickName
         }
         // this.$message.success('切换成功')
       })
     },
     // 关闭选人弹窗
-    closeselectMenmber () {
+    closeselectMenmber() {
       this.selectDialog.selectMenmberFlag = false
     },
-    addMainLeader () {
+    addMainLeader() {
       this.selectDialog.selectMenmberFlag = true
       this.selectDialog.isSingleSelect = false
       this.selectDialog.notOnlyPerson = false
@@ -432,40 +434,45 @@ export default {
       this.selectDialog.isOnlyOrg = true
       this.selectDialog.isAllData = true
     },
-    exportOrg () {
+    exportOrg() {
       this.calloutFlag = true
     },
-    getLabelId (val) {
+    getLabelId(val) {
       this.userInfo.labelId = val.map(Number)
     },
-    findLabel (id, type) {
+    findLabel(id, type) {
       api[urlNames['findLabel']]({
         id: id,
         type: type
-      }).then((res) => {
-        this.fromLabelList = res.data
-      }, () => {
-      })
+      }).then(
+        res => {
+          this.fromLabelList = res.data
+        },
+        () => {}
+      )
     },
-    getIdentity (id) {
+    getIdentity(id) {
       api[urlNames['findIdentityById']]({
         identityId: id
-      }).then((res) => {
-        this.userInfo.identity.departmentId = res.data.departmentId
-        this.userInfo.identity.id = res.data.id
-        this.userInfo.identity.orgId = res.data.orgId
-        this.userInfo.identity.postName = res.data.postName
-        this.userInfo.identity.type = parseInt(res.data.type)
-        this.userInfo.identity.dutyName = res.data.dutyName
-        this.formCallout.identityId = res.data.id
-        this.formCallout.orgId = res.data.orgId
-        this.orgName = res.data.organizationName
-      }, () => {
-        /* this.$message.error(`没有内容`) */
-      })
+      }).then(
+        res => {
+          this.userInfo.identity.departmentId = res.data.departmentId
+          this.userInfo.identity.id = res.data.id
+          this.userInfo.identity.orgId = res.data.orgId
+          this.userInfo.identity.postName = res.data.postName
+          this.userInfo.identity.type = parseInt(res.data.type)
+          this.userInfo.identity.dutyName = res.data.dutyName
+          this.formCallout.identityId = res.data.id
+          this.formCallout.orgId = res.data.orgId
+          this.orgName = res.data.organizationName
+        },
+        () => {
+          /* this.$message.error(`没有内容`) */
+        }
+      )
     },
 
-    getUserDetail (id) {
+    getUserDetail(id) {
       this.loading = true
       api[urlNames['findUserById']]({
         id: id
@@ -500,18 +507,21 @@ export default {
       )
     },
 
-    goModifieUserInfo (val,data) {
+    goModifieUserInfo(val, data) {
       // 保存createUser
       this.userInfo.user = val
-      console.log('data:',data)
-      this.userInfo.userAccount[0].nickName=data.nickName
-      api[urlNames['createUser']](this.userInfo).then((res) => {
-        this.$message.success(`保存成功`)
-      }, () => {
-        this.$message.error(`保存失败，请重试`)
-      })
+      console.log('data:', data)
+      this.userInfo.userAccount[0].nickName = data.nickName
+      api[urlNames['createUser']](this.userInfo).then(
+        res => {
+          this.$message.success(`保存成功`)
+        },
+        () => {
+          this.$message.error(`保存失败，请重试`)
+        }
+      )
     },
-    getUser (val) {
+    getUser(val) {
       // 获取用户信息
       this.userInfo.user = val
       this.stepTwoFlag = true
@@ -520,19 +530,19 @@ export default {
       // this.submitForm()
     },
     // 绑定身份
-    getPost (val) {
+    getPost(val) {
       this.userInfo.identity = val
     },
 
-    selectAccount (item, index) {
+    selectAccount(item, index) {
       this.currentIndex = index
       this.currentSetAccount = item
     },
-    handleClick (tab, event) {
+    handleClick(tab, event) {
       // console.log(tab, event)
     },
 
-    submitForm (formName) {
+    submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           let data = {
@@ -558,15 +568,14 @@ export default {
       })
     },
     // 过滤手机号
-    hideMobile(phone){
-        return (phone+'').replace(/^(.{3})(?:\d+)(.{4})$/,"$1****$2")
+    hideMobile(phone) {
+      return (phone + '').replace(/^(.{3})(?:\d+)(.{4})$/, '$1****$2')
     },
-    
 
     // 发送验证码
-    resetPwd () {
-      this.resetPwdVisible=true
-      this.sendSmsCode();
+    resetPwd() {
+      this.resetPwdVisible = true
+      this.sendSmsCode()
       // console.log('currentSetAccount:',this.currentSetAccount)
     },
     /**
@@ -600,41 +609,37 @@ export default {
       api[urlNames['getVerifyCode']]({
         id: this.currentSetAccount.id
       }).then(
-        res => {
-        },
-        () => {
-        }
+        res => {},
+        () => {}
       )
     },
     // 验证验证码
-    beSureSmsCode(){
-      if(this.smsCode===''){
+    beSureSmsCode() {
+      if (this.smsCode === '') {
         this.$message.error('请输入有效验证码')
         this.$refs.smsCodeInput.focus()
-      }else{
-        let param={
-          id:this.currentSetAccount.id,
-          verifyCode:this.smsCode
+      } else {
+        let param = {
+          id: this.currentSetAccount.id,
+          verifyCode: this.smsCode
         }
         api[urlNames['resetPwd']](param).then(
-        res => {
-          if(res){
-            this.resetPwdVisible=false
-            this.successPwdVisible=true
-            this.smsCode=''
-          }else{
-            this.$message.error('验证码已失效，请重新发送')
-          }
-        },
-        () => {
-        }
-      )
+          res => {
+            if (res) {
+              this.resetPwdVisible = false
+              this.successPwdVisible = true
+              this.smsCode = ''
+            } else {
+              this.$message.error('验证码已失效，请重新发送')
+            }
+          },
+          () => {}
+        )
       }
-      
     },
 
     // 表单初始化
-    fromInit () {
+    fromInit() {
       // this.calloutFlag = false
       this.formCallout = {
         identityId: '',
@@ -646,7 +651,7 @@ export default {
     },
 
     // 提交调出
-    submitFormCallout (formCallout) {
+    submitFormCallout(formCallout) {
       this.$refs[formCallout].validate(valid => {
         if (valid) {
           api[urlNames['calloutUser']](this.formCallout).then(
@@ -659,12 +664,14 @@ export default {
               this.formCallout.deptId = this.formCallout.orgId = ''
               // this.orgName = this.depName = ''
             },
-            (error) => {
+            error => {
               if (error) {
                 this.calloutFlag = false
                 this.submitVisible = true
-                document.querySelector('.msg-title').innerHTML = '请勿重复提交调出申请'
-                document.querySelector('.msg-box').innerHTML = '在此之前，您已经提交过调出申请，请等待管理员审核完成后再操作！'
+                document.querySelector('.msg-title').innerHTML =
+                  '请勿重复提交调出申请'
+                document.querySelector('.msg-box').innerHTML =
+                  '在此之前，您已经提交过调出申请，请等待管理员审核完成后再操作！'
               }
             }
           )
@@ -672,14 +679,14 @@ export default {
       })
     },
 
-    resetForm (formName) {
+    resetForm(formName) {
       this.$refs[formName].resetFields()
     }
   }
 }
 </script>
 <style lang="less">
-@import "index";
+@import 'index';
 </style>
 
 
