@@ -44,43 +44,6 @@
       </div>
     </el-dialog>
 
-    <!-- 修改密码弹框 -->
-    <div class="dialog-box">
-      <el-dialog :visible.sync="modifiePwdVisible" :show-close="false" width="410px">
-        <div slot="title" class="header-title" style="background-color: #fff;">
-          修改密码
-          <i class="el-icon-document-copy" style="color:red"></i>
-        </div>
-        <el-form
-          :model="ruleForm"
-          status-icon
-          :rules="rules"
-          inline
-          label-width="100px"
-          ref="ruleForm"
-          class="demo-ruleForm"
-        >
-          <el-form-item label="原密码" prop="oldPass">
-            <el-input type="password" v-model="ruleForm.oldPass" show-password></el-input>
-          </el-form-item>
-          <el-form-item label="新密码" prop="newPass">
-            <el-input type="password" v-model="ruleForm.newPass" autocomplete="off" show-password></el-input>
-          </el-form-item>
-          <el-form-item label="确认密码" prop="checkPass">
-            <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off" show-password></el-input>
-          </el-form-item>
-          <div class="pass-rule">
-            <i class="el-icon-warning" style="color:black"></i>
-            {{passRule}}
-          </div>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
-          <el-button @click="resetForm('ruleForm')">取消</el-button>
-        </div>
-      </el-dialog>
-    </div>
-
     <!-- 重置密码弹框 -->
     <div class="dialog-box">
       <el-dialog :visible.sync="resetPwdVisible" width="420px" :show-close="false">
@@ -122,94 +85,115 @@
         <el-button type="primary" @click="successPwdVisible=false" width="120px">确 定</el-button>
       </div>
     </el-dialog>
-
-    <div class="pass-change-content">
-      <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="我的信息">
-          <el-row>
-            <el-col :span="18">
-              <person-manage
-                :user-detail="userInfo.user"
-                :post-detail="userInfo.identity"
-                :label-id="userInfo.labelId"
-                :label-list="fromLabelList"
-                :old-user-info="oldUserInfo"
-                :orgName="orgName"
-                :currentSetAccount="currentSetAccount"
-                @get-user="getUser"
-                @get-post="getPost"
-                @get-label="getLabelId"
-                @goModifieUserInfo="goModifieUserInfo"
-                :showexportIdentityType="showexportIdentityType"
-                @exportOrg="exportOrg"
-              ></person-manage>
-            </el-col>
-          </el-row>
-        </el-tab-pane>
-        <el-tab-pane label="多账号管理" name="first">
-          <multiple-accounts :accountData="accountInfoList" @goEdit='goEdit' v-if="showAccountsVisible"></multiple-accounts>
-          <edit-account v-else @resetPwd="resetPwd" @modifiePwd="modifiePwd"  :accountInfo='accountInfo'  @goBack='goBack'></edit-account>
-        </el-tab-pane>
-        <!-- <el-tab-pane label="修改密码">
-          <div class="modifiePwd">
-            <el-form
-              :model="ruleForm"
-              status-icon
-              :rules="rules"
-              ref="ruleForm"
-              label-width="100px"
-              class="demo-ruleForm"
-            >
+    <el-row :gutter="20">
+      <el-col :span="6">
+        <div class="account-info">
+          <p>账号信息</p>
+          <!-- <div v-for="(item, index) in accountInfoList" :key="item.id">
+            <el-button
+              @click="selectAccount(item, index)"
+              :type="currentIndex === index ? 'primary' : ''"
+            >{{item.name}}&gt;</el-button>
+          </div>-->
+          <el-dropdown>
+            <span class="el-dropdown-link">
+              当前账号:
+              <el-button type="primary">
+                {{defaultDutyName}}
+                <i class="el-icon-arrow-down el-icon--right"></i>
+              </el-button>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item
+                @click.native="changeSessionUser(item.id)"
+                :key="index"
+                v-for="(item, index) in accountInfoList"
+              >{{item.name}}</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+      </el-col>
+      <el-col :span="18">
+        <el-tabs v-model="activeName" @tab-click="handleClick">
+          <el-tab-pane label="我的信息" name="first">
+            <person-manage
+              :user-detail="userInfo.user"
+              :post-detail="userInfo.identity"
+              :label-id="userInfo.labelId"
+              :label-list="fromLabelList"
+              :old-user-info="oldUserInfo"
+              :orgName="orgName"
+              :currentSetAccount="currentSetAccount"
+              @get-user="getUser"
+              @get-post="getPost"
+              @get-label="getLabelId"
+              @goModifieUserInfo="goModifieUserInfo"
+              :showexportIdentityType="showexportIdentityType"
+              :showNickName="showNickName"
+              @exportOrg="exportOrg"
+            ></person-manage>
+          </el-tab-pane>
+          <el-tab-pane label="修改密码">
+            <div class="modifiePwd">
+              <el-form
+                :model="ruleForm"
+                status-icon
+                :rules="rules"
+                ref="ruleForm"
+                label-width="100px"
+                class="demo-ruleForm"
+              >
+                <div :style="{margin: '20px'}" class="account-name">
+                  <i class="el-icon-user" :style="{marginRight: '20px'}">{{currentSetAccount.name}}</i>
+                </div>
+                <el-form-item label="原密码" prop="oldPass">
+                  <el-input type="password" v-model="ruleForm.oldPass" show-password></el-input>
+                </el-form-item>
+                <el-form-item label="新密码" prop="newPass">
+                  <el-input
+                    type="password"
+                    v-model="ruleForm.newPass"
+                    autocomplete="off"
+                    show-password
+                  ></el-input>
+                </el-form-item>
+                <el-form-item label="确认密码" prop="checkPass">
+                  <el-input
+                    type="password"
+                    v-model="ruleForm.checkPass"
+                    autocomplete="off"
+                    show-password
+                  ></el-input>
+                </el-form-item>
+                <div class="pass-rule">
+                  <i class="el-icon-warning"></i>
+                  {{passRule}}
+                </div>
+                <el-form-item>
+                  <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
+                  <el-button @click="resetForm('ruleForm')">取消</el-button>
+                </el-form-item>
+              </el-form>
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="重置密码">
+            <div class="resetPwd">
               <div :style="{margin: '20px'}" class="account-name">
                 <i class="el-icon-user" :style="{marginRight: '20px'}">{{currentSetAccount.name}}</i>
               </div>
-              <el-form-item label="原密码" prop="oldPass">
-                <el-input type="password" v-model="ruleForm.oldPass" show-password></el-input>
-              </el-form-item>
-              <el-form-item label="新密码" prop="newPass">
-                <el-input
-                  type="password"
-                  v-model="ruleForm.newPass"
-                  autocomplete="off"
-                  show-password
-                ></el-input>
-              </el-form-item>
-              <el-form-item label="确认密码" prop="checkPass">
-                <el-input
-                  type="password"
-                  v-model="ruleForm.checkPass"
-                  autocomplete="off"
-                  show-password
-                ></el-input>
-              </el-form-item>
-              <div class="pass-rule">
-                <i class="el-icon-warning"></i>
-                {{passRule}}
-              </div>
-              <el-form-item>
-                <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
-                <el-button @click="resetForm('ruleForm')">取消</el-button>
-              </el-form-item>
-            </el-form>
-          </div>
-        </el-tab-pane>-->
-        <!-- <el-tab-pane label="重置密码">
-          <div class="resetPwd">
-            <div :style="{margin: '20px'}" class="account-name">
-              <i class="el-icon-user" :style="{marginRight: '20px'}">{{currentSetAccount.name}}</i>
+              <p style="margin:10px 0;">
+                <i class="el-icon-info" :style="{fontSize: '16px',color:'#FC7049'}"></i>
+                忘记原有密码，点击以下按钮进行重置，请确保该账号的手机号能正常接收信息！
+              </p>
+              <el-button type="primary" @click="resetPwd">重置密码</el-button>
             </div>
-            <p style="margin:10px 0;">
-              <i class="el-icon-info" :style="{fontSize: '16px',color:'#FC7049'}"></i>
-              忘记原有密码，点击以下按钮进行重置，请确保该账号的手机号能正常接收信息！
-            </p>
-            <el-button type="primary" @click="resetPwd">重置密码</el-button>
-          </div>
-        </el-tab-pane>-->
-        <el-tab-pane label="个人日志">
-          <personal-log></personal-log>
-        </el-tab-pane>
-      </el-tabs>
-    </div>
+          </el-tab-pane>
+          <el-tab-pane label="个人日志">
+            <personal-log></personal-log>
+          </el-tab-pane>
+        </el-tabs>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -219,8 +203,6 @@ import { mapState } from 'vuex'
 import personManage from '../../organization/components/PersonManage'
 import PersonalLog from '@src/components/PersonalLog/index'
 import SelectMembers from '@src/components/SelectMembers/index'
-import MultipleAccounts from '../components/MultipleAccounts/index'
-import EditAccount from '../components/EditAccount/index'
 const SMS_TIMES_SECOND = 60
 // 定时器
 let smsTimer = null
@@ -228,9 +210,7 @@ export default {
   components: {
     personManage,
     SelectMembers,
-    PersonalLog,
-    MultipleAccounts,
-    EditAccount
+    PersonalLog
   },
   data() {
     var validateOldPass = (rule, value, callback) => {
@@ -262,10 +242,7 @@ export default {
       }
     }
     return {
-      accountInfo:'',
-      showAccountsVisible: true,
       resetPwdVisible: false, //重置密码弹框
-      modifiePwdVisible: false, //修改密码弹框
       smsTimerCount: 0, //发送验证短信计时器
       smsCode: '',
       successPwdVisible: false, //重置密码成功弹框
@@ -275,6 +252,7 @@ export default {
       calloutFlag: false,
       submitVisible: false,
       showexportIdentityType: true,
+      showNickName: true,
       currentIndex: 0,
       accountInfoList: [],
       currentSetAccount: {},
@@ -360,6 +338,7 @@ export default {
   created() {
     this.getUserDetail(this.app.option.user.uid)
     this.getIdentity(this.app.option.user.identityId)
+    // this.getNickName('')
     api[urlNames['findUserAccountByUid']]().then(
       res => {
         if (res && res.data) {
@@ -401,6 +380,7 @@ export default {
     },
 
     // 获取用户身份列表
+
     findSessionUserList() {
       api[urlNames['findSessionUserList']]().then(res => {
         this.userList = res.data
@@ -408,8 +388,33 @@ export default {
         this.userList.forEach(item => {
           if (item.userId === this.app.option.user.identityId) {
             this.defaultDutyName = item.dutyName
+            this.getNickName(item.userId)
           }
         })
+      })
+    },
+    // 切换用户身份
+    changeSessionUser(id) {
+      this.getNickName(id)
+      api[urlNames['changeSessionUserId']]({
+        userId: id
+      }).then(res => {
+        window.setTimeout(() => {
+          this.$router.go(0) // 刷新页面
+          this.message.success('切换成功')
+        }, 500)
+      })
+    },
+
+    // 切换账号
+    getNickName(id) {
+      api[urlNames['findUserAccountNickName']]({
+        userIdentiyId: id
+      }).then(res => {
+        if (res.data.length > 0) {
+          this.currentSetAccount.nickName = res.data[0].nickName
+        }
+        // this.$message.success('切换成功')
       })
     },
     // 关闭选人弹窗
@@ -523,9 +528,13 @@ export default {
     getPost(val) {
       this.userInfo.identity = val
     },
+
+    selectAccount(item, index) {
+      this.currentIndex = index
+      this.currentSetAccount = item
+    },
     handleClick(tab, event) {
       // console.log(tab, event)
-      this.showAccountsVisible=true
     },
 
     submitForm(formName) {
@@ -558,17 +567,11 @@ export default {
       return (phone + '').replace(/^(.{3})(?:\d+)(.{4})$/, '$1****$2')
     },
 
-    /**
-     * 修改密码
-     */
-    modifiePwd() {
-      this.modifiePwdVisible = true
-    },
-
-    // 重置密码
+    // 发送验证码
     resetPwd() {
       this.resetPwdVisible = true
       this.sendSmsCode()
+      // console.log('currentSetAccount:',this.currentSetAccount)
     },
     /**
      * 发送验证短信到用户绑定手机号
@@ -598,12 +601,12 @@ export default {
       }, 1000)
 
       // 发送短信获取验证码
-      // api[urlNames['getVerifyCode']]({
-      //   id: this.currentSetAccount.id
-      // }).then(
-      //   res => {},
-      //   () => {}
-      // )
+      api[urlNames['getVerifyCode']]({
+        id: this.currentSetAccount.id
+      }).then(
+        res => {},
+        () => {}
+      )
     },
     // 验证验证码
     beSureSmsCode() {
@@ -615,33 +618,19 @@ export default {
           id: this.currentSetAccount.id,
           verifyCode: this.smsCode
         }
-        this.resetPwdVisible = false
-        this.successPwdVisible = true
-        // api[urlNames['resetPwd']](param).then(
-        //   res => {
-        //     if (res) {
-        //       this.resetPwdVisible = false
-        //       this.successPwdVisible = true
-        //       this.smsCode = ''
-        //     } else {
-        //       this.$message.error('验证码已失效，请重新发送')
-        //     }
-        //   },
-        //   () => {}
-        // )
+        api[urlNames['resetPwd']](param).then(
+          res => {
+            if (res) {
+              this.resetPwdVisible = false
+              this.successPwdVisible = true
+              this.smsCode = ''
+            } else {
+              this.$message.error('验证码已失效，请重新发送')
+            }
+          },
+          () => {}
+        )
       }
-    },
-
-    // 编辑页面
-    goEdit(val){
-      this.accountInfo=val
-      this.showAccountsVisible=false
-
-    },
-
-    // 多账号管理页
-    goBack(){
-       this.showAccountsVisible=true
     },
 
     // 表单初始化
@@ -686,7 +675,6 @@ export default {
     },
 
     resetForm(formName) {
-      this.modifiePwdVisible = false
       this.$refs[formName].resetFields()
     }
   }

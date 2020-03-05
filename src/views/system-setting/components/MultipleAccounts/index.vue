@@ -1,0 +1,85 @@
+<template>
+  <div class="multiple-accounts">
+    <div class="account-title">账号列表</div>
+    <el-table :data="accountData" stripe border align="center" style="width: 100%">
+      <el-table-column label="账号" align="center" prop="name"></el-table-column>
+      <el-table-column label="创建时间" align="center"></el-table-column>
+      <el-table-column label="登录别名" align="center" prop="nickName"></el-table-column>
+      <el-table-column label="关联系统" align="center">
+        <template slot-scope="scope">
+          <a
+            href="javascript:void(0);"
+            style="color:red;font-size:12px"
+            @click="findSystemInfo(scope.row)"
+          >查看</a>
+        </template>
+      </el-table-column>
+      <el-table-column label="状态" align="center">
+        <template slot-scope="scope">
+          <span style="color:#999">{{scope.row.removed==0 ?'已禁用':'已启用'}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" align="center">
+        <template slot-scope="scope">
+          <a
+            href="javascript:void(0);"
+            style="color:red;font-size:12px"
+            @click="setAccount(scope.row)"
+          >修改</a>
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-dialog :visible.sync="accountSystemVisible" width="380px">
+      <div slot="title" style="padding:15px">
+        已关联系统
+        <i class="el-icon-document-copy" style="color:red"></i>
+      </div>
+      <div class="systemInfo">
+        <el-table :show-header="false" :data="systemData" :row-class-name="tableRowClassName">
+          <el-table-column align="center">
+            <template>VPN管控平台</template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="accountSystemVisible = false" width="120px">确 定</el-button>
+      </div>
+    </el-dialog>
+  </div>
+</template>
+<script>
+import { api, urlNames } from '@src/api'
+export default {
+  props: ['accountData'],
+  data() {
+    return {
+      systemData: [{}, {}, {}],
+      accountSystemVisible: false
+    }
+  },
+  created() {},
+  methods: {
+    // 过滤查看系统样式
+    tableRowClassName({ row, rowIndex }) {
+      if (rowIndex % 2 === 0) {
+        return 'odd-row'
+      } else {
+        return 'even-row'
+      }
+      return ''
+    },
+    // 修改账号信息
+    setAccount(data) {
+      this.$emit('goEdit',data)
+    },
+
+    // 查看关联系统
+    findSystemInfo(data) {
+      this.accountSystemVisible = true
+    }
+  }
+}
+</script>
+<style lang="less" scoped>
+@import 'index.less';
+</style>

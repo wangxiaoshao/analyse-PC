@@ -2,16 +2,16 @@ const path = require('path');
 const URL = require("url")
 const CompressionPlugin = require("compression-webpack-plugin")
 
-function resolve (dir) {
+function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
 // 正是环境地址前缀，最好是绝对地址
-const publicPath= '';
+const publicPath = '';
 module.exports = function (options) {
   options = options || {}
   return {
-    publicPath: process.env.NODE_ENV === 'production' ? publicPath: '/',
+    publicPath: process.env.NODE_ENV === 'production' ? publicPath : '/',
 
     // 设置别名
     chainWebpack: (config) => {
