@@ -1,22 +1,33 @@
 <template>
   <div class="multiple-accounts">
     <div class="account-title">账号列表</div>
-    <el-table :data="accountData" stripe border align="center" style="width: 100%">
+    <el-table :data="accountInfoList" stripe border align="center" style="width: 100%">
       <el-table-column label="账号" align="center" prop="name"></el-table-column>
-      <el-table-column label="创建时间" align="center"></el-table-column>
-      <el-table-column label="登录别名" align="center" prop="nickName"></el-table-column>
+      <el-table-column label="创建时间" align="center"  prop="createTime"></el-table-column>
+      <el-table-column label="登录别名" align="center" prop="nickName">
+        <template slot-scope="scope">
+          <span style="color:#999"  v-if='!scope.row.nickName'>暂无</span>
+          <span style="color:#999"  v-else>{{scope.row.nickName}}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="关联系统" align="center">
         <template slot-scope="scope">
           <a
+          v-if="scope.row.account4AppDtos&&scope.row.account4AppDtos.length>0"
             href="javascript:void(0);"
             style="color:red;font-size:12px"
-            @click="findSystemInfo(scope.row)"
+            @click="findSystemInfo(scope.row.account4AppDtos)"
           >查看</a>
+           <a
+           v-else
+            href="javascript:void(0);"
+            style="color:#999;font-size:12px"
+          >暂无</a>
         </template>
       </el-table-column>
       <el-table-column label="状态" align="center">
         <template slot-scope="scope">
-          <span style="color:#999">{{scope.row.removed==0 ?'已禁用':'已启用'}}</span>
+          <span style="color:#999">{{scope.row.removed==0 ?'已启用':'已禁用'}}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center">
@@ -24,8 +35,8 @@
           <a
             href="javascript:void(0);"
             style="color:red;font-size:12px"
-            @click="setAccount(scope.row)"
-          >修改</a>
+            @click="setAccount(scope.row.id)"
+          >编辑</a>
         </template>
       </el-table-column>
     </el-table>
@@ -35,10 +46,8 @@
         <i class="el-icon-document-copy" style="color:red"></i>
       </div>
       <div class="systemInfo">
-        <el-table :show-header="false" :data="systemData" :row-class-name="tableRowClassName">
-          <el-table-column align="center">
-            <template>VPN管控平台</template>
-          </el-table-column>
+        <el-table :show-header="false" :data="systeamData" :row-class-name="tableRowClassName">
+          <el-table-column align="center" prop="appName"></el-table-column>
         </el-table>
       </div>
       <div slot="footer" class="dialog-footer">
@@ -50,14 +59,14 @@
 <script>
 import { api, urlNames } from '@src/api'
 export default {
-  props: ['accountData'],
+  props: ['accountInfoList'],
   data() {
     return {
-      systemData: [{}, {}, {}],
-      accountSystemVisible: false
+      accountSystemVisible: false,
+      systeamData:[]
     }
   },
-  created() {},
+
   methods: {
     // 过滤查看系统样式
     tableRowClassName({ row, rowIndex }) {
@@ -69,12 +78,21 @@ export default {
       return ''
     },
     // 修改账号信息
-    setAccount(data) {
-      this.$emit('goEdit',data)
+    setAccount(val) {
+     api[urlNames['findAccountById']]({id:val}).then(res=>{
+       if(res){
+         let  data=res.data
+        data.removed = !res.data.removed
+         this.$emit('goEdit',data)
+       }
+      })
+
+      
     },
 
     // 查看关联系统
     findSystemInfo(data) {
+      this.systeamData=data
       this.accountSystemVisible = true
     }
   }

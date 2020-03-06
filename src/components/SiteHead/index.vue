@@ -11,11 +11,11 @@
           </div>
         </div>
         <div class="site__head--right">
-          <div style="display:inline-block;" @click="showNotice">
-            <el-badge :value="msgNum" class="item" title="查看通知" style=" cursor: pointer;">
+          <!-- < style="display:inline-block;" @click="showNotice"> -->
+            <el-badge :value="msgNum" class="item" title="查看通知"  @click="showNotice" style=" cursor: pointer;">
               <i class="el-icon-bell"></i>
             </el-badge>
-          </div>
+          <!-- </div> -->
           <i class="ico fa fa-file-text-o"></i>
           <a style="cursor: pointer" @click="goToWordCenter" href="javascript:void(0)">数据文档</a>
           <!--          <i class="ico fa fa-phone"></i>-->
@@ -97,6 +97,7 @@ export default {
         this.noticeData = res.data
         this.msgNum = res.total
         if (this.msgNum === 0) {
+          this.msgNum=''
           this.showAllReadVisiable = false
           this.showNoticeDilog = false
         } else {
@@ -119,13 +120,13 @@ export default {
         }
       })
     },
+
     // 获取用户身份列表
     findSessionUserList() {
       api[urlNames['findSessionUserList']]().then(res => {
-        this.userList = res.data
-        this.defaultName = res.data[0].name
+        this.userList = res.data.userIdVos
         this.userList.forEach(item => {
-          if (item.userId === this.app.option.user.identityId) {
+          if (item.userId === res.data.id) {
             this.defaultName =
               item.orgName + ' ' + item.dutyName + ' ' + item.typeName
           }

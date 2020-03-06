@@ -118,7 +118,7 @@ export default {
     keepOriginResponse: true,
     showLoading: false,
     serve: 'organizationManagePC',
-    mock: '/setUserSort.json', 
+    mock: '/setUserSort.json',
     headers: {
       'Content-Type': 'application/json'
     }
@@ -159,6 +159,27 @@ export default {
     serve: 'organizationManagePC',
     mock: '/findUserAccountByUid.json' // development模式下，本地mock数据
   },
+
+  // 获取账号信息
+  [urlNames.findAccountById]: {
+    type: 'get',
+    url: '/api/jg_manage/user/findAccountById',
+    keepOriginResponse: true,
+    showLoading: true,
+    serve: 'organizationManagePC'
+  },
+  // 修改账号信息
+  [urlNames.updateAccount]: {
+    type: 'post',
+    url: '/api/jg_manage/user/updateAccount',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    showLoading: true, // 该请求发送时，是否显示全局loading
+    serve: 'organizationManagePC',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  },
+
   [urlNames.findLeaderList]: {
     type: 'get',
     url: '/api/jg_manage/user/findLeaderList',

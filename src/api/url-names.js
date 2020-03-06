@@ -139,7 +139,7 @@ export default {
   /**
    * 社会信用代码
    */
-  orgCreditId:'orgCreditId',
+  orgCreditId: 'orgCreditId',
   // 系统设置
   getDictionaryList: 'getdDictionaryList',
   addDictionary: 'addDictionary',
@@ -149,7 +149,7 @@ export default {
   // 重置密码
   resetPwd: 'resetPwd',
   // 获取验证码
-  getVerifyCode:'getVerifyCode',
+  getVerifyCode: 'getVerifyCode',
 
   deleteDictItem: 'deleteDictItem',
   getSystemParameter: 'getSystemParameter', // 参数设置
@@ -170,7 +170,7 @@ export default {
   // 通讯录搜索
   getAddressListUserByName: 'getAddressListUserByName',
   // 全省通讯录搜索人员结果查询电话
-  findMobileById:'findMobileById',
+  findMobileById: 'findMobileById',
   // 查询用户所在单位
   getAddressBookList: '',
   // 查询部门下的下级部门
@@ -190,6 +190,8 @@ export default {
   saveRoleBindUser: 'saveRoleBindUser',
   findAuthorityManageList: 'findAuthorityManageList', // 权限配置列表
   findUserAccountByUid: 'findUserAccountByUid',
+  findAccountById: 'findAccountById', // 获取账号信息
+  updateAccount: 'updateAccount', // 修改账号信息
   deleteRoleBindUser: 'deleteRoleBindUser',
   saveAuthorityManage: 'saveAuthorityManage',
   // 查询单位下的区域
@@ -244,8 +246,8 @@ export default {
   /**
    *通知中心
    */
-  notificationIndex:'notificationIndex',
-  notificationList:'notificationList',
-  notificationRead:'notificationRead'
+  notificationIndex: 'notificationIndex',
+  notificationList: 'notificationList',
+  notificationRead: 'notificationRead'
 
 }

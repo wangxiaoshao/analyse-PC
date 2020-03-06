@@ -2,24 +2,24 @@
   <div class="editAccount">
     <div class="parameter-item">
       <!-- <div class="header">账号设置</div> -->
-      <el-form label-width="100px">
+      <el-form  label-width="100px">
         <el-row>
           <el-col :span="10">
             <el-form-item label="登录账号">
-              <el-input placeholder="请输入登录账号" style="width:200px" disabled></el-input>
+              <el-input placeholder="请输入登录账号"  v-model="accountInfo.name" style="width:200px" disabled></el-input>
                 <div style="color:rgb(252, 112, 73);font-size:10px"><span style="margin-right:5px">*</span>登录账号暂不支持修改</div>
             </el-form-item>
             <el-form-item label="关联系统">
               <!--  -->
-              <bind-system :list="account4AppDtos"  @app-change="getAppId"></bind-system>
+              <bind-system :list="accountInfo.account4AppDtos || []"  @app-change="getAppId"></bind-system>
             </el-form-item>
           </el-col>
           <el-col :span="10">
             <el-form-item label="登录别名">
-              <el-input placeholder="请输入登录别名" style="width:200px"></el-input>
+              <el-input placeholder="请输入登录别名" style="width:200px"  v-model="accountInfo.nickName"></el-input>
             </el-form-item>
-            <el-form-item label="是否启用" prop="removed">
-              <el-switch v-model="addAccount.removed"></el-switch>
+            <el-form-item label="是否启用">
+              <el-switch v-model="accountInfo.removed"></el-switch>
             </el-form-item>
           </el-col>
         </el-row>
@@ -54,6 +54,7 @@
   </div>
 </template>
 <script>
+import { api, urlNames } from '@src/api'
 import bindSystem from '../../../organization/components/BindSystem/index'
 export default {
   components: {
@@ -62,36 +63,46 @@ export default {
   props:['accountInfo'],
   data() {
     return {
-      addAccount: {
-        password: '',
-        removed: true,
-        appId: [],
-        name: '',
-        nickName: '',
-        id: '',
-        defaultAccount: null,
-        reason: ''
-      },
-      account4AppDtos: [{id: 56, accountId: "-1412639883282593319", appId: 62, appName: "党建系统"}]
+        appId: []
     }
   },
   created(){
-    console.log('accountInfo:',this.accountInfo)
+    
   },
   methods: {
     // 重置密码
     resetPwd() {
-      this.$emit('resetPwd')
+      this.$emit('resetPwd',this.accountInfo.id)
     },
 
     // 修改密码
     modifiePwd() {
-      this.$emit('modifiePwd')
+      this.$emit('modifiePwd',this.accountInfo.id)
+    },
+
+    // 获取关联系统
+    getAppId (val) {
+      this.appId = val
     },
 
     // 保存修改
     saveAccount(){
-      this.goBack()
+      // 8442130717342908424
+      let params={
+        id:this.accountInfo.id,
+        name:this.accountInfo.name,
+        removed: this.accountInfo.removed ? 0 : 1,
+        nickName:this.accountInfo.nickName,
+        appId: this.appId
+      }
+      api[urlNames['updateAccount']](params).then(res=>{
+        if(res){
+          this.$message.info('设置成功')
+         this.goBack()
+        }
+      
+      })
+     
     },
 
     // 返回
@@ -99,10 +110,7 @@ export default {
       this.$emit('goBack')
     },
 
-    // 获取账号id
-    getAppId (val) {
-      this.addAccount.appId = val
-    }
+    
   }
 }
 </script>

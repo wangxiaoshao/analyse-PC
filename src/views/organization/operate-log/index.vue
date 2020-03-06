@@ -21,26 +21,34 @@
 <!--      width="55">-->
 <!--    </el-table-column>-->
     <el-table-column
-      prop="actionUserName"
-      label="操作人员"
+      prop="actionTime"
+      label="时间"
       align="center"
       width="140">
     </el-table-column>
     <el-table-column
-      label="操作动作"
+      prop="actionUserName"
+      label="操作人"
+      align="center"
+      width="140">
+    </el-table-column>
+    <el-table-column
+      label="操作描述"
       align="center"
       width="80">
       <template slot-scope="scope">
-        <span v-if="scope.row.actionType === 1">新增</span>
-        <span v-if="scope.row.actionType === 2">修改</span>
-        <span v-if="scope.row.actionType === 3">删除</span>
+        <span v-if="scope.row.actionType === 1">信息新增</span>
+        <span v-if="scope.row.actionType === 2">信息修改</span>
+        <span v-if="scope.row.actionType === 3">信息删除</span>
       </template>
     </el-table-column>
     <el-table-column
-      prop="actionTime"
       align="center"
-      label="操作时间"
+      label="操作"
       width="160">
+      <template slot-scope="scope">
+         <a style="color:red;"  href="jacascript:void(0)" @click="findInfo(scope.row)">详情</a>
+      </template>
     </el-table-column>
     <el-table-column
       prop="changeContent"
@@ -98,6 +106,11 @@ export default {
         }
       }, (error) => {
       })
+    },
+
+    // 查看详情
+    findInfo(val){
+
     }
   }
 }

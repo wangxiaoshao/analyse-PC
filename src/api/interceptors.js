@@ -120,6 +120,7 @@ axios.interceptors.response.use((response) => {
   const jsonLikeReg = /^application\/json/i
 
   // 判断单点登录未登录状态
+  //
   if (typeof data === 'string' && data.includes('<!DOCTYPE html PUBLIC ')) {
     const reg = /^.+\/cas\/login\/?\?service=/
     const match = reg.exec(response.request.responseURL) !== undefined ? reg.exec(response.request.responseURL) : null

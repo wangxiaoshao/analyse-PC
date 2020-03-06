@@ -147,7 +147,7 @@
           </el-row>
         </el-tab-pane>
         <el-tab-pane label="多账号管理" name="first">
-          <multiple-accounts :accountData="accountInfoList" @goEdit='goEdit' v-if="showAccountsVisible"></multiple-accounts>
+          <multiple-accounts :accountInfoList="accountInfoList" @goEdit='goEdit' v-if="showAccountsVisible"></multiple-accounts>
           <edit-account v-else @resetPwd="resetPwd" @modifiePwd="modifiePwd"  :accountInfo='accountInfo'  @goBack='goBack'></edit-account>
         </el-tab-pane>
         <!-- <el-tab-pane label="修改密码">
@@ -263,15 +263,13 @@ export default {
     }
     return {
       accountInfo:'',
+      accountId:'',
       showAccountsVisible: true,
       resetPwdVisible: false, //重置密码弹框
       modifiePwdVisible: false, //修改密码弹框
       smsTimerCount: 0, //发送验证短信计时器
       smsCode: '',
       successPwdVisible: false, //重置密码成功弹框
-      defaultName: '', // 默认名字
-      userList: [], // 用户身份列表
-      defaultDutyName: '', // 默认身份
       calloutFlag: false,
       submitVisible: false,
       showexportIdentityType: true,
@@ -360,20 +358,7 @@ export default {
   created() {
     this.getUserDetail(this.app.option.user.uid)
     this.getIdentity(this.app.option.user.identityId)
-    api[urlNames['findUserAccountByUid']]().then(
-      res => {
-        if (res && res.data) {
-          this.accountInfoList = res.data
-          this.currentSetAccount = res.data[0]
-          this.userInfo.userAccount = res.data
-        }
-      },
-      () => {
-        this.accountInfoList = []
-      }
-    )
-
-    this.findSessionUserList()
+    this.getAccountList()
   },
   computed: {
     ...mapState(['app'])
@@ -399,19 +384,23 @@ export default {
         )
       }
     },
+    // 获取账号列表
+    getAccountList(){
+       api[urlNames['findUserAccountByUid']]().then(
+      res => {
+        if (res && res.data) {
+          this.accountInfoList = res.data
+          this.currentSetAccount = res.data[0]
+          this.userInfo.userAccount = res.data
+        }
+      },
+      () => {
+        this.accountInfoList = []
+      }
+    )
 
-    // 获取用户身份列表
-    findSessionUserList() {
-      api[urlNames['findSessionUserList']]().then(res => {
-        this.userList = res.data
-        this.defaultName = res.data[0].name
-        this.userList.forEach(item => {
-          if (item.userId === this.app.option.user.identityId) {
-            this.defaultDutyName = item.dutyName
-          }
-        })
-      })
     },
+
     // 关闭选人弹窗
     closeselectMenmber() {
       this.selectDialog.selectMenmberFlag = false
@@ -528,11 +517,18 @@ export default {
       this.showAccountsVisible=true
     },
 
+    /**
+     * 修改密码
+     */
+    modifiePwd(val) {
+      this.accountId=val
+      this.modifiePwdVisible = true
+    },
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           let data = {
-            accountId: this.currentSetAccount.id,
+            accountId: this.accountId,
             oldPwd: this.ruleForm.oldPass,
             newPwd: this.ruleForm.newPass,
             repeatPwd: this.ruleForm.checkPass
@@ -558,15 +554,9 @@ export default {
       return (phone + '').replace(/^(.{3})(?:\d+)(.{4})$/, '$1****$2')
     },
 
-    /**
-     * 修改密码
-     */
-    modifiePwd() {
-      this.modifiePwdVisible = true
-    },
-
     // 重置密码
-    resetPwd() {
+    resetPwd(val) {
+      this.accountId=val
       this.resetPwdVisible = true
       this.sendSmsCode()
     },
@@ -599,12 +589,13 @@ export default {
 
       // 发送短信获取验证码
       // api[urlNames['getVerifyCode']]({
-      //   id: this.currentSetAccount.id
+      //   id: this.accountId
       // }).then(
       //   res => {},
       //   () => {}
       // )
     },
+
     // 验证验证码
     beSureSmsCode() {
       if (this.smsCode === '') {
@@ -612,7 +603,7 @@ export default {
         this.$refs.smsCodeInput.focus()
       } else {
         let param = {
-          id: this.currentSetAccount.id,
+          id: this.accountId,
           verifyCode: this.smsCode
         }
         this.resetPwdVisible = false
@@ -641,6 +632,7 @@ export default {
 
     // 多账号管理页
     goBack(){
+      this.getAccountList()
        this.showAccountsVisible=true
     },
 

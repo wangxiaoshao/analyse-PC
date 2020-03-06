@@ -9,6 +9,7 @@ const Serve = {
   },
   test: {
     organizationManagePC: ''
+    // organizationManagePC: 'http://jg-dev.lonmo.com'
   },
   production: {
     organizationManagePC: ''
