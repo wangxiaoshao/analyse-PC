@@ -1,9 +1,42 @@
 <template>
   <div>
+    <div class="moreInfo" v-if="orgInfo.nodeType==2 && activeColor==2||orgInfo.nodeType==3&&activeColor==2">
+      <div class="header-title">该单位信息</div>
+      <div class="infoContent">
+        <el-form :inline="true" label-width="100px" label-position='right'>
+          <el-row>
+            <el-col>
+              <el-form-item label="单位名称">
+                <div  class="table-td"  :title="orgInfo.name">{{orgInfo.name}}</div>
+              </el-form-item>
+              <el-form-item label="单位地址">
+                <div  class="table-td">贵阳市云岩区</div>
+              </el-form-item>
+            </el-col>
+            <el-col>
+              <el-form-item label="单位电话">
+                <div  class="table-td">
+                  <span >{{orgInfo.phone&&orgInfo.phone!=''?orgInfo.phone:'无'}} </span>
+                <a  href="javaScrpit:void(0)" v-if="orgInfo.phone&&orgInfo.phone!=''"
+               style="color: #FC7049;font-size:12px;margin-left:5px" @click="findPhone(scope.row)">查看</a>
+                </div>
+              </el-form-item>
+              <el-form-item label="邮   编">
+                <div  class="table-td">45000</div>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          
+        </el-form>
+      </div>
+    </div>
     <div class="department-tab-content">
+      <div class="header-title">详细数据</div>
       <el-table :data="departmentList"
                 style="width: 100%;"
                 class="eltab"
+                border
+                stripe
                 v-show="departmentList.length!==0"
       >
         <template slot="empty">
@@ -12,7 +45,7 @@
             <p><span style="padding-left: 8px">暂无数据！</span></p>
           </div>
         </template>
-        <el-table-column prop="name" label width="100" align="left" height="0"></el-table-column>
+        <!-- <el-table-column prop="name" label width="100" align="left" height="0"></el-table-column>
         <el-table-column label="内设机构电话" width="115">内设机构电话:</el-table-column>
         <el-table-column prop="phone" label></el-table-column>
         <el-table-column label="下级" align="right" width class-name="next-btn">
@@ -20,7 +53,41 @@
             <i class="el-icon-share"></i>
             <span @click="childClick(scope.row)">下级</span>
           </template>
+        </el-table-column> -->
+        <el-table-column  type="index" label="序号" align="center" width="50"></el-table-column>
+        <el-table-column prop="name" label='所有下级' >
+          <template slot-scope="scope">
+            <span class=" svg-container" style="color:#FC7049">
+              <span class="iconfont iconzuzhijigou" v-if="scope.row.nodeType === 1"></span>
+              <span class="iconfont icondanwei" v-if="scope.row.nodeType === 2"></span>
+              <span class="iconfont iconbumen" v-if="scope.row.nodeType === 3"></span>
+              
+            </span>
+            <span style="margin-left:5px">{{scope.row.name}}</span>
+          </template>
         </el-table-column>
+        <el-table-column prop="name" label='下级类型' align="center">
+           <template slot-scope="scope">
+            <span v-if="scope.row.nodeType==1">节点</span>
+            <span v-if="scope.row.nodeType==2">单位</span>
+            <span v-if="scope.row.nodeType==3">内设机构</span>
+           </template>
+        </el-table-column>
+        <el-table-column prop="phone" label="联系方式"  align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row.phone=='' ||!scope.row.phone ?'无':scope.row.phone}}</span>
+            <a v-if="scope.row.phone&&scope.row.phone!=''" href="javaScrpit:void(0)"
+             style="color: #FC7049;font-size:12px;margin-left:5px" @click="findPhone(scope.row)">查看</a>
+           </template>
+        </el-table-column>
+        <el-table-column label="下级" align="center">
+          <template slot-scope="scope">
+              <!-- <i class="el-icon-share"></i> -->
+            <a  href="javaScrpit:void(0)" style="color: #FC7049;font-size:12px" @click="childClick(scope.row)">查看下级</a>
+          
+          </template>
+        </el-table-column>
+        <el-table-column prop="" label="备注"  align="center"></el-table-column>
 
       </el-table>
     </div>
@@ -29,7 +96,7 @@
 <script>
 import { api, urlNames } from '@src/api'
 export default {
-  props: ['departmentList'],
+  props: ['departmentList','orgInfo','activeColor'],
   data () {
     return {
       status: 0,
@@ -37,13 +104,17 @@ export default {
       tableData: [],
       personnel: {},
       memberList: [],
-      userId: '11111111111'
+      userId: '11111111111',
+      infoVisiable:false
     }
   },
-  created () {},
   methods: {
     childClick (node) {
       this.$emit('handle-child-click', node)
+    },
+    // 查看电话
+    findPhone(val){
+
     }
   }
 }

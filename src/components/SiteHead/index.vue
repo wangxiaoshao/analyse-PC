@@ -11,11 +11,11 @@
           </div>
         </div>
         <div class="site__head--right">
-          <!-- < style="display:inline-block;" @click="showNotice"> -->
-            <el-badge :value="msgNum" class="item" title="查看通知"  @click="showNotice" style=" cursor: pointer;">
+          <div style="display:inline-block;" @click="showNotice">
+            <el-badge :value="msgNum" class="item" title="查看通知" style=" cursor: pointer;">
               <i class="el-icon-bell"></i>
             </el-badge>
-          <!-- </div> -->
+          </div>
           <i class="ico fa fa-file-text-o"></i>
           <a style="cursor: pointer" @click="goToWordCenter" href="javascript:void(0)">数据文档</a>
           <!--          <i class="ico fa fa-phone"></i>-->

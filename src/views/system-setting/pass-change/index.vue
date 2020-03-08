@@ -135,7 +135,6 @@
                 :label-list="fromLabelList"
                 :old-user-info="oldUserInfo"
                 :orgName="orgName"
-                :currentSetAccount="currentSetAccount"
                 @get-user="getUser"
                 @get-post="getPost"
                 @get-label="getLabelId"
@@ -275,7 +274,6 @@ export default {
       showexportIdentityType: true,
       currentIndex: 0,
       accountInfoList: [],
-      currentSetAccount: {},
       activeName: 'first',
       userName: '管理员管理员',
       passRule:
@@ -298,7 +296,6 @@ export default {
         reason: [{ required: true, message: '请填写申请原因', trigger: 'blur' }]
       },
       oldUserInfo: {},
-      nickName: '',
       userInfo: {
         userAccount: [], // 账户
         labelId: [],
@@ -312,7 +309,6 @@ export default {
         },
         userId: '',
         user: {
-          nickName: '',
           birthday: '',
           nation: null,
           portraitUrl: '',
@@ -358,7 +354,8 @@ export default {
   created() {
     this.getUserDetail(this.app.option.user.uid)
     this.getIdentity(this.app.option.user.identityId)
-    this.getAccountList()
+    // this.getAccountInfo()
+    this.getAllAccountList()
   },
   computed: {
     ...mapState(['app'])
@@ -384,21 +381,31 @@ export default {
         )
       }
     },
-    // 获取账号列表
-    getAccountList(){
-       api[urlNames['findUserAccountByUid']]().then(
-      res => {
-        if (res && res.data) {
-          this.accountInfoList = res.data
-          this.currentSetAccount = res.data[0]
-          this.userInfo.userAccount = res.data
-        }
-      },
-      () => {
-        this.accountInfoList = []
-      }
-    )
-
+   
+    // getAccountInfo(){
+    //    api[urlNames['findUserAccountByUid']]().then(
+    //   res => {
+    //     if (res && res.data) {
+    //       this.userInfo.userAccount = res.data
+    //     }
+    //   },
+    //   () => {}
+    // )
+    // },
+     // 获取账号列表
+    getAllAccountList(){
+      api[urlNames['findAllAccountByUid']]({
+        userId:this.app.option.user.uid
+      }).then(
+          res => {
+            if (res && res.data) {
+              this.accountInfoList = res.data
+            }
+          },
+          () => {
+            this.accountInfoList = []
+          }
+        )
     },
 
     // 关闭选人弹窗
@@ -486,11 +493,9 @@ export default {
       )
     },
 
-    goModifieUserInfo(val, data) {
+    goModifieUserInfo(val) {
       // 保存createUser
       this.userInfo.user = val
-      console.log('data:', data)
-      this.userInfo.userAccount[0].nickName = data.nickName
       api[urlNames['createUser']](this.userInfo).then(
         res => {
           this.$message.success(`保存成功`)

@@ -434,8 +434,7 @@ export default {
     'oldUserInfo',
     'labelId',
     'labelList',
-    'orgName',
-    'currentSetAccount'
+    'orgName'
   ],
   mixins: [dicOption, uploadFile],
   components: {
@@ -488,7 +487,7 @@ export default {
       this.$emit('exportOrg')
     },
     modifieUserInfo() {
-      this.$emit('goModifieUserInfo', this.personFrom, this.currentSetAccount)
+      this.$emit('goModifieUserInfo', this.personFrom)
     },
     // 搜索表格点击当前行
     selectRow(val) {

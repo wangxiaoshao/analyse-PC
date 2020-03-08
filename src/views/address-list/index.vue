@@ -4,13 +4,13 @@
       <el-col :span="6" style="height: 100%">
         <div class="site-scroll">
           <div class="organ-top">
-            <div class="top-one" :class="activeColor==1?'top-active':''" @click="onChange(1)">本单位通讯录</div>
+            <div class="top-one" :class="activeColor==1?'top-active':''" @click="onChange(1)">本单位通讯录111</div>
             <div
               class="top-two"
               title="查阅全省各单位的通讯录信息"
               :class="activeColor==2?'top-active':''"
               @click="onChange(2)"
-            >全省通讯录</div>
+            >全省通讯录22</div>
           </div>
           <search-result
             @searchMyBack="searchMyBack"
@@ -43,12 +43,17 @@
         <transition name="fade-transform" mode="out-in" style="height: 100%">
           <div style="padding: 0 20px">
             <department
+              :activeColor='activeColor'
+              :orgInfo='orgInfo'
               :departmentList="departmentList"
               :treeList="treeList"
               v-if="showDep"
               @handle-child-click="handleChildClick"
             ></department>
-            <member :table-data="memberList" v-if="selectType!='0' && !showDep"></member>
+            <member :table-data="memberList" 
+              :activeColor='activeColor'
+              :orgInfo='orgInfo'
+              v-if="selectType!='0' && !showDep"></member>
             <person-info
               :personInfoList="personInfoList"
               @showPhoneState="showPhoneState"
@@ -89,13 +94,15 @@ export default {
       departmentList: [],
       memberList: [],
       treeList: [],
+      orgInfo:{},
       hasChildren: true,
       name: '',
       personInfoList: {},
       showDep: true,
       showBreadCrumb: true,
       selectType: '',
-      phoneState: true
+      phoneState: true,
+
     }
   },
   created() {
@@ -193,6 +200,8 @@ export default {
     },
     /** 点击树节点显示内容 */
     handleNodeClickTree(node) {
+       console.log('node:',node)
+      this.orgInfo=node
       this.showDep = true
       this.navigation = []
       this.navigation.push({ id: node.id, name: node.name })
@@ -206,6 +215,8 @@ export default {
       this.getAddressListdepartment(node.id)
     },
     handleChildClick(node) {
+     console.log('node111:',node)
+      this.orgInfo=node
       this.selectType = ''
       this.showDep = true
       this.navigation.push({ id: node.id, name: node.name })

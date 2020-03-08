@@ -160,6 +160,14 @@ export default {
     mock: '/findUserAccountByUid.json' // development模式下，本地mock数据
   },
 
+  // 获取所有的账号列表
+  [urlNames.findAllAccountByUid]: {
+    type: 'get',
+    url: '/api/jg_manage/user/findAllAccountByUid',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    serve: 'organizationManagePC'
+  },
+
   // 获取账号信息
   [urlNames.findAccountById]: {
     type: 'get',
@@ -168,6 +176,7 @@ export default {
     showLoading: true,
     serve: 'organizationManagePC'
   },
+
   // 修改账号信息
   [urlNames.updateAccount]: {
     type: 'post',

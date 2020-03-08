@@ -190,6 +190,7 @@ export default {
   saveRoleBindUser: 'saveRoleBindUser',
   findAuthorityManageList: 'findAuthorityManageList', // 权限配置列表
   findUserAccountByUid: 'findUserAccountByUid',
+  findAllAccountByUid: 'findAllAccountByUid', // 获取所有的账号列表
   findAccountById: 'findAccountById', // 获取账号信息
   updateAccount: 'updateAccount', // 修改账号信息
   deleteRoleBindUser: 'deleteRoleBindUser',
