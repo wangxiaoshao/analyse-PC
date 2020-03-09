@@ -1,5 +1,6 @@
 <template>
 <div class="operate-log">
+  
   <el-table
     :data="logList"
     border
@@ -24,18 +25,18 @@
       prop="actionTime"
       label="时间"
       align="center"
-      width="140">
+      >
     </el-table-column>
     <el-table-column
       prop="actionUserName"
       label="操作人"
       align="center"
-      width="140">
+      >
     </el-table-column>
     <el-table-column
-      label="操作描述"
+      label="描述"
       align="center"
-      width="80">
+      >
       <template slot-scope="scope">
         <span v-if="scope.row.actionType === 1">信息新增</span>
         <span v-if="scope.row.actionType === 2">信息修改</span>
@@ -45,17 +46,75 @@
     <el-table-column
       align="center"
       label="操作"
-      width="160">
+      >
       <template slot-scope="scope">
          <a style="color:red;"  href="jacascript:void(0)" @click="findInfo(scope.row)">详情</a>
       </template>
     </el-table-column>
     <el-table-column
-      prop="changeContent"
       align="center"
-      label="操作内容">
+      label="备注">
+      <template>
+        <span>无</span>
+      </template>
     </el-table-column>
   </el-table>
+   <!-- 详细信息弹窗 -->
+    <div class="dialog-box">
+      <el-dialog :visible.sync="DetialInfoVisible"  width="450px">
+        <div slot="title" style="padding:20px">
+          日志详情
+          <i class="el-icon-document-copy" style="color:red"></i>
+        </div>
+           <el-form
+              inline
+              style="width:100%;"
+              label-width="110px"
+            >
+              <el-form-item label="操作日期" >
+                <div class="table-td">
+                  {{DetialInfo.actionTime}}
+                </div>
+              </el-form-item>
+              <el-form-item label="操作人">
+                <div class="table-td">
+                 {{DetialInfo.actionUserName}}
+                </div>
+              </el-form-item>
+              <el-form-item label="操作类型" >
+                <div class="table-td">
+                  <span v-if="DetialInfo.actionType === 1">信息新增</span>
+                  <span v-if="DetialInfo.actionType === 2">信息修改</span>
+                  <span v-if="DetialInfo.actionType === 3">信息删除</span>
+                </div>
+              </el-form-item>
+              <el-form-item label="操作标识">
+                <div class="table-td">
+                  {{DetialInfo.entityId }}
+                </div>
+              </el-form-item>
+              <el-form-item label="实体类型">
+                <div class="table-td">
+                  {{DetialInfo.entityType }}
+                </div>
+              </el-form-item>
+              <el-form-item label="类型描述">
+                <div class="table-td">
+                 {{DetialInfo.entityTypeText}}
+                </div>
+              </el-form-item>
+              
+              <el-form-item label="操作详情">
+                <div class="table-td">
+                 <p> {{DetialInfo.changeContent }}</p>
+                </div>
+              </el-form-item>
+            </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="DetialInfoVisible = false" width="120px">确 定</el-button>
+        </div>
+      </el-dialog>
+    </div>
 </div>
 </template>
 
@@ -68,7 +127,18 @@ export default {
   name: 'OperateLog',
   data () {
     return {
-      logList: []
+      logList: [],
+      DetialInfoVisible:false,
+      DetialInfo:{
+        id:'',
+        actionUserName:'',
+        actionType :'',
+        actionTime :'',
+        changeContent :'',
+        entityId :'',
+        entityType :'',
+        entityTypeText :''
+      }
     }
   },
   created () {
@@ -109,8 +179,18 @@ export default {
     },
 
     // 查看详情
-    findInfo(val){
-
+    findInfo(data){
+      api[urlNames['getEntityChangeLoggerDetail']]({
+        id:data.id,
+        entityType: data.entityType,
+        entityId: data.entityId
+      }).then((res) => {
+        if (res) {
+          this.DetialInfo = res.data
+        }
+      }, (error) => {
+      })
+      this.DetialInfoVisible=true
     }
   }
 }

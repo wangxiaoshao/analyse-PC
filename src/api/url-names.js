@@ -181,6 +181,8 @@ export default {
   getOrgUserTxlList: 'getOrgUserTxlList',
   findLabelByType: 'findLabelByType',
   getAreaList: 'findAreaList',
+  // 查看单位内设机构电话
+  getOrgMobile: 'getOrgMobile',
   // 证件照上传
   upload: 'upload',
   // 字典管理
@@ -201,6 +203,7 @@ export default {
   setClientOptions: 'setClientOptions', // 提交配置信息
   getSystemParameterlevel: 'getSystemParameterlevel', // 配置级别的配置信息
   findEntityChangeLoggerList: 'findEntityChangeLoggerList', // 操作日志
+  getEntityChangeLoggerDetail: 'getEntityChangeLoggerDetail', // 操作日志详情
   exportUser: 'exportUser', // 导出用户
   importUser: 'importUser', // 导入用户
   logoutUrl: 'logoutUrl', // 登出地址

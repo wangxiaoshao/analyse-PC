@@ -16,9 +16,9 @@
             <el-col>
               <el-form-item label="单位电话">
                 <div  class="table-td">
-                  <span >{{orgInfo.phone&&orgInfo.phone!=''?orgInfo.phone:'无'}} </span>
-                <a  href="javaScrpit:void(0)" v-if="orgInfo.phone&&orgInfo.phone!=''"
-               style="color: #FC7049;font-size:12px;margin-left:5px" @click="findPhone(scope.row)">查看</a>
+                  <span >{{orgInfo.phone||'无'}} </span>
+                <a  href="javaScrpit:void(0)" v-if="orgInfo.phone&&orgInfo.phone!=''&&!orgInfo.isLooked"
+               style="color: #FC7049;font-size:12px;margin-left:5px" @click="findPhone(orgInfo.nodeType,orgInfo.bindId,1)">查看</a>
                 </div>
               </el-form-item>
               <el-form-item label="邮   编">
@@ -36,7 +36,6 @@
       :data="tableData"
       border
       stripe
-      loading
       style="width: 100%"
     >
       <template slot="empty">
@@ -50,21 +49,23 @@
       </el-table-column>
       <el-table-column prop="duty" label="职务" align="center">
         <template slot-scope="scope">
-          <span>{{scope.row.duty=='' ?'暂无':scope.row.duty}}</span>
+          <span>{{scope.row.duty||'暂无'}}</span>
           </template>
       </el-table-column>
       <el-table-column prop="mobile" label="手机号" align="center">
          <template slot-scope="scope">
-            <span>{{scope.row.mobile=='' ?'无':scope.row.mobile}}</span>
-            <a v-if="scope.row.mobile&&scope.row.mobile!=''" href="iavaScrpit:void(0)"
-             style="color: #FC7049;margin-left:5px;font-size:12px" @click="findPhone(scope.row)">查看</a>
+            <span>{{scope.row.mobile||'无'}}</span>
+            <a v-if="scope.row.mobile&&scope.row.mobile!=''&&!scope.row.isLooked" href="javaScrpit:void(0)"
+             style="color: #FC7049;margin-left:5px;font-size:12px" 
+             @click="findMobileById(scope.row.uid,scope.$index,1)">查看</a>
            </template>
       </el-table-column>
       <el-table-column  prop="officePhone" label="座机号" align="center">
         <template slot-scope="scope">
-          <span>{{scope.row.officePhone=='' ?'无':scope.row.officePhone}}</span>
-          <a v-if="scope.row.officePhone&&scope.row.officePhone!=''&&scope.row.officePhone!='无'"
-           href="iavaScrpit:void(0)" style="color: #FC7049;margin-left:5px;font-size:12px" @click="findPhone(scope.row)">查看</a>
+          <span>{{scope.row.officePhone||'无'}}</span>
+          <a v-if="scope.row.officePhone&&scope.row.officePhone!=''&&scope.row.officePhone!='无'&&!scope.row.isOfficePhone"
+           href="javaScrpit:void(0)" style="color: #FC7049;margin-left:5px;font-size:12px"
+            @click="findMobileById(scope.row.uid,scope.$index,2)">查看</a>
           </template>
       </el-table-column>
        
@@ -100,8 +101,29 @@ export default {
     
   },
   methods: {
-    findPhone(val){
-
+    // 查看电话
+    findPhone(nodeType, bindId,state) {
+      api[urlNames['getOrgMobile']]({
+        nodeType,
+        bindId
+      }).then(res => {
+        if(res && state == 1){
+          this.orgInfo.phone = res.data.phone
+          this.orgInfo.isLooked=true
+        }
+      })
+    },
+    findMobileById(uid,index,state) {
+      api[urlNames['findMobileById']]({uid}).then(res => {
+        if (res && state == 1) {
+          this.tableData[index].mobile=res.data.mobile
+          this.tableData[index].isLooked=true
+        }
+        if (res && state == 2) {
+          this.tableData[index].officePhone=res.data.officePhone
+          this.tableData[index].isOfficePhone=true
+        }
+      })
     }
   }
 }

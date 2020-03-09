@@ -4,13 +4,13 @@
       <el-col :span="6" style="height: 100%">
         <div class="site-scroll">
           <div class="organ-top">
-            <div class="top-one" :class="activeColor==1?'top-active':''" @click="onChange(1)">本单位通讯录111</div>
+            <div class="top-one" :class="activeColor==1?'top-active':''" @click="onChange(1)">本单位通讯录</div>
             <div
               class="top-two"
               title="查阅全省各单位的通讯录信息"
               :class="activeColor==2?'top-active':''"
               @click="onChange(2)"
-            >全省通讯录22</div>
+            >全省通讯录</div>
           </div>
           <search-result
             @searchMyBack="searchMyBack"
@@ -33,7 +33,7 @@
             <el-breadcrumb-item v-for="(item,index) in navigation" :key="index">
               <a
                 v-if="navigation.length-1!==index"
-                @click.prevent="goCurrentNodeDetail(item.id, index)"
+                @click.prevent="goCurrentNodeDetail(item, index)"
               >{{item.name}}</a>
               <span v-if="navigation.length-1===index" href disabled>{{item.name}}</span>
             </el-breadcrumb-item>
@@ -56,9 +56,7 @@
               v-if="selectType!='0' && !showDep"></member>
             <person-info
               :personInfoList="personInfoList"
-              @showPhoneState="showPhoneState"
               :activeColor="activeColor"
-              :phoneState="phoneState"
               v-if="selectType=='0' && !showBreadCrumb"
             ></person-info>
           </div>
@@ -100,8 +98,7 @@ export default {
       personInfoList: {},
       showDep: true,
       showBreadCrumb: true,
-      selectType: '',
-      phoneState: true,
+      selectType: ''
 
     }
   },
@@ -169,18 +166,11 @@ export default {
 
     // 点击全省通讯录搜索人员
     searchPeopleInfo(data, type) {
+      console.log('personInfoList:',data)
       this.personInfoList = data
-      if (this.personInfoList.mobile == '') {
-        this.phoneState = false
-      } else {
-        this.phoneState = true
-      }
       this.selectType = type
       this.showBreadCrumb = false
       this.showDep = false
-    },
-    showPhoneState() {
-      this.phoneState = false
     },
     // 我的搜索返回
     searchMyBack() {
@@ -204,7 +194,8 @@ export default {
       this.orgInfo=node
       this.showDep = true
       this.navigation = []
-      this.navigation.push({ id: node.id, name: node.name })
+      // this.navigation.push({ id: node.id, name: node.name ,nodeType:node.nodeType})
+      this.navigation.push(node)
       if (node.nodeType === 3) {
         this.selectType = ''
         this.showDep = false
@@ -219,7 +210,8 @@ export default {
       this.orgInfo=node
       this.selectType = ''
       this.showDep = true
-      this.navigation.push({ id: node.id, name: node.name })
+      //  this.navigation.push({ id: node.id, name: node.name ,nodeType:node.nodeType})
+       this.navigation.push(node)
       if (node.nodeType === 3) {
         this.showDep = false
         this.getAddressListDepartmentMembers(node.bindId)
@@ -228,13 +220,6 @@ export default {
       }
       this.getAddressListdepartment(node.id)
 
-      // this.showDep=false
-      // alert(node.nodeType)
-      // console.log(JSON.parse(JSON.stringify(node)), '-------------node')
-      // this.navigation.push({ id: node.id, name: node.name })
-      // this.getAddressListOrganizationMembers(node.id)
-      // this.getAddressListdepartment(node.id)
-      // this.getAddressListDepartmentMembers(node.id)
     },
 
     /** 单位下部门 */
@@ -265,13 +250,14 @@ export default {
     },
 
     /** 点击回到当前 */
-    goCurrentNodeDetail(depid, index) {
+    goCurrentNodeDetail(node, index) {
+      this.showDep = true
+      this.orgInfo=node
       let len = this.navigation.length
       this.navigation.splice(index + 1, len - index + 1)
-      console.log(' depid:', depid)
-      this.getAddressListdepartment(depid)
-      this.getAddressListOrganizationMembers(depid.id)
-      this.getAddressListDepartmentMembers(depid.id)
+      this.getAddressListdepartment(node.id)
+      this.getAddressListOrganizationMembers(node.id)
+      this.getAddressListDepartmentMembers(node.id)
     },
 
     /** 人员搜索 */
@@ -280,16 +266,13 @@ export default {
         orgId: this.app.option.user.orgId,
         name: this.name
       }).then(res => {
-        console.log(res, '===1111111111')
-        // this.gridData = res.data
+
       })
     },
     getAddressListOtherUser() {
       api[urlNames['getAddressListUserByName']]({
         name: this.name
       }).then(res => {
-        console.log(res, '========222222222222')
-        // this.gridData = res.data
       })
     }
   }

@@ -119,9 +119,11 @@ export default {
     // 点击关闭按钮
     handleClose (item, index) {
       if (this.isCreate || !item.accountId) { // 创建账号关联、或者没有 accountId
+      // alert(111)
         this.slectedList.splice(index, 1)
         this.changeSelectedIds()
       } else {
+        //  alert(222)
         //  这个是回显的，就是用户已经选择了，后台已经保存了的
         api[urlNames['deleteAppBindAccount']]({
           accountId: item.accountId,
@@ -142,7 +144,7 @@ export default {
     handlePopoverConfirm () {
       this.changeSlectedList()
       let arr = this.selectedIds.map(id => id + '')
-      this.$emit('app-change', arr, this.sysIndex)
+      this.$emit('app-change', arr, this.sysIendx)
       this.showPopover = false
     },
 

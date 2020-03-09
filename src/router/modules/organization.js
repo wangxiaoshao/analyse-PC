@@ -6,16 +6,18 @@ const UnitDetail = () => import('@src/views/organization/unit-detail/index.vue')
 const DepartmentDetail = () => import('@src/views/organization/department-detail/index.vue')
 const PersonDetail = () => import('@src/views/organization/person-detail/index.vue')
 const OperateLog = () => import('@src/views/organization/operate-log/index.vue')
+
 /* 路由 */
 export default [
-  {
-    path: '/',
-    name: 'default',
-    redirect: '/organization',
-    meta: {
-      'key': 'menuOrgManage'
-    }
-  },
+  // {
+  //   path: '/',
+  //   name: 'default',
+  //   redirect: '/organization',
+  //   meta: {
+  //     'key': 'menuOrgManage'
+  //   }
+  // },
+
   // 组织机构详情页
   {
     path: '/organizationDetail',

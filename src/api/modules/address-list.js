@@ -51,12 +51,19 @@ export default {
     keepOriginResponse: true, // 返回数据是否保留后端response数据格式
     serve: 'organizationManagePC' // 该请求对应服务端，服务端名字在url-prefix中配置
   },
-   // 搜索人员结果查看电话
-   [urlNames.findMobileById]: {
+  // 搜索人员结果查看电话
+  [urlNames.findMobileById]: {
     type: 'get', // 请求类型
     url: '/api/jg_txl/addressList/findMobileById',
-    keepOriginResponse: true, 
+    keepOriginResponse: true,
     serve: 'organizationManagePC'
   },
 
+  // 查看单位部门电话
+  [urlNames.getOrgMobile]: {
+    type: 'get', // 请求类型
+    url: '/api/jg_txl/addressList/getOrgMobile',
+    keepOriginResponse: true,
+    serve: 'organizationManagePC'
+  }
 }

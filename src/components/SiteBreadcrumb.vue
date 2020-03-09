@@ -7,7 +7,7 @@
           <el-breadcrumb-item v-for="item in breadcrumb"
                               class="breadcrumb-item"
                               :key="item.menuId">{{item.name}}</el-breadcrumb-item>
-          <el-breadcrumb-item v-for="pageItem in pageBreadcrumb"
+          <el-breadcrumb-item v-for="(pageItem,index) in pageBreadcrumb"  :key="index"
                               class="breadcrumb-item">{{pageItem.name}}</el-breadcrumb-item>
         </el-breadcrumb>
       </el-col>

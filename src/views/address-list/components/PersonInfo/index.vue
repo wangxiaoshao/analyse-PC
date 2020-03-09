@@ -1,33 +1,43 @@
 <template>
   <div class="PersonInfo">
-    <el-form :inline="true" label-position="left" label-width="70px" :model="personInfoList">
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="姓名">
-            <el-input v-model="personInfoList.name" placeholder="暂无数据" disabled></el-input>
-          </el-form-item>
-          <el-form-item label="手机号码">
-            <div style="position:relative">
-              <el-input v-model="personInfoList.mobile" placeholder="暂无数据" disabled></el-input>
-              <span
-                style="color:red"
-                class="find"
-                @click="findMobile"
-                v-if="phoneState&&personInfoList.isForeign==0&&personInfoList.mobile!=='无'"
-              >查看</span>
-            </div>
-          </el-form-item>
-          <el-form-item label="座机号码">
-            <el-input v-model="personInfoList.num" placeholder="暂无数据" disabled></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="职务">
-            <el-input v-model="personInfoList.duty" placeholder="暂无数据" disabled></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-    </el-form>
+    <el-form :inline="true" label-width="100px" label-position="right">
+          <el-row>
+            <el-col>
+              <el-form-item label="姓名">
+                <div class="table-td" :title="personInfoList.name">{{personInfoList.name}}</div>
+              </el-form-item>
+               <el-form-item label="职   务">
+                <div class="table-td">{{personInfoList.duty||'无'}}</div>
+              </el-form-item>
+            </el-col>
+            <el-col>
+               <el-form-item label="手机号码">
+                <div class="table-td">
+                  <span>{{personInfoList.mobile||'无'}}</span>
+                  <a
+                    href="javaScrpit:void(0)"
+                    v-if="personInfoList.mobile&&personInfoList.mobile!=''&&personInfoList.mobile!=='无'&& !personInfoList.isLooked"
+                    style="color: #FC7049;font-size:12px;margin-left:5px"
+                    @click="findMobile(1)"
+                  >查看</a>
+                </div>
+              </el-form-item>
+              <el-form-item label="座机号码">
+                <div class="table-td">
+                  <span>{{personInfoList.officePhone||'无'}}</span>
+                  <a
+                    href="javaScrpit:void(0)"
+                    v-if="personInfoList.officePhone&&personInfoList.officePhone!=''&&personInfoList.officePhone!=='无'&& !personInfoList.isOfficePhone"
+                    style="color: #FC7049;font-size:12px;margin-left:5px"
+                    @click="findMobile(2)"
+                  >查看</a>
+                </div>
+                 
+              </el-form-item>
+             
+            </el-col>
+          </el-row>
+        </el-form>
   </div>
 </template>
 <script>
@@ -43,13 +53,17 @@ export default {
     }
   },
   methods: {
-    findMobile() {
+    findMobile(state) {
       api[urlNames['findMobileById']]({
         uid: this.personInfoList.uid
       }).then(res => {
-        if (res) {
+        if (res&&state==1) {
           this.personInfoList.mobile = res.data.mobile
-          this.$emit('showPhoneState')
+          this.personInfoList.isLooked=true
+        }
+        if (res&&state==2) {
+          this.personInfoList.officePhone = res.data.officePhone
+          this.personInfoList.isOfficePhone=true
         }
       })
     }

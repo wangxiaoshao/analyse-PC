@@ -77,7 +77,7 @@ export default {
       } else {
         let flag = false
         // 显示通信录和文档中心
-        if (this.menuItem.key === 'menuAddrBook' || this.menuItem.key === 'menuWordCenter') {
+        if (this.menuItem.key === 'menuAddrBook' || this.menuItem.key === 'menuWordCenter' || this.menuItem.key === 'menuHomePage') {
           // debugger
           return true
         }

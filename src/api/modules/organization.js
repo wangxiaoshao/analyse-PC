@@ -314,6 +314,13 @@ export default {
     keepOriginResponse: true, // 是否保留后端返回数据格式
     serve: 'organizationManagePC'
   },
+  // 查看单位日志
+  [urlNames.getEntityChangeLoggerDetail]: {
+    type: 'get',
+    url: '/api/jg_manage/entityChangeLogger/getEntityChangeLoggerDetail',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    serve: 'organizationManagePC'
+  },
   [urlNames.exportUser]: {
     type: 'get',
     url: '/api/jg_manage/user/exportUser',

@@ -637,7 +637,7 @@ export default {
 
     // 多账号管理页
     goBack(){
-      this.getAccountList()
+      this.getAllAccountList()
        this.showAccountsVisible=true
     },
 
