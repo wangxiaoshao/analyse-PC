@@ -23,7 +23,7 @@
           <el-col :span="4">
             <el-autocomplete
               v-model="searchQuery.labelName"
-              :trigger-on-focus=triggerOnFocus
+              :trigger-on-focus='triggerOnFocus'
               :fetch-suggestions="querySearchAsync"
               @input="inputClear"
               placeholder="标签"
@@ -38,6 +38,7 @@
             <el-button type="primary" plain @click="getGrid"
               :disabled="!hasRight('searchOrg')"
             >查询</el-button>
+            <!-- <el-button type="primary" plain @click="getGrid">返回</el-button> -->
           </el-col>
         </el-row>
       </el-col>
@@ -48,8 +49,6 @@
                 :operateWidth="operateWidth"
                 :operate="operate"
                 :tableData="tableData">
-      <template slot-scope="{slotScope}" slot="status">
-      </template>
       <template slot-scope="{slotScope}" slot="operate">
         <el-button size="mini" type="text" @click="goDetails(slotScope.row)">查看明细</el-button>
       </template>
@@ -164,7 +163,6 @@ export default {
     },
     search () {
       this.$nextTick(() => {
-        this.page.current = 1
         this.getGrid()
       })
     },
@@ -214,7 +212,7 @@ export default {
   }
 }
 </script>
-<style lang="less">
+<style lang="less"  scoped>
   @import "index";
 </style>
 

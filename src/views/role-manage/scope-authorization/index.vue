@@ -55,7 +55,7 @@ export default {
     this.pushBreadcrumb({
       name: '查看成员及权限',
       parent: {
-        path: '/role-manage/look-person-permission/1'
+        path: `/role-manage/look-person-permission/${this.$route.query.roleId}`
       }
     })
     this.getfindAuthorizedEntity()

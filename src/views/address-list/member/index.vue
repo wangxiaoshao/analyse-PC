@@ -10,7 +10,7 @@
                 <div  class="table-td"  :title="orgInfo.name">{{orgInfo.name}}</div>
               </el-form-item>
               <el-form-item label="单位地址">
-                <div  class="table-td">贵阳市云岩区</div>
+                <div  class="table-td">{{orgInfo.address||'无'}}</div>
               </el-form-item>
             </el-col>
             <el-col>
@@ -22,7 +22,7 @@
                 </div>
               </el-form-item>
               <el-form-item label="邮   编">
-                <div  class="table-td">45000</div>
+                <div  class="table-td">{{orgInfo.zipCode||'无'}}</div>
               </el-form-item>
             </el-col>
           </el-row>

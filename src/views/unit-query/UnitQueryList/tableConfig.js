@@ -18,7 +18,7 @@ const tableConfig = {
   creditId: {
     key: 'creditId',
     tooltip: false,
-    label: '统一单位编码',
+    label: '统一社会信用代码',
     sortable: false,
     showOverflowTooltip: false,
     minWidth: 100

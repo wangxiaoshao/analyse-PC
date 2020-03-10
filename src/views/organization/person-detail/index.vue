@@ -104,7 +104,8 @@ export default {
           userType: null,
           ext01: '',
           ext02: '',
-          ext03: ''
+          ext03: '',
+          address:''
         }
       }
     }

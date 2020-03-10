@@ -76,9 +76,9 @@
                   {{DetialInfo.actionTime}}
                 </div>
               </el-form-item>
-              <el-form-item label="操作人">
+              <el-form-item label="操作人标识">
                 <div class="table-td">
-                 {{DetialInfo.actionUserName}}
+                 {{DetialInfo.actionUid}}
                 </div>
               </el-form-item>
               <el-form-item label="操作类型" >
@@ -88,22 +88,11 @@
                   <span v-if="DetialInfo.actionType === 3">信息删除</span>
                 </div>
               </el-form-item>
-              <el-form-item label="操作标识">
+              <el-form-item :label="DetialInfo.entityTypeText+'标识'">
                 <div class="table-td">
                   {{DetialInfo.entityId }}
                 </div>
               </el-form-item>
-              <el-form-item label="实体类型">
-                <div class="table-td">
-                  {{DetialInfo.entityType }}
-                </div>
-              </el-form-item>
-              <el-form-item label="类型描述">
-                <div class="table-td">
-                 {{DetialInfo.entityTypeText}}
-                </div>
-              </el-form-item>
-              
               <el-form-item label="操作详情">
                 <div class="table-td">
                  <p> {{DetialInfo.changeContent }}</p>

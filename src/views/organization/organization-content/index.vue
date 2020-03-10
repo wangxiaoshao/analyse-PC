@@ -100,7 +100,6 @@
                 <el-button class="add-btn" @click="openAddPerson" :disabled="!hasRight('userCreate')" >添加人员</el-button>
               </template>
             </person-list>
-
                  <import-person  v-if="showExportPage"
                   :showExportPage="showExportPage"
                   @cancel="goExportPerson"
@@ -329,9 +328,10 @@ export default {
     // 跳转日志
     toLogData () {
       let path = ''
-      if (this.nodeData.nodeType === 1) {
+      console.log('nodeData',this.nodeData)
+      if (this.nodeData.nodeType === 1  ||  this.nodeData.nodeType === 2) {
         path = `/organization/operate-log/${this.nodeData.id}`
-      } else {
+      } else{
         path = `/organization/operate-log/${this.nodeData.bindId}`
       }
       this.$router.push({

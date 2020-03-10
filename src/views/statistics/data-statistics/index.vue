@@ -72,7 +72,7 @@
         </el-row>
         <el-row>
           <el-col :span="24">
-            <div class="template-btn depart-query" @click="jumpQuery('department')">部门查询</div>
+            <div class="template-btn depart-query" @click="jumpQuery('department')">内设机构查询</div>
           </el-col>
         </el-row>
         <el-row>

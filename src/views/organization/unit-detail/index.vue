@@ -20,7 +20,7 @@
     <el-dialog title="选择区域" :visible.sync="areaFlag">
       <area-list @get-area="getAreaId" @close="close" v-model="ruleForm.areaId"></area-list>
     </el-dialog>
-    <el-form :model="ruleForm" :disabled="disabledFlag" ref="ruleForm" label-width="130px">
+    <el-form :model="ruleForm" :disabled="disabledFlag"  :rules="rules" ref="ruleForm" label-width="130px">
       <div class="detail-title">
         <i class="imenu-icon iconfont icondanwei big-icon" style="margin: 0px 5px;"></i>单位信息
       </div>
@@ -32,7 +32,6 @@
           <el-form-item
             label="单位名称"
             prop="organization.name"
-            :rules="[{ required: true, message: '名称不能为空',trigger: 'blur'}]"
           >
             <el-input v-model="ruleForm.organization.name"></el-input>
             <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
@@ -70,7 +69,7 @@
             </div>
           </el-form-item>
           <el-form-item label="统一社会信用代码" prop="organization.creditId">
-            <el-input v-model="ruleForm.organization.creditId" @blur="handleCredit">
+            <el-input v-model="ruleForm.organization.creditId">
               <i class="el-icon-loading iconload" v-if="loadVisiable" slot="suffix"></i>
             </el-input>
             <div class="tip-msg">
@@ -269,6 +268,22 @@ export default {
       }
     }, */
   data() {
+    // validator: validatePass2
+    let validateCreditId = (rule, value, callback) => {
+        if(this.ruleForm.organization.name==''){
+          callback(new Error('请填写单位名称'));
+        }else if(value!==''){
+          this.handleCredit()
+        }else{
+           callback()
+        }
+         if(this.successVisiable || value==''){
+          callback()
+        }
+        if(this.errorVisiable){
+          this.$message.success('请填写正确的社会信用代码')
+        }
+      }
     return {
       breadcrumb: {
         name: '单位详情',
@@ -307,8 +322,9 @@ export default {
       tempLabelId: [],
       rules: {
         'organization.name': [
-          { required: true, message: '请输入活动名称', trigger: 'blur' }
-        ]
+          { required: true, message: '请输入单位名称', trigger: 'blur' },
+        ],
+        'organization.creditId':[ { validator: validateCreditId, trigger: 'blur' }]
       },
       ruleForm: {
         reason: '',
@@ -560,7 +576,8 @@ export default {
       // this.ruleForm.areaId = val
     },
     submitForm(ruleForm) {
-      if (this.successVisiable || this.ruleForm.organization.creditId == '') {
+      // 
+      //  || this.ruleForm.organization.creditId == ''
         this.ruleForm.organization.removed = this.ruleForm.organization.removed
           ? 0
           : 1
@@ -573,12 +590,14 @@ export default {
               },
               error => {}
             )
+          }else{
+            this.$message.error('请填写必要字段')
+            this.loadVisiable = false
+            this.successVisiable = false
+            this.errorVisiable = false
           }
         })
-      } else {
-        this.$message.error('请填写正确的社会信用代码')
-      }
-    },
+      } ,
     goBack() {
       this.$router.go(-1)
     },
@@ -597,9 +616,8 @@ export default {
     // 社会信用代码
     handleCredit() {
       // 51522300C58060003M
-      this.ruleForm.organization.creditId = '51522300C580'
-      this.ruleForm.organization.name = '黔西南布依族苗族自治州消费者协会'
-      if (this.ruleForm.organization.creditId !== '') {
+      // this.ruleForm.organization.creditId = '51522300C58060003M'
+      // this.ruleForm.organization.name = '黔西南布依族苗族自治州消费者协会'
         this.loadVisiable = true
         let param = {
           orgName: this.ruleForm.organization.name,
@@ -619,16 +637,18 @@ export default {
           },
           () => {}
         )
-      } else {
-        this.loadVisiable = false
-        this.successVisiable = false
-        this.errorVisiable = false
-      }
+      } 
+
     }
-  }
 }
+    
+    
+    
+    
+  
+
 </script>
 
-<style lang="less">
+<style lang="less"  scoped>
 @import 'index';
 </style>

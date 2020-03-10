@@ -46,6 +46,7 @@
         <div class="wait-select">
           <div v-if="selectCategory === 0">
             <div v-if="seleceDialog.isSingleSelect!==true">
+              <!--v-model="member"   -->
               <el-checkbox v-model="member" class="member-item" @change="toggleAllMembers">全选</el-checkbox>
               <el-checkbox-group v-model="membersModel" @change="toggleMember">
                 <el-checkbox style="display: block" class="member-item text-ellipsis"
@@ -64,7 +65,8 @@
           </div>
           <div v-if="selectCategory === 1">
            <div v-if="seleceDialog.isSingleOrgSelect!==true">
-             <el-checkbox v-model="org" class="member-item" @change="toggleAllOrgs">全选</el-checkbox>
+             <!-- v-model="org" -->
+             <el-checkbox   v-model="org"  class="member-item" @change="toggleAllOrgs">全选</el-checkbox>
              <el-checkbox-group v-model="orgsModel" @change="toggleOrg">
                 <!-- class="member-item text-ellipsis" -->
                <el-checkbox style="display: block"
@@ -147,7 +149,9 @@ export default {
       selectedMembers: [],
       selectedMembersModel: [],
       selectedOrgs: [],
-      selectedOrgsModel: []
+      selectedOrgsModel: [],
+      member:false,
+      org:false
     }
   },
   created () {
@@ -364,6 +368,7 @@ export default {
       }
     },
     removeAllSelected () {
+      this.member=false
       this.selectedMembers = []
       this.selectedMembersModel = []
       this.membersModel = []
@@ -454,6 +459,7 @@ export default {
       }
     },
     removeAllSelectedOrg () {
+      this.org=false
       this.selectedOrgs = []
       this.selectedOrgsModel = []
       this.orgsModel = []

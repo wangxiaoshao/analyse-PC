@@ -135,8 +135,10 @@
       </el-table-column>
       <el-table-column prop="act" label="操作" width="200" align="center">
         <template slot-scope="scope">
-          <el-button @click.native.prevent="openEiditPerson(scope.row)" type="text" size="small"  :disabled="!hasRight('userSetting')">修改</el-button>
-          <el-button @click.native.prevent="calloutDialog(scope.row)" type="text" size="small"  :disabled="!hasRight('userIdTransfe')">调出</el-button>
+          <el-button @click.native.prevent="openEiditPerson(scope.row)" type="text" size="small" 
+           :disabled="!hasRight('userSetting')">修改</el-button>
+          <el-button @click.native.prevent="calloutDialog(scope.row)" type="text" size="small" 
+           :disabled="!hasRight('userIdTransfe')">调出</el-button>
           <el-button
             v-if="scope.row.type === 1 || scope.row.type === '1'"
             @click.native.prevent="removeDuty(scope.row)"
@@ -572,7 +574,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less"  scoped>
   @import "index";
   .empty {
     p {

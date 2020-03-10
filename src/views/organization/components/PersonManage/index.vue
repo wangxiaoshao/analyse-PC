@@ -53,6 +53,7 @@
                   </el-table-column>
                 </el-table>
               </div>
+              
             </el-popover>
             <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd' ">
               <div
@@ -90,7 +91,7 @@
           </el-form-item>
           <el-form-item label="身份证号" prop="idcard">
             <el-input placeholder="请输入内容" :disabled="isDefaultFlag" v-model="userDetail.idcard">
-              <el-button slot="append" v-if="!disabledFlag" type="success" class="form-btn">点击实名认证</el-button>
+              <el-button slot="append" v-if="!disabledFlag" type="success" class="form-btn1">点击实名认证</el-button>
             </el-input>
             <span style="font-size: 12px;position: relative;top:-7px;color: #8c939d;">如果不录入不影响新帐号创建</span>
             <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
@@ -350,6 +351,9 @@
                   >添加或修改该字段需要提交审核</div>
                 </div>
               </el-form-item>
+               <el-form-item label="通讯地址" prop="address">
+                <el-input placeholder="请输入通讯地址" v-model="userDetail.address"></el-input>
+              </el-form-item>
             </el-col>
           </el-row>
           <el-row>
@@ -442,6 +446,7 @@ export default {
   },
   data() {
     return {
+      showPopover: false, // 是否显示 Popover
       hidefooter: false,
       dutyNameCheckd: [],
       dutyNameSelectVisible: false,
@@ -696,6 +701,6 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less"  scoped>
 @import 'index';
 </style>
