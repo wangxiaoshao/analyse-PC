@@ -30,7 +30,7 @@
                 <span class="iconfont iconzuzhijigou" v-if="data.nodeType === 1"></span>
                 <span class="iconfont icondanwei" v-if="data.nodeType === 2"></span>
                 <span class="iconfont iconbumen" v-if="data.nodeType === 3"></span>
-                <span>{{node.label}}</span>
+                <span :title="node.label">{{node.label}}</span>
               </span>
           </el-tree>
         </div>

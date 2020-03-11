@@ -35,7 +35,7 @@
             </el-autocomplete>
           </el-col>
           <el-col :span="4" class="text-right">
-            <el-button type="primary" plain @click="getGrid"
+            <el-button type="primary" plain @click="getGrid(1)"
               :disabled="!hasRight('searchOrg')"
             >查询</el-button>
             <!-- <el-button type="primary" plain @click="getGrid">返回</el-button> -->
@@ -174,10 +174,13 @@ export default {
         this.getGrid()
       }
     },
-    getGrid () {
+    getGrid (findPage) {
       let data = {
         page: this.page.current,
         limit: this.page.limit
+      }
+      if(findPage==1){
+        data.page=findPage
       }
       let keys = Object.keys(this.searchQuery)
       let len = keys.length

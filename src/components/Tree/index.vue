@@ -21,7 +21,7 @@
         <span :class="[data.id===$route.params.nodeId ?'active':'noActive']" class="iconfont iconzuzhijigou" v-if="data.nodeType === 1"></span>
         <span :class="[data.id===$route.params.nodeId ?'active':'noActive']" class="iconfont icondanwei" v-if="data.nodeType === 2"></span>
         <span :class="[data.id===$route.params.nodeId ?'active':'noActive']" class="iconfont iconbumen" v-if="data.nodeType === 3"></span>
-        <span :class="[data.id===$route.params.nodeId ?'active':'noActive']" style="margin-left:3px;">{{node.label}}</span>
+        <span :class="[data.id===$route.params.nodeId ?'active':'noActive']"  :title="node.label" style="margin-left:3px;">{{node.label}}</span>
       </span>
   </el-tree>
 </template>

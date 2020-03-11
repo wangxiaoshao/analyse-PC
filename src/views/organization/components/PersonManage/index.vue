@@ -414,7 +414,7 @@
         <el-button @click="goBack">取消</el-button>
       </span>
       <span v-if="this.$route.name==='PassChange' && hidefooter==false">
-        <el-button type="primary" @click="modifieUserInfo">立即更改</el-button>
+        <el-button type="primary" @click="modifieUserInfo('userDetail')">立即更改</el-button>
       </span>
     </el-footer>
   </div>
@@ -491,8 +491,17 @@ export default {
     exportOrg() {
       this.$emit('exportOrg')
     },
-    modifieUserInfo() {
-      this.$emit('goModifieUserInfo', this.personFrom)
+    modifieUserInfo(userDetail) {
+      this.$refs[userDetail].validate(valid => {
+        if (valid) {
+          this.$emit('goModifieUserInfo', this.personFrom)
+        } else {
+          this.$message.warning(`请填写必填字段`)
+          return false
+        }
+      })
+     
+
     },
     // 搜索表格点击当前行
     selectRow(val) {
@@ -572,33 +581,34 @@ export default {
     handleAvatarSuccess(res, file) {
       this.personFrom.portraitUrl = res.data[0] || URL.createObjectURL(file.raw)
     },
-    submitForm(form) {
-      this.$refs[form].validate(valid => {
-        if (valid) {
-          let data = new FormData()
-          let keys = Object.keys(this.editForm)
-          let len = keys.length
-          for (let i = 0; i < len; i++) {
-            let key = keys[i]
-            let value = this.editForm[key]
-            if (value) {
-              data.append(key, value)
-            }
-          }
-          api[urlNames['sendEditRightsInfo']](data).then(
-            res => {
-              this.$message({
-                message: this.current ? '修改成功' : '添加成功',
-                type: 'success'
-              })
-              this.$emit('refreshList')
-              this.closeDialog()
-            },
-            () => {}
-          )
-        }
-      })
-    },
+
+    // submitForm(form) {
+    //   this.$refs[form].validate(valid => {
+    //     if (valid) {
+    //       let data = new FormData()
+    //       let keys = Object.keys(this.editForm)
+    //       let len = keys.length
+    //       for (let i = 0; i < len; i++) {
+    //         let key = keys[i]
+    //         let value = this.editForm[key]
+    //         if (value) {
+    //           data.append(key, value)
+    //         }
+    //       }
+    //       api[urlNames['sendEditRightsInfo']](data).then(
+    //         res => {
+    //           this.$message({
+    //             message: this.current ? '修改成功' : '添加成功',
+    //             type: 'success'
+    //           })
+    //           this.$emit('refreshList')
+    //           this.closeDialog()
+    //         },
+    //         () => {}
+    //       )
+    //     }
+    //   })
+    // },
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg'
       const isLt2M = file.size / 1024 / 1024 < 2
@@ -658,9 +668,6 @@ export default {
       this.$emit('get-label', this.sendLabelId)
     },
     next(userDetail) {
-      if (userDetail.name === '') {
-        this.$message.success('请填写用户名称')
-      }
       this.$refs[userDetail].validate(valid => {
         if (valid) {
           this.$emit('get-post', this.postFrom)

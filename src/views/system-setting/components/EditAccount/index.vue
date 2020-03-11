@@ -97,7 +97,7 @@ export default {
       }
       api[urlNames['updateAccount']](params).then(res=>{
         if(res){
-          this.$message.info('设置成功')
+          this.$message.success('设置成功')
          this.goBack()
         }
       

@@ -209,7 +209,7 @@ export default {
     createApp () {
       api[urlNames['createApp']]({
         name: this.appFrom.name,
-        viewId: this.viewId,
+        viewId: this.appFrom.viewId,
         apiAccount: this.appFrom.apiAccount,
         apiPassword: this.appFrom.apiPassword,
         concatUser: this.appFrom.concatUser,

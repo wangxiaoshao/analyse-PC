@@ -15,7 +15,7 @@
       </span> -->
        <span class=" svg-container" slot-scope="{ node, data }">
         <span class="iconfont iconzuzhijigou" v-if="data"></span>
-        <span :class="[data.id===$route.params.nodeId ?'active':'noActive']" >{{node.label}}</span>
+        <span :class="[data.id===$route.params.nodeId ?'active':'noActive']" :title="node.label">{{node.label}}</span>
       </span>
   </el-tree>
 </template>

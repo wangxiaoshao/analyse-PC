@@ -26,7 +26,8 @@ export default {
   },
   data () {
     return {
-      defaultNodeId: ''
+      defaultNodeId: '',
+     
     }
   },
   methods: {
@@ -41,6 +42,7 @@ export default {
         }
       })
     },
+     
     getDefaultNode (val) {
       this.defaultNodeId = val
     }
@@ -48,6 +50,6 @@ export default {
 }
 </script>
 
-<style lang="less"  scoped>
+<style lang="less">
   @import "index";
 </style>

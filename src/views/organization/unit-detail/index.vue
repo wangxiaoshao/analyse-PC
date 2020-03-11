@@ -33,7 +33,7 @@
             label="单位名称"
             prop="organization.name"
           >
-            <el-input v-model="ruleForm.organization.name"></el-input>
+            <el-input v-model="ruleForm.organization.name"   @change="handleCredit"></el-input>
             <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
               <div
                 class="tip-msg"
@@ -69,7 +69,7 @@
             </div>
           </el-form-item>
           <el-form-item label="统一社会信用代码" prop="organization.creditId">
-            <el-input v-model="ruleForm.organization.creditId">
+            <el-input v-model="ruleForm.organization.creditId" @blur="handleCredit"  @change="handleCredit">
               <i class="el-icon-loading iconload" v-if="loadVisiable" slot="suffix"></i>
             </el-input>
             <div class="tip-msg">
@@ -268,22 +268,7 @@ export default {
       }
     }, */
   data() {
-    // validator: validatePass2
-    let validateCreditId = (rule, value, callback) => {
-        if(this.ruleForm.organization.name==''){
-          callback(new Error('请填写单位名称'));
-        }else if(value!==''){
-          this.handleCredit()
-        }else{
-           callback()
-        }
-         if(this.successVisiable || value==''){
-          callback()
-        }
-        if(this.errorVisiable){
-          this.$message.success('请填写正确的社会信用代码')
-        }
-      }
+    
     return {
       breadcrumb: {
         name: '单位详情',
@@ -324,7 +309,7 @@ export default {
         'organization.name': [
           { required: true, message: '请输入单位名称', trigger: 'blur' },
         ],
-        'organization.creditId':[ { validator: validateCreditId, trigger: 'blur' }]
+        // 'organization.creditId':[ { validator: validateCreditId, trigger: 'blur' }]
       },
       ruleForm: {
         reason: '',
@@ -578,6 +563,7 @@ export default {
     submitForm(ruleForm) {
       // 
       //  || this.ruleForm.organization.creditId == ''
+      if(this.successVisiable ||this.ruleForm.organization.creditId == ''){
         this.ruleForm.organization.removed = this.ruleForm.organization.removed
           ? 0
           : 1
@@ -597,6 +583,10 @@ export default {
             this.errorVisiable = false
           }
         })
+      }else if(this.errorVisiable){
+        this.$message.error('请输入与单位名称相匹配的社会信用代码')
+      }
+        
       } ,
     goBack() {
       this.$router.go(-1)
@@ -618,25 +608,36 @@ export default {
       // 51522300C58060003M
       // this.ruleForm.organization.creditId = '51522300C58060003M'
       // this.ruleForm.organization.name = '黔西南布依族苗族自治州消费者协会'
+      if(this.ruleForm.organization.name==''&&this.ruleForm.organization.creditId!==''){
+        this.$message.error('请输入单位名称')
+      }else if(this.ruleForm.organization.creditId!==''){
         this.loadVisiable = true
         let param = {
           orgName: this.ruleForm.organization.name,
           creditId: this.ruleForm.organization.creditId
         }
-        api[urlNames['orgCreditId']](param).then(
+         api[urlNames['orgCreditId']](param).then(
           res => {
             if (res.data == 1) {
               window.setTimeout(() => {
                 this.successVisiable = true
                 this.loadVisiable = false
+                this.errorVisiable = false
               }, 2000)
             } else {
               this.errorVisiable = true
               this.loadVisiable = false
+              this.successVisiable = false
             }
           },
           () => {}
         )
+      }else{
+        this.errorVisiable = false
+        this.loadVisiable = false
+        this.successVisiable = false
+      }
+       
       } 
 
     }

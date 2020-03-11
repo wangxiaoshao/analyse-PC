@@ -100,12 +100,12 @@
                 <el-button class="add-btn" @click="openAddPerson" :disabled="!hasRight('userCreate')" >添加人员</el-button>
               </template>
             </person-list>
-                 <import-person  v-if="showExportPage"
-                  :showExportPage="showExportPage"
-                  @cancel="goExportPerson"
-                  :id="content[0].bindId"
-                  :organizationName='content[0].name'
-                  :type="content[0].nodeType"></import-person>
+            <import-person  v-if="showExportPage"
+            :showExportPage="showExportPage"
+            @cancel="goExportPerson"
+            :id="content[0].bindId"
+            :organizationName='content[0].name'
+            :type="content[0].nodeType"></import-person>
 
           </el-tab-pane>
           <el-tab-pane label="单位领导" name="单位主要领导" v-if="content[0].nodeType === 2">

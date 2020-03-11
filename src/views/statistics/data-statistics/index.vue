@@ -35,21 +35,21 @@
       </span>
       <span class="template-two light-purple">
         <div style="position: absolute" class="add-unit">
-          <div>//今天</div>
+          <div>//{{dateName}}</div>
           <div>新增单位</div>
           <div>{{countData.userCount}}</div>
         </div>
       </span>
       <span class="template-two light-blue">
         <div style="position: absolute" class="add-depart">
-          <div>//今天</div>
+          <div>//{{dateName}}</div>
           <div>新增部门</div>
           <div>{{countData.deptCount}}</div>
         </div>
       </span>
       <span class="template-two light-orange">
         <div style="position: absolute" class="add-member">
-          <div>//今天</div>
+          <div>//{{dateName}}</div>
           <div>新增人员</div>
           <div>{{countData.organCount}}</div>
         </div>
@@ -63,7 +63,7 @@
       <el-tab-pane label="各市州新增人员占比" name="member">各市州新增人员占比</el-tab-pane>
     </el-tabs>
     <el-row>
-      <el-col :span="12" :style="{padding: '10px 40px', paddingRight: '140px'}">
+      <el-col :span="12" :style="{padding: '10px 40px', paddingRight: '90px'}">
         <!--<div :style="{width: '100%', height: '500px', backgroundColor: 'red'}"></div>-->
         <el-row>
           <el-col :span="24">
@@ -117,6 +117,7 @@ export default {
     return {
       reverse: true,
       newsList: [],
+      dateName:'今天',
       dataList: [
         { id: 1, name: '今天', type: 1 },
         { id: 2, name: '昨天', type: 2 },
@@ -148,6 +149,8 @@ export default {
     },
     initDataStatistics () {
       let datefilters = this.$options.filters['date'](new Date().getTime(), 'yyyy-MM')
+      let selected=this.dataList.filter(item=> item.type==this.selected.type)
+      this.dateName=selected[0].name
       let data = {
         date: datefilters,
         type: 4,

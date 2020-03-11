@@ -17,12 +17,12 @@
         <svg class="icon" aria-hidden="true" v-if="data">
           <use xlink:href="#iconzuzhijigou"></use>
         </svg>
-        <span>{{node.label}}</span>
+        <span :title="node.label">{{node.label}}</span>
       </span>
 
        <span class=" svg-container" slot-scope="{ node, data }">
         <span class="iconfont iconzuzhijigou" v-if="data"></span>
-        <span>{{node.label}}</span>
+        <span :title="node.label">{{node.label}}</span>
       </span>
     </el-tree>
   </div>

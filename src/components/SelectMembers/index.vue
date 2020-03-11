@@ -9,7 +9,7 @@
       <div class="select-category"
            v-if="seleceDialog.notOnlyPerson === true&&seleceDialog.isOnlyOrg === true">
         <el-button type="primary" @click="selectCategory = 1;searchType = '2'" :plain="selectCategory!==1">
-          单位/部门
+          单位/内设机构
         </el-button>
         <el-button type="primary" @click="selectCategory = 0;searchType = '12'" :plain="selectCategory===1">
           人员

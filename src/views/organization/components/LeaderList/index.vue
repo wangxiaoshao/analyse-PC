@@ -185,9 +185,11 @@ export default {
   methods: {
     getGrid () {
       let data = {
-        nodeType: this.nodeInfo.nodeType,
+        // nodeType: this.nodeInfo.nodeType,
+        nodeType: this.nodeType,
         nodeId: this.contentId
       }
+      console.log('data1：',data)
       this.mainLeaderList = []
       this.otherLeaderList = []
       this.loading = true
@@ -236,6 +238,7 @@ export default {
       }
       // 保存
       if (JSON.parse(JSON.stringify(data)) !== []) {
+        console.log('nodeInfo:',this.nodeInfo.nodeType)
         api[urlNames['createLeader']]({
           nodeId: this.contentId,
           nodeType: this.nodeType,
@@ -243,7 +246,6 @@ export default {
         }).then((res) => {
           this.$message.success(`保存成功`)
           this.getGrid()
-          console.log(res)
         }, (error) => {
           this.$message.error(`保存失败，请重试`)
         })
