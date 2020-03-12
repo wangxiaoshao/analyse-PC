@@ -12,7 +12,7 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="page.current"
-      :page-sizes="[1, 30, 50, 100]"
+      :page-sizes="[10, 20, 30, 50]"
       :page-size="page.limit"
       layout="total, sizes, prev, pager, next, jumper"
       :total="page.total">
@@ -70,7 +70,7 @@ export default {
         date: this.$route.params.month,
         confirmId: this.$route.params.id,
         page: this.page.current,
-        limit: 1
+        limit: this.page.limit
       }
       let keys = Object.keys(this.searchQuery)
       let len = keys.length

@@ -15,6 +15,12 @@
       </div>
     </div> -->
           <el-table :show-header="false"  :data='tableData' 	>
+             <template slot="empty">
+                <div class="empty">
+                  <p><img class="data-pic" src="@src/common/images/no-data.png" alt=""/></p>
+                  <p><span style="padding-left: 8px">暂无数据！</span></p>
+                </div>
+              </template>
           <el-table-column>
             <template slot-scope="scope">
               <div class="notice-info">
@@ -49,29 +55,7 @@ export default {
   mixins: [handleTable],
   data () {
     return {
-      tableData:[
-        {
-          id:2,
-          content:'22',
-          typeText:"消息确认通知",
-          creareTime:'2020-2-24 14:19:20',
-          hasRead:0
-        },
-        {
-          id:1,
-          content:'11',
-          typeText:"审核通知",
-          creareTime:'2020-2-24 14:19:20',
-          hasRead:1
-        },
-        {
-          id:1,
-          content:'11',
-          typeText:"审核通知",
-          creareTime:'2020-2-24 14:19:20',
-          hasRead:0
-        }
-      ]
+      tableData:[]
     }
   },
   created(){
@@ -106,7 +90,7 @@ export default {
 }
 
 </script>
-<style lang="less">
+<style lang="less"  scoped>
   @import "./index";
 </style>
 

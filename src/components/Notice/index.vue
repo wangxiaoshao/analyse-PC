@@ -2,7 +2,7 @@
   <div class="notice">
     <div class="notice-header">
       <span style="padding-left: 12px;">通知</span>
-      <i class="el-icon-close" @click="closeNotice"></i>
+      <i class="el-icon-close" @click="closeNotice" style="color:#999"></i>
     </div>
     <div class="notice-content">
       <el-table :show-header="false" :data="noticeData">

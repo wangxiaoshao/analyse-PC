@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex'
 export default {
   name: 'WordCenter',
   data () {
@@ -20,8 +21,13 @@ export default {
     }
   },
   created () {
+    console.log('breadcrumb:',this.app.breadcrumb)
+    // this.app.breadcrumb=this.app.breadcrumb.slice(0,2)
   },
-  methods: {}
+  methods: {},
+   computed: {
+   ...mapState(['app']),
+  },
 }
 </script>
 

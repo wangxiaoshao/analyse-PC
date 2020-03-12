@@ -252,6 +252,8 @@ export default {
    */
   notificationIndex: 'notificationIndex',
   notificationList: 'notificationList',
-  notificationRead: 'notificationRead'
+  notificationRead: 'notificationRead',
+  // 首页登第几个登录
+  loginIndex: 'loginIndex'
 
 }

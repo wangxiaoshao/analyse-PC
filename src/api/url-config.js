@@ -174,6 +174,13 @@ export default {
     serve: 'organizationManagePC',
     keepOriginResponse: false
   },
+  // 首页第几个登录
+  [urlNames.loginIndex]: {
+    type: 'get',
+    url: '/api/jg_manage/logger/loginIndex',
+    keepOriginResponse: true,
+    serve: 'organizationManagePC'
+  },
   // 应用管理
   ...application,
   ...examine, // 申请审核

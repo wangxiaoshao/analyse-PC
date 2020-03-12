@@ -79,7 +79,9 @@ export default {
         // 显示通信录和文档中心
         if (this.menuItem.key === 'menuAddrBook' || this.menuItem.key === 'menuWordCenter' || this.menuItem.key === 'menuHomePage') {
           // debugger
+            // alert(1111)
           return true
+        
         }
         let tempMenu = menuList.filter(item => {
           return item.moduleName === this.menuItem.key

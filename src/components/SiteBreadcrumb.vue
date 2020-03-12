@@ -50,6 +50,9 @@ export default {
     return {
     }
   },
+  created(){
+   
+  },
   methods: {
     goBack () {
       this.$emit('go-back')

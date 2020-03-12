@@ -78,8 +78,8 @@ export default {
       this.areaNameList = []
       this.orgNameList = []
       api[urlNames['findAuthorizedEntityByUid']]({
-        uid: parseInt(this.$route.params.id),
-        roleId: parseInt(this.$route.query.roleId)
+        uid: this.$route.params.id,
+        roleId: this.$route.query.roleId
       }).then((res) => {
         if (res.data.length > 0) {
           let that = this

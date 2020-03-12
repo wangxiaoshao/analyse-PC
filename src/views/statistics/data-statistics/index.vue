@@ -56,11 +56,17 @@
       </span>
     </div>
     <el-tabs v-model="activeName" @tab-click="handleClick" class="statistic-tab">
-      <el-tab-pane label="各市州新增单位占比" name="unit">
-        <echarts></echarts>
+      <el-tab-pane label="各市州新增单位占比" name="unit" lazy >
+        <echarts :echartsName='echartsName' v-if="echartsName==activeName"></echarts>
       </el-tab-pane>
-      <el-tab-pane label="各市州新增部门占比" name="department">各市州新增部门占比</el-tab-pane>
-      <el-tab-pane label="各市州新增人员占比" name="member">各市州新增人员占比</el-tab-pane>
+      <el-tab-pane label="各市州新增内设机构占比" name="department"  :key="activeName"> 
+        <echarts :echartsName='echartsName' v-if="echartsName==activeName"></echarts>
+        <!-- <echartsDept :echartsName='echartsName'></echartsDept> -->
+        <!-- <echarts :echartsName='echartsName' v-if="this.echartsName=activeName"></echarts> -->
+      </el-tab-pane>
+      <el-tab-pane label="各市州新增人员占比" name="member" lazy>
+         <echartsPeople :echartsName='echartsName'></echartsPeople>
+      </el-tab-pane>
     </el-tabs>
     <el-row>
       <el-col :span="12" :style="{padding: '10px 40px', paddingRight: '90px'}">
@@ -107,14 +113,17 @@
 <script type="text/ecmascript-6">
 import handleTable from '@src/mixins/handle-table'
 import echarts from '../components/Echarts'
+import echartsDept from '../components/EchartsDept'
+import echartsPeople from '../components/EchartsPeople'
 import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
 
 export default {
-  components: { echarts },
+  components: { echarts ,echartsDept,echartsPeople},
   mixins: [handleTable],
   data () {
     return {
+      echartsName:'unit',
       reverse: true,
       newsList: [],
       dateName:'今天',
@@ -128,7 +137,7 @@ export default {
         type: 1
       },
       activeName: 'unit',
-      countData: []
+      countData: {}
     }
   },
   computed: {
@@ -166,7 +175,10 @@ export default {
         this.newsList = res.data
       })
     },
-    handleClick () {},
+    handleClick (targetName,num) {
+      // console.log('targetName:',targetName.name)
+      this.echartsName=targetName.name
+    },
     jumpQuery (routerParams) { // routerParams === Unit|Department|Member
       this.$router.push({
         path: routerParams + '-query'

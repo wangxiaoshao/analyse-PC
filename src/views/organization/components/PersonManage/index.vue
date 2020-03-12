@@ -481,6 +481,7 @@ export default {
   },
   created() {
     this.init()
+   
   },
   computed: {
     ...mapState(['app'])
@@ -548,6 +549,7 @@ export default {
     },
     // 选择身份类型
     getIdentityType(val) {
+      alert(val)
       this.postFrom.type = val
     },
     // 选择民族
@@ -576,6 +578,7 @@ export default {
     },
     // 选择人员类型
     getUserType(val) {
+
       this.personFrom.userType = val
     },
     handleAvatarSuccess(res, file) {

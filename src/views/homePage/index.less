@@ -17,6 +17,7 @@
     .userInfo,.notice{
       display: flex;
       justify-content: space-between;
+      position: relative;
       .noticeInfo:nth-child(1){
         padding-right: 25px;
         border-right: 1px  solid rgba(0, 0, 0, 0.1);
@@ -28,21 +29,35 @@
       .noticeInfo{
         width: 50%;
         box-sizing: border-box;
-        position: relative;
         p{
           padding: 5px  0px;
-          display: flex;
           font-size: 13px;
           color:#777 ;
-          justify-content: space-between;
+          cursor: pointer;
+          span{
+            cursor: pointer;
+          }
+          .msg{
+            display: inline-block;
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+          .date{
+            display: inline-block;
+            width: 100%;
+            text-align: right;
+          }
         }
-        a{
-          font-size: 12px;
-          color:#FC7049;
-          position: absolute;
-          right: 0px;
-          bottom: -18px;
-        }
+        
+      }
+      a{
+        font-size: 12px;
+        color:#FC7049;
+        position: absolute;
+        right: 0px;
+        bottom: -4px;
       }
     }
     .userInfo{
@@ -121,7 +136,7 @@
       justify-content: space-between;
       padding: 10px 0px;
       .detailInfo{
-        width: 25%;
+        width: 20%;
         border-right: 2px  solid rgba(0, 0, 0, 0.1);
         box-sizing: border-box;
         text-align: center;
