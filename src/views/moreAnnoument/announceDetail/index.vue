@@ -25,7 +25,7 @@ export default {
   },
   
   created(){
-    this.app.breadcrumb=[{name: '文章详情'}]
+    // this.app.breadcrumb=[{name: '文章详情'}]
   },
   computed: {
    ...mapState(['app']),

@@ -470,7 +470,7 @@ export default {
       openMoreFlag: false,
       addInfo: {
         searchFlag: false,
-        type: 3 // 1.单位，2、部门，3、人员
+        type: 3 // 1.单位，2、内设机构，3、人员
       },
       timer: null,
       showPopoverFlag: false,

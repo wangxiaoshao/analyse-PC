@@ -18,7 +18,7 @@
           <el-form-item label="分组所属">
             <el-select v-model="groupFrom.ownerType" placeholder="请选分组所属">
               <el-option label="本单位" :value="1"></el-option>
-              <el-option label="本部门" :value="2"></el-option>
+              <el-option label="本内设机构" :value="2"></el-option>
               <el-option label="本人" :value="3"></el-option>
             </el-select>
           </el-form-item>
@@ -61,12 +61,12 @@ export default {
         this.$message.warning('请输入分组名称')
         return false
       }
-      let ownerType = this.groupFrom.ownerType + 0 // 1单位、2部门、3个人
+      let ownerType = this.groupFrom.ownerType + 0 // 1单位、2内设机构、3个人
       if (ownerType === 1 && !this.hasRight('orgGroupCreate')) {
         this.$message.warning('您没有创建单位分组的权限')
         return false
       } else if (ownerType === 2 && !this.hasRight('departmentGroupCreate')) {
-        this.$message.warning('您没有创建部门分组的权限')
+        this.$message.warning('您没有创建内设机构分组的权限')
         return false
       } else if (ownerType === 3 && !this.hasRight('userGroupCreate')) {
         this.$message.warning('您没有创建个人分组的权限')
@@ -88,7 +88,7 @@ export default {
       } else {
         api[urlNames['renameGroup']]({
           id: this.groupFrom.id,
-          ownerType: this.groupFrom.ownerType, // 1单位、2部门、3个人
+          ownerType: this.groupFrom.ownerType, // 1单位、2内设机构、3个人
           name: this.groupFrom.name,
           description: this.groupFrom.description,
           removed: this.groupFrom.removed ? 0 : 1

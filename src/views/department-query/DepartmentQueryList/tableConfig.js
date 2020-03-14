@@ -3,7 +3,7 @@ const tableConfig = {
   name: {
     key: 'name',
     tooltip: false,
-    label: '部门名称',
+    label: '内设机构名称',
     sortable: false,
     showOverflowTooltip: false,
     minWidth: 100
@@ -11,7 +11,7 @@ const tableConfig = {
   id: {
     key: 'id',
     tooltip: true,
-    label: '部门ID',
+    label: '内设机构ID',
     sortable: false,
     showOverflowTooltip: false,
     minWidth: 100

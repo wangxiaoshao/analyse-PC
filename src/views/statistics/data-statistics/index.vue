@@ -43,7 +43,7 @@
       <span class="template-two light-blue">
         <div style="position: absolute" class="add-depart">
           <div>//{{dateName}}</div>
-          <div>新增部门</div>
+          <div>新增内设机构</div>
           <div>{{countData.deptCount}}</div>
         </div>
       </span>
@@ -57,15 +57,13 @@
     </div>
     <el-tabs v-model="activeName" @tab-click="handleClick" class="statistic-tab">
       <el-tab-pane label="各市州新增单位占比" name="unit" lazy >
-        <echarts :echartsName='echartsName' v-if="echartsName==activeName"></echarts>
+        <echarts :echartsAry='echartsAry1' v-if="activeName=='unit'"></echarts>
       </el-tab-pane>
-      <el-tab-pane label="各市州新增内设机构占比" name="department"  :key="activeName"> 
-        <echarts :echartsName='echartsName' v-if="echartsName==activeName"></echarts>
-        <!-- <echartsDept :echartsName='echartsName'></echartsDept> -->
-        <!-- <echarts :echartsName='echartsName' v-if="this.echartsName=activeName"></echarts> -->
+      <el-tab-pane label="各市州新增内设机构占比" name="department"  lazy> 
+         <echarts :echartsAry='echartsAry2' v-if="activeName=='department'"></echarts>
       </el-tab-pane>
-      <el-tab-pane label="各市州新增人员占比" name="member" lazy>
-         <echartsPeople :echartsName='echartsName'></echartsPeople>
+      <el-tab-pane label="各市州新增人员占比" name="member">
+         <echarts :echartsAry='echartsAry3' v-if="activeName=='member'"></echarts>
       </el-tab-pane>
     </el-tabs>
     <el-row>
@@ -137,7 +135,43 @@ export default {
         type: 1
       },
       activeName: 'unit',
-      countData: {}
+      countData: {},
+      echartsAry1: [
+            ['amount', 'product'],
+            [58212, '贵阳市'],
+            [78254, '遵义市'],
+            [41032, '安顺市'],
+            [12755, '六盘水'],
+            [20145, '毕节市'],
+            [79146, '铜仁市'],
+            [91852, '黔南州'],
+            [101852, '黔西南州'],
+            [20112, '黔东南州']
+          ],
+           echartsAry2: [
+            ['amount', 'product'],
+            [63455, '贵阳市'],
+            [40089, '遵义市'],
+            [40076, '安顺市'],
+            [12755, '六盘水'],
+            [20003, '毕节市'],
+            [59802, '铜仁市'],
+            [54383, '黔南州'],
+            [58003, '黔西南州'],
+            [34677, '黔东南州']
+          ],
+           echartsAry3: [
+            ['amount', 'product'],
+            [120000, '贵阳市'],
+            [68000, '遵义市'],
+            [56003, '安顺市'],
+            [76890, '六盘水'],
+            [34899, '毕节市'],
+            [56788, '铜仁市'],
+            [69990, '黔南州'],
+            [86667, '黔西南州'],
+            [20112, '黔东南州']
+          ]
     }
   },
   computed: {

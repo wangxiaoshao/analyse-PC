@@ -5,11 +5,11 @@
       <el-col :span="24">
         <el-row :gutter="10" type="flex">
           <el-col :span="5">
-            <el-input placeholder="部门名称" v-model="searchQuery.name"  @clear="clearSearch()" clearable>
+            <el-input placeholder="内设机构名称" v-model="searchQuery.name"  @clear="clearSearch()" clearable>
             </el-input>
           </el-col>
 <!--          <el-col :span="5">-->
-<!--            <el-input placeholder="部门ID" v-model="searchQuery.id"  @clear="clearSearch()" clearable>-->
+<!--            <el-input placeholder="内设机构ID" v-model="searchQuery.id"  @clear="clearSearch()" clearable>-->
 <!--            </el-input>-->
 <!--          </el-col>-->
           <el-col :span="5">

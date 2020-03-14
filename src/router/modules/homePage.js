@@ -10,11 +10,17 @@ export default [
   {
     path: '/moreAnnoument',
     name: 'MoreAnnoument',
-    component: MoreAnnoument
+    component: MoreAnnoument,
+    meta: {
+      breadcrumb: [{ name: '平台公告' }]
+    }
   },
   {
     path: '/announceDetail',
     name: 'AnnounceDetail',
-    component: AnnounceDetail
+    component: AnnounceDetail,
+    meta: {
+      breadcrumb: [{ name: '文章详情' }]
+    }
   }
 ]

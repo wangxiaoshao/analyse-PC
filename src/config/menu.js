@@ -138,7 +138,7 @@ export default {
         },
         {
           'menuId': '422',
-          'name': '部门查询',
+          'name': '内设机构查询',
           'path': '/department-query',
           'type': 1,
           'key': 'menuSearchDepartment'
@@ -208,7 +208,8 @@ export default {
         'name': '文档中心',
         'path': '/word-center',
         'type': 1,
-        'key': 'menuWordCenter'
+        'key': 'menuDocumentCenter'
+        // 'key': 'menuWordCenter'
       }
       ]
     }

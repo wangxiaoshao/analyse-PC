@@ -24,7 +24,7 @@ export default {
   saveAudit: 'saveAudit', // 保存审批
 
 
-  // 部门查询
+  // 内设机构查询
   findDepartmentList: 'findDepartmentList',
   findDepartmentListByPost: 'findDepartmentListByPost',
   // 单位查询
@@ -93,15 +93,15 @@ export default {
   findViewNodeList: 'findViewNodeList',
   // 下级排序
   setViewNodeSort: 'setViewNodeSort',
-  // 根据id查询部门
+  // 根据id查询内设机构
   findDepartmentById: 'findDepartmentById',
-  // 创建部门
+  // 创建内设机构
   createDepartment: 'createDepartment',
   // 添加人员
   createUser: 'createUser',
-  // 查询部门下的所有人员
+  // 查询内设机构下的所有人员
   findDepartmentMembers: 'findDepartmentMembers',
-  // 部门下人员数值排序
+  // 内设机构下人员数值排序
   setSortThroughNumerical: 'setSortThroughNumerical',
   // 单位下数组排序
   setViewNodeSortThroughNumerical: 'setViewNodeSortThroughNumerical',
@@ -160,11 +160,11 @@ export default {
    */
   // 查询通讯录视图
   getAddressListTree: 'getAddressListTree',
-  searchMyDep: 'searchMyDep', // 关键字搜索部门/单位
+  searchMyDep: 'searchMyDep', // 关键字搜索内设机构/单位
   searchOtherDep: 'searchOtherDep',
   // 通讯录-查询单位下员
   getAddressListOrganizationMembers: 'getAddressListOrganizationMembers',
-  // 通讯录-查询部门下人员
+  // 通讯录-查询内设机构下人员
   getAddressListDepartmentMembers: 'getAddressListDepartmentMembers',
 
   // 通讯录搜索
@@ -173,9 +173,9 @@ export default {
   findMobileById: 'findMobileById',
   // 查询用户所在单位
   getAddressBookList: '',
-  // 查询部门下的下级部门
+  // 查询内设机构下的下级内设机构
   getDepartmentChildtree: 'getDepartmentChildtree',
-  // 查询单位下部门通讯信息
+  // 查询单位下内设机构通讯信息
   getOrgDepartmentTxlList: 'getOrgDepartmentTxlList',
   // 查询单位下人员通讯信息
   getOrgUserTxlList: 'getOrgUserTxlList',
@@ -208,7 +208,7 @@ export default {
   importUser: 'importUser', // 导入用户
   logoutUrl: 'logoutUrl', // 登出地址
   deleteViewAdmin: 'deleteViewAdmin', // 删除视图管理员
-  deleteUserLabelOrDeptLabelOrOrgLabel: 'deleteUserLabelOrDeptLabelOrOrgLabel', // 删除单位/人员/部门绑定标签
+  deleteUserLabelOrDeptLabelOrOrgLabel: 'deleteUserLabelOrDeptLabelOrOrgLabel', // 删除单位/人员/内设机构绑定标签
   searchMember: 'searchMember', // 选人组件搜索人员
   deleteAppBindAccount: 'deleteAppBindAccount',
   /**

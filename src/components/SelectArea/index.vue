@@ -78,7 +78,7 @@ export default {
       submitDisable: '',
       searchKeyWord: '',
       searchType: '2', // 搜索类型
-      selectCategory: 0, // 0 人员 ，1 部门/单位
+      selectCategory: 0, // 0 人员 ，1 内设机构/单位
       nodeTree: [], // 树
       defaultProps: {
         children: 'children',
@@ -87,9 +87,9 @@ export default {
         isLeaf: 'leaf'
       },
       // 中间待选择的成员数据，可能是人员，也可能是单位
-      orgList: [], // 部门
-      orgsModel: [], // 部门
-      orgSingleModel: [], // 部门单选
+      orgList: [], // 内设机构
+      orgsModel: [], // 内设机构
+      orgSingleModel: [], // 内设机构单选
       // 右侧已经选择的成员数据
       selectedOrgs: [],
       selectedOrgsModel: []
@@ -159,7 +159,7 @@ export default {
         })
       })
     },
-    // 部门/单位处理
+    // 内设机构/单位处理
     // 全选
     toggleAllOrgs (selected) {
       let that = this

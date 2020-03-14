@@ -21,7 +21,7 @@ export default {
     mock: '/address-book/addressBookList.json' // development模式下，本地mock数据地址
   },
 
-  /** 通讯录部门下成员 */
+  /** 通讯录内设机构下成员 */
   [urlNames.getAddressListDepartmentMembers]: {
     type: 'get', // 请求类型
     url: '/api/jg_txl/addressList/findDepartmentMembersAddressList', // 请求地址
@@ -59,7 +59,7 @@ export default {
     serve: 'organizationManagePC'
   },
 
-  // 查看单位部门电话
+  // 查看单位内设机构电话
   [urlNames.getOrgMobile]: {
     type: 'get', // 请求类型
     url: '/api/jg_txl/addressList/getOrgMobile',

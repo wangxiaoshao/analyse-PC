@@ -5,7 +5,7 @@
 <script type="text/ecmascript-6">
 export default {
   name: 'echarts',
-  props:['echartsName'],
+  props:['echartsAry'],
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'
@@ -19,18 +19,7 @@ export default {
       let myChart = this.$echarts.init(document.getElementsByClassName('myChart')[0])
       myChart.setOption({
         dataset: {
-          source: [
-            ['amount', 'product'],
-            [58212, '贵阳市'],
-            [78254, '遵义市'],
-            [41032, '安顺市'],
-            [12755, '六盘水'],
-            [20145, '毕节市'],
-            [79146, '铜仁市'],
-            [91852, '黔南州'],
-            [101852, '黔西南州'],
-            [20112, '黔东南州']
-          ]
+          source:this.echartsAry
         },
         tooltip: {},
         grid: { containLabel: true },

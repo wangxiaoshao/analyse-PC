@@ -239,7 +239,7 @@ export default {
         isAllData: true, // 是否需完整数据-默认为不需要（false，只包含用户id）
         notOnlyPerson: false, // 是否选人，默认为false（只选人）
         isSingleSelect: false, // 是否为单选框  false为多选（默认）-人员单选
-        isSingleOrgSelect: true, // 是否为单选框  false为多选（默认），true为单选(isOnlyOrg为true时部门/单位单选)
+        isSingleOrgSelect: true, // 是否为单选框  false为多选（默认），true为单选(isOnlyOrg为true时内设机构/单位单选)
         isOnlyOrg: true
       },
       sortValue: null,
@@ -402,8 +402,9 @@ export default {
           if (res) {
             this.showSortDilog = false
             this.$message.success('排序成功')
-            this.sortValue=''
+            this.contentPage.current=Math.ceil(this.sortValue/this.contentPage.limit)
             this.getGrid()
+             this.sortValue=''
           }
         })
     },

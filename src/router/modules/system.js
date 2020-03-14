@@ -76,7 +76,7 @@ export default [
     name: 'WordCenter',
     component: WordCenter,
     meta: {
-      key: 'menuWordCenter'
+      key: 'menuDocumentCenter'
     }
   }
 ]

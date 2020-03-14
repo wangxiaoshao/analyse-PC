@@ -21,7 +21,7 @@ export default {
         }
       })
     },
-    // 打开编辑部门
+    // 打开编辑内设机构
     openDepartmentEdit (row) {
       this.$router.push({
         name: 'DepartmentEdit',

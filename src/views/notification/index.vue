@@ -50,6 +50,7 @@
 <script>
 import handleTable from '@src/mixins/handle-table'
 import { api, urlNames } from '@src/api'
+import { mapState, mapMutations } from 'vuex'
 export default {
   name: 'notification',
   mixins: [handleTable],
@@ -60,7 +61,9 @@ export default {
   },
   created(){
     this.getGrid()
+    this.app.breadcrumb=[{name: '通知中心'}]
   },
+
   methods: {
     getGrid () {
       let data = {
@@ -86,7 +89,10 @@ export default {
       }
     },
 
-  }
+  },
+  computed: {
+   ...mapState(['app']),
+  },
 }
 
 </script>

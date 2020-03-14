@@ -147,7 +147,7 @@
           <el-radio :label="true">可见</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="部门座机号">
+      <el-form-item label="内设机构座机号">
         <el-radio-group v-model="orgAddressBookSet.depPhone">
           <el-radio :label="false">不可见</el-radio>
           <el-radio :label="true">可见</el-radio>
@@ -215,7 +215,7 @@
         </div>
         <div class="table-row">
           <div class="table-td">
-            部门
+            内设机构
           </div>
           <div class="table-td">
             <el-checkbox-group v-model="orgAuditField.checkedDepAuditList" @change="handleCheckAllChange">
@@ -255,10 +255,10 @@ const orgAuditList = [{ name: 'name', checkname: '单位全称' }, { name: 'shor
   name: 'type',
   checkname: '所属类型'
 }, { name: 'removed', checkname: '启用禁用' }]
-const depAuditList = [{ name: 'name', checkname: '部门名称' }, { name: 'type', checkname: '部门类型' }, {
+const depAuditList = [{ name: 'name', checkname: '内设机构名称' }, { name: 'type', checkname: '内设机构类型' }, {
   name: 'phone',
   checkname: '电话'
-}, { name: 'duty', checkname: '部门职责' }, { name: 'removed', checkname: '启用禁用' }]
+}, { name: 'duty', checkname: '内设机构职责' }, { name: 'removed', checkname: '启用禁用' }]
 const userAuditList = [{ name: 'name', checkname: '用户姓名' }, { name: 'mobile', checkname: '手机号' }, {
   name: 'dutyName',
   checkname: '职务'
@@ -293,7 +293,7 @@ export default {
       orgAuditField: {
         checkedNodeAuditList: [], // 节点选中数据
         checkedOrgAuditList: [], // 单位选中数据
-        checkedDepAuditList: [], //  部门
+        checkedDepAuditList: [], //  内设机构
         checkedUserAuditList: [] // 人员选中
       },
       form: {

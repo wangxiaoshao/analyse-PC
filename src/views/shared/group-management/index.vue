@@ -35,7 +35,7 @@
             align="center">
             <template slot-scope="scope">
               <span v-if="scope.row.ownerType===1">本单位</span>
-              <span v-if="scope.row.ownerType===2">本部门</span>
+              <span v-if="scope.row.ownerType===2">本内设机构</span>
               <span v-if="scope.row.ownerType===3">本人</span>
             </template>
           </el-table-column>
@@ -96,7 +96,7 @@ export default {
       currentPage: 1,
       pageSize: 10,
       groupFrom: {
-        ownerType: 1, // 1用户、2部门、3单位
+        ownerType: 1, // 1用户、2内设机构、3单位
         name: '',
         description: '',
         removed: true
@@ -110,7 +110,7 @@ export default {
         label: '本单位'
       }, {
         value: '2',
-        label: '本部门'
+        label: '本内设机构'
       }, {
         value: '3',
         label: '本人'
@@ -141,7 +141,7 @@ export default {
     openDialog () {
       // 创建初始化--防止修改数据覆盖
       this.creatTitle = '创建分组'
-      this.groupFrom.ownerType = 1 // 1用户、2部门、3单位
+      this.groupFrom.ownerType = 1 // 1用户、2内设机构、3单位
       this.groupFrom.name = ''
       this.groupFrom.description = ''
       this.groupFrom.removed = true
@@ -175,7 +175,7 @@ export default {
       this.$router.push({ path: `/group-management/group-detail/${row.id}/${row.ownerType}` })
     },
     // typeChange
-    // 单位部门
+    // 单位内设机构
     typeChange () {
       this.getGroupList(this.currentPage, this.pageSize, this.groupType)
     },

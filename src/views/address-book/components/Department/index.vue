@@ -6,7 +6,7 @@
                 class="eltab"
       >
         <el-table-column prop="name" label width="100" align="left" height="0"></el-table-column>
-        <el-table-column label="部门电话" width="100">部门电话:</el-table-column>
+        <el-table-column label="内设机构电话" width="100">内设机构电话:</el-table-column>
         <el-table-column prop="phone" label></el-table-column>
         <el-table-column label="下级" align="right" width class-name="next-btn">
           <template slot-scope="scope">

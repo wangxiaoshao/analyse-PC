@@ -36,7 +36,7 @@ export default [
     name: 'UnitDetail',
     component: UnitDetail
   },
-  // 部门详情
+  // 内设机构详情
   {
     path: '/departmentDetail/:id',
     name: 'DepartmentDetail',

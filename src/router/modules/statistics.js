@@ -47,7 +47,7 @@ export default [
       }
     ]
   },
-  { // 部门查询
+  { // 内设机构查询
     path: '/department-query',
     name: 'DepartmentQuery',
     component: DepartmentQuery,
@@ -61,7 +61,7 @@ export default [
         meta: { prePath: 'department-query' },
         component: DepartmentQueryList
       },
-      // 部门详情
+      // 内设机构详情
       {
         path: 'departmentDetail/:id',
         name: 'QueryDepartmentDetail',

@@ -36,7 +36,7 @@
           <p v-for="val in itemList" :key="val.id"  @click="doFindNotice(val)">
             <el-row>
               <el-col :span="17"> <span class="msg" :title="val.typeText">{{val.content}}</span></el-col>
-              <el-col :span="7"> <span class="date">{{val.creareTime}}</span></el-col>
+              <el-col :span="7"> <span class="date">{{val.createTime}}</span></el-col>
             </el-row>   
           </p>
         </div>
@@ -211,11 +211,12 @@ export default {
   created(){
     this.getUserIdentityInfo()
     this.getAccountData()
+    this.getNoticeList()
   },
   mounted(){
     this.userIdentityInfo.userName=this.app.option.user.name
     this.getLoginIndex()
-     this.filterDate()
+    //  this.filterDate()
     this.doArray()
    
   },
@@ -253,6 +254,7 @@ export default {
       }
       api[urlNames['notificationList']](data).then((res) => {
         this.noticeList = res.data
+        this.filterDate()
         this.doNoticeList.push(this.noticeList.slice(0,3),this.noticeList.slice(3))
       })
     },
@@ -285,7 +287,7 @@ export default {
     
     doArray(){
       this.dataStr=new Date().getFullYear()+'年'+new Date().getMonth()+'月'+new Date().getDate()+'日'
-      this.doNoticeList.push(this.noticeList.slice(0,3),this.noticeList.slice(3))
+      // this.doNoticeList.push(this.noticeList.slice(0,3),this.noticeList.slice(3))
       this.doAnnouncementList.push(this.announcementList.slice(0,3),this.announcementList.slice(3))
     },
     filterType(val){
@@ -294,8 +296,8 @@ export default {
     },
     filterDate(){
       this.noticeList.forEach(function(val,index){
-        let Date1=new Date(val.creareTime)
-        val.creareTime=Date1.getFullYear()+'年'+(Date1.getMonth()+1)+'月'+Date1.getDate()+'日'
+        let Date1=new Date(val.createTime)
+        val.createTime=Date1.getFullYear()+'年'+(Date1.getMonth()+1)+'月'+Date1.getDate()+'日'
       })
      
     },

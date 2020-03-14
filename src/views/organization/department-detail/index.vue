@@ -43,7 +43,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-         <!-- <el-form-item label="部门简称" prop="shortName">
+         <!-- <el-form-item label="内设机构简称" prop="shortName">
             <el-input v-model="ruleForm.department.shortName"></el-input>
           </el-form-item>-->
           <el-form-item
@@ -243,7 +243,7 @@ export default {
                 this.ruleForm.department.orgId = res.data.id
               })
             }
-            if (res.data.nodeType === 3) { // 上级部门
+            if (res.data.nodeType === 3) { // 上级内设机构
               this.ruleForm.department.parentId = res.data.bindId
               this.getDetail()
             }

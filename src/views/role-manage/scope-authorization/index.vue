@@ -98,12 +98,12 @@ export default {
         }
       })
     },
-    dialogReturnOrg (data) {
+    dialogReturnOrg (data) { 
       let parmas = {
-        uid: parseInt(this.$route.params.id),
+        uid: this.$route.params.id,
         authorizedType: 1,
         userAuthorizedEntityList: data,
-        roleId: parseInt(this.$route.query.roleId)
+        roleId: this.$route.query.roleId
       }
       api[urlNames['insertAuthorizedEntity']](parmas).then((res) => {
         this.$message.success(`授权成功`)
@@ -112,10 +112,10 @@ export default {
     },
     dialogReturnArea (data) {
       let parmas = {
-        uid: parseInt(this.$route.params.id),
+        uid:this.$route.params.id,
         authorizedType: 3,
         userAuthorizedEntityList: data,
-        roleId: parseInt(this.$route.query.roleId)
+        roleId:this.$route.query.roleId
       }
       api[urlNames['insertAuthorizedEntity']](parmas).then((res) => {
         this.$message.success(`授权成功`)

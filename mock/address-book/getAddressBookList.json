@@ -2,7 +2,7 @@
         "type": "GET",
         "url": "/txl/departmentTxl",
         "title": "showDepartmentTxl",
-        "description": "<p>查询部门下人员通讯信息</p>",
+        "description": "<p>查询内设机构下人员通讯信息</p>",
         "version": "1.0.0",
         "group": "TxlController",
         "name": "showDepartmentTxl",
@@ -27,7 +27,7 @@
                         "type": "Number",
                         "optional": false,
                         "field": "departmentId",
-                        "description": "<p>部门id</p>"
+                        "description": "<p>内设机构id</p>"
                     }
                 ]
             },
@@ -110,7 +110,7 @@
         "type": "GET",
         "url": "/txl/orgDepartmentTxl",
         "title": "showOrgDepartmentTxl",
-        "description": "<p>查询单位下部门通讯信息</p>",
+        "description": "<p>查询单位下内设机构通讯信息</p>",
         "version": "1.0.0",
         "group": "TxlController",
         "name": "showOrgDepartmentTxl",
@@ -180,14 +180,14 @@
                         "type": "String",
                         "optional": false,
                         "field": "response.name",
-                        "description": "<p>部门名称</p>"
+                        "description": "<p>内设机构名称</p>"
                     },
                     {
                         "group": "响应结果",
                         "type": "String",
                         "optional": false,
                         "field": "response.phone",
-                        "description": "<p>部门电话</p>"
+                        "description": "<p>内设机构电话</p>"
                     }
                 ]
             },

@@ -75,7 +75,7 @@ export default {
       })
     }
     /**
-     * 查询部门下的下级部门
+     * 查询内设机构下的下级内设机构
      */
     // getTmentChild (subsetId) {
     //   this.childrenTree = [];

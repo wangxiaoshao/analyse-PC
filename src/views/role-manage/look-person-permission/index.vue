@@ -49,7 +49,7 @@
         </el-table-column>-->
         <el-table-column label="操作" width="160" align="center">
           <template slot-scope="scope">
-            <el-button size="mini" type="text" @click="toAuthorization(scope.row.uid)">授权范围</el-button>
+            <el-button size="mini" type="text" @click="toAuthorization(scope.row)">授权范围</el-button>
             <el-button size="mini" type="text" @click="getDelete(scope.row)" :disabled="!hasRight('roleRemoveMember')">删除</el-button>
           </template>
         </el-table-column>
@@ -91,8 +91,8 @@ export default {
         isAllData: false, // 是否需完整数据-默认为不需要（false，只包含用户id）
         notOnlyPerson: true, // 是否选人，默认为false（只选人）
         isSingleSelect: false, // 是否为单选框  false为多选（默认）-人员单选(与notOnlyPerson一起使用，notOnlyPerson为true是有效
-        isSingleOrgSelect: false, // 是否为单选框  false为多选（默认），true为单选(与isOnlyOrg一起使用，isOnlyOrg为true时部门/单位单选)
-        isOnlyOrg: false //  是否选部门/单位 false为不是只选部门，true为只选部门
+        isSingleOrgSelect: false, // 是否为单选框  false为多选（默认），true为单选(与isOnlyOrg一起使用，isOnlyOrg为true时内设机构/单位单选)
+        isOnlyOrg: false //  是否选内设机构/单位 false为不是只选内设机构，true为只选内设机构
       },
       userId: [],
       dialogVisible: false
@@ -132,7 +132,8 @@ export default {
   methods: {
     ...mapMutations(['PERSON_PAGE', 'ROLE_ID']),
     toAuthorization (id) {
-      this.$router.push({ path: `/role-manage/scope-authorization/${id}?roleId=${this.roleId}` })
+      console.log('id1111:',id)
+      // this.$router.push({ path: `/role-manage/scope-authorization/${id}?roleId=${this.roleId}` })
     },
     getGrid () {
       let data = {

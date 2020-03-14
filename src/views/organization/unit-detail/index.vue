@@ -261,7 +261,7 @@ export default {
         type: Object,
         default () {
           return {
-            name: '部门详情',
+            name: '内设机构详情',
             parent: null
           }
         }
@@ -289,7 +289,7 @@ export default {
       openSearchFlag: false,
       addInfo: {
         searchFlag: false,
-        type: 1 // 1.单位，2、部门，3、人员
+        type: 1 // 1.单位，2、内设机构，3、人员
       },
       loading: false,
       isShowEditFlag: true,

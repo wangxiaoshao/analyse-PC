@@ -92,8 +92,8 @@ export default {
         isAllData: true, // 是否需完整数据-默认为不需要（false，只包含用户id）
         notOnlyPerson: true, // 选人，默认为false（只选人）
         isSingleSelect: false, // 是否为单选框  false为多选（默认）-人员单选(与notOnlyPerson一起使用，notOnlyPerson为true是有效
-        isSingleOrgSelect: false, // 是否为单选框  false为多选（默认），true为单选(与isOnlyOrg一起使用，isOnlyOrg为true时部门/单位单选)
-        isOnlyOrg: true //  是否选部门/单位 true为选部门
+        isSingleOrgSelect: false, // 是否为单选框  false为多选（默认），true为单选(与isOnlyOrg一起使用，isOnlyOrg为true时内设机构/单位单选)
+        isOnlyOrg: true //  是否选内设机构/单位 true为选内设机构
       },
       groupMemberInfo: []
     }
@@ -104,7 +104,7 @@ export default {
   methods: {
     /*
         @des：是否具有添加权限
-        @type：1(单位分组),2（部门分组）,3（个人分组）
+        @type：1(单位分组),2（内设机构分组）,3（个人分组）
      */
     hasAddRight () {
       let type = parseInt(this.$route.params.type)

@@ -5,7 +5,7 @@ import urlNames from '../url-names'
 
 export default {
   /**
-   * 获取部门/子部门列表
+   * 获取内设机构/子内设机构列表
    */
   [urlNames.getDepartmentList]: {
     type: 'get',
@@ -15,7 +15,7 @@ export default {
     serve: 'organizationManagePC'
   },
   /**
-   * 获取部门人员列表
+   * 获取内设机构人员列表
    */
   [urlNames.getDepartmentMemberList]: {
     type: 'get',

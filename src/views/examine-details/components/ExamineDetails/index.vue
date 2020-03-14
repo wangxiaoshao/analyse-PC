@@ -140,7 +140,7 @@ export default {
       })
     },
     // TODO 需要按父导航进行跳转
-    jumpDetailPage (type) { // type = 1 || 3部门 || 4单位
+    jumpDetailPage (type) { // type = 1 || 3内设机构 || 4单位
       let prePath = this.$route.meta.prePath
       let path = ''
       switch (+type) {

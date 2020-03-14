@@ -58,7 +58,7 @@ export default {
         for (let i = 0; i < len; i++) {
           let key = this.menuItem.key[i]
           // 显示通信录和文档中心
-          if (key === 'menuAddrBook' || key === 'menuWordCenter') {
+          if (key === 'menuAddrBook' || key === 'menuDocumentCenter') {
             return true
           }
           let tempMenu = menuList.filter(item => {
@@ -77,7 +77,7 @@ export default {
       } else {
         let flag = false
         // 显示通信录和文档中心
-        if (this.menuItem.key === 'menuAddrBook' || this.menuItem.key === 'menuWordCenter' || this.menuItem.key === 'menuHomePage') {
+        if (this.menuItem.key === 'menuAddrBook' || this.menuItem.key === 'menuDocumentCenter' || this.menuItem.key === 'menuHomePage') {
           // debugger
             // alert(1111)
           return true

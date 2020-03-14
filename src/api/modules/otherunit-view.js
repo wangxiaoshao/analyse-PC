@@ -1,7 +1,7 @@
 import urlNames from '../url-names'
 export default {
   /**
-     * 获取其他部门通讯录树形图
+     * 获取其他内设机构通讯录树形图
      */
   // [urlNames.getMainViewList]: {
   //   type: 'get', // 请求类型

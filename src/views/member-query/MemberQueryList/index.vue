@@ -32,7 +32,7 @@
             </el-input>
           </el-col>
           <el-col :span="7">
-            <el-input placeholder="所属部门" v-model="searchQuery.deptName" clearable>
+            <el-input placeholder="所属内设机构" v-model="searchQuery.deptName" clearable>
             </el-input>
           </el-col>
           <el-col :span="7">

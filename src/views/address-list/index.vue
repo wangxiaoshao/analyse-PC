@@ -222,7 +222,7 @@ export default {
 
     },
 
-    /** 单位下部门 */
+    /** 单位下内设机构 */
     getAddressListdepartment(id) {
       api[urlNames['getAddressListTree']]({
         parentId: id
@@ -240,7 +240,7 @@ export default {
       })
     },
 
-    /** 部门下人员getAddressListDepartmentMembers */
+    /** 内设机构下人员getAddressListDepartmentMembers */
     getAddressListDepartmentMembers(id) {
       api[urlNames['getAddressListDepartmentMembers']]({
         deptId: id

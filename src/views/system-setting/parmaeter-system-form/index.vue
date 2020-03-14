@@ -358,7 +358,7 @@ export default {
       systemAuditField: {
         checkedNodeAuditList: [], // 节点选中数据
         checkedOrgAuditList: [], // 单位选中数据
-        checkedDepAuditList: [], //  部门
+        checkedDepAuditList: [], //  内设机构
         checkedUserAuditList: [] // 人员选中
       },
       orgFormSet: {

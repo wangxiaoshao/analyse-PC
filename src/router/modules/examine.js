@@ -57,7 +57,7 @@ export default [
         name: 'WaitApprovalPersonDetail',
         component: WaitApprovalPersonDetail
       },
-      // 部门详情
+      // 内设机构详情
       {
         path: 'departmentDetail/:id',
         name: 'WaitApprovalDepartmentDetail',
@@ -97,7 +97,7 @@ export default [
         name: 'ApprovedPersonDetail',
         component: ApprovedPersonDetail
       },
-      // 部门详情
+      // 内设机构详情
       {
         path: 'departmentDetail/:id',
         name: 'ApprovedDepartmentDetail',
@@ -136,7 +136,7 @@ export default [
         name: 'MyApplicationPersonDetail',
         component: MyApplicationPersonDetail
       },
-      // 部门详情
+      // 内设机构详情
       {
         path: 'departmentDetail/:id',
         name: 'MyApplicationDepartmentDetail',

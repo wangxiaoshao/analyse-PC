@@ -78,7 +78,7 @@ export default {
         userAccount: [], // 账户
         labelId: [],
         identity: {
-          departmentId: '', // 部门id
+          departmentId: '', // 内设机构id
           postName: '', // 岗位名称
           id: '',
           type: null,

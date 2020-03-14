@@ -32,7 +32,7 @@ import urlNames from '../url-names'; // 必须引入url-names，vue文件才能�
 
 export default {
   /**
-   * 获取部门/子部门列表
+   * 获取内设机构/子内设机构列表
    */
   [urlNames.getDepartmentList]: {
     type: 'get',                              // 请求类型
@@ -89,7 +89,7 @@ export default {
 ```
 api[urlNames['getDepartmentList']]({
   parentId: parentId,
-  getDataType: 2 //1:只查机构，2:查机构和部门
+  getDataType: 2 //1:只查机构，2:查机构和内设机构
 }).then(res => {
   // success callback（）
 })

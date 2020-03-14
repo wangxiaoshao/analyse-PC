@@ -193,7 +193,7 @@ export default {
       })
     },
 
-    // 本单位通讯录-部门下人员
+    // 本单位通讯录-内设机构下人员
     getPersonnelmember (departmentId) {
       api[urlNames['getDepartmentPersonList']]({
         departmentId: departmentId
@@ -222,7 +222,7 @@ export default {
     },
 
     /**
- * 其他单位下部门
+ * 其他单位下内设机构
 */
     findDepartmentList (nodeId) {
       api[urlNames['getTree']]
@@ -233,8 +233,8 @@ export default {
     },
 
     /**
-     * 其他单位--部门下所有人员[urlNames.findOrganizationMembers] [urlNames.findMemberList]
-     *   // 查询部门下的所有人员findDepartmentMembers: 'findDepartmentMembers',
+     * 其他单位--内设机构下所有人员[urlNames.findOrganizationMembers] [urlNames.findMemberList]
+     *   // 查询内设机构下的所有人员findDepartmentMembers: 'findDepartmentMembers',
      * // 查询单位下的所有人员findOrganizationMembers: 'findOrganizationMembers',
     */
 

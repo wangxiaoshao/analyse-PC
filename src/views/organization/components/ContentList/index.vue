@@ -282,7 +282,7 @@ export default {
     goSort (val) {
       this.showSortDilog = true
        this.sortParam = {
-        nowId: val.id,
+        nowId: val.id
       }
       
     },
@@ -316,8 +316,9 @@ export default {
           if (res) {
             this.showSortDilog = false
             this.$message.success('排序成功')
-            this.sortValue=''
+            this.contentPage.current=Math.ceil(this.sortValue/this.contentPage.limit)
             this.getGrid()
+            this.sortValue=''
           }
         })
     }

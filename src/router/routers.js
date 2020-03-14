@@ -23,12 +23,18 @@ export default [
   {
     path: '/no-right',
     name: 'noRight',
-    component: noRight
+    component: noRight,
+    meta: {
+      breadcrumb: [{ name: '无权限' }]
+    }
   },
   {
     path: '/notification',
     name: 'notification',
-    component: Notification
+    component: Notification,
+    meta: {
+      breadcrumb: [{ name: '通知中心' }]
+    }
   },
 
   ...organization,

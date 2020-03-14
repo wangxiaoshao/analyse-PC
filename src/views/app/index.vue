@@ -44,21 +44,28 @@ export default {
       user: null,
       userInfo: {},
       asideMenu: asideMenu,
-      asideMenuActive: 0
+      asideMenuActive: '0'
     }
   },
   mixins: [handleBreadcrumb],
   components: { sideMenu, siteHead, SiteBreadcrumb, login, Notice },
   watch: {
     $route(newVal, oldVal) {
-      if (oldVal.path !== '/' && newVal.path !== '/') {
+      const custom =  this.$route.meta.breadcrumb
+      if (Array.isArray(custom)) {
+        this.breadcrumb = custom
+        this.asideMenuActive = '0'
+        this.SET_BREADCRUMB(this.breadcrumb)
+      }
+
+      // if (oldVal.path !== '/' && newVal.path !== '/') {
         let newModule = newVal.path.split('/')[1]
         let oldModule = oldVal.path.split('/')[1]
         this.SET_PAGE_BREADCRUMB([])
         if (newModule !== oldModule) {
-          this.init(newVal.path)
-        }
-      }
+          this.init(newVal.path, Array.isArray(custom))
+        } 
+      // }
       // if (newVal.matched[0].path === '/organization') {
       //   this.scrollPage = false
       // } else {
@@ -77,7 +84,7 @@ export default {
   },
   created() {
     let path = location.hash.replace('#', '')
-    this.init(path)
+    // this.init(path)
   },
   mounted() {
     this.addEventListenForResize()
@@ -93,15 +100,21 @@ export default {
       'DIC_LIST',
       'GET_CONFIRM_INFO'
     ]),
-    init(path) {
+    // isCustomBreadcrumb 是否用户定制的
+    init(path, isCustomBreadcrumb) {
       // 在初始化菜单是，手动将breakLoop置为false，否则findMenuByPath不进入循环
       this.breakLoop = false
-      this.findMenuByPath(this.asideMenu.list, path, 0)
-      if (this.breadcrumb.length > 0) {
-        this.asideMenuActive = this.breadcrumb[
-          this.breadcrumb.length - 1
-        ].menuId.toString()
-      }
+      const custom =  this.$route.meta.breadcrumb
+
+      if (!isCustomBreadcrumb) {
+        this.findMenuByPath(this.asideMenu.list, path, 0)
+        if (this.breadcrumb.length > 0) {
+          this.asideMenuActive = this.breadcrumb[
+            this.breadcrumb.length - 1
+          ].menuId.toString()
+        }
+      } 
+      
       this.SET_BREADCRUMB(this.breadcrumb)
       this.SET_WINDOWHEIGHT(document.body.offsetHeight)
       this.SET_WINDOWWIDTH(document.body.offsetWidth)

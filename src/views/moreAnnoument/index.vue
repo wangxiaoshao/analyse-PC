@@ -1,6 +1,6 @@
 <template>
   <div class="moreAnnoument">
-    <el-table :show-header="false"  :data='tableData' 	>
+    <el-table :show-header="false"  :data='tableData'>
              <template slot="empty">
                 <div class="empty">
                   <p><img class="data-pic" src="@src/common/images/no-data.png" alt=""/></p>
@@ -53,12 +53,8 @@ export default {
     }
   },
    mounted () {
-  //  this.SET_BREADCRUMB([])
-  console.log('breadcrumb:',this.app.breadcrumb)
-  this.app.breadcrumb=[{name: '平台公告'}]
-    // this.pushBreadcrumb({
-    //   name: '平台公告'
-    // })
+  // this.app.breadcrumb=[{name: '平台公告'}]
+  this.page.total=1
    
   },
    computed: {

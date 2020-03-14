@@ -53,7 +53,7 @@ export default {
     }
   },
   /**
-   * 根据ID查询部门详情
+   * 根据ID查询内设机构详情
    */
   [urlNames.findDepartmentById]: {
     type: 'get',
@@ -63,7 +63,7 @@ export default {
     mock: '/findDepartmentById.json' // development模式下，本地mock数据
   },
   /**
-   * 添加内设机构、设置部门
+   * 添加内设机构、设置内设机构
    */
   [urlNames.createDepartment]: {
     type: 'post',
@@ -88,7 +88,7 @@ export default {
       'Content-Type': 'application/json'
     }
   },
-  // 查询部门下的所有人员
+  // 查询内设机构下的所有人员
   [urlNames.findDepartmentMembers]: {
     type: 'get',
     url: '/api/jg_manage/user/findDepartmentMembers',
@@ -123,7 +123,7 @@ export default {
       'Content-Type': 'application/json'
     }
   },
-  // 部门下人员数值排序
+  // 内设机构下人员数值排序
   [urlNames.setSortThroughNumerical]: {
     type: 'post',
     url: '/api/jg_manage/user/setSortThroughNumerical',

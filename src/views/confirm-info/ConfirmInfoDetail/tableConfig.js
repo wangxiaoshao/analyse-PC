@@ -3,7 +3,7 @@ const tableConfig = {
   departmentName: {
     key: 'departmentName',
     tooltip: false,
-    label: '部门名称',
+    label: '内设机构名称',
     sortable: false,
     showOverflowTooltip: false,
     minWidth: 100

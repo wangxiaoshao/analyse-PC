@@ -24,7 +24,7 @@ export default {
   //   mock: '/address-book/addressBookList.json' // development模式下，本地mock数据地址
   // },
   /**
-   * 查询部门下的下级部门
+   * 查询内设机构下的下级内设机构
    */
   [urlNames.getDepartmentChildtree]: {
     type: 'get', // 请求类型
@@ -34,7 +34,7 @@ export default {
     mock: '/address-book/departmentChildtree.json' // development模式下，本地mock数据地址
   },
   /**
-   * 查询单位下部门通讯信息
+   * 查询单位下内设机构通讯信息
    */
   [urlNames.getOrgDepartmentTxlList]: {
     type: 'get', // 请求类型
@@ -54,7 +54,7 @@ export default {
     mock: '/address-book/getOrgUserTxlList.json' // development模式下，本地mock数据地址
   },
   /**
-   * 查询部门下人员通讯信息
+   * 查询内设机构下人员通讯信息
    */
   [urlNames.getDepartmentPersonList]: {
     type: 'get', // 请求类型

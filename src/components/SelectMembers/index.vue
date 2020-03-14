@@ -22,7 +22,7 @@
         class="input-with-select">
         <el-select v-model="searchType" style="width: 80px" @change="getType" slot="prepend" placeholder="请选择">
           <el-option v-if="selectCategory!==0" label="单位" value="2">单位</el-option>
-          <el-option v-if="selectCategory!==0" label="部门" value="3">部门</el-option>
+          <el-option v-if="selectCategory!==0" label="内设机构" value="3">内设机构</el-option>
           <el-option v-if="selectCategory===0"  label="人员" value="12">人员</el-option>
         </el-select>
         <el-button slot="append" @click="getResult" icon="el-icon-search"></el-button>
@@ -130,7 +130,7 @@ export default {
       submitDisable: '',
       searchKeyWord: '',
       searchType: '12', // 搜索类型
-      selectCategory: 0, // 0 人员 ，1 部门/单位
+      selectCategory: 0, // 0 人员 ，1 内设机构/单位
       nodeTree: [], // 树
       defaultProps: {
         children: 'children',
@@ -142,9 +142,9 @@ export default {
       memberList: [], // 人员
       membersModel: [], // 人员
       memberSingleModel: [], // 单选
-      orgList: [], // 部门
-      orgsModel: [], // 部门
-      orgSingleModel: [], // 部门单选
+      orgList: [], // 内设机构
+      orgsModel: [], // 内设机构
+      orgSingleModel: [], // 内设机构单选
       // 右侧已经选择的成员数据
       selectedMembers: [],
       selectedMembersModel: [],
@@ -175,8 +175,8 @@ export default {
   isAllData: true, // 是否需完整数据-默认为不需要（false，只包含用户id）
   notOnlyPerson: true, // 选人，默认为false（只选人）
   isSingleSelect: false, // 是否为单选框  false为多选（默认）-人员单选(与notOnlyPerson一起使用，notOnlyPerson为true是有效
-  isSingleOrgSelect: false, // 是否为单选框  false为多选（默认），true为单选(与isOnlyOrg一起使用，isOnlyOrg为true时部门/单位单选)
-  isOnlyOrg: true //  是否选部门/单位 true为选部门
+  isSingleOrgSelect: false, // 是否为单选框  false为多选（默认），true为单选(与isOnlyOrg一起使用，isOnlyOrg为true时内设机构/单位单选)
+  isOnlyOrg: true //  是否选内设机构/单位 true为选内设机构
   }
   */
     // 返回数据
@@ -184,7 +184,7 @@ export default {
       if (this.seleceDialog.isOnlyOrg && this.seleceDialog.notOnlyPerson) {
         this.$emit('dialogReturnMembersInfo', this.selectedMembers, this.selectedOrgs)
       } else {
-        // 单独选人或者单独选部门
+        // 单独选人或者单独选内设机构
         if (this.selectCategory === 0) {
           if (this.seleceDialog.isAllData) {
             this.$emit('dialogReturnMembersInfo', this.selectedMembers, this.selectCategory)
@@ -248,7 +248,7 @@ export default {
       if (this.seleceDialog.isOnlyOrg) {
         this.findcheckNodeTree(node.id)
       }
-      // （1:分类结点、3:部门结点、2:单位结点）
+      // （1:分类结点、3:内设机构结点、2:单位结点）
       if (this.selectCategory === 0) {
         if (node.nodeType === 3) {
           this.findDepartmentMembers(node.bindId)
@@ -257,7 +257,7 @@ export default {
         }
       }
     },
-    // 查询部门下的所有人员
+    // 查询内设机构下的所有人员
     findDepartmentMembers (deptId) {
       api[urlNames['findDepartmentMembers']]({
         deptId: deptId
@@ -376,7 +376,7 @@ export default {
     getSelectedMembers () {
       return [...this.selectedMembers]
     },
-    // 部门/单位处理
+    // 内设机构/单位处理
     // 全选
     toggleAllOrgs (selected) {
       let that = this

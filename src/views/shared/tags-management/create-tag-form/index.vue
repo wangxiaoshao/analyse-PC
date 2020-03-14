@@ -13,7 +13,7 @@
             <el-form-item label="标签类别">
               <el-select v-model="labelForm.type" placeholder="请选择分类">
                 <el-option label="单位标签" :value="1"></el-option>
-                <el-option label="部门标签" :value="2"></el-option>
+                <el-option label="内设机构标签" :value="2"></el-option>
                 <el-option label="个人标签" :value="3"></el-option>
               </el-select>
             </el-form-item>

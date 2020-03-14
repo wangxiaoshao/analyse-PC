@@ -59,7 +59,7 @@ export default {
   },
 
   /*
-     * 查询部门下的所有人员
+     * 查询内设机构下的所有人员
      * */
   [urlNames.findDepartmentMembers]: {
     type: 'get',
@@ -90,7 +90,7 @@ export default {
     mock: 'findOrganizationList.json'
   },
   /*
-     * 部门查询
+     * 内设机构查询
      * */
   [urlNames.findDepartmentList]: {
     type: 'get',
