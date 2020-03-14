@@ -81,7 +81,8 @@ export default {
         reason: ''
       },
       oldFrom: {},
-      addFlag: this.isDefaultFlag,
+      // addFlag: this.isDefaultFlag,
+      addFlag: true,
       activeAccount: '1',
       tags: [], // 提交的标签
       options: [],
@@ -105,11 +106,7 @@ export default {
       this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1)
     },
     creatAccount () {
-      if (this.addFlag === true) {
-        this.addFlag = false
-      } else {
-        this.addFlag = true
-      }
+      this.addFlag=!this.addFlag
     },
     getDefaultAccount (val) {
       this.accountList.forEach((item) => {

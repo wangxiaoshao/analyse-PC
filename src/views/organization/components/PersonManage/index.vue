@@ -549,7 +549,6 @@ export default {
     },
     // 选择身份类型
     getIdentityType(val) {
-      alert(val)
       this.postFrom.type = val
     },
     // 选择民族

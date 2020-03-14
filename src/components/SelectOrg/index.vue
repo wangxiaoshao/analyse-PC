@@ -68,6 +68,7 @@
 
 <script>
 import { api, urlNames } from '@src/api'
+import { constants } from 'http2'
 
 export default {
   name: 'SelectOrg',
@@ -103,6 +104,7 @@ export default {
     submitBackData () {
       let idList = []
       let itemId = {}
+      // console.lo
       this.selectedOrgs.forEach(item => {
         itemId = {
           authorizedOid: item.id
