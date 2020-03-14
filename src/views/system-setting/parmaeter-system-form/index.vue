@@ -164,11 +164,11 @@
       <div class="header">其他设置</div>
       <el-form ref="systemMessageRemind" label-width="160px">
         <el-form-item label="设置信息确认弹窗提醒">
-          <el-checkbox-group size="medium" v-model="systemMessageRemind">
-            <el-checkbox-button label="7">每月最后七天</el-checkbox-button>
-            <el-checkbox-button label="5">每月最后五天</el-checkbox-button>
-            <el-checkbox-button label="3">每月最后三天</el-checkbox-button>
-          </el-checkbox-group>
+          <el-radio-group size="medium" v-model="systemMessageRemind">
+            <el-radio-button label="7">每月最后七天</el-radio-button>
+            <el-radio-button label="5">每月最后五天</el-radio-button>
+            <el-radio-button label="3">每月最后三天</el-radio-button>
+          </el-radio-group>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="systemSubmit(2)">保存</el-button>
