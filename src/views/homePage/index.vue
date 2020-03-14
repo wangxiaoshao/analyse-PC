@@ -64,8 +64,8 @@
         <span style="color:#999;font-size:12px;margin-left:5px">更新于{{dataStr}}</span></div>
       <div class="info-box">
         <div class="detailInfo">
-          <p>组织机构注册人数</p>
-          <p>{{countData.organizationCount}}</p>
+          <p>组织机构注册总人数</p>
+          <p>{{countData.userCount}}</p>
           <ul>
             <li>日<a href="">0% <i class="el-icon-top"></i></a></li>
             <li>周<a href="">10% <i class="el-icon-top"></i></a></li>
@@ -73,8 +73,8 @@
           </ul>
         </div>
         <div class="detailInfo">
-          <p>新增单位数</p>
-          <p>{{countData.userCount}}</p>
+          <p>单位总数</p>
+          <p>{{countData.organCount}}</p>
           <ul>
             <li>日<a href="">1% <i class="el-icon-top"></i></a></li>
             <li>周<a href="">5% <i class="el-icon-top"></i></a></li>
@@ -82,7 +82,7 @@
           </ul>
         </div>
         <div class="detailInfo">
-          <p>新增内设机构数</p>
+          <p>内设机构总数</p>
           <p>{{countData.deptCount}}</p>
           <ul>
             <li>日<a href="">0% <i class="el-icon-top"></i></a></li>
@@ -91,17 +91,17 @@
           </ul>
         </div>
         <div class="detailInfo">
-          <p>新增人员数</p>
-          <p>{{countData.organCount}}</p>
+          <p>人员变动数</p>
+          <p>{{changeAccount}}</p>
           <ul>
             <li>日<a href="">0% <i class="el-icon-top"></i></a></li>
-            <li>周<a href="">12% <i class="el-icon-top"></i></a></li>
-            <li>月<a href="">30% <i class="el-icon-top"></i></a></li>
+            <li>周<a href="">3% <i class="el-icon-top"></i></a></li>
+            <li>月<a href="">5% <i class="el-icon-top"></i></a></li>
           </ul>
         </div>
         <div class="detailInfo">
           <p>接入应用总数</p>
-          <p>6</p>
+          <p>{{applyCount}}</p>
           <ul>
             <li>日<a href="">0% <i class="el-icon-top"></i></a></li>
             <li>周<a href="">0% <i class="el-icon-top"></i></a></li>
@@ -203,8 +203,15 @@ export default {
       doAnnouncementList:[],
       dataStr:'',
       // 详细数据
-      countData: {},
-      loginNumber:1
+      countData: {
+        userCount:null,
+        deptCount:null,
+        organCount:null
+      },
+      loginNumber:1,
+      applyCount:null,
+      // 人员变动数
+      changeAccount:null
 
     }
   },
@@ -212,11 +219,14 @@ export default {
     this.getUserIdentityInfo()
     this.getAccountData()
     this.getNoticeList()
+    // 获取接应用总数 
+    api[urlNames['findApplicationCount']]().then((res) => {
+        this.applyCount = res.data[0]
+      })
   },
   mounted(){
     this.userIdentityInfo.userName=this.app.option.user.name
     this.getLoginIndex()
-    //  this.filterDate()
     this.doArray()
    
   },
@@ -226,9 +236,6 @@ export default {
       api[urlNames['loginIndex']]().then(
         res => {
          this.loginNumber=res.data
-        },
-        () => {
-          /* this.$message.error(`没有内容`) */
         }
       )
     },
@@ -260,10 +267,9 @@ export default {
     },
 
     // 获取昨日数据
+    // getStatistiscCount
     getAccountData(){
-      api[urlNames['getStatistiscManageDto']]({
-        type: 1
-      }).then((res) => {
+      api[urlNames['getStatistiscCount']]().then((res) => {
         this.countData = res.data
       })
     },

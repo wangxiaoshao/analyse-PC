@@ -8,6 +8,7 @@ const AppManagement = () => import('@src/views/shared/app-management/index.vue')
 const CreateAppManagement = () => import('@src/views/shared/create-app-management/index.vue')
 const TagsManagement = () => import('@src/views/shared/tags-management/index.vue')
 const FieldsManagement = () => import('@src/views/shared/fields-management/index.vue')
+const PushLog = () => import('@src/views/shared/push-log/index.vue')
 
 export default [
   // 共享管理
@@ -54,6 +55,11 @@ export default [
         path: '/app-management/create-app-management',
         name: 'CreateAppManagement',
         component: CreateAppManagement
+      },
+      {
+        path: '/app-management/push-log',
+        name: 'PushLog',
+        component: PushLog
       },
       {
         path: '/app-management/fields-management',

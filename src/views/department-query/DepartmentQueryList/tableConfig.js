@@ -8,14 +8,14 @@ const tableConfig = {
     showOverflowTooltip: false,
     minWidth: 100
   },
-  id: {
-    key: 'id',
-    tooltip: true,
-    label: '内设机构ID',
-    sortable: false,
-    showOverflowTooltip: false,
-    minWidth: 100
-  },
+  // id: {
+  //   key: 'id',
+  //   tooltip: true,
+  //   label: '内设机构ID',
+  //   sortable: false,
+  //   showOverflowTooltip: false,
+  //   minWidth: 100
+  // },
   orgName: {
     key: 'orgName',
     tooltip: false,

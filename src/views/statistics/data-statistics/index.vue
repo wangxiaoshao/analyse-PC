@@ -30,28 +30,28 @@
         <div style="position: absolute" class="register">
           <div>//截止今天</div>
           <div>机构人员注册总数</div>
-          <div>{{countData.organizationCount}}</div>
+          <div>{{countData.userCount}}</div>
         </div>
       </span>
       <span class="template-two light-purple">
         <div style="position: absolute" class="add-unit">
           <div>//{{dateName}}</div>
-          <div>新增单位</div>
-          <div>{{countData.userCount}}</div>
+          <div>内设机构总数</div>
+          <div>{{countData.deptCount}}</div>
         </div>
       </span>
       <span class="template-two light-blue">
         <div style="position: absolute" class="add-depart">
           <div>//{{dateName}}</div>
-          <div>新增内设机构</div>
-          <div>{{countData.deptCount}}</div>
+          <div>单位总数</div>
+          <div>{{countData.organCount}}</div>
         </div>
       </span>
       <span class="template-two light-orange">
         <div style="position: absolute" class="add-member">
           <div>//{{dateName}}</div>
-          <div>新增人员</div>
-          <div>{{countData.organCount}}</div>
+          <div>接入应用总数</div>
+          <div>{{applyCount}}</div>
         </div>
       </span>
     </div>
@@ -135,7 +135,12 @@ export default {
         type: 1
       },
       activeName: 'unit',
-      countData: {},
+      countData: {
+         userCount:null,
+        deptCount:null,
+        organCount:null
+      },
+      applyCount:null,
       echartsAry1: [
             ['amount', 'product'],
             [58212, '贵阳市'],
@@ -179,6 +184,10 @@ export default {
   },
   created () {
     this.initDataStatistics()
+    // 获取接应用总数 
+    api[urlNames['findApplicationCount']]().then((res) => {
+        this.applyCount = res.data[0]
+      })
   },
   methods: {
     ...mapMutations(['SET_APPLICATION_PAGE', 'SET_APPLICATION_SEARCH_QUERY']),

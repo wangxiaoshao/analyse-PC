@@ -34,9 +34,7 @@
     <el-dialog :visible.sync="submitVisible" width="410px">
       <div slot="title" style="padding:20px; background-color: #fff;">
         <span class="msg-title">调出申请提交</span>
-        <span class="svg-container" style="color:red">
-          <span class="iconfont iconzuzhijigou"></span>
-        </span>
+       <i class="el-icon-document-copy" style="color:red"></i>
       </div>
       <div class="msg-box">您的调出申请已提交，等待管理员审核通过后即可生效。</div>
       <div slot="footer" class="dialog-footer">

@@ -93,8 +93,14 @@ export default {
           })
           let lastStr = this.areaNameList[this.areaNameList.length - 1]
           let lastStr1 = this.orgNameList[this.orgNameList.length - 1]
-          this.areaNameList.splice(this.areaNameList.length - 1, 1, lastStr.substring(0, lastStr.length - 1))
-          this.orgNameList.splice(this.orgNameList.length - 1, 1, lastStr1.substring(0, lastStr1.length - 1))
+          if(this.areaNameList.length>0){
+            this.areaNameList.splice(this.areaNameList.length - 1, 1, lastStr.substring(0, lastStr.length - 1))
+          }
+          if(this.orgNameList.length>0){
+             this.orgNameList.splice(this.orgNameList.length - 1, 1, lastStr1.substring(0, lastStr1.length - 1))
+          }
+         
+         
         }
       })
     },

@@ -69,7 +69,7 @@
             </div>
           </el-form-item>
           <el-form-item label="统一社会信用代码" prop="organization.creditId">
-            <el-input v-model="ruleForm.organization.creditId" @blur="handleCredit"  @change="handleCredit">
+            <el-input v-model="ruleForm.organization.creditId" @blur="handleCredit"  @change="handleCredit" :disabled="creditIddisable">
               <i class="el-icon-loading iconload" v-if="loadVisiable" slot="suffix"></i>
             </el-input>
             <div class="tip-msg">
@@ -80,6 +80,9 @@
               <p style="color:green" v-if="successVisiable">
                 <i class="el-icon-success"></i>
                 社会信用代码验证成功
+              </p>
+               <p style="color:#999" v-if="requiring">
+                正在验证...
               </p>
             </div>
           </el-form-item>
@@ -275,6 +278,7 @@ export default {
         parent: null
       },
       loadVisiable: false, //信用代码加载图标,
+      requiring:false,//验证中
       successVisiable: false,
       errorVisiable: false,
       areaFlag: false,
@@ -305,6 +309,7 @@ export default {
       defaultList: [],
       delSelectLabelId: null, // 添加后未提交到后台移除的标签
       tempLabelId: [],
+      creditIddisable:false,
       rules: {
         'organization.name': [
           { required: true, message: '请输入单位名称', trigger: 'blur' },
@@ -420,7 +425,11 @@ export default {
             this.ruleForm.organization.zipCode = res.data.zipCode
             this.ruleForm.organization.ext01 = res.data.ext01
             this.ruleForm.organization.ext02 = res.data.ext02
-            this.ruleForm.organization.creditId = res.data.creditId
+             this.ruleForm.organization.creditId = res.data.creditId
+            if(res.data.creditId&&res.data.creditId!=''){
+              this.creditIddisable=true
+            }
+           
             if (this.$route.name === 'UnitEdit') {
               this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
             }
@@ -506,7 +515,9 @@ export default {
         res => {
           this.allAreaList = res.data
           this.findMenuByPath(res.data)
-          this.ruleForm.areaId = this.areaOption[this.areaOption.length - 1].id
+          if(this.areaOption[this.areaOption.length - 1].id){
+            this.ruleForm.areaId = this.areaOption[this.areaOption.length - 1].id
+          }
           this.areaOption.forEach(item => {
             this.areaCheck += item.name + '/'
           })
@@ -612,6 +623,9 @@ export default {
         this.$message.error('请输入单位名称')
       }else if(this.ruleForm.organization.creditId!==''){
         this.loadVisiable = true
+        this.requiring=true
+        this.successVisiable = false
+        this.errorVisiable = false
         let param = {
           orgName: this.ruleForm.organization.name,
           creditId: this.ruleForm.organization.creditId
@@ -621,13 +635,16 @@ export default {
             if (res.data == 1) {
               window.setTimeout(() => {
                 this.successVisiable = true
+                this.requiring=false
                 this.loadVisiable = false
                 this.errorVisiable = false
+               
               }, 2000)
             } else {
               this.errorVisiable = true
               this.loadVisiable = false
               this.successVisiable = false
+              this.requiring=false
             }
           },
           () => {}

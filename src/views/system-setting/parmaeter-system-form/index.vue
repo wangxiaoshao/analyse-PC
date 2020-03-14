@@ -244,7 +244,7 @@
       </el-form>
     </div>
     <div class="parameter-item">
-      <div class="header">申请系统配置</div>
+      <div class="header">系统配置</div>
         <el-form label-width="auto" :model="systemNameLogoIcon">
           <el-row :gutter="8">
             <el-col>

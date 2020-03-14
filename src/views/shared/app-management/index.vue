@@ -58,7 +58,8 @@
         width="140">
         <template slot-scope="scope">
           <el-button @click="handleClick(scope.row)" type="text" size="small" :disabled="!hasRight('shareAppSetting')">编辑</el-button>
-<!--          <el-button  @click="toDataLog" type="text" size="small" :disabled="!hasRight('shareAppLoggingAccess')">日志</el-button>-->
+         <!-- <el-button  @click="toDataLog" type="text" size="small" :disabled="!hasRight('shareAppLoggingAccess')">日志</el-button> -->
+          <el-button  @click="toDataLog(scope.row)" type="text" size="small">日志</el-button>
           <el-button  @click="toSetFields(scope.row)" type="text" size="small">配置</el-button>
         </template>
       </el-table-column>
@@ -95,7 +96,7 @@ export default {
   },
   methods: {
     toDataLog () {
-      this.$router.push({ path: '/data-log' })
+      this.$router.push({ name: 'PushLog' })
     },
     //  获取应用
     getAppList (page, limt) {
@@ -111,8 +112,8 @@ export default {
       this.$router.push({ name: 'CreateAppManagement', query: { id: row.id } })
     },
     // 创建应用
-    createApp () {
-      this.$router.push({ name: 'CreateAppManagement' })
+    createApp (row) {
+      this.$router.push({ name: 'CreateAppManagement',query: { id: row.id }  })
     },
     toSetFields (row) {
       this.$router.push({ name: 'FieldsManagement', query: { id: row.id } })

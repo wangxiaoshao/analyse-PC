@@ -133,7 +133,7 @@ export default {
       } else if (e === 2) {
         this.navigation1.name = '全省通讯录'
         this.getAddressListOthertTree()
-        this.getAddressListOrganizationMembers()
+        // this.getAddressListOrganizationMembers()
         // this.getAddressListOtherUser()
       }
     },
@@ -232,11 +232,19 @@ export default {
     },
 
     /** 单位下人员 getAddressListOrganizationMembers */
-    getAddressListOrganizationMembers() {
+    getAddressListOrganizationMembers(id) {
+      if(!id){
+        id=this.app.option.user.orgId
+      }
       api[urlNames['getAddressListOrganizationMembers']]({
-        orgId: this.app.option.user.orgId
+        orgId: id
       }).then(res => {
+        let ary=res.data
         this.memberList = res.data
+        this.departmentList=[...this.departmentList,...ary]
+
+        // this.departmentList.push()
+        console.log('this.departmentList:',this.departmentList)
       })
     },
 

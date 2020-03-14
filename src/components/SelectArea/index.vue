@@ -59,7 +59,7 @@
         </div>
       </div>
       <div class="submit">
-        <el-button type="primary" @click="submitBackData">确定</el-button>
+        <el-button type="primary" @click="submitBackData">确定1111</el-button>
         <el-button @click="handleClose">取消</el-button>
       </div>
     </el-dialog>
@@ -105,7 +105,7 @@ export default {
       let itemId = {}
       this.selectedOrgs.forEach(item => {
         itemId = {
-          authorizedOid: item.bindId
+          authorizedOid: item.id
         }
         idList.push(itemId)
       })
@@ -186,7 +186,6 @@ export default {
       }
     },
     toggleOrg (orgs) {
-      console.log(this.selectedOrgs)
       this.selectedOrgs = orgs.map((org) => {
         const label = JSON.parse(org)
         this.addToSelectedOrgModel(org)
