@@ -1,6 +1,6 @@
 <template>
 <div class="parmaeterFrom">
-  <div class="parameter-item">
+  <div class="parameter-item" v-if="false">
     <div class="header">用户密码安全设置</div>
     <el-form ref="orgUserSecuritySettings" :model="orgUserSecuritySettings" label-width="160px">
       <el-row>
