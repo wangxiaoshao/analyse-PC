@@ -530,6 +530,7 @@ export default {
       this.modifiePwdVisible = true
     },
     submitForm(formName) {
+     
       this.$refs[formName].validate(valid => {
         if (valid) {
           let data = {
@@ -545,6 +546,7 @@ export default {
                 message: status === 0 ? '修改成功' : '修改失败',
                 type: status === 0 ? 'success' : 'error'
               })
+               this.modifiePwdVisible = false 
             },
             () => {}
           )

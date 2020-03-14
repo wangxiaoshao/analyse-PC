@@ -1,7 +1,7 @@
 <template>
   <div class="parameter-settings">
     <el-tabs v-model="activeName">
-      <el-tab-pane label="系统参数" >
+      <el-tab-pane label="全局参数设置" >
         <parmaeter-system-form></parmaeter-system-form>
       </el-tab-pane>
       <el-tab-pane label="单位参数">

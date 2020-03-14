@@ -30,7 +30,7 @@
       <div class="resetPwd">
         <p style="margin:10px 0;">
           <i class="el-icon-info" :style="{fontSize: '16px',color:'#FC7049'}"></i>
-          点击以下按钮进行密码修改，请确保修改改账号的原密码输入正确，如忘记密码请点击重置密码进行密码重置。
+          点击以下按钮进行密码修改，请确保修改该账号的原密码输入正确，如忘记密码请点击重置密码进行密码重置。
         </p>
         <el-button type="primary" @click="modifiePwd">修改密码</el-button>
       </div>
