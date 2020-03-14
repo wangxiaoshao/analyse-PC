@@ -68,8 +68,6 @@
 
 <script>
 import { api, urlNames } from '@src/api'
-import { constants } from 'http2'
-
 export default {
   name: 'SelectOrg',
   props: ['openSelectOrg'],
