@@ -119,38 +119,38 @@
     <el-form ref="orgAddressBookSet" :model="orgAddressBookSet" label-width="120px">
       <el-form-item label="所有单位信息">
         <el-radio-group v-model="orgAddressBookSet.allOrgInfo">
-          <el-radio :label="false">不可见</el-radio>
-          <el-radio :label="true">可见</el-radio>
+          <el-radio :label="0">不可见</el-radio>
+          <el-radio :label="1">可见</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="人员姓名">
         <el-radio-group v-model="orgAddressBookSet.userName">
-          <el-radio :label="false">不可见</el-radio>
-          <el-radio :label="true">可见</el-radio>
+          <el-radio :label="0">不可见</el-radio>
+          <el-radio :label="1">可见</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="人员手机号">
         <el-radio-group v-model="orgAddressBookSet.userMobile">
-          <el-radio :label="false">不可见</el-radio>
-          <el-radio :label="true">可见</el-radio>
+          <el-radio :label="0">不可见</el-radio>
+          <el-radio :label="1">可见</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="单位座机号">
         <el-radio-group v-model="orgAddressBookSet.userPhone">
-          <el-radio :label="false">不可见</el-radio>
-          <el-radio :label="true">可见</el-radio>
+          <el-radio :label="0">不可见</el-radio>
+          <el-radio :label="1">可见</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="人员详情页">
         <el-radio-group v-model="orgAddressBookSet.userDetail">
-          <el-radio :label="false">不可见</el-radio>
-          <el-radio :label="true">可见</el-radio>
+          <el-radio :label="0">不可见</el-radio>
+          <el-radio :label="1">可见</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="内设机构座机号">
         <el-radio-group v-model="orgAddressBookSet.depPhone">
-          <el-radio :label="false">不可见</el-radio>
-          <el-radio :label="true">可见</el-radio>
+          <el-radio :label="0">不可见</el-radio>
+          <el-radio :label="1">可见</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item>
@@ -161,7 +161,7 @@
   </div>
   <div class="parameter-item">
     <div class="header">其他设置</div>
-    <el-form ref="orgMessageRemind" :model="orgMessageRemind" label-width="160px">
+    <el-form ref="orgMessageRemind" label-width="160px">
       <el-form-item label="设置信息确认弹窗提醒">
         <el-radio-group size="medium" v-model="orgMessageRemind">
           <el-radio-button label="7">每月最后七天</el-radio-button>
@@ -284,7 +284,7 @@ export default {
         userDetail: false,
         depPhone: false
       },
-      orgMessageRemind: {}, // 消息提醒
+      orgMessageRemind: 0, // 消息提醒
       modeAuditList: [],
       orgAuditList: orgAuditList, // 单位审核字段数据
       nodeAuditList: nodeAuditList,
