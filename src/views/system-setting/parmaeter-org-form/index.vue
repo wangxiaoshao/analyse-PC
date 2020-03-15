@@ -260,7 +260,7 @@
         </div>
         <div class="msg-box">打开（关闭）单位信息确认后，从下月起，您的单位信息将不再需要手动确认。</div>
         <div slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="onToggleMessageConfirm()">确定关闭（打开）</el-button>
+            <el-button type="primary" @click="onSaveOrgMessageConfirm()">确定关闭（打开）</el-button>
             <el-button type="default" @click="orgMsgConfirmVisible = false; orgMessageConfirm = !orgMessageConfirm;" width="100px">取 消</el-button>
         </div>
     </el-dialog>
@@ -685,6 +685,7 @@ export default {
 
       // 处理“单位确认信息”开关的切换
     },
+    onSaveOrgMessageConfirm () {},
     onSubmit (flag) {
       console.log('submit!')
     },

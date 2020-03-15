@@ -163,17 +163,24 @@
     <div class="parameter-item">
       <div class="header">其他设置</div>
       <el-form ref="systemMessageRemind" label-width="160px">
-        <el-form-item label="设置信息确认弹窗提醒">
-          <el-radio-group size="medium" v-model="systemMessageRemind">
-            <el-radio-button label="7">每月最后七天</el-radio-button>
-            <el-radio-button label="5">每月最后五天</el-radio-button>
-            <el-radio-button label="3">每月最后三天</el-radio-button>
-          </el-radio-group>
+        <el-form-item label="单位信息确认">
+            <el-switch v-model="orgMessageConfirm" @change="orgMsgConfirmVisible = true" active-text="" inactive-text="">
+            </el-switch>
         </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="systemSubmit(2)">保存</el-button>
-          <el-button>取消</el-button>
-        </el-form-item>
+        <div v-if="orgMessageConfirm">
+          <el-form-item label="设置信息确认弹窗提醒">
+            <el-radio-group size="medium" v-model="systemMessageRemind">
+              <el-radio-button label="7">每月最后七天</el-radio-button>
+              <el-radio-button label="5">每月最后五天</el-radio-button>
+              <el-radio-button label="3">每月最后三天</el-radio-button>
+              <el-radio-button label="-1">不提醒</el-radio-button>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="systemSubmit(2)">保存</el-button>
+            <el-button>取消</el-button>
+          </el-form-item>
+        </div>
       </el-form>
     </div>
     <div class="parameter-item">
@@ -191,7 +198,7 @@
           <!--              <div class="table-td"></div>-->
           <!--            </div>-->
           <div class="table-row">
-            <div class="table-td">
+            <div class="table-td" style="text-align: center">
               节点
             </div>
             <div class="table-td">
@@ -202,8 +209,8 @@
             </div>
           </div>
           <div class="table-row">
-            <div class="table-td">
-              <p>单位</p>
+            <div class="table-td" style="text-align: center">
+              单位
             </div>
             <div class="table-td">
               <p>
@@ -215,7 +222,7 @@
             </div>
           </div>
           <div class="table-row">
-            <div class="table-td">
+            <div class="table-td" style="text-align: center">
               内设机构
             </div>
             <div class="table-td">
@@ -226,7 +233,7 @@
             </div>
           </div>
           <div class="table-row">
-            <div class="table-td">
+            <div class="table-td" style="text-align: center">
               人员
             </div>
             <div class="table-td">
@@ -299,6 +306,21 @@
         </el-form>
 
     </div>
+
+    <!-- 单位确认信息对话框 -->
+    <el-dialog :visible.sync="orgMsgConfirmVisible" width="410px" :show-close="false">
+        <div slot="title" style="padding:20px; background-color: #fff;">
+            <span class="msg-title">确认关闭单位信息确认</span>
+            <span class="svg-container" style="color:red">
+                <span class="el-icon-document-copy"></span>
+            </span>
+        </div>
+        <div class="msg-box">打开（关闭）单位信息确认后，从下月起，您的单位信息将不再需要手动确认。</div>
+        <div slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="onToggleMessageConfirm()">确定关闭（打开）</el-button>
+            <el-button type="default" @click="orgMsgConfirmVisible = false; orgMessageConfirm = !orgMessageConfirm;" width="100px">取 消</el-button>
+        </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -307,20 +329,332 @@ import { mapState, mapMutations } from 'vuex'
 import uploadFile from '@src/mixins/uploadFile.js'
 import hasRight from '@src/mixins/has-right'
 
-const nodeAuditList = [{ name: 'name', checkname: '节点名称' }]
-const orgAuditList = [{ name: 'name', checkname: '单位全称' }, { name: 'shortName', checkname: '单位简称' }, {
-  name: 'address',
-  checkname: '单位地址'
-}, { name: 'phone', checkname: '电话' }, { name: 'systemType', checkname: '所属系统' }, {
+const nodeAuditList = [{
+  name: 'id',
+  checkname: '结点ID'
+},
+{
+  name: 'parentId',
+  checkname: '父结点ID'
+},
+{
+  name: 'viewId',
+  checkname: '视图ID'
+},
+{
+  name: 'areaId',
+  checkname: '区域ID'
+},
+{
+  name: 'name',
+  checkname: '结点名称'
+},
+{
+  name: 'syncChildren',
+  checkname: '是否同步子级'
+},
+{
+  name: 'nodeType',
+  checkname: '结点类型'
+},
+{
+  name: 'systemType',
+  checkname: '从属哪些四大班子体系'
+},
+{
+  name: 'bindId',
+  checkname: '绑定成员ID'
+},
+{
+  name: 'sort',
+  checkname: '排序值，小的在前面'
+},
+{
+  name: 'removed',
+  checkname: '是否已经删除'
+},
+{
+  name: 'createTime',
+  checkname: '创建时间'
+},
+{
+  name: 'updateTime',
+  checkname: '修改时间'
+}
+]
+const orgAuditList = [{
+  name: 'id',
+  checkname: '单位ID'
+},
+{
+  name: 'parentId',
+  checkname: '父级ID'
+},
+{
+  name: 'level',
+  checkname: '单位级别：省市县'
+},
+{
+  name: 'dutyLevel',
+  checkname: '职能级别：正厅级等'
+},
+{
   name: 'type',
   checkname: '所属类型'
-}, { name: 'removed', checkname: '启用禁用' }]
-const depAuditList = [{ name: 'name', checkname: '内设机构名称' }, {
+},
+{
+  name: 'systemType',
+  checkname: '所属系统'
+},
+{
+  name: 'name',
+  checkname: '单位全称'
+},
+{
+  name: 'shortName',
+  checkname: '单位简称'
+},
+{
+  name: 'otherName',
+  checkname: '其他名称'
+},
+{
+  name: 'address',
+  checkname: '单位地址'
+},
+{
+  name: 'zipCode',
+  checkname: '邮编'
+},
+{
+  name: 'fax',
+  checkname: '传真号'
+},
+{
   name: 'phone',
   checkname: '电话'
-}, { name: 'duty', checkname: '内设机构职责' }, { name: 'removed', checkname: '启用禁用' }]
-const userAuditList = [{ name: 'name', checkname: '用户姓名' }, { name: 'mobile', checkname: '手机号' }, {
-  name: 'dutyName', checkname: '职务' }, { name: 'type', checkname: '身份类型' }]
+},
+{
+  name: 'creditId',
+  checkname: '统一社会信用代码'
+},
+{
+  name: 'creditIdValidated',
+  checkname: '统一社会信用代码是否认证通过'
+},
+{
+  name: 'ext01',
+  checkname: '扩展属性1'
+},
+{
+  name: 'ext02',
+  checkname: '扩展属性2'
+},
+{
+  name: 'ext03',
+  checkname: '扩展属性3'
+},
+{
+  name: 'ext04',
+  checkname: '扩展属性4'
+},
+{
+  name: 'ext05',
+  checkname: '扩展属性5'
+},
+{
+  name: 'removed',
+  checkname: '启用禁用'
+},
+{
+  name: 'createTime',
+  checkname: '创建时间'
+},
+{
+  name: 'updatedTime',
+  checkname: '修改时间'
+}
+]
+const depAuditList = [{
+  name: 'id',
+  checkname: '部门ID'
+},
+{
+  name: 'parentId',
+  checkname: '父级ID'
+},
+{
+  name: 'orgId',
+  checkname: '所属单位ID'
+},
+{
+  name: 'sort',
+  checkname: '排序值'
+},
+{
+  name: 'name',
+  checkname: '内设机构名称'
+},
+{
+  name: 'type',
+  checkname: '内设机构类型'
+},
+{
+  name: 'phone',
+  checkname: '电话'
+},
+{
+  name: 'description',
+  checkname: '部门介绍'
+},
+{
+  name: 'duty',
+  checkname: '内设机构职责'
+},
+{
+  name: 'removed',
+  checkname: '启用禁用'
+},
+{
+  name: 'createTime',
+  checkname: '创建时间'
+},
+{
+  name: 'updateTime',
+  checkname: '修改时间'
+}]
+const userAuditList = [{
+  name: 'uid',
+  checkname: '用户ID'
+},
+{
+  name: 'name',
+  checkname: '用户姓名'
+},
+{
+  name: 'idcard',
+  checkname: '身份证号'
+},
+{
+  name: 'idCardValidated',
+  checkname: '身份证号是否验证通过'
+},
+{
+  name: 'userType',
+  checkname: '人员类型：事业编制、行政编制、企业编制'
+},
+{
+  name: 'userState',
+  checkname: '人员状态：在职、离职、退休'
+},
+{
+  name: 'mobile',
+  checkname: '手机号'
+},
+{
+  name: 'mobile2',
+  checkname: '手机号2'
+},
+{
+  name: 'officePhone',
+  checkname: '座机号'
+},
+{
+  name: 'sex',
+  checkname: '性别'
+},
+{
+  name: 'birthday',
+  checkname: '出生年月日'
+},
+{
+  name: 'portraitUrl',
+  checkname: '头像地址'
+},
+{
+  name: 'qualification',
+  checkname: '学历'
+},
+{
+  name: 'professionalTitle',
+  checkname: '职称'
+},
+{
+  name: 'positionClass',
+  checkname: '职级'
+},
+{
+  name: 'nation',
+  checkname: '民族'
+},
+{
+  name: 'politicalParty',
+  checkname: '党派'
+},
+{
+  name: 'address',
+  checkname: '地址'
+},
+{
+  name: 'ext01',
+  checkname: '扩展属性1'
+},
+{
+  name: 'ext02',
+  checkname: '扩展属性2'
+},
+{
+  name: 'ext03',
+  checkname: '扩展属性3'
+},
+{
+  name: 'ext04',
+  checkname: '扩展属性'
+},
+{
+  name: 'ext05',
+  checkname: '扩展属性5'
+},
+{
+  name: 'signed',
+  checkname: '签名值'
+},
+{
+  name: 'removed',
+  checkname: '是否已经删除'
+},
+{
+  name: 'createTime',
+  checkname: '创建时间'
+},
+{
+  name: 'updatedTime',
+  checkname: '修改时间'
+},
+{
+  name: 'type',
+  checkname: '身份类型'
+},
+{
+  name: 'departmentId',
+  checkname: '部门ID'
+},
+{
+  name: 'orgId',
+  checkname: '单位ID'
+},
+{
+  name: 'dutyName',
+  checkname: '职务'
+},
+{
+  name: 'postName',
+  checkname: '岗位'
+},
+{
+  name: 'sort',
+  checkname: '排序值'
+}]
 export default {
   name: 'parmaeterFrom',
   mixins: [uploadFile, hasRight],
@@ -349,6 +683,8 @@ export default {
         favicon: ''
       },
       uploadHost: window.location.host,
+      orgMsgConfirmVisible: false, // 单位信息确认对话框
+      orgMessageConfirm: true, // 单位信息确认
       systemMessageRemind: {}, // 消息提醒
       modeAuditList: [],
       orgAuditList: orgAuditList, // 单位审核字段数据
@@ -412,10 +748,10 @@ export default {
           if (item.name === 'orgAuditFields') {
             this.systemAuditField.checkedOrgAuditList = item.value
           }
-          if(item.name === 'nodeAuditFields') {
+          if (item.name === 'nodeAuditFields') {
             // console.log([item.value.slice(2,item.value.length-2)])
             // this.systemAuditField.checkedNodeAuditList=[item.value.slice(2,item.value.length-2)]
-             this.systemAuditField.checkedNodeAuditList=item.value
+            this.systemAuditField.checkedNodeAuditList = item.value
           }
         })
       })
@@ -426,6 +762,12 @@ export default {
     handleSystemFavicon (res, file) {
       this.systemNameLogoIcon.favicon = res.data[0]
     },
+    onToggleMessageConfirm () {
+      this.orgMsgConfirmVisible = false
+
+      // 处理“单位确认信息”开关的切换
+    },
+    onSaveOrgMessageConfirm () {},
     beforeUpload (file) {
       const isJPG = file.type === 'image/jpeg'
       const isLt2M = file.size / 1024 / 1024 < 2
