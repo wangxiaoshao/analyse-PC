@@ -161,27 +161,27 @@
       </el-form>
     </div>
     <div class="parameter-item">
-      <div class="header">信息确认设置</div>
-      <el-form ref="systemMessageRemind" label-width="160px">
-        <el-form-item label="单位信息确认"  v-if="false">
-            <el-switch v-model="orgMessageConfirm" @change="orgMsgConfirmVisible = true" active-text="" inactive-text="">
-            </el-switch>
-        </el-form-item>
-        <div v-if="orgMessageConfirm">
-          <el-form-item label="设置信息确认弹窗提醒">
-            <el-radio-group size="medium" v-model="systemMessageRemind">
-              <el-radio-button label="7">每月最后七天</el-radio-button>
-              <el-radio-button label="5">每月最后五天</el-radio-button>
-              <el-radio-button label="3">每月最后三天</el-radio-button>
-              <el-radio-button label="-1">不提醒</el-radio-button>
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="systemSubmit(2)">保存</el-button>
-            <el-button>取消</el-button>
-          </el-form-item>
-        </div>
-      </el-form>
+        <div class="header">信息确认设置</div>
+        <el-form ref="orgMessageRemind" label-width="160px">
+            <el-form-item label="单位信息确认">
+                <el-switch v-model="orgMessageConfirm" @change="showMessageConfirmDialog()" active-text="" inactive-text="">
+                </el-switch>
+            </el-form-item>
+            <div v-if="orgMessageConfirm">
+                <el-form-item label="设置信息确认弹窗提醒">
+                    <el-radio-group size="medium" v-model="orgMessageRemind">
+                        <el-radio-button label="7">每月最后七天</el-radio-button>
+                        <el-radio-button label="5">每月最后五天</el-radio-button>
+                        <el-radio-button label="3">每月最后三天</el-radio-button>
+                        <el-radio-button label="-1">不提醒</el-radio-button>
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="systemSubmit(2)">保存</el-button>
+                    <el-button>取消</el-button>
+                </el-form-item>
+            </div>
+        </el-form>
     </div>
     <div class="parameter-item">
       <div class="header">申请审核字段设置
@@ -310,17 +310,31 @@
     </div>
 
     <!-- 单位确认信息对话框 -->
-    <el-dialog :visible.sync="orgMsgConfirmVisible" width="410px" :show-close="false">
+    <el-dialog :visible.sync="orgMsgConfirmOpenVisible" width="410px" :show-close="false">
+        <div slot="title" style="padding:20px; background-color: #fff;">
+            <span class="msg-title">确认打开单位信息确认</span>
+            <span class="svg-container" style="color:red">
+                <span class="el-icon-document-copy"></span>
+            </span>
+        </div>
+        <div class="msg-box">打开单位信息确认后，从下月起，您的单位信息将需要手动确认。</div>
+        <div slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="onSaveOrgMessageConfirm()">确定打开</el-button>
+            <el-button type="default" @click="orgMsgConfirmOpenVisible = false; orgMessageConfirm = !orgMessageConfirm;" width="100px">取 消</el-button>
+        </div>
+    </el-dialog>
+
+    <el-dialog :visible.sync="orgMsgConfirmCloseVisible" width="410px" :show-close="false">
         <div slot="title" style="padding:20px; background-color: #fff;">
             <span class="msg-title">确认关闭单位信息确认</span>
             <span class="svg-container" style="color:red">
                 <span class="el-icon-document-copy"></span>
             </span>
         </div>
-        <div class="msg-box">打开（关闭）单位信息确认后，从下月起，您的单位信息将不再需要手动确认。</div>
+        <div class="msg-box">关闭单位信息确认后，从下月起，您的单位信息将不再需要手动确认。</div>
         <div slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="onToggleMessageConfirm()">确定关闭（打开）</el-button>
-            <el-button type="default" @click="orgMsgConfirmVisible = false; orgMessageConfirm = !orgMessageConfirm;" width="100px">取 消</el-button>
+            <el-button type="primary" @click="onSaveOrgMessageConfirm()">确定关闭</el-button>
+            <el-button type="default" @click="orgMsgConfirmCloseVisible = false; orgMessageConfirm = !orgMessageConfirm;" width="100px">取 消</el-button>
         </div>
     </el-dialog>
   </div>
@@ -685,7 +699,8 @@ export default {
         favicon: ''
       },
       uploadHost: window.location.host,
-      orgMsgConfirmVisible: false, // 单位信息确认对话框
+      orgMsgConfirmOpenVisible: false, // 打开单位信息确认对话框
+      orgMsgConfirmCloseVisible: false, // 关闭单位信息确认对话框
       orgMessageConfirm: true, // 单位信息确认
       systemMessageRemind: {}, // 消息提醒
       modeAuditList: [],
@@ -765,11 +780,22 @@ export default {
       this.systemNameLogoIcon.favicon = res.data[0]
     },
     onToggleMessageConfirm () {
-      this.orgMsgConfirmVisible = false
+      this.orgMsgConfirmOpenVisible = false
+      this.orgMsgConfirmCloseVisible = false
 
       // 处理“单位确认信息”开关的切换
     },
-    onSaveOrgMessageConfirm () {},
+    showMessageConfirmDialog () {
+      if (this.orgMessageConfirm) {
+        this.orgMsgConfirmOpenVisible = true
+      } else {
+        this.orgMsgConfirmCloseVisible = true
+      }
+    },
+    onSaveOrgMessageConfirm () {
+      this.orgMsgConfirmOpenVisible = false
+      this.orgMsgConfirmCloseVisible = false
+    },
     beforeUpload (file) {
       const isJPG = file.type === 'image/jpeg'
       const isLt2M = file.size / 1024 / 1024 < 2

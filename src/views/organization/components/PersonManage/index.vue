@@ -101,7 +101,7 @@
               >添加或修改该字段需要提交审核</div>
             </div>
           </el-form-item>
-          <el-form-item label="人员ID" prop="uid"  v-if="this.$route.name !== 'PersonEdit' && this.$route.name !== 'PersonAdd'">
+          <el-form-item label="人员ID" prop="uid"  v-if="this.$route.name === 'QueryPersonDetail'">
             <el-input :placeholder="userDetail.uid" :disabled="isDefaultFlag" v-model="userDetail.uid">
             </el-input>
             <div
