@@ -90,7 +90,7 @@
       label="操作"
       >
       <template slot-scope="scope">
-         <a style="color:#FC7049;"  href="jacascript:void(0)" @click="findInfo(scope.row)">详情</a>
+         <a style="color:#FC7049;"  href="javaScript:void(0)" @click="findInfo(scope.row)">详情</a>
       </template>
     </el-table-column>
     <el-table-column
@@ -146,7 +146,7 @@ export default {
        let data={
           page: this.page.current,
           limit: this.page.limit,
-          appId: 42
+          appId: this.$route.query.id
        }
       api[urlNames['findPushLoggers']](data).then(res => {
          this.page.total = res.total
