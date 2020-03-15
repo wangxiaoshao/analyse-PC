@@ -32,11 +32,11 @@
           <el-form-item label=" 上级内设机构" prop="parentDep">
             <el-input v-model="parentDep" :disabled="true"></el-input>
           </el-form-item>
-          <el-form-item label=" 启用状态" prop="department.removed">
-            <el-switch v-model="ruleForm.department.removed"></el-switch>
+           <el-form-item label="内设机构ID">
+            <el-input v-model="ruleForm.department.id" :disabled="true"></el-input>
             <div v-if="this.$route.name === 'DepartmentEdit' ||  this.$route.name === 'DepartmentAdd'">
-              <div class="tip-msg"
-                   v-show="this.app.option.options.departmentAuditFields.indexOf('removed') > -1 && ruleForm.department.removed !== oldFrom.department.removed">
+             <div class="tip-msg"
+                   v-show="this.app.option.options.departmentAuditFields.indexOf('id') > -1 && ruleForm.department.id !== oldFrom.department.id">
                 添加或修改该字段需要提交审核
               </div>
             </div>
@@ -63,6 +63,15 @@
             <div v-if="this.$route.name === 'DepartmentEdit' ||  this.$route.name === 'DepartmentAdd'">
              <div class="tip-msg"
                    v-show="this.app.option.options.departmentAuditFields.indexOf('orgName') > -1 && ruleForm.department.orgName !== oldFrom.department.orgName">
+                添加或修改该字段需要提交审核
+              </div>
+            </div>
+          </el-form-item>
+           <el-form-item label=" 启用状态" prop="department.removed">
+            <el-switch v-model="ruleForm.department.removed"></el-switch>
+            <div v-if="this.$route.name === 'DepartmentEdit' ||  this.$route.name === 'DepartmentAdd'">
+              <div class="tip-msg"
+                   v-show="this.app.option.options.departmentAuditFields.indexOf('removed') > -1 && ruleForm.department.removed !== oldFrom.department.removed">
                 添加或修改该字段需要提交审核
               </div>
             </div>

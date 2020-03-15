@@ -2,51 +2,10 @@
   <div class="data-log">
     <div class="all-log">
       <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="登录日志">
-          <!-- <personal-log :loginLog='logAry[0]'></personal-log> -->
-        </el-tab-pane>
+        <!-- <el-tab-pane label="登录日志">
+          <personal-log :loginLog='logAry[0]'></personal-log>
+        </el-tab-pane> -->
         <el-tab-pane label="操作日志" name="first">
-          <!-- <div v-if="newsList && newsList.length === 0" class="noDataList">暂无数据</div> -->
-          <!-- <el-row v-if="newsList && newsList.length > 0">
-            <el-col :span="14" :style="{ marginLeft: '80px', marginTop: '20px'}">
-              <div class="timeLine">
-                <el-timeline :reverse="reverse">
-                  <el-timeline-item
-                    v-for="(activity, index) in newsList"
-                    :key="index"
-                    placement="top"
-                    :timestamp="activity.actionTime"
-                  >{{activity.userName}}{{activity.description}}</el-timeline-item>
-                </el-timeline>
-              </div>
-            </el-col>
-          </el-row>-->
-          <!-- <div class="log-table">
-            <el-table :data="systemData" stripe border align="center" style="width: 100%">
-              <el-table-column type="index" label="序号" width="80"></el-table-column>
-              <el-table-column prop="actionTime" label="时间"></el-table-column>
-              <el-table-column prop="userName" label="操作人"></el-table-column>
-              <el-table-column prop="description" label="描述"></el-table-column>
-              <el-table-column label="操作">
-                <template slot-scope="scope">
-                  <a
-                    href="javascript:void(0);"
-                    style="color:red;font-size:12px"
-                    @click="opensystemInfo(scope.row)"
-                  >详情</a>
-                </template>
-              </el-table-column>
-            </el-table>
-            <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="page.current"
-            :page-sizes="[10, 30, 50, 100]"
-            :page-size="page.limit"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="page.total"
-            ></el-pagination>
-          </div>-->
           <personal-log :loginLog="logAry[1]"></personal-log>
         </el-tab-pane>
         <el-tab-pane label="系统日志">

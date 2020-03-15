@@ -66,7 +66,7 @@
               <span class="iconfont iconzuzhijigou" v-if="scope.row.nodeType === 1"></span>
               <span class="iconfont icondanwei" v-if="scope.row.nodeType === 2"></span>
               <span class="iconfont iconbumen" v-if="scope.row.nodeType === 3"></span>
-              <span class="el-icon-user" v-if="scope.row.type&&scope.row.type === 4"></span>
+              <span class="el-icon-user" v-if="!scope.row.nodeType"></span>
             </span>
             <span style="margin-left:5px">{{scope.row.name}}</span>
           </template>
@@ -76,7 +76,7 @@
             <span v-if="scope.row.nodeType==1">节点</span>
             <span v-if="scope.row.nodeType==2">单位</span>
             <span v-if="scope.row.nodeType==3">内设机构</span>
-            <span v-if="scope.row.type&&scope.row.type==4">个人</span>
+            <span v-if="!scope.row.nodeType">个人</span>
           </template>
         </el-table-column>
         <el-table-column prop="phone" label="联系方式" align="center" width="140px">
@@ -105,7 +105,7 @@
           <template slot-scope="scope">
             <!-- <i class="el-icon-share"></i> -->
            
-            <a  v-if="scope.row.type&&scope.row.type==4"
+            <a v-if="!scope.row.nodeType"
               href="javaScrpit:void(0)"
             >无</a>
             <a v-else

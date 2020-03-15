@@ -292,7 +292,7 @@ export default {
     },
     
     doArray(){
-      this.dataStr=new Date().getFullYear()+'年'+new Date().getMonth()+'月'+new Date().getDate()+'日'
+      this.dataStr=new Date().getFullYear()+'年'+(new Date().getMonth()+1)+'月'+new Date().getDate()+'日'
       // this.doNoticeList.push(this.noticeList.slice(0,3),this.noticeList.slice(3))
       this.doAnnouncementList.push(this.announcementList.slice(0,3),this.announcementList.slice(3))
     },

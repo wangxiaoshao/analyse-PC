@@ -64,15 +64,15 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination
+     <el-pagination
       @size-change="handleSizeChange"
-      @current-change="handleCurrentPageChange"
-      :current-page="currentPage"
+      @current-change="handleCurrentChange"
+      :current-page="page.current"
       :page-sizes="[10, 30, 50, 100]"
-      :page-size="10"
+      :page-size="page.limit"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="total">
-    </el-pagination>
+      :total="page.total"
+    ></el-pagination>
   </div>
 </div>
 </template>
@@ -80,32 +80,30 @@
 <script>
 import { api, urlNames } from '@src/api'
 import HasRight from '@src/mixins/has-right'
+import handleTable from '@src/mixins/handle-table'
 export default {
   name: 'AppManagement',
-  mixins: [HasRight],
+  mixins: [HasRight,handleTable],
   data () {
     return {
-      appList: [],
-      total: 0,
-      currentPage: 1,
-      pageSize: 10
+      appList: []
     }
   },
   created () {
-    this.getAppList(1, 10)
+    this.getAppList()
   },
   methods: {
-    toDataLog () {
-      this.$router.push({ name: 'PushLog' })
+    toDataLog (row) {
+      this.$router.push({ name: 'PushLog' ,query:  { id: row.id } }, )
     },
     //  获取应用
-    getAppList (page, limt) {
+    getAppList () {
       api[urlNames['getAppList']]({
-        page: page,
-        limit: limt
+        page: this.page.current,
+        limit: this.page.limit
       }).then((res) => {
-        this.total = parseInt(res.total)
         this.appList = res.data
+        this.page.total = res.total
       })
     },
     handleClick (row) {

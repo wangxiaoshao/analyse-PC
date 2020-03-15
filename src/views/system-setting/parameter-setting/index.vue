@@ -1,13 +1,13 @@
 <template>
   <div class="parameter-settings">
     <el-tabs v-model="activeName">
-      <el-tab-pane label="全局参数设置" >
+      <el-tab-pane label="全局参数设置" name="first">
         <parmaeter-system-form></parmaeter-system-form>
       </el-tab-pane>
       <el-tab-pane label="单位参数">
         <parmaeter-org-form></parmaeter-org-form>
       </el-tab-pane>
-      <el-tab-pane label="消息模板配置" name="first">
+      <el-tab-pane label="消息模板配置" >
         <msg-setting></msg-setting>
       </el-tab-pane>
     </el-tabs>
