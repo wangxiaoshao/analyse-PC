@@ -3,7 +3,7 @@
     <el-row class="address-book-row">
       <el-col :span="6" style="height: 100%">
         <div class="site-scroll">
-          1111
+
           <!--<search-result :defaultNodeId="defaultNodeId"></search-result>
           <div class="tree-content">
             <organization-tree @handle-node-click="handleNodeClick" @get-default-node="getDefaultNode"></organization-tree>

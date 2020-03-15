@@ -160,9 +160,9 @@
         </el-form>
     </div>
     <div class="parameter-item">
-        <div class="header">其他设置</div>
+        <div class="header">信息确认设置</div>
         <el-form ref="orgMessageRemind" label-width="160px">
-            <el-form-item label="单位信息确认">
+            <el-form-item label="单位信息确认"  v-if="false">
                 <el-switch v-model="orgMessageConfirm" @change="orgMsgConfirmVisible = true" active-text="" inactive-text="">
                 </el-switch>
             </el-form-item>
@@ -183,7 +183,9 @@
         </el-form>
     </div>
     <div class="parameter-item">
-        <div class="header">申请审核字段设置</div>
+        <div class="header">申请审核字段设置
+          <span class="info-msg">（如下字段被选中以后再被修改，则需要审核后方可生效；不选中的字段被修改，不需要审核）</span>
+        </div>
         <el-form ref="orgAuditField" :model="orgAuditField" label-width="160px">
             <div class="table">
                 <div class="table-row">

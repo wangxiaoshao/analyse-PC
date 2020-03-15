@@ -123,12 +123,13 @@
           <!--:rules="[{ required: true, message: '请选择身份类型'}]"-->
           <el-form-item
             label="身份类型"
-            prop="userType"
+            prop="postDetail.type
+            "
             :rules="[{ required: true, message: '请选择身份类型'}]"
           >
             <el-select
               placeholder="请选择身份类型"
-              v-model="userDetail.userType"
+              v-model="postDetail.type"
               @change="getIdentityType"
             >
               <el-option
@@ -147,7 +148,7 @@
           </el-form-item>
           <el-form-item label="所属单位" v-if="showexportIdentityType">
             <el-input placeholder="所属单位" v-model="orgName">
-              <el-button type="primary" slot="append" class="form-btn1" @click="exportOrg">调出</el-button>
+              <el-button type="primary" slot="append" class="form-btn1" @click="exportOrg" :disabled="!hasRight('personUserIdTransfe')">调出</el-button>
             </el-input>
           </el-form-item>
         </el-col>
@@ -166,7 +167,7 @@
                 :before-upload="beforeAvatarUpload"
                 list-type="picture"
               >
-                <img v-if="personFrom.portraitUrl" :src="personFrom.portraitUrl" class="avatar" />
+                <img v-if="personFrom.portraitUrl" :src="personFrom.portraitUrl" class="avatar"/>
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
               <div style="font-size: 10px;color: #606266">
@@ -434,6 +435,7 @@ import addTags from '../AddTags/index'
 import dicOption from '@src/mixins/dic-options.js'
 import uploadFile from '@src/mixins/uploadFile.js'
 import { mapState, mapMutations } from 'vuex'
+import HasRight from '@src/mixins/has-right'
 export default {
   props: [
     'disabledFlag',
@@ -448,7 +450,7 @@ export default {
     'labelList',
     'orgName'
   ],
-  mixins: [dicOption, uploadFile],
+  mixins: [dicOption, uploadFile,HasRight],
   components: {
     addTags
   },
@@ -489,7 +491,6 @@ export default {
   },
   created() {
     this.init()
-
   },
   computed: {
     ...mapState(['app'])
@@ -592,33 +593,33 @@ export default {
       this.personFrom.portraitUrl = res.data[0] || URL.createObjectURL(file.raw)
     },
 
-    // submitForm(form) {
-    //   this.$refs[form].validate(valid => {
-    //     if (valid) {
-    //       let data = new FormData()
-    //       let keys = Object.keys(this.editForm)
-    //       let len = keys.length
-    //       for (let i = 0; i < len; i++) {
-    //         let key = keys[i]
-    //         let value = this.editForm[key]
-    //         if (value) {
-    //           data.append(key, value)
-    //         }
-    //       }
-    //       api[urlNames['sendEditRightsInfo']](data).then(
-    //         res => {
-    //           this.$message({
-    //             message: this.current ? '修改成功' : '添加成功',
-    //             type: 'success'
-    //           })
-    //           this.$emit('refreshList')
-    //           this.closeDialog()
-    //         },
-    //         () => {}
-    //       )
-    //     }
-    //   })
-    // },
+    submitForm(form) {
+      this.$refs[form].validate(valid => {
+        if (valid) {
+          let data = new FormData()
+          let keys = Object.keys(this.editForm)
+          let len = keys.length
+          for (let i = 0; i < len; i++) {
+            let key = keys[i]
+            let value = this.editForm[key]
+            if (value) {
+              data.append(key, value)
+            }
+          }
+          api[urlNames['sendEditRightsInfo']](data).then(
+            res => {
+              this.$message({
+                message: this.current ? '修改成功' : '添加成功',
+                type: 'success'
+              })
+              this.$emit('refreshList')
+              this.closeDialog()
+            },
+            () => {}
+          )
+        }
+      })
+    },
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg'
       const isLt2M = file.size / 1024 / 1024 < 2

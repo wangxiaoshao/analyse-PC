@@ -38,7 +38,7 @@
 
       <el-footer class="authority-setting-footer">
           <el-button type="primary" @click="saveAuthorityManage">保存</el-button>
-          <el-button @click="cancel">取消</el-button>
+          <el-button @click="cancel">返回</el-button>
       </el-footer>
     </div>
 </template>
@@ -165,7 +165,8 @@ export default {
 
     cancel () {
       this.allAction = []
-      this.sortModuleList(this.menuList)
+      this.$router.go(-1)
+      // this.sortModuleList(this.menuList)
     }
   }
 }

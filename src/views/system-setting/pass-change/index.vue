@@ -56,7 +56,6 @@
           inline
           label-width="100px"
           ref="ruleForm"
-          class="demo-ruleForm"
         >
           <el-form-item label="原密码" prop="oldPass">
             <el-input type="password" v-model="ruleForm.oldPass" show-password></el-input>
@@ -288,9 +287,9 @@ export default {
         orgId: [{ required: true, message: '请选择调出单位', trigger: 'blur' }]
       },
       rules: {
-        oldPass: [{ validator: validateOldPass, trigger: 'blur' }],
-        checkPass: [{ validator: validateCheckPass, trigger: 'blur' }],
-        newPass: [{ validator: validateNewPass, trigger: 'blur' }],
+        oldPass: [{ required: true,validator: validateOldPass, trigger: 'blur' }],
+        checkPass: [{ required: true,validator: validateCheckPass, trigger: 'blur' }],
+        newPass: [{ required: true,validator: validateNewPass, trigger: 'blur' }],
         reason: [{ required: true, message: '请填写申请原因', trigger: 'blur' }]
       },
       oldUserInfo: {},
@@ -444,7 +443,7 @@ export default {
           this.userInfo.identity.id = res.data.id
           this.userInfo.identity.orgId = res.data.orgId
           this.userInfo.identity.postName = res.data.postName
-          this.userInfo.identity.type = parseInt(res.data.type)
+          this.userInfo.identity.type = res.data.type
           this.userInfo.identity.dutyName = res.data.dutyName
           this.formCallout.identityId = res.data.id
           this.formCallout.orgId = res.data.orgId
@@ -528,7 +527,6 @@ export default {
       this.modifiePwdVisible = true
     },
     submitForm(formName) {
-     
       this.$refs[formName].validate(valid => {
         if (valid) {
           let data = {
@@ -545,14 +543,20 @@ export default {
                 type: status === 0 ? 'success' : 'error'
               })
                this.modifiePwdVisible = false 
+                this.$refs[formName].resetFields()
             },
             () => {}
           )
         } else {
+          this.$message.error('不符合规则，请重新输入')
           console.log('error submit!!')
           return false
         }
       })
+    },
+    resetForm(formName) {
+      this.modifiePwdVisible = false
+      this.$refs[formName].resetFields()
     },
     // 过滤手机号
     hideMobile(phone) {
@@ -593,12 +597,12 @@ export default {
       }, 1000)
 
       // 发送短信获取验证码
-      // api[urlNames['getVerifyCode']]({
-      //   id: this.accountId
-      // }).then(
-      //   res => {},
-      //   () => {}
-      // )
+      api[urlNames['getVerifyCode']]({
+        id: this.accountId
+      }).then(
+        res => {},
+        () => {}
+      )
     },
 
     // 验证验证码
@@ -613,18 +617,18 @@ export default {
         }
         this.resetPwdVisible = false
         this.successPwdVisible = true
-        // api[urlNames['resetPwd']](param).then(
-        //   res => {
-        //     if (res) {
-        //       this.resetPwdVisible = false
-        //       this.successPwdVisible = true
-        //       this.smsCode = ''
-        //     } else {
-        //       this.$message.error('验证码已失效，请重新发送')
-        //     }
-        //   },
-        //   () => {}
-        // )
+        api[urlNames['resetPwd']](param).then(
+          res => {
+            if (res) {
+              this.resetPwdVisible = false
+              this.successPwdVisible = true
+              this.smsCode = ''
+            } else {
+              this.$message.error('验证码已失效，请重新发送')
+            }
+          },
+          () => {}
+        )
       }
     },
 
@@ -682,10 +686,7 @@ export default {
       })
     },
 
-    resetForm(formName) {
-      this.modifiePwdVisible = false
-      this.$refs[formName].resetFields()
-    }
+    
   }
 }
 </script>
