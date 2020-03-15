@@ -92,7 +92,7 @@
         </div>
         <div class="detailInfo">
           <p>人员变动数</p>
-          <p>{{changeAccount}}</p>
+          <p>{{0}}</p>
           <ul>
             <li>日<a href="">0% <i class="el-icon-top"></i></a></li>
             <li>周<a href="">3% <i class="el-icon-top"></i></a></li>
@@ -292,7 +292,7 @@ export default {
     },
     
     doArray(){
-      this.dataStr=new Date().getFullYear()+'年'+new Date().getMonth()+'月'+new Date().getDate()+'日'
+      this.dataStr=new Date().getFullYear()+'年'+(new Date().getMonth()+1)+'月'+new Date().getDate()+'日'
       // this.doNoticeList.push(this.noticeList.slice(0,3),this.noticeList.slice(3))
       this.doAnnouncementList.push(this.announcementList.slice(0,3),this.announcementList.slice(3))
     },

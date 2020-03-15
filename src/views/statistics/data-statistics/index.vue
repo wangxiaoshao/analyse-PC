@@ -30,7 +30,7 @@
         <div style="position: absolute" class="register">
           <div>//截止今天</div>
           <div>机构人员注册总数</div>
-          <div>{{countData.userCount}}</div>
+          <div>{{countData.organizationCount}}</div>
         </div>
       </span>
       <span class="template-two light-purple">
@@ -56,14 +56,17 @@
       </span>
     </div>
     <el-tabs v-model="activeName" @tab-click="handleClick" class="statistic-tab">
-      <el-tab-pane label="各市州新增单位占比" name="unit" lazy >
+      <el-tab-pane label="各市州单位总数占比" name="unit" lazy >
         <echarts :echartsAry='echartsAry1' v-if="activeName=='unit'"></echarts>
       </el-tab-pane>
-      <el-tab-pane label="各市州新增内设机构占比" name="department"  lazy> 
+      <el-tab-pane label="各市州内设机构数占比" name="department"  lazy> 
          <echarts :echartsAry='echartsAry2' v-if="activeName=='department'"></echarts>
       </el-tab-pane>
-      <el-tab-pane label="各市州新增人员占比" name="member">
+      <el-tab-pane label="各市州人员总数占比" name="member">
          <echarts :echartsAry='echartsAry3' v-if="activeName=='member'"></echarts>
+      </el-tab-pane>
+      <el-tab-pane label="接入应用数占比" name="applyCount">
+         <echarts :echartsAry='echartsAry3' v-if="activeName=='applyCount'"></echarts>
       </el-tab-pane>
     </el-tabs>
     <el-row>
@@ -136,7 +139,7 @@ export default {
       },
       activeName: 'unit',
       countData: {
-         userCount:null,
+        organizationCount:null,
         deptCount:null,
         organCount:null
       },

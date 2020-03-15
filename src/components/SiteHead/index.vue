@@ -51,6 +51,7 @@
           @closeNotice="showNotice"
           :noticeData="noticeData"
           @goAllRead="goAllRead"
+          @getList='getList'
           :showAllReadVisiable="showAllReadVisiable"
         ></notice>
       </div>

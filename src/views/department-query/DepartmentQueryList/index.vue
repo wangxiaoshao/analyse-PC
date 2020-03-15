@@ -64,6 +64,7 @@
 <script type="text/ecmascript-6">
 import handleTable from '@src/mixins/handle-table'
 import SiteTable from '@src/components/SiteTable/index.vue'
+import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
 import tableConfig from './tableConfig'
 import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
@@ -71,7 +72,7 @@ import HasRight from '@src/mixins/has-right'
 
 export default {
   components: { SiteTable },
-  mixins: [handleTable, HasRight],
+  mixins: [handleTable, HasRight,handleBreadcrumb],
   data () {
     return {
       tableConfig,

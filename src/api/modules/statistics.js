@@ -51,14 +51,14 @@ export default {
   // 获取接入应用总数
   [urlNames.findApplicationCount]: {
     type: 'get',
-    url: '/api/jg_manage/app/findApplicationCount',
+    url: '/api/jg_share/app/findApplicationCount',
     keepOriginResponse: true,
     serve: 'organizationManagePC'
   },
   // 推送日志
   [urlNames.findPushLoggers]: {
     type: 'get',
-    url: '/api/jg_manage/app/findPushLoggers',
+    url: '/api/jg_share/app/findPushLoggers',
     keepOriginResponse: true,
     serve: 'organizationManagePC'
   }

@@ -17,11 +17,12 @@
             <el-form-item label="绑定视图" prop="viewId">
               <el-select
                 v-model="appFrom.viewId"
+                :remote-method="getViewList"
                 filterable
                 remote
                 reserve-keyword
                 placeholder="请输入视图名称"
-                :remote-method="getViewList"
+               
                 :loading="selectLoading">
                 <el-option
                   v-for="item in viewList"
@@ -129,7 +130,7 @@ export default {
       appFrom: {
         id: '',
         name: '',
-        viewId: 1,
+        viewId: '',
         apiAccount: '',
         apiPassword: '',
         concatUser: '',
@@ -179,13 +180,20 @@ export default {
     back () {
       this.$router.push({ name: 'AppManagement' })
     },
-    getViewList (query) {
+    // getViewList (query) {
+    //   if (query !== '') {
+    //     api[urlNames['getViewList']]({
+    //       keyWord: query,
+    //       page: 1,
+    //       limit: 10
+    //     }).then((res) => {
+    //       this.viewList = res.data
+    //     })
+    //   }
+    // },
+     getViewList (query) {
       if (query !== '') {
-        api[urlNames['getViewList']]({
-          keyWord: query,
-          page: 1,
-          limit: 10
-        }).then((res) => {
+        api[urlNames['getViewList']]().then((res) => {
           this.viewList = res.data
         })
       }
@@ -235,7 +243,7 @@ export default {
         concatPhone: this.appFrom.concatPhone,
         apiUrl: this.appFrom.apiUrl,
         description: this.appFrom.description,
-        removed: this.appFrom.removed
+        removed: this.appFrom.removed ? 0 : 1
       }).then((res) => {
         if (res.status === 0) {
           this.$message.success('修改成功')

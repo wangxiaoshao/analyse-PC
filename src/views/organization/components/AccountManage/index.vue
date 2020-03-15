@@ -87,7 +87,7 @@ export default {
       tags: [], // 提交的标签
       options: [],
       accountSend: [],
-      accountSelect: 1,
+      accountSelect: '',
       doIndex: ''
     }
   },

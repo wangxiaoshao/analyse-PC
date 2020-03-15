@@ -5,8 +5,8 @@
     </div>
     <div class="sort-do" v-if="sortFlag">
       按住左键上下拖动调整排序
-      <a @click="sublimeSort" href="javascript:void(0)">保存</a>
-      <a  @click="cancelSort"  href="javascript:void(0)">取消</a>
+      <a @click="sublimeSort" href="javascript: void ( 0 ); ">保存</a>
+      <a  @click="cancelSort"  href="javascript: void ( 0 ); ">取消</a>
     </div>
     <el-table
       v-loading="loading"

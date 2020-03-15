@@ -166,7 +166,6 @@ export default {
 
     // 点击全省通讯录搜索人员
     searchPeopleInfo(data, type) {
-      console.log('personInfoList:',data)
       this.personInfoList = data
       this.selectType = type
       this.showBreadCrumb = false
@@ -242,9 +241,6 @@ export default {
         let ary=res.data
         this.memberList = res.data
         this.departmentList=[...this.departmentList,...ary]
-
-        // this.departmentList.push()
-        console.log('this.departmentList:',this.departmentList)
       })
     },
 
