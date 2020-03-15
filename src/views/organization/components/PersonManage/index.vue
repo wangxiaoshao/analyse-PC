@@ -101,15 +101,13 @@
               >添加或修改该字段需要提交审核</div>
             </div>
           </el-form-item>
-          <el-form-item label="人员ID" prop="uid">
+          <el-form-item label="人员ID" prop="uid"  v-if="this.$route.name !== 'PersonAdd'">
             <el-input :placeholder="userDetail.uid" :disabled="isDefaultFlag" v-model="userDetail.uid">
             </el-input>
-            <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
-              <div
-                class="tip-msg"
-                v-show="this.app.option.options.userAuditFields.indexOf('uid') > -1 && userDetail.uid !== oldUserInfo.user.uid"
-              >添加或修改该字段需要提交审核</div>
-            </div>
+            <div
+              class="tip-msg"
+              v-show="this.app.option.options.userAuditFields.indexOf('uid') > -1 && userDetail.uid !== oldUserInfo.user.uid"
+            >添加或修改该字段需要提交审核</div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
