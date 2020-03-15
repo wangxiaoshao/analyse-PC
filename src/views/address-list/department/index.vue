@@ -60,12 +60,13 @@
           </template>
         </el-table-column>-->
         <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
-        <el-table-column prop="name" label="所有下级">
+        <el-table-column prop="name" label="所有下级" width="180px">
           <template slot-scope="scope">
             <span class="svg-container" style="color:#FC7049">
               <span class="iconfont iconzuzhijigou" v-if="scope.row.nodeType === 1"></span>
               <span class="iconfont icondanwei" v-if="scope.row.nodeType === 2"></span>
               <span class="iconfont iconbumen" v-if="scope.row.nodeType === 3"></span>
+              <span class="el-icon-user" v-if="scope.row.type&&scope.row.type === 4"></span>
             </span>
             <span style="margin-left:5px">{{scope.row.name}}</span>
           </template>
@@ -75,12 +76,13 @@
             <span v-if="scope.row.nodeType==1">节点</span>
             <span v-if="scope.row.nodeType==2">单位</span>
             <span v-if="scope.row.nodeType==3">内设机构</span>
+            <span v-if="scope.row.type&&scope.row.type==4">个人</span>
           </template>
         </el-table-column>
-        <el-table-column prop="phone" label="联系方式" align="center">
+        <el-table-column prop="phone" label="联系方式" align="center" width="140px">
           <template slot-scope="scope">
             <!-- <span>{{scope.row.phone=='' ||!scope.row.phone ?'无':scope.row.phone}}</span> -->
-            <span>{{scope.row.phone ||  '无'}}</span>
+            <span>{{scope.row.phone || scope.row.mobile ||  '无'}}</span>
             <a
               v-if="scope.row.phone&&scope.row.phone!='' && !scope.row.isLooked"
               href="javaScrpit:void(0)"
@@ -89,16 +91,29 @@
             >
               查看
             </a>
+            <a
+              v-if="scope.row.mobile&&scope.row.mobile!='' && !scope.row.isLooked"
+              href="javaScrpit:void(0)"
+              style="color: #FC7049;font-size:12px;margin-left:5px"
+              @click="findMobileById(scope.row.uid,scope.$index,1)"
+            >
+              查看
+            </a>
           </template>
         </el-table-column>
         <el-table-column label="下级" align="center">
           <template slot-scope="scope">
             <!-- <i class="el-icon-share"></i> -->
-            <a
+           
+            <a  v-if="scope.row.type&&scope.row.type==4"
+              href="javaScrpit:void(0)"
+            >无</a>
+            <a v-else
               href="javaScrpit:void(0)"
               style="color: #FC7049;font-size:12px"
               @click="childClick(scope.row)"
             >查看下级</a>
+             
           </template>
         </el-table-column>
         <el-table-column prop label="备注" align="center"></el-table-column>
@@ -108,6 +123,7 @@
 </template>
 <script>
 import { api, urlNames } from '@src/api'
+import { mapState, mapMutations } from 'vuex'
 export default {
   props: ['departmentList', 'orgInfo', 'activeColor'],
   data() {
@@ -116,11 +132,17 @@ export default {
       isShow: true,
       tableData: [],
       personnel: {},
-      memberList: [],
-      userId: '11111111111',
+      userId: '',
       infoVisiable: false,
+      deptMemberList:[],
       
     }
+  },
+  computed: {
+    ...mapState(['app'])
+  },
+  mounted(){
+  
   },
   methods: {
     childClick(node) {
@@ -139,6 +161,18 @@ export default {
         if (res && state == 2) {
           this.departmentList[index].phone=res.data.phone
           this.departmentList[index].isLooked=true
+        }
+      })
+    },
+    findMobileById(uid,index,state) {
+      api[urlNames['findMobileById']]({uid}).then(res => {
+        if (res && state == 1) {
+          this.departmentList[index].mobile=res.data.mobile
+          this.departmentList[index].isLooked=true
+        }
+        if (res && state == 2) {
+          this.departmentList[index].officePhone=res.data.officePhone
+          this.departmentList[index].isOfficePhone=true
         }
       })
     }

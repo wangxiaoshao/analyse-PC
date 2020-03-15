@@ -8,14 +8,14 @@ const tableConfig = {
     showOverflowTooltip: false,
     minWidth: 100
   },
-  uid: {
-    key: 'uid',
-    tooltip: true,
-    label: '人员ID',
-    sortable: false,
-    showOverflowTooltip: false,
-    minWidth: 100
-  },
+  // uid: {
+  //   key: 'uid',
+  //   tooltip: true,
+  //   label: '人员ID',
+  //   sortable: false,
+  //   showOverflowTooltip: false,
+  //   minWidth: 100
+  // },
   account: {
     key: 'account',
     tooltip: false,

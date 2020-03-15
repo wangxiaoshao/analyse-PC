@@ -1,6 +1,6 @@
 <template>
-<div class="operate-log">
-  <el-table
+  <div class="push-log">
+    <el-table
     :data="logList"
     border
     style="width: 100%">
@@ -22,32 +22,32 @@
 <!--    </el-table-column>-->
     <el-table-column
       prop="actionTime"
-      label="时间"
+      label="同步事件"
       align="center"
       >
     </el-table-column>
     <el-table-column
-      prop="actionUserName"
-      label="操作人"
+      prop="dataType"
+      label="同步类型"
       align="center"
       >
     </el-table-column>
     <el-table-column
-      label="描述"
+      label="同步耗时"
+      align="executeMs"
+      >
+    </el-table-column>
+      <el-table-column
+      label="同步状态"
       align="center"
       >
-      <template slot-scope="scope">
-        <span v-if="scope.row.actionType === 1">信息新增</span>
-        <span v-if="scope.row.actionType === 2">信息修改</span>
-        <span v-if="scope.row.actionType === 3">信息删除</span>
-      </template>
     </el-table-column>
     <el-table-column
       align="center"
       label="操作"
       >
       <template slot-scope="scope">
-         <a style="color:red;"  href="jacascript:void(0)" @click="findInfo(scope.row)">详情</a>
+         <a style="color:#FC7049;"  href="jacascript:void(0)" @click="findInfo(scope.row)">详情</a>
       </template>
     </el-table-column>
     <el-table-column
@@ -70,31 +70,24 @@
               style="width:100%;"
               label-width="110px"
             >
-              <el-form-item label="操作日期" >
+              <el-form-item label="同步实体ID" >
                 <div class="table-td">
-                  {{DetialInfo.actionTime}}
+                  {{detialInfo.entityId}}
                 </div>
               </el-form-item>
-              <el-form-item label="操作人标识">
+              <el-form-item label="同步地址">
                 <div class="table-td">
-                 {{DetialInfo.actionUid}}
+                 {{detialInfo.pushUrl}}
                 </div>
               </el-form-item>
-              <el-form-item label="操作类型" >
+              <el-form-item label="同步参数">
                 <div class="table-td">
-                  <span v-if="DetialInfo.actionType === 1">信息新增</span>
-                  <span v-if="DetialInfo.actionType === 2">信息修改</span>
-                  <span v-if="DetialInfo.actionType === 3">信息删除</span>
+                  {{detialInfo.pushBody}}
                 </div>
               </el-form-item>
-              <el-form-item :label="DetialInfo.entityTypeText+'标识'">
+              <el-form-item label="异常信息">
                 <div class="table-td">
-                  {{DetialInfo.entityId }}
-                </div>
-              </el-form-item>
-              <el-form-item label="操作详情">
-                <div class="table-td">
-                 <p> {{DetialInfo.changeContent }}</p>
+                  {{detialInfo.exceptionMessage}}
                 </div>
               </el-form-item>
             </el-form>
@@ -103,87 +96,65 @@
         </div>
       </el-dialog>
     </div>
-</div>
+  </div>
 </template>
-
 <script>
 import handleTable from '@src/mixins/handle-table'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
 import { api, urlNames } from '@src/api'
 export default {
-  mixins: [handleTable, handleBreadcrumb],
-  name: 'OperateLog',
-  data () {
-    return {
-      logList: [],
-      DetialInfoVisible:false,
-      DetialInfo:{
-        id:'',
-        actionUserName:'',
-        actionType :'',
-        actionTime :'',
-        changeContent :'',
-        entityId :'',
-        entityType :'',
-        entityTypeText :''
-      }
-    }
-  },
-  created () {
-    this.findEntityChangeLoggerList(this.$route.params.id, this.$route.query.type, 1, 10)
-  },
-  mounted () {
+   mixins: [handleTable, handleBreadcrumb],
+   data(){
+     return {
+        logList: [{}],
+        DetialInfoVisible:false,
+        detialInfo:{}
+
+     }
+   },
+   created(){
+     this.getLogList()
+   },
+    mounted () {
     this.pushBreadcrumb({
-      name: `${this.$route.query.title}日志`,
+      name: '应用日志',
       parent: {
-        name: 'OrganizationContent',
-        params: {
-          nodeId: this.$route.params.id
-        },
+        name: 'AppManagement',
         query: {
           type: 'back'
         }
       }
     })
   },
-  methods: {
-    findEntityChangeLoggerList (id, type, page, limit) {
-      if (type === 2) {
-        type = 3
-      } else if (type === 3) {
-        type = 2
-      }
-      api[urlNames['findEntityChangeLoggerList']]({
-        entityType: type,
-        entityId: id,
-        page: page,
-        limit: limit
-      }).then((res) => {
-        if (res.status === 0) {
-          this.logList = res.data
-        }
-      }, (error) => {
+  methods:{
+     getLogList () {
+      api[urlNames['findPushLoggers']]({
+        appId: this.$route.query.id
+      }).then(res => {
+        res.data.forEach(val => {
+          if (val.dataType === 1) {
+            this.systemAuditField.checkedNodeAuditList = JSON.parse(val.fieldName)
+          }
+          if (val.dataType === 2) {
+            this.systemAuditField.checkedOrgAuditList = JSON.parse(val.fieldName)
+          }
+          if (val.dataType === 3) {
+            this.systemAuditField.checkedDepAuditList = JSON.parse(val.fieldName)
+          }
+          if (val.dataType === 4) {
+            this.systemAuditField.checkedUserAuditList = JSON.parse(val.fieldName)
+          }
+        })
       })
     },
-
-    // 查看详情
-    findInfo(data){
-      api[urlNames['getEntityChangeLoggerDetail']]({
-        id:data.id,
-        entityType: data.entityType,
-        entityId: data.entityId
-      }).then((res) => {
-        if (res) {
-          this.DetialInfo = res.data
-        }
-      }, (error) => {
-      })
+    findInfo(val){
+      this.detialInfo=val
       this.DetialInfoVisible=true
     }
   }
+  
 }
 </script>
-
 <style scoped lang="less">
 @import "./index";
 .empty {
@@ -198,7 +169,6 @@ export default {
     font-size: 12px;
   }
 }
-
 .data-pic {
   padding-top: 20px;
   width: 60px;

@@ -254,6 +254,11 @@ export default {
   notificationList: 'notificationList',
   notificationRead: 'notificationRead',
   // 首页登第几个登录
-  loginIndex: 'loginIndex'
-
+  loginIndex: 'loginIndex',
+  // 取首页接入昨日数据
+  getStatistiscCount: 'getStatistiscCount',
+  // 接入应用总数
+  findApplicationCount: 'findApplicationCount',
+  // 推送日志
+  findPushLoggers: 'findPushLoggers'
 }

@@ -39,6 +39,27 @@ export default {
     showLoading: true,
     serve: 'organizationManagePC'
 
-  }
+  },
   // 登录日志列表
+  // 获取首页接入昨日数据
+  [urlNames.getStatistiscCount]: {
+    type: 'get',
+    url: '/api/jg_manage/statistics/getStatistiscCount',
+    keepOriginResponse: true,
+    serve: 'organizationManagePC'
+  },
+  // 获取接入应用总数
+  [urlNames.findApplicationCount]: {
+    type: 'get',
+    url: '/api/jg_manage/app/findApplicationCount',
+    keepOriginResponse: true,
+    serve: 'organizationManagePC'
+  },
+  // 推送日志
+  [urlNames.findPushLoggers]: {
+    type: 'get',
+    url: '/api/jg_manage/app/findPushLoggers',
+    keepOriginResponse: true,
+    serve: 'organizationManagePC'
+  }
 }

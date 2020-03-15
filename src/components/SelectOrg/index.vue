@@ -102,10 +102,9 @@ export default {
     submitBackData () {
       let idList = []
       let itemId = {}
-      // console.lo
       this.selectedOrgs.forEach(item => {
         itemId = {
-          authorizedOid: item.id
+          authorizedOid: item.bindId
         }
         idList.push(itemId)
       })

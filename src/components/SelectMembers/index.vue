@@ -219,7 +219,7 @@ export default {
     },
     // 获取机构树--初始化
     findNodeTree () {
-      api[urlNames['getTree']]({}).then((res) => {
+      api[urlNames['getViewTree']]({}).then((res) => {
         this.nodeTree = res.data
       })
     },
@@ -228,7 +228,7 @@ export default {
       if (node.level === 0) {
         return resolve(this.nodeTree)
       }
-      api[urlNames['getTree']]({
+      api[urlNames['getViewTree']]({
         parentId: node.data.id
       }).then((res) => {
         if (res.status === 0) {
@@ -275,7 +275,7 @@ export default {
     },
     // 获取机构树-加载可选
     findcheckNodeTree (parentId) {
-      api[urlNames['getTree']]({
+      api[urlNames['getViewTree']]({
         parentId: parentId
       }).then((res) => {
         this.orgList = []
