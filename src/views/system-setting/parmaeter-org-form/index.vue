@@ -163,7 +163,7 @@
         <div class="header">其他设置</div>
         <el-form ref="orgMessageRemind" label-width="160px">
             <el-form-item label="单位信息确认">
-                <el-switch v-model="orgMessageConfirm" @change="orgMsgConfirmVisible = true" active-text="" inactive-text="">
+                <el-switch v-model="orgMessageConfirm" @change="showMessageConfirmDialog()" active-text="" inactive-text="">
                 </el-switch>
             </el-form-item>
             <div v-if="orgMessageConfirm">
@@ -251,17 +251,31 @@
     </div>
 
     <!-- 单位确认信息对话框 -->
-    <el-dialog :visible.sync="orgMsgConfirmVisible" width="410px" :show-close="false">
+    <el-dialog :visible.sync="orgMsgConfirmOpenVisible" width="410px" :show-close="false">
+        <div slot="title" style="padding:20px; background-color: #fff;">
+            <span class="msg-title">确认打开单位信息确认</span>
+            <span class="svg-container" style="color:red">
+                <span class="el-icon-document-copy"></span>
+            </span>
+        </div>
+        <div class="msg-box">打开单位信息确认后，从下月起，您的单位信息将需要手动确认。</div>
+        <div slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="onSaveOrgMessageConfirm()">确定打开</el-button>
+            <el-button type="default" @click="orgMsgConfirmOpenVisible = false; orgMessageConfirm = !orgMessageConfirm;" width="100px">取 消</el-button>
+        </div>
+    </el-dialog>
+
+    <el-dialog :visible.sync="orgMsgConfirmCloseVisible" width="410px" :show-close="false">
         <div slot="title" style="padding:20px; background-color: #fff;">
             <span class="msg-title">确认关闭单位信息确认</span>
             <span class="svg-container" style="color:red">
                 <span class="el-icon-document-copy"></span>
             </span>
         </div>
-        <div class="msg-box">打开（关闭）单位信息确认后，从下月起，您的单位信息将不再需要手动确认。</div>
+        <div class="msg-box">关闭单位信息确认后，从下月起，您的单位信息将不再需要手动确认。</div>
         <div slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="onSaveOrgMessageConfirm()">确定关闭（打开）</el-button>
-            <el-button type="default" @click="orgMsgConfirmVisible = false; orgMessageConfirm = !orgMessageConfirm;" width="100px">取 消</el-button>
+            <el-button type="primary" @click="onSaveOrgMessageConfirm()">确定关闭</el-button>
+            <el-button type="default" @click="orgMsgConfirmCloseVisible = false; orgMessageConfirm = !orgMessageConfirm;" width="100px">取 消</el-button>
         </div>
     </el-dialog>
 </div>
@@ -619,7 +633,8 @@ export default {
         userDetail: false,
         depPhone: false
       },
-      orgMsgConfirmVisible: false, // 单位信息确认对话框
+      orgMsgConfirmOpenVisible: false, // 打开单位信息确认对话框
+      orgMsgConfirmCloseVisible: false, // 关闭单位信息确认对话框
       orgMessageConfirm: true, // 单位信息确认
       orgMessageRemind: -1, // 消息提醒
       modeAuditList: [],
@@ -681,11 +696,22 @@ export default {
       this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length
     },
     onToggleMessageConfirm () {
-      this.orgMsgConfirmVisible = false
+      this.orgMsgConfirmOpenVisible = false
+      this.orgMsgConfirmCloseVisible = false
 
       // 处理“单位确认信息”开关的切换
     },
-    onSaveOrgMessageConfirm () {},
+    showMessageConfirmDialog () {
+      if (this.orgMessageConfirm) {
+        this.orgMsgConfirmOpenVisible = true
+      } else {
+        this.orgMsgConfirmCloseVisible = true
+      }
+    },
+    onSaveOrgMessageConfirm () {
+      this.orgMsgConfirmOpenVisible = false
+      this.orgMsgConfirmCloseVisible = false
+    },
     onSubmit (flag) {
       console.log('submit!')
     },
