@@ -92,7 +92,7 @@
         </div>
         <div class="detailInfo">
           <p>人员变动数</p>
-          <p>{{changeAccount}}</p>
+          <p>{{0}}</p>
           <ul>
             <li>日<a href="">0% <i class="el-icon-top"></i></a></li>
             <li>周<a href="">3% <i class="el-icon-top"></i></a></li>

@@ -7,7 +7,7 @@
       <el-tab-pane label="单位参数">
         <parmaeter-org-form></parmaeter-org-form>
       </el-tab-pane>
-      <el-tab-pane label="消息模板配置" >
+      <el-tab-pane label="消息模板配置" v-if="false">
         <msg-setting></msg-setting>
       </el-tab-pane>
     </el-tabs>
