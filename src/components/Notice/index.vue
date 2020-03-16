@@ -64,20 +64,8 @@ export default {
       this.$router.push('/notification')
     },
     doFindNotice(val) {
-      this.closeNotice()
-      api[urlNames['notificationRead']]({ id: val.id }).then(res => {
-        if(res){
-          this.$emit('getList')
-        }
-      })
-      if (val.type === 1) {
-        // 待我审核  信息确认  我的申请
-         this.$router.push('/my-application')
-      } else if(val.type === 2){
-       this.$router.push('/confirm-info')
-      }else if(val.type===3){
-        this.$router.push('/wait-approval')
-      }
+     this.$emit('doFindNotice',val)
+      
     },
     goAllRead() {
       this.$emit('goAllRead')

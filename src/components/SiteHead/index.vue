@@ -51,7 +51,7 @@
           @closeNotice="showNotice"
           :noticeData="noticeData"
           @goAllRead="goAllRead"
-          @getList='getList'
+          @doFindNotice='doFindNotice'
           :showAllReadVisiable="showAllReadVisiable"
         ></notice>
       </div>
@@ -99,12 +99,12 @@ export default {
         this.noticeData = res.data
         this.msgNum = res.total
         if (this.msgNum === 0) {
-          this.msgNum=''
+          this.msgNum=null
           this.showAllReadVisiable = false
           this.showNoticeDilog = false
         } else {
           this.showAllReadVisiable = true
-          this.showNoticeDilog = true
+          // this.showNoticeDilog = true
         }
       })
     },
@@ -115,13 +115,33 @@ export default {
     goAllRead() {
       api[urlNames['notificationRead']]().then(res => {
         if (res) {
+          this.msgNum = null
+          this.noticeData = []
           this.showNoticeDilog = false
           this.showAllReadVisiable = false
-          this.msgNum = 0
-          this.noticeData = []
         }
       })
     },
+       // 去查看
+    doFindNotice(val){
+      api[urlNames['notificationRead']]({ id: val.id }).then(res => {
+        if(res){
+          this.getList()
+           this.showNoticeDilog = false
+          if (val.type === 1) {
+            this.$router.push('/my-application')
+          } else if(val.type === 2){
+          this.$router.push('/confirm-info')
+          }else if(val.type===3){
+            this.$router.push('/wait-approval')
+          }
+           
+        }
+      })
+   
+    },
+    
+
 
     // 获取用户身份列表
     findSessionUserList() {

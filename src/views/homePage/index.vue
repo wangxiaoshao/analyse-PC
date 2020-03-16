@@ -208,7 +208,7 @@ export default {
         deptCount:null,
         organCount:null
       },
-      loginNumber:1,
+      loginNumber:0,
       applyCount:null,
       // 人员变动数
       changeAccount:null
@@ -233,6 +233,7 @@ export default {
   methods:{
     // 获取第几个用户
     getLoginIndex(){
+      // {dataString:'2020-03-15'}
       api[urlNames['loginIndex']]().then(
         res => {
          this.loginNumber=res.data

@@ -15,10 +15,11 @@
       label-width="100px"
       class="demo-personFrom"
       style="width: 100%"
+      :rules="rules"
     >
       <el-row class="row-item">
         <el-col :span="12" styl="position: relative">
-          <el-form-item label="姓名" prop="name" :rules="[{ required: true, message: '姓名不能为空'}]">
+          <el-form-item label="姓名" prop="name">
             <el-popover placement="bottom-start" ref="popover" width="500">
               <el-input
                 v-popover:popover
@@ -55,10 +56,11 @@
               </div>
 
             </el-popover>
-            <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd' ">
+            <div v-if="msgVisiable">
+              <!-- && userDetail.name !== oldUserInfo.user.name -->
               <div
                 class="tip-msg"
-                v-show="this.app.option.options.userAuditFields.indexOf('name') > -1 && userDetail.name !== oldUserInfo.user.name"
+                v-show="this.app.option.options.userAuditFields.indexOf('name') > -1 "
               >添加或修改该字段需要提交审核</div>
             </div>
           </el-form-item>
@@ -111,20 +113,17 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="手机号" prop="mobile" :rules="[{ required: true, message: '手机号不能为空'}]">
+          <el-form-item label="手机号" prop="mobile">
             <el-input placeholder="请输入手机号" :disabled="isDefaultFlag" v-model="userDetail.mobile"></el-input>
-            <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
+            <!-- <div v-if="msgVisiable">
               <div
                 class="tip-msg"
                 v-show="this.app.option.options.userAuditFields.indexOf('mobile') > -1 && userDetail.mobile !== oldUserInfo.user.mobile"
               >添加或修改该字段需要提交审核</div>
-            </div>
+            </div> -->
           </el-form-item>
-          <!--:rules="[{ required: true, message: '请选择身份类型'}]"-->
           <el-form-item
             label="身份类型"
-            prop="postDetail.type
-            "
             :rules="[{ required: true, message: '请选择身份类型'}]"
           >
             <el-select
@@ -139,7 +138,7 @@
                 :value="item.value"
               ></el-option>
             </el-select>
-            <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
+            <div v-if="msgVisiable">
               <div
                 class="tip-msg"
                 v-show="this.app.option.options.userAuditFields.indexOf('userType') > -1 && userDetail.userType !== oldUserInfo.user.userType"
@@ -458,6 +457,7 @@ export default {
     return {
       showPopover: false, // 是否显示 Popover
       hidefooter: false,
+      msgVisiable:false,
       dutyNameCheckd: [],
       dutyNameSelectVisible: false,
       uploadUrl: '',
@@ -485,7 +485,8 @@ export default {
       timer: null,
       showPopoverFlag: false,
       rules: {
-        dutyName: [{ required: true, message: '职务不能为空' }]
+        name:[{ required: true, message: '姓名不能为空'}],
+        mobile:[{ required: true, message: '手机号不能为空'}] 
       }
     }
   },
@@ -497,12 +498,21 @@ export default {
   },
   methods: {
     ...mapMutations(['SET_OPTION']),
-    init() {},
+    init() {
+      if(this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd' || this.$route.name==='PassChange'){
+        this.msgVisiable=true
+      }else{
+        this.msgVisiable=false
+      }
+    },
     exportOrg() {
       this.$emit('exportOrg')
     },
     modifieUserInfo(userDetail) {
-      this.$refs[userDetail].validate(valid => {
+      if(this.postDetail.type==null){
+        this.$message.error('请选择身份类型')
+      }else{
+         this.$refs[userDetail].validate(valid => {
         if (valid) {
           this.$emit('goModifieUserInfo', this.personFrom)
         } else {
@@ -510,7 +520,7 @@ export default {
           return false
         }
       })
-
+      }
 
     },
     // 搜索表格点击当前行
@@ -679,7 +689,10 @@ export default {
       this.$emit('get-label', this.sendLabelId)
     },
     next(userDetail) {
-      this.$refs[userDetail].validate(valid => {
+      if(this.postDetail.type==null){
+        this.$message.error('请选择身份类型')
+      }else{
+        this.$refs[userDetail].validate(valid => {
         if (valid) {
           this.$emit('get-post', this.postFrom)
           this.$emit('get-user', this.personFrom)
@@ -688,6 +701,8 @@ export default {
           return false
         }
       })
+      }
+      
     },
     goBack() {
       this.$router.go(-1)
