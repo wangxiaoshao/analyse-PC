@@ -5,13 +5,13 @@
         <div class="site-scroll">
           <search-result :defaultNodeId="defaultNodeId"></search-result>
           <div class="tree-content">
-            <organization-tree @handle-node-click="handleNodeClick" @get-default-node="getDefaultNode"></organization-tree>
+            <organization-tree @handle-node-click="handleNodeClick" @get-default-node="getDefaultNode" ref="orgTree"></organization-tree>
           </div>
         </div>
       </el-col>
       <el-col :span="18" class="organization-container" >
         <transition name="fade-transform" mode="out-in" style="height: 100%">
-            <router-view></router-view>
+            <router-view @on-update-organization-tree='onUpdateOrgTree'></router-view>
         </transition>
       </el-col>
     </el-row>
@@ -27,7 +27,7 @@ export default {
   data () {
     return {
       defaultNodeId: '',
-     
+
     }
   },
   methods: {
@@ -42,9 +42,13 @@ export default {
         }
       })
     },
-     
+
     getDefaultNode (val) {
       this.defaultNodeId = val
+    },
+
+    onUpdateOrgTree () {
+      this.$refs.orgTree.findTreeList()
     }
   }
 }
