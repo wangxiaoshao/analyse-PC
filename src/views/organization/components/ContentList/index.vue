@@ -229,39 +229,16 @@ export default {
     sortBtnFlag () {
       this.$emit('cancel', true)
     },
-    // 排序处理
-    doSort (a, b) {
-      if (a.sort < b.sort) {
-        return a.sort - b.sort
-      }
-    },
     // 保存排序
     sublimeSort () {
       let sortList = []
-      let newAry = []
-      let newAry1 = []
-      // 深拷贝原数组
-      newAry = JSON.parse(JSON.stringify(this.list))
-      newAry1 = JSON.parse(JSON.stringify(this.list))
-      // 对当前排序好的数组按sort重新做排序
-      newAry1.sort(this.doSort)
       // 对之前已经排序好的
-      newAry.forEach(function (item, index) {
-        item.sort = newAry1[index].sort
-        const sortObj = {
+      this.list.forEach(function (item, index) {
+        sortList.push({
           id: item.id,
-          sort: item.sort
-        }
-        sortList.push(sortObj)
+          sort: index
+        })
       })
-
-      // this.list.forEach((item, index) => {
-      //   const sortObj = {
-      //     id: item.id,
-      //     sort: item.sort
-      //   }
-      //   sortList.push(sortObj)
-      // })
 
       let data = {
         page: this.contentPage.current,
@@ -284,7 +261,7 @@ export default {
        this.sortParam = {
         nowId: val.id
       }
-      
+
     },
 
     // 保存数值排序
