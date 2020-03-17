@@ -135,9 +135,9 @@
       </el-table-column>
       <el-table-column prop="act" label="操作" width="200" align="center">
         <template slot-scope="scope">
-          <el-button @click.native.prevent="openEiditPerson(scope.row)" type="text" size="small" 
+          <el-button @click.native.prevent="openEiditPerson(scope.row)" type="text" size="small"
            :disabled="!hasRight('userSetting')">修改</el-button>
-          <el-button @click.native.prevent="calloutDialog(scope.row)" type="text" size="small" 
+          <el-button @click.native.prevent="calloutDialog(scope.row)" type="text" size="small"
            :disabled="!hasRight('userIdTransfe')">调出</el-button>
           <el-button
             v-if="scope.row.type === 1 || scope.row.type === '1'"
@@ -305,21 +305,13 @@ export default {
     // 保存排序
     sublimeSort () {
       let sortList = []
-      let newAry = []
-      let newAry1 = []
-      // 深拷贝原数组
-      newAry = JSON.parse(JSON.stringify(this.list))
-      newAry1 = JSON.parse(JSON.stringify(this.list))
-      // 对当前排序好的数组按sort重新做排序
-      newAry1.sort(this.doSort)
       // 对之前已经排序好的
-      newAry.forEach(function (item, index) {
-        item.sort = newAry1[index].sort
-        const sortObj = {
+      this.list.forEach(function (item, index) {
+        sortList.push({
           id: item.uid,
-          sort: item.sort
-        }
-        sortList.push(sortObj)
+          sort: index,
+          name: item.name
+        })
       })
       let data = {
         page: this.contentPage.current,
