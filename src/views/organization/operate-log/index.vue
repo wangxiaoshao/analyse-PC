@@ -148,11 +148,12 @@ export default {
   },
   methods: {
     findEntityChangeLoggerList (id, type, page, limit) {
-      if (type === 2) {
+      // 原有的节点类型和日志类型不匹配，由后台改为保持一致，不用再修正节点类型
+      /* if (type === 2) {
         type = 3
       } else if (type === 3) {
         type = 2
-      }
+      } */
       api[urlNames['findEntityChangeLoggerList']]({
         entityType: type,
         entityId: id,
