@@ -83,13 +83,6 @@ export default {
   components: {},
   mixins: [hasRight],
   data () {
-    var checkAge = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error(' '))
-      } else {
-        callback()
-      }
-    }
     return {
       dynamicTags: ['正厅级', '副厅级'],
       inputVisible: false,
@@ -105,8 +98,48 @@ export default {
       foundDicList: [],
       newAddList: [],
       rules: {
-        text: [{ validator: checkAge, trigger: 'blur' }],
-        value: [{ validator: checkAge, trigger: 'blur' }]
+        text: [
+          { type: 'string', required: true, message: '字段名称未填写' },
+          { validator: (rule, value, callback) => {
+            let ok = true
+            let msg = ''
+
+            this.foundDicList.forEach((item) => {
+              if (value === item.text) {
+                ok = false
+                msg = '重复'
+              }
+            })
+
+            if (!ok) {
+              return callback(new Error(msg))
+            } else {
+              return callback()
+            }
+          },
+          trigger: 'blur' }
+        ],
+        value: [
+          { required: true, message: '字段值未填写' },
+          { validator: (rule, value, callback) => {
+            let ok = true
+            let msg = ''
+
+            this.foundDicList.forEach((item) => {
+              if (parseInt(value) === item.value) {
+                ok = false
+                msg = '重复'
+              }
+            })
+
+            if (!ok) {
+              return callback(new Error(msg))
+            } else {
+              return callback()
+            }
+          },
+          trigger: 'blur' }
+        ]
       }
     }
   },
