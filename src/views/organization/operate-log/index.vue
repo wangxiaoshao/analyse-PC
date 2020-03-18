@@ -16,10 +16,6 @@
       label="序号"
     align="center">
     </el-table-column>
-<!--    <el-table-column-->
-<!--      type="selection"-->
-<!--      width="55">-->
-<!--    </el-table-column>-->
     <el-table-column
       prop="actionTime"
       label="时间"
@@ -47,7 +43,7 @@
       label="操作"
       >
       <template slot-scope="scope">
-         <a style="color:red;"  href="jacascript:void(0)" @click="findInfo(scope.row)">详情</a>
+         <a style="color:#FC7049;"  href="jacascript:void(0)" @click="findInfo(scope.row)">详情</a>
       </template>
     </el-table-column>
     <el-table-column
@@ -60,10 +56,10 @@
   </el-table>
    <!-- 详细信息弹窗 -->
     <div class="dialog-box">
-      <el-dialog :visible.sync="DetialInfoVisible"  width="450px">
+      <el-dialog :visible.sync="detialInfoVisible"  width="450px">
         <div slot="title" style="padding:20px">
           日志详情
-          <i class="el-icon-document-copy" style="color:red"></i>
+          <i class="el-icon-document-copy" style="color:#FC7049"></i>
         </div>
            <el-form
               inline
@@ -72,34 +68,34 @@
             >
               <el-form-item label="操作日期" >
                 <div class="table-td">
-                  {{DetialInfo.actionTime}}
+                  {{detialInfo.actionTime}}
                 </div>
               </el-form-item>
               <el-form-item label="操作人标识">
                 <div class="table-td">
-                 {{DetialInfo.actionUid}}
+                 {{detialInfo.actionUid}}
                 </div>
               </el-form-item>
               <el-form-item label="操作类型" >
                 <div class="table-td">
-                  <span v-if="DetialInfo.actionType === 1">信息新增</span>
-                  <span v-if="DetialInfo.actionType === 2">信息修改</span>
-                  <span v-if="DetialInfo.actionType === 3">信息删除</span>
+                  <span v-if="detialInfo.actionType === 1">信息新增</span>
+                  <span v-if="detialInfo.actionType === 2">信息修改</span>
+                  <span v-if="detialInfo.actionType === 3">信息删除</span>
                 </div>
               </el-form-item>
-              <el-form-item :label="DetialInfo.entityTypeText+'标识'">
+              <el-form-item :label="detialInfo.entityTypeText+'标识'">
                 <div class="table-td">
-                  {{DetialInfo.entityId }}
+                  {{detialInfo.entityId }}
                 </div>
               </el-form-item>
               <el-form-item label="操作详情">
                 <div class="table-td">
-                 <p> {{DetialInfo.changeContent }}</p>
+                 <p> {{detialInfo.changeContent }}</p>
                 </div>
               </el-form-item>
             </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="DetialInfoVisible = false" width="120px">确 定</el-button>
+          <el-button type="primary" @click="detialInfoVisible = false" width="120px">确 定</el-button>
         </div>
       </el-dialog>
     </div>
@@ -175,7 +171,7 @@ export default {
         entityId: data.entityId
       }).then((res) => {
         if (res) {
-          this.DetialInfo = res.data
+          this.detialInfo = res.data
         }
       }, (error) => {
       })

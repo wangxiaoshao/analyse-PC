@@ -28,7 +28,9 @@
        <!-- <i class="el-icon-plus el-icon&#45;&#45;left">创建账号</i>-->
         创建账号
       </el-button>
-      <el-form label-width="100px" :model="addAccount" v-if="!addFlag">
+      <el-form label-width="100px" :model="addAccount"  ref="addAccount" v-if="!addFlag">
+        <input type="password" class="hideIpt" />
+        <input type="text" class="hideIpt"/>
         <el-form-item label="登录帐号" prop="name">
           <el-input v-model="addAccount.name"></el-input>
         </el-form-item>
@@ -38,11 +40,7 @@
         <el-form-item label="密码" prop="password">
           <el-input v-model="addAccount.password" show-password></el-input>
         </el-form-item>
-        <!-- <el-form-item label="关联系统">
-         <bind-system :user-account="[]" @get-app="getAppId"></bind-system>
-        </el-form-item> -->
          <el-form-item label="关联系统">
-         <!-- <bind-system :user-account="[]" @change="getAppId"></bind-system> -->
          <bind-system :list="[]" :isCreate="true" @app-change="getAppId"></bind-system>
         </el-form-item>
         <el-form-item label="是否启用" prop="removed">

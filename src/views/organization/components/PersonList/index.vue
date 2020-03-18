@@ -1,11 +1,5 @@
 <template>
   <div class="content-list">
-    <!--选择单位/内设机构-->
-    <!--    <candidate-dialog-->
-    <!--      :seleceDialog="selectDialog"-->
-    <!--      @dialogReturnMembersInfo="dialogReturnMembersInfo"-->
-    <!--      @closeselectMenmber="closeselectMenmber">-->
-    <!--    </candidate-dialog>-->
     <select-members
       :seleceDialog="selectDialog"
       @dialogReturnMembersInfo="dialogReturnMembersInfo"
@@ -76,21 +70,6 @@
       <el-button @click="exportUser" :disabled="!hasRight('userExport')">导出人员</el-button>
       <el-button size="small" type="primary" @click="exportPerson" :disabled="!hasRight('userImport')">导入人员</el-button>
 
-      <!-- <el-form class="uploadForm" :model="formFile" ref="formFile" enctype="multipart/form-data">
-        <el-upload
-          class="uploadMembers"
-          :show-file-list="false"
-          :auto-upload="false"
-          :limit="1"
-          name="file"
-          action="http://jg-dev.lonmo.com/api/jg_manage/import/userImport"
-          :on-change="fileHandleChange"
-          :file-list="fileList"
-        >
-          <el-button size="small" type="primary">导入人员</el-button>
-        </el-upload>
-      </el-form> -->
-
     </div>
     <div class="sort-do" v-if="sortFlag">
       按住左键上下拖动调整排序
@@ -135,24 +114,26 @@
       </el-table-column>
       <el-table-column prop="act" label="操作" width="200" align="center">
         <template slot-scope="scope">
-          <el-button @click.native.prevent="openEiditPerson(scope.row)" type="text" size="small"
+          <el-button @click.native.prevent="openEiditPerson(scope.row)" type="text" size="small" class="btnMar"
            :disabled="!hasRight('userSetting')">修改</el-button>
-          <el-button @click.native.prevent="calloutDialog(scope.row)" type="text" size="small"
+          <el-button @click.native.prevent="calloutDialog(scope.row)" type="text" size="small" class="btnMar"
            :disabled="!hasRight('userIdTransfe')">调出</el-button>
           <el-button
             v-if="scope.row.type === 1 || scope.row.type === '1'"
             @click.native.prevent="removeDuty(scope.row)"
             type="text"
             size="small"
+            class="btnMar"
           >解除兼职</el-button>
           <el-button
             v-if="scope.row.type === 2 || scope.row.type === '2'"
             @click.native.prevent="removeDuty(scope.row)"
             type="text"
             size="small"
+            class="btnMar"
             :disabled="!hasRight('userIdRemove')"
           >解除挂职</el-button>
-          <el-button  @click.native="goSort(scope.row)" type="text" size="small">
+          <el-button  @click.native="goSort(scope.row)" type="text" size="small" >
             排序
           </el-button>
         </template>
