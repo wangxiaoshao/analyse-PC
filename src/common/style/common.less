@@ -300,12 +300,55 @@ text-able{
 .el-tabs__nav-wrap::after{
   background-color: #fff;
 }
+/*=============
+  全局日志详情样式
+================*/
+.dialog-box{
+  /deep/.el-dialog__body{
+    padding: 10px;
+    max-height: 310px;
+    overflow: auto;
+  }
 
-/*
-/deep/.el-table td {
-  text-align: center;
-} 
-/deep/.el-table th{
-  text-align: center;
+  /deep/.el-dialog__header{
+    background-color: #fff;
+  }
+  .el-dialog .el-form-item{
+    margin-bottom: 5px;
+    margin-right: 0px;
+    width: 100%;
+  }
+  .el-dialog .el-form-item:nth-child(n){
+    background: #f0f9eb;
+  }
+  .el-dialog .el-form-item:nth-child(2n){
+    background: #fff;
+  }
+  .table-td{
+    width: 100%;
+    // width: 200;
+    display: inline-block;
+    padding: 0px 10px;
+    position: relative;
+    p{
+      text-indent:2em
+    }
+  }
+  .systemDetial{
+    .table-td{
+      margin-left: 20px;
+    }
+    
+  }
+  .overline{
+    width: 290px;
+    padding: 0px 10px;
+    text-indent:none;
+    display: inline-block;
+    word-break:keep-all;/* 不换行 */
+    white-space:nowrap;/* 不换行 */
+    overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
+    text-overflow:ellipsis;
+    cursor: pointer;
+  }
 }
-*/

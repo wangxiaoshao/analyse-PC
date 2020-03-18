@@ -84,10 +84,11 @@
               </div>
             </el-popover>
             <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
+              <!-- && postDetail.dutyName !== oldUserInfo.identity.dutyName -->
               <div
                 class="tip-msg"
                 style="right: 0"
-                v-show="this.app.option.options.userAuditFields.indexOf('dutyName') > -1 && postDetail.dutyName !== oldUserInfo.identity.dutyName"
+                v-show="this.app.option.options.userAuditFields.indexOf('dutyName') > -1"
               >添加或修改该字段需要提交审核</div>
             </div>
           </el-form-item>
@@ -115,12 +116,13 @@
         <el-col :span="12">
           <el-form-item label="手机号" prop="mobile">
             <el-input placeholder="请输入手机号" :disabled="isDefaultFlag" v-model="userDetail.mobile"></el-input>
-            <!-- <div v-if="msgVisiable">
+            <div v-if="msgVisiable">
+              <!-- && userDetail.mobile !== oldUserInfo.user.mobile -->
               <div
                 class="tip-msg"
-                v-show="this.app.option.options.userAuditFields.indexOf('mobile') > -1 && userDetail.mobile !== oldUserInfo.user.mobile"
+                v-show="this.app.option.options.userAuditFields.indexOf('mobile') > -1 "
               >添加或修改该字段需要提交审核</div>
-            </div> -->
+            </div>
           </el-form-item>
           <el-form-item
             label="身份类型"
@@ -141,7 +143,7 @@
             <div v-if="msgVisiable">
               <div
                 class="tip-msg"
-                v-show="this.app.option.options.userAuditFields.indexOf('userType') > -1 && userDetail.userType !== oldUserInfo.user.userType"
+                v-show="this.app.option.options.userAuditFields.indexOf('type') > -1"
               >添加或修改该字段需要提交审核</div>
             </div>
           </el-form-item>
@@ -149,6 +151,12 @@
             <el-input placeholder="所属单位" v-model="orgName">
               <el-button type="primary" slot="append" class="form-btn1" @click="exportOrg" :disabled="!hasRight('personUserIdTransfe')">调出</el-button>
             </el-input>
+            <div v-if="msgVisiable">
+              <div
+                class="tip-msg"
+                v-show="this.app.option.options.userAuditFields.indexOf('orgName') > -1 "
+              >添加或修改该字段需要提交审核</div>
+            </div>
           </el-form-item>
         </el-col>
       </el-row>

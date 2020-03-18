@@ -62,8 +62,8 @@
           <template slot-scope="scope">
             <a
               href="javascript:void(0);"
-              style="color:red;font-size:12px"
-              @click="openDetialInfo(scope.row)"
+              style="color:#FC7049;font-size:12px"
+              @click="opendetialInfo(scope.row)"
             >详情</a>
           </template>
         </el-table-column>
@@ -80,57 +80,55 @@
     </div>
     <!-- 详细信息弹窗 -->
     <div class="dialog-box">
-      <el-dialog :visible.sync="DetialInfoVisible" width="420px">
-        <div slot="title">
+      <el-dialog :visible.sync="detialInfoVisible" width="420px">
+        <div slot="title" style="padding:20px">
           日志详情
-          <i class="el-icon-document-copy" style="color:red"></i>
+          <i class="el-icon-document-copy" style="color:#FC7049"></i>
         </div>
         <template v-if="loginLog === 1 || loginLog === 2 || !loginLog">
            <el-form
-              :model="DetialInfoForm"
               inline
-              label-position="right"
-              style="width:100%;text-align:center"
+              label-width="130px"
+              class="systemDetial"
             >
-              <el-form-item label="操作日期" label-width="100px">
-                <el-input v-model="DetialInfoForm.actionTime" :disabled="true"></el-input>
+              <el-form-item label="操作日期" >
+                <div class="table-td">{{detialInfoForm.actionTime}}</div>
               </el-form-item>
-              <el-form-item label="操作人标识" label-width="100px">
-                <el-input v-model="DetialInfoForm.actionUid" width="200px" :disabled="true"></el-input>
+              <el-form-item label="操作人标识">
+                <div class="table-td">{{detialInfoForm.actionUid}}</div>
               </el-form-item>
-              <el-form-item label="操作描述" label-width="100px">
-                <el-input v-model="DetialInfoForm.description" :disabled="true"></el-input>
+              <el-form-item label="操作描述">
+                <div class="table-td">{{detialInfoForm.description}}</div>
               </el-form-item>
-              <el-form-item label="操作事件标识" label-width="100px">
-                <el-input v-model="DetialInfoForm.clientId" :disabled="true"></el-input>
+              <el-form-item label="操作事件标识">
+                <div class="table-td">{{detialInfoForm.clientId}}</div>
               </el-form-item>
             </el-form>
         </template>
          <template v-if="loginLog === 3">
             <el-form
-              :model="systemInfoForm"
               inline
-              label-position="right"
-              style="width:100%;text-align:center"
+               label-width="110px"
             >
-              <el-form-item label="操作日期" label-width="100px">
-                <el-input v-model="systemInfoForm.accessTime" :disabled="true"></el-input>
+              <el-form-item label="操作日期">
+                <div class="table-td">{{systemInfoForm.accessTime}}</div>
               </el-form-item>
-              <el-form-item label="应用名称" label-width="100px">
-                <el-input v-model="systemInfoForm.applicationName" width="200px" :disabled="true"></el-input>
+              <el-form-item label="应用名称">
+                 <div class="table-td">{{systemInfoForm.applicationName}}</div>
               </el-form-item>
-              <el-form-item label="日志类型" label-width="100px">
-                <el-input v-model="systemError" :disabled="true"></el-input>
+              <el-form-item label="日志类型">
+                <div class="table-td">{{systemError}}</div>
               </el-form-item>
-              <el-form-item label="操作事件标识" label-width="100px">
-                <el-input v-model="systemInfoForm.path" :disabled="true"></el-input>
+              <el-form-item label="操作事件标识">
+                <div class="overline" :title="systemInfoForm.path">
+                 {{systemInfoForm.path}}
+                </div>
               </el-form-item>
             </el-form>
         </template>
 
-
         <div slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="DetialInfoVisible = false" width="120px">确 定</el-button>
+          <el-button type="primary" @click="detialInfoVisible = false" width="120px">确 定</el-button>
         </div>
       </el-dialog>
     </div>
@@ -147,8 +145,8 @@ export default {
   data () {
     return {
       tableData: [],
-      DetialInfoVisible: false,
-      DetialInfoForm: {
+      detialInfoVisible: false,
+      detialInfoForm: {
         actionDepartmentId: '',
         actionOrgId: '',
         actionTime: '',
@@ -283,8 +281,8 @@ export default {
         }
       )
     },
-    openDetialInfo (val) {
-      this.DetialInfoVisible = true
+    opendetialInfo (val) {
+      this.detialInfoVisible = true
       if (this.loginLog === 1 || this.loginLog === 2 || !this.loginLog) {
         let info = {
           actionTime: val.actionTime.slice(0, 10),
@@ -292,7 +290,7 @@ export default {
         }
         api[urlNames['findLoggerById']](info).then(
           res => {
-            Object.assign(this.DetialInfoForm, res.data)
+            Object.assign(this.detialInfoForm, res.data)
           },
           () => {}
         )

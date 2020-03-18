@@ -43,7 +43,7 @@
     </el-dialog>
 
     <!-- 修改密码弹框 -->
-    <div class="dialog-box">
+    <div class="updatePwd-box">
       <el-dialog :visible.sync="modifiePwdVisible" :show-close="false" width="410px">
         <div slot="title" class="header-title" style="background-color: #fff;">
           修改密码
@@ -79,7 +79,7 @@
     </div>
 
     <!-- 重置密码弹框 -->
-    <div class="dialog-box">
+    <div class="updatePwd-box">
       <el-dialog :visible.sync="resetPwdVisible" width="420px" :show-close="false">
         <div slot="title" class="header-title" style="background-color: #fff;">
           手机号验证
@@ -108,6 +108,7 @@
         </div>
       </el-dialog>
     </div>
+
     <!-- 重置密码成功弹框 -->
     <el-dialog :visible.sync="successPwdVisible" width="420px">
       <div slot="title" class="header-title" style="background-color: #fff;">
@@ -378,17 +379,6 @@ export default {
         )
       }
     },
-   
-    // getAccountInfo(){
-    //    api[urlNames['findUserAccountByUid']]().then(
-    //   res => {
-    //     if (res && res.data) {
-    //       this.userInfo.userAccount = res.data
-    //     }
-    //   },
-    //   () => {}
-    // )
-    // },
      // 获取账号列表
     getAllAccountList(){
       api[urlNames['findAllAccountByUid']]({
@@ -515,7 +505,6 @@ export default {
       this.userInfo.identity = val
     },
     handleClick(tab, event) {
-      // console.log(tab, event)
       this.showAccountsVisible=true
     },
 
@@ -543,6 +532,7 @@ export default {
                 type: status === 0 ? 'success' : 'error'
               })
                this.modifiePwdVisible = false 
+               window.location.href= '/api/gate/logout'
                 this.$refs[formName].resetFields()
             },
             () => {}

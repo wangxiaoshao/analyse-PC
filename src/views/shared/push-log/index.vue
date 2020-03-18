@@ -2,7 +2,7 @@
   <div class="push-log">
     <!-- 详细信息弹窗 -->
     <div class="dialog-box">
-      <el-dialog :visible.sync="DetialInfoVisible"  width="450px">
+      <el-dialog :visible.sync="detialInfoVisible"  width="450px">
         <div slot="title" style="padding:20px">
           日志详情
           <i class="el-icon-document-copy" style="color:red"></i>
@@ -34,11 +34,10 @@
               </el-form-item>
             </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="DetialInfoVisible = false" width="120px">确 定</el-button>
+          <el-button type="primary" @click="detialInfoVisible = false" width="120px">确 定</el-button>
         </div>
       </el-dialog>
     </div>
-
     <el-table
     :data="logList"
     border
@@ -57,10 +56,6 @@
       label="序号"
     align="center">
     </el-table-column>
-<!--    <el-table-column-->
-<!--      type="selection"-->
-<!--      width="55">-->
-<!--    </el-table-column>-->
     <el-table-column
       prop="entityId"
       label="同步事件"
@@ -122,7 +117,7 @@ export default {
    data(){
      return {
         logList: [{}],
-        DetialInfoVisible:false,
+        detialInfoVisible:false,
         detialInfo:{}
 
      }
@@ -173,7 +168,7 @@ export default {
     },
     findInfo(val){
       this.detialInfo=val
-      this.DetialInfoVisible=true
+      this.detialInfoVisible=true
     }
   }
   

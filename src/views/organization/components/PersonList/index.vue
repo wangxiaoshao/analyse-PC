@@ -135,24 +135,26 @@
       </el-table-column>
       <el-table-column prop="act" label="操作" width="200" align="center">
         <template slot-scope="scope">
-          <el-button @click.native.prevent="openEiditPerson(scope.row)" type="text" size="small" 
+          <el-button @click.native.prevent="openEiditPerson(scope.row)" type="text" size="small" class="btnMar"
            :disabled="!hasRight('userSetting')">修改</el-button>
-          <el-button @click.native.prevent="calloutDialog(scope.row)" type="text" size="small" 
+          <el-button @click.native.prevent="calloutDialog(scope.row)" type="text" size="small" class="btnMar"
            :disabled="!hasRight('userIdTransfe')">调出</el-button>
           <el-button
             v-if="scope.row.type === 1 || scope.row.type === '1'"
             @click.native.prevent="removeDuty(scope.row)"
             type="text"
             size="small"
+            class="btnMar"
           >解除兼职</el-button>
           <el-button
             v-if="scope.row.type === 2 || scope.row.type === '2'"
             @click.native.prevent="removeDuty(scope.row)"
             type="text"
             size="small"
+            class="btnMar"
             :disabled="!hasRight('userIdRemove')"
           >解除挂职</el-button>
-          <el-button  @click.native="goSort(scope.row)" type="text" size="small">
+          <el-button  @click.native="goSort(scope.row)" type="text" size="small" >
             排序
           </el-button>
         </template>
