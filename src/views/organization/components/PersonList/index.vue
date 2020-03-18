@@ -365,28 +365,51 @@ export default {
     },
     // 保存数值排序
     submitNumSort () {
-      // sortValue
-      // console.log(' this.sortParam:', this.sortParam)
-      let data = {
-        deptId: this.id,
-        page: this.sortValue,
-        limit: 1
+      if (this.type === 3) {
+        let data = {
+          deptId: this.id,
+          page: this.sortValue,
+          limit: 1
+        }
+        api[urlNames['findDepartmentMembers']](data).then(
+          res => {
+            this.loading = false
+            if (res.data.length > 0) {
+              this.sortParam.id = res.data[0].identityId
+              this.NumSortFun(this.sortParam)
+              // console.log(' this.sortParam:', this.sortParam)
+            }
+            if (res.data.length === 0) {
+              this.$message.error('找不到目标序号，请重新输入')
+              this.showSortDilog = false
+            }
+          },
+          () => {}
+        )
       }
-      api[urlNames['findDepartmentMembers']](data).then(
-        res => {
-          this.loading = false
-          if (res.data.length > 0) {
-            this.sortParam.id = res.data[0].identityId
-            this.NumSortFun(this.sortParam)
-            // console.log(' this.sortParam:', this.sortParam)
-          }
-          if (res.data.length === 0) {
-            this.$message.error('找不到目标序号，请重新输入')
-            this.showSortDilog = false
-          }
-        },
-        () => {}
-      )
+
+      if (this.type === 2) {
+        let data = {
+          orgId: this.id,
+          page: this.sortValue,
+          limit: 1
+        }
+        api[urlNames['findOrganizationMembers']](data).then(
+          res => {
+            this.loading = false
+            if (res.data.length > 0) {
+              this.sortParam.id = res.data[0].identityId
+              this.NumSortFun(this.sortParam)
+              // console.log(' this.sortParam:', this.sortParam)
+            }
+            if (res.data.length === 0) {
+              this.$message.error('找不到目标序号，请重新输入')
+              this.showSortDilog = false
+            }
+          },
+          () => {}
+        )
+      }
     },
     NumSortFun (data) {
       api[urlNames['setSortThroughNumerical']](data).then(
