@@ -383,7 +383,7 @@ export default {
     },
     // 拖拽结束时触发的事件--原来机构树
     nodeDragEnd (Node, lastNode, lastTree, e) {
-      let coordinates = this.getCoordinates()
+      let rect = this.$refs.coordinates.getClientRects()[0]
       /*
         coordinates
         top:coordinates元素距离顶部的距离
@@ -392,7 +392,7 @@ export default {
         y:浏览器的位置-顶部
         */
       // if (e.screenX > 500 + coordinates.x && e.screenX < 1200 + coordinates.x) {
-      if (e.screenX > (window.innerWidth - 240) / 2 + 240 + coordinates.x && e.screenX < (window.innerWidth - 240) / 2 + 240 + coordinates.x + window.innerWidth * 0.5) {
+      if (e.screenX > rect.left && e.screenX < rect.right && e.screenY > rect.top && e.screenY < rect.bottom) {
         this.viewNodeDraft.id = Node.data.id
         Node.data.parentId = this.viewNodeDraft.parentId = '-1'
         this.viewNodeDraft.name = Node.data.name
