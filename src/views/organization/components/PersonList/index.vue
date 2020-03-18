@@ -1,11 +1,5 @@
 <template>
   <div class="content-list">
-    <!--选择单位/内设机构-->
-    <!--    <candidate-dialog-->
-    <!--      :seleceDialog="selectDialog"-->
-    <!--      @dialogReturnMembersInfo="dialogReturnMembersInfo"-->
-    <!--      @closeselectMenmber="closeselectMenmber">-->
-    <!--    </candidate-dialog>-->
     <select-members
       :seleceDialog="selectDialog"
       @dialogReturnMembersInfo="dialogReturnMembersInfo"
@@ -75,21 +69,6 @@
       <el-button @click="sortList" :disabled="!hasRight('userOrder')">调整排序</el-button>
       <el-button @click="exportUser" :disabled="!hasRight('userExport')">导出人员</el-button>
       <el-button size="small" type="primary" @click="exportPerson" :disabled="!hasRight('userImport')">导入人员</el-button>
-
-      <!-- <el-form class="uploadForm" :model="formFile" ref="formFile" enctype="multipart/form-data">
-        <el-upload
-          class="uploadMembers"
-          :show-file-list="false"
-          :auto-upload="false"
-          :limit="1"
-          name="file"
-          action="http://jg-dev.lonmo.com/api/jg_manage/import/userImport"
-          :on-change="fileHandleChange"
-          :file-list="fileList"
-        >
-          <el-button size="small" type="primary">导入人员</el-button>
-        </el-upload>
-      </el-form> -->
 
     </div>
     <div class="sort-do" v-if="sortFlag">
