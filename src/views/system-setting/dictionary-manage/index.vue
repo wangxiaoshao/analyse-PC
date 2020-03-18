@@ -141,6 +141,8 @@ export default {
       if (row && row.id) {
         this.dictionaryType = row.id
 
+        this.dicTitle = row.subject + '字段列表'
+
         this.dicDialogVisible = true
       }
     },
