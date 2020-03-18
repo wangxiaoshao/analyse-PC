@@ -182,7 +182,8 @@ export default {
         parentId: '',
         name: '',
         nodeType: null,
-        bindId: null
+        bindId: null,
+        sort: 0
       },
       for: {
         id: '',
@@ -384,15 +385,8 @@ export default {
     // 拖拽结束时触发的事件--原来机构树
     nodeDragEnd (Node, lastNode, lastTree, e) {
       let rect = this.$refs.coordinates.getClientRects()[0]
-      /*
-        coordinates
-        top:coordinates元素距离顶部的距离
-        left:coordinates元素距离左侧的距离
-        x:浏览器的位置-左侧
-        y:浏览器的位置-顶部
-        */
-      // if (e.screenX > 500 + coordinates.x && e.screenX < 1200 + coordinates.x) {
-      if (e.screenX > rect.left && e.screenX < rect.right && e.screenY > rect.top && e.screenY < rect.bottom) {
+
+      if (e.clientX > rect.left && e.clientX < rect.right && e.clientY > rect.top && e.clientY < rect.bottom) {
         this.viewNodeDraft.id = Node.data.id
         Node.data.parentId = this.viewNodeDraft.parentId = '-1'
         this.viewNodeDraft.name = Node.data.name
