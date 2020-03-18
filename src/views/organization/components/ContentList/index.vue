@@ -106,6 +106,7 @@ export default {
     return {
       loading: true,
       list: [],
+      originList: [],
       sortListFlag: false,
       isShowEditFlag: true,
       sortList: [],
@@ -215,10 +216,12 @@ export default {
       api[urlNames['findViewNodeList']](data).then((res) => {
         this.loading = false
         this.list = res.data
+        this.originList = JSON.parse(JSON.stringify(this.list))
         this.contentPage.total = res.total
       }, () => {
         this.loading = false
         this.list = []
+        this.originList = JSON.parse(JSON.stringify(this.list))
         this.contentPage.total = 0
       })
     },
@@ -231,12 +234,13 @@ export default {
     },
     // 保存排序
     sublimeSort () {
+      let that = this
       let sortList = []
       // 对之前已经排序好的
       this.list.forEach(function (item, index) {
         sortList.push({
           id: item.id,
-          sort: index
+          sort: that.originList[index].sort
         })
       })
 

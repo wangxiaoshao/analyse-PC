@@ -207,6 +207,7 @@ export default {
       fileList: [], // 文件列表
       loading: true,
       list: [],
+      originList: [],
       sortListFlag: false,
       isShowEditFlag: true,
       submitVisible: false,
@@ -273,11 +274,13 @@ export default {
           res => {
             this.loading = false
             this.list = res.data
+            this.originList = JSON.parse(JSON.stringify(this.list))
             this.contentPage.total = res.total
           },
           () => {
             this.loading = false
             this.list = []
+            this.originList = JSON.parse(JSON.stringify(this.list))
             this.contentPage.total = 0
           }
         )
@@ -292,11 +295,13 @@ export default {
           res => {
             this.loading = false
             this.list = res.data
+            this.originList = JSON.parse(JSON.stringify(this.list))
             this.contentPage.total = res.total
           },
           () => {
             this.loading = false
             this.list = []
+            this.originList = JSON.parse(JSON.stringify(this.list))
             this.contentPage.total = 0
           }
         )
@@ -304,12 +309,13 @@ export default {
     },
     // 保存排序
     sublimeSort () {
+      let that = this
       let sortList = []
       // 对之前已经排序好的
       this.list.forEach(function (item, index) {
         sortList.push({
           id: item.uid,
-          sort: index,
+          sort: that.originList[index].sort,
           name: item.name
         })
       })
