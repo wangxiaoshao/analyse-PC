@@ -60,7 +60,8 @@
                           :load="loadNode"
                           @check-change="currentchange"
                           :check-strictly="true"
-                          :allow-drop="allowDrop"
+                          :allow-drag="allowSourceDrag"
+                          :allow-drop="allowSourceDrop"
                           @node-drag-end="nodeDragEnd"
                           @node-drag-over="handleDragOver"
                           :default-expanded-keys="[defaultexpandedkeys]"
@@ -76,7 +77,7 @@
                                 <span class="iconfont iconzuzhijigou" v-if="data.nodeType === 1"></span>
                                 <span class="iconfont icondanwei" v-if="data.nodeType === 2"></span>
                                 <span class="iconfont iconbumen" v-if="data.nodeType === 3"></span>
-                                <span>{{node.label}}</span>
+                                <span class="label">{{node.label}}</span>
                               </span>
                         </el-tree>
                     </div>
@@ -103,6 +104,8 @@
                         :load="loadOrgNode"
                         :props="defaultProps"
                         :check-strictly="true"
+                        :allow-drag="allowDestinationDrag"
+                        :allow-drop="allowDestinationDrop"
                         @node-drag-end="nodeSelectDragEnd"
                         :expand-on-click-node="false"
                         :default-checked-keys="checkedKeys">
@@ -117,7 +120,7 @@
                             <span class="iconfont iconzuzhijigou" v-if="data.nodeType === 1"></span>
                             <span class="iconfont icondanwei" v-if="data.nodeType === 2"></span>
                             <span class="iconfont iconbumen" v-if="data.nodeType === 3"></span>
-                            <span>{{node.label}}</span>
+                            <span class="label">{{node.label}}</span>
                             <span @click="deleteNodeTree(data.id)" class="delete-icon fa fa-trash-o"></span>
                           </div>
                       </el-tree>
@@ -374,8 +377,21 @@ export default {
       this.$refs.selecttree.setCheckedKeys(this.checkedKeys)
       // this.$refs.selecttree.setChecked(this.checkedKeys, true, this.syncChild)
     },
-    // 允许拖拽--暂时无用
-    allowDrop (draggingNode, dropNode, type) {
+    // 允许数据源拖拽
+    allowSourceDrag (draggingNode) {
+      return true
+    },
+    // 允许数据源拖放
+    allowSourceDrop (draggingNode, dropNode, type) {
+      return false
+    },
+    // 允许目标拖拽
+    allowDestinationDrag (draggingNode) {
+      return true
+    },
+    // 允许目标拖放
+    allowDestinationDrop (draggingNode, dropNode, type) {
+      return true
     },
     // 拖拽--暂时无用
     handleDragOver (draggingNode, dropNode, ev) {
