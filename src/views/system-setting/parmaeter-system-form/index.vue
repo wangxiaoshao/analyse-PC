@@ -169,12 +169,19 @@
             </el-form-item>
             <div v-if="systemMessageConfirm">
                 <el-form-item label="设置信息确认弹窗提醒">
-                    <el-radio-group size="medium" v-model="systemMessageRemind">
-                        <el-radio-button label="7">每月最后七天</el-radio-button>
-                        <el-radio-button label="5">每月最后五天</el-radio-button>
-                        <el-radio-button label="3">每月最后三天</el-radio-button>
-                        <el-radio-button label="-1">不提醒</el-radio-button>
-                    </el-radio-group>
+                    <el-date-picker
+                        v-model="systemRemindTimeRange"
+                        type="daterange"
+                        :editable="false"
+                        :clearable="true"
+                        format="dd号"
+                        min-date="2020-01-01"
+                        max-date="2020-01-31"
+                        start-placeholder="选择提醒开始时间"
+                        end-placeholder="选择提醒结束时间"
+                        @change="noRemind = false">
+                      </el-date-picker>
+                      <el-checkbox-button v-model="noRemind" checked @change="systemRemindTimeRange = []">不提醒</el-checkbox-button>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="systemSubmit(2)">保存</el-button>
@@ -702,7 +709,9 @@ export default {
       systemMsgConfirmOpenVisible: false, // 打开单位信息确认对话框
       systemMsgConfirmCloseVisible: false, // 关闭单位信息确认对话框
       systemMessageConfirm: true, // 单位信息确认
-      systemMessageRemind: {}, // 消息提醒
+      systemMessageRemind: -1, // 消息提醒
+      noRemind: true, // 消息提醒，默认不提醒
+      systemRemindTimeRange: [], // 提醒的时间区间
       modeAuditList: [],
       orgAuditList: orgAuditList, // 单位审核字段数据
       nodeAuditList: nodeAuditList,
@@ -784,6 +793,18 @@ export default {
       this.systemMsgConfirmCloseVisible = false
 
       // 处理“单位确认信息”开关的切换
+    },
+    // 设置提醒的时间区间
+    setRemindRange () {
+      this.$refs.checkNotRemind.checked = false
+      this.remindStartDate = this.systemRemindTimeRange[0].getDate()
+      this.remindEndDate = this.systemRemindTimeRange[1].getDate()
+    },
+    // 取消提醒时间区间
+    unsetRemindRange (isChecked) {
+      if (!isChecked) return
+      this.remindStartDate = -1
+      this.remindEndDate = -1
     },
     showMessageConfirmDialog () {
       if (this.systemMessageConfirm) {
