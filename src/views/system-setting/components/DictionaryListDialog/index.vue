@@ -104,7 +104,7 @@ export default {
             let ok = true
             let msg = ''
 
-            this.foundDicList.forEach((item) => {
+            this.tableData.forEach((item) => {
               if (value === item.text) {
                 ok = false
                 msg = '重复'
@@ -125,7 +125,7 @@ export default {
             let ok = true
             let msg = ''
 
-            this.foundDicList.forEach((item) => {
+            this.tableData.forEach((item) => {
               if (parseInt(value) === item.value) {
                 ok = false
                 msg = '重复'
