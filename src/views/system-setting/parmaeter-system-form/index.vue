@@ -162,14 +162,14 @@
     </div>
     <div class="parameter-item">
         <div class="header">信息确认设置</div>
-        <el-form ref="orgMessageRemind" label-width="160px">
+        <el-form ref="systemMessageRemind" label-width="160px">
             <el-form-item label="单位信息确认">
-                <el-switch v-model="orgMessageConfirm" @change="showMessageConfirmDialog()" active-text="" inactive-text="">
+                <el-switch v-model="systemMessageConfirm" @change="showMessageConfirmDialog()" active-text="" inactive-text="">
                 </el-switch>
             </el-form-item>
-            <div v-if="orgMessageConfirm">
+            <div v-if="systemMessageConfirm">
                 <el-form-item label="设置信息确认弹窗提醒">
-                    <el-radio-group size="medium" v-model="orgMessageRemind">
+                    <el-radio-group size="medium" v-model="systemMessageRemind">
                         <el-radio-button label="7">每月最后七天</el-radio-button>
                         <el-radio-button label="5">每月最后五天</el-radio-button>
                         <el-radio-button label="3">每月最后三天</el-radio-button>
@@ -310,7 +310,7 @@
     </div>
 
     <!-- 单位确认信息对话框 -->
-    <el-dialog :visible.sync="orgMsgConfirmOpenVisible" width="410px" :show-close="false">
+    <el-dialog :visible.sync="systemMsgConfirmOpenVisible" width="410px" :show-close="false">
         <div slot="title" style="padding:20px; background-color: #fff;">
             <span class="msg-title">确认打开单位信息确认</span>
             <span class="svg-container" style="color:red">
@@ -319,12 +319,12 @@
         </div>
         <div class="msg-box">打开单位信息确认后，从下月起，您的单位信息将需要手动确认。</div>
         <div slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="onSaveOrgMessageConfirm()">确定打开</el-button>
-            <el-button type="default" @click="orgMsgConfirmOpenVisible = false; orgMessageConfirm = !orgMessageConfirm;" width="100px">取 消</el-button>
+            <el-button type="primary" @click="onSavesystemMessageConfirm()">确定打开</el-button>
+            <el-button type="default" @click="systemMsgConfirmOpenVisible = false; systemMessageConfirm = !systemMessageConfirm;" width="100px">取 消</el-button>
         </div>
     </el-dialog>
 
-    <el-dialog :visible.sync="orgMsgConfirmCloseVisible" width="410px" :show-close="false">
+    <el-dialog :visible.sync="systemMsgConfirmCloseVisible" width="410px" :show-close="false">
         <div slot="title" style="padding:20px; background-color: #fff;">
             <span class="msg-title">确认关闭单位信息确认</span>
             <span class="svg-container" style="color:red">
@@ -333,8 +333,8 @@
         </div>
         <div class="msg-box">关闭单位信息确认后，从下月起，您的单位信息将不再需要手动确认。</div>
         <div slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="onSaveOrgMessageConfirm()">确定关闭</el-button>
-            <el-button type="default" @click="orgMsgConfirmCloseVisible = false; orgMessageConfirm = !orgMessageConfirm;" width="100px">取 消</el-button>
+            <el-button type="primary" @click="onSavesystemMessageConfirm()">确定关闭</el-button>
+            <el-button type="default" @click="systemMsgConfirmCloseVisible = false; systemMessageConfirm = !systemMessageConfirm;" width="100px">取 消</el-button>
         </div>
     </el-dialog>
   </div>
@@ -699,9 +699,9 @@ export default {
         favicon: ''
       },
       uploadHost: window.location.host,
-      orgMsgConfirmOpenVisible: false, // 打开单位信息确认对话框
-      orgMsgConfirmCloseVisible: false, // 关闭单位信息确认对话框
-      orgMessageConfirm: true, // 单位信息确认
+      systemMsgConfirmOpenVisible: false, // 打开单位信息确认对话框
+      systemMsgConfirmCloseVisible: false, // 关闭单位信息确认对话框
+      systemMessageConfirm: true, // 单位信息确认
       systemMessageRemind: {}, // 消息提醒
       modeAuditList: [],
       orgAuditList: orgAuditList, // 单位审核字段数据
@@ -780,21 +780,21 @@ export default {
       this.systemNameLogoIcon.favicon = res.data[0]
     },
     onToggleMessageConfirm () {
-      this.orgMsgConfirmOpenVisible = false
-      this.orgMsgConfirmCloseVisible = false
+      this.systemMsgConfirmOpenVisible = false
+      this.systemMsgConfirmCloseVisible = false
 
       // 处理“单位确认信息”开关的切换
     },
     showMessageConfirmDialog () {
-      if (this.orgMessageConfirm) {
-        this.orgMsgConfirmOpenVisible = true
+      if (this.systemMessageConfirm) {
+        this.systemMsgConfirmOpenVisible = true
       } else {
-        this.orgMsgConfirmCloseVisible = true
+        this.systemMsgConfirmCloseVisible = true
       }
     },
-    onSaveOrgMessageConfirm () {
-      this.orgMsgConfirmOpenVisible = false
-      this.orgMsgConfirmCloseVisible = false
+    onSavesystemMessageConfirm () {
+      this.systemMsgConfirmOpenVisible = false
+      this.systemMsgConfirmCloseVisible = false
     },
     beforeUpload (file) {
       const isJPG = file.type === 'image/jpeg'

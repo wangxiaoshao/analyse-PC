@@ -271,7 +271,7 @@ export default {
       }
     }, */
   data() {
-    
+
     return {
       breadcrumb: {
         name: '单位详情',
@@ -429,7 +429,7 @@ export default {
             if(res.data.creditId&&res.data.creditId!=''){
               this.creditIddisable=true
             }
-           
+
             if (this.$route.name === 'UnitEdit') {
               this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
             }
@@ -520,10 +520,10 @@ export default {
           }
            this.areaOption.forEach(item => {
                 this.areaCheck += item.name + '/'
-             
-           
+
+
           })
-         
+
         },
         error => {}
       )
@@ -575,7 +575,7 @@ export default {
       // this.ruleForm.areaId = val
     },
     submitForm(ruleForm) {
-      // 
+      //
       //  || this.ruleForm.organization.creditId == ''
       if(this.successVisiable ||this.ruleForm.organization.creditId == ''){
         this.ruleForm.organization.removed = this.ruleForm.organization.removed
@@ -586,6 +586,7 @@ export default {
             api[urlNames['createOrganization']](this.ruleForm).then(
               res => {
                 this.$message.success(`保存成功`)
+                this.$emit('on-update-organization-tree')
                 this.goBack()
               },
               error => {}
@@ -600,7 +601,7 @@ export default {
       }else if(this.errorVisiable){
         this.$message.error('请输入与单位名称相匹配的社会信用代码')
       }
-        
+
       } ,
     goBack() {
       this.$router.go(-1)
@@ -641,7 +642,7 @@ export default {
                 this.requiring=false
                 this.loadVisiable = false
                 this.errorVisiable = false
-               
+
               }, 2000)
             } else {
               this.errorVisiable = true
@@ -657,16 +658,16 @@ export default {
         this.loadVisiable = false
         this.successVisiable = false
       }
-       
-      } 
+
+      }
 
     }
 }
-    
-    
-    
-    
-  
+
+
+
+
+
 
 </script>
 
