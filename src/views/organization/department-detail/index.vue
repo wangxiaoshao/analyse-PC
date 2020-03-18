@@ -218,7 +218,6 @@ export default {
     this.setBreadcrumbTitle()
   },
   created () {
-    
     this.init()
   },
   beforeRouteUpdate (to, from, next) {

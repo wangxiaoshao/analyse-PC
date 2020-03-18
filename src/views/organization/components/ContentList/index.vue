@@ -113,7 +113,7 @@ export default {
       sortNum: null,
       nodeId: this.$route.params.nodeId,
       showSortDilog: false,
-      sortParam:{}
+      sortParam: {}
     }
   },
   created () {
@@ -258,16 +258,15 @@ export default {
     // 数值排序弹框
     goSort (val) {
       this.showSortDilog = true
-       this.sortParam = {
+      this.sortParam = {
         nowId: val.id
       }
-
     },
 
     // 保存数值排序
     submitNumSort () {
       this.showSortDilog = false
-       let data = {
+      let data = {
         page: this.sortValue,
         parentId: this.nodeId,
         limit: 1
@@ -287,15 +286,15 @@ export default {
         () => {}
       )
     },
-    NumSortFun(data){
+    NumSortFun (data) {
       api[urlNames['setViewNodeSortThroughNumerical']](data).then(
         res => {
           if (res) {
             this.showSortDilog = false
             this.$message.success('排序成功')
-            this.contentPage.current=Math.ceil(this.sortValue/this.contentPage.limit)
+            this.contentPage.current = Math.ceil(this.sortValue / this.contentPage.limit)
             this.getGrid()
-            this.sortValue=''
+            this.sortValue = ''
           }
         })
     }

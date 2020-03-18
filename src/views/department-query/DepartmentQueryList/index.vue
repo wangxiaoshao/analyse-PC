@@ -72,7 +72,7 @@ import HasRight from '@src/mixins/has-right'
 
 export default {
   components: { SiteTable },
-  mixins: [handleTable, HasRight,handleBreadcrumb],
+  mixins: [handleTable, HasRight, handleBreadcrumb],
   data () {
     return {
       tableConfig,

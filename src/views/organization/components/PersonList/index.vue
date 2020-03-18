@@ -394,9 +394,9 @@ export default {
           if (res) {
             this.showSortDilog = false
             this.$message.success('排序成功')
-            this.contentPage.current=Math.ceil(this.sortValue/this.contentPage.limit)
+            this.contentPage.current = Math.ceil(this.sortValue / this.contentPage.limit)
             this.getGrid()
-             this.sortValue=''
+            this.sortValue = ''
           }
         })
     },

@@ -449,15 +449,15 @@ export default {
     'labelList',
     'orgName'
   ],
-  mixins: [dicOption, uploadFile,HasRight],
+  mixins: [dicOption, uploadFile, HasRight],
   components: {
     addTags
   },
-  data() {
+  data () {
     return {
       showPopover: false, // 是否显示 Popover
       hidefooter: false,
-      msgVisiable:false,
+      msgVisiable: false,
       dutyNameCheckd: [],
       dutyNameSelectVisible: false,
       uploadUrl: '',
@@ -485,12 +485,12 @@ export default {
       timer: null,
       showPopoverFlag: false,
       rules: {
-        name:[{ required: true, message: '姓名不能为空'}],
-        mobile:[{ required: true, message: '手机号不能为空'}] 
+        name: [{ required: true, message: '姓名不能为空' }],
+        mobile: [{ required: true, message: '手机号不能为空' }]
       }
     }
   },
-  created() {
+  created () {
     this.init()
   },
   computed: {
@@ -498,40 +498,39 @@ export default {
   },
   methods: {
     ...mapMutations(['SET_OPTION']),
-    init() {
-      if(this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd' || this.$route.name==='PassChange'){
-        this.msgVisiable=true
-      }else{
-        this.msgVisiable=false
+    init () {
+      if (this.$route.name === 'PersonEdit' || this.$route.name === 'PersonAdd' || this.$route.name === 'PassChange') {
+        this.msgVisiable = true
+      } else {
+        this.msgVisiable = false
       }
     },
-    exportOrg() {
+    exportOrg () {
       this.$emit('exportOrg')
     },
-    modifieUserInfo(userDetail) {
-      if(this.postDetail.type==null){
+    modifieUserInfo (userDetail) {
+      if (this.postDetail.type == null) {
         this.$message.error('请选择身份类型')
-      }else{
-         this.$refs[userDetail].validate(valid => {
-        if (valid) {
-          this.$emit('goModifieUserInfo', this.personFrom)
-        } else {
-          this.$message.warning(`请填写必填字段`)
-          return false
-        }
-      })
+      } else {
+        this.$refs[userDetail].validate(valid => {
+          if (valid) {
+            this.$emit('goModifieUserInfo', this.personFrom)
+          } else {
+            this.$message.warning(`请填写必填字段`)
+            return false
+          }
+        })
       }
-
     },
     // 搜索表格点击当前行
-    selectRow(val) {
+    selectRow (val) {
       let uid = val.uid
       this.searchFlag = false
       this.$emit('get-uid', uid)
       this.$emit('get-defauf', true)
     },
     // 搜索数据
-    loadSearch() {
+    loadSearch () {
       this.searchFlag = false
       // console.log(' this.personFrom.name:', this.personFrom.name)
       if (this.$route.name === 'PersonAdd' && this.personFrom.name.length > 1) {
@@ -563,47 +562,46 @@ export default {
         this.timer = null
       }
     },
-    blur() {
+    blur () {
       this.timer = null
     },
     // 选择身份类型
-    getIdentityType(val) {
+    getIdentityType (val) {
       this.postFrom.type = val
     },
     // 选择民族
-    getNation(val) {
+    getNation (val) {
       this.personFrom.nation = val
     },
     // 选择学历
-    getQualification(val) {
+    getQualification (val) {
       this.personFrom.qualification = val
     },
     // 选择性别
-    getSex(val) {
+    getSex (val) {
       this.personFrom.sex = val
     },
     // 选择职级
-    getPositionClass(val) {
+    getPositionClass (val) {
       this.personFrom.positionClass = val
     },
     // 选择党派
-    getPolicalParty(val) {
+    getPolicalParty (val) {
       this.personFrom.politicalParty = val
     },
     // 选择人员状态
-    getUserState(val) {
+    getUserState (val) {
       this.personFrom.userState = val
     },
     // 选择人员类型
-    getUserType(val) {
-
+    getUserType (val) {
       this.personFrom.userType = val
     },
-    handleAvatarSuccess(res, file) {
+    handleAvatarSuccess (res, file) {
       this.personFrom.portraitUrl = res.data[0] || URL.createObjectURL(file.raw)
     },
 
-    submitForm(form) {
+    submitForm (form) {
       this.$refs[form].validate(valid => {
         if (valid) {
           let data = new FormData()
@@ -630,7 +628,7 @@ export default {
         }
       })
     },
-    beforeAvatarUpload(file) {
+    beforeAvatarUpload (file) {
       const isJPG = file.type === 'image/jpeg'
       const isLt2M = file.size / 1024 / 1024 < 2
 
@@ -642,10 +640,10 @@ export default {
       }
       return isJPG && isLt2M
     },
-    getClose(val) {
+    getClose (val) {
       this.openSearchFlag = val
     },
-    getTag(val) {
+    getTag (val) {
       const res = new Map()
       let tag = []
       val.forEach(item => {
@@ -661,7 +659,7 @@ export default {
       }) */
       this.$emit('get-label', this.sendLabelId)
     },
-    removeTag(tag, index) {
+    removeTag (tag, index) {
       this.$confirm('此操作将永久删除该标签, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -688,42 +686,41 @@ export default {
         })
       this.$emit('get-label', this.sendLabelId)
     },
-    next(userDetail) {
-      if(this.postDetail.type==null){
+    next (userDetail) {
+      if (this.postDetail.type == null) {
         this.$message.error('请选择身份类型')
-      }else{
+      } else {
         this.$refs[userDetail].validate(valid => {
-        if (valid) {
-          this.$emit('get-post', this.postFrom)
-          this.$emit('get-user', this.personFrom)
-        } else {
-          this.$message.warning(`请填写必填字段`)
-          return false
-        }
-      })
+          if (valid) {
+            this.$emit('get-post', this.postFrom)
+            this.$emit('get-user', this.personFrom)
+          } else {
+            this.$message.warning(`请填写必填字段`)
+            return false
+          }
+        })
       }
-      
     },
-    goBack() {
+    goBack () {
       this.$router.go(-1)
     },
-    handleSelect(item) {
+    handleSelect (item) {
       console.log(item)
     },
-    showdutyNameList() {
+    showdutyNameList () {
       this.dutyNameSelectVisible = true
     },
-    hidedutyNameList() {
+    hidedutyNameList () {
       this.dutyNameSelectVisible = false
     },
-    selectDutyName() {
+    selectDutyName () {
       this.postDetail.dutyName = JSON.parse(
         JSON.stringify(this.dutyNameCheckd)
       ).toString()
     }
   },
   watch: {
-    labelList(val) {
+    labelList (val) {
       val.forEach(item => {
         this.tagsName.push(item.name)
         this.sendLabelId.push(item.id)

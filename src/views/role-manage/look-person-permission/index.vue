@@ -132,7 +132,7 @@ export default {
   methods: {
     ...mapMutations(['PERSON_PAGE', 'ROLE_ID']),
     toAuthorization (val) {
-      this.$router.push({ path: `/role-manage/scope-authorization/${val.uid}?roleId=${this.roleId}`})
+      this.$router.push({ path: `/role-manage/scope-authorization/${val.uid}?roleId=${this.roleId}` })
     },
     getGrid () {
       let data = {

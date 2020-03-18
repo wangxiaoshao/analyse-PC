@@ -22,7 +22,7 @@
                 remote
                 reserve-keyword
                 placeholder="请输入视图名称"
-               
+
                 :loading="selectLoading">
                 <el-option
                   v-for="item in viewList"
@@ -191,7 +191,7 @@ export default {
     //     })
     //   }
     // },
-     getViewList (query) {
+    getViewList (query) {
       if (query !== '') {
         api[urlNames['getViewList']]().then((res) => {
           this.viewList = res.data

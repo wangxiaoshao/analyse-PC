@@ -17,19 +17,19 @@
 <script>
 import { mapState, mapMutations } from 'vuex'
 export default {
-  name:'announceDetail',
-  data(){
-    return  {
+  name: 'announceDetail',
+  data () {
+    return {
 
     }
   },
-  
-  created(){
+
+  created () {
     // this.app.breadcrumb=[{name: '文章详情'}]
   },
   computed: {
-   ...mapState(['app']),
-  },
+    ...mapState(['app'])
+  }
 }
 </script>
 <style lang="less"  scoped>

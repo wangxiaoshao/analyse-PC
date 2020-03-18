@@ -32,9 +32,9 @@
                     @click="findMobile(2)"
                   >查看</a>
                 </div>
-                 
+
               </el-form-item>
-             
+
             </el-col>
           </el-row>
         </el-form>
@@ -45,7 +45,7 @@ import { api, urlNames } from '@src/api'
 export default {
   name: 'personInfo',
   props: ['personInfoList', 'phoneState', 'activeColor'],
-  data() {
+  data () {
     return {
       state: '',
       showBtn: true,
@@ -53,17 +53,17 @@ export default {
     }
   },
   methods: {
-    findMobile(state) {
+    findMobile (state) {
       api[urlNames['findMobileById']]({
         uid: this.personInfoList.uid
       }).then(res => {
-        if (res&&state==1) {
+        if (res && state == 1) {
           this.personInfoList.mobile = res.data.mobile
-          this.personInfoList.isLooked=true
+          this.personInfoList.isLooked = true
         }
-        if (res&&state==2) {
+        if (res && state == 2) {
           this.personInfoList.officePhone = res.data.officePhone
-          this.personInfoList.isOfficePhone=true
+          this.personInfoList.isOfficePhone = true
         }
       })
     }

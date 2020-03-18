@@ -15,9 +15,9 @@
           </el-col>
         </el-row>
         <el-button type="primary" @click="saveMsg" >保存</el-button>
-       
+
       </div>
-      
+
     </div>
     <div class="module">
       <div class="header">信息审核模板</div>
@@ -36,20 +36,20 @@
         <el-button type="primary" @click="saveMsg">保存</el-button>
       </div>
     </div>
-    
+
   </div>
 </template>
 <script>
 export default {
-  data(){
-    return  {
-      orgMsg:'',
-      auditMsg:'',
+  data () {
+    return {
+      orgMsg: '',
+      auditMsg: ''
 
     }
   },
-  methods:{
-    saveMsg(){
+  methods: {
+    saveMsg () {
 
     }
   }

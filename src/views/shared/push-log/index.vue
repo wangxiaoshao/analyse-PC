@@ -110,7 +110,7 @@
       layout="total, sizes, prev, pager, next, jumper"
       :total="page.total"
     ></el-pagination>
-   
+
   </div>
 </template>
 <script>
@@ -118,19 +118,19 @@ import handleTable from '@src/mixins/handle-table'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
 import { api, urlNames } from '@src/api'
 export default {
-   mixins: [handleTable, handleBreadcrumb],
-   data(){
-     return {
-        logList: [{}],
-        DetialInfoVisible:false,
-        detialInfo:{}
+  mixins: [handleTable, handleBreadcrumb],
+  data () {
+    return {
+      logList: [{}],
+      DetialInfoVisible: false,
+      detialInfo: {}
 
-     }
-   },
-   created(){
-     this.getLogList()
-   },
-    mounted () {
+    }
+  },
+  created () {
+    this.getLogList()
+  },
+  mounted () {
     this.pushBreadcrumb({
       name: '应用日志',
       parent: {
@@ -141,42 +141,41 @@ export default {
       }
     })
   },
-  methods:{
-     getLogList () {
-       let data={
-          page: this.page.current,
-          limit: this.page.limit,
-          appId: this.$route.query.id
-       }
+  methods: {
+    getLogList () {
+      let data = {
+        page: this.page.current,
+        limit: this.page.limit,
+        appId: this.$route.query.id
+      }
       api[urlNames['findPushLoggers']](data).then(res => {
-         this.page.total = res.total
+        this.page.total = res.total
         res.data.forEach(val => {
           if (val.dataType === 1) {
-            val.fieldName  ='用户变更数据'
+            val.fieldName = '用户变更数据'
           }
           if (val.dataType === 2) {
-             val.fieldName  ='用户身份变更数据'
+            val.fieldName = '用户身份变更数据'
           }
           if (val.dataType === 3) {
-            val.fieldName  ='部门变更数据'
+            val.fieldName = '部门变更数据'
           }
           if (val.dataType === 4) {
-            val.fieldName  ='单位变更数据'
+            val.fieldName = '单位变更数据'
           }
           if (val.dataType === 5) {
-            val.fieldName  ='视图变更数据'
+            val.fieldName = '视图变更数据'
           }
         })
-         this.logList=res.data
-        
+        this.logList = res.data
       })
     },
-    findInfo(val){
-      this.detialInfo=val
-      this.DetialInfoVisible=true
+    findInfo (val) {
+      this.detialInfo = val
+      this.DetialInfoVisible = true
     }
   }
-  
+
 }
 </script>
 <style scoped lang="less">

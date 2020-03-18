@@ -46,28 +46,27 @@
 import { api, urlNames } from '@src/api'
 export default {
   props: ['noticeData', 'showAllReadVisiable'],
-  data() {
+  data () {
     return {
       total: null,
       tableData: []
     }
   },
-  created() {
+  created () {
     // this.getList()
   },
   methods: {
-    closeNotice() {
+    closeNotice () {
       this.$emit('closeNotice', false)
     },
-    goNotification() {
+    goNotification () {
       this.closeNotice()
       this.$router.push('/notification')
     },
-    doFindNotice(val) {
-     this.$emit('doFindNotice',val)
-      
+    doFindNotice (val) {
+      this.$emit('doFindNotice', val)
     },
-    goAllRead() {
+    goAllRead () {
       this.$emit('goAllRead')
     }
   }

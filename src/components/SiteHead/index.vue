@@ -69,7 +69,7 @@ export default {
   name: 'Head',
   components: { Notice },
   props: ['breadcrumb', 'pageBreadcrumb'],
-  data() {
+  data () {
     return {
       logoutURL: '',
       url: window.location.host,
@@ -84,22 +84,22 @@ export default {
   computed: {
     ...mapState(['app'])
   },
-  created() {
+  created () {
     this.logoutURL = '/api/gate/logout'
     this.getList()
     this.findSessionUserList()
   },
   methods: {
-    goBack() {
+    goBack () {
       this.$emit('go-back')
     },
     // 消息通知
-    getList() {
+    getList () {
       api[urlNames['notificationIndex']]().then(res => {
         this.noticeData = res.data
         this.msgNum = res.total
         if (this.msgNum === 0) {
-          this.msgNum=null
+          this.msgNum = null
           this.showAllReadVisiable = false
           this.showNoticeDilog = false
         } else {
@@ -108,11 +108,11 @@ export default {
         }
       })
     },
-    showNotice() {
+    showNotice () {
       this.showNoticeDilog = !this.showNoticeDilog
     },
     // 标记全部已读
-    goAllRead() {
+    goAllRead () {
       api[urlNames['notificationRead']]().then(res => {
         if (res) {
           this.msgNum = null
@@ -122,29 +122,26 @@ export default {
         }
       })
     },
-       // 去查看
-    doFindNotice(val){
+    // 去查看
+    doFindNotice (val) {
       api[urlNames['notificationRead']]({ id: val.id }).then(res => {
-        if(res){
+        if (res) {
           this.getList()
-           this.showNoticeDilog = false
+          this.showNoticeDilog = false
           if (val.type === 1) {
             this.$router.push('/my-application')
-          } else if(val.type === 2){
-          this.$router.push('/confirm-info')
-          }else if(val.type===3){
+          } else if (val.type === 2) {
+            this.$router.push('/confirm-info')
+          } else if (val.type === 3) {
             this.$router.push('/wait-approval')
           }
-           
         }
       })
-   
     },
-    
 
 
     // 获取用户身份列表
-    findSessionUserList() {
+    findSessionUserList () {
       api[urlNames['findSessionUserList']]().then(res => {
         this.userList = res.data.userIdVos
         this.userList.forEach(item => {
@@ -156,7 +153,7 @@ export default {
       })
     },
     // 切换用户身份
-    changeSessionUser(id) {
+    changeSessionUser (id) {
       api[urlNames['changeSessionUserId']]({
         userId: id
       }).then(res => {
@@ -166,15 +163,15 @@ export default {
         }, 500)
       })
     },
-    goToWordCenter() {
+    goToWordCenter () {
       if (this.$route.name !== 'WordCenter') {
         this.$router.push('/word-center')
       }
     },
-    showNotice() {
+    showNotice () {
       this.showNoticeDilog = !this.showNoticeDilog
     },
-    handleCommand(command) {
+    handleCommand (command) {
       if (command === 'logout') {
         this.$store.dispatch('Logout').then(() => {
           this.$router.push({

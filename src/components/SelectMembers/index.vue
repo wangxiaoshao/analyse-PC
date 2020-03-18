@@ -150,8 +150,8 @@ export default {
       selectedMembersModel: [],
       selectedOrgs: [],
       selectedOrgsModel: [],
-      member:false,
-      org:false
+      member: false,
+      org: false
     }
   },
   created () {
@@ -368,7 +368,7 @@ export default {
       }
     },
     removeAllSelected () {
-      this.member=false
+      this.member = false
       this.selectedMembers = []
       this.selectedMembersModel = []
       this.membersModel = []
@@ -459,7 +459,7 @@ export default {
       }
     },
     removeAllSelectedOrg () {
-      this.org=false
+      this.org = false
       this.selectedOrgs = []
       this.selectedOrgsModel = []
       this.orgsModel = []

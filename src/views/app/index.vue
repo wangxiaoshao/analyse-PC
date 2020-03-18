@@ -38,7 +38,7 @@ import handleBreadcrumb from '@src/mixins/handle-breadcrumb'
 import login from '@src/views/login/index'
 export default {
   name: 'app',
-  data() {
+  data () {
     return {
       scrollPage: true,
       user: null,
@@ -50,8 +50,8 @@ export default {
   mixins: [handleBreadcrumb],
   components: { sideMenu, siteHead, SiteBreadcrumb, login, Notice },
   watch: {
-    $route(newVal, oldVal) {
-      const custom =  this.$route.meta.breadcrumb
+    $route (newVal, oldVal) {
+      const custom = this.$route.meta.breadcrumb
       if (Array.isArray(custom)) {
         this.breadcrumb = custom
         this.asideMenuActive = '0'
@@ -59,12 +59,12 @@ export default {
       }
 
       // if (oldVal.path !== '/' && newVal.path !== '/') {
-        let newModule = newVal.path.split('/')[1]
-        let oldModule = oldVal.path.split('/')[1]
-        this.SET_PAGE_BREADCRUMB([])
-        if (newModule !== oldModule) {
-          this.init(newVal.path, Array.isArray(custom))
-        } 
+      let newModule = newVal.path.split('/')[1]
+      let oldModule = oldVal.path.split('/')[1]
+      this.SET_PAGE_BREADCRUMB([])
+      if (newModule !== oldModule) {
+        this.init(newVal.path, Array.isArray(custom))
+      }
       // }
       // if (newVal.matched[0].path === '/organization') {
       //   this.scrollPage = false
@@ -75,18 +75,18 @@ export default {
   },
   computed: {
     ...mapState(['app']),
-    scrollStyle() {
+    scrollStyle () {
       return {
         height: this.app.windowHeight - 123 + 'px',
         width: '100%'
       }
     }
   },
-  created() {
+  created () {
     let path = location.hash.replace('#', '')
     // this.init(path)
   },
-  mounted() {
+  mounted () {
     this.addEventListenForResize()
     this.getDicList()
     this.confirmInfo()
@@ -101,10 +101,10 @@ export default {
       'GET_CONFIRM_INFO'
     ]),
     // isCustomBreadcrumb 是否用户定制的
-    init(path, isCustomBreadcrumb) {
+    init (path, isCustomBreadcrumb) {
       // 在初始化菜单是，手动将breakLoop置为false，否则findMenuByPath不进入循环
       this.breakLoop = false
-      const custom =  this.$route.meta.breadcrumb
+      const custom = this.$route.meta.breadcrumb
 
       if (!isCustomBreadcrumb) {
         this.findMenuByPath(this.asideMenu.list, path, 0)
@@ -113,13 +113,13 @@ export default {
             this.breadcrumb.length - 1
           ].menuId.toString()
         }
-      } 
-      
+      }
+
       this.SET_BREADCRUMB(this.breadcrumb)
       this.SET_WINDOWHEIGHT(document.body.offsetHeight)
       this.SET_WINDOWWIDTH(document.body.offsetWidth)
     },
-    goBack() {
+    goBack () {
       let breadcrumb = [...this.app.pageBreadcrumb]
       let currentPage = breadcrumb[breadcrumb.length - 1]
       breadcrumb.splice(-1, 1)
@@ -130,16 +130,16 @@ export default {
         this.$router.go(-1)
       }
     },
-    getDicList() {
+    getDicList () {
       api[urlNames['dicList']]().then(res => {
         this.DIC_LIST(res.data)
       })
     },
-    setWindowSize() {
+    setWindowSize () {
       this.SET_WINDOWHEIGHT(document.body.offsetHeight)
       this.SET_WINDOWWIDTH(document.body.offsetWidth)
     },
-    addEventListenForResize() {
+    addEventListenForResize () {
       window.onresize = () => {
         // 加定时器，300ms之后重新赋值，避免大量触发resize
         if (!this.timer) {
@@ -151,13 +151,13 @@ export default {
         }
       }
     },
-    select(code, menu) {
+    select (code, menu) {
       this.breadcrumb = []
       // this.findMenuByPath(this.asideMenu.list, menu.path, 0)
       this.$router.push(menu.path)
       // this.SET_BREADCRUMB(this.breadcrumb)
     },
-    confirmInfo() {
+    confirmInfo () {
       // 确认信息弹框是否弹出
       api[urlNames.popupWindow]()
         .then(res => {
@@ -166,7 +166,7 @@ export default {
         })
         .catch(e => {})
     },
-    openConfirmInfo() {
+    openConfirmInfo () {
       // 处理全局的确认弹框信息
       let getLoc = JSON.parse(localStorage.getItem('isShowConfirmDialog')) || {}
       let date = getLoc.date ? getLoc.date : false
@@ -194,7 +194,7 @@ export default {
           this.openLocalStorage()
         })
     },
-    openLocalStorage() {
+    openLocalStorage () {
       let isShowConfirmDialog = {
         date: this.$options.filters['date'](new Date().getTime(), 'yyyy-MM-dd'),
         isAlreadyShow: true

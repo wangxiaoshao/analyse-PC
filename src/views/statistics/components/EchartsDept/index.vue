@@ -5,7 +5,7 @@
 <script type="text/ecmascript-6">
 export default {
   name: 'echartsDept',
-  props:['echartsName'],
+  props: ['echartsName'],
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'
