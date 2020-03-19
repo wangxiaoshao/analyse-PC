@@ -17,7 +17,7 @@
               <el-input v-model="form.text" placeholder="请输入名称" clearable></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="addDic('form')" v-show="hasRight('dictItemCreate')">{{type || '创建'}}</el-button>
+              <el-button type="primary" @click="addDic('form')" v-show="hasRight('dictItemCreate')">创建</el-button>
               <!--<el-button type="primary" @click="addDic('form')">创建</el-button>-->
             </el-form-item>
           </el-form>
@@ -145,20 +145,19 @@ export default {
   },
   mounted () {
   },
+  watch: {
+    visible: function (currentVisible) {
+      if (currentVisible) {
+        this.foundDicList = []
+        this.getDicByTypeList()
+      }
+    }
+  },
   computed: {
     ...mapState(['app']),
     scrollStyle () {
       return {
         maxHeight: this.$store.state.app.windowHeight / 2 + 'px'
-      }
-    },
-    type () {
-      if (this.dictionaryType) {
-        this.foundDicList = []
-        this.getDicByTypeList()
-        return '创建'
-      } else {
-        return '创建'
       }
     }
   },
