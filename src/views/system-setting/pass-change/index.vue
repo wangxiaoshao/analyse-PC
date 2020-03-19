@@ -229,7 +229,7 @@ export default {
     MultipleAccounts,
     EditAccount
   },
-  data() {
+  data () {
     var validateOldPass = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请输入原始密码'))
@@ -259,14 +259,14 @@ export default {
       }
     }
     return {
-      accountInfo:'',
-      accountId:'',
+      accountInfo: '',
+      accountId: '',
       showAccountsVisible: true,
-      resetPwdVisible: false, //重置密码弹框
-      modifiePwdVisible: false, //修改密码弹框
-      smsTimerCount: 0, //发送验证短信计时器
+      resetPwdVisible: false, // 重置密码弹框
+      modifiePwdVisible: false, // 修改密码弹框
+      smsTimerCount: 0, // 发送验证短信计时器
       smsCode: '',
-      successPwdVisible: false, //重置密码成功弹框
+      successPwdVisible: false, // 重置密码成功弹框
       calloutFlag: false,
       submitVisible: false,
       showexportIdentityType: true,
@@ -288,9 +288,9 @@ export default {
         orgId: [{ required: true, message: '请选择调出单位', trigger: 'blur' }]
       },
       rules: {
-        oldPass: [{ required: true,validator: validateOldPass, trigger: 'blur' }],
-        checkPass: [{ required: true,validator: validateCheckPass, trigger: 'blur' }],
-        newPass: [{ required: true,validator: validateNewPass, trigger: 'blur' }],
+        oldPass: [{ required: true, validator: validateOldPass, trigger: 'blur' }],
+        checkPass: [{ required: true, validator: validateCheckPass, trigger: 'blur' }],
+        newPass: [{ required: true, validator: validateNewPass, trigger: 'blur' }],
         reason: [{ required: true, message: '请填写申请原因', trigger: 'blur' }]
       },
       oldUserInfo: {},
@@ -349,7 +349,7 @@ export default {
       }
     }
   },
-  created() {
+  created () {
     this.getUserDetail(this.app.option.user.uid)
     this.getIdentity(this.app.option.user.identityId)
     // this.getAccountInfo()
@@ -360,7 +360,7 @@ export default {
   },
   methods: {
     // 选人弹窗组件返回的人员信息
-    dialogReturnMembersInfo(data) {
+    dialogReturnMembersInfo (data) {
       if (data[0].nodeType === 2) {
         this.formCallout.orgId = data[0].bindId
         this.orgName = data[0].name
@@ -382,24 +382,24 @@ export default {
      // 获取账号列表
     getAllAccountList(){
       api[urlNames['findAllAccountByUid']]({
-        userId:this.app.option.user.uid
+        userId: this.app.option.user.uid
       }).then(
-          res => {
-            if (res && res.data) {
-              this.accountInfoList = res.data
-            }
-          },
-          () => {
-            this.accountInfoList = []
+        res => {
+          if (res && res.data) {
+            this.accountInfoList = res.data
           }
-        )
+        },
+        () => {
+          this.accountInfoList = []
+        }
+      )
     },
 
     // 关闭选人弹窗
-    closeselectMenmber() {
+    closeselectMenmber () {
       this.selectDialog.selectMenmberFlag = false
     },
-    addMainLeader() {
+    addMainLeader () {
       this.selectDialog.selectMenmberFlag = true
       this.selectDialog.isSingleSelect = false
       this.selectDialog.notOnlyPerson = false
@@ -407,13 +407,13 @@ export default {
       this.selectDialog.isOnlyOrg = true
       this.selectDialog.isAllData = true
     },
-    exportOrg() {
+    exportOrg () {
       this.calloutFlag = true
     },
-    getLabelId(val) {
+    getLabelId (val) {
       this.userInfo.labelId = val.map(Number)
     },
-    findLabel(id, type) {
+    findLabel (id, type) {
       api[urlNames['findLabel']]({
         id: id,
         type: type
@@ -424,7 +424,7 @@ export default {
         () => {}
       )
     },
-    getIdentity(id) {
+    getIdentity (id) {
       api[urlNames['findIdentityById']]({
         identityId: id
       }).then(
@@ -445,7 +445,7 @@ export default {
       )
     },
 
-    getUserDetail(id) {
+    getUserDetail (id) {
       this.loading = true
       api[urlNames['findUserById']]({
         id: id
@@ -480,7 +480,7 @@ export default {
       )
     },
 
-    goModifieUserInfo(val) {
+    goModifieUserInfo (val) {
       // 保存createUser
       this.userInfo.user = val
       api[urlNames['createUser']](this.userInfo).then(
@@ -492,7 +492,7 @@ export default {
         }
       )
     },
-    getUser(val) {
+    getUser (val) {
       // 获取用户信息
       this.userInfo.user = val
       this.stepTwoFlag = true
@@ -501,7 +501,7 @@ export default {
       // this.submitForm()
     },
     // 绑定身份
-    getPost(val) {
+    getPost (val) {
       this.userInfo.identity = val
     },
     handleClick(tab, event) {
@@ -511,11 +511,11 @@ export default {
     /**
      * 修改密码
      */
-    modifiePwd(val) {
-      this.accountId=val
+    modifiePwd (val) {
+      this.accountId = val
       this.modifiePwdVisible = true
     },
-    submitForm(formName) {
+    submitForm (formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           let data = {
@@ -531,7 +531,7 @@ export default {
                 message: status === 0 ? '修改成功' : '修改失败',
                 type: status === 0 ? 'success' : 'error'
               })
-               this.modifiePwdVisible = false 
+               this.modifiePwdVisible = false
                window.location.href= '/api/gate/logout'
                 this.$refs[formName].resetFields()
             },
@@ -544,26 +544,26 @@ export default {
         }
       })
     },
-    resetForm(formName) {
+    resetForm (formName) {
       this.modifiePwdVisible = false
       this.$refs[formName].resetFields()
     },
     // 过滤手机号
-    hideMobile(phone) {
+    hideMobile (phone) {
       return (phone + '').replace(/^(.{3})(?:\d+)(.{4})$/, '$1****$2')
     },
 
     // 重置密码
-    resetPwd(val) {
-      this.accountId=val
+    resetPwd (val) {
+      this.accountId = val
       this.resetPwdVisible = true
       this.sendSmsCode()
     },
     /**
      * 发送验证短信到用户绑定手机号
      */
-    sendSmsCode() {
-      if (0 !== this.smsTimerCount) {
+    sendSmsCode () {
+      if (this.smsTimerCount !== 0) {
         return
       }
 
@@ -576,7 +576,7 @@ export default {
       // 开启计时器
       let self = this
       smsTimer = setInterval(() => {
-        if (0 === self.smsTimerCount) {
+        if (self.smsTimerCount === 0) {
           if (smsTimer) {
             clearInterval(smsTimer)
             smsTimer = null
@@ -596,7 +596,7 @@ export default {
     },
 
     // 验证验证码
-    beSureSmsCode() {
+    beSureSmsCode () {
       if (this.smsCode === '') {
         this.$message.error('请输入有效验证码')
         this.$refs.smsCodeInput.focus()
@@ -623,20 +623,19 @@ export default {
     },
 
     // 编辑页面
-    goEdit(val){
-      this.accountInfo=val
-      this.showAccountsVisible=false
-
+    goEdit (val) {
+      this.accountInfo = val
+      this.showAccountsVisible = false
     },
 
     // 多账号管理页
-    goBack(){
+    goBack () {
       this.getAllAccountList()
-       this.showAccountsVisible=true
+      this.showAccountsVisible = true
     },
 
     // 表单初始化
-    fromInit() {
+    fromInit () {
       // this.calloutFlag = false
       this.formCallout = {
         identityId: '',
@@ -648,7 +647,7 @@ export default {
     },
 
     // 提交调出
-    submitFormCallout(formCallout) {
+    submitFormCallout (formCallout) {
       this.$refs[formCallout].validate(valid => {
         if (valid) {
           api[urlNames['calloutUser']](this.formCallout).then(
@@ -674,9 +673,9 @@ export default {
           )
         }
       })
-    },
+    }
 
-    
+
   }
 }
 </script>

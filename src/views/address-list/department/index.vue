@@ -104,7 +104,7 @@
         <el-table-column label="下级" align="center">
           <template slot-scope="scope">
             <!-- <i class="el-icon-share"></i> -->
-           
+
             <a v-if="!scope.row.nodeType"
               href="javaScrpit:void(0)"
             >无</a>
@@ -113,7 +113,7 @@
               style="color: #FC7049;font-size:12px"
               @click="childClick(scope.row)"
             >查看下级</a>
-             
+
           </template>
         </el-table-column>
         <el-table-column prop label="备注" align="center"></el-table-column>
@@ -126,7 +126,7 @@ import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
 export default {
   props: ['departmentList', 'orgInfo', 'activeColor'],
-  data() {
+  data () {
     return {
       status: 0,
       isShow: true,
@@ -134,45 +134,45 @@ export default {
       personnel: {},
       userId: '',
       infoVisiable: false,
-      deptMemberList:[],
-      
+      deptMemberList: []
+
     }
   },
   computed: {
     ...mapState(['app'])
   },
-  mounted(){
-  
+  mounted () {
+
   },
   methods: {
-    childClick(node) {
+    childClick (node) {
       this.$emit('handle-child-click', node)
     },
     // 查看电话
-    findPhone(nodeType, bindId,state,index) {
+    findPhone (nodeType, bindId, state, index) {
       api[urlNames['getOrgMobile']]({
         nodeType,
         bindId
       }).then(res => {
-        if(res && state == 1){
+        if (res && state == 1) {
           this.orgInfo.phone = res.data.phone
-          this.orgInfo.isLooked=true
+          this.orgInfo.isLooked = true
         }
         if (res && state == 2) {
-          this.departmentList[index].phone=res.data.phone
-          this.departmentList[index].isLooked=true
+          this.departmentList[index].phone = res.data.phone
+          this.departmentList[index].isLooked = true
         }
       })
     },
-    findMobileById(uid,index,state) {
-      api[urlNames['findMobileById']]({uid}).then(res => {
+    findMobileById (uid, index, state) {
+      api[urlNames['findMobileById']]({ uid }).then(res => {
         if (res && state == 1) {
-          this.departmentList[index].mobile=res.data.mobile
-          this.departmentList[index].isLooked=true
+          this.departmentList[index].mobile = res.data.mobile
+          this.departmentList[index].isLooked = true
         }
         if (res && state == 2) {
-          this.departmentList[index].officePhone=res.data.officePhone
-          this.departmentList[index].isOfficePhone=true
+          this.departmentList[index].officePhone = res.data.officePhone
+          this.departmentList[index].isOfficePhone = true
         }
       })
     }

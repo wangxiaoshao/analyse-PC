@@ -5,7 +5,7 @@
 <script type="text/ecmascript-6">
 export default {
   name: 'echarts',
-  props:['echartsAry'],
+  props: ['echartsAry'],
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'
@@ -19,7 +19,7 @@ export default {
       let myChart = this.$echarts.init(document.getElementsByClassName('myChart')[0])
       myChart.setOption({
         dataset: {
-          source:this.echartsAry
+          source: this.echartsAry
         },
         tooltip: {},
         grid: { containLabel: true },

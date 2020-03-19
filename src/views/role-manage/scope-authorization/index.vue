@@ -93,18 +93,16 @@ export default {
           })
           let lastStr = this.areaNameList[this.areaNameList.length - 1]
           let lastStr1 = this.orgNameList[this.orgNameList.length - 1]
-          if(this.areaNameList.length>0){
+          if (this.areaNameList.length > 0) {
             this.areaNameList.splice(this.areaNameList.length - 1, 1, lastStr.substring(0, lastStr.length - 1))
           }
-          if(this.orgNameList.length>0){
-             this.orgNameList.splice(this.orgNameList.length - 1, 1, lastStr1.substring(0, lastStr1.length - 1))
+          if (this.orgNameList.length > 0) {
+            this.orgNameList.splice(this.orgNameList.length - 1, 1, lastStr1.substring(0, lastStr1.length - 1))
           }
-         
-         
         }
       })
     },
-    dialogReturnOrg (data) { 
+    dialogReturnOrg (data) {
       let parmas = {
         uid: this.$route.params.id,
         authorizedType: 1,
@@ -118,10 +116,10 @@ export default {
     },
     dialogReturnArea (data) {
       let parmas = {
-        uid:this.$route.params.id,
+        uid: this.$route.params.id,
         authorizedType: 3,
         userAuthorizedEntityList: data,
-        roleId:this.$route.query.roleId
+        roleId: this.$route.query.roleId
       }
       api[urlNames['insertAuthorizedEntity']](parmas).then((res) => {
         this.$message.success(`授权成功`)

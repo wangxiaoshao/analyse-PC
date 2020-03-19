@@ -12,7 +12,7 @@ export default {
       let options
       api[urlNames['option']]().then((res) => {
         if (res.status === 0) {
-          options = res.data;
+          options = res.data
         } else {
           alert(res.message)
         }

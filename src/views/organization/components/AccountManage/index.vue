@@ -104,7 +104,7 @@ export default {
       this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1)
     },
     creatAccount () {
-      this.addFlag=!this.addFlag 
+      this.addFlag = !this.addFlag
     },
     getDefaultAccount (val) {
       this.accountList.forEach((item) => {

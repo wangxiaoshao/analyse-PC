@@ -17,8 +17,8 @@
                   <span>{{scope.row.content}}</span>
                 </div>
                 <!-- <p>{{scope.row.creareTime}}</p>
-                <span class="btn"><el-button type='primary' size="mini" 
-                :style="scope.row.hasRead===1?'background-color:#d8d7d7;border-color:#d8d7d7':''" 
+                <span class="btn"><el-button type='primary' size="mini"
+                :style="scope.row.hasRead===1?'background-color:#d8d7d7;border-color:#d8d7d7':''"
                  @click="doFindNotice(scope.row)">{{scope.row.hasRead===1?'已查看':'去查看'}}</el-button></span> -->
               </div>
             </template>
@@ -33,7 +33,7 @@
             layout="total, sizes, prev, pager, next, jumper"
             :total="page.total"
           ></el-pagination>
-        
+
       </el-tab-pane>
       <el-tab-pane label="权限说明" name="authorityDescript">
         <p>权限说明</p>
@@ -48,28 +48,28 @@ import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
 export default {
   name: 'WordCenter',
-    mixins: [handleTable],
+  mixins: [handleTable],
   data () {
     return {
       activeName: 'actionWord',
-       tableData:[
+      tableData: [
         {
-          typeText:'为推进国密改造，系统登录密码深度优化通知。',
-          content:'为推进国密改造，系统登录密码深度优化通知,为推进国密改造，系统登录密码深度优化通知。',
-          hasRead:0,
-          creareTime:'2020-03-12'
+          typeText: '为推进国密改造，系统登录密码深度优化通知。',
+          content: '为推进国密改造，系统登录密码深度优化通知,为推进国密改造，系统登录密码深度优化通知。',
+          hasRead: 0,
+          creareTime: '2020-03-12'
         }
       ]
     }
   },
   created () {
-      this.page.total=1
+    this.page.total = 1
     // this.app.breadcrumb=this.app.breadcrumb.slice(0,2)
   },
   methods: {},
-   computed: {
-   ...mapState(['app']),
-  },
+  computed: {
+    ...mapState(['app'])
+  }
 }
 </script>
 

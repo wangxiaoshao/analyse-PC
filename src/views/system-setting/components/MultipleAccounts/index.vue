@@ -66,16 +66,16 @@
 import { api, urlNames } from '@src/api'
 export default {
   props: ['accountInfoList'],
-  data() {
+  data () {
     return {
       accountSystemVisible: false,
-      systeamData:[]
+      systeamData: []
     }
   },
 
   methods: {
     // 过滤查看系统样式
-    tableRowClassName({ row, rowIndex }) {
+    tableRowClassName ({ row, rowIndex }) {
       if (rowIndex % 2 === 0) {
         return 'odd-row'
       } else {
@@ -84,21 +84,19 @@ export default {
       return ''
     },
     // 修改账号信息
-    setAccount(val) {
-     api[urlNames['findAccountById']]({id:val}).then(res=>{
-       if(res){
-         let  data=res.data
-        data.removed = !res.data.removed
-         this.$emit('goEdit',data)
-       }
+    setAccount (val) {
+      api[urlNames['findAccountById']]({ id: val }).then(res => {
+        if (res) {
+          let data = res.data
+          data.removed = !res.data.removed
+          this.$emit('goEdit', data)
+        }
       })
-
-      
     },
 
     // 查看关联系统
-    findSystemInfo(data) {
-      this.systeamData=data
+    findSystemInfo (data) {
+      this.systeamData = data
       this.accountSystemVisible = true
     }
   }

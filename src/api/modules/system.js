@@ -34,7 +34,7 @@ export default {
     serve: 'organizationManagePC',
     headers: {
       'Content-Type': 'application/json'
-    },
+    }
   },
   [urlNames.updatePwd]: {
     type: 'post',

@@ -134,15 +134,15 @@ export default {
       this.resultFlag = false
       if (this.myOrgFlag === 1) {
         this.$emit('searchMyBack')
-      } else{
+      } else {
         this.$emit('searchOtherBack')
       }
     },
     getDetail (val) {
-      this.$emit('searchListResult', val,this.selectType)
+      this.$emit('searchListResult', val, this.selectType)
     },
     handleCurrentChange (val) {
-      this.$emit('searchPeopleInfo', val,this.selectType)
+      this.$emit('searchPeopleInfo', val, this.selectType)
     }
   },
   watch: {

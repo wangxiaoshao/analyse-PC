@@ -26,7 +26,7 @@
               </el-form-item>
             </el-col>
           </el-row>
-          
+
         </el-form>
       </div>
     </div>
@@ -56,7 +56,7 @@
          <template slot-scope="scope">
             <span>{{scope.row.mobile||'无'}}</span>
             <a v-if="scope.row.mobile&&scope.row.mobile!=''&&!scope.row.isLooked" href="javaScrpit:void(0)"
-             style="color: #FC7049;margin-left:5px;font-size:12px" 
+             style="color: #FC7049;margin-left:5px;font-size:12px"
              @click="findMobileById(scope.row.uid,scope.$index,1)">查看</a>
            </template>
       </el-table-column>
@@ -68,9 +68,8 @@
             @click="findMobileById(scope.row.uid,scope.$index,2)">查看</a>
           </template>
       </el-table-column>
-       
-      
-     
+
+
 <!--            <span v-if="scope.row.portraitUrl !== '0'&&scope.row.portraitUrl!==undefined"><img  :src="scope.row.portraitUrl"></span>-->
       <!-- <el-table-column
         align="center"
@@ -82,7 +81,7 @@
             </span>
         </template>
       </el-table-column> -->
-      
+
     </el-table>
   </div>
   </div>
@@ -91,37 +90,37 @@
 import { api, urlNames } from '@src/api'
 
 export default {
-  props: ['tableData', 'memberProps','activeColor','orgInfo'],
+  props: ['tableData', 'memberProps', 'activeColor', 'orgInfo'],
   data () {
     return {
-     
+
     }
   },
   created () {
-    
+
   },
   methods: {
     // 查看电话
-    findPhone(nodeType, bindId,state) {
+    findPhone (nodeType, bindId, state) {
       api[urlNames['getOrgMobile']]({
         nodeType,
         bindId
       }).then(res => {
-        if(res && state == 1){
+        if (res && state == 1) {
           this.orgInfo.phone = res.data.phone
-          this.orgInfo.isLooked=true
+          this.orgInfo.isLooked = true
         }
       })
     },
-    findMobileById(uid,index,state) {
-      api[urlNames['findMobileById']]({uid}).then(res => {
+    findMobileById (uid, index, state) {
+      api[urlNames['findMobileById']]({ uid }).then(res => {
         if (res && state == 1) {
-          this.tableData[index].mobile=res.data.mobile
-          this.tableData[index].isLooked=true
+          this.tableData[index].mobile = res.data.mobile
+          this.tableData[index].isLooked = true
         }
         if (res && state == 2) {
-          this.tableData[index].officePhone=res.data.officePhone
-          this.tableData[index].isOfficePhone=true
+          this.tableData[index].officePhone = res.data.officePhone
+          this.tableData[index].isOfficePhone = true
         }
       })
     }

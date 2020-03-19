@@ -60,24 +60,24 @@ export default {
   components: {
     bindSystem
   },
-  props:['accountInfo'],
-  data() {
+  props: ['accountInfo'],
+  data () {
     return {
-        appId: []
+      appId: []
     }
   },
-  created(){
-    
+  created () {
+
   },
   methods: {
     // 重置密码
-    resetPwd() {
-      this.$emit('resetPwd',this.accountInfo.id)
+    resetPwd () {
+      this.$emit('resetPwd', this.accountInfo.id)
     },
 
     // 修改密码
-    modifiePwd() {
-      this.$emit('modifiePwd',this.accountInfo.id)
+    modifiePwd () {
+      this.$emit('modifiePwd', this.accountInfo.id)
     },
 
     // 获取关联系统
@@ -86,31 +86,29 @@ export default {
     },
 
     // 保存修改
-    saveAccount(){
+    saveAccount () {
       // 8442130717342908424
-      let params={
-        id:this.accountInfo.id,
-        name:this.accountInfo.name,
+      let params = {
+        id: this.accountInfo.id,
+        name: this.accountInfo.name,
         removed: this.accountInfo.removed ? 0 : 1,
-        nickName:this.accountInfo.nickName,
+        nickName: this.accountInfo.nickName,
         appId: this.appId
       }
-      api[urlNames['updateAccount']](params).then(res=>{
-        if(res){
+      api[urlNames['updateAccount']](params).then(res => {
+        if (res) {
           this.$message.success('设置成功')
-         this.goBack()
+          this.goBack()
         }
-      
       })
-     
     },
 
     // 返回
-    goBack(){
+    goBack () {
       this.$emit('goBack')
-    },
+    }
 
-    
+
   }
 }
 </script>

@@ -188,6 +188,7 @@ export default {
       fileList: [], // 文件列表
       loading: true,
       list: [],
+      originList: [],
       sortListFlag: false,
       isShowEditFlag: true,
       submitVisible: false,
@@ -254,11 +255,13 @@ export default {
           res => {
             this.loading = false
             this.list = res.data
+            this.originList = JSON.parse(JSON.stringify(this.list))
             this.contentPage.total = res.total
           },
           () => {
             this.loading = false
             this.list = []
+            this.originList = JSON.parse(JSON.stringify(this.list))
             this.contentPage.total = 0
           }
         )
@@ -273,11 +276,13 @@ export default {
           res => {
             this.loading = false
             this.list = res.data
+            this.originList = JSON.parse(JSON.stringify(this.list))
             this.contentPage.total = res.total
           },
           () => {
             this.loading = false
             this.list = []
+            this.originList = JSON.parse(JSON.stringify(this.list))
             this.contentPage.total = 0
           }
         )
@@ -285,12 +290,13 @@ export default {
     },
     // 保存排序
     sublimeSort () {
+      let that = this
       let sortList = []
       // 对之前已经排序好的
       this.list.forEach(function (item, index) {
         sortList.push({
           id: item.uid,
-          sort: index,
+          sort: that.originList[index].sort,
           name: item.name
         })
       })
@@ -346,28 +352,51 @@ export default {
     },
     // 保存数值排序
     submitNumSort () {
-      // sortValue
-      // console.log(' this.sortParam:', this.sortParam)
-      let data = {
-        deptId: this.id,
-        page: this.sortValue,
-        limit: 1
+      if (this.type === 3) {
+        let data = {
+          deptId: this.id,
+          page: this.sortValue,
+          limit: 1
+        }
+        api[urlNames['findDepartmentMembers']](data).then(
+          res => {
+            this.loading = false
+            if (res.data.length > 0) {
+              this.sortParam.id = res.data[0].identityId
+              this.NumSortFun(this.sortParam)
+              // console.log(' this.sortParam:', this.sortParam)
+            }
+            if (res.data.length === 0) {
+              this.$message.error('找不到目标序号，请重新输入')
+              this.showSortDilog = false
+            }
+          },
+          () => {}
+        )
       }
-      api[urlNames['findDepartmentMembers']](data).then(
-        res => {
-          this.loading = false
-          if (res.data.length > 0) {
-            this.sortParam.id = res.data[0].identityId
-            this.NumSortFun(this.sortParam)
-            // console.log(' this.sortParam:', this.sortParam)
-          }
-          if (res.data.length === 0) {
-            this.$message.error('找不到目标序号，请重新输入')
-            this.showSortDilog = false
-          }
-        },
-        () => {}
-      )
+
+      if (this.type === 2) {
+        let data = {
+          orgId: this.id,
+          page: this.sortValue,
+          limit: 1
+        }
+        api[urlNames['findOrganizationMembers']](data).then(
+          res => {
+            this.loading = false
+            if (res.data.length > 0) {
+              this.sortParam.id = res.data[0].identityId
+              this.NumSortFun(this.sortParam)
+              // console.log(' this.sortParam:', this.sortParam)
+            }
+            if (res.data.length === 0) {
+              this.$message.error('找不到目标序号，请重新输入')
+              this.showSortDilog = false
+            }
+          },
+          () => {}
+        )
+      }
     },
     NumSortFun (data) {
       api[urlNames['setSortThroughNumerical']](data).then(
@@ -375,9 +404,9 @@ export default {
           if (res) {
             this.showSortDilog = false
             this.$message.success('排序成功')
-            this.contentPage.current=Math.ceil(this.sortValue/this.contentPage.limit)
+            this.contentPage.current = Math.ceil(this.sortValue / this.contentPage.limit)
             this.getGrid()
-             this.sortValue=''
+            this.sortValue = ''
           }
         })
     },

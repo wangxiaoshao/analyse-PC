@@ -83,7 +83,7 @@ import HasRight from '@src/mixins/has-right'
 import handleTable from '@src/mixins/handle-table'
 export default {
   name: 'AppManagement',
-  mixins: [HasRight,handleTable],
+  mixins: [HasRight, handleTable],
   data () {
     return {
       appList: []
@@ -94,7 +94,7 @@ export default {
   },
   methods: {
     toDataLog (row) {
-      this.$router.push({ name: 'PushLog' ,query:  { id: row.id } }, )
+      this.$router.push({ name: 'PushLog', query: { id: row.id } })
     },
     //  获取应用
     getAppList () {
@@ -111,7 +111,7 @@ export default {
     },
     // 创建应用
     createApp (row) {
-      this.$router.push({ name: 'CreateAppManagement',query: { id: row.id }  })
+      this.$router.push({ name: 'CreateAppManagement', query: { id: row.id } })
     },
     toSetFields (row) {
       this.$router.push({ name: 'FieldsManagement', query: { id: row.id } })

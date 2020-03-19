@@ -106,6 +106,7 @@ export default {
     return {
       loading: true,
       list: [],
+      originList: [],
       sortListFlag: false,
       isShowEditFlag: true,
       sortList: [],
@@ -113,7 +114,7 @@ export default {
       sortNum: null,
       nodeId: this.$route.params.nodeId,
       showSortDilog: false,
-      sortParam:{}
+      sortParam: {}
     }
   },
   created () {
@@ -215,10 +216,12 @@ export default {
       api[urlNames['findViewNodeList']](data).then((res) => {
         this.loading = false
         this.list = res.data
+        this.originList = JSON.parse(JSON.stringify(this.list))
         this.contentPage.total = res.total
       }, () => {
         this.loading = false
         this.list = []
+        this.originList = JSON.parse(JSON.stringify(this.list))
         this.contentPage.total = 0
       })
     },
@@ -231,12 +234,13 @@ export default {
     },
     // 保存排序
     sublimeSort () {
+      let that = this
       let sortList = []
       // 对之前已经排序好的
       this.list.forEach(function (item, index) {
         sortList.push({
           id: item.id,
-          sort: index
+          sort: that.originList[index].sort
         })
       })
 
@@ -258,16 +262,15 @@ export default {
     // 数值排序弹框
     goSort (val) {
       this.showSortDilog = true
-       this.sortParam = {
+      this.sortParam = {
         nowId: val.id
       }
-
     },
 
     // 保存数值排序
     submitNumSort () {
       this.showSortDilog = false
-       let data = {
+      let data = {
         page: this.sortValue,
         parentId: this.nodeId,
         limit: 1
@@ -287,15 +290,15 @@ export default {
         () => {}
       )
     },
-    NumSortFun(data){
+    NumSortFun (data) {
       api[urlNames['setViewNodeSortThroughNumerical']](data).then(
         res => {
           if (res) {
             this.showSortDilog = false
             this.$message.success('排序成功')
-            this.contentPage.current=Math.ceil(this.sortValue/this.contentPage.limit)
+            this.contentPage.current = Math.ceil(this.sortValue / this.contentPage.limit)
             this.getGrid()
-            this.sortValue=''
+            this.sortValue = ''
           }
         })
     }

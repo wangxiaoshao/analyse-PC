@@ -23,7 +23,7 @@
             <li><span>身份类型</span>
             <span>|</span>
             <span>{{ userIdentityInfo.type&&userIdentityInfo.type!==null&&userIdentityInfo.type!==''? filterType(userIdentityInfo.type):'无'}}</span>
-            </li> 
+            </li>
           </ul>
           <div  @click="goPersonalPage">完善信息</div>
         </div>
@@ -37,7 +37,7 @@
             <el-row>
               <el-col :span="17"> <span class="msg" :title="val.typeText">{{val.content}}</span></el-col>
               <el-col :span="7"> <span class="date">{{val.createTime}}</span></el-col>
-            </el-row>   
+            </el-row>
           </p>
         </div>
         <a href="javaScript:void(0)"  @click="goMoreNotice">查看更多待办事项
@@ -52,7 +52,7 @@
             <el-row>
               <el-col :span="18"> <span class="msg" :title="val.typeText">{{val.content}}</span></el-col>
               <el-col :span="6"> <span class="date">{{val.creareTime}}</span></el-col>
-            </el-row>   
+            </el-row>
           </p>
         </div>
          <a href="javaScript:void(0)" @click="goMoreAnnounts">查看更多公告
@@ -60,7 +60,7 @@
       </div>
     </div>
     <div class="homeContent">
-      <div class="header-title">昨日数据  
+      <div class="header-title">昨日数据
         <span style="color:#999;font-size:12px;margin-left:5px">更新于{{dataStr}}</span></div>
       <div class="info-box">
         <div class="detailInfo">
@@ -120,133 +120,132 @@ import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
 import dicOption from '@src/mixins/dic-options.js'
 export default {
-   mixins: [dicOption],
-  data(){
-    return{
-      userIdentityInfo:{
-        userName:'',
-        id: "",
+  mixins: [dicOption],
+  data () {
+    return {
+      userIdentityInfo: {
+        userName: '',
+        id: '',
         type: null,
-        uid: "",
-        departmentId: "",
-        orgId: "-",
-        dutyName: "",
-        postName: "",
-        organizationName: "",
-        departmentName: "",
+        uid: '',
+        departmentId: '',
+        orgId: '-',
+        dutyName: '',
+        postName: '',
+        organizationName: '',
+        departmentName: ''
       },
       // 待办事项列表
-      noticeList:[
+      noticeList: [
         {
-          id:1,
-          content:'22消息确认通知消息确认通知消息确认通知息确认通知消息确认通知消息确认通22消息确认通知消息确认通知消息确认通知息确认通知消息确认通知消息确认通',
-          typeText:"消息确认通知",
-          creareTime:'2020-2-24 14:19:20',
-          hasRead:0
+          id: 1,
+          content: '22消息确认通知消息确认通知消息确认通知息确认通知消息确认通知消息确认通22消息确认通知消息确认通知消息确认通知息确认通知消息确认通知消息确认通',
+          typeText: '消息确认通知',
+          creareTime: '2020-2-24 14:19:20',
+          hasRead: 0
         },
         {
-          id:2,
-          content:'11',
-          typeText:"审核通知",
-          creareTime:'2020-1-20 14:19:20',
-          hasRead:1
+          id: 2,
+          content: '11',
+          typeText: '审核通知',
+          creareTime: '2020-1-20 14:19:20',
+          hasRead: 1
         },
         {
-          id:3,
-          content:'11',
-          typeText:"审核通知",
-          creareTime:'2020-2-24 14:19:20',
-          hasRead:0
+          id: 3,
+          content: '11',
+          typeText: '审核通知',
+          creareTime: '2020-2-24 14:19:20',
+          hasRead: 0
         },
         {
-          id:4,
-          content:'13',
-          typeText:"审核通知",
-          creareTime:'2020-2-24 14:19:20',
-          hasRead:0
+          id: 4,
+          content: '13',
+          typeText: '审核通知',
+          creareTime: '2020-2-24 14:19:20',
+          hasRead: 0
         }
       ],
       // 处理待办事项列表
-      doNoticeList:[],
+      doNoticeList: [],
       // 平台公告列表
-      announcementList:[
+      announcementList: [
         {
-          id:1,
-          content:'为推进国密改造，系统密码强度优化通知。',
-          typeText:"消息确认通知",
-          creareTime:'2020年02月24日',
-          hasRead:0
+          id: 1,
+          content: '为推进国密改造，系统密码强度优化通知。',
+          typeText: '消息确认通知',
+          creareTime: '2020年02月24日',
+          hasRead: 0
         },
         {
-          id:2,
-          content:'组织机构添加单位时，单位地址信息为必填相关通知。',
-          typeText:"审核通知",
-          creareTime:'2020年02月20日',
-          hasRead:1
+          id: 2,
+          content: '组织机构添加单位时，单位地址信息为必填相关通知。',
+          typeText: '审核通知',
+          creareTime: '2020年02月20日',
+          hasRead: 1
         },
         {
-          id:3,
-          content:'2020年春节期间系统运维时间调整公告！',
-          typeText:"审核通知",
-          creareTime:'2020年01月24日',
-          hasRead:0
+          id: 3,
+          content: '2020年春节期间系统运维时间调整公告！',
+          typeText: '审核通知',
+          creareTime: '2020年01月24日',
+          hasRead: 0
         },
         {
-          id:4,
-          content:'2020年春节系统更新及版本V1.0.1公告！',
-          typeText:"审核通知",
-          creareTime:'2020年01月23日',
-          hasRead:0
+          id: 4,
+          content: '2020年春节系统更新及版本V1.0.1公告！',
+          typeText: '审核通知',
+          creareTime: '2020年01月23日',
+          hasRead: 0
         }
       ],
-       //处理平台公告列表
-      doAnnouncementList:[],
-      dataStr:'',
+      // 处理平台公告列表
+      doAnnouncementList: [],
+      dataStr: '',
       // 详细数据
       countData: {
-        userCount:null,
-        deptCount:null,
-        organCount:null
+        userCount: null,
+        deptCount: null,
+        organCount: null
       },
-      loginNumber:0,
-      applyCount:null,
+      loginNumber: 0,
+      applyCount: null,
       // 人员变动数
-      changeAccount:null
+      changeAccount: null
 
     }
   },
-  created(){
+  created () {
     this.getUserIdentityInfo()
     this.getAccountData()
     this.getNoticeList()
-    // 获取接应用总数 
+    // 获取接应用总数
     api[urlNames['findApplicationCount']]().then((res) => {
-        this.applyCount = res.data[0]
-      })
+      this.applyCount = res.data[0]
+    })
   },
-  mounted(){
-    this.userIdentityInfo.userName=this.app.option.user.name
+  mounted () {
+    this.userIdentityInfo.userName = this.app.option.user.name
     this.getLoginIndex()
     this.doArray()
-   
   },
-  methods:{
+  methods: {
     // 获取第几个用户
-    getLoginIndex(){
+    getLoginIndex () {
       // {dataString:'2020-03-15'}
       api[urlNames['loginIndex']]().then(
         res => {
-         this.loginNumber=res.data
+          this.loginNumber = res.data
         }
       )
     },
     // 获取用户身份信息
-    getUserIdentityInfo(){
+    getUserIdentityInfo () {
       api[urlNames['findIdentityById']]({
         identityId: this.app.option.user.identityId
       }).then(
         res => {
-          Object.assign(this.userIdentityInfo,res.data);
+          Object.assign(this.userIdentityInfo, res.data)
         },
         () => {
           /* this.$message.error(`没有内容`) */
@@ -255,7 +254,7 @@ export default {
     },
 
     // 获取待办事项
-     getNoticeList () {
+    getNoticeList () {
       let data = {
         page: 1,
         limit: 6
@@ -263,65 +262,64 @@ export default {
       api[urlNames['notificationList']](data).then((res) => {
         this.noticeList = res.data
         this.filterDate()
-        this.doNoticeList.push(this.noticeList.slice(0,3),this.noticeList.slice(3))
+        this.doNoticeList.push(this.noticeList.slice(0, 3), this.noticeList.slice(3))
       })
     },
 
     // 获取昨日数据
     // getStatistiscCount
-    getAccountData(){
+    getAccountData () {
       api[urlNames['getStatistiscCount']]().then((res) => {
         this.countData = res.data
       })
     },
 
     // 待办事项点击查看
-    doFindNotice(val){
-      if(val.typeText==='消息确认通知'){
-          this.$router.push('/confirm-info')
-      }else{
-         this.$router.push('/wait-approval')
+    doFindNotice (val) {
+      if (val.typeText === '消息确认通知') {
+        this.$router.push('/confirm-info')
+      } else {
+        this.$router.push('/wait-approval')
       }
     },
-    goFindAnnountDetial(val){
+    goFindAnnountDetial (val) {
       this.$router.push({
-        path:'/announceDetail',
-        query:{
-          id:val.id
+        path: '/announceDetail',
+        query: {
+          id: val.id
         }
       })
     },
-    
-    doArray(){
-      this.dataStr=new Date().getFullYear()+'年'+(new Date().getMonth()+1)+'月'+new Date().getDate()+'日'
+
+    doArray () {
+      this.dataStr = new Date().getFullYear() + '年' + (new Date().getMonth() + 1) + '月' + new Date().getDate() + '日'
       // this.doNoticeList.push(this.noticeList.slice(0,3),this.noticeList.slice(3))
-      this.doAnnouncementList.push(this.announcementList.slice(0,3),this.announcementList.slice(3))
+      this.doAnnouncementList.push(this.announcementList.slice(0, 3), this.announcementList.slice(3))
     },
-    filterType(val){
-      let typeList=  this.userTypeOptions.filter(item=>item.value==val)
-      return  typeList[0].text
+    filterType (val) {
+      let typeList = this.userTypeOptions.filter(item => item.value == val)
+      return typeList[0].text
     },
-    filterDate(){
-      this.noticeList.forEach(function(val,index){
-        let Date1=new Date(val.createTime)
-        val.createTime=Date1.getFullYear()+'年'+(Date1.getMonth()+1)+'月'+Date1.getDate()+'日'
+    filterDate () {
+      this.noticeList.forEach(function (val, index) {
+        let Date1 = new Date(val.createTime)
+        val.createTime = Date1.getFullYear() + '年' + (Date1.getMonth() + 1) + '月' + Date1.getDate() + '日'
       })
-     
     },
 
-    goPersonalPage(){
+    goPersonalPage () {
       this.$router.push('/pass-change')
     },
-    goMoreNotice(){
-       this.$router.push('/notification')
+    goMoreNotice () {
+      this.$router.push('/notification')
     },
-     goMoreAnnounts(){
-        this.$router.push('/moreAnnoument')
-     },
+    goMoreAnnounts () {
+      this.$router.push('/moreAnnoument')
+    }
   },
-   computed: {
+  computed: {
     ...mapState(['app'])
-  },
+  }
 }
 </script>
 <style lang="less" scoped>

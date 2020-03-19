@@ -270,15 +270,14 @@ export default {
         }
       }
     }, */
-  data() {
-
+  data () {
     return {
       breadcrumb: {
         name: '单位详情',
         parent: null
       },
-      loadVisiable: false, //信用代码加载图标,
-      requiring:false,//验证中
+      loadVisiable: false, // 信用代码加载图标,
+      requiring: false, // 验证中
       successVisiable: false,
       errorVisiable: false,
       areaFlag: false,
@@ -309,11 +308,11 @@ export default {
       defaultList: [],
       delSelectLabelId: null, // 添加后未提交到后台移除的标签
       tempLabelId: [],
-      creditIddisable:false,
+      creditIddisable: false,
       rules: {
         'organization.name': [
-          { required: true, message: '请输入单位名称', trigger: 'blur' },
-        ],
+          { required: true, message: '请输入单位名称', trigger: 'blur' }
+        ]
         // 'organization.creditId':[ { validator: validateCreditId, trigger: 'blur' }]
       },
       ruleForm: {
@@ -345,18 +344,18 @@ export default {
   computed: {
     ...mapState(['app'])
   },
-  mounted() {
+  mounted () {
     this.setBreadcrumbTitle()
   },
-  created() {
+  created () {
     this.init()
   },
-  beforeRouteUpdate(to, from, next) {
+  beforeRouteUpdate (to, from, next) {
     next()
   },
   methods: {
     ...mapMutations(['SET_OPTION']),
-    init() {
+    init () {
       if (this.$route.name === 'UnitAdd' || this.$route.name === 'UnitEdit') {
         if (this.$route.name === 'UnitAdd') {
           this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
@@ -395,11 +394,11 @@ export default {
         this.getDetail()
       }
     },
-    openarea(e) {
+    openarea (e) {
       this.areaFlag = true
       e.target.blur()
     },
-    getDetail() {
+    getDetail () {
       let data = {
         id: this.bindId
       }
@@ -425,9 +424,9 @@ export default {
             this.ruleForm.organization.zipCode = res.data.zipCode
             this.ruleForm.organization.ext01 = res.data.ext01
             this.ruleForm.organization.ext02 = res.data.ext02
-             this.ruleForm.organization.creditId = res.data.creditId
-            if(res.data.creditId&&res.data.creditId!=''){
-              this.creditIddisable=true
+            this.ruleForm.organization.creditId = res.data.creditId
+            if (res.data.creditId && res.data.creditId != '') {
+              this.creditIddisable = true
             }
 
             if (this.$route.name === 'UnitEdit') {
@@ -441,7 +440,7 @@ export default {
       )
     },
     // 获取标签
-    findLabel(type) {
+    findLabel (type) {
       api[urlNames['findLabel']]({
         id: this.bindId,
         type: type
@@ -457,10 +456,10 @@ export default {
         error => {}
       )
     },
-    removeTag(tag, index) {
+    removeTag (tag, index) {
       let that = this
       let lIds = []
-      lIds = that.tempLabelId.filter(function(item) {
+      lIds = that.tempLabelId.filter(function (item) {
         return item === that.ruleForm.labelId[index]
       })
       if (lIds.length !== 0) {
@@ -496,7 +495,7 @@ export default {
         that.tagsName.splice(index, 1)
       }
     },
-    deleteUserLabelOrDeptLabelOrOrgLabel(id, type, labelId) {
+    deleteUserLabelOrDeptLabelOrOrgLabel (id, type, labelId) {
       api[urlNames['deleteUserLabelOrDeptLabelOrOrgLabel']]({
         id: id,
         type: type,
@@ -508,31 +507,28 @@ export default {
       })
     },
     // 获取区域
-    getArea(orgId) {
+    getArea (orgId) {
       api[urlNames['findOrgAreaList']]({
         orgId: orgId
       }).then(
         res => {
           this.allAreaList = res.data
           this.findMenuByPath(res.data)
-          if(this.areaOption[this.areaOption.length - 1].id){
+          if (this.areaOption[this.areaOption.length - 1].id) {
             this.ruleForm.areaId = this.areaOption[this.areaOption.length - 1].id
           }
-           this.areaOption.forEach(item => {
-                this.areaCheck += item.name + '/'
-
-
+          this.areaOption.forEach(item => {
+            this.areaCheck += item.name + '/'
           })
-
         },
         error => {}
       )
     },
-    getClose(val) {
+    getClose (val) {
       this.openSearchFlag = val
     },
     // 获取选中的标签
-    getTag(val) {
+    getTag (val) {
       const res = new Map()
       let tag = []
       val.forEach(item => {
@@ -546,7 +542,7 @@ export default {
         this.ruleForm.labelId.push(parseInt(item))
       })
     },
-    setBreadcrumbTitle() {
+    setBreadcrumbTitle () {
       // 设置面包屑title
       if (this.$route.name === 'UnitEdit' || this.$route.name === 'UnitAdd') {
         this.isShowEditFlag = true
@@ -563,21 +559,21 @@ export default {
       }
       this.pushBreadcrumb(this.breadcrumb)
     },
-    getSystemType(el) {
+    getSystemType (el) {
       this.ruleForm.organization.systemType = el
     },
-    getType(el) {
+    getType (el) {
       this.ruleForm.organization.type = el
     },
-    getAreaId(val) {
+    getAreaId (val) {
       this.areaCheck = val.name
       this.ruleForm.areaId = val.id
       // this.ruleForm.areaId = val
     },
-    submitForm(ruleForm) {
+    submitForm (ruleForm) {
       //
       //  || this.ruleForm.organization.creditId == ''
-      if(this.successVisiable ||this.ruleForm.organization.creditId == ''){
+      if (this.successVisiable || this.ruleForm.organization.creditId == '') {
         this.ruleForm.organization.removed = this.ruleForm.organization.removed
           ? 0
           : 1
@@ -591,25 +587,24 @@ export default {
               },
               error => {}
             )
-          }else{
+          } else {
             this.$message.error('请填写必要字段')
             this.loadVisiable = false
             this.successVisiable = false
             this.errorVisiable = false
           }
         })
-      }else if(this.errorVisiable){
+      } else if (this.errorVisiable) {
         this.$message.error('请输入与单位名称相匹配的社会信用代码')
       }
-
-      } ,
-    goBack() {
+    },
+    goBack () {
       this.$router.go(-1)
     },
-    close(val) {
+    close (val) {
       this.areaFlag = val
     },
-    findMenuByPath(list) {
+    findMenuByPath (list) {
       for (let item of list) {
         this.areaOption.push(item)
         if (item.children && item.children.length > 0) {
@@ -619,54 +614,48 @@ export default {
       }
     },
     // 社会信用代码
-    handleCredit() {
+    handleCredit () {
       // 51522300C58060003M
       // this.ruleForm.organization.creditId = '51522300C58060003M'
       // this.ruleForm.organization.name = '黔西南布依族苗族自治州消费者协会'
-      if(this.ruleForm.organization.name==''&&this.ruleForm.organization.creditId!==''){
+      if (this.ruleForm.organization.name == '' && this.ruleForm.organization.creditId !== '') {
         this.$message.error('请输入单位名称')
-      }else if(this.ruleForm.organization.creditId!==''){
+      } else if (this.ruleForm.organization.creditId !== '') {
         this.loadVisiable = true
-        this.requiring=true
+        this.requiring = true
         this.successVisiable = false
         this.errorVisiable = false
         let param = {
           orgName: this.ruleForm.organization.name,
           creditId: this.ruleForm.organization.creditId
         }
-         api[urlNames['orgCreditId']](param).then(
+        api[urlNames['orgCreditId']](param).then(
           res => {
             if (res.data == 1) {
               window.setTimeout(() => {
                 this.successVisiable = true
-                this.requiring=false
+                this.requiring = false
                 this.loadVisiable = false
                 this.errorVisiable = false
-
               }, 2000)
             } else {
               this.errorVisiable = true
               this.loadVisiable = false
               this.successVisiable = false
-              this.requiring=false
+              this.requiring = false
             }
           },
           () => {}
         )
-      }else{
+      } else {
         this.errorVisiable = false
         this.loadVisiable = false
         this.successVisiable = false
       }
-
-      }
-
     }
+
+  }
 }
-
-
-
-
 
 
 </script>

@@ -328,10 +328,10 @@ export default {
     // 跳转日志
     toLogData () {
       let path = ''
-      console.log('nodeData',this.nodeData)
-      if (this.nodeData.nodeType === 1  ||  this.nodeData.nodeType === 2) {
+      console.log('nodeData', this.nodeData)
+      if (this.nodeData.nodeType === 1 || this.nodeData.nodeType === 2) {
         path = `/organization/operate-log/${this.nodeData.id}`
-      } else{
+      } else {
         path = `/organization/operate-log/${this.nodeData.bindId}`
       }
       this.$router.push({

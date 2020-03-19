@@ -112,16 +112,16 @@ export default {
   data () {
     return {
       logList: [],
-      detialInfoVisible:false,
-      detialInfo:{
-        id:'',
-        actionUserName:'',
-        actionType :'',
-        actionTime :'',
-        changeContent :'',
-        entityId :'',
-        entityType :'',
-        entityTypeText :''
+      DetialInfoVisible: false,
+      DetialInfo: {
+        id: '',
+        actionUserName: '',
+        actionType: '',
+        actionTime: '',
+        changeContent: '',
+        entityId: '',
+        entityType: '',
+        entityTypeText: ''
       }
     }
   },
@@ -164,9 +164,9 @@ export default {
     },
 
     // 查看详情
-    findInfo(data){
+    findInfo (data) {
       api[urlNames['getEntityChangeLoggerDetail']]({
-        id:data.id,
+        id: data.id,
         entityType: data.entityType,
         entityId: data.entityId
       }).then((res) => {
@@ -175,7 +175,7 @@ export default {
         }
       }, (error) => {
       })
-      this.detialInfoVisible=true
+      this.DetialInfoVisible = true
     }
   }
 }

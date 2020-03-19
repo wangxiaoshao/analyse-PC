@@ -24,7 +24,7 @@ import PersonalLog from '@src/components/PersonalLog/index'
 export default {
   mixins: [handleTable],
   components: { PersonalLog },
-  data() {
+  data () {
     return {
       searchQuery: {
         areaId: '',
@@ -45,7 +45,7 @@ export default {
       dateType: '',
       format: '',
       pickerOptions: {
-        disabledDate(time) {
+        disabledDate (time) {
           return time.getTime() > Date.now() - 8.64e6
         },
         shortcuts: null
@@ -56,7 +56,7 @@ export default {
   computed: {
     ...mapState(['application'])
   },
-  created() {
+  created () {
     let datefilters = this.$options.filters['date'](
       new Date().getTime(),
       'yyyy-MM-dd'
@@ -77,8 +77,8 @@ export default {
   },
   methods: {
     ...mapMutations(['SET_APPLICATION_PAGE', 'SET_APPLICATION_SEARCH_QUERY']),
-    opensystemInfo() {},
-    selectChange(val) {
+    opensystemInfo () {},
+    selectChange (val) {
       this.date = ''
       this.currentDateVal = ''
       this.openPicker = false
@@ -101,13 +101,13 @@ export default {
         this.getGrid()
       }
     },
-    dateChange(val) {
+    dateChange (val) {
       if (val) {
         this.date = val
         this.getGrid()
       }
     },
-    getGrid() {
+    getGrid () {
       let data = {
         date: this.date,
         type: this.dateType === 'month' ? 4 : 0, // 后端需要传输的数据类型 月份type：4 || 天：0
@@ -126,7 +126,7 @@ export default {
         }
       )
     },
-    handleClick(tab, event) {
+    handleClick (tab, event) {
       // console.log(tab, event)
     }
   }
