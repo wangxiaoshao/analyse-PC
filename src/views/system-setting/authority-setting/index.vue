@@ -56,7 +56,7 @@
 </template>
 
 <script>
-  import getUserInfo from '@src/mixins/getUserInfo'
+import getUserInfo from '@src/mixins/getUserInfo'
 import { api, urlNames } from '@src/api'
 export default {
   mixins: [getUserInfo],

@@ -59,7 +59,7 @@
       <el-tab-pane label="各市州单位总数占比" name="unit" lazy >
         <echarts :echartsAry='echartsAry1' v-if="activeName=='unit'"></echarts>
       </el-tab-pane>
-      <el-tab-pane label="各市州内设机构数占比" name="department"  lazy> 
+      <el-tab-pane label="各市州内设机构数占比" name="department"  lazy>
          <echarts :echartsAry='echartsAry2' v-if="activeName=='department'"></echarts>
       </el-tab-pane>
       <el-tab-pane label="各市州人员总数占比" name="member">
@@ -120,14 +120,14 @@ import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
 
 export default {
-  components: { echarts ,echartsDept,echartsPeople},
+  components: { echarts, echartsDept, echartsPeople },
   mixins: [handleTable],
   data () {
     return {
-      echartsName:'unit',
+      echartsName: 'unit',
       reverse: true,
       newsList: [],
-      dateName:'今天',
+      dateName: '今天',
       dataList: [
         { id: 1, name: '今天', type: 1 },
         { id: 2, name: '昨天', type: 2 },
@@ -139,47 +139,47 @@ export default {
       },
       activeName: 'unit',
       countData: {
-        organizationCount:null,
-        deptCount:null,
-        organCount:null
+        organizationCount: null,
+        deptCount: null,
+        organCount: null
       },
-      applyCount:null,
+      applyCount: null,
       echartsAry1: [
-            ['amount', 'product'],
-            [58212, '贵阳市'],
-            [78254, '遵义市'],
-            [41032, '安顺市'],
-            [12755, '六盘水'],
-            [20145, '毕节市'],
-            [79146, '铜仁市'],
-            [91852, '黔南州'],
-            [101852, '黔西南州'],
-            [20112, '黔东南州']
-          ],
-           echartsAry2: [
-            ['amount', 'product'],
-            [63455, '贵阳市'],
-            [40089, '遵义市'],
-            [40076, '安顺市'],
-            [12755, '六盘水'],
-            [20003, '毕节市'],
-            [59802, '铜仁市'],
-            [54383, '黔南州'],
-            [58003, '黔西南州'],
-            [34677, '黔东南州']
-          ],
-           echartsAry3: [
-            ['amount', 'product'],
-            [120000, '贵阳市'],
-            [68000, '遵义市'],
-            [56003, '安顺市'],
-            [76890, '六盘水'],
-            [34899, '毕节市'],
-            [56788, '铜仁市'],
-            [69990, '黔南州'],
-            [86667, '黔西南州'],
-            [20112, '黔东南州']
-          ]
+        ['amount', 'product'],
+        [58212, '贵阳市'],
+        [78254, '遵义市'],
+        [41032, '安顺市'],
+        [12755, '六盘水'],
+        [20145, '毕节市'],
+        [79146, '铜仁市'],
+        [91852, '黔南州'],
+        [101852, '黔西南州'],
+        [20112, '黔东南州']
+      ],
+      echartsAry2: [
+        ['amount', 'product'],
+        [63455, '贵阳市'],
+        [40089, '遵义市'],
+        [40076, '安顺市'],
+        [12755, '六盘水'],
+        [20003, '毕节市'],
+        [59802, '铜仁市'],
+        [54383, '黔南州'],
+        [58003, '黔西南州'],
+        [34677, '黔东南州']
+      ],
+      echartsAry3: [
+        ['amount', 'product'],
+        [120000, '贵阳市'],
+        [68000, '遵义市'],
+        [56003, '安顺市'],
+        [76890, '六盘水'],
+        [34899, '毕节市'],
+        [56788, '铜仁市'],
+        [69990, '黔南州'],
+        [86667, '黔西南州'],
+        [20112, '黔东南州']
+      ]
     }
   },
   computed: {
@@ -187,10 +187,10 @@ export default {
   },
   created () {
     this.initDataStatistics()
-    // 获取接应用总数 
+    // 获取接应用总数
     api[urlNames['findApplicationCount']]().then((res) => {
-        this.applyCount = res.data[0]
-      })
+      this.applyCount = res.data[0]
+    })
   },
   methods: {
     ...mapMutations(['SET_APPLICATION_PAGE', 'SET_APPLICATION_SEARCH_QUERY']),
@@ -204,8 +204,8 @@ export default {
     },
     initDataStatistics () {
       let datefilters = this.$options.filters['date'](new Date().getTime(), 'yyyy-MM')
-      let selected=this.dataList.filter(item=> item.type==this.selected.type)
-      this.dateName=selected[0].name
+      let selected = this.dataList.filter(item => item.type == this.selected.type)
+      this.dateName = selected[0].name
       let data = {
         date: datefilters,
         type: 4,
@@ -221,9 +221,9 @@ export default {
         this.newsList = res.data
       })
     },
-    handleClick (targetName,num) {
+    handleClick (targetName, num) {
       // console.log('targetName:',targetName.name)
-      this.echartsName=targetName.name
+      this.echartsName = targetName.name
     },
     jumpQuery (routerParams) { // routerParams === Unit|Department|Member
       this.$router.push({

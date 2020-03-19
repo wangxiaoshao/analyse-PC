@@ -179,8 +179,8 @@ export default {
         page: this.page.current,
         limit: this.page.limit
       }
-      if(findPage==1){
-        data.page=findPage
+      if (findPage == 1) {
+        data.page = findPage
       }
       let keys = Object.keys(this.searchQuery)
       let len = keys.length

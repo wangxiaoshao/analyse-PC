@@ -15,8 +15,8 @@
                   <span>{{scope.row.content}}</span>
                 </div>
                 <!-- <p>{{scope.row.creareTime}}</p>
-                <span class="btn"><el-button type='primary' size="mini" 
-                :style="scope.row.hasRead===1?'background-color:#d8d7d7;border-color:#d8d7d7':''" 
+                <span class="btn"><el-button type='primary' size="mini"
+                :style="scope.row.hasRead===1?'background-color:#d8d7d7;border-color:#d8d7d7':''"
                  @click="doFindNotice(scope.row)">{{scope.row.hasRead===1?'已查看':'去查看'}}</el-button></span> -->
               </div>
             </template>
@@ -39,30 +39,29 @@ import { api, urlNames } from '@src/api'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
 import { mapState, mapMutations } from 'vuex'
 export default {
-    mixins: [handleTable],
-    data () {
+  mixins: [handleTable],
+  data () {
     return {
-      tableData:[
+      tableData: [
         {
-          typeText:'为推进国密改造，系统登录密码深度优化通知。',
-          content:'为推进国密改造，系统登录密码深度优化通知,为推进国密改造，系统登录密码深度优化通知。',
-          hasRead:0,
-          creareTime:'2020-03-12'
+          typeText: '为推进国密改造，系统登录密码深度优化通知。',
+          content: '为推进国密改造，系统登录密码深度优化通知,为推进国密改造，系统登录密码深度优化通知。',
+          hasRead: 0,
+          creareTime: '2020-03-12'
         }
       ]
     }
   },
-   mounted () {
+  mounted () {
   // this.app.breadcrumb=[{name: '平台公告'}]
-  this.page.total=1
-   
+    this.page.total = 1
   },
-   computed: {
-   ...mapState(['app']),
+  computed: {
+    ...mapState(['app'])
   },
-  methods:{
+  methods: {
   }
-  
+
 }
 </script>
 <style lang="less"  scoped>

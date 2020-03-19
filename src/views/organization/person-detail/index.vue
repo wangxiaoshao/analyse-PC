@@ -105,7 +105,7 @@ export default {
           ext01: '',
           ext02: '',
           ext03: '',
-          address:''
+          address: ''
         }
       }
     }

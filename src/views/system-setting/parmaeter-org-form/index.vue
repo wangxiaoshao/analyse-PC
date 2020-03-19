@@ -168,12 +168,19 @@
             </el-form-item>
             <div v-if="orgMessageConfirm">
                 <el-form-item label="设置信息确认弹窗提醒">
-                    <el-radio-group size="medium" v-model="orgMessageRemind">
-                        <el-radio-button label="7">每月最后七天</el-radio-button>
-                        <el-radio-button label="5">每月最后五天</el-radio-button>
-                        <el-radio-button label="3">每月最后三天</el-radio-button>
-                        <el-radio-button label="-1">不提醒</el-radio-button>
-                    </el-radio-group>
+                    <el-date-picker
+                        v-model="orgRemindTimeRange"
+                        type="daterange"
+                        :editable="false"
+                        :clearable="true"
+                        format="dd号"
+                        min-date="2020-01-01"
+                        max-date="2020-01-31"
+                        start-placeholder="选择提醒开始时间"
+                        end-placeholder="选择提醒结束时间"
+                        @change="noRemind = false">
+                      </el-date-picker>
+                      <el-checkbox-button v-model="noRemind" checked @change="orgRemindTimeRange = []">不提醒</el-checkbox-button>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="systemSubmit(2)">保存</el-button>
@@ -639,6 +646,8 @@ export default {
       orgMsgConfirmCloseVisible: false, // 关闭单位信息确认对话框
       orgMessageConfirm: true, // 单位信息确认
       orgMessageRemind: -1, // 消息提醒
+      noRemind: true, // 消息提醒，默认不提醒
+      orgRemindTimeRange: [], // 提醒的时间区间
       modeAuditList: [],
       orgAuditList: orgAuditList, // 单位审核字段数据
       nodeAuditList: nodeAuditList,

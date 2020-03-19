@@ -24,42 +24,40 @@
         </div>
         <el-row :gutter="20">
           <el-col :span="18" :offset="4">
-            <template>
-              <el-table
-                :data="tableData"
-                height="200"
-                style="width: 100%">
-                <el-table-column
-                  fixed
-                  align="center"
-                  prop="value"
-                  label="值"
-                  width="180">
-                </el-table-column>
-                <el-table-column
-                  fixed
-                  align="center"
-                  prop="text"
-                  label="名称"
-                  width="180">
-                </el-table-column>
-                <el-table-column
-                  fixed
-                  align="center"
-                  prop="value"
-                  width="180"
-                  label="操作">
-                  <template slot-scope="scope">
-                    <span class="tag-icon-operate fa fa-trash-o delete" style="color:red;cursor: pointer;"
-                     @click="deleteDic(scope.$index, scope.row)"></span>
-                    <!-- <el-button
-                    size="mini"
-                    type="danger"
-                    @click="deleteDic(scope.$index, scope.row)">删除</el-button> -->
-                  </template>
-                </el-table-column>
-              </el-table>
-            </template>
+            <el-table
+              :data="tableData"
+              max-height="200"
+              style="width: 100%">
+              <el-table-column
+                fixed
+                align="center"
+                prop="value"
+                label="值"
+                width="180">
+              </el-table-column>
+              <el-table-column
+                fixed
+                align="center"
+                prop="text"
+                label="名称"
+                width="180">
+              </el-table-column>
+              <el-table-column
+                fixed
+                align="center"
+                prop="value"
+                width="180"
+                label="操作">
+                <template slot-scope="scope">
+                  <span class="tag-icon-operate fa fa-trash-o delete" style="color:red;cursor: pointer;"
+                    @click="deleteDic(scope.$index, scope.row)"></span>
+                  <!-- <el-button
+                  size="mini"
+                  type="danger"
+                  @click="deleteDic(scope.$index, scope.row)">删除</el-button> -->
+                </template>
+              </el-table-column>
+            </el-table>
           </el-col>
         </el-row>
       <el-row :gutter="20" :style="{marginTop: '20px'}">
@@ -76,23 +74,15 @@
 </template>
 
 <script type="text/ecmascript-6">
-import { mapState, mapMutations } from 'vuex'
+import { mapState } from 'vuex'
 import hasRight from '@src/mixins/has-right'
 import { api, urlNames } from '@src/api'
-import { constants } from 'zlib'
 
 export default {
   props: ['visible', 'close', 'dialogTitle', 'dictionaryType'],
   components: {},
   mixins: [hasRight],
   data () {
-    var checkAge = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error(' '))
-      } else {
-        callback()
-      }
-    }
     return {
       dynamicTags: ['正厅级', '副厅级'],
       inputVisible: false,
@@ -108,8 +98,48 @@ export default {
       foundDicList: [],
       newAddList: [],
       rules: {
-        text: [{ validator: checkAge, trigger: 'blur' }],
-        value: [{ validator: checkAge, trigger: 'blur' }]
+        text: [
+          { type: 'string', required: true, message: '字段名称未填写' },
+          { validator: (rule, value, callback) => {
+            let ok = true
+            let msg = ''
+
+            this.tableData.forEach((item) => {
+              if (value === item.text) {
+                ok = false
+                msg = '重复'
+              }
+            })
+
+            if (!ok) {
+              return callback(new Error(msg))
+            } else {
+              return callback()
+            }
+          },
+          trigger: 'blur' }
+        ],
+        value: [
+          { required: true, message: '字段值未填写' },
+          { validator: (rule, value, callback) => {
+            let ok = true
+            let msg = ''
+
+            this.tableData.forEach((item) => {
+              if (parseInt(value) === item.value) {
+                ok = false
+                msg = '重复'
+              }
+            })
+
+            if (!ok) {
+              return callback(new Error(msg))
+            } else {
+              return callback()
+            }
+          },
+          trigger: 'blur' }
+        ]
       }
     }
   },

@@ -30,7 +30,8 @@ module.exports = {
       {
         max: 2
       }
-    ]
+    ],
+    'eslint-disable-next-line': 0
   },
   parserOptions: {
     parser: 'babel-eslint'

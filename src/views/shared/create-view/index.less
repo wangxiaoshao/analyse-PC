@@ -1,5 +1,15 @@
 .create-view {
   .from {
+    /deep/ .el-tree-node {
+      .is-drop-inner {
+        .el-tree-node__content {
+          .label{
+            background-color: #FC7049;
+            color: #fff
+          }
+        }
+      }
+    }
     .tree-panel{
       display: flex;
       margin-bottom: 20px;

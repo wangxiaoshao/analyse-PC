@@ -50,7 +50,7 @@
               v-if="showDep"
               @handle-child-click="handleChildClick"
             ></department>
-            <member :table-data="memberList" 
+            <member :table-data="memberList"
               :activeColor='activeColor'
               :orgInfo='orgInfo'
               v-if="selectType!='0' && !showDep"></member>
@@ -82,7 +82,7 @@ export default {
     addressListTree,
     personInfo
   },
-  data() {
+  data () {
     return {
       isShow: 1,
       activeColor: 1,
@@ -92,7 +92,7 @@ export default {
       departmentList: [],
       memberList: [],
       treeList: [],
-      orgInfo:{},
+      orgInfo: {},
       hasChildren: true,
       name: '',
       personInfoList: {},
@@ -102,7 +102,7 @@ export default {
 
     }
   },
-  created() {
+  created () {
     if (this.app.option.user && this.app.option.user.orgId) {
       this.getAddressListUnitTree()
       this.getAddressListOrganizationMembers()
@@ -117,7 +117,7 @@ export default {
     /**
      * 切换通讯录
      */
-    onChange(e) {
+    onChange (e) {
       this.activeColor = e
       this.isShow = e
       this.showDep = true
@@ -139,7 +139,7 @@ export default {
     },
 
     /** 通讯录视图 */
-    getAddressListUnitTree() {
+    getAddressListUnitTree () {
       // console.log(this.app.option.user,'wertyui12345====')
       api[urlNames['getAddressListTree']]({
         orgId: this.app.option.user.orgId
@@ -149,14 +149,14 @@ export default {
         this.handleNodeClickTree(this.treeList[0])
       })
     },
-    getAddressListOthertTree() {
+    getAddressListOthertTree () {
       api[urlNames['getAddressListTree']]({}).then(res => {
         this.treeList = res.data
         this.handleNodeClickTree(this.treeList[0])
       })
     },
     // 搜索返回数据点击
-    searchListResult(data, type) {
+    searchListResult (data, type) {
       this.selectType = type
       this.showDep = false
       this.showBreadCrumb = false
@@ -165,14 +165,14 @@ export default {
     },
 
     // 点击全省通讯录搜索人员
-    searchPeopleInfo(data, type) {
+    searchPeopleInfo (data, type) {
       this.personInfoList = data
       this.selectType = type
       this.showBreadCrumb = false
       this.showDep = false
     },
     // 我的搜索返回
-    searchMyBack() {
+    searchMyBack () {
       this.showDep = true
       this.showBreadCrumb = true
       this.getAddressListUnitTree()
@@ -180,7 +180,7 @@ export default {
       this.getAddressListdepartment()
     },
     // 其他单位
-    searchOtherBack() {
+    searchOtherBack () {
       this.showDep = true
       this.showBreadCrumb = true
       this.getAddressListOthertTree()
@@ -188,9 +188,9 @@ export default {
       //  this.handleChildClick()
     },
     /** 点击树节点显示内容 */
-    handleNodeClickTree(node) {
-       console.log('node:',node)
-      this.orgInfo=node
+    handleNodeClickTree (node) {
+      console.log('node:', node)
+      this.orgInfo = node
       this.showDep = true
       this.navigation = []
       // this.navigation.push({ id: node.id, name: node.name ,nodeType:node.nodeType})
@@ -204,13 +204,13 @@ export default {
       }
       this.getAddressListdepartment(node.id)
     },
-    handleChildClick(node) {
-     console.log('node111:',node)
-      this.orgInfo=node
+    handleChildClick (node) {
+      console.log('node111:', node)
+      this.orgInfo = node
       this.selectType = ''
       this.showDep = true
       //  this.navigation.push({ id: node.id, name: node.name ,nodeType:node.nodeType})
-       this.navigation.push(node)
+      this.navigation.push(node)
       if (node.nodeType === 3) {
         this.showDep = false
         this.getAddressListDepartmentMembers(node.bindId)
@@ -218,11 +218,10 @@ export default {
         this.getAddressListOrganizationMembers(node.bindId)
       }
       this.getAddressListdepartment(node.id)
-
     },
 
     /** 单位下内设机构 */
-    getAddressListdepartment(id) {
+    getAddressListdepartment (id) {
       api[urlNames['getAddressListTree']]({
         parentId: id
       }).then(res => {
@@ -231,21 +230,21 @@ export default {
     },
 
     /** 单位下人员 getAddressListOrganizationMembers */
-    getAddressListOrganizationMembers(id) {
-      if(!id){
-        id=this.app.option.user.orgId
+    getAddressListOrganizationMembers (id) {
+      if (!id) {
+        id = this.app.option.user.orgId
       }
       api[urlNames['getAddressListOrganizationMembers']]({
         orgId: id
       }).then(res => {
-        let ary=res.data
+        let ary = res.data
         this.memberList = res.data
-        this.departmentList=[...this.departmentList,...ary]
+        this.departmentList = [...this.departmentList, ...ary]
       })
     },
 
     /** 内设机构下人员getAddressListDepartmentMembers */
-    getAddressListDepartmentMembers(id) {
+    getAddressListDepartmentMembers (id) {
       api[urlNames['getAddressListDepartmentMembers']]({
         deptId: id
       }).then(res => {
@@ -254,9 +253,9 @@ export default {
     },
 
     /** 点击回到当前 */
-    goCurrentNodeDetail(node, index) {
+    goCurrentNodeDetail (node, index) {
       this.showDep = true
-      this.orgInfo=node
+      this.orgInfo = node
       let len = this.navigation.length
       this.navigation.splice(index + 1, len - index + 1)
       this.getAddressListdepartment(node.id)
@@ -265,7 +264,7 @@ export default {
     },
 
     /** 人员搜索 */
-    getAddressListUnitUser() {
+    getAddressListUnitUser () {
       api[urlNames['getAddressListUserByName']]({
         orgId: this.app.option.user.orgId,
         name: this.name
@@ -273,7 +272,7 @@ export default {
 
       })
     },
-    getAddressListOtherUser() {
+    getAddressListOtherUser () {
       api[urlNames['getAddressListUserByName']]({
         name: this.name
       }).then(res => {

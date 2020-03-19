@@ -29,8 +29,8 @@
                   <span>{{scope.row.content}}</span>
                 </div>
                 <p>{{scope.row.creareTime}}</p>
-                <span class="btn"><el-button type='primary' size="mini" 
-                :style="scope.row.hasRead===1?'background-color:#d8d7d7;border-color:#d8d7d7':''" 
+                <span class="btn"><el-button type='primary' size="mini"
+                :style="scope.row.hasRead===1?'background-color:#d8d7d7;border-color:#d8d7d7':''"
                  @click="doFindNotice(scope.row)">{{scope.row.hasRead===1?'已查看':'去查看'}}</el-button></span>
               </div>
             </template>
@@ -56,12 +56,12 @@ export default {
   mixins: [handleTable],
   data () {
     return {
-      tableData:[]
+      tableData: []
     }
   },
-  created(){
+  created () {
     this.getGrid()
-    this.app.breadcrumb=[{name: '通知中心'}]
+    this.app.breadcrumb = [{ name: '通知中心' }]
   },
 
   methods: {
@@ -81,21 +81,21 @@ export default {
         this.page.total = 0
       })
     },
-    doFindNotice(val){
+    doFindNotice (val) {
       if (val.type === 1) {
         // 待我审核  信息确认  我的申请
-         this.$router.push('/wait-approval')
-      } else if(val.type === 2){
-       this.$router.push('/confirm-info')
-      }else if(val.type===3){
+        this.$router.push('/wait-approval')
+      } else if (val.type === 2) {
+        this.$router.push('/confirm-info')
+      } else if (val.type === 3) {
         this.$router.push('/my-application')
       }
-    },
+    }
 
   },
   computed: {
-   ...mapState(['app']),
-  },
+    ...mapState(['app'])
+  }
 }
 
 </script>

@@ -189,7 +189,7 @@ export default {
         nodeType: this.nodeType,
         nodeId: this.contentId
       }
-      console.log('data1：',data)
+      console.log('data1：', data)
       this.mainLeaderList = []
       this.otherLeaderList = []
       this.loading = true
@@ -238,7 +238,7 @@ export default {
       }
       // 保存
       if (JSON.parse(JSON.stringify(data)) !== []) {
-        console.log('nodeInfo:',this.nodeInfo.nodeType)
+        console.log('nodeInfo:', this.nodeInfo.nodeType)
         api[urlNames['createLeader']]({
           nodeId: this.contentId,
           nodeType: this.nodeType,
@@ -314,7 +314,7 @@ export default {
     },
     mainLeaderList: {
       handler (val) {
-       
+
       }
     }
   }
