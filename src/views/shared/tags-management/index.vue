@@ -7,7 +7,7 @@
         <el-option label="内设机构标签" :value="2"></el-option>
         <el-option label="个人标签" :value="3"></el-option>
       </el-select>
-      <el-button type="primary" @click="createTag('',{flag:1,title:'新增'})">新增</el-button>
+      <el-button type="primary" @click="createTag('',{flag:1,title:'新增'})">新增111</el-button>
     </div>
     <div class="tag-panel">
       <el-tree
