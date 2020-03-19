@@ -50,13 +50,13 @@
       </el-table-column>
       <el-table-column prop="act" label="操作" width="100" align="center">
         <template slot-scope="scope">
-          <el-button v-show="scope.row.nodeType === 1" @click.native="openEditNode(scope.row)" type="text" size="small">
+          <el-button v-show="scope.row.nodeType === 1" @click.native="openEditNode(scope.row)" type="text" size="small" class="btnMar">
             修改
           </el-button>
-          <el-button v-show="scope.row.nodeType === 3" @click.native="openDepartmentEdit(scope.row)" type="text" size="small">
+          <el-button v-show="scope.row.nodeType === 3" @click.native="openDepartmentEdit(scope.row)" type="text" size="small" class="btnMar">
             修改
           </el-button>
-          <el-button v-show="scope.row.nodeType === 2" @click.native="openEditUnit(scope.row)" type="text" size="small">
+          <el-button v-show="scope.row.nodeType === 2" @click.native="openEditUnit(scope.row)" type="text" size="small" class="btnMar">
             修改
           </el-button>
           <el-button  @click.native="goSort(scope.row)" type="text" size="small">
