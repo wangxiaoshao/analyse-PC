@@ -241,6 +241,7 @@ export default {
       if (value === '') {
         callback(new Error('请输入新密码'))
       } else {
+        // eslint-disable-next-line no-useless-escape
         let reg = /^(?!([a-zA-Z\d]*|[\d!@#\$%_\.*/]*|[a-zA-Z!@#\$%_\.*/]*)$)[a-zA-Z\d!@#\$%_\.*/]{8,}$/
         reg.test(value) ? callback() : callback(new Error('请按照密码规则填写'))
         if (this.ruleForm.checkPass !== '') {
@@ -379,8 +380,8 @@ export default {
         )
       }
     },
-     // 获取账号列表
-    getAllAccountList(){
+    // 获取账号列表
+    getAllAccountList () {
       api[urlNames['findAllAccountByUid']]({
         userId: this.app.option.user.uid
       }).then(
@@ -504,8 +505,8 @@ export default {
     getPost (val) {
       this.userInfo.identity = val
     },
-    handleClick(tab, event) {
-      this.showAccountsVisible=true
+    handleClick (tab, event) {
+      this.showAccountsVisible = true
     },
 
     /**
@@ -531,9 +532,9 @@ export default {
                 message: status === 0 ? '修改成功' : '修改失败',
                 type: status === 0 ? 'success' : 'error'
               })
-               this.modifiePwdVisible = false
-               window.location.href= '/api/gate/logout'
-                this.$refs[formName].resetFields()
+              this.modifiePwdVisible = false
+              window.location.href = '/api/gate/logout'
+              this.$refs[formName].resetFields()
             },
             () => {}
           )
