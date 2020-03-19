@@ -295,13 +295,29 @@ export default {
     },
     // 创建视图草稿
     createNodeDraft () {
+      let nodeList = []
+
+      this.viewNodeTree.forEach((item, index) => {
+        let syncChild = false
+
+        if (this.viewNodeDraft.id === item.data.id) {
+          syncChild = this.syncChild
+        }
+
+        nodeList.push({
+          id: item.data.id,
+          parentId: -1,
+          sort: index,
+          syncChild
+        })
+      })
+
       if (this.returnViewId === 0) {
         this.returnViewId = ''
       }
       api[urlNames['createNodeDraft']]({
-        syncChild: this.syncChild,
         viewId: this.returnViewId,
-        viewNodeDraft: this.viewNodeDraft
+        viewNodeDraft: nodeList
       }).then((res) => {
         if (res.status === 0) {
           if (res.data !== undefined && res.data === '-1') {
@@ -438,8 +454,21 @@ export default {
       })
     },
     // 草稿拖动排序
-    updateNodeDraft (id, parentId) {
-      api[urlNames['updateNodeDraft']]({
+    updateNodeDraft (id, nodeList) {
+      api[urlNames['createNodeDraft']]({
+        viewId: this.returnViewId,
+        viewNodeDraft: nodeList
+      }).then((res) => {
+        if (res.status === 0) {
+          if (res.data !== undefined && res.data === '-1') {
+            this.$message.info('存在重复的节点')
+          } else {
+            this.$message.success('保存节点成功')
+          }
+          this.findNodeDraftList('-1')
+        }
+      })
+      /* api[urlNames['updateNodeDraft']]({
         id: id,
         parentId: parentId,
         viewId: this.returnViewId
@@ -448,7 +477,7 @@ export default {
           this.findNodeDraftList('-1')
           this.$message.success('调整节点位置成功')
         }
-      })
+      }) */
     },
     // 删除视图草稿 - deleteViewById
     deleteNodeTree (id) {
@@ -475,14 +504,39 @@ export default {
     },
     // 草稿拖动节点位置
     nodeSelectDragEnd (dragNode, lastNode, seat, e) {
+      let nodeList = []
+      let parentId = -1
+
       if (lastNode === null) {
-        this.updateNodeDraft(dragNode.data.id, '-1')
+        this.viewNodeTree.forEach((item, index) => {
+          nodeList.push({
+            id: item.data.id,
+            parentId: parentId,
+            sort: index
+          })
+        })
+
+        nodeList.push({
+          id: dragNode.data.id,
+          parentId: -1,
+          sort: this.viewNodeTree.length
+        })
       } else {
         if (dragNode.data.id === lastNode.data.id) {
           return false
         }
-        this.updateNodeDraft(dragNode.data.id, lastNode.data.id)
+
+        parentId = lastNode.parent.data.id
+        lastNode.parent.childNodes.forEach((item, index) => {
+          nodeList.push({
+            id: item.data.id,
+            parentId: parentId,
+            sort: index
+          })
+        })
       }
+
+      this.updateNodeDraft(dragNode.data.id, nodeList)
     },
     // 单选框选中
     currentchange (node, checked) {
