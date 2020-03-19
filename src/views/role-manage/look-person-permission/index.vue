@@ -1,20 +1,5 @@
 <template>
     <div class="look-person">
-      <el-dialog
-        title="确认删除"
-        :visible.sync="dialogVisible"
-        width="30%">
-        <span>确认删除吗？</span>
-        <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="deleteRoleBindUser">确 定</el-button>
-      </span>
-      </el-dialog>
-<!--      <candidate-dialog-->
-<!--        :seleceDialog="selectDialog"-->
-<!--        @dialogReturnMembersInfo="dialogReturnMembersInfo"-->
-<!--        @closeselectMenmber="closeselectMenmber">-->
-<!--      </candidate-dialog>-->
       <select-members :seleceDialog="selectDialog" @dialogReturnMembersInfo="dialogReturnMembersInfo" @closeselectMenmber="closeselectMenmber"></select-members>
       <div class="button-wrap">
         <el-button type="primary"
@@ -94,8 +79,7 @@ export default {
         isSingleOrgSelect: false, // 是否为单选框  false为多选（默认），true为单选(与isOnlyOrg一起使用，isOnlyOrg为true时内设机构/单位单选)
         isOnlyOrg: false //  是否选内设机构/单位 false为不是只选内设机构，true为只选内设机构
       },
-      userId: [],
-      dialogVisible: false
+      userId: []
     }
   },
   computed: {
@@ -154,7 +138,18 @@ export default {
     },
     getDelete (row) {
       this.userId = row.uid
-      this.dialogVisible = true
+      this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.deleteRoleBindUser()
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
     },
     // 删除角色绑定人员
     deleteRoleBindUser () {
@@ -165,7 +160,6 @@ export default {
         this.$message.success(`删除成功`)
         this.dialogVisible = false
         this.getGrid()
-        console.log(res)
       }, (error) => {
         this.$message.error(`保存失败，请重试`)
       })
