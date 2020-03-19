@@ -296,16 +296,17 @@ export default {
     // 创建视图草稿
     createNodeDraft () {
       let nodeList = []
+      let that = this
 
       this.viewNodeTree.forEach((item, index) => {
         let syncChild = false
 
-        if (this.viewNodeDraft.id === item.data.id) {
-          syncChild = this.syncChild
+        if (that.viewNodeDraft.id === item.id) {
+          syncChild = that.syncChild
         }
 
         nodeList.push({
-          id: item.data.id,
+          id: item.id,
           parentId: -1,
           sort: index,
           syncChild
