@@ -110,17 +110,51 @@
         </div>
       </div>
     </div>
-    <!-- <div class="homeContent">
-      <div class="header-title">数据来源概况</div>
-    </div> -->
+    <el-button type="primary" @click="configDialogVisible = true" class="config-button">配置</el-button>
+
+    <el-dialog title="首页显示项配置"
+                align="left"
+                :fullscreen="false"
+                :visible.sync="configDialogVisible"
+                :close-on-click-modal="false"
+                :close-on-press-escape="false"
+                :show-close="true"
+                width="50">
+      <el-row :gutter="20">
+        <el-col :span="24">
+          <el-table
+            :data="homepageConfig"
+            stripe
+            style="width: 100%">
+            <el-table-column
+              prop="name">
+            </el-table-column>
+            <el-table-column>
+              <template slot-scope="scope">
+                <el-checkbox v-model="scope.row.isChecked"></el-checkbox>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20" :style="{marginTop: '20px'}">
+        <el-col :span="12" :offset="6">
+          <el-button
+            type="primary"
+            @click="saveHomepageConfig" v-show="hasRight('homepageConfig')">保存</el-button>
+          <el-button @click="configDialogVisible = false" :style="{marginLeft: '60px'}">取消</el-button>
+        </el-col>
+      </el-row>
+    </el-dialog>
   </div>
 </template>
 <script>
 import { api, urlNames } from '@src/api'
-import { mapState, mapMutations } from 'vuex'
+import { mapState } from 'vuex'
+import hasRight from '@src/mixins/has-right'
 import dicOption from '@src/mixins/dic-options.js'
 export default {
-  mixins: [dicOption],
+  mixins: [dicOption, hasRight],
   data () {
     return {
       userIdentityInfo: {
@@ -211,8 +245,27 @@ export default {
       loginNumber: 0,
       applyCount: null,
       // 人员变动数
-      changeAccount: null
+      changeAccount: null,
 
+      configDialogVisible: false,
+      homepageConfig: [
+        {
+          name: '基本信息',
+          isChecked: true
+        },
+        {
+          name: '待办事项',
+          isChecked: false
+        },
+        {
+          name: '平台公告',
+          isChecked: true
+        },
+        {
+          name: '昨日数据',
+          isChecked: true
+        }
+      ]
     }
   },
   created () {
@@ -297,7 +350,7 @@ export default {
       this.doAnnouncementList.push(this.announcementList.slice(0, 3), this.announcementList.slice(3))
     },
     filterType (val) {
-      let typeList = this.userTypeOptions.filter(item => item.value == val)
+      let typeList = this.userTypeOptions.filter(item => item.value === val)
       return typeList[0].text
     },
     filterDate () {
@@ -315,7 +368,9 @@ export default {
     },
     goMoreAnnounts () {
       this.$router.push('/moreAnnoument')
-    }
+    },
+    // 保存首页配置
+    saveHomepageConfig () {}
   },
   computed: {
     ...mapState(['app'])
