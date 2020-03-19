@@ -121,7 +121,7 @@
                             <span class="iconfont icondanwei" v-if="data.nodeType === 2"></span>
                             <span class="iconfont iconbumen" v-if="data.nodeType === 3"></span>
                             <span class="label">{{node.label}}</span>
-                            <span @click="deleteNodeTree(data.id)" class="delete-icon fa fa-trash-o"></span>
+                            <span @click="deleteNodeTree(data)" class="delete-icon fa fa-trash-o"></span>
                           </div>
                       </el-tree>
                     </div>
@@ -296,21 +296,12 @@ export default {
     // 创建视图草稿
     createNodeDraft () {
       let nodeList = []
-      let that = this
 
       this.viewNodeTree.forEach((item, index) => {
-        let syncChild = false
+        let tmpObj = JSON.parse(JSON.stringify(item))
 
-        if (that.viewNodeDraft.id === item.id) {
-          syncChild = that.syncChild
-        }
-
-        nodeList.push({
-          id: item.id,
-          parentId: -1,
-          sort: index,
-          syncChild
-        })
+        tmpObj.sort = index
+        nodeList.push(tmpObj)
       })
 
       if (this.returnViewId === 0) {
@@ -318,7 +309,8 @@ export default {
       }
       api[urlNames['createNodeDraft']]({
         viewId: this.returnViewId,
-        viewNodeDraft: nodeList
+        viewNodeDraft: nodeList,
+        syncChild: this.syncChild
       }).then((res) => {
         if (res.status === 0) {
           if (res.data !== undefined && res.data === '-1') {
@@ -481,14 +473,14 @@ export default {
       }) */
     },
     // 删除视图草稿 - deleteViewById
-    deleteNodeTree (id) {
+    deleteNodeTree (node) {
       this.$confirm('是否也要删除该节点以下子节点信息?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
         api[urlNames['deleteViewById']]({
-          id: id,
+          viewNodeDraft: [JSON.parse(JSON.stringify(node))],
           viewId: this.returnViewId
         }).then((res) => {
           if (res.status === 0) {
@@ -510,18 +502,19 @@ export default {
 
       if (lastNode === null) {
         this.viewNodeTree.forEach((item, index) => {
-          nodeList.push({
-            id: item.data.id,
-            parentId: parentId,
-            sort: index
-          })
+          let tmpObj = JSON.parse(JSON.stringify(item))
+
+          tmpObj.parentId = parentId
+          tmpObj.sort = index
+
+          nodeList.push(tmpObj)
         })
 
-        nodeList.push({
-          id: dragNode.data.id,
-          parentId: -1,
-          sort: this.viewNodeTree.length
-        })
+        let tmpObj = JSON.parse(JSON.stringify(dragNode))
+        tmpObj.parentId = -1
+        tmpObj.sort = this.viewNodeTree.length
+
+        nodeList.push(tmpObj)
       } else {
         if (dragNode.data.id === lastNode.data.id) {
           return false
@@ -529,11 +522,12 @@ export default {
 
         parentId = lastNode.parent.data.id
         lastNode.parent.childNodes.forEach((item, index) => {
-          nodeList.push({
-            id: item.data.id,
-            parentId: parentId,
-            sort: index
-          })
+          let tmpObj = JSON.parse(JSON.stringify(item))
+
+          tmpObj.parentId = parentId
+          tmpObj.sort = index
+
+          nodeList.push(tmpObj)
         })
       }
 
