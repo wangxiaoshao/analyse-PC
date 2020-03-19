@@ -112,7 +112,7 @@
                         @click="removeAllSelectedOrg">取消全部
               </el-button>
               <el-checkbox-group v-model="selectedOrgsModel" @change="toggleSelectedOrg">
-                <el-checkbox style="display: block" v-for="org in selectedOrgs" checked :label="org"
+                <el-checkbox style="display: block" v-for="org in selectedOrgs" :label="JSON.stringify(org)"
                             :key="org.id"> {{org.name}}
                 </el-checkbox>
               </el-checkbox-group>
@@ -421,7 +421,7 @@ export default {
     toggleSingleOrg (org) {
       this.selectedOrgsModel = []
       this.selectedOrgs[0] = JSON.parse(this.orgSingleModel)
-      this.selectedOrgsModel.push(JSON.parse(org))
+      this.selectedOrgsModel.push(org)
     },
     toggleSelectedOrg (orgs) {
       this.orgsModel.forEach((org) => {
