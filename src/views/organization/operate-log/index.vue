@@ -112,8 +112,8 @@ export default {
   data () {
     return {
       logList: [],
-      DetialInfoVisible: false,
-      DetialInfo: {
+      detialInfoVisible: false,
+      detialInfo: {
         id: '',
         actionUserName: '',
         actionType: '',
@@ -175,7 +175,7 @@ export default {
         }
       }, (error) => {
       })
-      this.DetialInfoVisible = true
+      this.detialInfoVisible = true
     }
   }
 }
