@@ -100,7 +100,7 @@
                         @click="removeAllSelected">取消全部
               </el-button>
               <el-checkbox-group v-model="selectedMembersModel" @change="toggleSelectedOrg">
-                <el-checkbox style="display: block" v-for="member in selectedMembers" checked :label="JSON.stringify(member)"
+                <el-checkbox style="display: block" v-for="member in selectedMembers" :label="JSON.stringify(member)"
                             :key="member.uid"> {{member.name}}
                 </el-checkbox>
               </el-checkbox-group>
