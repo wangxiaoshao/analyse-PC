@@ -258,6 +258,60 @@
             </el-form-item>
         </el-form>
     </div>
+    <div class="parameter-item">
+      <div class="header">单位信息确认短信模板
+      </div>
+      <el-form class="sms-template">
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-input
+              type="textarea"
+              v-model="orgMsgConfirmSmsTemplate"
+              ></el-input>
+          </el-col>
+          <el-col :span="12">
+            <p>每月单位信息需要确认时发送短信。</p>
+            <br>
+            <p>可用占位符：<span>{单位名称}</span>，<span>{月份}</span>，<span>{单位名称}</span>，<span>{信息确认截止时间}</span></p>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col>
+            <el-form-item>
+                <el-button type="primary" @click="saveOrgMsgConfirmSmsTemplate">保存</el-button>
+                <el-button>取消</el-button>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+    </div>
+    <div class="parameter-item">
+      <div class="header">信息审核通知短信模板
+      </div>
+      <el-form class="sms-template">
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-input
+              type="textarea"
+              v-model="msgAuditSmsTemplate"
+              ></el-input>
+          </el-col>
+          <el-col :span="12">
+            <p>审核管理员有审核事项时，给相关人员发送短信。</p>
+            <br>
+            <p>可用占位符：<span>{单位名称}</span>，<span>{操作人名称}</span>，<span>{修改字段}</span>，<span>{修改时间}</span>。</p>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col>
+            <el-form-item>
+                <el-button type="primary" @click="saveMsgAuditSmsTemplate">保存</el-button>
+                <el-button>取消</el-button>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+    </div>
 </div>
 </template>
 
@@ -626,6 +680,8 @@ export default {
       messageRemind: 0, // 消息提醒, 1提醒，0不提醒
       noRemind: false, // 消息提醒，默认不提醒
       modeAuditList: [],
+      orgMsgConfirmSmsTemplate: '【贵州省电子政务外网组织机构人员数据库及管控平台】{单位名称}{2020年3月}的单位信息需在3月30日前确认，请及时前往确认。http://59.215.232.95/api/gate/forward',
+      msgAuditSmsTemplate: '【贵州省电子政务外网组织机构人员数据库及管控平台】{单位名称}{操作人}于{操作时间}修改了{修改字段}，请尽快前往后台处理。http://59.215.232.95/api/gate/forward',
       orgAuditList: orgAuditList, // 单位审核字段数据
       nodeAuditList: nodeAuditList,
       depAuditList: depAuditList,
@@ -670,6 +726,8 @@ export default {
     }
   },
   methods: {
+    saveOrgMsgConfirmSmsTemplate () {},
+    saveMsgAuditSmsTemplate () {},
     onStartDateChanged (startDate) {
       this.noRemind = false
 
