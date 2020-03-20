@@ -755,6 +755,16 @@ export default {
     },
     onEndDateChanged (endDate) {
       this.noRemind = false
+
+      let that = this
+
+      this.remindStartDateList.forEach((item, index) => {
+        if (item.value > endDate) {
+          that.remindStartDateList[index].disabled = true
+        } else {
+          that.remindStartDateList[index].disabled = false
+        }
+      })
     },
     onNoRemind (isNoRemind) {
       if (isNoRemind) {
