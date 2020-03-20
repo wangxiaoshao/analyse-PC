@@ -162,32 +162,32 @@
     </div>
     <div class="parameter-item">
         <div class="header">信息确认设置</div>
-        <el-form ref="systemMessageRemind" label-width="160px">
-            <el-form-item label="单位信息确认">
-                <el-switch v-model="systemMessageConfirm" @change="showMessageConfirmDialog()" active-text="" inactive-text="">
-                </el-switch>
+        <el-form ref="messageRemind" label-width="160px">
+            <el-form-item label="设置信息确认弹窗提醒">
+              <el-select v-model="remindStartDate" placeholder="选择提醒开始时间" @change="onStartDateChanged" :disabled="startDateDisabled" ref="remindStartDate">
+                <el-option
+                  v-for="item in remindStartDateList"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                  :disabled="item.disabled">
+                </el-option>
+              </el-select>
+              <el-select v-model="remindEndDate" placeholder="选择提醒结束时间" @change="onEndDateChanged" :disabled="endDateDisabled" ref="remindEndDate">
+                <el-option
+                  v-for="item in remindEndDateList"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                  :disabled="item.disabled">
+                </el-option>
+              </el-select>
+              <el-checkbox-button class="button-no-remind" v-model="noRemind" @change="onNoRemind">不提醒</el-checkbox-button>
             </el-form-item>
-            <div v-if="systemMessageConfirm">
-                <el-form-item label="设置信息确认弹窗提醒">
-                    <el-date-picker
-                        v-model="systemRemindTimeRange"
-                        type="daterange"
-                        :editable="false"
-                        :clearable="true"
-                        format="dd号"
-                        min-date="2020-01-01"
-                        max-date="2020-01-31"
-                        start-placeholder="选择提醒开始时间"
-                        end-placeholder="选择提醒结束时间"
-                        @change="noRemind = false">
-                      </el-date-picker>
-                      <el-checkbox-button v-model="noRemind" checked @change="systemRemindTimeRange = []">不提醒</el-checkbox-button>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="systemSubmit(2)">保存</el-button>
-                    <el-button>取消</el-button>
-                </el-form-item>
-            </div>
+            <el-form-item>
+                <el-button type="primary" @click="systemSubmit(2)">保存</el-button>
+                <el-button>取消</el-button>
+            </el-form-item>
         </el-form>
     </div>
     <div class="parameter-item">
@@ -315,35 +315,6 @@
         </el-form>
 
     </div>
-
-    <!-- 单位确认信息对话框 -->
-    <el-dialog :visible.sync="systemMsgConfirmOpenVisible" width="410px" :show-close="false">
-        <div slot="title" style="padding:20px; background-color: #fff;">
-            <span class="msg-title">确认打开单位信息确认</span>
-            <span class="svg-container" style="color:red">
-                <span class="el-icon-document-copy"></span>
-            </span>
-        </div>
-        <div class="msg-box">打开单位信息确认后，从下月起，您的单位信息将需要手动确认。</div>
-        <div slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="onSavesystemMessageConfirm()">确定打开</el-button>
-            <el-button type="default" @click="systemMsgConfirmOpenVisible = false; systemMessageConfirm = !systemMessageConfirm;" width="100px">取 消</el-button>
-        </div>
-    </el-dialog>
-
-    <el-dialog :visible.sync="systemMsgConfirmCloseVisible" width="410px" :show-close="false">
-        <div slot="title" style="padding:20px; background-color: #fff;">
-            <span class="msg-title">确认关闭单位信息确认</span>
-            <span class="svg-container" style="color:red">
-                <span class="el-icon-document-copy"></span>
-            </span>
-        </div>
-        <div class="msg-box">关闭单位信息确认后，从下月起，您的单位信息将不再需要手动确认。</div>
-        <div slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="onSavesystemMessageConfirm()">确定关闭</el-button>
-            <el-button type="default" @click="systemMsgConfirmCloseVisible = false; systemMessageConfirm = !systemMessageConfirm;" width="100px">取 消</el-button>
-        </div>
-    </el-dialog>
   </div>
 </template>
 <script>
@@ -352,6 +323,7 @@ import { mapState, mapMutations } from 'vuex'
 import uploadFile from '@src/mixins/uploadFile.js'
 import hasRight from '@src/mixins/has-right'
 
+const level = 1
 const nodeAuditList = [{
   name: 'id',
   checkname: '结点ID'
@@ -706,12 +678,14 @@ export default {
         favicon: ''
       },
       uploadHost: window.location.host,
-      systemMsgConfirmOpenVisible: false, // 打开单位信息确认对话框
-      systemMsgConfirmCloseVisible: false, // 关闭单位信息确认对话框
-      systemMessageConfirm: true, // 单位信息确认
-      systemMessageRemind: -1, // 消息提醒
-      noRemind: true, // 消息提醒，默认不提醒
-      systemRemindTimeRange: [], // 提醒的时间区间
+      remindStartDate: 1,
+      remindEndDate: 31,
+      remindStartDateList: [],
+      remindEndDateList: [],
+      startDateDisabled: false,
+      endDateDisabled: false,
+      messageRemind: -1, // 消息提醒，-1不提醒，0提醒
+      noRemind: false, // 消息提醒，默认不提醒
       modeAuditList: [],
       orgAuditList: orgAuditList, // 单位审核字段数据
       nodeAuditList: nodeAuditList,
@@ -743,14 +717,56 @@ export default {
     }
   },
   created () {
-    this.getSystemParameterlevel(1)
+    this.getSystemParameterlevel(level)
     this.getSystemNameLogoIon()
+
+    let startDate = 1
+    let endDate = 31
+    for (let i = startDate; i <= endDate; i++) {
+      this.remindStartDateList.push({
+        label: `每月从 ${i} 号开始`,
+        value: i,
+        disabled: false
+      })
+      this.remindEndDateList.push({
+        label: `到每月 ${i} 号结束`,
+        value: i,
+        disabled: false
+      })
+    }
   },
   computed: {
     ...mapState(['app'])
   },
   methods: {
     ...mapMutations(['SET_OPTION']),
+    onStartDateChanged (startDate) {
+      this.noRemind = false
+
+      let that = this
+
+      this.remindEndDateList.forEach((item, index) => {
+        if (item.value < startDate) {
+          that.remindEndDateList[index].disabled = true
+        } else {
+          that.remindEndDateList[index].disabled = false
+        }
+      })
+    },
+    onEndDateChanged (endDate) {
+      this.noRemind = false
+    },
+    onNoRemind (isNoRemind) {
+      if (isNoRemind) {
+        this.startDateDisabled = true
+        this.endDateDisabled = true
+        this.messageRemind = -1
+      } else {
+        this.startDateDisabled = false
+        this.endDateDisabled = false
+        this.messageRemind = 0
+      }
+    },
     getSystemParameterlevel (level) {
       api[urlNames['getSystemParameterlevel']]({
         level: level
@@ -763,7 +779,19 @@ export default {
             this.systemUserSecuritySettings = JSON.parse(item.value)
           }
           if (item.name === 'systemMessageRemind') {
-            this.systemMessageRemind = JSON.parse(item.value)
+            this.remindStartDate = parseInt(JSON.parse(item.value)[0])
+            this.remindEndDate = parseInt(JSON.parse(item.value)[1])
+            this.messageRemind = parseInt(JSON.parse(item.value)[2])
+
+            if (this.messageRemind === -1) {
+              this.startDateDisabled = true
+              this.endDateDisabled = true
+              this.noRemind = true
+            } else {
+              this.startDateDisabled = false
+              this.endDateDisabled = false
+              this.noRemind = false
+            }
           }
           if (item.name === 'userAuditFields') {
             this.systemAuditField.checkedUserAuditList = item.value
@@ -793,25 +821,6 @@ export default {
       this.systemMsgConfirmCloseVisible = false
 
       // 处理“单位确认信息”开关的切换
-    },
-    // 设置提醒的时间区间
-    setRemindRange () {
-      this.$refs.checkNotRemind.checked = false
-      this.remindStartDate = this.systemRemindTimeRange[0].getDate()
-      this.remindEndDate = this.systemRemindTimeRange[1].getDate()
-    },
-    // 取消提醒时间区间
-    unsetRemindRange (isChecked) {
-      if (!isChecked) return
-      this.remindStartDate = -1
-      this.remindEndDate = -1
-    },
-    showMessageConfirmDialog () {
-      if (this.systemMessageConfirm) {
-        this.systemMsgConfirmOpenVisible = true
-      } else {
-        this.systemMsgConfirmCloseVisible = true
-      }
     },
     onSavesystemMessageConfirm () {
       this.systemMsgConfirmOpenVisible = false
@@ -845,7 +854,7 @@ export default {
     // 更新系统名称
     updateSystemName () {
       let list = {
-        level: 1,
+        level: level,
         name: 'systemName',
         value: this.systemNameLogoIcon.systemName
       }
@@ -854,7 +863,7 @@ export default {
     // 更新系统图标
     updateSystemLogo () {
       let list = {
-        level: 1,
+        level: level,
         name: 'systemLogo',
         value: this.systemNameLogoIcon.systemLogo
       }
@@ -863,7 +872,7 @@ export default {
     // 更新favicon图标
     updateSystemFavicon () {
       let list = {
-        level: 1,
+        level: level,
         name: 'favicon',
         value: this.systemNameLogoIcon.favicon
       }
@@ -888,7 +897,7 @@ export default {
     },
     userFormSetSubmit () {
       let list = {
-        level: 1,
+        level: level,
         name: 'userAuditFields',
         value: this.orgFormSet.systemUserSet
       }
@@ -903,7 +912,7 @@ export default {
       // 1通讯录设置
       // 2消息提醒设置
       let list = {
-        level: 1,
+        level: level,
         name: '',
         value: null
       }
@@ -915,7 +924,11 @@ export default {
         list.value = this.systemAddressBookSet
       } else if (flag === 2) {
         list.name = 'systemMessageRemind'
-        list.value = this.systemMessageRemind
+        list.value = [
+          this.remindStartDate,
+          this.remindEndDate,
+          this.messageRemind
+        ]
       } else if (flag === 3) {
         list.name = 'nodeAuditFields'
         list.value = this.systemAuditField.checkedNodeAuditList
