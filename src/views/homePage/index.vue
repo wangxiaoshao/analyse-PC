@@ -1,6 +1,6 @@
 <template>
   <div  class="homePage">
-     <div class="homeContent">
+     <div class="homeContent" v-if="hasRight('viewBasicInformation')">
       <div  class="userInfo">
         <div class="noticeInfo">
           <span class="userImg">
@@ -29,7 +29,7 @@
         </div>
       </div>
     </div>
-     <div class="homeContent">
+     <div class="homeContent" v-if="hasRight('viewCommissionMatters')">
       <div class="header-title">待办事项</div>
       <div  class="notice">
         <div class="noticeInfo" v-for="(itemList,index) in doNoticeList" :key="index">
@@ -44,7 +44,7 @@
              <i class="el-icon-d-arrow-right"></i></a>
       </div>
     </div>
-    <div class="homeContent">
+    <div class="homeContent" v-if="hasRight('viewPlatformAnnouncement')">
       <div class="header-title">平台公告</div>
       <div  class="notice">
         <div class="noticeInfo" v-for="(itemList,index) in doAnnouncementList" :key="index">
@@ -59,7 +59,7 @@
              <i class="el-icon-d-arrow-right"></i></a>
       </div>
     </div>
-    <div class="homeContent">
+    <div class="homeContent" v-if="hasRight('viewYesterdayData')">
       <div class="header-title">昨日数据
         <span style="color:#999;font-size:12px;margin-left:5px">更新于{{dataStr}}</span></div>
       <div class="info-box">
@@ -110,7 +110,7 @@
         </div>
       </div>
     </div>
-    <el-button type="primary" @click="configDialogVisible = true" class="config-button">配置</el-button>
+    <!-- <el-button type="primary" @click="configDialogVisible = true" class="config-button">配置</el-button>
 
     <el-dialog title="首页显示项配置"
                 align="left"
@@ -145,7 +145,7 @@
           <el-button @click="configDialogVisible = false" :style="{marginLeft: '60px'}">取消</el-button>
         </el-col>
       </el-row>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 <script>
@@ -368,9 +368,9 @@ export default {
     },
     goMoreAnnounts () {
       this.$router.push('/moreAnnoument')
-    },
+    }/* ,
     // 保存首页配置
-    saveHomepageConfig () {}
+    saveHomepageConfig () {} */
   },
   computed: {
     ...mapState(['app'])
