@@ -76,10 +76,12 @@ export default {
   methods: {
     // 对菜单进行分类
     sortModuleList (menuList) {
+      let that = this
       let obj = {}
+
       menuList.forEach(item => {
         if (item.authorityId) {
-          this.allAction.push({
+          that.allAction.push({
             id: item.authorityId,
             authorityName: item.authorityName,
             isAuthority: false
@@ -113,6 +115,7 @@ export default {
           }
         }
       })
+      this.menuAuthList = []
       Object.keys(obj).forEach((key) => {
         this.menuAuthList.push(obj[key])
       })
@@ -141,9 +144,11 @@ export default {
 
     // 保存
     saveAuthorityManage () {
+      let that = this
+
       this.allAction.forEach(item => {
-        for (let i = 0; i < this.checkboxtSelect.length; i++) {
-          if (item.authorityName === this.checkboxtSelect[i]) {
+        for (let i = 0; i < that.defaultSelect.length; i++) {
+          if (item.authorityName === that.defaultSelect[i]) {
             item.isAuthority = true
             break
           }
@@ -159,6 +164,7 @@ export default {
           this.allAction = []
           this.sortModuleList(this.menuList)
           this.getGlobalInfo()
+          this.getActionList()
         }
       })
     },

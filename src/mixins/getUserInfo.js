@@ -9,15 +9,13 @@ export default {
   },
   methods: {
     getGlobalInfo () {
-      let options
       api[urlNames['option']]().then((res) => {
         if (res.status === 0) {
-          options = res.data
+          this.$store.commit('SET_OPTION', res.data || {})
         } else {
           alert(res.message)
         }
       })
-      this.$store.commit('SET_OPTION', options || {})
     }
   }
 }
