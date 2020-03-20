@@ -623,7 +623,7 @@ export default {
       remindEndDateList: [],
       startDateDisabled: false,
       endDateDisabled: false,
-      messageRemind: -1, // 消息提醒
+      messageRemind: 0, // 消息提醒, 1提醒，0不提醒
       noRemind: false, // 消息提醒，默认不提醒
       modeAuditList: [],
       orgAuditList: orgAuditList, // 单位审核字段数据
@@ -690,11 +690,11 @@ export default {
       if (isNoRemind) {
         this.startDateDisabled = true
         this.endDateDisabled = true
-        this.messageRemind = -1
+        this.messageRemind = 0
       } else {
         this.startDateDisabled = false
         this.endDateDisabled = false
-        this.messageRemind = 0
+        this.messageRemind = 1
       }
     },
     getSystemParameterlevel (level) {
@@ -713,7 +713,7 @@ export default {
             this.remindEndDate = parseInt(JSON.parse(item.value)[1])
             this.messageRemind = parseInt(JSON.parse(item.value)[2])
 
-            if (this.messageRemind === -1) {
+            if (this.messageRemind === 0) {
               this.startDateDisabled = true
               this.endDateDisabled = true
               this.noRemind = true
