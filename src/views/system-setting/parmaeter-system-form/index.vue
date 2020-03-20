@@ -265,7 +265,7 @@
       <el-form class="sms-template">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-input type="textarea" v-model="verifycodeTemplate"></el-input>
+            <el-input type="textarea" v-model="SMSVerificationCodeTemplate"></el-input>
           </el-col>
           <el-col :span="12">
             <p>审核管理员有审核事项时，给相关人员发送短信。</p>
@@ -276,7 +276,7 @@
         <el-row :gutter="20">
           <el-col>
             <el-form-item>
-                <el-button type="primary" @click="saveVerifycodeTemplate">保存</el-button>
+                <el-button type="primary" @click="saveSMSVerificationCodeTemplate">保存</el-button>
                 <el-button>取消</el-button>
             </el-form-item>
           </el-col>
@@ -303,7 +303,7 @@
         <el-row :gutter="20">
           <el-col>
             <el-form-item>
-                <el-button type="primary" @click="saveResetPasswordTemplate">保存</el-button>
+                <el-button type="primary" @click="saveresetPasswordTemplate">保存</el-button>
                 <el-button>取消</el-button>
             </el-form-item>
           </el-col>
@@ -737,7 +737,7 @@ export default {
       endDateDisabled: false,
       messageRemind: 0, // 消息提醒，0不提醒，1提醒
       noRemind: false, // 消息提醒，默认不提醒
-      verifycodeTemplate: '【贵州省电子政务外网组织机构人员数据库及管控平台】验证码：{验证码}，有效期3分钟。',
+      SMSVerificationCodeTemplate: '【贵州省电子政务外网组织机构人员数据库及管控平台】验证码：{验证码}，有效期3分钟。',
       resetPasswordTemplate: '【贵州省电子政务外网组织机构人员数据库及管控平台】您于3月17日通过本人重置密码，新密码：{验证码}，请妥善保管。',
       modeAuditList: [],
       orgAuditList: orgAuditList, // 单位审核字段数据
@@ -793,8 +793,20 @@ export default {
   },
   methods: {
     ...mapMutations(['SET_OPTION']),
-    saveVerifycodeTemplate () {},
-    saveResetPasswordTemplate () {},
+    saveSMSVerificationCodeTemplate () {
+      this.setClientOptions({
+        level: level,
+        name: 'SMSVerificationCodeTemplate',
+        value: this.SMSVerificationCodeTemplate
+      })
+    },
+    saveresetPasswordTemplate () {
+      this.setClientOptions({
+        level: level,
+        name: 'SMSVerificationCodeTemplate',
+        value: this.SMSVerificationCodeTemplate
+      })
+    },
     onStartDateChanged (startDate) {
       this.noRemind = false
 
@@ -842,6 +854,12 @@ export default {
           }
           if (item.name === 'systemUserSecuritySettings') {
             this.systemUserSecuritySettings = JSON.parse(item.value)
+          }
+          if (item.name === 'SMSVerificationCodeTemplate') {
+            this.SMSVerificationCodeTemplate = item.value
+          }
+          if (item.name === 'resetPasswordTemplate') {
+            this.resetPasswordTemplate = item.value
           }
           if (item.name === 'systemMessageRemind') {
             this.remindStartDate = parseInt(JSON.parse(item.value)[0])

@@ -266,7 +266,7 @@
           <el-col :span="12">
             <el-input
               type="textarea"
-              v-model="orgMsgConfirmSmsTemplate"
+              v-model="orgMessageRemindTemplate"
               ></el-input>
           </el-col>
           <el-col :span="12">
@@ -278,7 +278,7 @@
         <el-row :gutter="20">
           <el-col>
             <el-form-item>
-                <el-button type="primary" @click="saveOrgMsgConfirmSmsTemplate">保存</el-button>
+                <el-button type="primary" @click="saveorgMessageRemindTemplate">保存</el-button>
                 <el-button>取消</el-button>
             </el-form-item>
           </el-col>
@@ -293,7 +293,7 @@
           <el-col :span="12">
             <el-input
               type="textarea"
-              v-model="msgAuditSmsTemplate"
+              v-model="informationAuditTemplate"
               ></el-input>
           </el-col>
           <el-col :span="12">
@@ -305,7 +305,7 @@
         <el-row :gutter="20">
           <el-col>
             <el-form-item>
-                <el-button type="primary" @click="saveMsgAuditSmsTemplate">保存</el-button>
+                <el-button type="primary" @click="saveinformationAuditTemplate">保存</el-button>
                 <el-button>取消</el-button>
             </el-form-item>
           </el-col>
@@ -680,8 +680,8 @@ export default {
       messageRemind: 0, // 消息提醒, 1提醒，0不提醒
       noRemind: false, // 消息提醒，默认不提醒
       modeAuditList: [],
-      orgMsgConfirmSmsTemplate: '【贵州省电子政务外网组织机构人员数据库及管控平台】{单位名称}{2020年3月}的单位信息需在3月30日前确认，请及时前往确认。http://59.215.232.95/api/gate/forward',
-      msgAuditSmsTemplate: '【贵州省电子政务外网组织机构人员数据库及管控平台】{单位名称}{操作人}于{操作时间}修改了{修改字段}，请尽快前往后台处理。http://59.215.232.95/api/gate/forward',
+      orgMessageRemindTemplate: '【贵州省电子政务外网组织机构人员数据库及管控平台】{单位名称}{2020年3月}的单位信息需在3月30日前确认，请及时前往确认。http://59.215.232.95/api/gate/forward',
+      informationAuditTemplate: '【贵州省电子政务外网组织机构人员数据库及管控平台】{单位名称}{操作人}于{操作时间}修改了{修改字段}，请尽快前往后台处理。http://59.215.232.95/api/gate/forward',
       orgAuditList: orgAuditList, // 单位审核字段数据
       nodeAuditList: nodeAuditList,
       depAuditList: depAuditList,
@@ -726,8 +726,20 @@ export default {
     }
   },
   methods: {
-    saveOrgMsgConfirmSmsTemplate () {},
-    saveMsgAuditSmsTemplate () {},
+    saveorgMessageRemindTemplate () {
+      this.setClientOptions({
+        level: level,
+        name: 'orgMessageRemindTemplate',
+        value: this.orgMessageRemindTemplate
+      })
+    },
+    saveinformationAuditTemplate () {
+      this.setClientOptions({
+        level: level,
+        name: 'informationAuditTemplate',
+        value: this.informationAuditTemplate
+      })
+    },
     onStartDateChanged (startDate) {
       this.noRemind = false
 
@@ -775,6 +787,12 @@ export default {
           }
           if (item.name === 'orgUserSecuritySettings') {
             this.orgUserSecuritySettings = JSON.parse(item.value)
+          }
+          if (item.name === 'orgMessageRemindTemplate') {
+            this.orgMessageRemindTemplate = JSON.parse(item.value)
+          }
+          if (item.name === 'informationAuditTemplate') {
+            this.informationAuditTemplate = JSON.parse(item.value)
           }
           if (item.name === 'systemMessageRemind') {
             this.remindStartDate = parseInt(JSON.parse(item.value)[0])
