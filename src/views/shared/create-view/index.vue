@@ -321,9 +321,7 @@ export default {
     getViewTime () {
       api[urlNames['getViewTime']]({
         viewId: this.returnViewId,
-        parentId: -1,
-        page: 1,
-        limit: 1,
+        parentId: -1
       }).then((res) => {
         if (res.status === 0) {
           this.viewLastUpdatedTime = res.data.lastUpdateTime
