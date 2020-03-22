@@ -6,6 +6,8 @@
                    @click="openselectMenmber"
                    :disabled="!hasRight('roleAddMember')">添加人员</el-button>
         <el-button @click="goPermission" :disabled="!hasRight('roleSetAuthority')">权限配置</el-button>
+         <el-input  placeholder="请输入搜索关键词" v-model="searchName" prefix-icon="el-icon-search" style="width:200px;margin:0px 10px"></el-input>
+        <el-button class="creat-btn" @click="findBySearchName">查询</el-button>
       </div>
       <!--表格-->
       <el-table v-loading="loading" :data="list" :max-height="tableMaxHeight" border style="width: 100%">
@@ -70,6 +72,7 @@ export default {
       loading: false,
       setFlag: false,
       roleId: this.$route.params.id,
+      searchName:'',
       selectDialog: {
         selectMenmberTitle: '添加管理员', // 选人组件标题
         selectMenmberFlag: false, // 显示弹窗，
@@ -129,6 +132,19 @@ export default {
         this.loading = false
         this.list = res.data
         this.permissionId = res.roleId
+        this.page.total = res.total
+      }, () => {
+      })
+    },
+    findBySearchName(){
+      let data = {
+        searchName:this.searchName,
+        page: this.page.current,
+        limit: this.page.limit
+      }
+      api[urlNames['searchRoleBindUserList']](data).then((res) => {
+        this.loading = false
+        this.list = res.data
         this.page.total = res.total
       }, () => {
         this.loading = false

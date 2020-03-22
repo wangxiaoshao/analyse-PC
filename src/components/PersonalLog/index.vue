@@ -2,44 +2,64 @@
 <template>
   <div class="personal-log">
     <div class="log-header">
-      <el-row>
-        <el-col :span="4">
-          <div class="block">
-            <el-select
-              v-model="selectValue"
-              slot="prepend"
+      <el-form inline>
+         <el-form-item>
+            <span class="title">时间</span>
+             <el-select
+              v-model="logParam.selectValue"
               align="center"
               placeholder="今天"
-              @change="selectChange(selectValue)"
+              @change="selectChange(logParam.selectValue)"
             >
               <el-option label="今天" :value="['today']"></el-option>
               <el-option label="昨天" :value="['yesterday']"></el-option>
               <el-option label="月" :value="['month', '月', 'yyyy-MM']"></el-option>
               <el-option label="选择日期" :value="['date', '日期', 'yyyy-MM-dd']"></el-option>
-            </el-select>
+            </el-select> 
+        </el-form-item>
+         <el-form-item>
+            <div v-if="openPicker">
+              <el-date-picker
+                slot="append"
+                v-model="currentDateVal"
+                :type="logParam.dateType"
+                :default-value="weekstart"
+                :format="format"
+                :value-format="format"
+                :placeholder="'选择'+value"
+                :picker-options="pickerOptions"
+                @change="dateChange"
+              ></el-date-picker>
           </div>
-        </el-col>
-        <el-col :span="6" :style="{width: '220px'}">
-          <div class="block" v-if="openPicker">
-            <el-date-picker
-              slot="append"
-              v-model="currentDateVal"
-              :type="dateType"
-              :default-value="weekstart"
-              :format="format"
-              :value-format="format"
-              :placeholder="'选择'+value"
-              :picker-options="pickerOptions"
-              @change="dateChange"
-            ></el-date-picker>
-          </div>
-          <div v-else>
+           <div v-else>
             <el-input v-model="inputValue" :placeholder="date" :disabled="true">
               <i slot="prefix" class="el-input__icon el-icon-date"></i>
             </el-input>
           </div>
-        </el-col>
-      </el-row>
+         </el-form-item>
+         <el-form-item v-if="showFindBtn">
+             <span class="title">分类  </span>
+                <el-select size='medium'
+                  placeholder="请选择日志类型"
+                  @change="logChange"
+                  v-model="logParam.actionType"
+                >
+                <el-option
+                  v-for="item in logList"
+                  :key="item.type"
+                  :label="item.text"
+                  :value="item.type"
+                ></el-option>
+              </el-select>
+         </el-form-item>
+          <el-form-item v-if="showFindBtn">
+           <span class="title">关键词 </span>
+            <el-input  placeholder="请输入搜索关键词" v-model="logParam.name" @blur="iptChange" prefix-icon="el-icon-search" style="width:160px"></el-input>
+          </el-form-item>
+          <el-form-item v-if="showFindBtn">
+           <el-button type="primary" @click="findCondition">查询</el-button>
+          </el-form-item>
+      </el-form>
     </div>
     <div class="log-table">
       <el-table :data="tableData" stripe border align="center" style="width: 100%">
@@ -141,11 +161,54 @@ import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
 export default {
   mixins: [handleTable],
-  props: ['loginLog'],
+  props: ['loginLog','showFindBtn'],
   data () {
+    let logAry=[
+      {type:1,text:'登录日志'},
+      {type:20,text:'创建用户'},
+      {type:21,text:'更新用户'},
+      {type:22,text:'删除用户'},
+      {type:23,text:'添加用户身份'},
+      {type:24,text:'修改身份'},
+      {type:25,text:'删除身份'},
+      {type:26,text:'创建用户扩展属性'},
+      {type:27,text:'修改用户扩展属性'},
+      {type:28,text:'创建用户调出'},
+      {type:29,text:'创建用户账号'},
+      {type:30,text:'修改用户账号'},
+      {type:31,text:'修改用户密码'},
+      {type:32,text:'创建用户标签'},
+      {type:40,text:'创建部门'},
+      {type:41,text:'修改部门'},
+      {type:42,text:'删除部门'},
+      {type:43,text:'创建部门标签'},
+      {type:50,text:'创建单位'},
+      {type:51,text:'修改单位'},
+      {type:52,text:'删除单位'},
+      {type:53,text:'创建单位领导'},
+      {type:54,text:'创建单位标签'},
+      {type:55,text:'创建单位区域'},
+      {type:56,text:'删除单位区域'},
+      {type:60,text:'创建视图'},
+      {type:61,text:'修改视图'},
+      {type:62,text:' 创建视图草稿'},
+      {type:63,text:' 删除视图草稿'},
+      {type:64,text:'修改视图草稿'},
+      {type:70,text:'创建视图节点'},
+      {type:71,text:' 删除视图节点'},
+      {type:72,text:'修改视图节点'},
+      {type:73,text:'添加部门节点'},
+      {type:74,text:' 添加单位节点'},
+      {type:80,text:'添加角色'},
+      {type:81,text:'修改角色'},
+      {type:82,text:'删除角色'},
+      {type:83,text:'添加角色权限'},
+      {type:84,text:'添加角色成员'}
+    ]
     return {
       tableData: [],
       detialInfoVisible: false,
+      logList:logAry,
       detialInfoForm: {
         actionDepartmentId: '',
         actionOrgId: '',
@@ -184,11 +247,16 @@ export default {
       newsList: [],
       currentDateVal: '',
       openPicker: false,
-      selectValue: '',
       date: '',
       inputValue: '',
-      dateType: '',
       format: '',
+      logParam:{
+        selectValue:'',
+        dateType:'',
+        actionType:'',
+        name:''
+      },
+
       pickerOptions: {
         disabledDate (time) {
           return time.getTime() > Date.now() - 8.64e6
@@ -230,13 +298,13 @@ export default {
       let todayDate = new Date()
       if (val && val.length > 1) {
         this.openPicker = true
-        this.dateType = val[0]
+        this.logParam.dateType = val[0]
         this.value = val[1]
         this.format = val[2]
         return false
       } else if (val[0] === 'yesterday') {
         todayDate = new Date(todayDate.setDate(todayDate.getDate() - 1))
-        this.dateType = val[0]
+        this.logParam.dateType = val[0]
       }
       this.date = this.$options.filters['date'](
         todayDate.getTime(),
@@ -252,10 +320,25 @@ export default {
         this.getGrid()
       }
     },
+    logChange(val){
+      this.logParam.actionType=val
+       this.getGrid()
+    },
+    iptChange(){
+      if(this.logParam.name!==''){
+         this.getGrid()
+      }
+    },
+    getLoggerTypeList(){
+       api[urlNames['findLoggerTypeList']]().then(
+        res => {
+         this.logList=res.data
+        })
+    },
     getGrid () {
       let data = {
         date: this.date,
-        type: this.dateType === 'month' ? 4 : 0, // 后端需要传输的数据类型 月份type：4 || 天：0
+        type: this.logParam.dateType === 'month' ? 4 : 0, // 后端需要传输的数据类型 月份type：4 || 天：0
         page: this.page.current,
         limit: this.page.limit
       }
@@ -264,6 +347,8 @@ export default {
         logUrl = 'getDataLogList'
       } else if (this.loginLog === 2) {
         logUrl = 'getDataLogList'
+        data.actionType=this.logParam.actionType
+        data.name=this.logParam.name
       } else if (this.loginLog === 3) {
         logUrl = 'findLoggerApiAccessList'
       } else {
@@ -307,6 +392,9 @@ export default {
           () => {}
         )
       }
+    },
+    findCondition(){
+      this.getGrid()
     }
   }
 }

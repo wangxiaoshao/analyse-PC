@@ -44,6 +44,8 @@ export default {
   getParameter: 'getParameter',
   // 操作日志
   getDataLogList: 'getDataLogList',
+  // 日志类型
+  findLoggerTypeList: 'findLoggerTypeList',
   /**
    * 系统日志
    */
@@ -189,6 +191,8 @@ export default {
   dicList: 'dicList',
   findRoleList: 'findRoleList',
   getRoleBindUserList: 'getRoleBindUserList',
+  // 角色权人员查询
+  searchRoleBindUserList: 'searchRoleBindUserList',
   saveRoleBindUser: 'saveRoleBindUser',
   findAuthorityManageList: 'findAuthorityManageList', // 权限配置列表
   findUserAccountByUid: 'findUserAccountByUid',

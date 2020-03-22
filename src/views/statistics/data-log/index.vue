@@ -2,14 +2,11 @@
   <div class="data-log">
     <div class="all-log">
       <el-tabs v-model="activeName" @tab-click="handleClick">
-        <!-- <el-tab-pane label="登录日志">
-          <personal-log :loginLog='logAry[0]'></personal-log>
-        </el-tab-pane> -->
         <el-tab-pane label="操作日志" name="first">
-          <personal-log :loginLog="logAry[1]"></personal-log>
+          <personal-log :loginLog="logAry[1]" :showFindBtn='showFindBtn'></personal-log>
         </el-tab-pane>
-        <el-tab-pane label="系统日志">
-          <personal-log :loginLog="logAry[2]"></personal-log>
+        <el-tab-pane label="系统日志" name="seccend">
+          <personal-log :loginLog="logAry[2]" :showFindBtn='showFindBtn'></personal-log>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -32,6 +29,7 @@ export default {
         keyword: ''
       },
       logAry: [1, 2, 3],
+      showFindBtn:true,
       systemData: [],
       weekstart: '',
       activeName: 'first',
@@ -127,7 +125,11 @@ export default {
       )
     },
     handleClick (tab, event) {
-      // console.log(tab, event)
+      if(this.activeName=='first'){
+        this.showFindBtn=true
+      }else{
+        this.showFindBtn=false
+      }
     }
   }
 }

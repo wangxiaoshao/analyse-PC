@@ -9,13 +9,16 @@
     ></add-tags>
     <!--人员管理-->
     <el-form
-      :model="userDetail"
+     :model='{
+           ...userDetail,
+          ...postDetail
+        } '
       :disabled="disabledFlag"
       ref="userDetail"
       label-width="100px"
       class="demo-personFrom"
       style="width: 100%"
-      :rules="rules"
+      :rules="rulesOption"
     >
       <el-row class="row-item">
         <el-col :span="12" styl="position: relative">
@@ -56,13 +59,9 @@
               </div>
 
             </el-popover>
-            <div v-if="msgVisiable">
-              <!-- && userDetail.name !== oldUserInfo.user.name -->
-              <div
-                class="tip-msg"
-                v-show="this.app.option.options.userAuditFields.indexOf('name') > -1 "
-              >添加或修改该字段需要提交审核</div>
-            </div>
+            <div class="el-form-item__error" v-if="this.app.option.options.userAuditFields.indexOf('name') > -1 &&          userDetail.name!==''">
+               {{iptMsgInfoStr}}
+              </div>
           </el-form-item>
           <el-form-item label="职务" prop="dutyName">
             <el-input placeholder="请输入职务" v-model="postDetail.dutyName" @focus="showdutyNameList"></el-input>
@@ -83,52 +82,33 @@
                 </el-checkbox-group>
               </div>
             </el-popover>
-            <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
-              <!-- && postDetail.dutyName !== oldUserInfo.identity.dutyName -->
-              <div
-                class="tip-msg"
-                style="right: 0"
-                v-show="this.app.option.options.userAuditFields.indexOf('dutyName') > -1"
-              >添加或修改该字段需要提交审核</div>
+            <div class="el-form-item__error" v-if="this.app.option.options.userAuditFields.indexOf('dutyName') > -1 &&       postDetail.dutyName!==''">
+              {{iptMsgInfoStr}}
             </div>
           </el-form-item>
           <el-form-item label="身份证号" prop="idcard">
             <el-input placeholder="请输入内容" :disabled="isDefaultFlag" v-model="userDetail.idcard">
               <el-button slot="append" v-if="!disabledFlag" type="success" class="form-btn1">点击实名认证</el-button>
             </el-input>
-            <span style="font-size: 12px;position: relative;top:-7px;color: #8c939d;">如果不录入不影响新帐号创建</span>
-            <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
-              <div
-                class="tip-msg"
-                v-show="this.app.option.options.userAuditFields.indexOf('idcard') > -1 && userDetail.idcard !== oldUserInfo.user.idcard"
-              >添加或修改该字段需要提交审核</div>
+            <div class="el-form-item__error" v-if="this.app.option.options.userAuditFields.indexOf('idcard') > -1 &&       userDetail.idcard!==''">
+              {{iptMsgInfoStr}}
             </div>
+            <span style="font-size: 12px;position: relative;top:-7px;color: #8c939d;">如果不录入不影响新帐号创建</span>
           </el-form-item>
-          <el-form-item label="人员ID" prop="uid"  v-if="this.$route.name === 'QueryPersonDetail'">
+          <el-form-item label="人员ID" prop="uid" :disabled='true' v-if="this.$route.name === 'QueryPersonDetail'">
             <el-input :placeholder="userDetail.uid" :disabled="isDefaultFlag" v-model="userDetail.uid">
             </el-input>
-            <div
-              class="tip-msg"
-              v-show="this.app.option.options.userAuditFields.indexOf('uid') > -1 && userDetail.uid !== oldUserInfo.user.uid"
-            >添加或修改该字段需要提交审核</div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="手机号" prop="mobile">
             <el-input placeholder="请输入手机号" :disabled="isDefaultFlag" v-model="userDetail.mobile"></el-input>
-            <div v-if="msgVisiable">
-              <!-- && userDetail.mobile !== oldUserInfo.user.mobile -->
-              <div
-                class="tip-msg"
-                v-show="this.app.option.options.userAuditFields.indexOf('mobile') > -1 "
-              >添加或修改该字段需要提交审核</div>
+               <div class="el-form-item__error" v-if="this.app.option.options.userAuditFields.indexOf('mobile') > -1 &&  userDetail.mobile!==''">
+              {{iptMsgInfoStr}}
             </div>
           </el-form-item>
-          <el-form-item
-            label="身份类型"
-            :rules="[{ required: true, message: '请选择身份类型'}]"
-          >
-            <el-select
+          <el-form-item label="身份类型" prop="type" required>
+            <el-select 
               placeholder="请选择身份类型"
               v-model="postDetail.type"
               @change="getIdentityType"
@@ -140,23 +120,17 @@
                 :value="item.value"
               ></el-option>
             </el-select>
-            <div v-if="msgVisiable">
-              <div
-                class="tip-msg"
-                v-show="this.app.option.options.userAuditFields.indexOf('type') > -1"
-              >添加或修改该字段需要提交审核</div>
-            </div>
+            <div class="el-form-item__error" v-if="this.app.option.options.userAuditFields.indexOf('type') > -1 && postDetail.type!==''">
+               {{iptMsgInfoStr}}
+              </div>
           </el-form-item>
-          <el-form-item label="所属单位" v-if="showexportIdentityType">
+          <el-form-item label="所属单位" v-if="showexportIdentityType" prop="orgName">
             <el-input placeholder="所属单位" v-model="orgName">
               <el-button type="primary" slot="append" class="form-btn1" @click="exportOrg" :disabled="!hasRight('personUserIdTransfe')">调出</el-button>
             </el-input>
-            <div v-if="msgVisiable">
-              <div
-                class="tip-msg"
-                v-show="this.app.option.options.userAuditFields.indexOf('orgName') > -1 "
-              >添加或修改该字段需要提交审核</div>
-            </div>
+            <div class="el-form-item__error" v-if="this.app.option.options.userAuditFields.indexOf('orgName') > -1 && orgName!==''">
+               {{iptMsgInfoStr}}
+              </div>
           </el-form-item>
         </el-col>
       </el-row>
@@ -190,12 +164,9 @@
                   :disabled="isDefaultFlag"
                   v-model="userDetail.mobile2"
                 ></el-input>
-                <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
-                  <div
-                    class="tip-msg"
-                    v-show="this.app.option.options.userAuditFields.indexOf('mobile2') > -1 && userDetail.mobile2 !== oldUserInfo.user.mobile2"
-                  >添加或修改该字段需要提交审核</div>
-                </div>
+                 <div class="el-form-item__error" v-if="this.app.option.options.userAuditFields.indexOf('mobile2') > -1 && userDetail.mobile2!==''">
+                    {{iptMsgInfoStr}}
+                    </div>
               </el-form-item>
               <el-form-item label="民族" prop="nation">
                 <el-select
@@ -211,12 +182,9 @@
                     :value="item.value"
                   ></el-option>
                 </el-select>
-                <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
-                  <div
-                    class="tip-msg"
-                    v-show="this.app.option.options.userAuditFields.indexOf('nation') > -1 && userDetail.nation !== oldUserInfo.user.nation"
-                  >添加或修改该字段需要提交审核</div>
-                </div>
+                 <div class="el-form-item__error" v-if="this.app.option.options.userAuditFields.indexOf('nation') > -1 && userDetail.nation!==''">
+                    {{iptMsgInfoStr}}
+                    </div>            
               </el-form-item>
               <el-form-item label="性别" prop="sex">
                 <el-select
@@ -232,12 +200,9 @@
                     :value="item.value"
                   ></el-option>
                 </el-select>
-                <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
-                  <div
-                    class="tip-msg"
-                    v-show="this.app.option.options.userAuditFields.indexOf('sex') > -1 && userDetail.sex !== oldUserInfo.user.sex"
-                  >添加或修改该字段需要提交审核</div>
-                </div>
+               <div class="el-form-item__error" v-if="this.app.option.options.userAuditFields.indexOf('sex') > -1 && userDetail.sex!==''">
+                    {{iptMsgInfoStr}}
+                    </div> 
               </el-form-item>
               <el-form-item label="所属党派" prop="politicalParty">
                 <el-select
@@ -253,12 +218,6 @@
                     :value="item.value"
                   ></el-option>
                 </el-select>
-                <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
-                  <div
-                    class="tip-msg"
-                    v-show="this.app.option.options.userAuditFields.indexOf('politicalParty') > -1 && userDetail.politicalParty !== oldUserInfo.user.politicalParty"
-                  >添加或修改该字段需要提交审核</div>
-                </div>
               </el-form-item>
               <el-form-item label="人员类型" prop="userAccount">
                 <el-select
@@ -273,12 +232,6 @@
                     :value="item.value"
                   ></el-option>
                 </el-select>
-                <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
-                  <div
-                    class="tip-msg"
-                    v-show="this.app.option.options.userAuditFields.indexOf('userType') > -1 && userDetail.userType !== oldUserInfo.user.userType "
-                  >添加或修改该字段需要提交审核</div>
-                </div>
               </el-form-item>
               <el-form-item label=" 办公电话" prop="officePhone">
                 <el-input
@@ -286,12 +239,9 @@
                   :disabled="isDefaultFlag"
                   v-model="userDetail.officePhone"
                 ></el-input>
-                <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
-                  <div
-                    class="tip-msg"
-                    v-show="this.app.option.options.userAuditFields.indexOf('officePhone') > -1 && userDetail.officePhone !== oldUserInfo.user.officePhone"
-                  >添加或修改该字段需要提交审核</div>
-                </div>
+                <div class="el-form-item__error" v-if="this.app.option.options.userAuditFields.indexOf('officePhone') > -1 && userDetail.officePhone!==''">
+                    {{iptMsgInfoStr}}
+                    </div> 
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -309,12 +259,6 @@
                     :value="item.value"
                   ></el-option>
                 </el-select>
-                <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
-                  <div
-                    class="tip-msg"
-                    v-show="this.app.option.options.userAuditFields.indexOf('qualification') > -1 && userDetail.qualification !== oldUserInfo.user.qualification"
-                  >添加或修改该字段需要提交审核</div>
-                </div>
               </el-form-item>
               <el-form-item label="职级" prop="positionClass">
                 <el-select
@@ -330,12 +274,6 @@
                     :value="item.value"
                   ></el-option>
                 </el-select>
-                <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
-                  <div
-                    class="tip-msg"
-                    v-show="this.app.option.options.userAuditFields.indexOf('positionClass') > -1 && userDetail.positionClass !== oldUserInfo.user.positionClass"
-                  >添加或修改该字段需要提交审核</div>
-                </div>
               </el-form-item>
               <el-form-item label=" 人员状态" prop="userState">
                 <el-select
@@ -351,24 +289,18 @@
                     :value="item.value"
                   ></el-option>
                 </el-select>
-                <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
-                  <div
-                    class="tip-msg"
-                    v-show="this.app.option.options.userAuditFields.indexOf('userState') > -1 && userDetail.userState !== oldUserInfo.user.userState"
-                  >添加或修改该字段需要提交审核</div>
-                </div>
               </el-form-item>
-              <el-form-item label=" 岗位" prop="postName">
+              <el-form-item label=" 岗位">
                 <el-input placeholder="请输入岗位" v-model="postDetail.postName"></el-input>
-                <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
-                  <div
-                    class="tip-msg"
-                    v-show="this.app.option.options.userAuditFields.indexOf('postName') > -1 && postDetail.postName !== oldUserInfo.identity.postName"
-                  >添加或修改该字段需要提交审核</div>
-                </div>
+                 <div class="el-form-item__error" v-if="this.app.option.options.userAuditFields.indexOf('postName') > -1 && postDetail.postName!==''">
+                    {{iptMsgInfoStr}}
+                    </div> 
               </el-form-item>
-               <el-form-item label="通讯地址" prop="address">
+               <el-form-item label="通讯地址">
                 <el-input placeholder="请输入通讯地址" v-model="userDetail.address"></el-input>
+                  <div class="el-form-item__error" v-if="this.app.option.options.userAuditFields.indexOf('address') > -1 && userDetail.address!==''">
+                    {{iptMsgInfoStr}}
+                    </div>
               </el-form-item>
             </el-col>
           </el-row>
@@ -389,7 +321,7 @@
               <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
                 <div
                   class="tip-msg"
-                  v-show="this.app.option.options.userAuditFields.indexOf('labelId') > -1 && sendLabelId !== oldUserInfo.labelId"
+                  v-show="this.app.option.options.userAuditFields.indexOf('labelId') > -1"
                 >添加或修改该字段需要提交审核</div>
               </div>
             </el-form-item>
@@ -398,23 +330,11 @@
             <el-col :span="12">
               <el-form-item label="人员介绍" prop="instruction">
                 <el-input type="textarea" v-model="userDetail.ext01" :disabled="isDefaultFlag"></el-input>
-                <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
-                  <div
-                    class="tip-msg"
-                    v-show="this.app.option.options.userAuditFields.indexOf('ext01') > -1 && userDetail.ext01 !== oldUserInfo.user.ext01"
-                  >添加或修改该字段需要提交审核</div>
-                </div>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="人员职责" prop="reason">
                 <el-input type="textarea" v-model="userDetail.ext02" :disabled="isDefaultFlag"></el-input>
-                <div v-if="this.$route.name === 'PersonEdit' ||  this.$route.name === 'PersonAdd'">
-                  <div
-                    class="tip-msg"
-                    v-show="this.app.option.options.userAuditFields.indexOf('ext02') > -1 && userDetail.ext02 !== oldUserInfo.user.ext02"
-                  >添加或修改该字段需要提交审核</div>
-                </div>
               </el-form-item>
             </el-col>
           </el-row>
@@ -443,6 +363,7 @@ import dicOption from '@src/mixins/dic-options.js'
 import uploadFile from '@src/mixins/uploadFile.js'
 import { mapState, mapMutations } from 'vuex'
 import HasRight from '@src/mixins/has-right'
+import rulesOption from '@src/mixins/rules-options'
 export default {
   props: [
     'disabledFlag',
@@ -462,7 +383,33 @@ export default {
     addTags
   },
   data () {
+    // ^((13[0-9])|(15[^4])|(18[0,2,3,5-9])|(17[0-8])|(147))\d{8}$
+    let validateMobile = (rule, value, callback) => {
+      if (value === '') {
+        allback(new Error('号码不能为空'))
+      } else {
+        let reg=/ ^((13[0-9])|(15[^4])|(18[0,2,3,5-9])|(17[0-8])|(147))\d{8}$/
+        reg.test(value) ? callback() : callback(new Error('请输入11位有效号码'))
+        callback()
+      }
+    }
     return {
+        iptMsgInfoStr: '添加或修改该字段需要提交审核',
+        rulesOption:{
+          name: [
+          { required: true, message: '姓名不能为空', trigger: 'blur' },
+          { message: '', trigger: 'change' },
+        ],
+        mobile: [
+          { required: true, message: '手机号不能为空', trigger: 'blur' },
+           { message: '', trigger: 'change' },
+            // { validator: validateMobile, trigger: 'blur' }
+        ],
+         type: [
+          { required: true, message: '请选择身份类型', trigger: 'blur' },
+          { type:'number', message: '', trigger: 'change' }
+        ]
+        },
       showPopover: false, // 是否显示 Popover
       hidefooter: false,
       msgVisiable: false,
@@ -492,10 +439,6 @@ export default {
       },
       timer: null,
       showPopoverFlag: false,
-      rules: {
-        name: [{ required: true, message: '姓名不能为空' }],
-        mobile: [{ required: true, message: '手机号不能为空' }]
-      }
     }
   },
   created () {
@@ -517,9 +460,7 @@ export default {
       this.$emit('exportOrg')
     },
     modifieUserInfo (userDetail) {
-      if (this.postDetail.type == null) {
-        this.$message.error('请选择身份类型')
-      } else {
+     
         this.$refs[userDetail].validate(valid => {
           if (valid) {
             this.$emit('goModifieUserInfo', this.personFrom)
@@ -528,7 +469,7 @@ export default {
             return false
           }
         })
-      }
+      
     },
     // 搜索表格点击当前行
     selectRow (val) {
@@ -695,19 +636,16 @@ export default {
       this.$emit('get-label', this.sendLabelId)
     },
     next (userDetail) {
-      if (this.postDetail.type == null) {
-        this.$message.error('请选择身份类型')
-      } else {
-        this.$refs[userDetail].validate(valid => {
-          if (valid) {
-            this.$emit('get-post', this.postFrom)
-            this.$emit('get-user', this.personFrom)
-          } else {
-            this.$message.warning(`请填写必填字段`)
-            return false
-          }
-        })
-      }
+      this.$refs[userDetail].validate(valid => {
+        if (valid) {
+          this.$emit('get-post', this.postFrom)
+          this.$emit('get-user', this.personFrom)
+        } else {
+          this.$message.warning(`请填写必填字段`)
+          return false
+        }
+      })
+      
     },
     goBack () {
       this.$router.go(-1)

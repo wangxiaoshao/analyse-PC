@@ -99,7 +99,6 @@ export default {
       showDep: true,
       showBreadCrumb: true,
       selectType: ''
-
     }
   },
   created () {

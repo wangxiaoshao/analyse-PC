@@ -23,6 +23,15 @@ export default {
     serve: 'organizationManagePC',
     mock: 'statistics/getDataLogList.json'
   },
+  // 查询操作日志类型
+  // 操作日志列表
+  [urlNames.findLoggerTypeList]: {
+    type: 'get',
+    url: '/api/jg_manage/logger/findLoggerTypeList',
+    keepOriginResponse: true,
+    showLoading: true,
+    serve: 'organizationManagePC'
+  },
   // 系统日志列表
   [urlNames.findLoggerApiAccessList]: {
     type: 'get',

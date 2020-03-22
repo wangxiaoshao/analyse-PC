@@ -1,9 +1,8 @@
 <template>
   <div class="create-app-management">
-<!--    <div class="to-log">-->
-<!--      <el-button type="primary" @click="toDataLog">查看数据推送日志</el-button>-->
-<!--    </div>-->
     <el-form ref="ruleForm"   :rules="rules" :model="appFrom" label-width="120px">
+       <input type="password" class="hideIpt" />
+            <input type="text" class="hideIpt"/>
       <el-row :gutter="80">
         <el-col :span="12">
           <div class="grid-content bg-purple">
@@ -13,7 +12,7 @@
           </div>
         </el-col>
         <el-col :span="12">
-          <div class="grid-content bg-purple-light">
+          <div class="grid-content bg-purple-light">           
             <el-form-item label="绑定视图" prop="viewId">
               <el-select
                 v-model="appFrom.viewId"
