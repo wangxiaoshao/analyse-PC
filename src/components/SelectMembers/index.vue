@@ -28,86 +28,95 @@
         <el-button slot="append" @click="getResult" icon="el-icon-search"></el-button>
       </el-input></div>
       <div class="select-panel" style="display: flex">
-        <div class="tree">
-          <el-tree
-            :data="nodeTree"
-            lazy
-            :load="loadNode"
-            :props="defaultProps"
-            @node-click="handleNodeClick">
-            <span class=" svg-container" slot-scope="{ node, data }">
-                <span class="iconfont iconzuzhijigou" v-if="data.nodeType === 1"></span>
-                <span class="iconfont icondanwei" v-if="data.nodeType === 2"></span>
-                <span class="iconfont iconbumen" v-if="data.nodeType === 3"></span>
-                <span>{{node.label}}</span>
-              </span>
-          </el-tree>
+        <div class="panel">
+          <span class="panel-title">全省单位</span>
+          <div class="tree">
+            <el-tree
+              :data="nodeTree"
+              lazy
+              :load="loadNode"
+              :props="defaultProps"
+              @node-click="handleNodeClick">
+              <span class=" svg-container" slot-scope="{ node, data }">
+                  <span class="iconfont iconzuzhijigou" v-if="data.nodeType === 1"></span>
+                  <span class="iconfont icondanwei" v-if="data.nodeType === 2"></span>
+                  <span class="iconfont iconbumen" v-if="data.nodeType === 3"></span>
+                  <span>{{node.label}}</span>
+                </span>
+            </el-tree>
+          </div>
         </div>
-        <div class="wait-select">
-          <div v-if="selectCategory === 0">
-            <div v-if="seleceDialog.isSingleSelect!==true">
-              <!--v-model="member"   -->
-              <el-checkbox v-model="member" class="member-item" @change="toggleAllMembers">全选</el-checkbox>
-              <el-checkbox-group v-model="membersModel" @change="toggleMember">
-                <el-checkbox style="display: block" class="member-item text-ellipsis"
-                             v-for="member in memberList"
-                             :key="member.uid"
-                             :label="JSON.stringify(member)">
-                  {{member.name}}
+        <div class="panel panel-wait-select">
+          <span class="panel-title">可选</span>
+          <div class="wait-select">
+            <div v-if="selectCategory === 0">
+              <div v-if="seleceDialog.isSingleSelect!==true">
+                <!--v-model="member"   -->
+                <el-checkbox v-model="member" class="member-item" @change="toggleAllMembers">全选</el-checkbox>
+                <el-checkbox-group v-model="membersModel" @change="toggleMember">
+                  <el-checkbox style="display: block" class="member-item text-ellipsis"
+                              v-for="member in memberList"
+                              :key="member.uid"
+                              :label="JSON.stringify(member)">
+                    {{member.name}}
+                  </el-checkbox>
+                </el-checkbox-group>
+              </div>
+              <div v-if="seleceDialog.isSingleSelect===true">
+                <el-radio-group v-model="memberSingleModel" @change="singleSelectMember">
+                  <el-radio v-for="member in memberList" :key="member.uid" style="display: block" :label="JSON.stringify(member)">{{member.name}}</el-radio>
+                </el-radio-group>
+              </div>
+            </div>
+            <div v-if="selectCategory === 1">
+            <div v-if="seleceDialog.isSingleOrgSelect!==true">
+              <!-- v-model="org" -->
+              <el-checkbox   v-model="org"  class="member-item" @change="toggleAllOrgs">全选</el-checkbox>
+              <el-checkbox-group v-model="orgsModel" @change="toggleOrg">
+                  <!-- class="member-item text-ellipsis" -->
+                <el-checkbox style="display: block"
+                              v-for="org in orgList"
+                              :key="org.id"
+                              :label="JSON.stringify(org)">
+                  {{org.name}}
                 </el-checkbox>
               </el-checkbox-group>
             </div>
-            <div v-if="seleceDialog.isSingleSelect===true">
-              <el-radio-group v-model="memberSingleModel" @change="singleSelectMember">
-                <el-radio v-for="member in memberList" :key="member.uid" style="display: block" :label="JSON.stringify(member)">{{member.name}}</el-radio>
-              </el-radio-group>
-            </div>
-          </div>
-          <div v-if="selectCategory === 1">
-           <div v-if="seleceDialog.isSingleOrgSelect!==true">
-             <!-- v-model="org" -->
-             <el-checkbox   v-model="org"  class="member-item" @change="toggleAllOrgs">全选</el-checkbox>
-             <el-checkbox-group v-model="orgsModel" @change="toggleOrg">
-                <!-- class="member-item text-ellipsis" -->
-               <el-checkbox style="display: block"
-                            v-for="org in orgList"
-                            :key="org.id"
-                            :label="JSON.stringify(org)">
-                 {{org.name}}
-               </el-checkbox>
-             </el-checkbox-group>
-           </div>
-            <div v-if="seleceDialog.isSingleOrgSelect===true">
-              <el-radio-group v-model="orgSingleModel" @change="toggleSingleOrg">
-                <el-radio v-for="org in orgList" :key="org.id" style="display: block" :label="JSON.stringify(org)">{{org.name}}</el-radio>
-              </el-radio-group>
+              <div v-if="seleceDialog.isSingleOrgSelect===true">
+                <el-radio-group v-model="orgSingleModel" @change="toggleSingleOrg">
+                  <el-radio v-for="org in orgList" :key="org.id" style="display: block" :label="JSON.stringify(org)">{{org.name}}</el-radio>
+                </el-radio-group>
+              </div>
             </div>
           </div>
         </div>
-        <div class="container">
-          <div v-if="selectCategory === 0">
-            <el-button size="small"
-                       type="text"
-                       v-show="selectedMembers.length > 0"
-                       @click="removeAllSelected">取消全部
-            </el-button>
-            <el-checkbox-group v-model="selectedMembersModel" @change="toggleSelectedOrg">
-              <el-checkbox style="display: block" v-for="member in selectedMembers" :label="JSON.stringify(member)"
-                           :key="member.uid"> {{member.name}}
-              </el-checkbox>
-            </el-checkbox-group>
-          </div>
-          <div v-if="selectCategory === 1">
-            <el-button size="small"
-                       type="text"
-                       v-show="selectedOrgs.length > 0"
-                       @click="removeAllSelectedOrg">取消全部
-            </el-button>
-            <el-checkbox-group v-model="selectedOrgsModel" @change="toggleSelectedOrg">
-              <el-checkbox style="display: block" v-for="org in selectedOrgs" :label="org"
-                           :key="org.id"> {{org.name}}
-              </el-checkbox>
-            </el-checkbox-group>
+        <div class="panel">
+          <span class="panel-title">已选</span>
+          <div class="container">
+            <div v-if="selectCategory === 0">
+              <el-button size="small"
+                        type="text"
+                        v-show="selectedMembers.length > 0"
+                        @click="removeAllSelected">取消全部
+              </el-button>
+              <el-checkbox-group v-model="selectedMembersModel" @change="toggleSelectedOrg">
+                <el-checkbox style="display: block" v-for="member in selectedMembers" :label="JSON.stringify(member)"
+                            :key="member.uid"> {{member.name}}
+                </el-checkbox>
+              </el-checkbox-group>
+            </div>
+            <div v-if="selectCategory === 1">
+              <el-button size="small"
+                        type="text"
+                        v-show="selectedOrgs.length > 0"
+                        @click="removeAllSelectedOrg">取消全部
+              </el-button>
+              <el-checkbox-group v-model="selectedOrgsModel" @change="toggleSelectedOrg">
+                <el-checkbox style="display: block" v-for="org in selectedOrgs" :label="JSON.stringify(org)"
+                            :key="org.id"> {{org.name}}
+                </el-checkbox>
+              </el-checkbox-group>
+            </div>
           </div>
         </div>
       </div>
@@ -412,7 +421,7 @@ export default {
     toggleSingleOrg (org) {
       this.selectedOrgsModel = []
       this.selectedOrgs[0] = JSON.parse(this.orgSingleModel)
-      this.selectedOrgsModel.push(JSON.parse(org))
+      this.selectedOrgsModel.push(org)
     },
     toggleSelectedOrg (orgs) {
       this.orgsModel.forEach((org) => {

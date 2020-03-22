@@ -13,7 +13,7 @@
     .notice{
       padding-bottom: 16px;
     }
-   
+
     .userInfo,.notice{
       display: flex;
       justify-content: space-between;
@@ -50,7 +50,7 @@
             text-align: right;
           }
         }
-        
+
       }
       a{
         font-size: 12px;
@@ -127,10 +127,10 @@
           border-radius:0px 5px 5px 0px;
         }
       }
-      
-     
+
+
     }
-   
+
     .info-box{
       display: flex;
       justify-content: space-between;
@@ -161,5 +161,28 @@
   }
   .homeContent:nth-child(1){
     height: 102px;
+  }
+
+  .config-button {
+    width: 100%;
+    font-size: 20px;
+    height: 3em;
+    padding: 10px 0;
+  }
+
+  /deep/ .el-dialog {
+    width: 200px;
+
+    .el-dialog__body {
+      padding: 20px 10px 10px 10px;
+
+      .el-table__header-wrapper {
+        display: none;
+      }
+
+      table {
+        width: 100%;
+      }
+    }
   }
 }

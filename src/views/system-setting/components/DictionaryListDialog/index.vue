@@ -17,7 +17,7 @@
               <el-input v-model="form.text" placeholder="请输入名称" clearable></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="addDic('form')" v-show="hasRight('dictItemCreate')">{{type || '创建'}}</el-button>
+              <el-button type="primary" @click="addDic('form')" v-show="hasRight('dictItemCreate')">创建</el-button>
               <!--<el-button type="primary" @click="addDic('form')">创建</el-button>-->
             </el-form-item>
           </el-form>
@@ -97,27 +97,7 @@ export default {
       foundDicList: [],
       newAddList: [],
       rules: {
-        text: [
-          { type: 'string', required: true, message: '字段名称未填写' },
-          { validator: (rule, value, callback) => {
-            let ok = true
-            let msg = ''
-
-            this.tableData.forEach((item) => {
-              if (value === item.text) {
-                ok = false
-                msg = '重复'
-              }
-            })
-
-            if (!ok) {
-              return callback(new Error(msg))
-            } else {
-              return callback()
-            }
-          },
-          trigger: 'blur' }
-        ],
+        text: { type: 'string', required: true, message: '字段名称未填写' },
         value: [
           { required: true, message: '字段值未填写' },
           { validator: (rule, value, callback) => {
@@ -127,7 +107,7 @@ export default {
             this.tableData.forEach((item) => {
               if (parseInt(value) === item.value) {
                 ok = false
-                msg = '重复'
+                msg = '重复的值'
               }
             })
 
@@ -144,20 +124,19 @@ export default {
   },
   mounted () {
   },
+  watch: {
+    visible: function (currentVisible) {
+      if (currentVisible) {
+        this.foundDicList = []
+        this.getDicByTypeList()
+      }
+    }
+  },
   computed: {
     ...mapState(['app']),
     scrollStyle () {
       return {
         maxHeight: this.$store.state.app.windowHeight / 2 + 'px'
-      }
-    },
-    type () {
-      if (this.dictionaryType) {
-        this.foundDicList = []
-        this.getDicByTypeList()
-        return '创建'
-      } else {
-        return '创建'
       }
     }
   },

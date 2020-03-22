@@ -161,32 +161,32 @@
     </div>
     <div class="parameter-item">
         <div class="header">信息确认设置</div>
-        <el-form ref="orgMessageRemind" label-width="160px">
-            <el-form-item label="单位信息确认">
-                <el-switch v-model="orgMessageConfirm" @change="showMessageConfirmDialog()" active-text="" inactive-text="">
-                </el-switch>
+        <el-form ref="messageRemind" label-width="160px">
+            <el-form-item label="设置信息确认弹窗提醒">
+                <el-select v-model="remindStartDate" placeholder="选择提醒开始时间" @change="onStartDateChanged" :disabled="startDateDisabled" ref="remindStartDate">
+                  <el-option
+                    v-for="item in remindStartDateList"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                    :disabled="item.disabled">
+                  </el-option>
+                </el-select>
+                <el-select v-model="remindEndDate" placeholder="选择提醒结束时间" @change="onEndDateChanged" :disabled="endDateDisabled" ref="remindEndDate">
+                  <el-option
+                    v-for="item in remindEndDateList"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                    :disabled="item.disabled">
+                  </el-option>
+                </el-select>
+                <el-checkbox-button class="button-no-remind" v-model="noRemind" @change="onNoRemind">不提醒</el-checkbox-button>
             </el-form-item>
-            <div v-if="orgMessageConfirm">
-                <el-form-item label="设置信息确认弹窗提醒">
-                    <el-date-picker
-                        v-model="orgRemindTimeRange"
-                        type="daterange"
-                        :editable="false"
-                        :clearable="true"
-                        format="dd号"
-                        min-date="2020-01-01"
-                        max-date="2020-01-31"
-                        start-placeholder="选择提醒开始时间"
-                        end-placeholder="选择提醒结束时间"
-                        @change="noRemind = false">
-                      </el-date-picker>
-                      <el-checkbox-button v-model="noRemind" checked @change="orgRemindTimeRange = []">不提醒</el-checkbox-button>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="systemSubmit(2)">保存</el-button>
-                    <el-button>取消</el-button>
-                </el-form-item>
-            </div>
+            <el-form-item>
+                <el-button type="primary" @click="systemSubmit(2)">保存</el-button>
+                <el-button>取消</el-button>
+            </el-form-item>
         </el-form>
     </div>
     <div class="parameter-item">
@@ -258,35 +258,60 @@
             </el-form-item>
         </el-form>
     </div>
-
-    <!-- 单位确认信息对话框 -->
-    <el-dialog :visible.sync="orgMsgConfirmOpenVisible" width="410px" :show-close="false">
-        <div slot="title" style="padding:20px; background-color: #fff;">
-            <span class="msg-title">确认打开单位信息确认</span>
-            <span class="svg-container" style="color:red">
-                <span class="el-icon-document-copy"></span>
-            </span>
-        </div>
-        <div class="msg-box">打开单位信息确认后，从下月起，您的单位信息将需要手动确认。</div>
-        <div slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="onSaveOrgMessageConfirm()">确定打开</el-button>
-            <el-button type="default" @click="orgMsgConfirmOpenVisible = false; orgMessageConfirm = !orgMessageConfirm;" width="100px">取 消</el-button>
-        </div>
-    </el-dialog>
-
-    <el-dialog :visible.sync="orgMsgConfirmCloseVisible" width="410px" :show-close="false">
-        <div slot="title" style="padding:20px; background-color: #fff;">
-            <span class="msg-title">确认关闭单位信息确认</span>
-            <span class="svg-container" style="color:red">
-                <span class="el-icon-document-copy"></span>
-            </span>
-        </div>
-        <div class="msg-box">关闭单位信息确认后，从下月起，您的单位信息将不再需要手动确认。</div>
-        <div slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="onSaveOrgMessageConfirm()">确定关闭</el-button>
-            <el-button type="default" @click="orgMsgConfirmCloseVisible = false; orgMessageConfirm = !orgMessageConfirm;" width="100px">取 消</el-button>
-        </div>
-    </el-dialog>
+    <div class="parameter-item">
+      <div class="header">单位信息确认短信模板
+      </div>
+      <el-form class="sms-template">
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-input
+              type="textarea"
+              v-model="orgMessageRemindTemplate"
+              ></el-input>
+          </el-col>
+          <el-col :span="12">
+            <p>每月单位信息需要确认时发送短信。</p>
+            <br>
+            <p>可用占位符：<span>{单位名称}</span>，<span>{月份}</span>，<span>{单位名称}</span>，<span>{信息确认截止时间}</span></p>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col>
+            <el-form-item>
+                <el-button type="primary" @click="saveorgMessageRemindTemplate">保存</el-button>
+                <el-button>取消</el-button>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+    </div>
+    <div class="parameter-item">
+      <div class="header">信息审核通知短信模板
+      </div>
+      <el-form class="sms-template">
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-input
+              type="textarea"
+              v-model="informationAuditTemplate"
+              ></el-input>
+          </el-col>
+          <el-col :span="12">
+            <p>审核管理员有审核事项时，给相关人员发送短信。</p>
+            <br>
+            <p>可用占位符：<span>{单位名称}</span>，<span>{操作人名称}</span>，<span>{修改字段}</span>，<span>{修改时间}</span>。</p>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col>
+            <el-form-item>
+                <el-button type="primary" @click="saveinformationAuditTemplate">保存</el-button>
+                <el-button>取消</el-button>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+    </div>
 </div>
 </template>
 
@@ -295,6 +320,8 @@ import {
   api,
   urlNames
 } from '@src/api'
+
+const level = 2
 const nodeAuditList = [{
   name: 'id',
   checkname: '结点ID'
@@ -644,11 +671,17 @@ export default {
       },
       orgMsgConfirmOpenVisible: false, // 打开单位信息确认对话框
       orgMsgConfirmCloseVisible: false, // 关闭单位信息确认对话框
-      orgMessageConfirm: true, // 单位信息确认
-      orgMessageRemind: -1, // 消息提醒
-      noRemind: true, // 消息提醒，默认不提醒
-      orgRemindTimeRange: [], // 提醒的时间区间
+      remindStartDate: 1,
+      remindEndDate: 31,
+      remindStartDateList: [],
+      remindEndDateList: [],
+      startDateDisabled: false,
+      endDateDisabled: false,
+      messageRemind: 0, // 消息提醒, 1提醒，0不提醒
+      noRemind: false, // 消息提醒，默认不提醒
       modeAuditList: [],
+      orgMessageRemindTemplate: '【贵州省电子政务外网组织机构人员数据库及管控平台】{单位名称}{2020年3月}的单位信息需在3月30日前确认，请及时前往确认。http://59.215.232.95/api/gate/forward',
+      informationAuditTemplate: '【贵州省电子政务外网组织机构人员数据库及管控平台】{单位名称}{操作人}于{操作时间}修改了{修改字段}，请尽快前往后台处理。http://59.215.232.95/api/gate/forward',
       orgAuditList: orgAuditList, // 单位审核字段数据
       nodeAuditList: nodeAuditList,
       depAuditList: depAuditList,
@@ -675,9 +708,75 @@ export default {
     }
   },
   created () {
-    this.getSystemParameterlevel(1)
+    this.getSystemParameterlevel(level)
+
+    let startDate = 1
+    let endDate = 31
+    for (let i = startDate; i <= endDate; i++) {
+      this.remindStartDateList.push({
+        label: `每月从 ${i} 号开始`,
+        value: i,
+        disabled: false
+      })
+      this.remindEndDateList.push({
+        label: `到每月 ${i} 号结束`,
+        value: i,
+        disabled: false
+      })
+    }
   },
   methods: {
+    saveorgMessageRemindTemplate () {
+      this.setClientOptions({
+        level: level,
+        name: 'orgMessageRemindTemplate',
+        value: this.orgMessageRemindTemplate
+      })
+    },
+    saveinformationAuditTemplate () {
+      this.setClientOptions({
+        level: level,
+        name: 'informationAuditTemplate',
+        value: this.informationAuditTemplate
+      })
+    },
+    onStartDateChanged (startDate) {
+      this.noRemind = false
+
+      let that = this
+
+      this.remindEndDateList.forEach((item, index) => {
+        if (item.value < startDate) {
+          that.remindEndDateList[index].disabled = true
+        } else {
+          that.remindEndDateList[index].disabled = false
+        }
+      })
+    },
+    onEndDateChanged (endDate) {
+      this.noRemind = false
+
+      let that = this
+
+      this.remindStartDateList.forEach((item, index) => {
+        if (item.value > endDate) {
+          that.remindStartDateList[index].disabled = true
+        } else {
+          that.remindStartDateList[index].disabled = false
+        }
+      })
+    },
+    onNoRemind (isNoRemind) {
+      if (isNoRemind) {
+        this.startDateDisabled = true
+        this.endDateDisabled = true
+        this.messageRemind = 0
+      } else {
+        this.startDateDisabled = false
+        this.endDateDisabled = false
+        this.messageRemind = 1
+      }
+    },
     getSystemParameterlevel (level) {
       api[urlNames['getSystemParameterlevel']]({
         level: level
@@ -689,8 +788,26 @@ export default {
           if (item.name === 'orgUserSecuritySettings') {
             this.orgUserSecuritySettings = JSON.parse(item.value)
           }
-          if (item.name === 'orgMessageRemind') {
-            this.orgMessageRemind = JSON.parse(item.value)
+          if (item.name === 'orgMessageRemindTemplate') {
+            this.orgMessageRemindTemplate = JSON.parse(item.value)
+          }
+          if (item.name === 'informationAuditTemplate') {
+            this.informationAuditTemplate = JSON.parse(item.value)
+          }
+          if (item.name === 'systemMessageRemind') {
+            this.remindStartDate = parseInt(JSON.parse(item.value)[0])
+            this.remindEndDate = parseInt(JSON.parse(item.value)[1])
+            this.messageRemind = parseInt(JSON.parse(item.value)[2])
+
+            if (this.messageRemind === 0) {
+              this.startDateDisabled = true
+              this.endDateDisabled = true
+              this.noRemind = true
+            } else {
+              this.startDateDisabled = false
+              this.endDateDisabled = false
+              this.noRemind = false
+            }
           }
           if (item.name === 'orgCheckedAuditList') {
             this.orgAuditField = JSON.parse(item.value)
@@ -712,13 +829,6 @@ export default {
 
       // 处理“单位确认信息”开关的切换
     },
-    showMessageConfirmDialog () {
-      if (this.orgMessageConfirm) {
-        this.orgMsgConfirmOpenVisible = true
-      } else {
-        this.orgMsgConfirmCloseVisible = true
-      }
-    },
     onSaveOrgMessageConfirm () {
       this.orgMsgConfirmOpenVisible = false
       this.orgMsgConfirmCloseVisible = false
@@ -731,7 +841,7 @@ export default {
       // 1通讯录设置
       // 2消息提醒设置
       let list = {
-        level: 1,
+        level: level,
         name: '',
         value: null
       }
@@ -742,8 +852,12 @@ export default {
         list.name = 'orgAddressBookSet'
         list.value = this.orgAddressBookSet
       } else if (flag === 2) {
-        list.name = 'orgMessageRemind'
-        list.value = this.orgMessageRemind
+        list.name = 'systemMessageRemind'
+        list.value = [
+          this.remindStartDate,
+          this.remindEndDate,
+          this.messageRemind
+        ]
       } else if (flag === 3) {
         list.name = 'orgCheckedAuditList'
         list.value = {

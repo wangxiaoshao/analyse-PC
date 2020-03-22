@@ -211,6 +211,7 @@ export default {
           api[urlNames['createViewNode']](data).then(
             res => {
               this.$message.success(`保存成功`)
+              this.$emit('on-update-organization-tree')
               this.goBack()
             },
             () => {}

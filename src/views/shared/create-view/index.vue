@@ -121,7 +121,7 @@
                             <span class="iconfont icondanwei" v-if="data.nodeType === 2"></span>
                             <span class="iconfont iconbumen" v-if="data.nodeType === 3"></span>
                             <span class="label">{{node.label}}</span>
-                            <span @click="deleteNodeTree(data.id)" class="delete-icon fa fa-trash-o"></span>
+                            <span @click="deleteNodeTree(data)" class="delete-icon fa fa-trash-o"></span>
                           </div>
                       </el-tree>
                     </div>
@@ -295,13 +295,22 @@ export default {
     },
     // 创建视图草稿
     createNodeDraft () {
+      let nodeList = []
+
+      this.viewNodeTree.forEach((item, index) => {
+        let tmpObj = JSON.parse(JSON.stringify(item))
+
+        tmpObj.sort = index
+        nodeList.push(tmpObj)
+      })
+
       if (this.returnViewId === 0) {
         this.returnViewId = ''
       }
       api[urlNames['createNodeDraft']]({
-        syncChild: this.syncChild,
         viewId: this.returnViewId,
-        viewNodeDraft: this.viewNodeDraft
+        viewNodeDraft: nodeList,
+        syncChild: this.syncChild
       }).then((res) => {
         if (res.status === 0) {
           if (res.data !== undefined && res.data === '-1') {
@@ -438,8 +447,21 @@ export default {
       })
     },
     // 草稿拖动排序
-    updateNodeDraft (id, parentId) {
-      api[urlNames['updateNodeDraft']]({
+    updateNodeDraft (id, nodeList) {
+      api[urlNames['createNodeDraft']]({
+        viewId: this.returnViewId,
+        viewNodeDraft: nodeList
+      }).then((res) => {
+        if (res.status === 0) {
+          if (res.data !== undefined && res.data === '-1') {
+            this.$message.info('存在重复的节点')
+          } else {
+            this.$message.success('保存节点成功')
+          }
+          this.findNodeDraftList('-1')
+        }
+      })
+      /* api[urlNames['updateNodeDraft']]({
         id: id,
         parentId: parentId,
         viewId: this.returnViewId
@@ -448,17 +470,17 @@ export default {
           this.findNodeDraftList('-1')
           this.$message.success('调整节点位置成功')
         }
-      })
+      }) */
     },
     // 删除视图草稿 - deleteViewById
-    deleteNodeTree (id) {
+    deleteNodeTree (node) {
       this.$confirm('是否也要删除该节点以下子节点信息?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
         api[urlNames['deleteViewById']]({
-          id: id,
+          viewNodeDraft: [JSON.parse(JSON.stringify(node))],
           viewId: this.returnViewId
         }).then((res) => {
           if (res.status === 0) {
@@ -475,14 +497,41 @@ export default {
     },
     // 草稿拖动节点位置
     nodeSelectDragEnd (dragNode, lastNode, seat, e) {
+      let nodeList = []
+      let parentId = -1
+
       if (lastNode === null) {
-        this.updateNodeDraft(dragNode.data.id, '-1')
+        this.viewNodeTree.forEach((item, index) => {
+          let tmpObj = JSON.parse(JSON.stringify(item))
+
+          tmpObj.parentId = parentId
+          tmpObj.sort = index
+
+          nodeList.push(tmpObj)
+        })
+
+        let tmpObj = JSON.parse(JSON.stringify(dragNode))
+        tmpObj.parentId = -1
+        tmpObj.sort = this.viewNodeTree.length
+
+        nodeList.push(tmpObj)
       } else {
         if (dragNode.data.id === lastNode.data.id) {
           return false
         }
-        this.updateNodeDraft(dragNode.data.id, lastNode.data.id)
+
+        parentId = lastNode.parent.data.id
+        lastNode.parent.childNodes.forEach((item, index) => {
+          let tmpObj = JSON.parse(JSON.stringify(item))
+
+          tmpObj.parentId = parentId
+          tmpObj.sort = index
+
+          nodeList.push(tmpObj)
+        })
       }
+
+      this.updateNodeDraft(dragNode.data.id, nodeList)
     },
     // 单选框选中
     currentchange (node, checked) {

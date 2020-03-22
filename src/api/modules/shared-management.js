@@ -91,7 +91,10 @@ export default {
    * 单条视图草稿
    */
   [urlNames.deleteViewById]: {
-    type: 'get',
+    type: 'post',
+    headers: {
+      'Content-Type': 'application/json'
+    },
     url: '/api/jg_manage/view/deleteNodeDraft',
     serve: 'organizationManagePC',
     keepOriginResponse: false
