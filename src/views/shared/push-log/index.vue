@@ -85,7 +85,7 @@
       label="操作"
       >
       <template slot-scope="scope">
-         <a style="color:#FC7049;"  href="javaScript:void(0)" @click="findInfo(scope.row)">详情</a>
+         <a style="color:#FC7049;"  href="javascript:void(0)" @click="findInfo(scope.row)">详情</a>
       </template>
     </el-table-column>
     <el-table-column
@@ -112,18 +112,19 @@
 import handleTable from '@src/mixins/handle-table'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
 import { api, urlNames } from '@src/api'
+import { mapState, mapMutations } from 'vuex'
 export default {
   mixins: [handleTable, handleBreadcrumb],
   data () {
     return {
-      logList: [{}],
-      DetialInfoVisible: false,
+      logList: [],
+      detialInfoVisible: false,
       detialInfo: {}
 
     }
   },
   created () {
-    this.getLogList()
+    this.getGrid()
   },
   mounted () {
     this.pushBreadcrumb({
@@ -137,7 +138,8 @@ export default {
     })
   },
   methods: {
-    getLogList () {
+     ...mapMutations(['SET_APPLICATION_PAGE', 'SET_APPLICATION_SEARCH_QUERY']),
+    getGrid () {
       let data = {
         page: this.page.current,
         limit: this.page.limit,
@@ -167,8 +169,11 @@ export default {
     },
     findInfo (val) {
       this.detialInfo = val
-      this.DetialInfoVisible = true
+      this.detialInfoVisible = true
     }
+  },
+  computed: {
+    ...mapState(['application'])
   }
 
 }

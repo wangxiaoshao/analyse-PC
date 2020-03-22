@@ -8,16 +8,7 @@
     <select-members :seleceDialog="selectDialog"
     @dialogReturnMembersInfo="dialogReturnMembersInfo"
     @closeselectMenmber="closeselectMenmber"></select-members>
-    <el-dialog
-      title="确认删除"
-      :visible.sync="dialogVisible"
-      width="30%">
-      <span>确认删除该领导吗？</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="sublimeDelete">确 定</el-button>
-      </span>
-    </el-dialog>
+
     <div class="button-wrap" v-if="mainLeaderList.length === 0">
       <el-button type="primary" @click="addMainLeader(true,true,1)" :disabled="!hasRight('orgLeaderAdd')">添加主要领导</el-button>
     </div>
@@ -265,20 +256,22 @@ export default {
       this.learderType = learderType
     },
     deleteRow (row) {
-      this.dialogVisible = true
-      this.deleteId = row.id
+      this.handleRow('确认要删除该领导吗',row.id,this.sublimeDelete)
     },
-    sublimeDelete () {
+    sublimeDelete (id) {
       api[urlNames['deleteLeader']]({
-        id: this.deleteId
+        id: id
       }).then((res) => {
         this.dialogVisible = false
-        this.$message.success(`保存成功`)
+        this.$message.success(`已删除`)
         this.getGrid()
       }, (error) => {
         this.$message.error(`保存失败，请重试`)
       })
     }
+    
+
+
   },
   watch: {
     sortFlag: {

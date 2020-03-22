@@ -112,9 +112,10 @@ export default {
   },
   mounted () {
     this.setBreadcrumbTitle()
+     this.init()
   },
   created () {
-    this.init()
+    // this.init()
   },
   computed: {
     ...mapState(['app'])
@@ -124,6 +125,7 @@ export default {
     init () {
       if (this.$route.name === 'PersonAdd') {
         this.oldUserInfo = JSON.parse(JSON.stringify(this.userInfo))
+        console.log('this.oldUserInfo111 :',this.oldUserInfo )
         if (this.$route.params.id) {
           this.getUserDetail(this.$route.params.id)
         }
@@ -135,7 +137,6 @@ export default {
               id: res.data.bindId
             }).then((res) => {
               this.userInfo.identity.orgId = res.data.id
-            // eslint-disable-next-line handle-callback-err
             }, (error) => {
               this.$message.error(`没有内容`)
             })
@@ -146,12 +147,10 @@ export default {
             }).then((res) => {
               this.userInfo.identity.departmentId = res.data.id
               this.userInfo.identity.orgId = res.data.orgId
-            // eslint-disable-next-line handle-callback-err
             }, (error) => {
               this.$message.error(`没有内容`)
             })
           }
-        // eslint-disable-next-line handle-callback-err
         }, (error) => {
           this.$message.error(`没有内容`)
         })
@@ -186,11 +185,12 @@ export default {
         if (this.$route.name === 'PersonEdit') {
           this.userInfo.userId = res.data.uid
           this.oldUserInfo = JSON.parse(JSON.stringify(this.userInfo))
+          console.log('this.oldUserInfo222 :',this.oldUserInfo)
+
         }
         this.getUserAccount(res.data.uid)
         this.findLabel(res.data.uid, 3)
         this.loading = false
-      // eslint-disable-next-line handle-callback-err
       }, (error) => {
         this.$message.error(`保存失败，请重试`)
       })

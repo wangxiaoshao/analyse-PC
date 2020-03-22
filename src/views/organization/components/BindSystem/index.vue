@@ -77,7 +77,8 @@ export default {
       appList: [], // 应用列表
       showPopover: false, // 是否显示 Popover
       selectedIds: [...this.list.map(item => item.appId)], // checkbox 选择的id列表
-      slectedList: [...this.list] // 选中的列表
+      slectedList: [...this.list] ,// 选中的列表
+      isChange:false
     }
   },
   created () {
@@ -109,6 +110,7 @@ export default {
     changeSlectedList () {
       let selectedIds = this.selectedIds
       this.slectedList = this.appList.filter(app => selectedIds.includes(app.appId))
+      this.isChange=true
     },
 
     // 改变选择列表的id
@@ -123,9 +125,14 @@ export default {
         this.slectedList.splice(index, 1)
         this.changeSelectedIds()
       } else {
-        //  alert(222)
         //  这个是回显的，就是用户已经选择了，后台已经保存了的
-        api[urlNames['deleteAppBindAccount']]({
+        this.$confirm('此操作将永久删除该标签, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          api[urlNames['deleteAppBindAccount']]({
           accountId: item.accountId,
           appId: item.appId
         }).then((res) => {
@@ -137,6 +144,15 @@ export default {
         }).catch(() => {
           this.$message.success('删除失败')
         })
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+
+       
       }
     },
 
@@ -144,7 +160,7 @@ export default {
     handlePopoverConfirm () {
       this.changeSlectedList()
       let arr = this.selectedIds.map(id => id + '')
-      this.$emit('app-change', arr, this.sysIendx)
+      this.$emit('app-change', arr, this.sysIndex)
       this.showPopover = false
     },
 

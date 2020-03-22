@@ -18,6 +18,13 @@ export default {
     serve: 'organizationManagePC',
     mock: '/getRoleBindUserList.json' // development模式下，本地mock数据
   },
+
+  [urlNames.searchRoleBindUserList]: {
+    type: 'get',
+    url: '/api/jg_manage/role/searchRoleBindUserList',
+    keepOriginResponse: true,
+    serve: 'organizationManagePC'
+  },
   [urlNames.saveRoleBindUser]: {
     type: 'post',
     url: '/api/jg_manage/role/saveRoleBindUser',

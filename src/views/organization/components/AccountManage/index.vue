@@ -28,7 +28,7 @@
        <!-- <i class="el-icon-plus el-icon&#45;&#45;left">创建账号</i>-->
         创建账号
       </el-button>
-      <el-form label-width="100px" :model="addAccount"  ref="addAccount" v-if="!addFlag">
+      <el-form label-width="100px" :model="addAccount" :rules="rulesOption" ref="addAccount" v-if="!addFlag">
         <input type="password" class="hideIpt" />
         <input type="text" class="hideIpt"/>
         <el-form-item label="登录帐号" prop="name">
@@ -41,7 +41,7 @@
           <el-input v-model="addAccount.password" show-password></el-input>
         </el-form-item>
          <el-form-item label="关联系统">
-         <bind-system :list="[]" :isCreate="true" @app-change="getAppId"></bind-system>
+         <bind-system :list="[]" :isCreate="isCreate" @app-change="getAppId"></bind-system>
         </el-form-item>
         <el-form-item label="是否启用" prop="removed">
           <el-switch v-model="addAccount.removed"></el-switch>
@@ -54,7 +54,7 @@
       <el-footer class="add-person-footer">
         <span v-if="this.$route.name === 'PersonAdd' || this.$route.name === 'PersonEdit'">
         <el-button type="primary" @click="lastStep" :disabled="false">上一步</el-button>
-        <el-button type="primary" @click="fromSublime">保存</el-button>
+        <el-button type="primary" @click="fromSublime('addAccount')">保存</el-button>
         <el-button @click="goBack">取消</el-button>
         </span>
       </el-footer>
@@ -67,6 +67,34 @@ export default {
   components: { bindSystem },
   props: ['disabledFlag', 'isShowEditFlag', 'accountList', 'userInfo', 'isDefaultFlag', 'userAccount', 'isExit'],
   data () {
+    
+    var validateName = (rule, value, callback) => {
+      if (value === '') {
+        allback(new Error('登录账号不能为空'))
+      } else {
+       let reg=/^[a-z][a-z\d\@._-]*[^\u4e00-\u9fa5+]{5,19}$/
+        reg.test(value) ? callback() : callback(new Error('以小写字母开头，不能使用中文或大写字母，特殊符号仅允许"@"、"."、"_"、"—"，长度为6-20个字符。'))
+        callback()
+      }
+    } 
+    var validateNickName = (rule, value, callback) => {
+      if (value === '') {
+        allback(new Error('登录别名不能为空'))
+      } else {
+        let reg=/^[a-z][a-z\d\@._-]*[^\u4e00-\u9fa5+]{5,19}$/
+        reg.test(value) ? callback() : callback(new Error('以小写字母开头，不能使用中文或大写字母，特殊符号仅允许"@"、"."、"_"、"—"。长度为6-20个字符。'))
+        callback()
+      }
+    }
+     var validatePwd = (rule, value, callback) => {
+      if (value === '') {
+        allback(new Error('登录密码不能为空'))
+      } else {
+        let reg=/^(?=.*\d)(?=.*[a-zA-Z])(?=.*[~!@._-])[\da-zA-Z~!@._-]{8,}$/
+        reg.test(value) ? callback() : callback(new Error('必须包含字母、数字和特殊字符（特殊符号仅允许“@”、“.”、“_”、“—”。）,长度至少为8个字符。'))
+        callback()
+      }
+    }
     return {
       addAccount: {
         password: '',
@@ -78,6 +106,8 @@ export default {
         defaultAccount: null,
         reason: ''
       },
+      isCreate:true,
+      updateSystem:false,
       oldFrom: {},
       // addFlag: this.isDefaultFlag,
       addFlag: true,
@@ -86,7 +116,20 @@ export default {
       options: [],
       accountSend: [],
       accountSelect: '',
-      doIndex: ''
+      doIndex: '',
+      rulesOption:{
+        name:[
+          { required: true, message: '登录账号不能为空', trigger: 'blur' },
+          { validator: validateName, trigger: 'blur' }
+          ],
+        nickName:[{ required: true, message: '登录别名不能为空', trigger: 'blur' },
+         { validator: validateNickName, trigger: 'blur' }
+
+        ],
+        password:[{ required: true, message: '登录密码不能为空', trigger: 'blur' },
+         { validator: validatePwd, trigger: 'blur' }
+        ]
+      }
     }
   },
   created () {
@@ -124,42 +167,34 @@ export default {
         }
       })
     },
-    fromSublime () {
-      let accountObj = {
-        password: this.addAccount.password,
-        removed: this.addAccount.removed ? 0 : 1,
-        appId: this.addAccount.appId,
-        name: this.addAccount.name,
-        nickName: this.addAccount.nickName,
-        id: '',
-        defaultAccount: null,
-        reason: this.addAccount.reason
-      }
-      let that = this
-      let state = true
-      if (this.addAccount.name !== this.oldFrom.name && this.addAccount.password !== this.oldFrom.password) {
-        that.accountSend.forEach(function (item, index) {
-          if (accountObj.name === item.name) {
-            state = false
-            that.$message.error('该用户名已存在，请重新设置')
-          }
-        })
+    fromSublime (addAccount) {
+      // 情况二：添加账号信息
+        this.addAccount.removed= this.addAccount.removed ? 0 : 1
+        let that = this
         if (!this.isExit) {
           that.accountSend.pop()
+           this.$nextTick(() => {                            
+          this.$refs['addAccount'].resetFields()
+          })
         }
-        if (state) {
-          that.accountSend.push(accountObj)
-          this.$emit('get-account', this.accountSend)
+        if(this.addAccount.name!==''||this.addAccount.nickName!==''||this.addAccount.password!==''){
+          this.$refs[addAccount].validate(valid => {
+          if (valid) {
+            that.accountSend.push(that.addAccount)
+            this.$emit('get-account', that.accountSend)
+          } else {
+            this.$message.warning(`请根据提示输入必填字段`)
+            return false
+          }
+          })
+        }else{
+           if(this.doIndex!==undefined&&this.doIndex!==''){
+           this.$emit('get-account', this.accountSend)
+          }
         }
-      }
-      // console.log(' accountObj:', accountObj)
-      if (this.doIndex || this.doIndex === 0) {
-        this.accountSend[this.doIndex].appId = this.addAccount.appId
-        this.$emit('get-account', this.accountSend)
-      }
-      if (accountObj.name === '') {
-        this.$emit('get-account', this.accountSend)
-      }
+        
+
+       
     },
     lastStep () {
       this.$emit('get-back', true)
@@ -167,14 +202,17 @@ export default {
     goBack () {
       this.$router.go(-1)
     },
-    getAppId (val, index) {
+    getAppId (val, index,isChange) {
       this.addAccount.appId = val
-      this.doIndex = index
+      this.doIndex=index
+      if(index!==undefined&&index!==''){
+        this.accountSend[index].appId = this.addAccount.appId
+      }
     }
   }
 }
 </script>
 
-<style lang="less"  scoped>
+<style lang="less">
   @import "index";
 </style>

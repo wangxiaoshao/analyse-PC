@@ -495,17 +495,17 @@ export default {
         that.tagsName.splice(index, 1)
       }
     },
-    deleteUserLabelOrDeptLabelOrOrgLabel (id, type, labelId) {
-      api[urlNames['deleteUserLabelOrDeptLabelOrOrgLabel']]({
-        id: id,
-        type: type,
-        labelId: labelId
-      }).then(res => {
-        if (res.status === 0) {
-          this.$message.info('删除成功')
-        }
-      })
-    },
+    // deleteUserLabelOrDeptLabelOrOrgLabel (id, type, labelId) {
+    //   api[urlNames['deleteUserLabelOrDeptLabelOrOrgLabel']]({
+    //     id: id,
+    //     type: type,
+    //     labelId: labelId
+    //   }).then(res => {
+    //     if (res.status === 0) {
+    //       this.$message.info('删除成功')
+    //     }
+    //   })
+    // },
     // 获取区域
     getArea (orgId) {
       api[urlNames['findOrgAreaList']]({
