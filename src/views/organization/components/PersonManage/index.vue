@@ -59,12 +59,12 @@
               </div>
 
             </el-popover>
-            <div class="el-form-item__error" v-if="this.app.option.options.userAuditFields.indexOf('name') > -1 &&          userDetail.name!==''">
+            <div class="el-form-item__error" v-show="this.iptMsgVisible['name']">
                {{iptMsgInfoStr}}
               </div>
           </el-form-item>
           <el-form-item label="职务" prop="dutyName">
-            <el-input placeholder="请输入职务" v-model="postDetail.dutyName" @focus="showdutyNameList"></el-input>
+            <el-input placeholder="请输入职务" v-model="postDetail.dutyName" @focus="showdutyNameList" @input="showIptMsg('dutyName')"></el-input>
             <span
               style="font-size: 12px;position: relative;top:-7px;color: #8c939d;"
             >请先选择再输入,职务以逗号隔开</span>
@@ -82,15 +82,15 @@
                 </el-checkbox-group>
               </div>
             </el-popover>
-            <div class="el-form-item__error" v-if="this.app.option.options.userAuditFields.indexOf('dutyName') > -1 &&       postDetail.dutyName!==''">
+            <div class="el-form-item__error" v-show="this.iptMsgVisible['dutyName']">
               {{iptMsgInfoStr}}
             </div>
           </el-form-item>
           <el-form-item label="身份证号" prop="idcard">
-            <el-input placeholder="请输入内容" :disabled="isDefaultFlag" v-model="userDetail.idcard">
+            <el-input placeholder="请输入内容" :disabled="isDefaultFlag" v-model="userDetail.idcard" @input="showIptMsg('idcard')">
               <el-button slot="append" v-if="!disabledFlag" type="success" class="form-btn1">点击实名认证</el-button>
             </el-input>
-            <div class="el-form-item__error" v-if="this.app.option.options.userAuditFields.indexOf('idcard') > -1 &&       userDetail.idcard!==''">
+            <div class="el-form-item__error" v-show="this.iptMsgVisible['idcard']">
               {{iptMsgInfoStr}}
             </div>
             <span style="font-size: 12px;position: relative;top:-7px;color: #8c939d;">如果不录入不影响新帐号创建</span>
@@ -102,13 +102,13 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="手机号" prop="mobile">
-            <el-input placeholder="请输入手机号" :disabled="isDefaultFlag" v-model="userDetail.mobile"></el-input>
-               <div class="el-form-item__error" v-if="this.app.option.options.userAuditFields.indexOf('mobile') > -1 &&  userDetail.mobile!==''">
+            <el-input placeholder="请输入手机号" :disabled="isDefaultFlag" v-model="userDetail.mobile" @input="showIptMsg('mobile')"></el-input>
+               <div class="el-form-item__error" v-show="this.iptMsgVisible['mobile']">
               {{iptMsgInfoStr}}
             </div>
           </el-form-item>
           <el-form-item label="身份类型" prop="type" required>
-            <el-select 
+            <el-select
               placeholder="请选择身份类型"
               v-model="postDetail.type"
               @change="getIdentityType"
@@ -120,15 +120,15 @@
                 :value="item.value"
               ></el-option>
             </el-select>
-            <div class="el-form-item__error" v-if="this.app.option.options.userAuditFields.indexOf('type') > -1 && postDetail.type!==''">
+            <div class="el-form-item__error" v-show="this.iptMsgVisible['type']">
                {{iptMsgInfoStr}}
               </div>
           </el-form-item>
           <el-form-item label="所属单位" v-if="showexportIdentityType" prop="orgName">
-            <el-input placeholder="所属单位" v-model="orgName">
+            <el-input placeholder="所属单位" v-model="orgName" @input="showIptMsg('orgName')">
               <el-button type="primary" slot="append" class="form-btn1" @click="exportOrg" :disabled="!hasRight('personUserIdTransfe')">调出</el-button>
             </el-input>
-            <div class="el-form-item__error" v-if="this.app.option.options.userAuditFields.indexOf('orgName') > -1 && orgName!==''">
+            <div class="el-form-item__error" v-show="this.iptMsgVisible['orgName']">
                {{iptMsgInfoStr}}
               </div>
           </el-form-item>
@@ -163,8 +163,9 @@
                   placeholder="请输入备用手机号"
                   :disabled="isDefaultFlag"
                   v-model="userDetail.mobile2"
+                  @input="showIptMsg('mobile2')"
                 ></el-input>
-                 <div class="el-form-item__error" v-if="this.app.option.options.userAuditFields.indexOf('mobile2') > -1 && userDetail.mobile2!==''">
+                 <div class="el-form-item__error" v-show="this.iptMsgVisible['mobile2']">
                     {{iptMsgInfoStr}}
                     </div>
               </el-form-item>
@@ -182,9 +183,9 @@
                     :value="item.value"
                   ></el-option>
                 </el-select>
-                 <div class="el-form-item__error" v-if="this.app.option.options.userAuditFields.indexOf('nation') > -1 && userDetail.nation!==''">
+                 <div class="el-form-item__error" v-show="this.iptMsgVisible['nation']">
                     {{iptMsgInfoStr}}
-                    </div>            
+                    </div>
               </el-form-item>
               <el-form-item label="性别" prop="sex">
                 <el-select
@@ -200,9 +201,9 @@
                     :value="item.value"
                   ></el-option>
                 </el-select>
-               <div class="el-form-item__error" v-if="this.app.option.options.userAuditFields.indexOf('sex') > -1 && userDetail.sex!==''">
+               <div class="el-form-item__error" v-show="this.iptMsgVisible['sex']">
                     {{iptMsgInfoStr}}
-                    </div> 
+                    </div>
               </el-form-item>
               <el-form-item label="所属党派" prop="politicalParty">
                 <el-select
@@ -238,10 +239,11 @@
                   placeholder="请输入办公电话"
                   :disabled="isDefaultFlag"
                   v-model="userDetail.officePhone"
+                  @input="showIptMsg('officePhone')"
                 ></el-input>
-                <div class="el-form-item__error" v-if="this.app.option.options.userAuditFields.indexOf('officePhone') > -1 && userDetail.officePhone!==''">
+                <div class="el-form-item__error" v-show="this.iptMsgVisible['officePhone']">
                     {{iptMsgInfoStr}}
-                    </div> 
+                    </div>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -291,16 +293,16 @@
                 </el-select>
               </el-form-item>
               <el-form-item label=" 岗位">
-                <el-input placeholder="请输入岗位" v-model="postDetail.postName"></el-input>
-                 <div class="el-form-item__error" v-if="this.app.option.options.userAuditFields.indexOf('postName') > -1 && postDetail.postName!==''">
-                    {{iptMsgInfoStr}}
-                    </div> 
-              </el-form-item>
-               <el-form-item label="通讯地址">
-                <el-input placeholder="请输入通讯地址" v-model="userDetail.address"></el-input>
-                  <div class="el-form-item__error" v-if="this.app.option.options.userAuditFields.indexOf('address') > -1 && userDetail.address!==''">
+                <el-input placeholder="请输入岗位" v-model="postDetail.postName" @input="showIptMsg('postName')"></el-input>
+                 <div class="el-form-item__error" v-show="this.iptMsgVisible['postName']">
                     {{iptMsgInfoStr}}
                     </div>
+              </el-form-item>
+               <el-form-item label="通讯地址">
+                <el-input placeholder="请输入通讯地址" v-model="userDetail.address" @input="showIptMsg('address')"></el-input>
+                  <div class="el-form-item__error" v-show="this.iptMsgVisible['address']">
+                    {{iptMsgInfoStr}}
+                  </div>
               </el-form-item>
             </el-col>
           </el-row>
@@ -388,28 +390,29 @@ export default {
       if (value === '') {
         allback(new Error('号码不能为空'))
       } else {
-        let reg=/ ^((13[0-9])|(15[^4])|(18[0,2,3,5-9])|(17[0-8])|(147))\d{8}$/
+        let reg = / ^((13[0-9])|(15[^4])|(18[0,2,3,5-9])|(17[0-8])|(147))\d{8}$/
         reg.test(value) ? callback() : callback(new Error('请输入11位有效号码'))
         callback()
       }
     }
     return {
-        iptMsgInfoStr: '添加或修改该字段需要提交审核',
-        rulesOption:{
-          name: [
+      iptMsgInfoStr: '添加或修改该字段需要提交审核',
+      iptMsgVisible: {},
+      rulesOption: {
+        name: [
           { required: true, message: '姓名不能为空', trigger: 'blur' },
-          { message: '', trigger: 'change' },
+          { message: '', trigger: 'change' }
         ],
         mobile: [
           { required: true, message: '手机号不能为空', trigger: 'blur' },
-           { message: '', trigger: 'change' },
-            // { validator: validateMobile, trigger: 'blur' }
+          { message: '', trigger: 'change' }
+          // { validator: validateMobile, trigger: 'blur' }
         ],
-         type: [
+        type: [
           { required: true, message: '请选择身份类型', trigger: 'blur' },
-          { type:'number', message: '', trigger: 'change' }
+          { type: 'number', message: '', trigger: 'change' }
         ]
-        },
+      },
       showPopover: false, // 是否显示 Popover
       hidefooter: false,
       msgVisiable: false,
@@ -438,7 +441,7 @@ export default {
         type: 3 // 1.单位，2、内设机构，3、人员
       },
       timer: null,
-      showPopoverFlag: false,
+      showPopoverFlag: false
     }
   },
   created () {
@@ -455,21 +458,32 @@ export default {
       } else {
         this.msgVisiable = false
       }
+
+      this.initIptMsgVisible()
     },
     exportOrg () {
       this.$emit('exportOrg')
     },
+    // 设置各个字段的验证提示信息的可见性
+    initIptMsgVisible () {
+      for (let field in this.userDetail) {
+        this.iptMsgVisible[field] = false
+      }
+    },
+    showIptMsg (fieldName) {
+      if (this.app.option.options.userAuditFields.indexOf(fieldName) > -1) {
+        this.iptMsgVisible[fieldName] = true
+      }
+    },
     modifieUserInfo (userDetail) {
-     
-        this.$refs[userDetail].validate(valid => {
-          if (valid) {
-            this.$emit('goModifieUserInfo', this.personFrom)
-          } else {
-            this.$message.warning(`请填写必填字段`)
-            return false
-          }
-        })
-      
+      this.$refs[userDetail].validate(valid => {
+        if (valid) {
+          this.$emit('goModifieUserInfo', this.personFrom)
+        } else {
+          this.$message.warning(`请填写必填字段`)
+          return false
+        }
+      })
     },
     // 搜索表格点击当前行
     selectRow (val) {
@@ -480,6 +494,7 @@ export default {
     },
     // 搜索数据
     loadSearch () {
+      this.iptMsgVisible['name'] = true
       this.searchFlag = false
       // console.log(' this.personFrom.name:', this.personFrom.name)
       if (this.$route.name === 'PersonAdd' && this.personFrom.name.length > 1) {
@@ -517,10 +532,12 @@ export default {
     // 选择身份类型
     getIdentityType (val) {
       this.postFrom.type = val
+      this.showIptMsg('type')
     },
     // 选择民族
     getNation (val) {
       this.personFrom.nation = val
+      this.showIptMsg('nation')
     },
     // 选择学历
     getQualification (val) {
@@ -529,6 +546,7 @@ export default {
     // 选择性别
     getSex (val) {
       this.personFrom.sex = val
+      this.showIptMsg('sex')
     },
     // 选择职级
     getPositionClass (val) {
@@ -645,7 +663,6 @@ export default {
           return false
         }
       })
-      
     },
     goBack () {
       this.$router.go(-1)
