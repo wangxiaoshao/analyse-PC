@@ -20,7 +20,7 @@
       :disabled="!isShowEditFlag"
       class="demo-ruleForm"
     >
-      <el-form-item label="节点名称" prop="name">
+      <el-form-item label="节点名称111" prop="name">
         <el-input v-model="ruleForm.name"></el-input>
       </el-form-item>
       <el-form-item label="上级节点" prop="parentName">
@@ -58,12 +58,13 @@
 import { api, urlNames } from '@src/api'
 import dicOption from '@src/mixins/dic-options.js'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
+import goBack from '@src/mixins/go-back.js'
 import hasRight from '@src/mixins/has-right'
 import areaList from '../components/AreaList/index'
 export default {
   name: 'index',
   components: { areaList },
-  mixins: [handleBreadcrumb, dicOption, hasRight],
+  mixins: [handleBreadcrumb, dicOption, hasRight,goBack],
   data () {
     return {
       loading: false,
@@ -100,7 +101,6 @@ export default {
       enable: this.ruleForm.enable,
       reason: this.ruleForm.reason
     }
-    this.oldFrom = JSON.parse(JSON.stringify(obj))
     this.getNodeDetail()
   },
   methods: {
@@ -131,6 +131,7 @@ export default {
       let data = {
         id: this.$route.params.id || this.$route.params.parentId
       }
+      let that=this
       this.loading = true
       api[urlNames['findViewNodeById']](data).then(
         res => {
@@ -171,6 +172,8 @@ export default {
               }
             }
           })
+          this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
+          console.log('ruleForm:',this.ruleForm,this.oldFrom)
         },
         () => {
           this.$message.error(`没有内容`)
@@ -212,10 +215,13 @@ export default {
             res => {
               this.$message.success(`保存成功`)
               this.$emit('on-update-organization-tree')
-              this.goBack()
+              this.$router.go(-1)
             },
             () => {}
           )
+        }else{
+          this.$message.error('请填写必要字段')
+          this.isChange=false
         }
       })
     },
@@ -230,7 +236,14 @@ export default {
       let currentPage = breadcrumb[breadcrumb.length - 1]
       breadcrumb.splice(-1, 1)
       this.SET_PAGE_BREADCRUMB(breadcrumb)
-      this.$router.push(currentPage.parent)
+      // this.$router.push(currentPage.parent)
+      this.isChange= this.addWatch(this.ruleForm,this.oldFrom)
+      if(this.isChange){
+        this.goBackDilog(this.submitForm,'ruleForm')
+      }else{
+        this.isChange=false
+        this.$router.go(-1)
+      }
     }
   },
   computed: {

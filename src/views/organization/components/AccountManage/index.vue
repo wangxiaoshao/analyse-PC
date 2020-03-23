@@ -193,6 +193,9 @@ export default {
            this.$emit('get-account', this.accountSend)
           }
         }
+        if(this.addAccount.name==''&&this.addAccount.nickName==''&&this.addAccount.password==''){
+           this.$emit('get-account', this.accountSend)
+        }
         
 
        

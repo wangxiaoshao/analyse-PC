@@ -7,12 +7,12 @@
       @getTag="getTag"
       :delSelectLabelId="delSelectLabelId"
     ></search-lable>
-    <el-form :model="ruleForm" :disabled="disabledFlag" ref="ruleForm" label-width="110px">
+    <el-form :model="ruleForm" :disabled="disabledFlag" ref="ruleForm" label-width="110px" id="ruleForm">
       <div class="detail-title">
         <i class="imenu-icon iconfont iconbumen big-icon" style="margin: 0px 5px;"></i>内设机构信息
       </div>
       <el-menu class="el-menu-demo" mode="horizontal">
-        <el-menu-item index="1">基础信息111</el-menu-item>
+        <el-menu-item index="1">基础信息</el-menu-item>
       </el-menu>
       <el-row>
         <el-col :span="12">
@@ -132,7 +132,7 @@
       </el-row>
       <el-form-item v-show="isShowEditFlag">
         <el-button type="primary" @click="submitForm('ruleForm')">{{submitHtml}}</el-button>
-        <el-button @click="goBack">取消</el-button>
+        <el-button @click="goBack">返回</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -141,11 +141,12 @@
 <script>
 import { api, urlNames } from '@src/api'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
+import goBack from '@src/mixins/go-back.js'
 import searchLable from '../components/AddTags/index'
 import { mapState, mapMutations } from 'vuex'
 export default {
   name: 'index',
-  mixins: [ handleBreadcrumb ],
+  mixins: [ handleBreadcrumb ,goBack],
   components: { searchLable },
   /* props: {
     // TODO breadcrumb可采用组件传参的模式替换路由判断，将配置权交给调用方
@@ -209,7 +210,7 @@ export default {
           value: 2
         }
       ],
-      isChange:false,
+      // isChange:false,
       initCount:0
     }
   },
@@ -231,9 +232,7 @@ export default {
     ...mapMutations(['SET_OPTION']),
     init () {
       if (this.$route.name === 'DepartmentAdd' || this.$route.name === 'DepartmentEdit') {
-        // if (this.$route.name === 'DepartmentAdd') {
-        //   this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
-        // }
+        this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
         api[urlNames['findViewNodeById']]({
           id: this.$route.params.parentId || this.$route.params.id
         }).then((res) => {
@@ -247,6 +246,7 @@ export default {
               }).then((res) => {
                 this.ruleForm.department.orgName = res.data.name
                 this.ruleForm.department.orgId = res.data.id
+                this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
               })
             }
             if (res.data.nodeType === 3) { // 上级内设机构
@@ -254,11 +254,7 @@ export default {
               this.getDetail()
             }
           }
-
-           this.oldFrom=JSON.parse(JSON.stringify(this.ruleForm.department))
-            // this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
-           console.log('ruleForm',this.ruleForm,this.oldFrom)
-        
+          
         }, () => {
           this.$message.error(`没有内容`)
         })
@@ -268,6 +264,8 @@ export default {
         this.findLabel(2)
       }
     },
+    
+
     getDetail () {
       let data = {
         id: this.bindId
@@ -292,10 +290,9 @@ export default {
           this.ruleForm.department.description = res.data.description
           this.ruleForm.department.duty = res.data.duty
           this.ruleForm.department.removed = !res.data.removed
-          // if (this.$route.name === 'DepartmentEdit') {
-          //   this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
-          // }
-          //  this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
+          if (this.$route.name === 'DepartmentEdit') {
+            this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
+          }
         }
       }, () => {
         this.$message.error(`没有内容`)
@@ -399,84 +396,32 @@ export default {
         if (valid) {
           api[urlNames['createDepartment']](this.ruleForm).then((res) => {
             this.$message.success(`保存成功`)
-            this.goBack()
+            this.$router.go(-1)
           }, () => {
-
           })
+        }else{
+          this.$message.error('请填写必填字段')
         }
       })
     },
-      /** 判断两值是否相等、考虑原始值 */
-    judgeValueEqual(a, b) {
-      if (typeof a === 'object' && typeof b === 'object') {
-        // 取对象a和b的属性名
-        var aProps = Object.getOwnPropertyNames(a)
-        var bProps = Object.getOwnPropertyNames(b)
-        // 判断属性名的length是否一致
-        if (aProps.length !== bProps.length) {
-          return false
-        }
-        console.log('aProps:',aProps)
-        // 循环取出属性名，再判断属性值是否一致
-        for (var i = 0; i < aProps.length; i++) {
-          // var propName = aProps[i]
-          //  console.log('propName1',propName)
-          if (typeof a[aProps[i]] === 'object') {
-            alert(typeof a[aProps[i]])
-            console.log('a:',a[aProps[i]])
-            // if (this.judgeValueEqual(a[propName], b[propName])) {
-            //   return true
-            // }
-          } 
-          // else if (a[propName] !== b[propName]) {
-          //   console.log('propName3',a[propName])
-          //   return false
-          // }else{
-          //   console.log('propName4',a[propName])
-          //   return true
-          // }
-        }
-        return true
-      } else {
-        return a === b
-      }
-    },
 
     goBack () {
-      //   orgName: '',
-      // parentDep: '',
-      // parentName: ''
-     
-      // this.oldFrom.nodeId=this.ruleForm.nodeId;
-      // this.oldFrom.department.orgName=this.ruleForm.department.orgName;
-      // this.oldFrom.department.orgId=this.ruleForm.department.orgId
-       console.log(this.ruleForm,this.oldFrom)
-    //  this.isChange= this.judgeValueEqual(this.ruleForm,this.oldFrom)
-    //  console.log('isChange',this.isChange)
-      // if(this.isChange){
-        this.$confirm('内容已修改, 是否保存?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          // this.$message({
-          //   type: 'success',
-          //   message: '删除成功!'
-          // });
-        }).catch(() => {
-            this.$router.go(-1)
-        });
-      // }
+      this.isChange= this.addWatch(this.ruleForm,this.oldFrom)
+      if(this.isChange){
+        this.goBackDilog(this.submitForm,'ruleForm')
+      }else{
+        this.isChange=false
+        this.$router.go(-1)
+      }
+      
     }
   },
   watch:{
-    // ruleForm:{
-    //   handler(newForm){
-       
-
-    //   },
-    //   deep:true
-    // }
+    ruleForm:{
+      handler(newForm,oldFrom){
+      },
+      deep:true
+    }
   }
 }
 </script>

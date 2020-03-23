@@ -349,7 +349,7 @@
         v-if="this.$route.name === 'PersonAdd' || this.$route.name === 'PersonEdit' && !hidefooter"
       >
         <el-button type="primary" @click="next('userDetail')" :disabled="false">下一步</el-button>
-        <el-button @click="goBack">取消</el-button>
+        <el-button @click="goBack">返回</el-button>
       </span>
       <span v-if="this.$route.name==='PassChange' && hidefooter==false">
         <el-button type="primary" @click="modifieUserInfo('userDetail')">立即更改</el-button>
@@ -368,6 +368,7 @@ import HasRight from '@src/mixins/has-right'
 import rulesOption from '@src/mixins/rules-options'
 export default {
   props: [
+    'userInfo',
     'disabledFlag',
     'isShowEditFlag',
     'userDetail',
@@ -385,7 +386,6 @@ export default {
     addTags
   },
   data () {
-    // ^((13[0-9])|(15[^4])|(18[0,2,3,5-9])|(17[0-8])|(147))\d{8}$
     let validateMobile = (rule, value, callback) => {
       if (value === '') {
         allback(new Error('号码不能为空'))
@@ -413,6 +413,7 @@ export default {
           { type: 'number', message: '', trigger: 'change' }
         ]
       },
+      isChange:false,
       showPopover: false, // 是否显示 Popover
       hidefooter: false,
       msgVisiable: false,
@@ -441,11 +442,23 @@ export default {
         type: 3 // 1.单位，2、内设机构，3、人员
       },
       timer: null,
-      showPopoverFlag: false
+      showPopoverFlag: false,
+       oldUserDetail:{},
+       oldPostDetail:{}
+      // oldUserInfo
     }
   },
   created () {
     this.init()
+  },
+  mounted(){
+    this.oldUserDetail = JSON.parse(JSON.stringify(this.userDetail))
+    this.oldPostDetail = JSON.parse(JSON.stringify(this.postFrom))
+    // this.oldPostDetail=Object.assign({},this.postDetail)
+    console.log(this.postDetail,this.oldPostDetail)
+
+    // this.oldPostDetail.orgId=this.postDetail.orgId
+   
   },
   computed: {
     ...mapState(['app'])
@@ -656,16 +669,42 @@ export default {
     next (userDetail) {
       this.$refs[userDetail].validate(valid => {
         if (valid) {
+          this.isChange=false
           this.$emit('get-post', this.postFrom)
           this.$emit('get-user', this.personFrom)
         } else {
           this.$message.warning(`请填写必填字段`)
+           this.isChange=false
           return false
         }
       })
     },
+    addWatch(){
+      return JSON.stringify(this.userDetail) !== JSON.stringify(this.oldUserDetail) || JSON.stringify(this.postDetail) !== JSON.stringify(this.oldPostDetail)
+
+   },
     goBack () {
-      this.$router.go(-1)
+       this.$router.go(-1)
+      //  console.log(this.userDetail,this.oldUserDetail)
+      //   console.log(this.postDetail,this.oldPostDetail)
+      // this.isChange=this.addWatch()
+      // console.log(this.isChange)
+      // if(this.isChange){
+      //   this.$confirm('修改内容尚未保存, 确定要返回吗?', '提示', {
+      //       confirmButtonText: '确定',
+      //       cancelButtonText: '取消',
+      //       type: 'warning'
+      //     }).then(() => {
+      //       this.next ('userDetail')
+      //     }).catch(() => {
+      //       this.isChange=false
+      //       this.$router.go(-1)
+      //     });
+      // }else{
+      //   this.isChange=false
+      //   this.$router.go(-1)
+      // }
+       
     },
     handleSelect (item) {
       console.log(item)
