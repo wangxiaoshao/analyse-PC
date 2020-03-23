@@ -91,6 +91,15 @@ export default {
         vm.selectedIds = val.map(item => item.appId)
         vm.changeSlectedList()
       }
+    },
+    selectedIds:{
+       handler (newValue, oldValue) {
+        console.log(newValue)
+        if(newValue.length>0&&!this.isCreate){
+          this.isChange=true
+          console.log('this.isChange:',this.isChange)
+        }
+      }
     }
   },
   methods: {
@@ -110,7 +119,6 @@ export default {
     changeSlectedList () {
       let selectedIds = this.selectedIds
       this.slectedList = this.appList.filter(app => selectedIds.includes(app.appId))
-      this.isChange=true
     },
 
     // 改变选择列表的id
@@ -160,7 +168,7 @@ export default {
     handlePopoverConfirm () {
       this.changeSlectedList()
       let arr = this.selectedIds.map(id => id + '')
-      this.$emit('app-change', arr, this.sysIndex)
+      this.$emit('app-change', arr, this.sysIndex,this.isChange)
       this.showPopover = false
     },
 
