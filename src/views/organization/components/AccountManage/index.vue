@@ -20,7 +20,7 @@
     <el-collapse v-model="activeAccount" accordion class="account-list">
       <el-collapse-item v-for="(item,index) in accountList" :key="item.id" :title="item.name + ' ' + userInfo.name">
           <!-- <bind-system :user-account="userAccount" @get-app="getAppId"></bind-system> -->
-          <bind-system :list="item.account4AppDtos || []" :sysIndex='index'  @app-change="getAppId"></bind-system>
+          <bind-system :list="item.account4AppDtos || []" :sysIndex='index'  :isCreate="false"  @app-change="getAppId"></bind-system>
       </el-collapse-item>
     </el-collapse>
     <div class="creat-account-content" v-if="this.$route.name === 'PersonAdd' || this.$route.name === 'PersonEdit'">
@@ -41,7 +41,7 @@
           <el-input v-model="addAccount.password" show-password></el-input>
         </el-form-item>
          <el-form-item label="关联系统">
-         <bind-system :list="[]" :isCreate="isCreate" @app-change="getAppId"></bind-system>
+         <bind-system :list="[]" :isCreate="true" @app-change="getAppId"></bind-system>
         </el-form-item>
         <el-form-item label="是否启用" prop="removed">
           <el-switch v-model="addAccount.removed"></el-switch>
@@ -107,6 +107,7 @@ export default {
         reason: ''
       },
       isCreate:true,
+      isChange:false,
       updateSystem:false,
       oldFrom: {},
       // addFlag: this.isDefaultFlag,
@@ -188,7 +189,7 @@ export default {
           }
           })
         }else{
-           if(this.doIndex!==undefined&&this.doIndex!==''){
+           if(this.isChange){
            this.$emit('get-account', this.accountSend)
           }
         }
@@ -202,10 +203,11 @@ export default {
     goBack () {
       this.$router.go(-1)
     },
-    getAppId (val, index,isChange) {
+    getAppId (val, index,change) {
       this.addAccount.appId = val
       this.doIndex=index
-      if(index!==undefined&&index!==''){
+      this.isChange=change
+      if(index!==undefined&&index!==''&&this.isChange){
         this.accountSend[index].appId = this.addAccount.appId
       }
     }

@@ -7,12 +7,12 @@
       @getTag="getTag"
       :delSelectLabelId="delSelectLabelId"
     ></search-lable>
-    <el-form :model="ruleForm" :disabled="disabledFlag" ref="ruleForm" label-width="110px" class="demo-ruleForm">
+    <el-form :model="ruleForm" :disabled="disabledFlag" ref="ruleForm" label-width="110px">
       <div class="detail-title">
         <i class="imenu-icon iconfont iconbumen big-icon" style="margin: 0px 5px;"></i>内设机构信息
       </div>
       <el-menu class="el-menu-demo" mode="horizontal">
-        <el-menu-item index="1">基础信息</el-menu-item>
+        <el-menu-item index="1">基础信息111</el-menu-item>
       </el-menu>
       <el-row>
         <el-col :span="12">
@@ -30,7 +30,7 @@
             </div>
           </el-form-item>
           <el-form-item label=" 上级内设机构" prop="parentDep">
-            <el-input v-model="parentDep" :disabled="true"></el-input>
+            <el-input v-model="ruleForm.department.parentDep" :disabled="true"></el-input>
           </el-form-item>
            <el-form-item label=" 启用状态" prop="department.removed">
             <el-switch v-model="ruleForm.department.removed"></el-switch>
@@ -55,19 +55,19 @@
           >
             <el-input v-model="ruleForm.department.phone"></el-input>
             <div v-if="this.$route.name === 'DepartmentEdit' ||  this.$route.name === 'DepartmentAdd'">
-            <div class="tip-msg"
+            <!-- <div class="tip-msg"
                  v-show="this.app.option.options.departmentAuditFields.indexOf('phone') > -1 && ruleForm.department.phone !== oldFrom.department.phone">
               添加或修改该字段需要提交审核
-            </div>
+            </div> -->
             </div>
           </el-form-item>
           <el-form-item label="上级单位" prop="orgName">
-            <el-input v-model="orgName" :disabled="true"></el-input>
+            <el-input v-model="ruleForm.department.orgName" :disabled="true"></el-input>
             <div v-if="this.$route.name === 'DepartmentEdit' ||  this.$route.name === 'DepartmentAdd'">
-             <div class="tip-msg"
+             <!-- <div class="tip-msg"
                    v-show="this.app.option.options.departmentAuditFields.indexOf('orgName') > -1 && ruleForm.department.orgName !== oldFrom.department.orgName">
                 添加或修改该字段需要提交审核
-              </div>
+              </div> -->
             </div>
           </el-form-item>
         </el-col>
@@ -178,9 +178,6 @@ export default {
       oldFrom: {},
       tagKeyWord: '',
       tagsName: [],
-      orgName: '',
-      parentDep: '',
-      parentName: '',
       bindId: '',
       tempLabelId: [], // 存储label中间变量
       delSelectLabelId: null,
@@ -189,6 +186,9 @@ export default {
         nodeId: '',
         labelId: [],
         department: {
+          orgName: '',
+          parentDep: '',
+          parentName: '',
           removed: true,
           phone: '',
           name: '',
@@ -208,7 +208,9 @@ export default {
           label: '党委',
           value: 2
         }
-      ]
+      ],
+      isChange:false,
+      initCount:0
     }
   },
   computed: {
@@ -219,6 +221,7 @@ export default {
   },
   created () {
     this.init()
+   
   },
   beforeRouteUpdate (to, from, next) {
     next()
@@ -228,9 +231,9 @@ export default {
     ...mapMutations(['SET_OPTION']),
     init () {
       if (this.$route.name === 'DepartmentAdd' || this.$route.name === 'DepartmentEdit') {
-        if (this.$route.name === 'DepartmentAdd') {
-          this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
-        }
+        // if (this.$route.name === 'DepartmentAdd') {
+        //   this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
+        // }
         api[urlNames['findViewNodeById']]({
           id: this.$route.params.parentId || this.$route.params.id
         }).then((res) => {
@@ -242,7 +245,7 @@ export default {
               api[urlNames['findOrganizationById']]({
                 id: res.data.bindId
               }).then((res) => {
-                this.orgName = res.data.name
+                this.ruleForm.department.orgName = res.data.name
                 this.ruleForm.department.orgId = res.data.id
               })
             }
@@ -251,6 +254,11 @@ export default {
               this.getDetail()
             }
           }
+
+           this.oldFrom=JSON.parse(JSON.stringify(this.ruleForm.department))
+            // this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
+           console.log('ruleForm',this.ruleForm,this.oldFrom)
+        
         }, () => {
           this.$message.error(`没有内容`)
         })
@@ -268,15 +276,15 @@ export default {
       api[urlNames['findDepartmentById']](data).then((res) => {
         this.loading = false
         if (this.$route.name === 'DepartmentAdd') {
-          this.orgName = res.data.orgName
+          this.ruleForm.department.orgName = res.data.orgName
           this.ruleForm.department.orgId = res.data.orgId
         } else {
-          this.orgName = res.data.orgName
+          this.ruleForm.department.orgName = res.data.orgName
           this.ruleForm.department.orgId = res.data.orgId
           if (res.data.parentId) {
-            this.parentDep = res.data.parentName
+            this.ruleForm.department.parentDep = res.data.parentName
           } else {
-            this.parentDep = ''
+            this.ruleForm.department.parentDep = ''
           }
           this.ruleForm.department.id = res.data.id
           this.ruleForm.department.phone = res.data.phone
@@ -284,9 +292,10 @@ export default {
           this.ruleForm.department.description = res.data.description
           this.ruleForm.department.duty = res.data.duty
           this.ruleForm.department.removed = !res.data.removed
-          if (this.$route.name === 'DepartmentEdit') {
-            this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
-          }
+          // if (this.$route.name === 'DepartmentEdit') {
+          //   this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
+          // }
+          //  this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
         }
       }, () => {
         this.$message.error(`没有内容`)
@@ -397,9 +406,77 @@ export default {
         }
       })
     },
+      /** 判断两值是否相等、考虑原始值 */
+    judgeValueEqual(a, b) {
+      if (typeof a === 'object' && typeof b === 'object') {
+        // 取对象a和b的属性名
+        var aProps = Object.getOwnPropertyNames(a)
+        var bProps = Object.getOwnPropertyNames(b)
+        // 判断属性名的length是否一致
+        if (aProps.length !== bProps.length) {
+          return false
+        }
+        console.log('aProps:',aProps)
+        // 循环取出属性名，再判断属性值是否一致
+        for (var i = 0; i < aProps.length; i++) {
+          // var propName = aProps[i]
+          //  console.log('propName1',propName)
+          if (typeof a[aProps[i]] === 'object') {
+            alert(typeof a[aProps[i]])
+            console.log('a:',a[aProps[i]])
+            // if (this.judgeValueEqual(a[propName], b[propName])) {
+            //   return true
+            // }
+          } 
+          // else if (a[propName] !== b[propName]) {
+          //   console.log('propName3',a[propName])
+          //   return false
+          // }else{
+          //   console.log('propName4',a[propName])
+          //   return true
+          // }
+        }
+        return true
+      } else {
+        return a === b
+      }
+    },
+
     goBack () {
-      this.$router.go(-1)
+      //   orgName: '',
+      // parentDep: '',
+      // parentName: ''
+     
+      // this.oldFrom.nodeId=this.ruleForm.nodeId;
+      // this.oldFrom.department.orgName=this.ruleForm.department.orgName;
+      // this.oldFrom.department.orgId=this.ruleForm.department.orgId
+       console.log(this.ruleForm,this.oldFrom)
+    //  this.isChange= this.judgeValueEqual(this.ruleForm,this.oldFrom)
+    //  console.log('isChange',this.isChange)
+      // if(this.isChange){
+        this.$confirm('内容已修改, 是否保存?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          // this.$message({
+          //   type: 'success',
+          //   message: '删除成功!'
+          // });
+        }).catch(() => {
+            this.$router.go(-1)
+        });
+      // }
     }
+  },
+  watch:{
+    // ruleForm:{
+    //   handler(newForm){
+       
+
+    //   },
+    //   deep:true
+    // }
   }
 }
 </script>

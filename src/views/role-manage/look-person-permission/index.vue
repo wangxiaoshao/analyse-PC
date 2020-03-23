@@ -138,6 +138,7 @@ export default {
     },
     findBySearchName(){
       let data = {
+        roleId: this.$route.params.id,
         searchName:this.searchName,
         page: this.page.current,
         limit: this.page.limit

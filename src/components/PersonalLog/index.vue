@@ -47,7 +47,7 @@
                 <el-option
                   v-for="item in logList"
                   :key="item.type"
-                  :label="item.text"
+                  :label="item.subject"
                   :value="item.type"
                 ></el-option>
               </el-select>
@@ -163,52 +163,11 @@ export default {
   mixins: [handleTable],
   props: ['loginLog','showFindBtn'],
   data () {
-    let logAry=[
-      {type:1,text:'登录日志'},
-      {type:20,text:'创建用户'},
-      {type:21,text:'更新用户'},
-      {type:22,text:'删除用户'},
-      {type:23,text:'添加用户身份'},
-      {type:24,text:'修改身份'},
-      {type:25,text:'删除身份'},
-      {type:26,text:'创建用户扩展属性'},
-      {type:27,text:'修改用户扩展属性'},
-      {type:28,text:'创建用户调出'},
-      {type:29,text:'创建用户账号'},
-      {type:30,text:'修改用户账号'},
-      {type:31,text:'修改用户密码'},
-      {type:32,text:'创建用户标签'},
-      {type:40,text:'创建部门'},
-      {type:41,text:'修改部门'},
-      {type:42,text:'删除部门'},
-      {type:43,text:'创建部门标签'},
-      {type:50,text:'创建单位'},
-      {type:51,text:'修改单位'},
-      {type:52,text:'删除单位'},
-      {type:53,text:'创建单位领导'},
-      {type:54,text:'创建单位标签'},
-      {type:55,text:'创建单位区域'},
-      {type:56,text:'删除单位区域'},
-      {type:60,text:'创建视图'},
-      {type:61,text:'修改视图'},
-      {type:62,text:' 创建视图草稿'},
-      {type:63,text:' 删除视图草稿'},
-      {type:64,text:'修改视图草稿'},
-      {type:70,text:'创建视图节点'},
-      {type:71,text:' 删除视图节点'},
-      {type:72,text:'修改视图节点'},
-      {type:73,text:'添加部门节点'},
-      {type:74,text:' 添加单位节点'},
-      {type:80,text:'添加角色'},
-      {type:81,text:'修改角色'},
-      {type:82,text:'删除角色'},
-      {type:83,text:'添加角色权限'},
-      {type:84,text:'添加角色成员'}
-    ]
+    
     return {
       tableData: [],
       detialInfoVisible: false,
-      logList:logAry,
+      logList:[],
       detialInfoForm: {
         actionDepartmentId: '',
         actionOrgId: '',
@@ -288,6 +247,7 @@ export default {
       this.SET_APPLICATION_SEARCH_QUERY({})
     }
     this.getGrid()
+    this.getLoggerTypeList()
   },
   methods: {
     ...mapMutations(['SET_APPLICATION_PAGE', 'SET_APPLICATION_SEARCH_QUERY']),
