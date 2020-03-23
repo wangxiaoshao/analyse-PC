@@ -221,6 +221,7 @@ export default {
   },
   created () {
     this.init()
+    this.getOldForm()
    
   },
   beforeRouteUpdate (to, from, next) {
@@ -255,9 +256,8 @@ export default {
             }
           }
 
-           this.oldFrom=JSON.parse(JSON.stringify(this.ruleForm.department))
             // this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
-           console.log('ruleForm',this.ruleForm,this.oldFrom)
+            // console.log("ruleForm:",this.ruleForm,this.oldFrom)
         
         }, () => {
           this.$message.error(`没有内容`)
@@ -268,6 +268,17 @@ export default {
         this.findLabel(2)
       }
     },
+
+    getOldForm(){
+      // for(let key in this.ruleForm){
+      //   this.oldFrom.key=ruleForm[key]
+      // }
+   
+      console.log("ruleForm:",this.ruleForm,this.oldFrom)
+     
+    },
+
+
     getDetail () {
       let data = {
         id: this.bindId
@@ -443,13 +454,7 @@ export default {
     },
 
     goBack () {
-      //   orgName: '',
-      // parentDep: '',
-      // parentName: ''
      
-      // this.oldFrom.nodeId=this.ruleForm.nodeId;
-      // this.oldFrom.department.orgName=this.ruleForm.department.orgName;
-      // this.oldFrom.department.orgId=this.ruleForm.department.orgId
        console.log(this.ruleForm,this.oldFrom)
     //  this.isChange= this.judgeValueEqual(this.ruleForm,this.oldFrom)
     //  console.log('isChange',this.isChange)

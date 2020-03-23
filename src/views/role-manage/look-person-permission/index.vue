@@ -140,7 +140,7 @@ export default {
       let data = {
         roleId: this.$route.params.id,
         searchName:this.searchName,
-        page: this.page.current,
+        page: 1,
         limit: this.page.limit
       }
       api[urlNames['searchRoleBindUserList']](data).then((res) => {
