@@ -29,6 +29,11 @@
                   <el-form-item v-if="returnViewId!=='0'" label="视图ID">
                     <el-input  disabled v-model="returnViewId"></el-input>
                   </el-form-item>
+                  <el-form-item>
+                    <el-checkbox v-model="ViewFrom.syncChildren">是否关闭新增机构自动同步</el-checkbox>
+                    <br>
+                    <span style="color:rgb(114, 116, 119)">（组织机构新增单位、内设机构将同步至本视图）</span>
+                  </el-form-item>
                   <!--                暂时隐藏  <el-form-item label="备注">-->
                   <!--                    <el-input v-model="ViewFrom.remark"></el-input>-->
                   <!--                  </el-form-item>-->
@@ -135,6 +140,27 @@
           </el-form>
         </div>
       </el-tab-pane>
+      <el-tab-pane label="最新视图" name="third">
+        <div class="from tree-form">
+          <div class="tree-title">最新视图（{{ viewLastUpdatedTime }}）</div>
+          <el-form ref="form" :model="form">
+          <div class="tree-panel">
+            <div class="grid-content">
+              <el-form-item label="">
+                <div class="select-org">
+                  <el-tree
+                    :data="currentView"
+                    :props="defaultProps"
+                    :load="loadNode"
+                    lazy>
+                  </el-tree>
+                </div>
+              </el-form-item>
+            </div>
+          </div>
+          </el-form>
+        </div>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -150,6 +176,8 @@ export default {
   mixins: [handleTable, handleBreadcrumb, HasRight],
   data () {
     return {
+      currentView: [],
+      viewLastUpdatedTime: '',
       defaultexpandedkeys: '-1730833917365171641',
       activeName: 'first',
       tabDisable: true,
@@ -158,7 +186,8 @@ export default {
         name: '',
         remark: '',
         removed: true,
-        roleBindUserIds: []
+        roleBindUserIds: [],
+        syncChildren: false
       },
       returnViewId: this.$route.params.id, // 228770923203788800
       form: {},
@@ -216,6 +245,9 @@ export default {
       this.tabDisable = false
       this.findNodeDraftList('-1')
       this.findViewById(this.$route.params.id)
+
+      this.findCurrentView(this.$route.params.id)
+      this.getViewTime()
     }
   },
   methods: {
@@ -241,7 +273,8 @@ export default {
         name: this.ViewFrom.name,
         remark: '暂时隐藏',
         removed: this.ViewFrom.removed ? 0 : 1,
-        roleBindUserId: this.ViewFrom.roleBindUserIds
+        roleBindUserId: this.ViewFrom.roleBindUserIds,
+        syncChildren: this.ViewFrom.syncChildren
       }).then((res) => {
         if (res.status === 0) {
           this.returnViewId = res.data
@@ -284,6 +317,17 @@ export default {
         }
       })
     },
+    // 获取当前定型视图的最新时间
+    getViewTime () {
+      api[urlNames['getViewTime']]({
+        viewId: this.returnViewId,
+        parentId: -1
+      }).then((res) => {
+        if (res.status === 0) {
+          this.viewLastUpdatedTime = res.data.lastUpdateTime
+        }
+      })
+    },
     // 获取机构树--初始化
     findNodeTree (parentId) {
       api[urlNames['getViewTree']]({}).then((res) => {
@@ -320,6 +364,14 @@ export default {
           }
           this.findNodeDraftList('-1')
         }
+      })
+    },
+    // 获取当前定型的视图
+    findCurrentView (viewId) {
+      api[urlNames['getViewTree']]({
+        viewId: viewId
+      }).then((res) => {
+        this.currentView = res.data
       })
     },
     // 获取机构树--加载子节点
@@ -450,7 +502,8 @@ export default {
     updateNodeDraft (id, nodeList) {
       api[urlNames['createNodeDraft']]({
         viewId: this.returnViewId,
-        viewNodeDraft: nodeList
+        viewNodeDraft: nodeList,
+        syncChild: false
       }).then((res) => {
         if (res.status === 0) {
           if (res.data !== undefined && res.data === '-1') {
@@ -502,32 +555,51 @@ export default {
 
       if (lastNode === null) {
         this.viewNodeTree.forEach((item, index) => {
-          let tmpObj = JSON.parse(JSON.stringify(item))
-
-          tmpObj.parentId = parentId
-          tmpObj.sort = index
-
-          nodeList.push(tmpObj)
+          nodeList.push({
+            areaId: item.areaId || 0,
+            bindId: item.key,
+            hasChildren: item.hasChildren,
+            id: item.key,
+            name: item.label,
+            parentId: parentId,
+            removed: 0,
+            sort: index,
+            syncChildren: 1,
+            viewId: this.returnViewId
+          })
         })
 
-        let tmpObj = JSON.parse(JSON.stringify(dragNode))
-        tmpObj.parentId = -1
-        tmpObj.sort = this.viewNodeTree.length
-
-        nodeList.push(tmpObj)
+        nodeList.push({
+          areaId: dragNode.areaId || 0,
+          bindId: dragNode.key,
+          hasChildren: dragNode.hasChildren,
+          id: dragNode.key,
+          name: dragNode.label,
+          parentId: parentId,
+          removed: 0,
+          sort: this.viewNodeTree.length,
+          syncChildren: 1,
+          viewId: this.returnViewId
+        })
       } else {
         if (dragNode.data.id === lastNode.data.id) {
           return false
         }
 
-        parentId = lastNode.parent.data.id
+        parentId = lastNode.parent.key || -1
         lastNode.parent.childNodes.forEach((item, index) => {
-          let tmpObj = JSON.parse(JSON.stringify(item))
-
-          tmpObj.parentId = parentId
-          tmpObj.sort = index
-
-          nodeList.push(tmpObj)
+          nodeList.push({
+            areaId: item.areaId || 0,
+            bindId: item.key,
+            hasChildren: item.hasChildren,
+            id: item.key,
+            name: item.label,
+            parentId: parentId,
+            removed: 0,
+            sort: index,
+            syncChildren: 1,
+            viewId: this.returnViewId
+          })
         })
       }
 

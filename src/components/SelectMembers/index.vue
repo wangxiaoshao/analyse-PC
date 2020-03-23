@@ -121,7 +121,7 @@
         </div>
       </div>
       <div class="submit">
-        <el-button type="primary" @click="submitBackData">确定</el-button>
+        <el-button type="primary" @click="submitBackData" :disabled="selectedMembersModel.length ===0 && selectedOrgsModel.length === 0">确定</el-button>
         <el-button @click="handleClose">取消</el-button>
       </div>
     </el-dialog>

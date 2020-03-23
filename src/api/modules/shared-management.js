@@ -46,6 +46,15 @@ export default {
     keepOriginResponse: false
   },
   /**
+   * 获取最新视图的时间
+   */
+  [urlNames.getViewTime]: {
+    type: 'get',
+    url: '/api/jg_manage/viewNode/list',
+    serve: 'organizationManagePC',
+    keepOriginResponse: false
+  },
+  /**
    * 获取视图草稿
    */
   [urlNames.createNodeDraft]: {
