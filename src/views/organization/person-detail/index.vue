@@ -5,6 +5,7 @@
     <step :active="activeIndex" @getActive="getActive"></step>
    <el-container>
      <person-manage
+       :userInfo='userInfo'
        :user-audit-fields="app.option.options.userAuditFields"
        v-if="stepOneFlag"
        :disabledFlag="disabledFlag"
@@ -124,8 +125,8 @@ export default {
     ...mapMutations(['SET_OPTION']),
     init () {
       if (this.$route.name === 'PersonAdd') {
-        this.oldUserInfo = JSON.parse(JSON.stringify(this.userInfo))
-        console.log('this.oldUserInfo111 :',this.oldUserInfo )
+        // console.log('this.oldUserInfo111 :',this.oldUserInfo )
+        
         if (this.$route.params.id) {
           this.getUserDetail(this.$route.params.id)
         }
@@ -137,6 +138,7 @@ export default {
               id: res.data.bindId
             }).then((res) => {
               this.userInfo.identity.orgId = res.data.id
+               this.oldUserInfo = JSON.parse(JSON.stringify(this.userInfo))
             }, (error) => {
               this.$message.error(`没有内容`)
             })
@@ -147,6 +149,7 @@ export default {
             }).then((res) => {
               this.userInfo.identity.departmentId = res.data.id
               this.userInfo.identity.orgId = res.data.orgId
+               this.oldUserInfo = JSON.parse(JSON.stringify(this.userInfo))
             }, (error) => {
               this.$message.error(`没有内容`)
             })
@@ -180,14 +183,11 @@ export default {
           res.data.politicalParty = parseInt(res.data.politicalParty)
         }
         let doUserDetail = Object.assign(this.userInfo.user, res.data)
-
         this.userInfo.user = doUserDetail
-        if (this.$route.name === 'PersonEdit') {
+       
           this.userInfo.userId = res.data.uid
           this.oldUserInfo = JSON.parse(JSON.stringify(this.userInfo))
-          console.log('this.oldUserInfo222 :',this.oldUserInfo)
-
-        }
+        
         this.getUserAccount(res.data.uid)
         this.findLabel(res.data.uid, 3)
         this.loading = false
@@ -214,9 +214,7 @@ export default {
         this.userInfo.identity.postName = res.data.postName
         this.userInfo.identity.type = parseInt(res.data.type)
         this.userInfo.identity.dutyName = res.data.dutyName
-      // eslint-disable-next-line handle-callback-err
       }, (error) => {
-        /* this.$message.error(`没有内容`) */
       })
     },
     findLabel (id, type) {

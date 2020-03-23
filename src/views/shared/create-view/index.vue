@@ -644,6 +644,7 @@ export default {
       }).then((res) => {
         this.ViewFrom.name = res.data.name
         this.ViewFrom.removed = !res.data.removed
+        this.ViewFrom.syncChildren= res.data.syncChildren==1 ? true: false
         this.ViewFrom.roleBindUserIds = []
         res.data.list.forEach(item => {
           this.ViewFrom.roleBindUserIds.push(item.uid)
