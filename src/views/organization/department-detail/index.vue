@@ -7,7 +7,7 @@
       @getTag="getTag"
       :delSelectLabelId="delSelectLabelId"
     ></search-lable>
-    <el-form :model="ruleForm" :disabled="disabledFlag" ref="ruleForm" label-width="110px">
+    <el-form :model="ruleForm" :disabled="disabledFlag" ref="ruleForm" label-width="110px" id="ruleForm">
       <div class="detail-title">
         <i class="imenu-icon iconfont iconbumen big-icon" style="margin: 0px 5px;"></i>内设机构信息
       </div>
@@ -221,7 +221,6 @@ export default {
   },
   created () {
     this.init()
-    this.getOldForm()
    
   },
   beforeRouteUpdate (to, from, next) {
@@ -235,11 +234,13 @@ export default {
         // if (this.$route.name === 'DepartmentAdd') {
         //   this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
         // }
+        this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
         api[urlNames['findViewNodeById']]({
           id: this.$route.params.parentId || this.$route.params.id
         }).then((res) => {
           this.bindId = res.data.bindId
           this.ruleForm.nodeId = res.data.id
+          // this.oldFrom.nodeId = res.data.id
           if (res.data.bindId) {
             this.findLabel(2)
             if (res.data.nodeType === 2) {
@@ -248,6 +249,8 @@ export default {
               }).then((res) => {
                 this.ruleForm.department.orgName = res.data.name
                 this.ruleForm.department.orgId = res.data.id
+                this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
+                console.log('ruleForm:',this.oldFrom,this.ruleForm)
               })
             }
             if (res.data.nodeType === 3) { // 上级内设机构
@@ -255,10 +258,7 @@ export default {
               this.getDetail()
             }
           }
-
-            // this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
-            // console.log("ruleForm:",this.ruleForm,this.oldFrom)
-        
+          
         }, () => {
           this.$message.error(`没有内容`)
         })
@@ -268,16 +268,10 @@ export default {
         this.findLabel(2)
       }
     },
-
-    getOldForm(){
-      // for(let key in this.ruleForm){
-      //   this.oldFrom.key=ruleForm[key]
-      // }
-   
-      console.log("ruleForm:",this.ruleForm,this.oldFrom)
-     
+    formChange(){
+      this.isChange=true
     },
-
+   
 
     getDetail () {
       let data = {
@@ -303,9 +297,9 @@ export default {
           this.ruleForm.department.description = res.data.description
           this.ruleForm.department.duty = res.data.duty
           this.ruleForm.department.removed = !res.data.removed
-          // if (this.$route.name === 'DepartmentEdit') {
-          //   this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
-          // }
+          if (this.$route.name === 'DepartmentEdit') {
+            this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
+          }
           //  this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
         }
       }, () => {
@@ -417,7 +411,7 @@ export default {
         }
       })
     },
-      /** 判断两值是否相等、考虑原始值 */
+    /** 判断两值是否相等、考虑原始值 */
     judgeValueEqual(a, b) {
       if (typeof a === 'object' && typeof b === 'object') {
         // 取对象a和b的属性名
@@ -427,61 +421,59 @@ export default {
         if (aProps.length !== bProps.length) {
           return false
         }
-        console.log('aProps:',aProps)
-        // 循环取出属性名，再判断属性值是否一致
         for (var i = 0; i < aProps.length; i++) {
-          // var propName = aProps[i]
-          //  console.log('propName1',propName)
-          if (typeof a[aProps[i]] === 'object') {
-            alert(typeof a[aProps[i]])
-            console.log('a:',a[aProps[i]])
-            // if (this.judgeValueEqual(a[propName], b[propName])) {
-            //   return true
-            // }
-          } 
-          // else if (a[propName] !== b[propName]) {
-          //   console.log('propName3',a[propName])
-          //   return false
-          // }else{
-          //   console.log('propName4',a[propName])
-          //   return true
-          // }
+          var propName = aProps[i]
+          if(typeof a[propName] === 'object'){
+            if(this.judgeValueEqual(a[propName], b[propName])){
+              return true
+            }
+          }else if(a[propName] !== b[propName]){
+            return false
+          }else{
+            return true
+          }
+          
         }
         return true
       } else {
         return a === b
       }
     },
+     addWatch(){
+     this.isChange= this.judgeValueEqual(this.ruleForm,this.oldFrom)
+     console.log('isChange',this.isChange)
+    },
 
     goBack () {
-     
-       console.log(this.ruleForm,this.oldFrom)
-    //  this.isChange= this.judgeValueEqual(this.ruleForm,this.oldFrom)
-    //  console.log('isChange',this.isChange)
+      console.log('this.oldFrom:',this.ruleForm,this.oldFrom)
+      this.isChange= this.judgeValueEqual(this.ruleForm,this.oldFrom)
+     console.log('isChange',this.isChange)
       // if(this.isChange){
-        this.$confirm('内容已修改, 是否保存?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          // this.$message({
-          //   type: 'success',
-          //   message: '删除成功!'
-          // });
-        }).catch(() => {
-            this.$router.go(-1)
-        });
+        // this.$confirm('内容已修改, 是否保存?', '提示', {
+        //   confirmButtonText: '确定',
+        //   cancelButtonText: '取消',
+        //   type: 'warning'
+        // }).then(() => {
+        //   // this.$message({
+        //   //   type: 'success',
+        //   //   message: '删除成功!'
+        //   // });
+        // }).catch(() => {
+        //     this.$router.go(-1)
+        // });
       // }
     }
   },
   watch:{
-    // ruleForm:{
-    //   handler(newForm){
-       
+    ruleForm:{
+      handler(newForm){
+        console.log('newForm:',newForm)
+        this.initCount++
+         console.log('initCount',this.initCount)
 
-    //   },
-    //   deep:true
-    // }
+      },
+      deep:true
+    }
   }
 }
 </script>
