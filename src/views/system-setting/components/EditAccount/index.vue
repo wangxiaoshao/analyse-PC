@@ -11,7 +11,7 @@
             </el-form-item>
             <el-form-item label="关联系统">
               <!--  -->
-              <bind-system :list="accountInfo.account4AppDtos || []"  @app-change="getAppId"></bind-system>
+              <bind-system :list="accountInfo.account4AppDtos || []"  @app-change="getAppId" :isCreate='false'></bind-system>
             </el-form-item>
           </el-col>
           <el-col :span="10">
@@ -56,18 +56,22 @@
 <script>
 import { api, urlNames } from '@src/api'
 import bindSystem from '../../../organization/components/BindSystem/index'
+import goBack from '@src/mixins/go-back.js'
 export default {
+  mixins:[goBack],
   components: {
     bindSystem
   },
   props: ['accountInfo'],
   data () {
     return {
-      appId: []
+      appId: [],
+      oldAccountInfo:{}
     }
   },
   created () {
-
+    // this.oldAccountInfo = JSON.parse(JSON.stringify(this.accountInfo))
+    this.oldAccountInfo = JSON.parse(JSON.stringify(this.accountInfo))
   },
   methods: {
     // 重置密码
@@ -84,7 +88,6 @@ export default {
     getAppId (val) {
       this.appId = val
     },
-
     // 保存修改
     saveAccount () {
       // 8442130717342908424
@@ -98,14 +101,21 @@ export default {
       api[urlNames['updateAccount']](params).then(res => {
         if (res) {
           this.$message.success('设置成功')
-          this.goBack()
+           this.$emit('close')
+            this.isChange=false
         }
       })
     },
 
     // 返回
     goBack () {
-      this.$emit('goBack')
+      this.isChange=this.addWatch(this.accountInfo,this.oldAccountInfo)
+       if(this.isChange){
+         this.goBackDilog(this.saveAccount,'',true)
+       }else{
+         this.$emit('close')
+         this.isChange=false
+       }
     }
 
 

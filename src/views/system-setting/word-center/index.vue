@@ -54,8 +54,8 @@ export default {
       activeName: 'actionWord',
       tableData: [
         {
-          typeText: '为推进国密改造，系统登录密码深度优化通知。',
-          content: '为推进国密改造，系统登录密码深度优化通知,为推进国密改造，系统登录密码深度优化通知。',
+          typeText: '为推进改造，系统登录密码深度优化通知。',
+          content: '为推进改造，系统登录密码深度优化通知,为推进改造，系统登录密码深度优化通知。',
           hasRead: 0,
           creareTime: '2020-03-12'
         }

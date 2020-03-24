@@ -63,7 +63,9 @@
 
 <script>
 import bindSystem from '../BindSystem/index'
+import goBack from '@src/mixins/go-back.js'
 export default {
+  mixins:[goBack],
   components: { bindSystem },
   props: ['disabledFlag', 'isShowEditFlag', 'accountList', 'userInfo', 'isDefaultFlag', 'userAccount', 'isExit'],
   data () {
@@ -107,9 +109,9 @@ export default {
         reason: ''
       },
       isCreate:true,
-      isChange:false,
+      isCommit:false,
       updateSystem:false,
-      oldFrom: {},
+      oldAddAccount: {},
       // addFlag: this.isDefaultFlag,
       addFlag: true,
       activeAccount: '1',
@@ -139,7 +141,7 @@ export default {
   methods: {
     init () {
       let that = this
-      this.oldFrom = JSON.parse(JSON.stringify(this.addAccount))
+      this.oldAddAccount = JSON.parse(JSON.stringify(this.addAccount))
       this.accountList.forEach(function (item) {
         that.accountSend.push(item)
       })
@@ -189,7 +191,7 @@ export default {
           }
           })
         }else{
-           if(this.isChange){
+           if(this.isCommit){
            this.$emit('get-account', this.accountSend)
           }
         }
@@ -204,13 +206,19 @@ export default {
       this.$emit('get-back', true)
     },
     goBack () {
-      this.$router.go(-1)
+       this.isChange= this.addWatch(this.addAccount,this.oldAddAccount)
+      if(this.isChange){
+        this.goBackDilog(this.fromSublime,'addAccount')
+      }else{
+        this.isChange=false
+        // this.$router.go(-1)
+      }
     },
     getAppId (val, index,change) {
       this.addAccount.appId = val
       this.doIndex=index
-      this.isChange=change
-      if(index!==undefined&&index!==''&&this.isChange){
+      this.isCommit=change
+      if(index!==undefined&&index!==''&&this.isCommit){
         this.accountSend[index].appId = this.addAccount.appId
       }
     }

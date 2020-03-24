@@ -336,7 +336,7 @@
                 <img v-if="systemNameLogoIcon.systemLogo" :src="systemNameLogoIcon.systemLogo" class="avatar" />
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                  <div slot="tip" style="font-size: 10px;color: #606266">
-                  <span style="color: #FC7049">*</span>只支持jpg格式，100*100像素的图片
+                  <span style="color: #FC7049">*</span>图片大小为100*100像素
                   <el-button type="primary" size="small" @click="updateSystemLogo">提交</el-button>
                   </div>
               </el-upload>
@@ -356,7 +356,7 @@
                 <img v-if="systemNameLogoIcon.favicon" :src="systemNameLogoIcon.favicon" class="avatar" />
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 <div slot="tip" style="font-size: 10px;color: #606266">
-                    <span style="color: #FC7049">*</span>只支持jpg格式，100*100像素的图片
+                    <span style="color: #FC7049">*</span>图片大小为100*100像素
                     <el-button type="primary" size="small" @click="updateSystemFavicon">提交</el-button>
                   </div>
               </el-upload>
@@ -914,16 +914,16 @@ export default {
       this.systemMsgConfirmCloseVisible = false
     },
     beforeUpload (file) {
-      const isJPG = file.type === 'image/jpeg'
+      // const isJPG = file.type === 'image/jpeg'
       const isLt2M = file.size / 1024 / 1024 < 2
 
-      if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!')
-      }
+      // if (!isJPG) {
+      //   this.$message.error('上传头像图片只能是 JPG 格式!')
+      // }
       if (!isLt2M) {
         this.$message.error('上传头像图片大小不能超过 2MB!')
       }
-      return isJPG && isLt2M
+      return  isLt2M
     },
     // 获取系统名称，系统图标
     getSystemNameLogoIon () {

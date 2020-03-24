@@ -75,7 +75,7 @@
           :total="total">
         </el-pagination>
       </div>
-      <create-group-dialog :creatTitle="creatTitle" :groupFrom="groupFrom" @close="close" :creategroupdialogVisible="creategroupdialogVisible"></create-group-dialog>
+      <create-group-dialog :creatTitle="creatTitle" :editId='editId' @close="close" :creategroupdialogVisible="creategroupdialogVisible"></create-group-dialog>
     </div>
 </template>
 
@@ -93,14 +93,9 @@ export default {
       total: 0,
       creatTitle: '',
       creategroupdialogVisible: false,
+      editId:'',
       currentPage: 1,
       pageSize: 10,
-      groupFrom: {
-        ownerType: 1, // 1用户、2内设机构、3单位
-        name: '',
-        description: '',
-        removed: true
-      },
       groupType: '',
       options: [{
         value: '',
@@ -141,28 +136,14 @@ export default {
     openDialog () {
       // 创建初始化--防止修改数据覆盖
       this.creatTitle = '创建分组'
-      this.groupFrom.ownerType = 1 // 1用户、2内设机构、3单位
-      this.groupFrom.name = ''
-      this.groupFrom.description = ''
-      this.groupFrom.removed = true
       this.creategroupdialogVisible = true
     },
     // 编辑分组
     handleEditGroup (row) {
       this.creatTitle = '编辑分组'
+      this.editId=row.id
+      // this.findGroupDetail(row.id)
       this.creategroupdialogVisible = true
-      this.findGroupDetail(row.id)
-    },
-    // 获取分组详情
-    findGroupDetail (id) {
-      api[urlNames['findGroupById']]({
-        id: id
-      }).then((res) => {
-        if (res.status === 0) {
-          this.groupFrom = res.data
-          this.groupFrom.removed = !res.data.removed
-        }
-      })
     },
     handleCurrentChange (val) {
       this.currentRow = val

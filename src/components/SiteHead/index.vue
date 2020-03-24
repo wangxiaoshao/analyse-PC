@@ -4,8 +4,8 @@
       <div class="site__head-content">
         <div class="site__head--center">
           <div class="logo">
-            <!-- <img :src="app.option.options.systemLogo" /> -->
-            <img src="@src/common/images/logo.png" alt=""/>
+            <img :src="app.option.options.systemLogo" />
+            <!-- <img src="@src/common/images/logo.png" alt=""/> -->
           </div>
           <div class="name">
             <h2>{{app.option.options.systemName || ''}}</h2>

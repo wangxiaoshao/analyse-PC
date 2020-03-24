@@ -349,7 +349,7 @@
         v-if="this.$route.name === 'PersonAdd' || this.$route.name === 'PersonEdit' && !hidefooter"
       >
         <el-button type="primary" @click="next('userDetail')" :disabled="false">下一步</el-button>
-        <el-button @click="goBack">返回</el-button>
+        <el-button @click="goBack">取消</el-button>
       </span>
       <span v-if="this.$route.name==='PassChange' && hidefooter==false">
         <el-button type="primary" @click="modifieUserInfo('userDetail')">立即更改</el-button>
@@ -379,7 +379,9 @@ export default {
     'oldUserInfo',
     'labelId',
     'labelList',
-    'orgName'
+    'orgName',
+    'oldPostDetail',
+    'oldUserDetail'
   ],
   mixins: [dicOption, uploadFile, HasRight],
   components: {
@@ -443,39 +445,36 @@ export default {
       },
       timer: null,
       showPopoverFlag: false,
-       oldUserDetail:{},
-       oldPostDetail:{}
-      // oldUserInfo
+      //  oldUserDetail:{},
+      //  oldPostDetail:{},
+       initCount:0
     }
   },
   created () {
-    this.init()
+     
+      // console.log(this.oldPostDetail)
   },
   mounted(){
-    this.oldUserDetail = JSON.parse(JSON.stringify(this.userDetail))
-    this.oldPostDetail = JSON.parse(JSON.stringify(this.postFrom))
-    // this.oldPostDetail=Object.assign({},this.postDetail)
-    console.log(this.postDetail,this.oldPostDetail)
-
-    // this.oldPostDetail.orgId=this.postDetail.orgId
-   
+    // this.oldUserDetail = JSON.parse(JSON.stringify(this.userDetail))
+      // this.oldPostDetail ={...this.postDetail}
   },
   computed: {
     ...mapState(['app'])
   },
   methods: {
     ...mapMutations(['SET_OPTION']),
-    init () {
-      if (this.$route.name === 'PersonEdit' || this.$route.name === 'PersonAdd' || this.$route.name === 'PassChange') {
-        this.msgVisiable = true
-      } else {
-        this.msgVisiable = false
-      }
-
-      this.initIptMsgVisible()
-    },
+   
     exportOrg () {
       this.$emit('exportOrg')
+    },
+     getUserAccount (userId) {
+      api[urlNames['findUserAccountByUid']]({
+        userId: userId
+      }).then((res) => {
+        this.userInfo.userAccount = res.data
+        this.accountList = res.data
+      }, () => {
+      })
     },
     // 设置各个字段的验证提示信息的可见性
     initIptMsgVisible () {
@@ -666,6 +665,7 @@ export default {
         })
       this.$emit('get-label', this.sendLabelId)
     },
+    
     next (userDetail) {
       this.$refs[userDetail].validate(valid => {
         if (valid) {
@@ -679,32 +679,30 @@ export default {
         }
       })
     },
-    addWatch(){
-      return JSON.stringify(this.userDetail) !== JSON.stringify(this.oldUserDetail) || JSON.stringify(this.postDetail) !== JSON.stringify(this.oldPostDetail)
-
-   },
-    goBack () {
-       this.$router.go(-1)
-      //  console.log(this.userDetail,this.oldUserDetail)
-      //   console.log(this.postDetail,this.oldPostDetail)
-      // this.isChange=this.addWatch()
-      // console.log(this.isChange)
-      // if(this.isChange){
-      //   this.$confirm('修改内容尚未保存, 确定要返回吗?', '提示', {
-      //       confirmButtonText: '确定',
-      //       cancelButtonText: '取消',
-      //       type: 'warning'
-      //     }).then(() => {
-      //       this.next ('userDetail')
-      //     }).catch(() => {
-      //       this.isChange=false
-      //       this.$router.go(-1)
-      //     });
-      // }else{
-      //   this.isChange=false
-      //   this.$router.go(-1)
-      // }
-       
+     addWatch(){
+       return JSON.stringify(this.userDetail) !== JSON.stringify(this.oldUserDetail) || JSON.stringify(this.postDetail) !== JSON.stringify(this.oldPostDetail)
+    },
+   goBack () {
+       this.isChange= this.addWatch()
+      console.log('isChange:',this.isChange)
+      if(this.isChange){
+        this.$confirm('修改内容尚未保存, 确定要取消吗?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+             this.$router.go(-1)
+          }).catch(() => {
+            this.isChange=false
+           
+          });
+      }else{
+          this.$router.go(-1)
+          this.isChange=false
+      }
+     
+      
+      
     },
     handleSelect (item) {
       console.log(item)
