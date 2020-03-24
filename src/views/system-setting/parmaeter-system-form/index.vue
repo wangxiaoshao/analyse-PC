@@ -270,7 +270,7 @@
           <el-col :span="12">
             <p>审核管理员有审核事项时，给相关人员发送短信。</p>
             <br>
-            <p>可用占位符：<span>{管理员名称}</span>，<span>{事件详情}</span>。</p>
+            <p>可用占位符： <el-button type="primary" size="small" round @click="insertTextInfoCursor('{有效时长}')">{有效时长}</el-button> ，<el-button type="primary" size="small" round @click="insertTextInfoCursor('{验证码}')">{验证码}</el-button>。</p>
           </el-col>
         </el-row>
         <el-row :gutter="20">
@@ -297,7 +297,7 @@
           <el-col :span="12">
             <p>审核管理员有审核事项时，给相关人员发送短信。</p>
             <br>
-            <p>可用占位符：<span>{验证码}</span>。</p>
+            <p>可用占位符：<el-button type="primary" size="small" round @click="insertTextInfoCursor('{验证码}')">{验证码}</el-button>，<el-button type="primary" size="small" round @click="insertTextInfoCursor('{重置时间}')">{重置时间}</el-button>。</p>
           </el-col>
         </el-row>
         <el-row :gutter="20">
@@ -373,6 +373,7 @@ import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
 import uploadFile from '@src/mixins/uploadFile.js'
 import hasRight from '@src/mixins/has-right'
+import insertTextInfoCursor from '@src/mixins/insertIntoCursor'
 
 const level = 1
 const nodeAuditList = [{
@@ -703,7 +704,7 @@ const userAuditList = [{
 }]
 export default {
   name: 'parmaeterFrom',
-  mixins: [uploadFile, hasRight],
+  mixins: [uploadFile, hasRight, insertTextInfoCursor],
   data () {
     return {
       systemUserSecuritySettings: {// 用户安全
@@ -737,8 +738,8 @@ export default {
       endDateDisabled: false,
       messageRemind: 0, // 消息提醒，0不提醒，1提醒
       noRemind: false, // 消息提醒，默认不提醒
-      SMSVerificationCodeTemplate: '【贵州省电子政务外网组织机构人员数据库及管控平台】验证码：{验证码}，有效期3分钟。',
-      resetPasswordTemplate: '【贵州省电子政务外网组织机构人员数据库及管控平台】您于3月17日通过本人重置密码，新密码：{验证码}，请妥善保管。',
+      SMSVerificationCodeTemplate: '【贵州省电子政务外网组织机构人员数据库及管控平台】验证码：{验证码}，有效期{有效时长}分钟。',
+      resetPasswordTemplate: '【贵州省电子政务外网组织机构人员数据库及管控平台】您于{重置时间}通过本人重置密码，新密码：{验证码}，请妥善保管。',
       modeAuditList: [],
       orgAuditList: orgAuditList, // 单位审核字段数据
       nodeAuditList: nodeAuditList,
@@ -793,6 +794,9 @@ export default {
   },
   methods: {
     ...mapMutations(['SET_OPTION']),
+    insertTextToCursor (text) {
+
+    },
     saveSMSVerificationCodeTemplate () {
       this.setClientOptions({
         level: level,
