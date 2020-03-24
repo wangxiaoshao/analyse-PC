@@ -678,6 +678,7 @@ const userAuditList = [{
 }]
 export default {
   name: 'parmaeterFrom',
+  mixins: [insertTextInfoCursor],
   data () {
     return {
       orgUserSecuritySettings: { // 用户安全
