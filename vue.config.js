@@ -1,6 +1,5 @@
 const path = require('path');
-const URL = require("url")
-const CompressionPlugin = require("compression-webpack-plugin")
+const GitRevisionPlugin = require("git-revision-webpack-plugin");
 
 function resolve(dir) {
   return path.join(__dirname, dir)
@@ -23,6 +22,8 @@ module.exports = function (options) {
       if (process.env.NODE_ENV !== 'production') {
         config.devtool = 'source-map'
       }
+      let gitRevisionPlugin = new GitRevisionPlugin();
+      config.plugins.push(gitRevisionPlugin);
     },
 
     devServer: {
