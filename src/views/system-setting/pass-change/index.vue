@@ -123,7 +123,7 @@
 
     <div class="pass-change-content">
       <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="我的信息">
+        <el-tab-pane label="我的信息" name="first">
           <el-row>
             <el-col :span="18">
               <person-manage
@@ -144,9 +144,9 @@
             </el-col>
           </el-row>
         </el-tab-pane>
-        <el-tab-pane label="多账号管理" name="first">
+        <el-tab-pane label="多账号管理" >
           <multiple-accounts :accountInfoList="accountInfoList" @goEdit='goEdit' v-if="showAccountsVisible"></multiple-accounts>
-          <edit-account v-else @resetPwd="resetPwd" @modifiePwd="modifiePwd"  :accountInfo='accountInfo'  @goBack='goBack'></edit-account>
+          <edit-account v-else @resetPwd="resetPwd" @modifiePwd="modifiePwd"  :accountInfo='accountInfo'  @close='goBack'></edit-account>
         </el-tab-pane>
         <el-tab-pane label="个人日志">
           <personal-log :showFindBtn='showFindBtn'></personal-log>
@@ -596,7 +596,7 @@ export default {
     },
 
     // 编辑页面
-    goEdit (val) {
+    goEdit (val) { 
       this.accountInfo = val
       this.showAccountsVisible = false
     },

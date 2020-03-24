@@ -85,13 +85,14 @@ export default {
     },
     // 修改账号信息
     setAccount (val) {
-      api[urlNames['findAccountById']]({ id: val }).then(res => {
+       api[urlNames['findAccountById']]({ id: val }).then(res => {
         if (res) {
           let data = res.data
           data.removed = !res.data.removed
-          this.$emit('goEdit', data)
+            this.$emit('goEdit', data)
         }
       })
+     
     },
 
     // 查看关联系统

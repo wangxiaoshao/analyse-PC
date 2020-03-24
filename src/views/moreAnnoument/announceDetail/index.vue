@@ -1,7 +1,7 @@
 <template>
   <div  class="announceDetail">
     <div class="content">
-      <div class="header-title">为推进国密改造，系统密码强度优化通知。</div>
+      <div class="header-title">为推进改造，系统密码强度优化通知。</div>
       <div class="createTime">2020年3月12日22：00</div>
       <div  class="msg">
         <p>一、品牌定位</p>

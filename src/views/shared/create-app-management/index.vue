@@ -2,7 +2,7 @@
   <div class="create-app-management">
     <el-form ref="ruleForm"   :rules="rules" :model="appFrom" label-width="120px">
        <input type="password" class="hideIpt" />
-            <input type="text" class="hideIpt"/>
+        <input type="text" class="hideIpt"/>
       <el-row :gutter="80">
         <el-col :span="12">
           <div class="grid-content bg-purple">
@@ -97,11 +97,12 @@
 
 <script>
 import handleTable from '@src/mixins/handle-table'
+import goBack from '@src/mixins/go-back.js'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
 import { api, urlNames } from '@src/api'
 export default {
   name: 'CreateAppManagement',
-  mixins: [handleTable, handleBreadcrumb],
+  mixins: [handleTable, handleBreadcrumb,goBack],
   mounted () {
     this.pushBreadcrumb({
       name: '创建接入应用',
@@ -138,6 +139,7 @@ export default {
         description: '',
         removed: true
       },
+      oldAppFrom:{},
       rules: {
         name: [
           { required: true, message: '请输入应用名称', trigger: 'blur' }
@@ -171,25 +173,12 @@ export default {
     if (this.$route.query.id !== undefined) {
       this.getAppDetail(this.$route.query.id)
     }
+    this.oldAppFrom = JSON.parse(JSON.stringify(this.appFrom))
   },
   methods: {
     toDataLog () {
       this.$router.push({ path: '/data-log' })
     },
-    back () {
-      this.$router.push({ name: 'AppManagement' })
-    },
-    // getViewList (query) {
-    //   if (query !== '') {
-    //     api[urlNames['getViewList']]({
-    //       keyWord: query,
-    //       page: 1,
-    //       limit: 10
-    //     }).then((res) => {
-    //       this.viewList = res.data
-    //     })
-    //   }
-    // },
     getViewList (query) {
       if (query !== '') {
         api[urlNames['getViewList']]().then((res) => {
@@ -198,20 +187,32 @@ export default {
       }
     },
     onSubmit (ref) {
-      if (this.appFrom.apiAccount.trim().length === 0 ||
-        this.appFrom.apiPassword.trim().length === 0 ||
-        this.appFrom.concatUser.trim().length === 0 ||
-        this.appFrom.concatPhone.trim().length === 0 ||
-        this.appFrom.apiUrl.trim().length === 0 ||
-        this.appFrom.description.trim().length === 0) {
-        this.$message.info('请填写必填字段')
-        return false
-      }
-      if (this.$route.query.id === undefined) {
-        this.createApp()
-      } else if (this.$route.query.id !== undefined) {
-        this.updateApp()
-      }
+      this.$refs[ref].validate(valid => { 
+        if(valid){
+          if (this.$route.query.id === undefined) {
+            this.createApp()
+          } else if (this.$route.query.id !== undefined) {
+            this.updateApp()
+          }
+        }else{
+           this.$message.error('请填写必填字段')
+        }
+      })
+      // if (this.appFrom.apiAccount.trim().length === 0 ||
+      //   this.appFrom.apiPassword.trim().length === 0 ||
+      //   this.appFrom.concatUser.trim().length === 0 ||
+      //   this.appFrom.concatPhone.trim().length === 0 ||
+      //   this.appFrom.apiUrl.trim().length === 0 ||
+      //   this.appFrom.description.trim().length === 0) {
+      //   this.$message.info('请填写必填字段')
+      //   this.isChange=false
+      //   return false
+      // }
+      // if (this.$route.query.id === undefined) {
+      //   this.createApp()
+      // } else if (this.$route.query.id !== undefined) {
+      //   this.updateApp()
+      // }
     },
     createApp () {
       api[urlNames['createApp']]({
@@ -227,7 +228,8 @@ export default {
       }).then((res) => {
         if (res.status === 0 && this.$route.query.id === undefined) {
           this.$message.success('创建成功')
-          this.back()
+          this.isChange=false
+          this.$router.push({ name: 'AppManagement' })
         }
       })
     },
@@ -246,7 +248,7 @@ export default {
       }).then((res) => {
         if (res.status === 0) {
           this.$message.success('修改成功')
-          this.back()
+         this.$router.push({ name: 'AppManagement' })
         }
       })
     },
@@ -256,12 +258,23 @@ export default {
       }).then((res) => {
         this.appFrom = res.data
         this.appFrom.removed = !res.data.removed
+        this.oldAppFrom = JSON.parse(JSON.stringify(this.appFrom))
       })
     },
     // 搜索选择
     handleSelect (item) {
       console.log(item)
-    }
+    },
+     back () {
+       this.isChange=this.addWatch(this.appFrom,this.oldAppFrom)
+       if(this.isChange){
+         this.goBackDilog(this.onSubmit,'ruleForm')
+       }else{
+         this.$router.push({ name: 'AppManagement' })
+         this.isChange=false
+       }
+
+    },
   }
 }
 </script>

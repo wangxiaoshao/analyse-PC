@@ -42,7 +42,7 @@
             </el-row>
             <el-form-item>
               <el-button type="primary" @click="createView">保存视图基本信息</el-button>
-              <el-button @click="backToList">取消</el-button>
+              <el-button @click="back">取消</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -170,10 +170,11 @@ import handleTable from '@src/mixins/handle-table'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
 import { api, urlNames } from '@src/api'
 import HasRight from '@src/mixins/has-right'
+import goBack from '@src/mixins/go-back.js'
 
 export default {
   name: 'CreateView',
-  mixins: [handleTable, handleBreadcrumb, HasRight],
+  mixins: [handleTable, handleBreadcrumb, HasRight,goBack],
   data () {
     return {
       currentView: [],
@@ -189,6 +190,7 @@ export default {
         roleBindUserIds: [],
         syncChildren: false
       },
+      oldViewFrom:{},
       returnViewId: this.$route.params.id, // 228770923203788800
       form: {},
       rules: {
@@ -249,6 +251,7 @@ export default {
       this.findCurrentView(this.$route.params.id)
       this.getViewTime()
     }
+    this.oldViewFrom = JSON.parse(JSON.stringify(this.ViewFrom))
   },
   methods: {
     // 获取树的左上点的坐标
@@ -633,6 +636,15 @@ export default {
         this.viewNodeTree.push(node)
       }
     },
+    back(){
+      this.isChange=this.addWatch(this.ViewFrom,this.oldViewFrom)
+       if(this.isChange){
+         this.goBackDilog(this.createView)
+       }else{
+         this.$router.push({ path: '/view-management' })
+         this.isChange=false
+       }
+    },
     // 返回列表
     backToList () {
       this.$router.push({ path: '/view-management' })
@@ -649,6 +661,8 @@ export default {
         res.data.list.forEach(item => {
           this.ViewFrom.roleBindUserIds.push(item.uid)
         })
+        this.oldViewFrom = JSON.parse(JSON.stringify(this.ViewFrom))
+        
       })
     }
   }

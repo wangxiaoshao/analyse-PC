@@ -206,7 +206,7 @@ export default {
       announcementList: [
         {
           id: 1,
-          content: '为推进国密改造，系统密码强度优化通知。',
+          content: '为推进改造，系统密码强度优化通知。',
           typeText: '消息确认通知',
           creareTime: '2020年02月24日',
           hasRead: 0

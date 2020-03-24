@@ -15,7 +15,7 @@
         label-width="100px"
         class="demo-ruleForm"
       >
-        <el-form-item label="申请原因" prop="reason">
+        <el-form-item label="申请原因111" prop="reason">
           <el-input type="textarea" v-model="ruleForm.reason"></el-input>
         </el-form-item>
         <el-form-item>

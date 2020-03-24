@@ -16,6 +16,8 @@
        :old-user-info="oldUserInfo"
        :label-id="userInfo.labelId"
        :label-list="fromLabelList"
+       :oldPostDetail='oldPostDetail'
+       :oldUserDetail='oldUserDetail'
        @get-user="getUser"
        @get-post="getPost"
        @get-uid="getUid"
@@ -61,6 +63,7 @@ export default {
         name: '人员详情',
         parent: null
       },
+      isChange:false,
       loading: false,
       breadcrumbTitle: '',
       isShowEditFlag: false,
@@ -108,7 +111,9 @@ export default {
           ext03: '',
           address: ''
         }
-      }
+      },
+      oldPostDetail:{},
+      oldUserDetail:{}
     }
   },
   mounted () {
@@ -116,7 +121,7 @@ export default {
      this.init()
   },
   created () {
-    // this.init()
+    this.init()
   },
   computed: {
     ...mapState(['app'])
@@ -126,7 +131,7 @@ export default {
     init () {
       if (this.$route.name === 'PersonAdd') {
         // console.log('this.oldUserInfo111 :',this.oldUserInfo )
-        
+        // this.oldUserInfo = JSON.parse(JSON.stringify(this.userInfo))
         if (this.$route.params.id) {
           this.getUserDetail(this.$route.params.id)
         }
@@ -138,6 +143,8 @@ export default {
               id: res.data.bindId
             }).then((res) => {
               this.userInfo.identity.orgId = res.data.id
+              this.oldPostDetail ={...this.userInfo.identity}
+              this.oldUserDetail={...this.userInfo.user}
                this.oldUserInfo = JSON.parse(JSON.stringify(this.userInfo))
             }, (error) => {
               this.$message.error(`没有内容`)
@@ -149,14 +156,20 @@ export default {
             }).then((res) => {
               this.userInfo.identity.departmentId = res.data.id
               this.userInfo.identity.orgId = res.data.orgId
-               this.oldUserInfo = JSON.parse(JSON.stringify(this.userInfo))
+              this.oldUserInfo.identity.orgId = res.data.orgId
+              this.oldPostDetail ={...this.userInfo.identity}
+              this.oldUserDetail={...this.userInfo.user}
+              this.oldUserInfo = JSON.parse(JSON.stringify(this.userInfo))
             }, (error) => {
               this.$message.error(`没有内容`)
             })
           }
+          //  this.oldPostDetail={...this.userInfo.identity}
+        
         }, (error) => {
           this.$message.error(`没有内容`)
         })
+         
       } else {
         this.getUserDetail(this.$route.params.id)
         this.getIdentity()
@@ -185,11 +198,11 @@ export default {
         let doUserDetail = Object.assign(this.userInfo.user, res.data)
         this.userInfo.user = doUserDetail
        
-          this.userInfo.userId = res.data.uid
-          this.oldUserInfo = JSON.parse(JSON.stringify(this.userInfo))
-        
+        this.userInfo.userId = res.data.uid
+        this.oldUserDetail={...this.userInfo.user}
         this.getUserAccount(res.data.uid)
         this.findLabel(res.data.uid, 3)
+         
         this.loading = false
       }, (error) => {
         this.$message.error(`保存失败，请重试`)
@@ -201,6 +214,9 @@ export default {
       }).then((res) => {
         this.userInfo.userAccount = res.data
         this.accountList = res.data
+        // his.oldUserDetail={...this.userInfo.user}
+        // this.oldPostDetail ={...this.userInfo.identity}
+        // this.oldUserInfo = JSON.parse(JSON.stringify(this.userInfo))
       }, () => {
       })
     },
@@ -214,6 +230,8 @@ export default {
         this.userInfo.identity.postName = res.data.postName
         this.userInfo.identity.type = parseInt(res.data.type)
         this.userInfo.identity.dutyName = res.data.dutyName
+        this.oldPostDetail ={...this.userInfo.identity}
+        this.oldUserInfo = JSON.parse(JSON.stringify(this.userInfo))
       }, (error) => {
       })
     },
@@ -223,7 +241,6 @@ export default {
         type: type
       }).then((res) => {
         this.fromLabelList = res.data
-      // eslint-disable-next-line handle-callback-err
       }, (error) => {
       })
     },
@@ -260,7 +277,7 @@ export default {
       api[urlNames['createUser']](this.userInfo).then((res) => {
         this.$message.success(`保存成功`)
         this.isExit = true
-        this.goBack()
+        // this.goBack()
       }, (error) => {
         if (error) {
           this.isExit = false
@@ -294,9 +311,7 @@ export default {
       this.stepOneFlag = true
       this.activeIndex = 0
     },
-    goBack () {
-      this.$router.go(-1)
-    },
+    
     getActive (val) {
       this.active = val
     },

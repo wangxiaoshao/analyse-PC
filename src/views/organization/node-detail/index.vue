@@ -20,7 +20,7 @@
       :disabled="!isShowEditFlag"
       class="demo-ruleForm"
     >
-      <el-form-item label="节点名称111" prop="name">
+      <el-form-item label="节点名称" prop="name">
         <el-input v-model="ruleForm.name"></el-input>
       </el-form-item>
       <el-form-item label="上级节点" prop="parentName">
