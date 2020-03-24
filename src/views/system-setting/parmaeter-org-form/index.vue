@@ -272,7 +272,7 @@
           <el-col :span="12">
             <p>每月单位信息需要确认时发送短信。</p>
             <br>
-            <p>可用占位符：<span>{单位名称}</span>，<span>{月份}</span>，<span>{信息确认截止时间}</span></p>
+            <p>可用占位符：<el-button type="primary" size="small" round @click="insertTextInfoCursor('{单位名称}')">{单位名称}</el-button>，<el-button type="primary" size="small" round @click="insertTextInfoCursor('{月份}')">{月份}</el-button>，<el-button type="primary" size="small" round @click="insertTextInfoCursor('{信息确认截止时间}')">{信息确认截止时间}</el-button></p>
           </el-col>
         </el-row>
         <el-row :gutter="20">
@@ -299,7 +299,7 @@
           <el-col :span="12">
             <p>审核管理员有审核事项时，给相关人员发送短信。</p>
             <br>
-            <p>可用占位符：<span>{单位名称}</span>，<span>{操作人名称}</span>，<span>{修改字段}</span>，<span>{修改时间}</span>。</p>
+            <p>可用占位符：<el-button type="primary" size="small" round @click="insertTextInfoCursor('{单位名称}')">{单位名称}</el-button>，<el-button type="primary" size="small" round @click="insertTextInfoCursor('{操作人名称}')">{操作人名称}</el-button>，<el-button type="primary" size="small" round @click="insertTextInfoCursor('{修改字段}')">{修改字段}</el-button>，<el-button type="primary" size="small" round @click="insertTextInfoCursor('{修改时间}')">{修改时间}</el-button>。</p>
           </el-col>
         </el-row>
         <el-row :gutter="20">
@@ -326,7 +326,7 @@
           <el-col :span="12">
             <p>审核管理员有审核事项时，给相关人员发送短信。</p>
             <br>
-            <p>可用占位符：<span>{单位名称}</span>，<span>{操作人名称}</span>，<span>{修改字段}</span>，<span>{修改时间}</span>。</p>
+            <p>可用占位符：<el-button type="primary" size="small" round @click="insertTextInfoCursor('{单位名称}')">{单位名称}</el-button>，<el-button type="primary" size="small" round @click="insertTextInfoCursor('{操作人名称}')">{操作人名称}</el-button>，<el-button type="primary" size="small" round @click="insertTextInfoCursor('{修改字段}')">{修改字段}</el-button>，<el-button type="primary" size="small" round @click="insertTextInfoCursor('{修改时间}')">{修改时间}</el-button>。</p>
           </el-col>
         </el-row>
         <el-row :gutter="20">
@@ -347,6 +347,7 @@ import {
   api,
   urlNames
 } from '@src/api'
+import insertTextInfoCursor from '@src/mixins/insertIntoCursor'
 
 const level = 2
 const nodeAuditList = [{
