@@ -685,12 +685,12 @@ export default {
         passwordStrength: 0
       },
       orgAddressBookSet: { // 通讯录
-        allOrgInfo: false,
-        userName: false,
-        userMobile: false,
-        userPhone: false,
-        userDetail: false,
-        depPhone: false
+        allOrgInfo: 0,
+        userName: 0,
+        userMobile: 0,
+        userPhone: 0,
+        userDetail: 0,
+        depPhone: 0
       },
       orgMsgConfirmOpenVisible: false, // 打开单位信息确认对话框
       orgMsgConfirmCloseVisible: false, // 关闭单位信息确认对话框
@@ -815,6 +815,9 @@ export default {
         res.data.forEach(item => {
           if (item.name === 'orgAddressBookSet') {
             this.orgAddressBookSet = JSON.parse(item.value)
+            for (let key in this.orgAddressBookSet) {
+              this.orgAddressBookSet[key] = this.orgAddressBookSet[key] ? 1 : 0
+            }
           }
           if (item.name === 'orgUserSecuritySettings') {
             this.orgUserSecuritySettings = JSON.parse(item.value)
