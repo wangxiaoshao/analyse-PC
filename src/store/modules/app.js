@@ -5,6 +5,7 @@ const app = {
     windowHeight: document.body.offsetHeight,
     windowWidth: document.body.offsetWidth,
     breadcrumb: [],
+    noticeShowBtn: false,
     pageBreadcrumb: [],
     dicList: [],
     option: {

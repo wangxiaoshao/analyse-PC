@@ -10,7 +10,9 @@
           <site-breadcrumb
             :breadcrumb="app.breadcrumb"
             :pageBreadcrumb="app.pageBreadcrumb"
+            :noticeShowBtn='app.noticeShowBtn'
             @go-back="goBack"
+            @goHome='goHome'
           ></site-breadcrumb>
           <el-scrollbar :style="scrollStyle" class="site-scroll">
             <el-main id="siteMain" class="site-main">
@@ -130,6 +132,11 @@ export default {
         this.$router.go(-1)
       }
     },
+    goHome(){
+      this.app.noticeShowBtn=false
+      this.$router.go(-1)
+    },
+     
     getDicList () {
       api[urlNames['dicList']]().then(res => {
         this.DIC_LIST(res.data)

@@ -1,19 +1,6 @@
 <template>
   <div class="notification">
-    <!-- <div class="notice-info">
-      <el-badge is-dot>修改单位名称的审核结果</el-badge>
-      <div class="notice-msg">
-        <span>你申请原单位“贵州省信息中心”修改为“贵州省新信息中心已审核通过”。</span>
-          <span><el-button type='primary' size="mini">去处理</el-button></span>
-      </div>
-    </div>
-    <div class="notice-info">
-      <el-badge is-dot>修改单位名称的审核结果</el-badge>
-      <div class="notice-msg">
-        <span>你申请原单位“贵州省信息中心”修改为“贵州省新信息中心已审核通过”。</span>
-          <span><el-button type='primary' size="mini">去处理</el-button></span>
-      </div>
-    </div> -->
+     
           <el-table :show-header="false"  :data='tableData' 	>
              <template slot="empty">
                 <div class="empty">
@@ -61,9 +48,13 @@ export default {
   },
   created () {
     this.getGrid()
-    this.app.breadcrumb = [{ name: '通知中心' }]
+    this.app.noticeShowBtn=true
   },
-
+  mounted(){
+  },
+  computed:{
+    ...mapState(['app']),
+  },
   methods: {
     getGrid () {
       let data = {
@@ -91,10 +82,6 @@ export default {
         this.$router.push('/my-application')
       }
     }
-
-  },
-  computed: {
-    ...mapState(['app'])
   }
 }
 
