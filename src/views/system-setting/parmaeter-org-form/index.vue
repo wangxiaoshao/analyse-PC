@@ -200,6 +200,17 @@
                     <div class="table-td" style="text-align: center">功能</div>
                 </div>
                 <div class="table-row">
+                  <div class="table-td" style="text-align: center">
+                    节点
+                  </div>
+                  <div class="table-td">
+                    <el-checkbox-group v-model="orgAuditField.checkedNodeAuditList" @change="handleCheckAllChange">
+                      <el-checkbox v-for="item in nodeAuditList" :label="item.name" :key="item.name">{{item.checkname}}
+                      </el-checkbox>
+                    </el-checkbox-group>
+                  </div>
+                </div>
+                <div class="table-row">
                     <div class="table-td" style="text-align: center">
                         单位
                     </div>
@@ -333,7 +344,59 @@ import {
 import insertTextInfoCursor from '@src/mixins/insertIntoCursor'
 
 const level = 2
-
+const nodeAuditList = [{
+  name: 'id',
+  checkname: '结点ID'
+},
+{
+  name: 'parentId',
+  checkname: '父结点ID'
+},
+{
+  name: 'viewId',
+  checkname: '视图ID'
+},
+{
+  name: 'areaId',
+  checkname: '区域ID'
+},
+{
+  name: 'name',
+  checkname: '结点名称'
+},
+{
+  name: 'syncChildren',
+  checkname: '是否同步子级'
+},
+{
+  name: 'nodeType',
+  checkname: '结点类型'
+},
+{
+  name: 'systemType',
+  checkname: '从属哪些四大班子体系'
+},
+{
+  name: 'bindId',
+  checkname: '绑定成员ID'
+},
+{
+  name: 'sort',
+  checkname: '排序值，小的在前面'
+},
+{
+  name: 'removed',
+  checkname: '是否已经删除'
+},
+{
+  name: 'createTime',
+  checkname: '创建时间'
+},
+{
+  name: 'updateTime',
+  checkname: '修改时间'
+}
+]
 const orgAuditList = [{
   name: 'id',
   checkname: '单位ID'
@@ -644,9 +707,11 @@ export default {
       informationAuditTemplate: '【贵州省电子政务外网组织机构人员数据库及管控平台】{单位名称}{操作人名称}于{操作时间}修改了{修改字段}，请尽快前往后台处理。http://59.215.232.95/api/gate/forward',
       informationAuditThroughTemplate: '【贵州省电子政务外网组织机构人员数据库及管控平台】{单位名称}{操作人名称}于{操作时间}修改了{修改字段}已通过审核，请前往平台查看',
       orgAuditList: orgAuditList, // 单位审核字段数据
+      nodeAuditList: nodeAuditList,
       depAuditList: depAuditList,
       userAuditList: userAuditList,
       orgAuditField: {
+        checkedNodeAuditList: [], // 节点选中数据
         checkedOrgAuditList: [], // 单位选中数据
         checkedDepAuditList: [], //  内设机构
         checkedUserAuditList: [] // 人员选中
@@ -778,8 +843,17 @@ export default {
               this.noRemind = false
             }
           }
-          if (item.name === 'orgCheckedAuditList') {
-            this.orgAuditField = JSON.parse(item.value)
+          if (item.name === 'userAuditFields') {
+            this.orgAuditField.checkedUserAuditList = item.value
+          }
+          if (item.name === 'departmentAuditFields') {
+            this.orgAuditField.checkedDepAuditList = item.value
+          }
+          if (item.name === 'orgAuditFields') {
+            this.orgAuditField.checkedOrgAuditList = item.value
+          }
+          if (item.name === 'nodeAuditFields') {
+            this.orgAuditField.checkedNodeAuditList = item.value
           }
         })
       })
@@ -828,15 +902,15 @@ export default {
           this.messageRemind
         ]
       } else if (flag === 3) {
-        list.level = 1
+        list.name = 'nodeAuditFields'
+        list.value = this.orgAuditField.checkedNodeAuditList
+        this.setClientOptions(list)
         list.name = 'orgAuditFields'
         list.value = this.orgAuditField.checkedOrgAuditList
         this.setClientOptions(list)
-        list.level = 1
         list.name = 'depAuditFields'
         list.value = this.orgAuditField.checkedDepAuditList
         this.setClientOptions(list)
-        list.level = 1
         list.name = 'userAuditFields'
         list.value = this.orgAuditField.checkedUserAuditList
       }

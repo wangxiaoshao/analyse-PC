@@ -191,34 +191,6 @@
         </el-form>
     </div>
     <div class="parameter-item">
-      <div class="header">申请审核字段设置
-         <span class="info-msg">（如下字段被选中以后再被修改，则需要审核后方可生效；不选中的字段被修改，不需要审核）</span>
-      </div>
-      <el-form ref="systemAuditField"  label-width="160px">
-        <div class="table">
-          <div class="table-row">
-            <div class="table-td" style="text-align: center">模块</div>
-            <div class="table-td" style="text-align: center">功能</div>
-          </div>
-          <div class="table-row">
-            <div class="table-td" style="text-align: center">
-              节点
-            </div>
-            <div class="table-td">
-              <el-checkbox-group v-model="systemAuditField.checkedNodeAuditList" @change="handleCheckAllChange">
-                <el-checkbox v-for="item in nodeAuditList" :label="item.name" :key="item.name">{{item.checkname}}
-                </el-checkbox>
-              </el-checkbox-group>
-            </div>
-          </div>
-        </div>
-        <el-form-item>
-          <el-button type="primary" @click="systemSubmit(3)">保存</el-button>
-          <el-button>取消</el-button>
-        </el-form-item>
-      </el-form>
-    </div>
-    <div class="parameter-item">
       <div class="header">发送验证码短信模板
       </div>
       <el-form class="sms-template">
@@ -335,59 +307,6 @@ import hasRight from '@src/mixins/has-right'
 import insertTextInfoCursor from '@src/mixins/insertIntoCursor'
 
 const level = 1
-const nodeAuditList = [{
-  name: 'id',
-  checkname: '结点ID'
-},
-{
-  name: 'parentId',
-  checkname: '父结点ID'
-},
-{
-  name: 'viewId',
-  checkname: '视图ID'
-},
-{
-  name: 'areaId',
-  checkname: '区域ID'
-},
-{
-  name: 'name',
-  checkname: '结点名称'
-},
-{
-  name: 'syncChildren',
-  checkname: '是否同步子级'
-},
-{
-  name: 'nodeType',
-  checkname: '结点类型'
-},
-{
-  name: 'systemType',
-  checkname: '从属哪些四大班子体系'
-},
-{
-  name: 'bindId',
-  checkname: '绑定成员ID'
-},
-{
-  name: 'sort',
-  checkname: '排序值，小的在前面'
-},
-{
-  name: 'removed',
-  checkname: '是否已经删除'
-},
-{
-  name: 'createTime',
-  checkname: '创建时间'
-},
-{
-  name: 'updateTime',
-  checkname: '修改时间'
-}
-]
 export default {
   name: 'parmaeterFrom',
   mixins: [uploadFile, hasRight, insertTextInfoCursor],
@@ -427,10 +346,6 @@ export default {
       SMSVerificationCodeTemplate: '【贵州省电子政务外网组织机构人员数据库及管控平台】验证码：{验证码}，有效期3分钟。',
       resetPasswordTemplate: '【贵州省电子政务外网组织机构人员数据库及管控平台】您于{重置时间}通过本人重置密码，新密码：{密码}，请妥善保管。',
       modeAuditList: [],
-      nodeAuditList: nodeAuditList,
-      systemAuditField: {
-        checkedNodeAuditList: [], // 节点选中数据
-      },
       orgFormSet: {
         nameSet: [],
         systemUserSet: []
@@ -560,18 +475,6 @@ export default {
               this.noRemind = false
             }
           }
-          if (item.name === 'userAuditFields') {
-            this.systemAuditField.checkedUserAuditList = item.value
-          }
-          if (item.name === 'departmentAuditFields') {
-            this.systemAuditField.checkedDepAuditList = item.value
-          }
-          if (item.name === 'orgAuditFields') {
-            this.systemAuditField.checkedOrgAuditList = item.value
-          }
-          if (item.name === 'nodeAuditFields') {
-            this.systemAuditField.checkedNodeAuditList = item.value
-          }
         })
       })
     },
@@ -694,9 +597,6 @@ export default {
           this.remindEndDate,
           this.messageRemind
         ]
-      } else if (flag === 3) {
-        list.name = 'nodeAuditFields'
-        list.value = this.systemAuditField.checkedNodeAuditList
       }
       this.setClientOptions(list)
     },
