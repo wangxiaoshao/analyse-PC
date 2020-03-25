@@ -392,9 +392,9 @@ export default {
       if (value === '') {
         allback(new Error('号码不能为空'))
       } else {
-        let reg = / ^((13[0-9])|(15[^4])|(18[0,2,3,5-9])|(17[0-8])|(147))\d{8}$/
+        let reg = /^((13[0-9])|(15[^4])|(18[0,2,3,5-9])|(17[0-8])|(147))\d{8}$/
         reg.test(value) ? callback() : callback(new Error('请输入11位有效号码'))
-        callback()
+       
       }
     }
     return {
@@ -407,8 +407,8 @@ export default {
         ],
         mobile: [
           { required: true, message: '手机号不能为空', trigger: 'blur' },
-          { message: '', trigger: 'change' }
-          // { validator: validateMobile, trigger: 'blur' }
+          { message: '', trigger: 'change' },
+          { validator: validateMobile, trigger: 'blur' }
         ],
         type: [
           { required: true, message: '请选择身份类型', trigger: 'blur' },
@@ -672,7 +672,7 @@ export default {
           this.$emit('get-post', this.postFrom)
           this.$emit('get-user', this.personFrom)
         } else {
-          this.$message.warning(`请填写必填字段`)
+          this.$message.warning(`请根据提示填写必填字段`)
            this.isChange=false
           return false
         }

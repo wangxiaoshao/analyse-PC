@@ -79,6 +79,9 @@
       label="同步状态"
       align="center"
       >
+       <template slot-scope="scope">
+         <span>{{scope.row.success=0 ?'失败':'成功'}}</span>
+      </template>
     </el-table-column>
     <el-table-column
       align="center"
