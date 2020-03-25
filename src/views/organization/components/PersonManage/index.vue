@@ -451,8 +451,7 @@ export default {
     }
   },
   created () {
-     
-      // console.log(this.oldPostDetail)
+    this.initIptMsgVisible()
   },
   mounted(){
     // this.oldUserDetail = JSON.parse(JSON.stringify(this.userDetail))
@@ -463,7 +462,7 @@ export default {
   },
   methods: {
     ...mapMutations(['SET_OPTION']),
-   
+
     exportOrg () {
       this.$emit('exportOrg')
     },
@@ -665,7 +664,7 @@ export default {
         })
       this.$emit('get-label', this.sendLabelId)
     },
-    
+
     next (userDetail) {
       this.$refs[userDetail].validate(valid => {
         if (valid) {
@@ -694,15 +693,15 @@ export default {
              this.$router.go(-1)
           }).catch(() => {
             this.isChange=false
-           
+
           });
       }else{
           this.$router.go(-1)
           this.isChange=false
       }
-     
-      
-      
+
+
+
     },
     handleSelect (item) {
       console.log(item)
