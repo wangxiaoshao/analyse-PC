@@ -697,15 +697,6 @@ export default {
       } else if (flag === 3) {
         list.name = 'nodeAuditFields'
         list.value = this.systemAuditField.checkedNodeAuditList
-        this.setClientOptions(list)
-        list.name = 'userAuditFields'
-        list.value = this.systemAuditField.checkedUserAuditList
-        this.setClientOptions(list)
-        list.name = 'departmentAuditFields'
-        list.value = this.systemAuditField.checkedDepAuditList
-        this.setClientOptions(list)
-        list.name = 'orgAuditFields'
-        list.value = this.systemAuditField.checkedOrgAuditList
       }
       this.setClientOptions(list)
     },
