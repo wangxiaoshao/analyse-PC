@@ -117,10 +117,9 @@
       </div>
       <div class="sucessPwd-box">验证通过，您的新密码已发送至手机号：{{hideMobile(userInfo.user.mobile)}}，请注意查收。</div>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="successPwdVisible=false" width="120px">确 定</el-button>
+        <el-button type="primary" @click="loginOut" width="120px">确 定</el-button>
       </div>
     </el-dialog>
-
     <div class="pass-change-content">
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="我的信息" name="first">
@@ -593,6 +592,11 @@ export default {
           () => {}
         )
       }
+    },
+    
+    loginOut(){
+      this.successPwdVisible=false 
+      window.location.href= '/api/gate/logout' 
     },
 
     // 编辑页面

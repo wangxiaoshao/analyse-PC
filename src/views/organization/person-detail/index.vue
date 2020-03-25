@@ -277,13 +277,16 @@ export default {
       api[urlNames['createUser']](this.userInfo).then((res) => {
         this.$message.success(`保存成功`)
         this.isExit = true
-        // this.goBack()
+        this.goBack()
       }, (error) => {
         if (error) {
           this.isExit = false
           this.$message.error(`保存失败，请重试`)
         }
       })
+    },
+    goBack(){
+      this.$router.go(-1)
     },
     // TODO breadcrumb可采用组件传参的模式替换路由判断，将配置权交给调用方
     setBreadcrumbTitle () { // 设置面包屑title
