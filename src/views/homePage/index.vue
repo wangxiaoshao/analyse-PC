@@ -153,6 +153,7 @@ import { api, urlNames } from '@src/api'
 import { mapState } from 'vuex'
 import hasRight from '@src/mixins/has-right'
 import dicOption from '@src/mixins/dic-options.js'
+
 export default {
   mixins: [dicOption, hasRight],
   data () {

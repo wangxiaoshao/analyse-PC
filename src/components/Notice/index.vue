@@ -44,6 +44,7 @@
 </template>
 <script>
 import { api, urlNames } from '@src/api'
+import { mapState } from 'vuex'
 export default {
   props: ['noticeData', 'showAllReadVisiable'],
   data () {
@@ -53,7 +54,6 @@ export default {
     }
   },
   created () {
-    // this.getList()
   },
   methods: {
     closeNotice () {
@@ -69,6 +69,9 @@ export default {
     goAllRead () {
       this.$emit('goAllRead')
     }
+  },
+  computed: {
+    ...mapState(['app'])
   }
 }
 </script>

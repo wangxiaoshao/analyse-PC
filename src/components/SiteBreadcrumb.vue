@@ -15,6 +15,7 @@
         <el-button size="mini"
                    v-show="pageBreadcrumb.length > 0"
                    @click="goBack">返回</el-button>
+        <el-button size="mini" class="goBackBtn" v-if="noticeShowBtn"  @click="goHome">返回</el-button>
       </el-col>
     </el-row>
   </div>
@@ -39,6 +40,12 @@ export default {
         return []
       }
     },
+    noticeShowBtn:{
+      type:Boolean,
+      default () {
+        return false
+      }
+    },
     pageBreadcrumb: {
       type: Array,
       default () {
@@ -51,11 +58,15 @@ export default {
     }
   },
   created () {
-
   },
   methods: {
     goBack () {
       this.$emit('go-back')
+    },
+     goHome(){
+       this.$emit('goHome')
+     
+      
     }
   }
 }

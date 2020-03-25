@@ -90,14 +90,14 @@ export default {
     }
   },
   created () {
-    this.getAppList()
+    this.getGrid()
   },
   methods: {
     toDataLog (row) {
       this.$router.push({ name: 'PushLog', query: { id: row.id } })
     },
     //  获取应用
-    getAppList () {
+    getGrid  () {
       api[urlNames['getAppList']]({
         page: this.page.current,
         limit: this.page.limit
@@ -119,12 +119,12 @@ export default {
     // 每一页请求条数
     handleSizeChange (val) {
       this.pageSize = val
-      this.getAppList(this.currentPage, val)
+      this.getGrid (this.currentPage, val)
     },
     // 分页
     handleCurrentPageChange (val) {
       this.currentPage = val
-      this.getAppList(val, this.pageSize)
+      this.getGrid (val, this.pageSize)
     }
   }
 }
