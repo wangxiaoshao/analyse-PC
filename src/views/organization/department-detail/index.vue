@@ -21,11 +21,10 @@
             prop="department.name"
             :rules="[{ required: true, message: '名称不能为空'}]"
           >
-            <el-input v-model="ruleForm.department.name"></el-input>
+            <el-input v-model="ruleForm.department.name" @input="showIptMsg('name')"></el-input>
             <div v-if="this.$route.name === 'DepartmentEdit' ||  this.$route.name === 'DepartmentAdd'">
-              <div class="tip-msg"
-                   v-show="this.app.option.options.departmentAuditFields.indexOf('name') > -1 && ruleForm.department.name !== oldFrom.department.name">
-                添加或修改该字段需要提交审核
+              <div class="el-form-item__error" v-show="this.iptMsgVisible['name']">
+              {{iptMsgInfoStr}}
               </div>
             </div>
           </el-form-item>
@@ -33,11 +32,10 @@
             <el-input v-model="ruleForm.department.parentDep" :disabled="true"></el-input>
           </el-form-item>
            <el-form-item label=" 启用状态" prop="department.removed">
-            <el-switch v-model="ruleForm.department.removed"></el-switch>
+            <el-switch v-model="ruleForm.department.removed" @change="showIptMsg('removed')"></el-switch>
             <div v-if="this.$route.name === 'DepartmentEdit' ||  this.$route.name === 'DepartmentAdd'">
-              <div class="tip-msg"
-                   v-show="this.app.option.options.departmentAuditFields.indexOf('removed') > -1 && ruleForm.department.removed !== oldFrom.department.removed">
-                添加或修改该字段需要提交审核
+              <div class="el-form-item__error" v-show="this.iptMsgVisible['removed']">
+              {{iptMsgInfoStr}}
               </div>
             </div>
           </el-form-item>
@@ -53,12 +51,11 @@
             label="内设机构电话"
             prop="department.phone"
           >
-            <el-input v-model="ruleForm.department.phone"></el-input>
+            <el-input v-model="ruleForm.department.phone" @input="showIptMsg('phone')"></el-input>
             <div v-if="this.$route.name === 'DepartmentEdit' ||  this.$route.name === 'DepartmentAdd'">
-            <!-- <div class="tip-msg"
-                 v-show="this.app.option.options.departmentAuditFields.indexOf('phone') > -1 && ruleForm.department.phone !== oldFrom.department.phone">
-              添加或修改该字段需要提交审核
-            </div> -->
+              <div class="el-form-item__error" v-show="this.iptMsgVisible['phone']">
+                    {{iptMsgInfoStr}}
+                    </div>
             </div>
           </el-form-item>
           <el-form-item label="上级单位" prop="orgName">
@@ -87,10 +84,9 @@
           </el-tag>
           <el-tag class="add-tag-btn" v-if="!disabledFlag" @click="openSearchFlag = true"><i class="el-icon-plus"></i>添加标签</el-tag>
           <div v-if="this.$route.name === 'DepartmentEdit' ||  this.$route.name === 'DepartmentAdd'">
-            <div class="tip-msg"
-                 v-show="this.app.option.options.departmentAuditFields.indexOf('labelId') > -1 && ruleForm.labelId !== oldFrom.labelId">
-              添加或修改该字段需要提交审核
-            </div>
+            <!-- <div class="el-form-item__error" v-show="this.iptMsgVisible['phone']">
+                    {{iptMsgInfoStr}}
+                    </div> -->
           </div>
         </el-form-item>
       </el-row>
@@ -100,32 +96,30 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="内设机构介绍" prop="department.duty">
-            <el-input type="textarea" v-model="ruleForm.department.duty"></el-input>
+            <el-input type="textarea" v-model="ruleForm.department.duty" @input="showIptMsg('duty')"></el-input>
             <div v-if="this.$route.name === 'DepartmentEdit' ||  this.$route.name === 'DepartmentAdd'">
-              <div class="tip-msg"
-                   v-show="this.app.option.options.departmentAuditFields.indexOf('duty') > -1 && ruleForm.department.duty !== oldFrom.department.duty">
-                添加或修改该字段需要提交审核
-              </div>
+              <div class="el-form-item__error" v-show="this.iptMsgVisible['duty']">
+                    {{iptMsgInfoStr}}
+                    </div>
             </div>
           </el-form-item>
           <el-form-item label="申请原因" prop="reason">
             <el-input type="textarea" v-model="ruleForm.reason"></el-input>
             <div v-if="this.$route.name === 'DepartmentEdit' ||  this.$route.name === 'DepartmentAdd'">
-              <div class="tip-msg"
+              <!-- <div class="tip-msg"
                    v-show="this.app.option.options.departmentAuditFields.indexOf('reason') > -1 && ruleForm.reason !== oldFrom.reason">
                 添加或修改该字段需要提交审核
-              </div>
+              </div> -->
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="内设机构职责" prop="department.description">
-            <el-input type="textarea" v-model="ruleForm.department.description"></el-input>
+            <el-input type="textarea" v-model="ruleForm.department.description" @input="showIptMsg('description')"></el-input>
             <div v-if="this.$route.name === 'DepartmentEdit' ||  this.$route.name === 'DepartmentAdd'">
-              <div class="tip-msg"
-                   v-show="this.app.option.options.departmentAuditFields.indexOf('description') > -1 && ruleForm.department.description !== oldFrom.department.description">
-                添加或修改该字段需要提交审核
-              </div>
+              <div class="el-form-item__error" v-show="this.iptMsgVisible['description']">
+                    {{iptMsgInfoStr}}
+                    </div>
             </div>
           </el-form-item>
         </el-col>
@@ -162,6 +156,8 @@ export default {
   }, */
   data () {
     return {
+      iptMsgInfoStr: '添加或修改该字段需要提交审核',
+      iptMsgVisible: {},
       breadcrumb: {
         name: '内设机构详情',
         parent: null
@@ -222,7 +218,8 @@ export default {
   },
   created () {
     this.init()
-   
+    this.initIptMsgVisible()
+
   },
   beforeRouteUpdate (to, from, next) {
     next()
@@ -254,7 +251,7 @@ export default {
               this.getDetail()
             }
           }
-          
+
         }, () => {
           this.$message.error(`没有内容`)
         })
@@ -264,8 +261,17 @@ export default {
         this.findLabel(2)
       }
     },
-    
-
+    // 设置各个字段的验证提示信息的可见性
+    initIptMsgVisible () {
+      for (let field in this.ruleForm) {
+        this.iptMsgVisible[field] = false
+      }
+    },
+    showIptMsg (fieldName) {
+      if (this.app.option.options.departmentAuditFields.indexOf(fieldName) > -1) {
+        this.iptMsgVisible[fieldName] = true
+      }
+    },
     getDetail () {
       let data = {
         id: this.bindId
@@ -413,7 +419,7 @@ export default {
         this.isChange=false
         this.$router.go(-1)
       }
-      
+
     }
   },
   watch:{
