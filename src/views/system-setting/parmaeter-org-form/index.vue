@@ -828,13 +828,17 @@ export default {
           this.messageRemind
         ]
       } else if (flag === 3) {
-        list.name = 'orgCheckedAuditList'
-        list.value = {
-          checkedNodeAuditList: this.orgAuditField.checkedNodeAuditList,
-          checkedOrgAuditList: this.orgAuditField.checkedOrgAuditList,
-          checkedDepAuditList: this.orgAuditField.checkedDepAuditList,
-          checkedUserAuditList: this.orgAuditField.checkedUserAuditList
-        }
+        list.level = 1
+        list.name = 'orgAuditFields'
+        list.value = this.orgAuditField.checkedOrgAuditList
+        this.setClientOptions(list)
+        list.level = 1
+        list.name = 'depAuditFields'
+        list.value = this.orgAuditField.checkedDepAuditList
+        this.setClientOptions(list)
+        list.level = 1
+        list.name = 'userAuditFields'
+        list.value = this.orgAuditField.checkedUserAuditList
       }
       this.setClientOptions(list)
     },
