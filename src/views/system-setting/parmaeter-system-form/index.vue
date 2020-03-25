@@ -807,8 +807,8 @@ export default {
     saveresetPasswordTemplate () {
       this.setClientOptions({
         level: level,
-        name: 'SMSVerificationCodeTemplate',
-        value: this.SMSVerificationCodeTemplate
+        name: 'resetPasswordTemplate',
+        value: this.resetPasswordTemplate
       })
     },
     onStartDateChanged (startDate) {
