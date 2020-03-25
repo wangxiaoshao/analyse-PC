@@ -890,8 +890,6 @@ export default {
             this.systemAuditField.checkedOrgAuditList = item.value
           }
           if (item.name === 'nodeAuditFields') {
-            // console.log([item.value.slice(2,item.value.length-2)])
-            // this.systemAuditField.checkedNodeAuditList=[item.value.slice(2,item.value.length-2)]
             this.systemAuditField.checkedNodeAuditList = item.value
           }
         })
