@@ -57,8 +57,8 @@
     align="center">
     </el-table-column>
     <el-table-column
-      prop="entityId"
-      label="同步事件"
+      prop="pushTime"
+      label="同步时间"
       align="center"
       >
     </el-table-column>
