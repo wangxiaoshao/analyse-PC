@@ -394,7 +394,7 @@ export default {
       } else {
         let reg = /^((13[0-9])|(15[^4])|(18[0,2,3,5-9])|(17[0-8])|(147))\d{8}$/
         reg.test(value) ? callback() : callback(new Error('请输入11位有效号码'))
-       
+
       }
     }
     return {
@@ -505,7 +505,7 @@ export default {
     },
     // 搜索数据
     loadSearch () {
-      this.iptMsgVisible['name'] = true
+      this.showIptMsg('name')
       this.searchFlag = false
       // console.log(' this.personFrom.name:', this.personFrom.name)
       if (this.$route.name === 'PersonAdd' && this.personFrom.name.length > 1) {
