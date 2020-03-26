@@ -11,6 +11,11 @@ const initRouter = (menus) => {
   })
   router.beforeEach((to, from, next) => {
     let route = to.matched[0]
+    if (!route) {
+      router.back()
+      return
+    }
+
     if (route.meta && route.meta.key) {
       let flag = menus.find(item => {
         return item.moduleName === route.meta.key
