@@ -25,7 +25,7 @@
         <i class="imenu-icon iconfont icondanwei big-icon" style="margin: 0px 5px;"></i>单位信息
       </div>
       <el-menu class="el-menu-demo" mode="horizontal">
-        <el-menu-item index="1">基础信息</el-menu-item>
+        <el-menu-item index="1">基础信息11</el-menu-item>
       </el-menu>
       <el-row>
         <el-col :span="12">
@@ -34,7 +34,7 @@
             prop="organization.name"
           >
             <el-input v-model="ruleForm.organization.name"   @change="handleCredit" @input="showIptMsg('name')"></el-input>
-            <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
+            <div v-if="this.$route.name === 'UnitEdit'">
               <div class="el-form-item__error" v-show="this.iptMsgVisible['name']">
               {{iptMsgInfoStr}}
               </div>
@@ -42,7 +42,7 @@
           </el-form-item>
           <el-form-item label="单位其他名称" prop="organization.otherName">
             <el-input v-model="ruleForm.organization.otherName" @input="showIptMsg('otherName')"></el-input>
-            <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
+            <div v-if="this.$route.name === 'UnitEdit' ">
               <div class="el-form-item__error" v-show="this.iptMsgVisible['otherName']">
               {{iptMsgInfoStr}}
               </div>
@@ -50,7 +50,7 @@
           </el-form-item>
           <el-form-item label="单位地址" prop="organization.address">
             <el-input v-model="ruleForm.organization.address" @input="showIptMsg('address')"></el-input>
-            <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
+            <div v-if="this.$route.name === 'UnitEdit' ">
               <div class="el-form-item__error" v-show="this.iptMsgVisible['address']">
               {{iptMsgInfoStr}}
               </div>
@@ -58,7 +58,7 @@
           </el-form-item>
           <el-form-item label="传真号码" prop="organization.fax">
             <el-input v-model="ruleForm.organization.fax" @input="showIptMsg('fax')"></el-input>
-            <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
+            <div v-if="this.$route.name === 'UnitEdit'">
               <div class="el-form-item__error" v-show="this.iptMsgVisible['fax']">
               {{iptMsgInfoStr}}
               </div>
@@ -586,7 +586,11 @@ export default {
           if (valid) {
             api[urlNames['createOrganization']](this.ruleForm).then(
               res => {
-                this.$message.success(`保存成功`)
+                if(this.$route.name === 'UnitEdit'){
+                  this.$message.success('保存成功，待审核管理员审核通过后方生效')
+                }else{
+                  this.$message.success(`保存成功`)
+                }
                 this.$router.go(-1)
                 this.isChange=false
                 this.$emit('on-update-organization-tree')

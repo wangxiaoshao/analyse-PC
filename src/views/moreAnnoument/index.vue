@@ -55,6 +55,7 @@ export default {
   mounted () {
   // this.app.breadcrumb=[{name: '平台公告'}]
     this.page.total = 1
+     this.app.noticeShowBtn=true
   },
   computed: {
     ...mapState(['app'])

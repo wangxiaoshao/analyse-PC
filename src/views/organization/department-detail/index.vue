@@ -401,7 +401,11 @@ export default {
       this.$refs[ruleForm].validate((valid) => {
         if (valid) {
           api[urlNames['createDepartment']](this.ruleForm).then((res) => {
-            this.$message.success(`保存成功`)
+            if(this.$route.name === 'DepartmentEdit'){
+               this.$message.success('保存成功，待审核管理员审核通过后方生效')
+            }else{
+              this.$message.success(`保存成功`)
+            }
             this.$router.go(-1)
           }, () => {
           })

@@ -35,8 +35,8 @@
         <div class="noticeInfo" v-for="(itemList,index) in doNoticeList" :key="index">
           <p v-for="val in itemList" :key="val.id"  @click="doFindNotice(val)">
             <el-row>
-              <el-col :span="17"> <span class="msg" :title="val.typeText">{{val.content}}</span></el-col>
-              <el-col :span="7"> <span class="date">{{val.createTime}}</span></el-col>
+              <el-col :span="16"> <span class="msg" :title="val.typeText">{{val.content}}</span></el-col>
+              <el-col :span="8"> <span class="date">{{val.createTime}}</span></el-col>
             </el-row>
           </p>
         </div>
@@ -50,8 +50,8 @@
         <div class="noticeInfo" v-for="(itemList,index) in doAnnouncementList" :key="index">
           <p v-for="val in itemList" :key="val.id"  @click="goFindAnnountDetial(val)">
             <el-row>
-              <el-col :span="18"> <span class="msg" :title="val.typeText">{{val.content}}</span></el-col>
-              <el-col :span="6"> <span class="date">{{val.creareTime}}</span></el-col>
+              <el-col :span="16"> <span class="msg" :title="val.typeText">{{val.content}}</span></el-col>
+              <el-col :span="8"> <span class="date">{{val.creareTime}}</span></el-col>
             </el-row>
           </p>
         </div>
@@ -209,28 +209,28 @@ export default {
           id: 1,
           content: '为推进改造，系统密码强度优化通知。',
           typeText: '消息确认通知',
-          creareTime: '2020年02月24日',
+          creareTime: '2020-03-15 20:07:17',
           hasRead: 0
         },
         {
           id: 2,
           content: '组织机构添加单位时，单位地址信息为必填相关通知。',
           typeText: '审核通知',
-          creareTime: '2020年02月20日',
+          creareTime: '2020-03-01 20:07:17',
           hasRead: 1
         },
         {
           id: 3,
           content: '2020年春节期间系统运维时间调整公告！',
           typeText: '审核通知',
-          creareTime: '2020年01月24日',
+          creareTime: '2020-02-26 20:07:17',
           hasRead: 0
         },
         {
           id: 4,
           content: '2020年春节系统更新及版本V1.0.1公告！',
           typeText: '审核通知',
-          creareTime: '2020年01月23日',
+          creareTime: '2020-02-15 20:07:17',
           hasRead: 0
         }
       ],
@@ -316,7 +316,6 @@ export default {
       }
       api[urlNames['notificationList']](data).then((res) => {
         this.noticeList = res.data
-        this.filterDate()
         this.doNoticeList.push(this.noticeList.slice(0, 3), this.noticeList.slice(3))
       })
     },
@@ -348,23 +347,13 @@ export default {
 
     doArray () {
       this.dataStr = new Date().getFullYear() + '年' + (new Date().getMonth() + 1) + '月' + new Date().getDate() + '日'
-      // this.doNoticeList.push(this.noticeList.slice(0,3),this.noticeList.slice(3))
       this.doAnnouncementList.push(this.announcementList.slice(0, 3), this.announcementList.slice(3))
     },
     filterType (val) {
       let typeList = this.userTypeOptions.filter(item => item.value === val)
       return typeList[0].text
     },
-    filterDate () {
-      let that=this
-      this.noticeList.forEach(function (val, index) {
-        let Date1 = new Date(val.createTime)
-        val.createTime = Date1.getFullYear() + '年' + that.dataViliter((Date1.getMonth() + 1))  + '月' +that.dataViliter (Date1.getDate() )+ '日'
-      })
-    },
-    dataViliter(a){
-     return a= a<10 ? '0'+a:a
-    },
+  
 
     goPersonalPage () {
       this.$router.push('/pass-change')

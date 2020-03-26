@@ -5,7 +5,7 @@
       <el-row class="operator-row">
         <el-col :span="18">
           <el-row :gutter="10" type="flex">
-            <el-col :span="6">
+            <!-- <el-col :span="6">
               <el-select
                 v-model="selected.type"
                 filterable
@@ -19,7 +19,7 @@
                   :value="item.type">
                 </el-option>
               </el-select>
-            </el-col>
+            </el-col> -->
           </el-row>
         </el-col>
       </el-row>
@@ -35,21 +35,24 @@
       </span>
       <span class="template-two light-purple">
         <div style="position: absolute" class="add-unit">
-          <div>//{{dateName}}</div>
+          <!-- <div>//{{dateName}}</div> -->
+          <div>//截止今天</div>
           <div>内设机构总数</div>
           <div>{{countData.deptCount}}</div>
         </div>
       </span>
       <span class="template-two light-blue">
         <div style="position: absolute" class="add-depart">
-          <div>//{{dateName}}</div>
+          <!-- <div>//{{dateName}}</div> -->
+          <div>//截止今天</div>
           <div>单位总数</div>
           <div>{{countData.organCount}}</div>
         </div>
       </span>
       <span class="template-two light-orange">
         <div style="position: absolute" class="add-member">
-          <div>//{{dateName}}</div>
+          <!-- <div>//{{dateName}}</div> -->
+          <div>//截止今天</div>
           <div>接入应用总数</div>
           <div>{{applyCount}}</div>
         </div>
@@ -212,11 +215,15 @@ export default {
         page: 1,
         limit: 5
       }
-      api[urlNames['getStatistiscManageDto']]({
-        type: this.selected.type
-      }).then((res) => {
+      // api[urlNames['getStatistiscManageDto']]({
+      //   type: this.selected.type
+      // }).then((res) => {
+      //   this.countData = res.data
+      // })
+       api[urlNames['getStatistiscManageDto']]().then((res) => {
         this.countData = res.data
       })
+
       api[urlNames['getDataLogList']](data).then((res) => {
         this.newsList = res.data
       })

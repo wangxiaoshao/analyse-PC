@@ -71,11 +71,11 @@
         </template>
         <template v-if="loginLog === 3">
           <el-table-column prop="accessTime" label="时间"></el-table-column>
-          <el-table-column label="日志类型">
+          <!-- <el-table-column label="日志类型">
             <template slot-scope>
-              <span>系统错误</span>
+              <span>{{systemError}}</span>
             </template>
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column prop="path" label="接口标识"></el-table-column>
         </template>
         <el-table-column label="操作">
@@ -180,7 +180,7 @@ export default {
         id: '',
         signed: ''
       },
-      systemError: '系统错误',
+      systemError: '接口调用异常',
       systemInfoForm: {
         id: null,
         accessTime: '',

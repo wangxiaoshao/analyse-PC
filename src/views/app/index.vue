@@ -133,6 +133,7 @@ export default {
       }
     },
     goHome(){
+      // this.SET_PAGE_BREADCRUMB(breadcrumb)
       this.app.noticeShowBtn=false
       this.$router.go(-1)
     },
