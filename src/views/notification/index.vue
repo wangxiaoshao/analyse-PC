@@ -38,9 +38,10 @@
 import handleTable from '@src/mixins/handle-table'
 import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
+import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
 export default {
   name: 'notification',
-  mixins: [handleTable],
+  mixins: [handleTable,handleBreadcrumb],
   data () {
     return {
       tableData: []
@@ -48,6 +49,9 @@ export default {
   },
   created () {
     this.getGrid()
+    // this.breadcrumb=[]
+    // console.log(this.breadcrumb)
+    // this.breadcrumb.name = '通知中心'
     this.app.noticeShowBtn=true
   },
   mounted(){

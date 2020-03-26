@@ -253,7 +253,12 @@ export default {
           }
           api[urlNames['createViewNode']](data).then(
             res => {
-              this.$message.success(`保存成功`)
+              if(this.$route.name === 'NodeEdit'){
+                 this.$message.success('保存成功，待审核管理员审核通过后方生效')
+              }else{
+                 this.$message.success(`保存成功`)
+              }
+             
               this.$emit('on-update-organization-tree')
               this.$router.go(-1)
             },
