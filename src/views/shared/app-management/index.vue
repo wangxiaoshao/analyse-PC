@@ -41,11 +41,11 @@
       label="应用接口账号"
       align="center">
     </el-table-column>
-      <el-table-column
+      <!-- <el-table-column
         property="apiPassword"
         label="应用接口密码"
         align="center">
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="启用状态" prop="removed" width="80" align="center">
         <template slot-scope="scope">
           <span class="text-able" v-show="scope.row.removed===0">启用</span>
