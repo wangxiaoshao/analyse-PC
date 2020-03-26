@@ -134,7 +134,7 @@
                 </div>
           </div>
             <el-form-item>
-              <el-button style="margin-left: 267px" type="primary" @click="synchronizedNode">保存视图</el-button>
+              <el-button style="margin-left: 267px" type="primary" @click="synchronizedNode">应用到视图</el-button>
               <el-button @click="backToList">取消</el-button>
             </el-form-item>
           </el-form>

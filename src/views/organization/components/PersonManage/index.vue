@@ -125,7 +125,7 @@
               </div>
           </el-form-item>
           <el-form-item label="所属单位" v-if="showexportIdentityType" prop="orgName">
-            <el-input placeholder="所属单位" v-model="orgName" @input="showIptMsg('orgName')">
+            <el-input placeholder="所属单位" v-model="postDetail.orgName" @input="showIptMsg('orgName')">
               <el-button type="primary" slot="append" class="form-btn1" @click="exportOrg" :disabled="!hasRight('personUserIdTransfe')">调出</el-button>
             </el-input>
             <div class="el-form-item__error" v-show="this.iptMsgVisible['orgName']">
@@ -379,7 +379,6 @@ export default {
     'oldUserInfo',
     'labelId',
     'labelList',
-    'orgName',
     'oldPostDetail',
     'oldUserDetail'
   ],

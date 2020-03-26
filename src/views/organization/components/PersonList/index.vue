@@ -47,21 +47,17 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-     <!-- 提交调出申请弹框 -->
-     <el-dialog
-      :visible.sync="submitVisible" width='410px'>
-      <div slot='title' style="padding:20px; background-color: #fff;">
-        <span class="msg-title">调出申请提交</span>
-          <span class='svg-container' style="color:red"><span class='iconfont iconzuzhijigou'></span></span>
+    <!-- 提交调出申请弹框 -->
+    <el-dialog :visible.sync="submitVisible" width="410px">
+      <div slot="title" style="padding:20px; background-color: #fff;">
+        <span class="msg-title">{{callMag.title}}</span>
+       <i class="el-icon-document-copy" style="color:red"></i>
       </div>
-      <div class="msg-box">
-        您的调出申请已提交，等待管理员审核通过后即可生效。
-      </div>
+      <div class="msg-box">{{callMag.msg}}</div>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitVisible = false" width='120px'>确 定</el-button>
+        <el-button type="primary" @click="submitVisible = false" width="120px">确 定</el-button>
       </div>
     </el-dialog>
-
     <div class="button-wrap">
       <span>
         <slot name="AddBtn"></slot>
@@ -226,7 +222,11 @@ export default {
       },
       sortValue: null,
       // 数值排序参数
-      sortParam: {}
+      sortParam: {},
+       callMag:{
+        title:'调出申请提交',
+        msg:'您的调出申请已提交，等待管理员审核通过后即可生效。'
+      }
     }
   },
   created () {
@@ -461,8 +461,8 @@ export default {
               if (error) {
                 this.calloutFlag = false
                 this.submitVisible = true
-                document.querySelector('.msg-title').innerHTML = '请勿重复提交调出申请'
-                document.querySelector('.msg-box').innerHTML = '在此之前，您已经提交过调出申请，请等待管理员审核完成后再操作！'
+                this.callMag.title='请勿重复提交调出申请'
+                this.callMag.msg='在此之前，您已经提交过调出申请，请等待管理员审核完成后再操作！'
               }
             }
           )

@@ -356,10 +356,14 @@ export default {
       return typeList[0].text
     },
     filterDate () {
+      let that=this
       this.noticeList.forEach(function (val, index) {
         let Date1 = new Date(val.createTime)
-        val.createTime = Date1.getFullYear() + '年' + (Date1.getMonth() + 1) + '月' + Date1.getDate() + '日'
+        val.createTime = Date1.getFullYear() + '年' + that.dataViliter((Date1.getMonth() + 1))  + '月' +that.dataViliter (Date1.getDate() )+ '日'
       })
+    },
+    dataViliter(a){
+     return a= a<10 ? '0'+a:a
     },
 
     goPersonalPage () {

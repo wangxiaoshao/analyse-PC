@@ -115,7 +115,7 @@
         </el-form>
     </div>
     <div class="parameter-item">
-        <div class="header">通讯录权限设置111</div>
+        <div class="header">通讯录权限设置</div>
         <el-form ref="orgAddressBookSet" :model="orgAddressBookSet" label-width="120px">
             <el-form-item label="所有单位信息">
                 <el-radio-group v-model="orgAddressBookSet.allOrgInfo">
