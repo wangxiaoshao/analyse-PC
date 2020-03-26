@@ -17,13 +17,13 @@ const tableConfig = {
     key: 'applyTime',
     label: '申请时间',
     sortable: false,
-    formatter (row, column, cellValue) {
+    /* formatter (row, column, cellValue) {
       let timeStr = ''
       if (cellValue) {
         timeStr = cellValue.split(' ')[0]
       }
       return timeStr
-    },
+    }, */
     showOverflowTooltip: false,
     minWidth: 100
   },
