@@ -358,7 +358,7 @@ export default {
     filterDate () {
       let that=this
       this.noticeList.forEach(function (val, index) {
-        let Date1 = new Date(val.createTime)
+        let Date1 = new Date(val.createTime.replace(/-/g, '/'))
         val.createTime = Date1.getFullYear() + '年' + that.dataViliter((Date1.getMonth() + 1))  + '月' +that.dataViliter (Date1.getDate() )+ '日'
       })
     },
