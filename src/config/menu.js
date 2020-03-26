@@ -9,7 +9,7 @@ export default {
       'name': '首页',
       'path': '/homePage',
       'type': 1,
-      'key': 'menuHomePage',
+      'key': 'menuHome',
       'icon': 'fa fa-home',
       'list': []
     },
