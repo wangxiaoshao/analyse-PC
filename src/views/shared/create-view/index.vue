@@ -30,7 +30,7 @@
                     <el-input  disabled v-model="returnViewId"></el-input>
                   </el-form-item>
                   <el-form-item>
-                    <el-checkbox v-model="ViewFrom.syncChildren">是否关闭新增机构自动同步</el-checkbox>
+                    <el-checkbox v-model="ViewFrom.syncChildren">关闭新增机构自动同步</el-checkbox>
                     <br>
                     <span style="color:rgb(114, 116, 119)">（组织机构新增单位、内设机构将同步至本视图）</span>
                   </el-form-item>
@@ -277,7 +277,7 @@ export default {
         remark: '暂时隐藏',
         removed: this.ViewFrom.removed ? 0 : 1,
         roleBindUserId: this.ViewFrom.roleBindUserIds,
-        syncChildren: this.ViewFrom.syncChildren
+        syncChildren: +this.ViewFrom.syncChildren
       }).then((res) => {
         if (res.status === 0) {
           this.returnViewId = res.data
@@ -656,13 +656,13 @@ export default {
       }).then((res) => {
         this.ViewFrom.name = res.data.name
         this.ViewFrom.removed = !res.data.removed
-        this.ViewFrom.syncChildren= res.data.syncChildren==1 ? true: false
+        this.ViewFrom.syncChildren = !!res.data.syncChildren
         this.ViewFrom.roleBindUserIds = []
         res.data.list.forEach(item => {
           this.ViewFrom.roleBindUserIds.push(item.uid)
         })
         this.oldViewFrom = JSON.parse(JSON.stringify(this.ViewFrom))
-        
+
       })
     }
   }

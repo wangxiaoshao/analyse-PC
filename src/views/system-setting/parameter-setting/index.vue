@@ -1,10 +1,10 @@
 <template>
   <div class="parameter-settings">
     <el-tabs v-model="activeName">
-      <el-tab-pane label="全局参数设置" name="first">
+      <el-tab-pane label="全局参数设置" name="first" v-if="hasRight('viewGlobalParameter')">
         <parmaeter-system-form></parmaeter-system-form>
       </el-tab-pane>
-      <el-tab-pane label="单位参数">
+      <el-tab-pane label="单位参数" :name="!hasRight('viewGlobalParameter') && hasRight('viewOrgParameter') ? 'first' : 'second'"  v-if="hasRight('viewOrgParameter')">
         <parmaeter-org-form></parmaeter-org-form>
       </el-tab-pane>
       <el-tab-pane label="消息模板配置" v-if="false">
@@ -18,8 +18,10 @@
 import ParmaeterOrgForm from '@src/views/system-setting/parmaeter-org-form/index'
 import ParmaeterSystemForm from '@src/views/system-setting/parmaeter-system-form/index'
 import MsgSetting from './msg-setting/index'
+import hasRight from '@src/mixins/has-right'
 export default {
   name: 'ParameterSettings',
+  mixins: [hasRight],
   components: {
     ParmaeterOrgForm,
     ParmaeterSystemForm,

@@ -64,7 +64,7 @@
           <el-button
             type="primary"
             @click="addAllDic"
-            :disabled="foundDicList && foundDicList.length === 0" v-show="hasRight('dictItemCreate')">批量添加</el-button>
+            :disabled="foundDicList && foundDicList.length === 0" v-show="hasRight('dictItemCreate')">保存</el-button>
           <el-button @click="closeDialog('form')" :style="{marginLeft: '60px'}">取消</el-button>
         </el-col>
       </el-row>
@@ -171,7 +171,7 @@ export default {
         if (res && res.status === 0) {
           this.$emit('refreshList')
           this.closeDialog('form')
-          this.$message.success(`批量添加成功`)
+          this.$message.success(`保存成功`)
         }
       }, () => {
         this.foundDicList = []
@@ -218,7 +218,7 @@ export default {
           message: '已取消删除'
         })
       })
-      
+
     }
   }
 }
