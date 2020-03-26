@@ -33,10 +33,10 @@
     <!-- 提交调出申请弹框 -->
     <el-dialog :visible.sync="submitVisible" width="410px">
       <div slot="title" style="padding:20px; background-color: #fff;">
-        <span class="msg-title">调出申请提交</span>
+        <span class="msg-title">{{callMag.title}}</span>
        <i class="el-icon-document-copy" style="color:red"></i>
       </div>
-      <div class="msg-box">您的调出申请已提交，等待管理员审核通过后即可生效。</div>
+      <div class="msg-box">{{callMag.msg}}</div>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitVisible = false" width="120px">确 定</el-button>
       </div>
@@ -132,7 +132,6 @@
                 :label-id="userInfo.labelId"
                 :label-list="fromLabelList"
                 :old-user-info="oldUserInfo"
-                :orgName="orgName"
                 @get-user="getUser"
                 @get-post="getPost"
                 @get-label="getLabelId"
@@ -186,7 +185,6 @@ export default {
       if (value === '') {
         callback(new Error('请输入新密码'))
       } else {
-        // eslint-disable-next-line no-useless-escape
         let reg = /^(?!([a-zA-Z\d]*|[\d!@#\$%_\.*/]*|[a-zA-Z!@#\$%_\.*/]*)$)[a-zA-Z\d!@#\$%_\.*/]{8,}$/
         reg.test(value) ? callback() : callback(new Error('请按照密码规则填写'))
         if (this.ruleForm.checkPass !== '') {
@@ -251,7 +249,8 @@ export default {
           id: '',
           type: null,
           orgId: '',
-          dutyName: '' // 职务名称
+          dutyName: '' ,// 职务名称
+          orgName:''
         },
         userId: '',
         user: {
@@ -284,8 +283,8 @@ export default {
         orgId: '',
         reason: ''
       },
-      orgName: '',
       depName: '',
+      orgName:'',
       selectDialog: {
         selectMenmberTitle: '选择调出单位或内设机构', // 选人组件标题
         selectMenmberFlag: false, // 显示弹窗，
@@ -294,6 +293,10 @@ export default {
         isSingleSelect: false, // 是否为单选框  false为多选（默认）-人员单选
         isSingleOrgSelect: true, // 是否为单选框  false为多选（默认），true为单选(isOnlyOrg为true时内设机构/单位单选)
         isOnlyOrg: true
+      },
+      callMag:{
+        title:'调出申请提交',
+        msg:'您的调出申请已提交，等待管理员审核通过后即可生效。'
       }
     }
   },
@@ -385,7 +388,8 @@ export default {
           this.userInfo.identity.dutyName = res.data.dutyName
           this.formCallout.identityId = res.data.id
           this.formCallout.orgId = res.data.orgId
-          this.orgName = res.data.organizationName
+          this.userInfo.identity.orgName = res.data.organizationName
+          this.orgName= res.data.organizationName
         },
         () => {
           /* this.$message.error(`没有内容`) */
@@ -629,22 +633,21 @@ export default {
         if (valid) {
           api[urlNames['calloutUser']](this.formCallout).then(
             res => {
-              // this.$message.success(`调出申请已提交`)
-              this.calloutFlag = false
-              this.submitVisible = true
-              // this.getGrid()
-              this.fromInit()
-              this.formCallout.deptId = this.formCallout.orgId = ''
-              // this.orgName = this.depName = ''
+                // this.$message.success(`调出申请已提交`)
+                this.calloutFlag = false
+                this.submitVisible = true
+                // this.getGrid()
+                this.fromInit()
+                this.formCallout.deptId = this.formCallout.orgId = ''
+              this.orgName = this.depName = ''
+
             },
             error => {
               if (error) {
                 this.calloutFlag = false
                 this.submitVisible = true
-                document.querySelector('.msg-title').innerHTML =
-                  '请勿重复提交调出申请'
-                document.querySelector('.msg-box').innerHTML =
-                  '在此之前，您已经提交过调出申请，请等待管理员审核完成后再操作！'
+                this.callMag.title='请勿重复提交调出申请'
+                this.callMag.msg='在此之前，您已经提交过调出申请，请等待管理员审核完成后再操作！'
               }
             }
           )
