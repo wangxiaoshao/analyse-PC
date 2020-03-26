@@ -199,22 +199,16 @@
                     <div class="table-td" style="text-align: center">模块</div>
                     <div class="table-td" style="text-align: center">功能</div>
                 </div>
-                <!--            <div class="table-row">-->
-                <!--              <div class="table-td">-->
-                <!--                <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>-->
-                <!--              </div>-->
-                <!--              <div class="table-td"></div>-->
-                <!--            </div>-->
                 <div class="table-row">
-                    <div class="table-td" style="text-align: center">
-                        节点
-                    </div>
-                    <div class="table-td">
-                        <el-checkbox-group v-model="orgAuditField.checkedNodeAuditList" @change="handleCheckAllChange">
-                            <el-checkbox v-for="item in nodeAuditList" :label="item.name" :key="item.name">{{item.checkname}}
-                            </el-checkbox>
-                        </el-checkbox-group>
-                    </div>
+                  <div class="table-td" style="text-align: center">
+                    节点
+                  </div>
+                  <div class="table-td">
+                    <el-checkbox-group v-model="orgAuditField.checkedNodeAuditList" @change="handleCheckAllChange">
+                      <el-checkbox v-for="item in nodeAuditList" :label="item.name" :key="item.name">{{item.checkname}}
+                      </el-checkbox>
+                    </el-checkbox-group>
+                  </div>
                 </div>
                 <div class="table-row">
                     <div class="table-td" style="text-align: center">
@@ -350,151 +344,151 @@ import {
 import insertTextInfoCursor from '@src/mixins/insertIntoCursor'
 
 const level = 2
-  const nodeAuditList = [{
-    name: 'id',
-    checkname: '结点ID'
-  },
-  {
-    name: 'parentId',
-    checkname: '父结点ID'
-  },
-  {
-    name: 'viewId',
-    checkname: '视图ID'
-  },
-  {
-    name: 'areaId',
-    checkname: '区域ID'
-  },
-  {
-    name: 'name',
-    checkname: '结点名称'
-  },
-  {
-    name: 'syncChildren',
-    checkname: '是否同步子级'
-  },
-  {
-    name: 'nodeType',
-    checkname: '结点类型'
-  },
-  {
-    name: 'systemType',
-    checkname: '从属哪些四大班子体系'
-  },
-  {
-    name: 'bindId',
-    checkname: '绑定成员ID'
-  },
-  {
-    name: 'sort',
-    checkname: '排序值，小的在前面'
-  },
-  {
-    name: 'removed',
-    checkname: '是否已经删除'
-  },
-  {
-    name: 'createTime',
-    checkname: '创建时间'
-  },
-  {
-    name: 'updateTime',
-    checkname: '修改时间'
-  }
-  ]
-  const orgAuditList = [{
-    name: 'id',
-    checkname: '单位ID'
-  },
-  {
-    name: 'parentId',
-    checkname: '父级ID'
-  },
-  {
-    name: 'level',
-    checkname: '单位级别：省市县'
-  },
-  {
-    name: 'dutyLevel',
-    checkname: '职能级别：正厅级等'
-  },
-  {
-    name: 'type',
-    checkname: '所属类型'
-  },
-  {
-    name: 'systemType',
-    checkname: '所属系统'
-  },
-  {
-    name: 'name',
-    checkname: '单位全称'
-  },
-  {
-    name: 'shortName',
-    checkname: '单位简称'
-  },
-  {
-    name: 'otherName',
-    checkname: '其他名称'
-  },
-  {
-    name: 'address',
-    checkname: '单位地址'
-  },
-  {
-    name: 'zipCode',
-    checkname: '邮编'
-  },
-  {
-    name: 'fax',
-    checkname: '传真号'
-  },
-  {
-    name: 'phone',
-    checkname: '电话'
-  },
-  {
-    name: 'creditId',
-    checkname: '统一社会信用代码'
-  },
-  {
-    name: 'creditIdValidated',
-    checkname: '统一社会信用代码是否认证通过'
-  },
-  {
-    name: 'ext01',
-    checkname: '扩展属性1'
-  },
-  {
-    name: 'ext02',
-    checkname: '扩展属性2'
-  },
-  {
-    name: 'ext03',
-    checkname: '扩展属性3'
-  },
-  {
-    name: 'ext04',
-    checkname: '扩展属性4'
-  },
-  {
-    name: 'ext05',
-    checkname: '扩展属性5'
-  },
-  {
-    name: 'removed',
-    checkname: '启用禁用'
-  },
-  {
-    name: 'createTime',
-    checkname: '创建时间'
-  },
-  {
-    name: 'updatedTime',
-    checkname: '修改时间'
-  }
+const nodeAuditList = [{
+  name: 'id',
+  checkname: '结点ID'
+},
+{
+  name: 'parentId',
+  checkname: '父结点ID'
+},
+{
+  name: 'viewId',
+  checkname: '视图ID'
+},
+{
+  name: 'areaId',
+  checkname: '区域ID'
+},
+{
+  name: 'name',
+  checkname: '结点名称'
+},
+{
+  name: 'syncChildren',
+  checkname: '是否同步子级'
+},
+{
+  name: 'nodeType',
+  checkname: '结点类型'
+},
+{
+  name: 'systemType',
+  checkname: '从属哪些四大班子体系'
+},
+{
+  name: 'bindId',
+  checkname: '绑定成员ID'
+},
+{
+  name: 'sort',
+  checkname: '排序值，小的在前面'
+},
+{
+  name: 'removed',
+  checkname: '是否已经删除'
+},
+{
+  name: 'createTime',
+  checkname: '创建时间'
+},
+{
+  name: 'updateTime',
+  checkname: '修改时间'
+}
+]
+const orgAuditList = [{
+  name: 'id',
+  checkname: '单位ID'
+},
+{
+  name: 'parentId',
+  checkname: '父级ID'
+},
+{
+  name: 'level',
+  checkname: '单位级别：省市县'
+},
+{
+  name: 'dutyLevel',
+  checkname: '职能级别：正厅级等'
+},
+{
+  name: 'type',
+  checkname: '所属类型'
+},
+{
+  name: 'systemType',
+  checkname: '所属系统'
+},
+{
+  name: 'name',
+  checkname: '单位全称'
+},
+{
+  name: 'shortName',
+  checkname: '单位简称'
+},
+{
+  name: 'otherName',
+  checkname: '其他名称'
+},
+{
+  name: 'address',
+  checkname: '单位地址'
+},
+{
+  name: 'zipCode',
+  checkname: '邮编'
+},
+{
+  name: 'fax',
+  checkname: '传真号'
+},
+{
+  name: 'phone',
+  checkname: '电话'
+},
+{
+  name: 'creditId',
+  checkname: '统一社会信用代码'
+},
+{
+  name: 'creditIdValidated',
+  checkname: '统一社会信用代码是否认证通过'
+},
+{
+  name: 'ext01',
+  checkname: '扩展属性1'
+},
+{
+  name: 'ext02',
+  checkname: '扩展属性2'
+},
+{
+  name: 'ext03',
+  checkname: '扩展属性3'
+},
+{
+  name: 'ext04',
+  checkname: '扩展属性4'
+},
+{
+  name: 'ext05',
+  checkname: '扩展属性5'
+},
+{
+  name: 'removed',
+  checkname: '启用禁用'
+},
+{
+  name: 'createTime',
+  checkname: '创建时间'
+},
+{
+  name: 'updatedTime',
+  checkname: '修改时间'
+}
 ]
 const depAuditList = [{
   name: 'id',
@@ -678,6 +672,7 @@ const userAuditList = [{
 }]
 export default {
   name: 'parmaeterFrom',
+  mixins: [insertTextInfoCursor],
   data () {
     return {
       orgUserSecuritySettings: { // 用户安全
@@ -690,12 +685,12 @@ export default {
         passwordStrength: 0
       },
       orgAddressBookSet: { // 通讯录
-        allOrgInfo: false,
-        userName: false,
-        userMobile: false,
-        userPhone: false,
-        userDetail: false,
-        depPhone: false
+        allOrgInfo: 0,
+        userName: 0,
+        userMobile: 0,
+        userPhone: 0,
+        userDetail: 0,
+        depPhone: 0
       },
       orgMsgConfirmOpenVisible: false, // 打开单位信息确认对话框
       orgMsgConfirmCloseVisible: false, // 关闭单位信息确认对话框
@@ -820,6 +815,9 @@ export default {
         res.data.forEach(item => {
           if (item.name === 'orgAddressBookSet') {
             this.orgAddressBookSet = JSON.parse(item.value)
+            for (let key in this.orgAddressBookSet) {
+              this.orgAddressBookSet[key] = this.orgAddressBookSet[key] ? 1 : 0
+            }
           }
           if (item.name === 'orgUserSecuritySettings') {
             this.orgUserSecuritySettings = JSON.parse(item.value)
@@ -848,8 +846,17 @@ export default {
               this.noRemind = false
             }
           }
-          if (item.name === 'orgCheckedAuditList') {
-            this.orgAuditField = JSON.parse(item.value)
+          if (item.name === 'userAuditFields') {
+            this.orgAuditField.checkedUserAuditList = item.value
+          }
+          if (item.name === 'departmentAuditFields') {
+            this.orgAuditField.checkedDepAuditList = item.value
+          }
+          if (item.name === 'orgAuditFields') {
+            this.orgAuditField.checkedOrgAuditList = item.value
+          }
+          if (item.name === 'nodeAuditFields') {
+            this.orgAuditField.checkedNodeAuditList = item.value
           }
         })
       })
@@ -898,13 +905,17 @@ export default {
           this.messageRemind
         ]
       } else if (flag === 3) {
-        list.name = 'orgCheckedAuditList'
-        list.value = {
-          checkedNodeAuditList: this.orgAuditField.checkedNodeAuditList,
-          checkedOrgAuditList: this.orgAuditField.checkedOrgAuditList,
-          checkedDepAuditList: this.orgAuditField.checkedDepAuditList,
-          checkedUserAuditList: this.orgAuditField.checkedUserAuditList
-        }
+        list.name = 'nodeAuditFields'
+        list.value = this.orgAuditField.checkedNodeAuditList
+        this.setClientOptions(list)
+        list.name = 'orgAuditFields'
+        list.value = this.orgAuditField.checkedOrgAuditList
+        this.setClientOptions(list)
+        list.name = 'depAuditFields'
+        list.value = this.orgAuditField.checkedDepAuditList
+        this.setClientOptions(list)
+        list.name = 'userAuditFields'
+        list.value = this.orgAuditField.checkedUserAuditList
       }
       this.setClientOptions(list)
     },

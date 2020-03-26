@@ -33,37 +33,35 @@
             label="单位名称"
             prop="organization.name"
           >
-            <el-input v-model="ruleForm.organization.name"   @change="handleCredit"></el-input>
+            <el-input v-model="ruleForm.organization.name"   @change="handleCredit" @input="showIptMsg('name')"></el-input>
             <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
-              <div
-                class="tip-msg"
-                v-show="this.app.option.options.orgAuditFields.indexOf('name') > -1">添加或修改该字段需要提交审核</div>
+              <div class="el-form-item__error" v-show="this.iptMsgVisible['name']">
+              {{iptMsgInfoStr}}
+              </div>
             </div>
           </el-form-item>
           <el-form-item label="单位其他名称" prop="organization.otherName">
-            <el-input v-model="ruleForm.organization.otherName"></el-input>
+            <el-input v-model="ruleForm.organization.otherName" @input="showIptMsg('otherName')"></el-input>
             <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
-              <div
-                class="tip-msg"
-                v-show="this.app.option.options.orgAuditFields.indexOf('otherName') > -1">添加或修改该字段需要提交审核</div>
+              <div class="el-form-item__error" v-show="this.iptMsgVisible['otherName']">
+              {{iptMsgInfoStr}}
+              </div>
             </div>
           </el-form-item>
           <el-form-item label="单位地址" prop="organization.address">
-            <el-input v-model="ruleForm.organization.address"></el-input>
+            <el-input v-model="ruleForm.organization.address" @input="showIptMsg('address')"></el-input>
             <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
-              <div
-                class="tip-msg"
-                v-show="this.app.option.options.orgAuditFields.indexOf('address') > -1"
-              >添加或修改该字段需要提交审核</div>
+              <div class="el-form-item__error" v-show="this.iptMsgVisible['address']">
+              {{iptMsgInfoStr}}
+              </div>
             </div>
           </el-form-item>
           <el-form-item label="传真号码" prop="organization.fax">
-            <el-input v-model="ruleForm.organization.fax"></el-input>
+            <el-input v-model="ruleForm.organization.fax" @input="showIptMsg('fax')"></el-input>
             <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
-              <div
-                class="tip-msg"
-                v-show="this.app.option.options.orgAuditFields.indexOf('fax') > -1 && ruleForm.organization.fax !== oldFrom.organization.fax"
-              >添加或修改该字段需要提交审核</div>
+              <div class="el-form-item__error" v-show="this.iptMsgVisible['fax']">
+              {{iptMsgInfoStr}}
+              </div>
             </div>
           </el-form-item>
           <el-form-item label="统一社会信用代码" prop="organization.creditId">
@@ -88,30 +86,29 @@
             <el-input v-model="parentName" :disabled="true"></el-input>
           </el-form-item>
           <el-form-item label=" 启用状态" prop="organization.removed">
-            <el-switch v-model="ruleForm.organization.removed"></el-switch>
+            <el-switch v-model="ruleForm.organization.removed" @change="showIptMsg('removed')"></el-switch>
             <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
-              <div
-                class="tip-msg"
-                v-show="this.app.option.options.orgAuditFields.indexOf('removed') > -1 ">添加或修改该字段需要提交审核</div>
+              <div class="el-form-item__error" v-show="this.iptMsgVisible['removed']">
+              {{iptMsgInfoStr}}
+              </div>
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="单位简称" prop="organization.shortName">
-            <el-input v-model="ruleForm.organization.shortName"></el-input>
+            <el-input v-model="ruleForm.organization.shortName" @input="showIptMsg('shortName')"></el-input>
             <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
-              <div
-                class="tip-msg"
-                v-show="this.app.option.options.orgAuditFields.indexOf('shortName') > -1">添加或修改该字段需要提交审核</div>
+              <div class="el-form-item__error" v-show="this.iptMsgVisible['shortName']">
+              {{iptMsgInfoStr}}
+              </div>
             </div>
           </el-form-item>
           <el-form-item label="单位电话" prop="organization.phone">
-            <el-input v-model="ruleForm.organization.phone"></el-input>
+            <el-input v-model="ruleForm.organization.phone" @input="showIptMsg('phone')"></el-input>
             <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
-              <div
-                class="tip-msg"
-                v-show="this.app.option.options.orgAuditFields.indexOf('phone') > -1"
-              >添加或修改该字段需要提交审核</div>
+              <div class="el-form-item__error" v-show="this.iptMsgVisible['phone']">
+              {{iptMsgInfoStr}}
+              </div>
             </div>
           </el-form-item>
           <el-form-item label="邮编" prop="organization.zipCode">
@@ -119,12 +116,12 @@
               v-model="ruleForm.organization.zipCode"
               onkeyup="this.value=this.value.replace(/[^\d.]/g,'');"
               maxlength="6"
+              @input="showIptMsg('zipCode')"
             ></el-input>
             <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
-              <div
-                class="tip-msg"
-                v-show="this.app.option.options.orgAuditFields.indexOf('zipCode') > -1"
-              >添加或修改该字段需要提交审核</div>
+              <div class="el-form-item__error" v-show="this.iptMsgVisible['zipCode']">
+              {{iptMsgInfoStr}}
+              </div>
             </div>
           </el-form-item>
           <el-form-item label="所属区域" prop="areaId">
@@ -132,10 +129,10 @@
             <el-input v-model="ruleForm.areaId" style="display: none"></el-input>
             <el-input v-model="areaCheck" @focus="openarea"></el-input>
             <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
-              <div
+              <!-- <div
                 class="tip-msg"
                 v-show="this.app.option.options.orgAuditFields.indexOf('areaId') > -1"
-              >添加或修改该字段需要提交审核</div>
+              >添加或修改该字段需要提交审核</div> -->
             </div>
           </el-form-item>
           <el-form-item label="所属系统" prop="organization.systemType">
@@ -152,10 +149,9 @@
               ></el-option>
             </el-select>
             <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
-              <div
-                class="tip-msg"
-                v-show="this.app.option.options.orgAuditFields.indexOf('systemType') > -1 "
-              >添加或修改该字段需要提交审核</div>
+              <div class="el-form-item__error" v-show="this.iptMsgVisible['systemType']">
+              {{iptMsgInfoStr}}
+              </div>
             </div>
           </el-form-item>
           <el-form-item label="所属类型" prop="organization.type">
@@ -168,10 +164,9 @@
               ></el-option>
             </el-select>
             <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
-              <div
-                class="tip-msg"
-                v-show="this.app.option.options.orgAuditFields.indexOf('type') > -1 "
-              >添加或修改该字段需要提交审核</div>
+              <div class="el-form-item__error" v-show="this.iptMsgVisible['type']">
+              {{iptMsgInfoStr}}
+              </div>
             </div>
           </el-form-item>
         </el-col>
@@ -191,10 +186,10 @@
             <i class="el-icon-plus"></i>添加标签
           </el-tag>
           <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
-            <div
+            <!-- <div
               class="tip-msg"
               v-show="this.app.option.options.orgAuditFields.indexOf('labelId') > -1"
-            >添加或修改该字段需要提交审核</div>
+            >添加或修改该字段需要提交审核</div> -->
           </div>
         </el-form-item>
       </el-row>
@@ -204,32 +199,30 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="单位介绍" prop="ext01">
-            <el-input type="textarea" v-model="ruleForm.organization.ext01"></el-input>
+            <el-input type="textarea" v-model="ruleForm.organization.ext01" @input="showIptMsg('ext01')"></el-input>
             <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
-              <div
-                class="tip-msg"
-                v-show="this.app.option.options.orgAuditFields.indexOf('ext01') > -1"
-              >添加或修改该字段需要提交审核</div>
+              <div class="el-form-item__error" v-show="this.iptMsgVisible['ext01']">
+              {{iptMsgInfoStr}}
+              </div>
             </div>
           </el-form-item>
           <el-form-item label="申请原因" prop="reason">
             <el-input type="textarea" v-model="ruleForm.reason"></el-input>
             <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
-              <div
+              <!-- <div
                 class="tip-msg"
                 v-show="this.app.option.options.orgAuditFields.indexOf('reason') > -1 "
-              >添加或修改该字段需要提交审核</div>
+              >添加或修改该字段需要提交审核</div> -->
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="单位职责" prop="ext02">
-            <el-input type="textarea" v-model="ruleForm.organization.ext02"></el-input>
+            <el-input type="textarea" v-model="ruleForm.organization.ext02" @input="showIptMsg('ext02')"></el-input>
             <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
-              <div
-                class="tip-msg"
-                v-show="this.app.option.options.orgAuditFields.indexOf('ext02') > -1 "
-              >添加或修改该字段需要提交审核</div>
+              <div class="el-form-item__error" v-show="this.iptMsgVisible['ext02']">
+              {{iptMsgInfoStr}}
+              </div>
             </div>
           </el-form-item>
         </el-col>
@@ -269,6 +262,8 @@ export default {
     }, */
   data () {
     return {
+      iptMsgInfoStr: '添加或修改该字段需要提交审核',
+      iptMsgVisible: {},
       breadcrumb: {
         name: '单位详情',
         parent: null
@@ -346,6 +341,7 @@ export default {
   },
   created () {
     this.init()
+    this.initIptMsgVisible()
   },
   beforeRouteUpdate (to, from, next) {
     next()
@@ -391,6 +387,17 @@ export default {
         this.getDetail()
       }
     },
+    // 设置各个字段的验证提示信息的可见性
+    initIptMsgVisible () {
+      for (let field in this.ruleForm.organization) {
+        this.iptMsgVisible[field] = false
+      }
+    },
+    showIptMsg (fieldName) {
+      if (this.app.option.options.orgAuditFields.indexOf(fieldName) > -1) {
+        this.iptMsgVisible[fieldName] = true
+      }
+    },
     openarea (e) {
       this.areaFlag = true
       e.target.blur()
@@ -424,7 +431,7 @@ export default {
             }
             this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
              console.log('ruleForm2:',this.ruleForm,this.oldFrom)
-            
+
           }
         },
         error => {
@@ -515,7 +522,7 @@ export default {
           })
           this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
            console.log('ruleForm3:',this.ruleForm,this.oldFrom)
-        
+
         },
         error => {}
       )
@@ -557,9 +564,11 @@ export default {
     },
     getSystemType (el) {
       this.ruleForm.organization.systemType = el
+      this.showIptMsg('systemType')
     },
     getType (el) {
       this.ruleForm.organization.type = el
+      this.showIptMsg('getType')
     },
     getAreaId (val) {
       this.areaCheck = val.name
@@ -604,7 +613,7 @@ export default {
         this.isChange=false
         this.$router.go(-1)
       }
-      
+
     },
     close (val) {
       this.areaFlag = val

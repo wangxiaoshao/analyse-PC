@@ -21,16 +21,31 @@
       class="demo-ruleForm"
     >
       <el-form-item label="节点名称" prop="name">
-        <el-input v-model="ruleForm.name"></el-input>
+        <el-input v-model="ruleForm.name" @input="showIptMsg('name')"></el-input>
+        <div v-if="this.$route.name === 'NodeEdit' ||  this.$route.name === 'NodeAdd'">
+          <div class="el-form-item__error" v-show="this.iptMsgVisible['name']">
+          {{iptMsgInfoStr}}
+          </div>
+        </div>
       </el-form-item>
       <el-form-item label="上级节点" prop="parentName">
         <el-input v-model="ruleForm.parentName" :disabled="true"></el-input>
       </el-form-item>
       <el-form-item label="是否启用" prop="removed">
-        <el-switch v-model="ruleForm.removed"></el-switch>
+        <el-switch v-model="ruleForm.removed" @change="showIptMsg('removed')"></el-switch>
+        <div v-if="this.$route.name === 'NodeEdit' ||  this.$route.name === 'NodeAdd'">
+          <div class="el-form-item__error" v-show="this.iptMsgVisible['removed']">
+          {{iptMsgInfoStr}}
+          </div>
+        </div>
       </el-form-item>
       <el-form-item label="申请原因" prop="reason">
-        <el-input type="textarea" v-model="ruleForm.reason"></el-input>
+        <el-input type="textarea" v-model="ruleForm.reason" @input="showIptMsg('reason')"></el-input>
+        <div v-if="this.$route.name === 'NodeEdit' ||  this.$route.name === 'NodeAdd'">
+          <div class="el-form-item__error" v-show="this.iptMsgVisible['reason']">
+          {{iptMsgInfoStr}}
+          </div>
+        </div>
       </el-form-item>
       <el-form-item label="所属系统" prop="systemType">
         <el-select v-model="ruleForm.systemType" @change="getSystemType" placeholder="请选择所属系统">
@@ -41,10 +56,20 @@
             :label="item.text"
           ></el-option>
         </el-select>
+        <div v-if="this.$route.name === 'NodeEdit' ||  this.$route.name === 'NodeAdd'">
+          <div class="el-form-item__error" v-show="this.iptMsgVisible['systemType']">
+          {{iptMsgInfoStr}}
+          </div>
+        </div>
       </el-form-item>
       <el-form-item label="所属区域" prop="areaId">
-        <el-input v-model="ruleForm.areaId" style="display: none"></el-input>
+        <el-input v-model="ruleForm.areaId" style="display: none" @change="showIptMsg('areaId')"></el-input>
         <el-input v-model="areaCheck" @focus="openArea"></el-input>
+        <div v-if="this.$route.name === 'NodeEdit' ||  this.$route.name === 'NodeAdd'">
+          <div class="el-form-item__error" v-show="this.iptMsgVisible['areaId']">
+          {{iptMsgInfoStr}}
+          </div>
+        </div>
       </el-form-item>
       <el-form-item v-if="isShowEditFlag">
         <el-button type="primary" @click="submitForm('ruleForm')" :disabled="!hasRight('viewNodeSetting')">{{submitHtml}}</el-button>
@@ -67,6 +92,8 @@ export default {
   mixins: [handleBreadcrumb, dicOption, hasRight,goBack],
   data () {
     return {
+      iptMsgInfoStr: '添加或修改该字段需要提交审核',
+      iptMsgVisible: {},
       loading: false,
       isShowEditFlag: true,
       disabledFlag: false,
@@ -102,10 +129,23 @@ export default {
       reason: this.ruleForm.reason
     }
     this.getNodeDetail()
+    this.initIptMsgVisible()
   },
   methods: {
+    // 设置各个字段的验证提示信息的可见性
+    initIptMsgVisible () {
+      for (let field in this.ruleForm) {
+        this.iptMsgVisible[field] = false
+      }
+    },
+    showIptMsg (fieldName) {
+      if (this.app.option.options.nodeAuditFields.indexOf(fieldName) > -1) {
+        this.iptMsgVisible[fieldName] = true
+      }
+    },
     getSystemType (el) {
       this.ruleForm.systemType = el
+      this.showIptMsg('systemType')
     },
     getAreaId (val) {
       this.areaCheck = val.name
@@ -274,6 +314,6 @@ export default {
 }
 </script>
 
-<style lang="less">
-
+<style scoped lang="less">
+  @import "index";
 </style>

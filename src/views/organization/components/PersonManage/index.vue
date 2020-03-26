@@ -393,7 +393,7 @@ export default {
       } else {
         let reg = /^((13[0-9])|(15[^4])|(18[0,2,3,5-9])|(17[0-8])|(147))\d{8}$/
         reg.test(value) ? callback() : callback(new Error('请输入11位有效号码'))
-       
+
       }
     }
     return {
@@ -450,8 +450,7 @@ export default {
     }
   },
   created () {
-     
-      // console.log(this.oldPostDetail)
+    this.initIptMsgVisible()
   },
   mounted(){
     // this.oldUserDetail = JSON.parse(JSON.stringify(this.userDetail))
@@ -462,7 +461,7 @@ export default {
   },
   methods: {
     ...mapMutations(['SET_OPTION']),
-   
+
     exportOrg () {
       this.$emit('exportOrg')
     },
@@ -505,7 +504,7 @@ export default {
     },
     // 搜索数据
     loadSearch () {
-      this.iptMsgVisible['name'] = true
+      this.showIptMsg('name')
       this.searchFlag = false
       // console.log(' this.personFrom.name:', this.personFrom.name)
       if (this.$route.name === 'PersonAdd' && this.personFrom.name.length > 1) {
@@ -664,7 +663,7 @@ export default {
         })
       this.$emit('get-label', this.sendLabelId)
     },
-    
+
     next (userDetail) {
       this.$refs[userDetail].validate(valid => {
         if (valid) {
@@ -693,15 +692,15 @@ export default {
              this.$router.go(-1)
           }).catch(() => {
             this.isChange=false
-           
+
           });
       }else{
           this.$router.go(-1)
           this.isChange=false
       }
-     
-      
-      
+
+
+
     },
     handleSelect (item) {
       console.log(item)
