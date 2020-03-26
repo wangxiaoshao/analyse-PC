@@ -30,7 +30,7 @@
                     <el-input  disabled v-model="returnViewId"></el-input>
                   </el-form-item>
                   <el-form-item>
-                    <el-checkbox v-model="ViewFrom.syncChildren">是否关闭新增机构自动同步</el-checkbox>
+                    <el-checkbox v-model="ViewFrom.syncChildren">关闭新增机构自动同步</el-checkbox>
                     <br>
                     <span style="color:rgb(114, 116, 119)">（组织机构新增单位、内设机构将同步至本视图）</span>
                   </el-form-item>
