@@ -126,7 +126,6 @@ export default {
     doFindNotice (val) {
       api[urlNames['notificationRead']]({ id: val.id }).then(res => {
         if (res) {
-          this.getList()
           this.showNoticeDilog = false
           if (val.type === 1) {
             this.$router.push('/my-application')
@@ -135,10 +134,10 @@ export default {
           } else if (val.type === 3) {
             this.$router.push('/wait-approval')
           }
+           this.getList()
         }
       })
     },
-
 
     // 获取用户身份列表
     findSessionUserList () {

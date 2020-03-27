@@ -30,7 +30,7 @@
         <div style="position: absolute" class="register">
           <div>//截止今天</div>
           <div>机构人员注册总数</div>
-          <div>{{countData.organizationCount}}</div>
+          <div>{{countData.userCount}}</div>
         </div>
       </span>
       <span class="template-two light-purple">
@@ -142,7 +142,7 @@ export default {
       },
       activeName: 'unit',
       countData: {
-        organizationCount: null,
+        userCount: null,
         deptCount: null,
         organCount: null
       },
