@@ -11,11 +11,31 @@
           <table>
             <tr>
               <td>区域</td>
-              <td><span v-for="(item,index) in orgNameList" :key="index">{{item}}</span></td>
+              <td>
+                <el-tag
+                  v-for="area in areaNameList"
+                  :key="area.id"
+                  closable
+                  size="medium"
+                  type="success"
+                  @close="deleteAuthorizedEntity(area)">
+                  {{area.name}}
+                </el-tag>
+              </td>
             </tr>
             <tr>
               <td>单位</td>
-              <td><span v-for="(item,index) in areaNameList" :key="index">{{item}}</span></td>
+              <td>
+                <el-tag
+                  v-for="org in orgNameList"
+                  :key="org.id"
+                  closable
+                  size="medium"
+                  type="success"
+                  @close="deleteAuthorizedEntity(org)">
+                  {{org.name}}
+                </el-tag>
+              </td>
             </tr>
           </table>
    </div>
@@ -38,8 +58,8 @@ export default {
     return {
       openSelectOrg: false,
       openSelectArea: false,
-      areaNameList: [],
-      orgNameList: []
+      orgNameList: [],
+      areaNameList: []
 
     }
   },
@@ -74,8 +94,8 @@ export default {
       this.openSelectArea = false
     },
     getfindAuthorizedEntity () {
-      this.areaNameList = []
       this.orgNameList = []
+      this.areaNameList = []
       api[urlNames['findAuthorizedEntityByUid']]({
         uid: this.$route.params.id,
         roleId: this.$route.query.roleId
@@ -84,20 +104,12 @@ export default {
           let that = this
           res.data.forEach(val => {
             if (val.authorizedType === 1) {
-              that.areaNameList.push(val.name + '、')
+              that.orgNameList.push(val)
             }
             if (val.authorizedType === 3) {
-              that.orgNameList.push(val.name + '、')
+              that.areaNameList.push(val)
             }
           })
-          let lastStr = this.areaNameList[this.areaNameList.length - 1]
-          let lastStr1 = this.orgNameList[this.orgNameList.length - 1]
-          if (this.areaNameList.length > 0) {
-            this.areaNameList.splice(this.areaNameList.length - 1, 1, lastStr.substring(0, lastStr.length - 1))
-          }
-          if (this.orgNameList.length > 0) {
-            this.orgNameList.splice(this.orgNameList.length - 1, 1, lastStr1.substring(0, lastStr1.length - 1))
-          }
         }
       })
     },
@@ -122,6 +134,16 @@ export default {
       }
       api[urlNames['insertAuthorizedEntity']](parmas).then((res) => {
         this.$message.success(`授权成功`)
+        this.getfindAuthorizedEntity()
+      })
+    },
+    deleteAuthorizedEntity (entity) {
+      api[urlNames['deleteAuthorizedEntity']]({
+        uid: entity.uid,
+        roleId: entity.roleId,
+        entityIds: [entity.authorizedOid]
+      }).then((res) => {
+        this.$message.success(`删除成功`)
         this.getfindAuthorizedEntity()
       })
     }

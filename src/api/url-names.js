@@ -236,6 +236,7 @@ export default {
   // 授权区域
   insertAuthorizedEntity: 'insertAuthorizedEntity',
   findAuthorizedEntityByUid: 'findAuthorizedEntityByUid',
+  deleteAuthorizedEntity: 'deleteAuthorizedEntity',
 
   /**
    * 用户切换身份

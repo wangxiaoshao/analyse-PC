@@ -83,5 +83,15 @@ export default {
     url: '/api/jg_manage/authorizedEntity/findAuthorizedEntityByUid',
     keepOriginResponse: true, // 是否保留后端返回数据格式
     serve: 'organizationManagePC'
+  },
+  // 删除授权区域
+  [urlNames.deleteAuthorizedEntity]: {
+    type: 'post',
+    url: '/api/jg_manage/authorizedEntity/deleteAuthorizedEntity',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    serve: 'organizationManagePC',
+    headers: {
+      'Content-Type': 'application/json'
+    }
   }
 }
