@@ -40,13 +40,13 @@ const tableConfig = {
     tooltip: false,
     label: '确认时间',
     sortable: false,
-    formatter (row, column, cellValue) {
+    /* formatter (row, column, cellValue) {
       let timeStr = ''
       if (cellValue) {
         timeStr = cellValue.split(' ')[0]
       }
       return timeStr
-    },
+    }, */
     showOverflowTooltip: false,
     minWidth: 100
   },

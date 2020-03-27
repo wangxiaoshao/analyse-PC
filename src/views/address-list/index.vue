@@ -199,6 +199,8 @@ export default {
         this.showDep = false
         this.getAddressListDepartmentMembers(node.bindId)
       } else if (node.nodeType === 2) {
+        this.selectType = ''
+        this.showDep = false
         this.getAddressListOrganizationMembers(node.bindId)
       }
       this.getAddressListdepartment(node.id)
