@@ -912,7 +912,7 @@ export default {
         list.name = 'orgAuditFields'
         list.value = this.orgAuditField.checkedOrgAuditList
         this.setClientOptions(list)
-        list.name = 'depAuditFields'
+        list.name = 'departmentAuditFields'
         list.value = this.orgAuditField.checkedDepAuditList
         this.setClientOptions(list)
         list.name = 'userAuditFields'
