@@ -1,7 +1,7 @@
 <template>
   <div  class="memberInfo">
     <div class="moreInfo" v-if="orgInfo.nodeType==2 && activeColor==2||orgInfo.nodeType==3&&activeColor==2">
-      <div class="header-title">该单位信息</div>
+      <div class="header-title">部门信息</div>
       <div class="infoContent">
         <el-form :inline="true" label-width="100px" label-position='right'>
           <el-row>
@@ -31,7 +31,7 @@
       </div>
     </div>
     <div class="member-tab">
-      <div class="header-title">详细数据</div>
+      <div class="header-title">人员信息</div>
     <el-table
       :data="tableData"
       border
