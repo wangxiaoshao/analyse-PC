@@ -114,7 +114,7 @@ export default {
       this.SET_EXAMINE_BACKPATH({})
     }
     this.initQuery()
-    this.getGrid()
+    // this.getGrid()
   },
   methods: {
     ...mapMutations([
@@ -179,7 +179,7 @@ export default {
         page: this.page.current,
         limit: this.page.limit
       }
-      if (findPage == 1) {
+      if (findPage === 1) {
         data.page = findPage
       }
       let keys = Object.keys(this.searchQuery)
