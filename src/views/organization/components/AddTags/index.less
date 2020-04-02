@@ -9,5 +9,27 @@
   .tag-content{
     max-height: 500px;
     overflow-y: auto;
+
+    .el-checkbox.is-bordered.el-checkbox--medium {
+      height: auto;
+    }
+    .el-checkbox.is-bordered {
+      margin-left: 0;
+      vertical-align: top;
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+
+    .el-checkbox {
+      /deep/ .el-checkbox__input {
+        vertical-align: top;
+      }
+      /deep/ .el-checkbox__label {
+        display: inline-block;
+        width: 5em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
   }
 }
