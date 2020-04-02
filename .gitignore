@@ -87,6 +87,7 @@ crashlytics-build.properties
 fabric.properties
 .idea/
 dist
+dist*
 meetingseat-web-mob
 package-lock.json
 .vscode
