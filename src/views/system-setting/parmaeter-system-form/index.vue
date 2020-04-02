@@ -115,7 +115,7 @@
         </el-form-item>
       </el-form>
     </div>
-    <div class="parameter-item" v-if="hasRight('optionSystemLevelTxlSetting')">
+    <!-- <div class="parameter-item" v-if="hasRight('optionSystemLevelTxlSetting')">
       <div class="header">通讯录权限设置</div>
       <el-form ref="addressBookSet"  label-width="120px">
         <el-form-item label="所有单位信息">
@@ -159,7 +159,7 @@
           <el-button>取消</el-button>
         </el-form-item>
       </el-form>
-    </div>
+    </div> -->
     <div class="parameter-item" v-if="hasRight('optionSystemLevelCSetting')">
         <div class="header">信息确认设置</div>
         <el-form ref="messageRemind" label-width="160px">
