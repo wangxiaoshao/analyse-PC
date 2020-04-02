@@ -7,33 +7,11 @@
       @dialogReturnMembersInfo="dialogReturnMembersInfo"
       @closeselectMenmber="closeselectMenmber"
     ></select-members>
-    <el-dialog title="填写调出说明" :visible.sync="calloutFlag" width="50%">
-      <el-form
-        :model="formCallout"
-        :rules="rulesCallou"
-        ref="formCallout"
-        label-width="100px"
-        class="demo-ruleForm"
-      >
-        <el-form-item label="调出单位">
-          <span class="name-span">{{orgName}}</span>
-          <span class="name-span" v-if="depName !== ''">/{{depName}}</span>
-          <el-button @click="addMainLeader">选择调出单位/内设机构</el-button>
-        </el-form-item>
-        <el-form-item label="申请原因" prop="reason">
-          <el-input type="textarea" v-model="formCallout.reason"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="submitFormCallout('formCallout')">确定</el-button>
-          <el-button @click="calloutFlag = false">取 消</el-button>
-        </el-form-item>
-      </el-form>
-    </el-dialog>
+
 
     <el-row class="operator-row">
       <el-col :span="24">
         <el-row :gutter="10" >
-            <el-button type="primary" size='mini' @click="calloutDialog">申请调出</el-button>
           <!--<el-col :span="6">-->
           <!--<el-select v-model="searchQuery.id" filterable clearable @change="search" placeholder="单位">-->
           <!--<el-option-->
