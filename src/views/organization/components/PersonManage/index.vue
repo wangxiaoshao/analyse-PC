@@ -20,6 +20,26 @@
       style="width: 100%"
       :rules="rulesOption"
     >
+      <el-row>
+        <el-form-item label="头像">
+          <el-upload
+            :disabled="disabledFlag"
+            class="avatar-uploader"
+            :action="'http://' + uploadHost + '/api/jg_manage/image/upload?_='+downloadBinaryFile()[0]+'&sign='+downloadBinaryFile()[1]"
+            :show-file-list="false"
+            name="files"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+            list-type="picture"
+          >
+            <img v-if="personFrom.portraitUrl" :src="personFrom.portraitUrl" class="avatar"/>
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+          <div style="font-size: 10px;color: #606266">
+            <span style="color: #FC7049">*</span>只支持jpg格式，100*100像素的图片
+          </div>
+        </el-form-item>
+      </el-row>
       <el-row class="row-item">
         <el-col :span="12" styl="position: relative">
           <el-form-item label="姓名" prop="name">
@@ -136,26 +156,6 @@
       </el-row>
       <el-collapse>
         <el-collapse-item name="1" title="完善其他信息">
-          <el-row>
-            <el-form-item label="头像">
-              <el-upload
-                :disabled="disabledFlag"
-                class="avatar-uploader"
-                :action="'http://' + uploadHost + '/api/jg_manage/image/upload?_='+downloadBinaryFile()[0]+'&sign='+downloadBinaryFile()[1]"
-                :show-file-list="false"
-                name="files"
-                :on-success="handleAvatarSuccess"
-                :before-upload="beforeAvatarUpload"
-                list-type="picture"
-              >
-                <img v-if="personFrom.portraitUrl" :src="personFrom.portraitUrl" class="avatar"/>
-                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-              </el-upload>
-              <div style="font-size: 10px;color: #606266">
-                <span style="color: #FC7049">*</span>只支持jpg格式，100*100像素的图片
-              </div>
-            </el-form-item>
-          </el-row>
           <el-row class="row-item">
             <el-col :span="12">
               <el-form-item label="备用手机号" prop="mobile2">
