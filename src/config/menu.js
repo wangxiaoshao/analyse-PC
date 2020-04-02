@@ -205,7 +205,7 @@ export default {
       },
       {
         'menuId': '56',
-        'name': '文档中心',
+        'name': '帮助中心',
         'path': '/word-center',
         'type': 1,
         'key': 'menuDocumentCenter'
