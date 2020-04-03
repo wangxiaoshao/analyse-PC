@@ -401,15 +401,20 @@ export default {
       this.$refs[ruleForm].validate((valid) => {
         if (valid) {
           api[urlNames['createDepartment']](this.ruleForm).then((res) => {
-            if(this.$route.name === 'DepartmentEdit'){
-               this.$message.success('保存成功，待审核管理员审核通过后方生效')
-            }else{
+            if (this.$route.name === 'DepartmentEdit') {
+              this.$alert('保存成功，待审核管理员审核通过后方生效', '保存成功', {
+                confirmButtonText: '确定',
+                callback: action => {
+                  this.$router.go(-1)
+                }
+              })
+            } else {
               this.$message.success(`保存成功`)
+              this.$router.go(-1)
             }
-            this.$router.go(-1)
           }, () => {
           })
-        }else{
+        }else {
           this.$message.error('请填写必填字段')
         }
       })
@@ -417,9 +422,9 @@ export default {
 
     goBack () {
       this.isChange= this.addWatch(this.ruleForm,this.oldFrom)
-      if(this.isChange){
+      if (this.isChange) {
         this.goBackDilog(this.submitForm,'ruleForm')
-      }else{
+      }else {
         this.isChange=false
         this.$router.go(-1)
       }
@@ -428,7 +433,7 @@ export default {
   },
   watch:{
     ruleForm:{
-      handler(newForm,oldFrom){
+      handler(newForm,oldFrom) {
       },
       deep:true
     }
