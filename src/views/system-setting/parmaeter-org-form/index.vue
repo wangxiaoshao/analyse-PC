@@ -704,9 +704,9 @@ export default {
       messageRemind: 0, // 消息提醒, 1提醒，0不提醒
       noRemind: false, // 消息提醒，默认不提醒
       modeAuditList: [],
-      orgMessageRemindTemplate: '【贵州省电子政务外网组织机构人员数据库及管控平台】{单位名称}{月份}的单位信息需在{信息确认截止时间}日前确认，请及时前往确认。http://59.215.232.95/api/gate/forward',
-      informationAuditTemplate: '【贵州省电子政务外网组织机构人员数据库及管控平台】{单位名称}{操作人名称}于{操作时间}修改了{修改字段}，请尽快前往后台处理。http://59.215.232.95/api/gate/forward',
-      informationAuditThroughTemplate: '【贵州省电子政务外网组织机构人员数据库及管控平台】{单位名称}{操作人名称}于{操作时间}修改了{修改字段}已通过审核，请前往平台查看',
+      orgMessageRemindTemplate: '{单位名称}{月份}的单位信息需在{信息确认截止时间}日前确认，请及时前往确认。http://59.215.232.95/api/gate/forward',
+      informationAuditTemplate: '{单位名称}{操作人名称}于{操作时间}修改了{修改字段}，请尽快前往后台处理。http://59.215.232.95/api/gate/forward',
+      informationAuditThroughTemplate: '{单位名称}{操作人名称}于{操作时间}修改了{修改字段}已通过审核，请前往平台查看',
       orgAuditList: orgAuditList, // 单位审核字段数据
       nodeAuditList: nodeAuditList,
       depAuditList: depAuditList,
