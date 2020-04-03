@@ -70,9 +70,10 @@
       <el-row :gutter="80">
         <el-col :span="12">
           <div class="grid-content bg-purple">
-            <el-form-item label="应用访问地址" prop="apiUrl">
-              <el-input placeholder="请输入应用访问地址"  v-model="appFrom.apiUrl"></el-input>
+            <el-form-item label="数据同步接口" prop="apiUrl">
+              <el-input placeholder="请输入数据同步接口"  v-model="appFrom.apiUrl"></el-input>
             </el-form-item>
+            <p>(由第三方应用提供，组织机构数据将通过该地址自动同步。)</p>
           </div>
         </el-col>
         <el-col :span="12">

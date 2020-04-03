@@ -33,14 +33,6 @@
           <div>{{countData.userCount}}</div>
         </div>
       </span>
-      <span class="template-two light-purple">
-        <div style="position: absolute" class="add-unit">
-          <!-- <div>//{{dateName}}</div> -->
-          <div>//截止今天</div>
-          <div>内设机构总数</div>
-          <div>{{countData.deptCount}}</div>
-        </div>
-      </span>
       <span class="template-two light-blue">
         <div style="position: absolute" class="add-depart">
           <!-- <div>//{{dateName}}</div> -->
@@ -49,6 +41,15 @@
           <div>{{countData.organCount}}</div>
         </div>
       </span>
+      <span class="template-two light-purple">
+        <div style="position: absolute" class="add-unit">
+          <!-- <div>//{{dateName}}</div> -->
+          <div>//截止今天</div>
+          <div>内设机构总数</div>
+          <div>{{countData.deptCount}}</div>
+        </div>
+      </span>
+      
       <span class="template-two light-orange">
         <div style="position: absolute" class="add-member">
           <!-- <div>//{{dateName}}</div> -->

@@ -68,7 +68,7 @@
             <span
               style="font-size: 12px;position: relative;top:-7px;color: #8c939d;"
             >请先选择再输入,职务以逗号隔开</span>
-            <el-popover placement="bottom" width="160" v-model="dutyNameSelectVisible">
+            <el-popover placement="bottom" :offset='-10' width="160" v-model="dutyNameSelectVisible">
               <div>
                 <el-button size="mini" @click="dutyNameSelectVisible = false">关闭</el-button>
                 <el-checkbox-group @change="selectDutyName" size="medium" v-model="dutyNameCheckd">
