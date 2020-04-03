@@ -5,7 +5,7 @@
       <el-col :span="24">
         <el-row :gutter="10" type="flex">
           <el-col :span="7">
-            <el-input placeholder="人员名称" v-model="searchQuery.name"  @clear="clearSearch()" clearable>
+            <el-input placeholder="人员姓名" v-model="searchQuery.name"  @clear="clearSearch()" clearable>
             </el-input>
           </el-col>
 <!--          <el-col :span="7">-->
@@ -120,7 +120,7 @@ export default {
       this.SET_EXAMINE_BACKPATH({})
     }
     this.initQuery()
-    this.getGrid()
+    // this.getGrid()
   },
   methods: {
     ...mapMutations([

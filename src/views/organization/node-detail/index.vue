@@ -253,18 +253,23 @@ export default {
           }
           api[urlNames['createViewNode']](data).then(
             res => {
-              if(this.$route.name === 'NodeEdit'){
-                 this.$message.success('保存成功，待审核管理员审核通过后方生效')
-              }else{
-                 this.$message.success(`保存成功`)
+              if (this.$route.name === 'NodeEdit') {
+                this.$alert('保存成功，待审核管理员审核通过后方生效', '保存成功', {
+                  confirmButtonText: '确定',
+                  callback: action => {
+                    this.$emit('on-update-organization-tree')
+                    this.$router.go(-1)
+                  }
+                })
+              } else {
+                this.$message.success(`保存成功`)
+                this.$emit('on-update-organization-tree')
+                this.$router.go(-1)
               }
-             
-              this.$emit('on-update-organization-tree')
-              this.$router.go(-1)
             },
             () => {}
           )
-        }else{
+        } else {
           this.$message.error('请填写必要字段')
           this.isChange=false
         }
@@ -283,9 +288,9 @@ export default {
       this.SET_PAGE_BREADCRUMB(breadcrumb)
       // this.$router.push(currentPage.parent)
       this.isChange= this.addWatch(this.ruleForm,this.oldFrom)
-      if(this.isChange){
+      if (this.isChange) {
         this.goBackDilog(this.submitForm,'ruleForm')
-      }else{
+      } else {
         this.isChange=false
         this.$router.go(-1)
       }

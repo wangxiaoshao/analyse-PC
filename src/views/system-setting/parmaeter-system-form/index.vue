@@ -115,7 +115,7 @@
         </el-form-item>
       </el-form>
     </div>
-    <div class="parameter-item" v-if="hasRight('optionSystemLevelTxlSetting')">
+    <!-- <div class="parameter-item" v-if="hasRight('optionSystemLevelTxlSetting')">
       <div class="header">通讯录权限设置</div>
       <el-form ref="addressBookSet"  label-width="120px">
         <el-form-item label="所有单位信息">
@@ -159,7 +159,7 @@
           <el-button>取消</el-button>
         </el-form-item>
       </el-form>
-    </div>
+    </div> -->
     <div class="parameter-item" v-if="hasRight('optionSystemLevelCSetting')">
         <div class="header">信息确认设置</div>
         <el-form ref="messageRemind" label-width="160px">
@@ -343,8 +343,8 @@ export default {
       endDateDisabled: false,
       messageRemind: 0, // 消息提醒，0不提醒，1提醒
       noRemind: false, // 消息提醒，默认不提醒
-      SMSVerificationCodeTemplate: '【贵州省电子政务外网组织机构人员数据库及管控平台】验证码：{验证码}，有效期3分钟。',
-      resetPasswordTemplate: '【贵州省电子政务外网组织机构人员数据库及管控平台】您于{重置时间}通过本人重置密码，新密码：{密码}，请妥善保管。',
+      SMSVerificationCodeTemplate: '验证码：{验证码}，有效期3分钟。',
+      resetPasswordTemplate: '您于{重置时间}通过本人重置密码，新密码：{密码}，请妥善保管。',
       modeAuditList: [],
       orgFormSet: {
         nameSet: [],

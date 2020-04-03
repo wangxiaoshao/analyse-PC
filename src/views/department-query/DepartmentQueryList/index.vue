@@ -106,7 +106,7 @@ export default {
       this.SET_EXAMINE_BACKPATH({})
     }
     this.initQuery()
-    this.getGrid()
+    // this.getGrid()
   },
   methods: {
     ...mapMutations([

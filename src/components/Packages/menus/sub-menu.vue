@@ -57,9 +57,9 @@ export default {
         let len = this.menuItem.key.length
         for (let i = 0; i < len; i++) {
           let key = this.menuItem.key[i]
-          // 显示通信录和文档中心
+          // 显示通信录和帮助中心
           // @date: 2020-03-14
-          // 按要求去除对通讯录和文档中心的特殊通道
+          // 按要求去除对通讯录和帮助中心的特殊通道
           /* if (key === 'menuAddrBook' || key === 'menuDocumentCenter') {
             return true
           } */
@@ -78,9 +78,9 @@ export default {
         return flag
       } else {
         let flag = false
-        // 显示通信录和文档中心
+        // 显示通信录和帮助中心
         // @date: 2020-03-14
-        // 去除通讯录和文档中心的特殊通道
+        // 去除通讯录和帮助中心的特殊通道
         /* if (this.menuItem.key === 'menuAddrBook' || this.menuItem.key === 'menuDocumentCenter' || this.menuItem.key === 'menuHomePage') {
           return true
         } */

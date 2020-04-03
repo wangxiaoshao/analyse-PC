@@ -184,7 +184,7 @@ export default {
       },
       {
         'menuId': '53',
-        'name': '个人信息',
+        'name': '个人设置',
         'path': '/pass-change',
         'type': 1,
         'key': 'menuPersonalInfo'
@@ -205,7 +205,7 @@ export default {
       },
       {
         'menuId': '56',
-        'name': '文档中心',
+        'name': '帮助中心',
         'path': '/word-center',
         'type': 1,
         'key': 'menuDocumentCenter'

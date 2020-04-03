@@ -587,14 +587,21 @@ export default {
           if (valid) {
             api[urlNames['createOrganization']](this.ruleForm).then(
               res => {
-                if(this.$route.name === 'UnitEdit'){
-                  this.$message.success('保存成功，待审核管理员审核通过后方生效')
-                }else{
+                if (this.$route.name === 'UnitEdit') {
+                  this.$alert('保存成功，待审核管理员审核通过后方生效', '保存成功', {
+                    confirmButtonText: '确定',
+                    callback: action => {
+                      this.$router.go(-1)
+                      this.isChange = false
+                      this.$emit('on-update-organization-tree')
+                    }
+                  })
+                } else {
                   this.$message.success(`保存成功`)
+                  this.$router.go(-1)
+                  this.isChange = false
+                  this.$emit('on-update-organization-tree')
                 }
-                this.$router.go(-1)
-                this.isChange=false
-                this.$emit('on-update-organization-tree')
               },
               error => {}
             )
@@ -611,10 +618,10 @@ export default {
     },
     goBack () {
       this.isChange= this.addWatch(this.ruleForm,this.oldFrom)
-      if(this.isChange){
+      if (this.isChange) {
         this.goBackDilog(this.submitForm,'ruleForm')
         this.isChange=false
-      }else{
+      } else {
         this.isChange=false
         this.$router.go(-1)
       }
