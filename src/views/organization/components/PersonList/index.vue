@@ -98,10 +98,10 @@
         <template slot-scope="scope"><span v-text='getIndex(scope.$index)'></span></template>
       </el-table-column>
       <el-table-column label="姓名" prop="name"></el-table-column>
-      <el-table-column label="登录账号" prop="account"></el-table-column>
-      <el-table-column label="手机号" prop="mobile"></el-table-column>
+      <!-- <el-table-column label="登录账号" prop="account"></el-table-column> -->
       <el-table-column label="职务" prop="duty"></el-table-column>
-      <el-table-column label="身份类型" prop="typeText"></el-table-column>
+      <el-table-column label="手机号" prop="mobile"></el-table-column>
+      <!-- <el-table-column label="身份类型" prop="typeText"></el-table-column> -->
       <el-table-column label="启用状态" prop="removed" align="center">
         <template slot-scope="scope">
           <span class="text-able" v-show="scope.row.removed === 0">启用</span>
