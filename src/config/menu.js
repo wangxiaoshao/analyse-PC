@@ -95,13 +95,6 @@ export default {
         'key': 'menuGroups'
       },
       {
-        'menuId': '33',
-        'name': '标签管理',
-        'path': '/tags-mnagement',
-        'type': 1,
-        'key': 'menuLabels'
-      },
-      {
         'menuId': '34',
         'name': '应用管理',
         'path': '/app-management',
@@ -195,6 +188,13 @@ export default {
         'path': '/authority-setting',
         'type': 1,
         'key': 'menuRightSetting'
+      },
+      {
+        'menuId': '33',
+        'name': '标签管理',
+        'path': '/tags-mnagement',
+        'type': 1,
+        'key': 'menuLabels'
       },
       {
         'menuId': '55',
