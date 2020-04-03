@@ -172,10 +172,28 @@ export default {
     this.getViewList()
     if (this.$route.query.id !== undefined) {
       this.getAppDetail(this.$route.query.id)
+    } else {
+      this.generateRandomAccount()
     }
     this.oldAppFrom = JSON.parse(JSON.stringify(this.appFrom))
   },
   methods: {
+    generateRandomAccount () {
+      const lib = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@'
+      const libLength = lib.length
+      const usernameLength = 8
+      const passwordlength = 18
+
+      this.appFrom.apiAccount = ''
+      this.appFrom.apiPassword = ''
+
+      for (let i = 0; i < usernameLength; i++) {
+        this.appFrom.apiAccount += lib[Math.floor(Math.random() * libLength)]
+      }
+      for (let i = 0; i < passwordlength; i++) {
+        this.appFrom.apiPassword += lib[Math.floor(Math.random() * libLength)]
+      }
+    },
     toDataLog () {
       this.$router.push({ path: '/data-log' })
     },
@@ -188,13 +206,13 @@ export default {
     },
     onSubmit (ref) {
       this.$refs[ref].validate(valid => {
-        if(valid){
+        if (valid){
           if (this.$route.query.id === undefined) {
             this.createApp()
           } else if (this.$route.query.id !== undefined) {
             this.updateApp()
           }
-        }else{
+        }else {
            this.$message.error('请填写必填字段')
         }
       })
@@ -228,7 +246,7 @@ export default {
       }).then((res) => {
         if (res.status === 0 && this.$route.query.id === undefined) {
           this.$message.success('创建成功')
-          this.isChange=false
+          this.isChange = false
           this.$router.push({ name: 'AppManagement' })
         }
       })
@@ -266,12 +284,12 @@ export default {
       console.log(item)
     },
      back () {
-       this.isChange=this.addWatch(this.appFrom,this.oldAppFrom)
-       if(this.isChange){
+       this.isChange = this.addWatch(this.appFrom,this.oldAppFrom)
+       if (this.isChange){
          this.goBackDilog(this.onSubmit,'ruleForm')
-       }else{
+       }else {
          this.$router.push({ name: 'AppManagement' })
-         this.isChange=false
+         this.isChange = false
        }
 
     },
