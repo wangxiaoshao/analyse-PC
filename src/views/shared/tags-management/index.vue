@@ -40,6 +40,9 @@
           <span class="tag-icon-operate fa fa-plus-circle"
                 v-show="hasCreateRight(data.type)"
                 @click="createTag(data, {flag:0,title:node.label})"></span>
+          <span v-show="hasEditRight(data.type)"
+                class="tag-icon-operate fa fa-edit"
+                @click="editTag(data, {flag:0,title:node.label})"></span>
           <span v-show="hasDeleteRight(data.type)"
                 class="tag-icon-operate fa fa-trash-o delete"
                 @click="deleteLabel(data.id)"></span>
@@ -49,7 +52,7 @@
     </div>
     <!-- fa   fa-tags-->
     <!--    user-circle-o-->
-    <create-tag-form @updateLabelLiat="updateLabelLiat" @close="close" :flagdata="flagdata" :createData="createData"
+    <create-tag-form @updateLabelLiat="updateLabelLiat" @close="close" :flagdata="flagdata" :createData="createData" :actionType="actionType"
                      :createTagDialogVisible="createTagDialogVisible"></create-tag-form>
   </div>
 </template>
@@ -70,6 +73,7 @@ export default {
       createTagDialogVisible: false,
       createData: '',
       flagdata: '',
+      actionType: 'create',
       labelList: [],
       labelSonList: [],
       defaultProps: {
@@ -92,6 +96,16 @@ export default {
         return this.hasRight('labelDepartmentCreate')
       } else if (type === 3) {
         return this.hasRight('labelUserCreate')
+      }
+    },
+    hasEditRight (type) {
+      type = +type
+      if (type === 1) {
+        return this.hasRight('labelOrgSetting')
+      } else if (type === 2) {
+        return this.hasRight('labelDepartmentSetting')
+      } else if (type === 3) {
+        return this.hasRight('labelUserSetting')
       }
     },
     hasDeleteRight (type) {
@@ -174,6 +188,13 @@ export default {
       }
     },
     createTag (data, flag) {
+      this.actionType = 'create'
+      this.createTagDialogVisible = true
+      this.createData = data
+      this.flagdata = flag
+    },
+    editTag (data, flag) {
+      this.actionType = 'edit'
       this.createTagDialogVisible = true
       this.createData = data
       this.flagdata = flag

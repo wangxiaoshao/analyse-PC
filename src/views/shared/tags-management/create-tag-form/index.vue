@@ -26,7 +26,7 @@
           </el-form>
         </div>
         <span slot="footer" class="dialog-footer">
-    <el-button type="primary" @click="onSubmit" :disabled="disabledBtn()">确 定</el-button>
+    <el-button type="primary" @click="onSubmit" :disabled="disabledBtn()">保 存</el-button>
     <el-button @click="handleClose">取 消</el-button>
   </span>
       </el-dialog>
@@ -38,7 +38,7 @@ import { api, urlNames } from '@src/api'
 import hasRight from '@src/mixins/has-right'
 export default {
   name: 'CreateTagForm',
-  props: ['createTagDialogVisible', 'createData', 'flagdata'],
+  props: ['createTagDialogVisible', 'createData', 'flagdata', 'actionType'],
   mixins: [hasRight],
   data () {
     return {
@@ -47,6 +47,7 @@ export default {
         2: 'labelDepartmentCreate',
         3: 'labelUserCreate'
       },
+      title: '',
       labelForm: {
         type: 2,
         parentId: '',
@@ -56,23 +57,42 @@ export default {
   },
   created () {
   },
+  mounted () {
+    if (this.actionType === 'edit') {
+      this.labelForm.name = this.flagdata.title
+    }
+  },
   methods: {
     disabledBtn () {
       return !this.hasRight(this.rightKey[this.labelForm.type])
     },
     // 创建标签
     onSubmit () {
-      let parentId = null
-      if (this.createData.id === '' || this.createData.id === undefined) {
-        parentId = '-1'
+      let params = null
+
+      if (this.actionType === 'create') {
+        let parentId = null
+        if (this.createData.id === '' || this.createData.id === undefined) {
+          parentId = '-1'
+        } else {
+          parentId = this.createData.id
+        }
+
+        params = {
+          name: this.labelForm.name,
+          type: this.labelForm.type,
+          parentId: parentId
+        }
       } else {
-        parentId = this.createData.id
+        params = {
+          id: this.createData.id,
+          name: this.labelForm.name,
+          type: this.labelForm.type,
+          parentId: this.createData.parentId
+        }
       }
-      api[urlNames['createLabel']]({
-        name: this.labelForm.name,
-        type: this.labelForm.type,
-        parentId: parentId
-      }).then((res) => {
+
+      api[urlNames['createLabel']](params).then((res) => {
         if (res.status === 0) {
           this.$message.success('创建成功')
           this.$emit('close')
