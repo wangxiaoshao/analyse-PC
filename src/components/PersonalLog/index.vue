@@ -15,7 +15,7 @@
               <el-option label="昨天" :value="['yesterday']"></el-option>
               <el-option label="月" :value="['month', '月', 'yyyy-MM']"></el-option>
               <el-option label="选择日期" :value="['date', '日期', 'yyyy-MM-dd']"></el-option>
-            </el-select> 
+            </el-select>
         </el-form-item>
          <el-form-item>
             <div v-if="openPicker">
@@ -161,13 +161,12 @@ import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
 export default {
   mixins: [handleTable],
-  props: ['loginLog','showFindBtn'],
+  props: ['loginLog', 'showFindBtn'],
   data () {
-    
     return {
       tableData: [],
       detialInfoVisible: false,
-      logList:[],
+      logList: [],
       detialInfoForm: {
         actionDepartmentId: '',
         actionOrgId: '',
@@ -209,11 +208,11 @@ export default {
       date: '',
       inputValue: '',
       format: '',
-      logParam:{
-        selectValue:'',
-        dateType:'',
-        actionType:'',
-        name:''
+      logParam: {
+        selectValue: '',
+        dateType: '',
+        actionType: '',
+        name: ''
       },
 
       pickerOptions: {
@@ -280,19 +279,19 @@ export default {
         this.getGrid()
       }
     },
-    logChange(val){
-      this.logParam.actionType=val
-       this.getGrid()
+    logChange (val) {
+      this.logParam.actionType = val
+      this.getGrid()
     },
-    iptChange(){
-      if(this.logParam.name!==''){
-         this.getGrid()
+    iptChange () {
+      if (this.logParam.name !== '') {
+        this.getGrid()
       }
     },
-    getLoggerTypeList(){
-       api[urlNames['findLoggerTypeList']]().then(
+    getLoggerTypeList () {
+      api[urlNames['findLoggerTypeList']]().then(
         res => {
-         this.logList=res.data
+          this.logList = res.data
         })
     },
     getGrid () {
@@ -307,8 +306,8 @@ export default {
         logUrl = 'getDataLogList'
       } else if (this.loginLog === 2) {
         logUrl = 'getDataLogList'
-        data.actionType=this.logParam.actionType
-        data.name=this.logParam.name
+        data.actionType = this.logParam.actionType
+        data.name = this.logParam.name
       } else if (this.loginLog === 3) {
         logUrl = 'findLoggerApiAccessList'
       } else {
@@ -353,7 +352,7 @@ export default {
         )
       }
     },
-    findCondition(){
+    findCondition () {
       this.getGrid()
     }
   }
