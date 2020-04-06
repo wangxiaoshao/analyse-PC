@@ -17,8 +17,8 @@
               <el-form-item label="单位电话">
                 <div  class="table-td">
                   <span >{{orgInfo.phone||'无'}} </span>
-                <a  href="javaScrpit:void(0)" v-if="orgInfo.phone&&orgInfo.phone!=''&&!orgInfo.isLooked"
-               style="color: #FC7049;font-size:12px;margin-left:5px" @click="findPhone(orgInfo.nodeType,orgInfo.bindId,1)">查看</a>
+                <span v-if="orgInfo.phone&&orgInfo.phone!=''&&!orgInfo.isLooked"
+               class="findMobileBtn" @click="findPhone(orgInfo.nodeType,orgInfo.bindId,1)">查看</span>
                 </div>
               </el-form-item>
               <el-form-item label="邮   编">
@@ -55,17 +55,17 @@
       <el-table-column prop="mobile" label="手机号" align="center">
          <template slot-scope="scope">
             <span>{{scope.row.mobile||'无'}}</span>
-            <a v-if="scope.row.mobile&&scope.row.mobile!=''&&!scope.row.isLooked" href="javaScrpit:void(0)"
-             style="color: #FC7049;margin-left:5px;font-size:12px"
-             @click="findMobileById(scope.row.uid,scope.$index,1)">查看</a>
+            <span v-if="scope.row.mobile&&scope.row.mobile!=''&&!scope.row.isLooked"
+             class="findMobileBtn"
+             @click="findMobileById(scope.row.uid,scope.$index,1)">查看</span>
            </template>
       </el-table-column>
       <el-table-column  prop="officePhone" label="座机号" align="center">
         <template slot-scope="scope">
           <span>{{scope.row.officePhone||'无'}}</span>
-          <a v-if="scope.row.officePhone&&scope.row.officePhone!=''&&scope.row.officePhone!='无'&&!scope.row.isOfficePhone"
-           href="javaScrpit:void(0)" style="color: #FC7049;margin-left:5px;font-size:12px"
-            @click="findMobileById(scope.row.uid,scope.$index,2)">查看</a>
+          <span v-if="scope.row.officePhone&&scope.row.officePhone!=''&&scope.row.officePhone!='无'&&!scope.row.isOfficePhone"
+          class="findMobileBtn"
+            @click="findMobileById(scope.row.uid,scope.$index,2)">查看</span>
           </template>
       </el-table-column>
 

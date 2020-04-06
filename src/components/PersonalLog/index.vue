@@ -62,29 +62,28 @@
       </el-form>
     </div>
     <div class="log-table">
-      <el-table :data="tableData" stripe border align="center" style="width: 100%">
-        <el-table-column type="index" label="序号" width="80"></el-table-column>
+      <el-table :data="tableData" stripe border style="width: 100%">
+        <el-table-column type="index" label="序号" width="80" align="center"></el-table-column>
         <template v-if="loginLog === 1 || loginLog === 2 || !loginLog">
-          <el-table-column prop="actionTime" label="时间"></el-table-column>
-          <el-table-column prop="userName" label="操作人"></el-table-column>
-          <el-table-column prop="description" label="描述"></el-table-column>
+          <el-table-column prop="actionTime" label="时间" align="center"></el-table-column>
+          <el-table-column prop="userName" label="操作人" align="center"></el-table-column>
+          <el-table-column prop="description" label="描述" align="center"></el-table-column>
         </template>
         <template v-if="loginLog === 3">
-          <el-table-column prop="accessTime" label="时间"></el-table-column>
+          <el-table-column prop="accessTime" label="时间" align="center"></el-table-column>
           <!-- <el-table-column label="日志类型">
             <template slot-scope>
               <span>{{systemError}}</span>
             </template>
           </el-table-column> -->
-          <el-table-column prop="path" label="接口标识"></el-table-column>
+          <el-table-column prop="path" label="接口标识" align="center"></el-table-column>
         </template>
-        <el-table-column label="操作">
+        <el-table-column label="操作" align="center">
           <template slot-scope="scope">
-            <a
-              href="javascript:void(0);"
-              style="color:#FC7049;font-size:12px"
+            <span
+             class="common-detialBtn"
               @click="opendetialInfo(scope.row)"
-            >详情</a>
+            >详情</span>
           </template>
         </el-table-column>
       </el-table>

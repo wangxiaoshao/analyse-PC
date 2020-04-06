@@ -83,36 +83,32 @@
           <template slot-scope="scope">
             <!-- <span>{{scope.row.phone=='' ||!scope.row.phone ?'无':scope.row.phone}}</span> -->
             <span>{{scope.row.phone || scope.row.mobile ||  '无'}}</span>
-            <a
+            <span
               v-if="scope.row.phone&&scope.row.phone!='' && !scope.row.isLooked"
-              href="javaScrpit:void(0)"
-              style="color: #FC7049;font-size:12px;margin-left:5px"
+              class="findMobileBtn"
               @click="findPhone(scope.row.nodeType,scope.row.bindId,2,scope.$index)"
             >
               查看
-            </a>
-            <a
+            </span>
+            <span
               v-if="scope.row.mobile&&scope.row.mobile!='' && !scope.row.isLooked"
-              href="javaScrpit:void(0)"
-              style="color: #FC7049;font-size:12px;margin-left:5px"
+              class="findMobileBtn"
               @click="findMobileById(scope.row.uid,scope.$index,1)"
             >
               查看
-            </a>
+            </span>
           </template>
         </el-table-column>
         <el-table-column label="下级" align="center">
           <template slot-scope="scope">
             <!-- <i class="el-icon-share"></i> -->
 
-            <a v-if="!scope.row.nodeType"
+            <span v-if="!scope.row.nodeType">无</span>
+            <span v-else
               href="javaScrpit:void(0)"
-            >无</a>
-            <a v-else
-              href="javaScrpit:void(0)"
-              style="color: #FC7049;font-size:12px"
+              style="color: #FC7049;font-size:12px; cursor: pointer;"
               @click="childClick(scope.row)"
-            >查看下级</a>
+            >查看下级</span>
 
           </template>
         </el-table-column>

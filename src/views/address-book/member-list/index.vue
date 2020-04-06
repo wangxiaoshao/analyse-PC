@@ -16,7 +16,7 @@
         label=""
         width="100"
         align="center">
-        <template slot-scope="scope">
+        <template>
               <!-- <img :src="api + scope.row.common/images/examine/depart_icon" alt="" style="width: 36px;height:36px"> -->
             <i class="el-icon-success"></i>
          </template>

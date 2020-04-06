@@ -76,7 +76,7 @@
       :total="contentPage.total">
     </el-pagination>
     <el-dialog :visible.sync="showSortDilog" width="420px">
-      <div slot="title">
+      <div slot="title" style=" padding: 20px; background-color: #fff;">
         <span>数值排序</span>
         <i class="el-icon-document-copy" style="color:red;margin-left:6px"></i>
       </div>

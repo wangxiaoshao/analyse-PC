@@ -1,6 +1,7 @@
 <template>
   <div class="site-module mod-dictionary">
     <!--操作row-->
+    
     <el-row class="operator-row">
       <el-button
         size="small"
@@ -70,9 +71,10 @@
                   :tableData="DialogTableData">
       </site-table>
       <el-row :gutter="20" :style="{marginTop: '20px'}">
-        <el-col :span="12" :offset="8">
+        <el-col :span="13" :offset="7">
+          <el-button type="primary" @click="goFindDetial">查看详情</el-button>
           <el-button type="primary" @click="handleConfirm">确认</el-button>
-          <el-button :style="{marginLeft: '40px'}" @click="handleClose">取消</el-button>
+          <el-button  @click="handleClose">取消</el-button>
         </el-col>
       </el-row>
     </el-dialog>
@@ -101,7 +103,7 @@ export default {
         keyName: {
           key: 'keyName',
           tooltip: false,
-          label: '名称',
+          label: '信息确认',
           sortable: false,
           showOverflowTooltip: false,
           minWidth: 50
@@ -109,7 +111,7 @@ export default {
         valueName: {
           key: 'valueName',
           tooltip: false,
-          label: '值',
+          label: '结果',
           sortable: false,
           showOverflowTooltip: false,
           minWidth: 50
@@ -192,6 +194,7 @@ export default {
       this.getGrid()
     },
     getConfirmMemberList () {
+
       api[urlNames['getConfirmMemberList']]().then((res) => {
         this.DialogTableData = res.data
         this.dialogVisible = true
@@ -254,6 +257,12 @@ export default {
     },
     handleClose () {
       this.dialogVisible = false
+    },
+    goFindDetial(){
+      // this.app.option.options.user.orgId
+      // console.log(this.app.option)
+      // this.$router.push(`/organization/organization-content/${this.app.option.user.orgId}`)
+    //  t orgId
     },
     handleConfirm () {
       let newDatefmt = this.$options.filters['date'](new Date().getTime(), 'yyyy-MM')
