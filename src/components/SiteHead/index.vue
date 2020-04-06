@@ -125,6 +125,7 @@ export default {
     // 去查看
     doFindNotice (val) {
       api[urlNames['notificationRead']]({ id: val.id }).then(res => {
+         this.getList()
         if (res) {
           this.showNoticeDilog = false
           if (val.type === 1) {
@@ -134,7 +135,7 @@ export default {
           } else if (val.type === 3) {
             this.$router.push('/wait-approval')
           }
-           this.getList()
+          
         }
       })
     },

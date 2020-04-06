@@ -67,45 +67,45 @@
           <p>组织机构注册总人数</p>
           <p>{{countData.userCount}}</p>
           <ul>
-            <li>日<a href="">0% <i class="el-icon-top"></i></a></li>
-            <li>周<a href="">10% <i class="el-icon-top"></i></a></li>
-            <li>月<a href="">30% <i class="el-icon-top"></i></a></li>
+            <li>日<span>0% <i class="el-icon-top"></i></span></li>
+            <li>周<span>10% <i class="el-icon-top"></i></span></li>
+            <li>月<span>30% <i class="el-icon-top"></i></span></li>
           </ul>
         </div>
         <div class="detailInfo">
           <p>单位总数</p>
           <p>{{countData.organCount}}</p>
           <ul>
-            <li>日<a href="">1% <i class="el-icon-top"></i></a></li>
-            <li>周<a href="">5% <i class="el-icon-top"></i></a></li>
-            <li>月<a href="">10% <i class="el-icon-top"></i></a></li>
+            <li>日<span>1% <i class="el-icon-top"></i></span></li>
+            <li>周<span>5% <i class="el-icon-top"></i></span></li>
+            <li>月<span>10% <i class="el-icon-top"></i></span></li>
           </ul>
         </div>
         <div class="detailInfo">
           <p>内设机构总数</p>
           <p>{{countData.deptCount}}</p>
           <ul>
-            <li>日<a href="">0% <i class="el-icon-top"></i></a></li>
-            <li>周<a href="">3% <i class="el-icon-top"></i></a></li>
-            <li>月<a href="">5% <i class="el-icon-top"></i></a></li>
+            <li>日<span>0% <i class="el-icon-top"></i></span></li>
+            <li>周<span>3% <i class="el-icon-top"></i></span></li>
+            <li>月<span>5% <i class="el-icon-top"></i></span></li>
           </ul>
         </div>
         <div class="detailInfo">
           <p>人员变动数</p>
           <p>{{countData.userChangedCount}}</p>
           <ul>
-            <li>日<a href="">0% <i class="el-icon-top"></i></a></li>
-            <li>周<a href="">3% <i class="el-icon-top"></i></a></li>
-            <li>月<a href="">5% <i class="el-icon-top"></i></a></li>
+            <li>日<span>0% <i class="el-icon-top"></i></span></li>
+            <li>周<span>3% <i class="el-icon-top"></i></span></li>
+            <li>月<span>5% <i class="el-icon-top"></i></span></li>
           </ul>
         </div>
         <div class="detailInfo">
           <p>接入应用总数</p>
           <p>{{applyCount}}</p>
           <ul>
-            <li>日<a href="">0% <i class="el-icon-top"></i></a></li>
-            <li>周<a href="">0% <i class="el-icon-top"></i></a></li>
-            <li>月<a href="">0% <i class="el-icon-top"></i></a></li>
+            <li>日<span>0% <i class="el-icon-top"></i></span></li>
+            <li>周<span>0% <i class="el-icon-top"></i></span></li>
+            <li>月<span>0% <i class="el-icon-top"></i></span></li>
           </ul>
         </div>
       </div>

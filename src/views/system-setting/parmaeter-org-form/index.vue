@@ -440,7 +440,7 @@ const orgAuditList = [{
 },
 {
   name: 'zipCode',
-  checkname: '邮编'
+  checkname: '邮政编码'
 },
 {
   name: 'fax',

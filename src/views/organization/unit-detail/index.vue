@@ -40,7 +40,7 @@
               </div>
             </div>
           </el-form-item>
-          <el-form-item label="单位其他名称" prop="organization.otherName">
+          <el-form-item label="其他名称" prop="organization.otherName">
             <el-input v-model="ruleForm.organization.otherName" @input="showIptMsg('otherName')"></el-input>
             <div v-if="this.$route.name === 'UnitEdit' ">
               <div class="el-form-item__error" v-show="this.iptMsgVisible['otherName']">
@@ -75,10 +75,10 @@
               </p>
               <p style="color:green" v-if="successVisiable">
                 <i class="el-icon-success"></i>
-                社会信用代码验证成功
+               统一社会信用代码验证成功。
               </p>
                <p style="color:#999" v-if="requiring">
-                正在验证...
+                统一社会信用代码正在验证...
               </p>
             </div>
           </el-form-item>
@@ -111,7 +111,7 @@
               </div>
             </div>
           </el-form-item>
-          <el-form-item label="邮编" prop="organization.zipCode">
+          <el-form-item label="邮政编码" prop="organization.zipCode">
             <el-input
               v-model="ruleForm.organization.zipCode"
               onkeyup="this.value=this.value.replace(/[^\d.]/g,'');"
@@ -198,7 +198,7 @@
       </el-menu>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="单位介绍" prop="ext01">
+          <el-form-item label="单位简介" prop="ext01">
             <el-input type="textarea" v-model="ruleForm.organization.ext01" @input="showIptMsg('ext01')"></el-input>
             <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
               <div class="el-form-item__error" v-show="this.iptMsgVisible['ext01']">
@@ -206,7 +206,10 @@
               </div>
             </div>
           </el-form-item>
-          <el-form-item label="申请原因" prop="reason">
+         
+        </el-col>
+        <el-col :span="12">
+           <el-form-item label="申请备注" prop="reason">
             <el-input type="textarea" v-model="ruleForm.reason"></el-input>
             <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
               <!-- <div
@@ -215,16 +218,14 @@
               >添加或修改该字段需要提交审核</div> -->
             </div>
           </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="单位职责" prop="ext02">
+          <!-- <el-form-item label="单位职责" prop="ext02">
             <el-input type="textarea" v-model="ruleForm.organization.ext02" @input="showIptMsg('ext02')"></el-input>
             <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
               <div class="el-form-item__error" v-show="this.iptMsgVisible['ext02']">
               {{iptMsgInfoStr}}
               </div>
             </div>
-          </el-form-item>
+          </el-form-item> -->
         </el-col>
       </el-row>
       <el-form-item v-show="isShowEditFlag">
