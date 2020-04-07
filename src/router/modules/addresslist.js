@@ -16,6 +16,22 @@ export default [
     }
   },
   {
+    path: '/address-list-dept',
+    name: 'AddressListDept',
+    component: AddressList,
+    meta: {
+      key: 'menuAddrBookDept'
+    }
+  },
+  {
+    path: '/address-list-all',
+    name: 'AddressListAll',
+    component: AddressList,
+    meta: {
+      key: 'menuAddrBookAll'
+    }
+  },
+  {
     path: '/department',
     name: 'Department',
     component: Department
