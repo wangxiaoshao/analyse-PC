@@ -95,7 +95,7 @@ export default {
       'name': '共享管理',
       'path': '',
       'type': 1,
-      'key': ['menuShareViews', 'menuGroups', 'menuLabels', 'menuShareApplication'],
+      'key': ['menuShareViews', 'menuGroups', 'menuShareApplication'],
       'icon': 'fa fa-address-card-o',
       'list': [{
         'menuId': '31',
@@ -177,7 +177,7 @@ export default {
       'path': '',
       'type': 1,
       'icon': 'fa fa-cogs',
-      'key': ['menuRoles', 'menuDictionary', 'menuPersonalInfo', 'menuRightSetting', 'menuPreferencesSetting', 'menuWordCenter'],
+      'key': ['menuRoles', 'menuDictionary', 'menuPersonalInfo', 'menuRightSetting', 'menuPreferencesSetting', 'menuWordCenter', 'menuLabels'],
       'list': [{
         'menuId': '51',
         'name': '角色权限',
