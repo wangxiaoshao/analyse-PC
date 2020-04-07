@@ -3,7 +3,7 @@
     <el-row class="address-row">
       <el-col :span="6" style="height: 100%">
         <div class="site-scroll">
-          <div class="organ-top">
+          <!-- <div class="organ-top">
             <div class="top-one" :class="activeColor==1?'top-active':''" @click="switchAddressView(1)">本单位通讯录</div>
             <div
               class="top-two"
@@ -11,7 +11,7 @@
               :class="activeColor==2?'top-active':''"
               @click="switchAddressView(2)"
             >全省通讯录</div>
-          </div>
+          </div> -->
           <search-result
             @searchMyBack="searchMyBack"
             @searchOtherBack="searchOtherBack"
@@ -106,6 +106,15 @@ export default {
       this.switchAddressView(1)
     } else if (this.$route.meta.key === 'menuAddrBookAll') {
       this.switchAddressView(2)
+    }
+  },
+  watch: {
+    $route (to, from) {
+      if (to.meta.key === 'menuAddrBookDept') {
+        this.switchAddressView(1)
+      } else if (to.meta.key === 'menuAddrBookAll') {
+        this.switchAddressView(2)
+      }
     }
   },
   computed: {
