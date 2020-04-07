@@ -124,31 +124,31 @@
                 </el-radio-group>
             </el-form-item>
             <el-form-item label="人员姓名">
-                <el-radio-group v-model="orgAddressBookSet.userName">
+                <el-radio-group v-model="orgAddressBookSet.userName" :disabled='orgAddressBookSet.allOrgInfo==0'>
                     <el-radio :label="0">不可见</el-radio>
                     <el-radio :label="1">可见</el-radio>
                 </el-radio-group>
-            </el-form-item>
+            </el-form-item> 
             <el-form-item label="人员手机号">
-                <el-radio-group v-model="orgAddressBookSet.userMobile">
+                <el-radio-group v-model="orgAddressBookSet.userMobile" :disabled='orgAddressBookSet.allOrgInfo==0'>
                     <el-radio :label="0">不可见</el-radio>
                     <el-radio :label="1">可见</el-radio>
                 </el-radio-group>
             </el-form-item>
             <el-form-item label="单位座机号">
-                <el-radio-group v-model="orgAddressBookSet.userPhone">
+                <el-radio-group v-model="orgAddressBookSet.userPhone" :disabled='orgAddressBookSet.allOrgInfo==0'>
                     <el-radio :label="0">不可见</el-radio>
                     <el-radio :label="1">可见</el-radio>
                 </el-radio-group>
             </el-form-item>
             <el-form-item label="人员详情页">
-                <el-radio-group v-model="orgAddressBookSet.userDetail">
+                <el-radio-group v-model="orgAddressBookSet.userDetail" :disabled='orgAddressBookSet.allOrgInfo==0'>
                     <el-radio :label="0">不可见</el-radio>
                     <el-radio :label="1">可见</el-radio>
                 </el-radio-group>
             </el-form-item>
             <el-form-item label="内设机构座机号">
-                <el-radio-group v-model="orgAddressBookSet.depPhone">
+                <el-radio-group v-model="orgAddressBookSet.depPhone" :disabled='orgAddressBookSet.allOrgInfo==0'>
                     <el-radio :label="0">不可见</el-radio>
                     <el-radio :label="1">可见</el-radio>
                 </el-radio-group>
@@ -897,6 +897,13 @@ export default {
         list.value = this.orgUserSecuritySettings
       } else if (flag === 1) {
         list.name = 'orgAddressBookSet'
+        if(this.orgAddressBookSet.allOrgInfo==0){
+          this.orgAddressBookSet.userName=0
+          this.orgAddressBookSet.userMobile=0
+          this.orgAddressBookSet.userPhone=0
+          this.orgAddressBookSet.userDetail=0
+          this.orgAddressBookSet.depPhone=0
+        }
         list.value = this.orgAddressBookSet
       } else if (flag === 2) {
         list.name = 'systemMessageRemind'

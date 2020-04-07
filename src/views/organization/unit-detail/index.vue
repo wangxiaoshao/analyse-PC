@@ -85,7 +85,7 @@
           <el-form-item label=" 上级单位">
             <el-input v-model="parentName" :disabled="true"></el-input>
           </el-form-item>
-          <el-form-item label=" 启用状态" prop="organization.removed">
+          <el-form-item label=" 启用状态" prop="organization.removed" v-if="this.$route.name === 'UnitEdit'&&!this.app.option.roles.indexOf('ORG_MANAGER') > -1">
             <el-switch v-model="ruleForm.organization.removed" @change="showIptMsg('removed')"></el-switch>
             <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
               <div class="el-form-item__error" v-show="this.iptMsgVisible['removed']">

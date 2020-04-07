@@ -1,6 +1,7 @@
 <template>
   <div class="site-module mod-dictionary">
     <!--操作row-->
+   
     <el-row class="operator-row">
       <el-button
         size="small"
@@ -257,7 +258,6 @@ export default {
       this.dialogVisible = false
     },
     goFindDetial(){
-      // console.log(this.app.option)
       this.$router.push(`/organization/organization-content/${this.app.option.user.orgNodeId}`)
    
     },

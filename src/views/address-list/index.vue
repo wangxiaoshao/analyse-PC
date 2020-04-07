@@ -48,6 +48,7 @@
               :departmentList="departmentList"
               :treeList="treeList"
               :msg='msg'
+              :visableData='visableData'
               v-if="showDep"
               @handle-child-click="handleChildClick"
             ></department>
@@ -55,6 +56,7 @@
               :activeColor='activeColor'
               :orgInfo='orgInfo'
               :msg='msg'
+              :visableData='visableData'
               v-if="selectType!='0' && !showDep"></member>
             <person-info
               :personInfoList="personInfoList"
@@ -101,7 +103,11 @@ export default {
       personInfoList: {},
       showDep: true,
       showBreadCrumb: true,
-      selectType: ''
+      selectType: '',
+      addressBookSet:[],
+      visableData:{
+       
+      }
     }
   },
   created () {
@@ -202,22 +208,22 @@ export default {
         this.getAddressListDepartmentMembers(node.bindId)
       } else if (node.nodeType === 2) {
         this.selectType = ''
-        let pararms={
-          level:2,
-          memberId:node.bindId
-        }
-       let addressBookSet= [1,0,0,0,0,0]
-
-        // this.handtxlOptions(pararms)
-        if(addressBookSet[0]===1){
-          this.msg='该单位信息对外不可见!'
-          this.memberList=[]
-          this.departmentList=[]
-        }else{
-           this.getAddressListOrganizationMembers(node.bindId)
-        }
+         api[urlNames['txlOptions']]({ 
+           level:2,
+          memberId:node.bindId}).then(res => {
+          this.addressBookSet=res.data.filter(function(val){
+            return val.name=='orgAddressBookSet'
+          })
+          //  this.visableData=JSON.parse(this.addressBookSet[0].value)
+            
+         this.getAddressListOrganizationMembers(node.bindId)
+        })
+         
       }
-      this.getAddressListdepartment(node.id)
+     
+         this.getAddressListdepartment(node.id)
+      
+     
     },
     handleChildClick (node) {
       console.log('node111:', node)
@@ -250,7 +256,7 @@ export default {
         parentId: id
       }).then(res => {
         this.departmentList = res.data
-        
+        //  console.log('data1:',res.data)
       })
     },
 
@@ -274,6 +280,7 @@ export default {
         deptId: id
       }).then(res => {
         this.memberList = res.data
+         console.log('data3:',res.data)
       })
     },
 

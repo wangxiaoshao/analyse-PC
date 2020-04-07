@@ -4,39 +4,41 @@
       class="moreInfo"
       v-if="orgInfo.nodeType==2 && activeColor==2||orgInfo.nodeType==3&&activeColor==2"
     >
-      <div class="header-title">部门信息</div>
-      <div class="infoContent">
-        <el-form :inline="true" label-width="100px" label-position="right">
-          <el-row>
-            <el-col>
-              <el-form-item label="单位名称">
-                <div class="table-td" :title="orgInfo.name">{{orgInfo.name}}</div>
-              </el-form-item>
-              <el-form-item label="单位地址">
-                <div class="table-td">{{orgInfo.address||'无'}}</div>
-              </el-form-item>
-            </el-col>
-            <el-col>
-              <el-form-item label="单位电话">
-                <div class="table-td">
-                  <span>{{orgInfo.phone||'无'}}</span>
-                  <a
-                    href="javaScrpit:void(0)"
-                    v-if="orgInfo.phone&&orgInfo.phone!=''&& !orgInfo.isLooked"
-                    style="color: #FC7049;font-size:12px;margin-left:5px"
-                    @click="findPhone(orgInfo.nodeType,orgInfo.bindId,1)"
-                  >查看</a>
-                </div>
-              </el-form-item>
-              <el-form-item label="邮政编码">
-                <div class="table-td">{{orgInfo.zipCode||'无'}}</div>
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </el-form>
+      <div v-if="!visableData.allOrgInfo||visableData.allOrgInfo==0">
+        <div class="header-title">部门信息</div>
+        <div class="infoContent">
+          <el-form :inline="true" label-width="100px" label-position="right">
+            <el-row>
+              <el-col>
+                <el-form-item label="单位名称">
+                  <div class="table-td" :title="orgInfo.name">{{orgInfo.name}}</div>
+                </el-form-item>
+                <el-form-item label="单位地址">
+                  <div class="table-td">{{orgInfo.address||'无'}}</div>
+                </el-form-item>
+              </el-col>
+              <el-col>
+                <el-form-item label="单位电话">
+                  <div class="table-td">
+                    <span>{{orgInfo.phone||'无'}}</span>
+                    <a
+                      href="javaScrpit:void(0)"
+                      v-if="orgInfo.phone&&orgInfo.phone!=''&& !orgInfo.isLooked"
+                      style="color: #FC7049;font-size:12px;margin-left:5px"
+                      @click="findPhone(orgInfo.nodeType,orgInfo.bindId,1)"
+                    >查看</a>
+                  </div>
+                </el-form-item>
+                <el-form-item label="邮政编码">
+                  <div class="table-td">{{orgInfo.zipCode||'无'}}</div>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+        </div>
       </div>
     </div>
-    <div class="department-tab-content">
+    <div class="department-tab-content" v-if="!visableData.allOrgInfo||visableData.allOrgInfo==0">
       <div class="header-title">详细数据</div>
       <!-- v-show="departmentList.length!==0" -->
       <el-table :data="departmentList" style="width: 100%;" class="eltab" border stripe>
@@ -46,7 +48,7 @@
               <img class="data-pic" src="@src/common/images/no-data.png" alt />
             </p>
             <p>
-              <span style="padding-left: 8px">{{msg}}</span>
+              <span style="padding-left: 8px">暂无数据</span>
             </p>
           </div>
         </template>
@@ -115,14 +117,25 @@
         <el-table-column prop label="备注" align="center"></el-table-column>
       </el-table>
     </div>
+    <div class="no-right" v-if="visableData.allOrgInfo&&visableData.allOrgInfo==1" style="text-align:center;">
+      <img class="no-content-img" :src="imgSrc" alt="" width="250px">
+      <div style="font-size:20px;color:#999"> 该单位信息对外不可见！</div>
+  </div>
   </div>
 </template>
 <script>
 import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
+import noDataImg from '@src/common/images/no-data.png'
 export default {
-  props: ['departmentList', 'orgInfo', 'activeColor','msg'],
+  props: ['departmentList', 'orgInfo', 'activeColor','msg','visableData'],
   data () {
+    //  allOrgInfo
+    //     userName
+    //     userMobile
+    //     userPhone
+    //     userDetail
+    //     depPhone
     return {
       status: 0,
       isShow: true,
@@ -130,7 +143,8 @@ export default {
       personnel: {},
       userId: '',
       infoVisiable: false,
-      deptMemberList: []
+      deptMemberList: [],
+      imgSrc: noDataImg
 
     }
   },
