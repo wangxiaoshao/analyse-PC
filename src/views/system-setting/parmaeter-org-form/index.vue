@@ -252,7 +252,7 @@
             </el-form-item>
         </el-form>
     </div>
-    <div class="parameter-item">
+    <!-- <div class="parameter-item">
       <div class="header">单位信息确认短信模板
       </div>
       <el-form class="sms-template">
@@ -266,7 +266,7 @@
           <el-col :span="12">
             <p>每月单位信息需要确认时发送短信。</p>
             <br>
-            <p>可用占位符：<el-button type="primary" size="small" round @click="insertTextInfoCursor('{单位名称}')">{单位名称}</el-button>，<el-button type="primary" size="small" round @click="insertTextInfoCursor('{月份}')">{月份}</el-button>，<el-button type="primary" size="small" round @click="insertTextInfoCursor('{信息确认截止时间}')">{信息确认截止时间}</el-button></p>
+            <p>可用占位符：<el-button type="primary" size="small" round @click="insertTextIntoCursor('{单位名称}')">{单位名称}</el-button>，<el-button type="primary" size="small" round @click="insertTextIntoCursor('{月份}')">{月份}</el-button>，<el-button type="primary" size="small" round @click="insertTextIntoCursor('{信息确认截止时间}')">{信息确认截止时间}</el-button></p>
           </el-col>
         </el-row>
         <el-row :gutter="20">
@@ -293,7 +293,7 @@
           <el-col :span="12">
             <p>审核管理员有审核事项时，给相关人员发送短信。</p>
             <br>
-            <p>可用占位符：<el-button type="primary" size="small" round @click="insertTextInfoCursor('{单位名称}')">{单位名称}</el-button>，<el-button type="primary" size="small" round @click="insertTextInfoCursor('{操作人名称}')">{操作人名称}</el-button>，<el-button type="primary" size="small" round @click="insertTextInfoCursor('{修改字段}')">{修改字段}</el-button>，<el-button type="primary" size="small" round @click="insertTextInfoCursor('{修改时间}')">{修改时间}</el-button>。</p>
+            <p>可用占位符：<el-button type="primary" size="small" round @click="insertTextIntoCursor('{单位名称}')">{单位名称}</el-button>，<el-button type="primary" size="small" round @click="insertTextIntoCursor('{操作人名称}')">{操作人名称}</el-button>，<el-button type="primary" size="small" round @click="insertTextIntoCursor('{修改字段}')">{修改字段}</el-button>，<el-button type="primary" size="small" round @click="insertTextIntoCursor('{修改时间}')">{修改时间}</el-button>。</p>
           </el-col>
         </el-row>
         <el-row :gutter="20">
@@ -320,7 +320,7 @@
           <el-col :span="12">
             <p>审核管理员有审核事项时，给相关人员发送短信。</p>
             <br>
-            <p>可用占位符：<el-button type="primary" size="small" round @click="insertTextInfoCursor('{单位名称}')">{单位名称}</el-button>，<el-button type="primary" size="small" round @click="insertTextInfoCursor('{操作人名称}')">{操作人名称}</el-button>，<el-button type="primary" size="small" round @click="insertTextInfoCursor('{修改字段}')">{修改字段}</el-button>，<el-button type="primary" size="small" round @click="insertTextInfoCursor('{修改时间}')">{修改时间}</el-button>。</p>
+            <p>可用占位符：<el-button type="primary" size="small" round @click="insertTextIntoCursor('{单位名称}')">{单位名称}</el-button>，<el-button type="primary" size="small" round @click="insertTextIntoCursor('{操作人名称}')">{操作人名称}</el-button>，<el-button type="primary" size="small" round @click="insertTextIntoCursor('{修改字段}')">{修改字段}</el-button>，<el-button type="primary" size="small" round @click="insertTextIntoCursor('{修改时间}')">{修改时间}</el-button>。</p>
           </el-col>
         </el-row>
         <el-row :gutter="20">
@@ -332,7 +332,7 @@
           </el-col>
         </el-row>
       </el-form>
-    </div>
+    </div> -->
 </div>
 </template>
 
@@ -341,7 +341,7 @@ import {
   api,
   urlNames
 } from '@src/api'
-import insertTextInfoCursor from '@src/mixins/insertIntoCursor'
+import insertTextIntoCursor from '@src/mixins/insertIntoCursor'
 import hasRight from '@src/mixins/has-right'
 
 const level = 2
@@ -694,7 +694,7 @@ const userAuditList = [
 ]
 export default {
   name: 'parmaeterFrom',
-  mixins: [insertTextInfoCursor, hasRight],
+  mixins: [insertTextIntoCursor, hasRight],
   data () {
     return {
       orgUserSecuritySettings: { // 用户安全
@@ -725,9 +725,9 @@ export default {
       messageRemind: 0, // 消息提醒, 1提醒，0不提醒
       noRemind: false, // 消息提醒，默认不提醒
       modeAuditList: [],
-      orgMessageRemindTemplate: '{单位名称}{月份}的单位信息需在{信息确认截止时间}日前确认，请及时前往确认。http://59.215.232.95/api/gate/forward',
+      /* orgMessageRemindTemplate: '{单位名称}{月份}的单位信息需在{信息确认截止时间}日前确认，请及时前往确认。http://59.215.232.95/api/gate/forward',
       informationAuditTemplate: '{单位名称}{操作人名称}于{操作时间}修改了{修改字段}，请尽快前往后台处理。http://59.215.232.95/api/gate/forward',
-      informationAuditThroughTemplate: '{单位名称}{操作人名称}于{操作时间}修改了{修改字段}已通过审核，请前往平台查看',
+      informationAuditThroughTemplate: '{单位名称}{操作人名称}于{操作时间}修改了{修改字段}已通过审核，请前往平台查看', */
       orgAuditList: orgAuditList, // 单位审核字段数据
       nodeAuditList: nodeAuditList,
       depAuditList: depAuditList,
@@ -772,7 +772,7 @@ export default {
     }
   },
   methods: {
-    saveorgMessageRemindTemplate () {
+    /* saveorgMessageRemindTemplate () {
       this.setClientOptions({
         level: level,
         name: 'orgMessageRemindTemplate',
@@ -792,7 +792,7 @@ export default {
         name: 'informationAuditThroughTemplate',
         value: this.informationAuditThroughTemplate
       })
-    },
+    }, */
     onStartDateChanged (startDate) {
       this.noRemind = false
 
@@ -844,7 +844,7 @@ export default {
           if (item.name === 'orgUserSecuritySettings') {
             this.orgUserSecuritySettings = JSON.parse(item.value)
           }
-          if (item.name === 'orgMessageRemindTemplate') {
+          /* if (item.name === 'orgMessageRemindTemplate') {
             this.orgMessageRemindTemplate = item.value
           }
           if (item.name === 'informationAuditTemplate') {
@@ -852,7 +852,7 @@ export default {
           }
           if (item.name === 'informationAuditThroughTemplate') {
             this.informationAuditThroughTemplate = item.value
-          }
+          } */
           if (item.name === 'systemMessageRemind') {
             this.remindStartDate = parseInt(JSON.parse(item.value)[0])
             this.remindEndDate = parseInt(JSON.parse(item.value)[1])
