@@ -130,15 +130,17 @@ export default {
     this.getGrid()
   },
   mounted () {
-    this.pushBreadcrumb({
-      name: '应用日志',
-      parent: {
-        name: 'AppManagement',
-        query: {
-          type: 'back'
+    if (this.$route.query.id) {
+      this.pushBreadcrumb({
+        name: '应用日志',
+        parent: {
+          name: 'AppManagement',
+          query: {
+            type: 'back'
+          }
         }
-      }
-    })
+      })
+    }
   },
   methods: {
      ...mapMutations(['SET_APPLICATION_PAGE', 'SET_APPLICATION_SEARCH_QUERY']),
@@ -146,7 +148,7 @@ export default {
       let data = {
         page: this.page.current,
         limit: this.page.limit,
-        appId: this.$route.query.id
+        appId: this.$route.query.id || 0
       }
       api[urlNames['findPushLoggers']](data).then(res => {
         this.page.total = res.total

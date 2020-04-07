@@ -8,6 +8,9 @@
         <el-tab-pane label="系统日志" name="seccend">
           <personal-log :loginLog="logAry[2]" :showFindBtn='showFindBtn'></personal-log>
         </el-tab-pane>
+        <el-tab-pane label="同步日志" name="third">
+          <push-log :showFindBtn='showFindBtn'></push-log>
+        </el-tab-pane>
       </el-tabs>
     </div>
   </div>
@@ -18,9 +21,10 @@ import handleTable from '@src/mixins/handle-table'
 import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
 import PersonalLog from '@src/components/PersonalLog/index'
+import PushLog from '@src/views/shared/push-log'
 export default {
   mixins: [handleTable],
-  components: { PersonalLog },
+  components: { PersonalLog, PushLog },
   data () {
     return {
       searchQuery: {
