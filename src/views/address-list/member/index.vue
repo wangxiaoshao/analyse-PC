@@ -41,7 +41,7 @@
       <template slot="empty">
         <div class="empty">
           <p><img class="data-pic" src="@src/common/images/no-data.png" alt=""/></p>
-          <p><span style="padding-left: 8px">暂无数据！</span></p>
+          <p><span style="padding-left: 8px">{{msg}}</span></p>
         </div>
       </template>
       <el-table-column  type="index" label="序号" align="center" width="50"></el-table-column>
@@ -90,7 +90,7 @@
 import { api, urlNames } from '@src/api'
 
 export default {
-  props: ['tableData', 'memberProps', 'activeColor', 'orgInfo'],
+  props: ['tableData', 'memberProps', 'activeColor', 'orgInfo','msg'],
   data () {
     return {
 

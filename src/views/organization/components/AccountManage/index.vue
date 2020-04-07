@@ -198,9 +198,7 @@ export default {
         if(this.addAccount.name==''&&this.addAccount.nickName==''&&this.addAccount.password==''){
            this.$emit('get-account', this.accountSend)
         }
-        
-
-       
+    
     },
     lastStep () {
       this.$emit('get-back', true)

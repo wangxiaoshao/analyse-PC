@@ -87,5 +87,13 @@ export default {
     url: '/api/jg_manage/option/levelOptions',
     keepOriginResponse: true,
     serve: 'organizationManagePC'
+  },
+  /*
+  * 获取通讯录配置信息 */
+  [urlNames.txlOptions]: {
+    type: 'get',
+    url: '/api/jg_manage/option/txlOptions',
+    keepOriginResponse: true,
+    serve: 'organizationManagePC'
   }
 }

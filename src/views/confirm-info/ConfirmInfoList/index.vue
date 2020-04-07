@@ -1,12 +1,11 @@
 <template>
   <div class="site-module mod-dictionary">
     <!--操作row-->
-    
     <el-row class="operator-row">
       <el-button
         size="small"
         type="primary"
-        :disabled="!app.confirmState || !hasRight('orgMemberConfirm')"
+        :disabled="!app.confirmState || hasRight('orgMemberConfirm')" 
         @click="getConfirmMemberList"
         >确认机构人员信息
       </el-button>
@@ -194,7 +193,6 @@ export default {
       this.getGrid()
     },
     getConfirmMemberList () {
-
       api[urlNames['getConfirmMemberList']]().then((res) => {
         this.DialogTableData = res.data
         this.dialogVisible = true
@@ -259,10 +257,9 @@ export default {
       this.dialogVisible = false
     },
     goFindDetial(){
-      // this.app.option.options.user.orgId
       // console.log(this.app.option)
-      // this.$router.push(`/organization/organization-content/${this.app.option.user.orgId}`)
-    //  t orgId
+      this.$router.push(`/organization/organization-content/${this.app.option.user.orgNodeId}`)
+   
     },
     handleConfirm () {
       let newDatefmt = this.$options.filters['date'](new Date().getTime(), 'yyyy-MM')

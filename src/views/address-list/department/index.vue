@@ -28,7 +28,7 @@
                   >查看</a>
                 </div>
               </el-form-item>
-              <el-form-item label="邮   编">
+              <el-form-item label="邮政编码">
                 <div class="table-td">{{orgInfo.zipCode||'无'}}</div>
               </el-form-item>
             </el-col>
@@ -46,7 +46,7 @@
               <img class="data-pic" src="@src/common/images/no-data.png" alt />
             </p>
             <p>
-              <span style="padding-left: 8px">暂无数据！</span>
+              <span style="padding-left: 8px">{{msg}}</span>
             </p>
           </div>
         </template>
@@ -121,7 +121,7 @@
 import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
 export default {
-  props: ['departmentList', 'orgInfo', 'activeColor'],
+  props: ['departmentList', 'orgInfo', 'activeColor','msg'],
   data () {
     return {
       status: 0,

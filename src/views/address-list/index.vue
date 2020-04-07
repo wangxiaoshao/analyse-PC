@@ -47,12 +47,14 @@
               :orgInfo='orgInfo'
               :departmentList="departmentList"
               :treeList="treeList"
+              :msg='msg'
               v-if="showDep"
               @handle-child-click="handleChildClick"
             ></department>
             <member :table-data="memberList"
               :activeColor='activeColor'
               :orgInfo='orgInfo'
+              :msg='msg'
               v-if="selectType!='0' && !showDep"></member>
             <person-info
               :personInfoList="personInfoList"
@@ -86,6 +88,7 @@ export default {
     return {
       isShow: 1,
       activeColor: 1,
+      msg:'暂无数据！',
       defaultNodeId: '',
       navigation: [],
       navigation1: [],
@@ -144,7 +147,7 @@ export default {
         orgId: this.app.option.user.orgId
       }).then(res => {
         this.treeList = res.data
-        // this.departmentList=res.data
+        this.departmentList=res.data
         this.handleNodeClickTree(this.treeList[0])
       })
     },
@@ -188,7 +191,7 @@ export default {
     },
     /** 点击树节点显示内容 */
     handleNodeClickTree (node) {
-      console.log('node:', node)
+      console.log('node33:', node)
       this.orgInfo = node
       this.showDep = true
       this.navigation = []
@@ -200,8 +203,20 @@ export default {
         this.getAddressListDepartmentMembers(node.bindId)
       } else if (node.nodeType === 2) {
         this.selectType = ''
-        this.showDep = false
-        this.getAddressListOrganizationMembers(node.bindId)
+        let pararms={
+          level:2,
+          memberId:node.bindId
+        }
+       let addressBookSet= [1,0,0,0,0,0]
+
+        // this.handtxlOptions(pararms)
+        if(addressBookSet[0]===1){
+          this.msg='该单位信息对外不可见!'
+          this.memberList=[]
+          this.departmentList=[]
+        }else{
+           this.getAddressListOrganizationMembers(node.bindId)
+        }
       }
       this.getAddressListdepartment(node.id)
     },
@@ -221,12 +236,22 @@ export default {
       this.getAddressListdepartment(node.id)
     },
 
+    handtxlOptions(data){
+      // txlOptions
+       api[urlNames['txlOptions']](data).then(res => {
+        
+      })
+    },
+
+
+
     /** 单位下内设机构 */
     getAddressListdepartment (id) {
       api[urlNames['getAddressListTree']]({
         parentId: id
       }).then(res => {
         this.departmentList = res.data
+        
       })
     },
 

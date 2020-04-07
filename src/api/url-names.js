@@ -207,6 +207,7 @@ export default {
   // 查询用户可用配置
   setClientOptions: 'setClientOptions', // 提交配置信息
   getSystemParameterlevel: 'getSystemParameterlevel', // 配置级别的配置信息
+  txlOptions: 'txlOptions', // 通讯录配置信息
   findEntityChangeLoggerList: 'findEntityChangeLoggerList', // 操作日志
   getEntityChangeLoggerDetail: 'getEntityChangeLoggerDetail', // 操作日志详情
   exportUser: 'exportUser', // 导出用户

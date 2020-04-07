@@ -97,10 +97,10 @@
       <el-table-column label="序号" type="index" align="center" width="60">
         <template slot-scope="scope"><span v-text='getIndex(scope.$index)'></span></template>
       </el-table-column>
-      <el-table-column label="姓名" prop="name"></el-table-column>
+      <el-table-column label="姓名" prop="name" align="center"></el-table-column>
       <!-- <el-table-column label="登录账号" prop="account"></el-table-column> -->
-      <el-table-column label="职务" prop="duty"></el-table-column>
-      <el-table-column label="手机号" width="150">
+      <el-table-column label="职务" prop="duty" align="center"></el-table-column>
+      <el-table-column label="手机号" width="150" align="center">
         <template slot-scope="scope">
           <span>{{scope.row.isLooked ? scope.row.mobile:hideMobile(scope.row.mobile) || '无'}}</span>
           <span v-if="scope.row.mobile&&scope.row.mobile!=''&&scope.row.mobile!='无'&&!scope.row.isLooked"
@@ -254,6 +254,11 @@ export default {
       return (phone + '').replace(/^(.{3})(?:\d+)(.{4})$/, '$1****$2')
     },                   
     findMobileById (uid, index) {
+      this.list.forEach(function(val,index){
+        if(val.isLooked){
+          val.isLooked=false
+        }
+      })
       this.list[index].isLooked = true
       api[urlNames['findMobileById']]({ uid }).then(res => {
       })

@@ -33,6 +33,7 @@ export default {
   methods: {
     // 点击节点加载子节点
     handleNodeClick (node) {
+      // if()
       let id = ''
       id = node.id
       this.$router.push({
