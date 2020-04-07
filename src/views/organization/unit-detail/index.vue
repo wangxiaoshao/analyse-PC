@@ -206,7 +206,7 @@
               </div>
             </div>
           </el-form-item>
-         
+
         </el-col>
         <el-col :span="12">
            <el-form-item label="申请备注" prop="reason">
@@ -371,7 +371,6 @@ export default {
                 this.ruleForm.organization.parentId = res.data.bindId
               }
             } else {
-              alert(222)
               this.parentName = ''
               this.ruleForm.nodeId = res.data.id
             }
