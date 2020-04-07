@@ -228,7 +228,16 @@ export default {
     },
     // 获取机构树--初始化
     findNodeTree () {
-      api[urlNames['getViewTree']]({}).then((res) => {
+      let apiName = null
+
+      if (this.$store.state.app.option.roles.includes('AREA_MANAGE')) {
+        // 针对区域管理员
+        apiName = urlNames['getTree']
+      } else {
+        apiName = urlNames['getViewTree']
+      }
+
+      api[apiName]({}).then((res) => {
         this.nodeTree = res.data
       })
     },
@@ -237,7 +246,17 @@ export default {
       if (node.level === 0) {
         return resolve(this.nodeTree)
       }
-      api[urlNames['getViewTree']]({
+
+      let apiName = null
+
+      if (this.$store.state.app.option.roles.includes('AREA_MANAGE')) {
+        // 针对区域管理员
+        apiName = urlNames['getTree']
+      } else {
+        apiName = urlNames['getViewTree']
+      }
+
+      api[apiName]({
         parentId: node.data.id
       }).then((res) => {
         if (res.status === 0) {
@@ -284,7 +303,16 @@ export default {
     },
     // 获取机构树-加载可选
     findcheckNodeTree (parentId) {
-      api[urlNames['getViewTree']]({
+      let apiName = null
+
+      if (this.$store.state.app.option.roles.includes('AREA_MANAGE')) {
+        // 针对区域管理员
+        apiName = urlNames['getTree']
+      } else {
+        apiName = urlNames['getViewTree']
+      }
+
+      api[apiName]({
         parentId: parentId
       }).then((res) => {
         this.orgList = []

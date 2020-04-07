@@ -8,7 +8,7 @@ export default {
     return {}
   },
   methods: {
-    insertTextInfoCursor (text) {
+    insertTextIntoCursor (text) {
       document.execCommand('insertText', false, text)
     }
   }

@@ -8,14 +8,6 @@ const Member = () => import('@src/views/address-list/member/index.vue')
 export default [
   /** 通讯录 */
   {
-    path: '/address-list',
-    name: 'AddressList',
-    component: AddressList,
-    meta: {
-      key: 'menuAddrBook'
-    }
-  },
-  {
     path: '/address-list-dept',
     name: 'AddressListDept',
     component: AddressList,

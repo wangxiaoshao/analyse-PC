@@ -160,6 +160,87 @@
         </el-form-item>
       </el-form>
     </div> -->
+    <div class="parameter-item">
+      <div class="header">单位信息确认短信模板
+      </div>
+      <el-form class="sms-template">
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-input
+              type="textarea"
+              v-model="orgMessageRemindTemplate"
+              ></el-input>
+          </el-col>
+          <el-col :span="12">
+            <p>每月单位信息需要确认时发送短信。</p>
+            <br>
+            <p>可用占位符：<el-button type="primary" size="small" round @click="insertTextIntoCursor('{单位名称}')">{单位名称}</el-button>，<el-button type="primary" size="small" round @click="insertTextIntoCursor('{月份}')">{月份}</el-button>，<el-button type="primary" size="small" round @click="insertTextIntoCursor('{信息确认截止时间}')">{信息确认截止时间}</el-button></p>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col>
+            <el-form-item>
+                <el-button type="primary" @click="saveorgMessageRemindTemplate">保存</el-button>
+                <el-button>取消</el-button>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+    </div>
+    <div class="parameter-item">
+      <div class="header">发起审核通知短信模板
+      </div>
+      <el-form class="sms-template">
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-input
+              type="textarea"
+              v-model="informationAuditTemplate"
+              ></el-input>
+          </el-col>
+          <el-col :span="12">
+            <p>审核管理员有审核事项时，给相关人员发送短信。</p>
+            <br>
+            <p>可用占位符：<el-button type="primary" size="small" round @click="insertTextIntoCursor('{单位名称}')">{单位名称}</el-button>，<el-button type="primary" size="small" round @click="insertTextIntoCursor('{操作人名称}')">{操作人名称}</el-button>，<el-button type="primary" size="small" round @click="insertTextIntoCursor('{修改字段}')">{修改字段}</el-button>，<el-button type="primary" size="small" round @click="insertTextIntoCursor('{修改时间}')">{修改时间}</el-button>。</p>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col>
+            <el-form-item>
+                <el-button type="primary" @click="saveinformationAuditTemplate">保存</el-button>
+                <el-button>取消</el-button>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+    </div>
+    <div class="parameter-item">
+      <div class="header">审核通过短信模板
+      </div>
+      <el-form class="sms-template">
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-input
+              type="textarea"
+              v-model="informationAuditThroughTemplate"
+              ></el-input>
+          </el-col>
+          <el-col :span="12">
+            <p>审核管理员有审核事项时，给相关人员发送短信。</p>
+            <br>
+            <p>可用占位符：<el-button type="primary" size="small" round @click="insertTextIntoCursor('{单位名称}')">{单位名称}</el-button>，<el-button type="primary" size="small" round @click="insertTextIntoCursor('{操作人名称}')">{操作人名称}</el-button>，<el-button type="primary" size="small" round @click="insertTextIntoCursor('{修改字段}')">{修改字段}</el-button>，<el-button type="primary" size="small" round @click="insertTextIntoCursor('{修改时间}')">{修改时间}</el-button>。</p>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col>
+            <el-form-item>
+                <el-button type="primary" @click="saveinformationAuditThroughTemplate">保存</el-button>
+                <el-button>取消</el-button>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+    </div>
     <div class="parameter-item" v-if="hasRight('optionSystemLevelCSetting')">
         <div class="header">信息确认设置</div>
         <el-form ref="messageRemind" label-width="160px">
@@ -201,7 +282,7 @@
           <el-col :span="12">
             <p>审核管理员有审核事项时，给相关人员发送短信。</p>
             <br>
-            <p>可用占位符： <el-button type="primary" size="small" round @click="insertTextInfoCursor('{验证码}')">{验证码}</el-button>。</p>
+            <p>可用占位符： <el-button type="primary" size="small" round @click="insertTextIntoCursor('{验证码}')">{验证码}</el-button>。</p>
           </el-col>
         </el-row>
         <el-row :gutter="20">
@@ -228,7 +309,7 @@
           <el-col :span="12">
             <p>审核管理员有审核事项时，给相关人员发送短信。</p>
             <br>
-            <p>可用占位符：<el-button type="primary" size="small" round @click="insertTextInfoCursor('{验证码}')">{密码}</el-button>，<el-button type="primary" size="small" round @click="insertTextInfoCursor('{重置时间}')">{重置时间}</el-button>。</p>
+            <p>可用占位符：<el-button type="primary" size="small" round @click="insertTextIntoCursor('{验证码}')">{密码}</el-button>，<el-button type="primary" size="small" round @click="insertTextIntoCursor('{重置时间}')">{重置时间}</el-button>。</p>
           </el-col>
         </el-row>
         <el-row :gutter="20">
@@ -304,12 +385,12 @@ import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
 import uploadFile from '@src/mixins/uploadFile.js'
 import hasRight from '@src/mixins/has-right'
-import insertTextInfoCursor from '@src/mixins/insertIntoCursor'
+import insertTextIntoCursor from '@src/mixins/insertIntoCursor'
 
 const level = 1
 export default {
   name: 'parmaeterFrom',
-  mixins: [uploadFile, hasRight, insertTextInfoCursor],
+  mixins: [uploadFile, hasRight, insertTextIntoCursor],
   data () {
     return {
       systemUserSecuritySettings: {// 用户安全
@@ -343,6 +424,9 @@ export default {
       endDateDisabled: false,
       messageRemind: 0, // 消息提醒，0不提醒，1提醒
       noRemind: false, // 消息提醒，默认不提醒
+      orgMessageRemindTemplate: '{单位名称}{月份}的单位信息需在{信息确认截止时间}日前确认，请及时前往确认。http://59.215.232.95/api/gate/forward',
+      informationAuditTemplate: '{单位名称}{操作人名称}于{操作时间}修改了{修改字段}，请尽快前往后台处理。http://59.215.232.95/api/gate/forward',
+      informationAuditThroughTemplate: '{单位名称}{操作人名称}于{操作时间}修改了{修改字段}已通过审核，请前往平台查看',
       SMSVerificationCodeTemplate: '验证码：{验证码}，有效期3分钟。',
       resetPasswordTemplate: '您于{重置时间}通过本人重置密码，新密码：{密码}，请妥善保管。',
       modeAuditList: [],
@@ -389,8 +473,26 @@ export default {
   },
   methods: {
     ...mapMutations(['SET_OPTION']),
-    insertTextToCursor (text) {
-
+    saveorgMessageRemindTemplate () {
+      this.setClientOptions({
+        level: level,
+        name: 'orgMessageRemindTemplate',
+        value: this.orgMessageRemindTemplate
+      })
+    },
+    saveinformationAuditTemplate () {
+      this.setClientOptions({
+        level: level,
+        name: 'informationAuditTemplate',
+        value: this.informationAuditTemplate
+      })
+    },
+    saveinformationAuditThroughTemplate () {
+      this.setClientOptions({
+        level: level,
+        name: 'informationAuditThroughTemplate',
+        value: this.informationAuditThroughTemplate
+      })
     },
     saveSMSVerificationCodeTemplate () {
       this.setClientOptions({
@@ -453,6 +555,15 @@ export default {
           }
           if (item.name === 'systemUserSecuritySettings') {
             this.systemUserSecuritySettings = JSON.parse(item.value)
+          }
+          if (item.name === 'orgMessageRemindTemplate') {
+            this.orgMessageRemindTemplate = item.value
+          }
+          if (item.name === 'informationAuditTemplate') {
+            this.informationAuditTemplate = item.value
+          }
+          if (item.name === 'informationAuditThroughTemplate') {
+            this.informationAuditThroughTemplate = item.value
           }
           if (item.name === 'SMSVerificationCodeTemplate') {
             this.SMSVerificationCodeTemplate = item.value

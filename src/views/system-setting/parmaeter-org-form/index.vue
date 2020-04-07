@@ -252,7 +252,7 @@
             </el-form-item>
         </el-form>
     </div>
-    <div class="parameter-item">
+    <!-- <div class="parameter-item">
       <div class="header">单位信息确认短信模板
       </div>
       <el-form class="sms-template">
@@ -266,7 +266,7 @@
           <el-col :span="12">
             <p>每月单位信息需要确认时发送短信。</p>
             <br>
-            <p>可用占位符：<el-button type="primary" size="small" round @click="insertTextInfoCursor('{单位名称}')">{单位名称}</el-button>，<el-button type="primary" size="small" round @click="insertTextInfoCursor('{月份}')">{月份}</el-button>，<el-button type="primary" size="small" round @click="insertTextInfoCursor('{信息确认截止时间}')">{信息确认截止时间}</el-button></p>
+            <p>可用占位符：<el-button type="primary" size="small" round @click="insertTextIntoCursor('{单位名称}')">{单位名称}</el-button>，<el-button type="primary" size="small" round @click="insertTextIntoCursor('{月份}')">{月份}</el-button>，<el-button type="primary" size="small" round @click="insertTextIntoCursor('{信息确认截止时间}')">{信息确认截止时间}</el-button></p>
           </el-col>
         </el-row>
         <el-row :gutter="20">
@@ -293,7 +293,7 @@
           <el-col :span="12">
             <p>审核管理员有审核事项时，给相关人员发送短信。</p>
             <br>
-            <p>可用占位符：<el-button type="primary" size="small" round @click="insertTextInfoCursor('{单位名称}')">{单位名称}</el-button>，<el-button type="primary" size="small" round @click="insertTextInfoCursor('{操作人名称}')">{操作人名称}</el-button>，<el-button type="primary" size="small" round @click="insertTextInfoCursor('{修改字段}')">{修改字段}</el-button>，<el-button type="primary" size="small" round @click="insertTextInfoCursor('{修改时间}')">{修改时间}</el-button>。</p>
+            <p>可用占位符：<el-button type="primary" size="small" round @click="insertTextIntoCursor('{单位名称}')">{单位名称}</el-button>，<el-button type="primary" size="small" round @click="insertTextIntoCursor('{操作人名称}')">{操作人名称}</el-button>，<el-button type="primary" size="small" round @click="insertTextIntoCursor('{修改字段}')">{修改字段}</el-button>，<el-button type="primary" size="small" round @click="insertTextIntoCursor('{修改时间}')">{修改时间}</el-button>。</p>
           </el-col>
         </el-row>
         <el-row :gutter="20">
@@ -320,7 +320,7 @@
           <el-col :span="12">
             <p>审核管理员有审核事项时，给相关人员发送短信。</p>
             <br>
-            <p>可用占位符：<el-button type="primary" size="small" round @click="insertTextInfoCursor('{单位名称}')">{单位名称}</el-button>，<el-button type="primary" size="small" round @click="insertTextInfoCursor('{操作人名称}')">{操作人名称}</el-button>，<el-button type="primary" size="small" round @click="insertTextInfoCursor('{修改字段}')">{修改字段}</el-button>，<el-button type="primary" size="small" round @click="insertTextInfoCursor('{修改时间}')">{修改时间}</el-button>。</p>
+            <p>可用占位符：<el-button type="primary" size="small" round @click="insertTextIntoCursor('{单位名称}')">{单位名称}</el-button>，<el-button type="primary" size="small" round @click="insertTextIntoCursor('{操作人名称}')">{操作人名称}</el-button>，<el-button type="primary" size="small" round @click="insertTextIntoCursor('{修改字段}')">{修改字段}</el-button>，<el-button type="primary" size="small" round @click="insertTextIntoCursor('{修改时间}')">{修改时间}</el-button>。</p>
           </el-col>
         </el-row>
         <el-row :gutter="20">
@@ -332,7 +332,7 @@
           </el-col>
         </el-row>
       </el-form>
-    </div>
+    </div> -->
 </div>
 </template>
 
@@ -341,339 +341,360 @@ import {
   api,
   urlNames
 } from '@src/api'
-import insertTextInfoCursor from '@src/mixins/insertIntoCursor'
+import insertTextIntoCursor from '@src/mixins/insertIntoCursor'
 import hasRight from '@src/mixins/has-right'
 
 const level = 2
-const nodeAuditList = [{
-  name: 'id',
-  checkname: '结点ID'
-},
-{
-  name: 'parentId',
-  checkname: '父结点ID'
-},
-{
-  name: 'viewId',
-  checkname: '视图ID'
-},
-{
-  name: 'areaId',
-  checkname: '区域ID'
-},
-{
-  name: 'name',
-  checkname: '结点名称'
-},
-{
-  name: 'syncChildren',
-  checkname: '是否同步子级'
-},
-{
-  name: 'nodeType',
-  checkname: '结点类型'
-},
-{
-  name: 'systemType',
-  checkname: '从属哪些四大班子体系'
-},
-{
-  name: 'bindId',
-  checkname: '绑定成员ID'
-},
-{
-  name: 'sort',
-  checkname: '排序值，小的在前面'
-},
-{
-  name: 'removed',
-  checkname: '是否已经删除'
-},
-{
-  name: 'createTime',
-  checkname: '创建时间'
-},
-{
-  name: 'updateTime',
-  checkname: '修改时间'
-}
+const nodeAuditList = [/* {
+    name: 'id',
+    checkname: '结点ID'
+  },
+  {
+    name: 'parentId',
+    checkname: '父结点ID'
+  },
+  {
+    name: 'viewId',
+    checkname: '视图ID'
+  }, */
+  {
+    name: 'name',
+    checkname: '节点名称'
+  },
+  {
+    name: 'systemType',
+    checkname: '所属系统'
+  },
+  {
+    name: 'areaId',
+    checkname: '所属区域'
+  }
+  /* {
+    name: 'syncChildren',
+    checkname: '是否同步子级'
+  },
+  {
+    name: 'nodeType',
+    checkname: '结点类型'
+  },
+  {
+    name: 'bindId',
+    checkname: '绑定成员ID'
+  },
+  {
+    name: 'sort',
+    checkname: '排序值，小的在前面'
+  },
+  {
+    name: 'removed',
+    checkname: '是否已经删除'
+  },
+  {
+    name: 'createTime',
+    checkname: '创建时间'
+  },
+  {
+    name: 'updateTime',
+    checkname: '修改时间'
+  } */
 ]
-const orgAuditList = [{
-  name: 'id',
-  checkname: '单位ID'
-},
-{
-  name: 'parentId',
-  checkname: '父级ID'
-},
-{
-  name: 'level',
-  checkname: '单位级别：省市县'
-},
-{
-  name: 'dutyLevel',
-  checkname: '职能级别：正厅级等'
-},
-{
-  name: 'type',
-  checkname: '所属类型'
-},
-{
-  name: 'systemType',
-  checkname: '所属系统'
-},
-{
-  name: 'name',
-  checkname: '单位全称'
-},
-{
-  name: 'shortName',
-  checkname: '单位简称'
-},
-{
-  name: 'otherName',
-  checkname: '其他名称'
-},
-{
-  name: 'address',
-  checkname: '单位地址'
-},
-{
-  name: 'zipCode',
-  checkname: '邮政编码'
-},
-{
-  name: 'fax',
-  checkname: '传真号'
-},
-{
-  name: 'phone',
-  checkname: '电话'
-},
-{
-  name: 'creditId',
-  checkname: '统一社会信用代码'
-},
-{
-  name: 'creditIdValidated',
-  checkname: '统一社会信用代码是否认证通过'
-},
-{
-  name: 'ext01',
-  checkname: '扩展属性1'
-},
-{
-  name: 'ext02',
-  checkname: '扩展属性2'
-},
-{
-  name: 'ext03',
-  checkname: '扩展属性3'
-},
-{
-  name: 'ext04',
-  checkname: '扩展属性4'
-},
-{
-  name: 'ext05',
-  checkname: '扩展属性5'
-},
-{
-  name: 'removed',
-  checkname: '启用禁用'
-},
-{
-  name: 'createTime',
-  checkname: '创建时间'
-},
-{
-  name: 'updatedTime',
-  checkname: '修改时间'
-}
+const orgAuditList = [
+  {
+    name: 'name',
+    checkname: '单位名称'
+  },
+  {
+    name: 'shortName',
+    checkname: '单位简称'
+  },
+  {
+    name: 'level',
+    checkname: '单位级别'
+  },
+  {
+    name: 'type',
+    checkname: '所属类型'
+  },
+  {
+    name: 'systemType',
+    checkname: '所属系统'
+  },
+  {
+    name: 'phone',
+    checkname: '单位电话'
+  },
+  {
+    name: 'creditId',
+    checkname: '统一社会信用代码'
+  },
+  {
+    name: 'otherName',
+    checkname: '其他名称'
+  },
+  {
+    name: 'address',
+    checkname: '单位地址'
+  },
+  {
+    name: 'zipCode',
+    checkname: '邮政编码'
+  },
+  {
+    name: 'fax',
+    checkname: '传真号'
+  },
+  {
+    name: '_tag',
+    checkname: '单位标签'
+  },
+  {
+    name: '_introduction',
+    checkname: '单位简介'
+  }/* ,
+  {
+    name: 'id',
+    checkname: '单位ID'
+  },
+  {
+    name: 'parentId',
+    checkname: '父级ID'
+  },
+  {
+    name: 'dutyLevel',
+    checkname: '职能级别：正厅级等'
+  },
+  {
+    name: 'creditIdValidated',
+    checkname: '统一社会信用代码是否认证通过'
+  },
+  {
+    name: 'ext01',
+    checkname: '扩展属性1'
+  },
+  {
+    name: 'ext02',
+    checkname: '扩展属性2'
+  },
+  {
+    name: 'ext03',
+    checkname: '扩展属性3'
+  },
+  {
+    name: 'ext04',
+    checkname: '扩展属性4'
+  },
+  {
+    name: 'ext05',
+    checkname: '扩展属性5'
+  },
+  {
+    name: 'removed',
+    checkname: '启用禁用'
+  },
+  {
+    name: 'createTime',
+    checkname: '创建时间'
+  },
+  {
+    name: 'updatedTime',
+    checkname: '修改时间'
+  } */
 ]
-const depAuditList = [{
-  name: 'id',
-  checkname: '部门ID'
-},
-{
-  name: 'parentId',
-  checkname: '父级ID'
-},
-{
-  name: 'orgId',
-  checkname: '所属单位ID'
-},
-{
-  name: 'sort',
-  checkname: '排序值'
-},
-{
-  name: 'name',
-  checkname: '内设机构名称'
-},
-{
-  name: 'type',
-  checkname: '内设机构类型'
-},
-{
-  name: 'phone',
-  checkname: '电话'
-},
-{
-  name: 'description',
-  checkname: '部门介绍'
-},
-{
-  name: 'duty',
-  checkname: '内设机构职责'
-},
-{
-  name: 'removed',
-  checkname: '启用禁用'
-},
-{
-  name: 'createTime',
-  checkname: '创建时间'
-},
-{
-  name: 'updateTime',
-  checkname: '修改时间'
-}]
-const userAuditList = [{
-  name: 'uid',
-  checkname: '用户ID'
-},
-{
-  name: 'name',
-  checkname: '用户姓名'
-},
-{
-  name: 'idcard',
-  checkname: '身份证号'
-},
-{
-  name: 'idCardValidated',
-  checkname: '身份证号是否验证通过'
-},
-{
-  name: 'userType',
-  checkname: '人员类型：事业编制、行政编制、企业编制'
-},
-{
-  name: 'userState',
-  checkname: '人员状态：在职、离职、退休'
-},
-{
-  name: 'mobile',
-  checkname: '手机号'
-},
-{
-  name: 'mobile2',
-  checkname: '手机号2'
-},
-{
-  name: 'officePhone',
-  checkname: '座机号'
-},
-{
-  name: 'sex',
-  checkname: '性别'
-},
-{
-  name: 'birthday',
-  checkname: '出生年月日'
-},
-{
-  name: 'portraitUrl',
-  checkname: '头像地址'
-},
-{
-  name: 'qualification',
-  checkname: '学历'
-},
-{
-  name: 'professionalTitle',
-  checkname: '职称'
-},
-{
-  name: 'positionClass',
-  checkname: '职级'
-},
-{
-  name: 'nation',
-  checkname: '民族'
-},
-{
-  name: 'politicalParty',
-  checkname: '党派'
-},
-{
-  name: 'address',
-  checkname: '地址'
-},
-{
-  name: 'ext01',
-  checkname: '扩展属性1'
-},
-{
-  name: 'ext02',
-  checkname: '扩展属性2'
-},
-{
-  name: 'ext03',
-  checkname: '扩展属性3'
-},
-{
-  name: 'ext04',
-  checkname: '扩展属性'
-},
-{
-  name: 'ext05',
-  checkname: '扩展属性5'
-},
-{
-  name: 'signed',
-  checkname: '签名值'
-},
-{
-  name: 'removed',
-  checkname: '是否已经删除'
-},
-{
-  name: 'createTime',
-  checkname: '创建时间'
-},
-{
-  name: 'updatedTime',
-  checkname: '修改时间'
-},
-{
-  name: 'type',
-  checkname: '身份类型'
-},
-{
-  name: 'departmentId',
-  checkname: '部门ID'
-},
-{
-  name: 'orgId',
-  checkname: '单位ID'
-},
-{
-  name: 'dutyName',
-  checkname: '职务'
-},
-{
-  name: 'postName',
-  checkname: '岗位'
-},
-{
-  name: 'sort',
-  checkname: '排序值'
-}]
+const depAuditList = [
+  {
+    name: 'sort',
+    checkname: '排序值'
+  },
+  {
+    name: 'name',
+    checkname: '内设机构名称'
+  },
+  {
+    name: 'type',
+    checkname: '内设机构类型'
+  },
+  {
+    name: 'phone',
+    checkname: '内设机构电话'
+  },
+  {
+    name: 'description',
+    checkname: '内设机构介绍'
+  },
+  {
+    name: 'duty',
+    checkname: '内设机构职责'
+  }/* ,
+  {
+    name: 'id',
+    checkname: '部门ID'
+  },
+  {
+    name: 'parentId',
+    checkname: '父级ID'
+  },
+  {
+    name: 'orgId',
+    checkname: '所属单位ID'
+  },
+  {
+    name: 'removed',
+    checkname: '启用禁用'
+  },
+  {
+    name: 'createTime',
+    checkname: '创建时间'
+  },
+  {
+    name: 'updateTime',
+    checkname: '修改时间'
+  } */
+]
+const userAuditList = [
+  {
+    name: 'name',
+    checkname: '用户姓名'
+  },
+  {
+    name: 'idcard',
+    checkname: '身份证号'
+  },
+  {
+    name: 'userType',
+    checkname: '人员类型'
+  },
+  {
+    name: 'userState',
+    checkname: '人员状态'
+  },
+  {
+    name: 'mobile',
+    checkname: '手机号'
+  },
+  {
+    name: 'mobile2',
+    checkname: '备用手机号'
+  },
+  {
+    name: 'officePhone',
+    checkname: '座机号'
+  },
+  {
+    name: 'sex',
+    checkname: '性别'
+  },
+  {
+    name: 'birthday',
+    checkname: '出生年月日'
+  },
+  {
+    name: 'portraitUrl',
+    checkname: '头像'
+  },
+  {
+    name: 'qualification',
+    checkname: '学历'
+  },
+  {
+    name: 'professionalTitle',
+    checkname: '职称'
+  },
+  {
+    name: 'positionClass',
+    checkname: '职级'
+  },
+  {
+    name: 'nation',
+    checkname: '民族'
+  },
+  {
+    name: 'politicalParty',
+    checkname: '党派'
+  },
+  {
+    name: 'address',
+    checkname: '通讯地址'
+  },
+  {
+    name: 'type',
+    checkname: '身份类型'
+  },
+  {
+    name: 'dutyName',
+    checkname: '职务'
+  },
+  {
+    name: 'postName',
+    checkname: '岗位'
+  },
+  {
+    name: 'sort',
+    checkname: '排序值'
+  },
+  {
+    name: '_tag',
+    checkname: '标签'
+  },
+  {
+    name: '_introduction',
+    checkname: '人员简介'
+  }/* ,
+  {
+    name: 'uid',
+    checkname: '用户ID'
+  },
+  {
+    name: 'idCardValidated',
+    checkname: '身份证号是否验证通过'
+  },
+  {
+    name: 'ext01',
+    checkname: '扩展属性1'
+  },
+  {
+    name: 'ext02',
+    checkname: '扩展属性2'
+  },
+  {
+    name: 'ext03',
+    checkname: '扩展属性3'
+  },
+  {
+    name: 'ext04',
+    checkname: '扩展属性'
+  },
+  {
+    name: 'ext05',
+    checkname: '扩展属性5'
+  },
+  {
+    name: 'signed',
+    checkname: '签名值'
+  },
+  {
+    name: 'removed',
+    checkname: '是否已经删除'
+  },
+  {
+    name: 'createTime',
+    checkname: '创建时间'
+  },
+  {
+    name: 'updatedTime',
+    checkname: '修改时间'
+  },
+  {
+    name: 'departmentId',
+    checkname: '部门ID'
+  },
+  {
+    name: 'orgId',
+    checkname: '单位ID'
+  } */
+]
 export default {
   name: 'parmaeterFrom',
-  mixins: [insertTextInfoCursor, hasRight],
+  mixins: [insertTextIntoCursor, hasRight],
   data () {
     return {
       orgUserSecuritySettings: { // 用户安全
@@ -704,9 +725,9 @@ export default {
       messageRemind: 0, // 消息提醒, 1提醒，0不提醒
       noRemind: false, // 消息提醒，默认不提醒
       modeAuditList: [],
-      orgMessageRemindTemplate: '{单位名称}{月份}的单位信息需在{信息确认截止时间}日前确认，请及时前往确认。http://59.215.232.95/api/gate/forward',
+      /* orgMessageRemindTemplate: '{单位名称}{月份}的单位信息需在{信息确认截止时间}日前确认，请及时前往确认。http://59.215.232.95/api/gate/forward',
       informationAuditTemplate: '{单位名称}{操作人名称}于{操作时间}修改了{修改字段}，请尽快前往后台处理。http://59.215.232.95/api/gate/forward',
-      informationAuditThroughTemplate: '{单位名称}{操作人名称}于{操作时间}修改了{修改字段}已通过审核，请前往平台查看',
+      informationAuditThroughTemplate: '{单位名称}{操作人名称}于{操作时间}修改了{修改字段}已通过审核，请前往平台查看', */
       orgAuditList: orgAuditList, // 单位审核字段数据
       nodeAuditList: nodeAuditList,
       depAuditList: depAuditList,
@@ -751,7 +772,7 @@ export default {
     }
   },
   methods: {
-    saveorgMessageRemindTemplate () {
+    /* saveorgMessageRemindTemplate () {
       this.setClientOptions({
         level: level,
         name: 'orgMessageRemindTemplate',
@@ -771,7 +792,7 @@ export default {
         name: 'informationAuditThroughTemplate',
         value: this.informationAuditThroughTemplate
       })
-    },
+    }, */
     onStartDateChanged (startDate) {
       this.noRemind = false
 
@@ -823,7 +844,7 @@ export default {
           if (item.name === 'orgUserSecuritySettings') {
             this.orgUserSecuritySettings = JSON.parse(item.value)
           }
-          if (item.name === 'orgMessageRemindTemplate') {
+          /* if (item.name === 'orgMessageRemindTemplate') {
             this.orgMessageRemindTemplate = item.value
           }
           if (item.name === 'informationAuditTemplate') {
@@ -831,7 +852,7 @@ export default {
           }
           if (item.name === 'informationAuditThroughTemplate') {
             this.informationAuditThroughTemplate = item.value
-          }
+          } */
           if (item.name === 'systemMessageRemind') {
             this.remindStartDate = parseInt(JSON.parse(item.value)[0])
             this.remindEndDate = parseInt(JSON.parse(item.value)[1])
