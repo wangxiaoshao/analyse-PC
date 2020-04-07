@@ -211,7 +211,7 @@ export default {
         this.goBackDilog(this.fromSublime,'addAccount')
       }else{
         this.isChange=false
-        // this.$router.go(-1)
+        this.$router.go(-1)
       }
     },
     getAppId (val, index,change) {

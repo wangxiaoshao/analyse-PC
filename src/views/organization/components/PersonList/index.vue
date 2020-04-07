@@ -100,7 +100,14 @@
       <el-table-column label="姓名" prop="name"></el-table-column>
       <!-- <el-table-column label="登录账号" prop="account"></el-table-column> -->
       <el-table-column label="职务" prop="duty"></el-table-column>
-      <el-table-column label="手机号" prop="mobile"></el-table-column>
+      <el-table-column label="手机号" width="150">
+        <template slot-scope="scope">
+          <span>{{scope.row.isLooked ? scope.row.mobile:hideMobile(scope.row.mobile) || '无'}}</span>
+          <span v-if="scope.row.mobile&&scope.row.mobile!=''&&scope.row.mobile!='无'&&!scope.row.isLooked"
+          class="findMobileBtn"
+            @click="findMobileById(scope.row.uid,scope.$index)">查看</span>
+        </template>
+      </el-table-column>
       <!-- <el-table-column label="身份类型" prop="typeText"></el-table-column> -->
       <el-table-column label="启用状态" prop="removed" align="center">
         <template slot-scope="scope">
@@ -148,7 +155,7 @@
 
     <!-- 数值排序弹框 -->
     <el-dialog :visible.sync="showSortDilog" width="420px">
-      <div slot="title">
+       <div slot="title" style=" padding: 20px; background-color: #fff;">
         <span>数值排序</span>
         <i class="el-icon-document-copy" style="color:red;margin-left:6px"></i>
       </div>
@@ -193,6 +200,7 @@ export default {
       orgName: '',
       depName: '',
       showSortDilog: false,
+      lastIndex:null,
       ruleForm: {
         identityId: '',
         reason: ''
@@ -240,6 +248,15 @@ export default {
   methods: {
     exportPerson () {
       this.$emit('goExportPerson')
+    },
+    // 过滤手机号
+    hideMobile (phone) {
+      return (phone + '').replace(/^(.{3})(?:\d+)(.{4})$/, '$1****$2')
+    },                   
+    findMobileById (uid, index) {
+      this.list[index].isLooked = true
+      api[urlNames['findMobileById']]({ uid }).then(res => {
+      })
     },
     getGrid () {
       // this.cancelSort()

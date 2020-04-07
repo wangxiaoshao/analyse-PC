@@ -14,23 +14,21 @@
                <el-form-item label="手机号码">
                 <div class="table-td">
                   <span>{{personInfoList.mobile||'无'}}</span>
-                  <a
-                    href="javaScrpit:void(0)"
+                  <span
+                  class="findMobileBtn"
                     v-if="personInfoList.mobile&&personInfoList.mobile!=''&&personInfoList.mobile!=='无'&& !personInfoList.isLooked"
-                    style="color: #FC7049;font-size:12px;margin-left:5px"
                     @click="findMobile(1)"
-                  >查看</a>
+                  >查看</span>
                 </div>
               </el-form-item>
               <el-form-item label="座机号码">
                 <div class="table-td">
                   <span>{{personInfoList.officePhone||'无'}}</span>
-                  <a
-                    href="javaScrpit:void(0)"
+                  <span
+                  class="findMobileBtn"
                     v-if="personInfoList.officePhone&&personInfoList.officePhone!=''&&personInfoList.officePhone!=='无'&& !personInfoList.isOfficePhone"
-                    style="color: #FC7049;font-size:12px;margin-left:5px"
                     @click="findMobile(2)"
-                  >查看</a>
+                  >查看</span>
                 </div>
 
               </el-form-item>

@@ -43,7 +43,7 @@
       label="操作"
       >
       <template slot-scope="scope">
-         <a style="color:#FC7049;"  href="jacascript:void(0)" @click="findInfo(scope.row)">详情</a>
+         <span class="common-detialBtn"  @click="findInfo(scope.row)">详情</span>
       </template>
     </el-table-column>
     <el-table-column
