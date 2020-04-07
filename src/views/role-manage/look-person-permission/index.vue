@@ -36,7 +36,7 @@
         </el-table-column>-->
         <el-table-column label="操作" width="160" align="center">
           <template slot-scope="scope">
-            <el-button size="mini" type="text" @click="toAuthorization(scope.row)">授权范围</el-button>
+            <el-button size="mini" type="text" @click="toAuthorization(scope.row)" :disabled="!hasRight('addArea') && !hasRight('addDep')">授权范围</el-button>
             <el-button size="mini" type="text" @click="getDelete(scope.row)" :disabled="!hasRight('roleRemoveMember')">删除</el-button>
           </template>
         </el-table-column>
@@ -165,7 +165,7 @@ export default {
           this.$message({
             type: 'info',
             message: '已取消删除'
-          });          
+          });
         });
     },
     // 删除角色绑定人员

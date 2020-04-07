@@ -15,6 +15,7 @@
               <el-option label="昨天" :value="['yesterday']"></el-option>
               <el-option label="月" :value="['month', '月', 'yyyy-MM']"></el-option>
               <el-option label="选择日期" :value="['date', '日期', 'yyyy-MM-dd']"></el-option>
+              <el-option label="选择时间段" :value="['daterange', '时间段', 'yyyy-MM-dd']"></el-option>
             </el-select>
         </el-form-item>
          <el-form-item>
@@ -27,6 +28,8 @@
                 :format="format"
                 :value-format="format"
                 :placeholder="'选择'+value"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
                 :picker-options="pickerOptions"
                 @change="dateChange"
               ></el-date-picker>

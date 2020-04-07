@@ -19,21 +19,38 @@ export default {
       'path': '',
       'type': 1,
       'icon': 'fa fa-sitemap',
-      'key': ['menuAddrBook', 'menuOrgManage'],
+      'key': ['menuOrgManage'],
       'list': [{
         'menuId': '11',
         'name': '组织管理',
         'path': '/organization',
         'key': 'menuOrgManage',
         'type': 1
-      },
-      {
-        'menuId': '12',
-        'name': '通讯录',
-        'key': 'menuAddrBook',
-        'path': '/address-list',
-        'type': 1
       }
+      ]
+    },
+    {
+      'menuId': '12',
+      'name': '通讯录',
+      'path': '',
+      'type': 1,
+      'icon': 'fa fa-address-book',
+      'key': ['menuAddrBookDept', 'menuAddrBookAll'],
+      'list': [
+        {
+          'menuId': '121',
+          'name': '本单位通讯录',
+          'path': '/address-list-dept',
+          'key': 'menuAddrBookDept',
+          'type': 1
+        },
+        {
+          'menuId': '122',
+          'name': '全省通讯录',
+          'path': '/address-list-all',
+          'key': 'menuAddrBookAll',
+          'type': 1
+        }
       ]
     },
     {

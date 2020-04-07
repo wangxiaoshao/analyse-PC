@@ -4,12 +4,12 @@
       <el-col :span="6" style="height: 100%">
         <div class="site-scroll">
           <div class="organ-top">
-            <div class="top-one" :class="activeColor==1?'top-active':''" @click="onChange(1)">本单位通讯录</div>
+            <div class="top-one" :class="activeColor==1?'top-active':''" @click="switchAddressView(1)">本单位通讯录</div>
             <div
               class="top-two"
               title="查阅全省各单位的通讯录信息"
               :class="activeColor==2?'top-active':''"
-              @click="onChange(2)"
+              @click="switchAddressView(2)"
             >全省通讯录</div>
           </div>
           <search-result
@@ -105,12 +105,11 @@ export default {
     }
   },
   created () {
-    if (this.app.option.user && this.app.option.user.orgId) {
-      this.getAddressListUnitTree()
-      this.getAddressListOrganizationMembers()
-      this.getAddressListdepartment()
+    if (this.$route.meta.key === 'menuAddrBookDept') {
+      this.switchAddressView(1)
+    } else if (this.$route.meta.key === 'menuAddrBookAll') {
+      this.switchAddressView(2)
     }
-    this.navigation1.name = '本单位通讯录'
   },
   computed: {
     ...mapState(['app'])
@@ -119,7 +118,7 @@ export default {
     /**
      * 切换通讯录
      */
-    onChange (e) {
+    switchAddressView (e) {
       this.activeColor = e
       this.isShow = e
       this.showDep = true
