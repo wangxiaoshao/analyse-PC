@@ -33,10 +33,14 @@
         label-width="100px"
         class="demo-ruleForm"
       >
-        <el-form-item label="调出单位">
-          <span class="name-span">{{orgName}}</span>
-          <span class="name-span" v-if="depName !== ''">/{{depName}}</span>
-          <el-button @click="addMainLeader">选择调出单位/内设机构</el-button>
+        <el-form-item label="当前单位">
+          <span class="name-span">{{this.$store.state.app.option.user.orgName}}</span>
+        </el-form-item>
+        <el-form-item label="目标单位">
+          <span class="name-span border">{{orgName || this.$store.state.app.option.user.orgName}}</span>
+          <span class="name-span border" v-if="depName !== ''">/{{depName}}</span>
+          <el-button @click="addMainLeader" type="primary">选择调出目标单位</el-button>
+          <el-button @click="removeDestOrg" type="primary">不调出到任何单位</el-button>
         </el-form-item>
         <el-form-item label="申请原因" prop="reason">
           <el-input type="textarea" v-model="formCallout.reason"></el-input>
@@ -252,7 +256,7 @@ export default {
     // 过滤手机号
     hideMobile (phone) {
       return (phone + '').replace(/^(.{3})(?:\d+)(.{4})$/, '$1****$2')
-    },                   
+    },
     findMobileById (uid, index) {
       this.list.forEach(function(val,index){
         if(val.isLooked){
@@ -541,6 +545,10 @@ export default {
       this.selectDialog.isSingleOrgSelect = false
       this.selectDialog.isOnlyOrg = true
       this.selectDialog.isAllData = true
+    },
+    removeDestOrg () {
+      this.formCallout.orgId = ''
+      this.orgName = '无'
     },
     exportUser () {
       let host = window.location.href.split('#')[0]

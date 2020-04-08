@@ -15,10 +15,14 @@
         label-width="100px"
         class="demo-ruleForm"
       >
-        <el-form-item label="调出单位">
-          <span class="name-span">{{orgName}}</span>
-          <span class="name-span" v-if="depName !== ''">/{{depName}}</span>
-          <el-button @click="addMainLeader">选择调出单位/内设机构</el-button>
+        <el-form-item label="当前单位">
+          <span class="name-span">{{this.$store.state.app.option.user.orgName}}</span>
+        </el-form-item>
+        <el-form-item label="目标单位">
+          <span class="name-span border">{{orgName}}</span>
+          <span class="name-span border" v-if="depName !== ''">/{{depName}}</span>
+          <el-button @click="addMainLeader" type="primary">选择调出目标单位</el-button>
+          <el-button @click="removeDestOrg" type="primary">不调出到任何单位</el-button>
         </el-form-item>
         <el-form-item label="申请原因" prop="reason">
           <el-input type="textarea" v-model="formCallout.reason"></el-input>
@@ -358,6 +362,10 @@ export default {
       this.selectDialog.isOnlyOrg = true
       this.selectDialog.isAllData = true
     },
+    removeDestOrg () {
+      this.formCallout.orgId = ''
+      this.orgName = '无'
+    },
     exportOrg () {
       this.calloutFlag = true
     },
@@ -465,7 +473,7 @@ export default {
     modifiePwd (val) {
       this.accountId = val
       this.modifiePwdVisible = true
-      this.$nextTick(() => {                            
+      this.$nextTick(() => {
         this.$refs['ruleForm'].resetFields()
       })
     },
@@ -500,7 +508,7 @@ export default {
           this.$message({
             type: 'info',
             message: '已取消操作'
-          });          
+          });
         });
         } else {
           this.$message.error('不符合规则，请重新输入')
@@ -512,7 +520,7 @@ export default {
     resetForm (formName) {
       this.$refs['ruleForm'].resetFields()
       this.modifiePwdVisible = false
-     
+
     },
     // 过滤手机号
     hideMobile (phone) {
@@ -533,10 +541,10 @@ export default {
           this.$message({
             type: 'info',
             message: '已取消操作'
-          });          
+          });
         });
 
-     
+
     },
     /**
      * 发送验证短信到用户绑定手机号
@@ -597,14 +605,14 @@ export default {
         )
       }
     },
-    
+
     loginOut(){
-      this.successPwdVisible=false 
-      window.location.href= '/api/gate/logout' 
+      this.successPwdVisible=false
+      window.location.href= '/api/gate/logout'
     },
 
     // 编辑页面
-    goEdit (val) { 
+    goEdit (val) {
       this.accountInfo = val
       this.showAccountsVisible = false
     },
