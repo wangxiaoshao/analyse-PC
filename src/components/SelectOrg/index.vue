@@ -91,7 +91,8 @@ export default {
       orgSingleModel: [], // 内设机构单选
       // 右侧已经选择的成员数据
       selectedOrgs: [],
-      selectedOrgsModel: []
+      selectedOrgsModel: [],
+      apiName:null
     }
   },
   created () {
@@ -117,18 +118,21 @@ export default {
       this.removeAllSelectedOrg()
       this.$emit('closeSelectOrg')
     },
+    // 处理区域管理员
+    handArea(){
+      let that=this
+      this.$store.state.app.option.authorizedEntityVos.forEach(function(item){
+        if(item.name=='AREA_MANAGE'){
+            that.apiName = urlNames['getTree']
+        }else{
+           that.apiName = urlNames['getViewTree']
+        }
+      })
+    },
     // 获取机构树--初始化
     findNodeTree () {
-      let apiName = null
-
-      if (this.$store.state.app.option.roles.includes('AREA_MANAGE')) {
-        // 针对区域管理员
-        apiName = urlNames['getTree']
-      } else {
-        apiName = urlNames['getViewTree']
-      }
-
-      api[apiName]({}).then((res) => {
+      this.handArea()
+      api[this.apiName]({}).then((res) => {
         this.nodeTree = res.data
       })
     },
@@ -138,16 +142,9 @@ export default {
         return resolve(this.nodeTree)
       }
 
-      let apiName = null
+      this.handArea()
 
-      if (this.$store.state.app.option.roles.includes('AREA_MANAGE')) {
-        // 针对区域管理员
-        apiName = urlNames['getTree']
-      } else {
-        apiName = urlNames['getViewTree']
-      }
-
-      api[apiName]({
+      api[this.apiName]({
         parentId: node.data.id
       }).then((res) => {
         if (res.status === 0) {
@@ -168,16 +165,9 @@ export default {
     },
     // 获取机构树-加载可选
     findcheckNodeTree (parentId) {
-      let apiName = null
+     this.handArea()
 
-      if (this.$store.state.app.option.roles.includes('AREA_MANAGE')) {
-        // 针对区域管理员
-        apiName = urlNames['getTree']
-      } else {
-        apiName = urlNames['getViewTree']
-      }
-
-      api[apiName]({
+      api[this.apiName]({
         parentId: parentId
       }).then((res) => {
         this.orgList = []

@@ -160,7 +160,8 @@ export default {
       selectedOrgs: [],
       selectedOrgsModel: [],
       member: false,
-      org: false
+      org: false,
+      apiName:null
     }
   },
   created () {
@@ -228,17 +229,21 @@ export default {
     },
     // 获取机构树--初始化
     findNodeTree () {
-      let apiName = null
-
-      if (this.$store.state.app.option.roles.includes('AREA_MANAGE')) {
-        // 针对区域管理员
-        apiName = urlNames['getTree']
-      } else {
-        apiName = urlNames['getViewTree']
-      }
-
-      api[apiName]({}).then((res) => {
+      this.handArea()
+      api[this.apiName]({}).then((res) => {
         this.nodeTree = res.data
+      })
+    },
+
+    // 处理区域管理员
+    handArea(){
+      let that=this
+      this.$store.state.app.option.authorizedEntityVos.forEach(function(item){
+        if(item.name=='AREA_MANAGE'){
+            that.apiName = urlNames['getTree']
+        }else{
+           that.apiName = urlNames['getViewTree']
+        }
       })
     },
     // 加载下一级
@@ -246,17 +251,8 @@ export default {
       if (node.level === 0) {
         return resolve(this.nodeTree)
       }
-
-      let apiName = null
-
-      if (this.$store.state.app.option.roles.includes('AREA_MANAGE')) {
-        // 针对区域管理员
-        apiName = urlNames['getTree']
-      } else {
-        apiName = urlNames['getViewTree']
-      }
-
-      api[apiName]({
+      this.handArea()
+      api[this.apiName]({
         parentId: node.data.id
       }).then((res) => {
         if (res.status === 0) {
@@ -303,16 +299,16 @@ export default {
     },
     // 获取机构树-加载可选
     findcheckNodeTree (parentId) {
-      let apiName = null
+      this.handArea()
+      // let apiName = null
 
-      if (this.$store.state.app.option.roles.includes('AREA_MANAGE')) {
-        // 针对区域管理员
-        apiName = urlNames['getTree']
-      } else {
-        apiName = urlNames['getViewTree']
-      }
-
-      api[apiName]({
+      // if (this.$store.state.app.option.roles.includes('AREA_MANAGE')) {
+      //   // 针对区域管理员
+      //   apiName = urlNames['getTree']
+      // } else {
+      //   apiName = urlNames['getViewTree']
+      // }
+      api[this.apiName]({
         parentId: parentId
       }).then((res) => {
         this.orgList = []

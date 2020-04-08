@@ -6,7 +6,7 @@
       <el-button
         size="small"
         type="primary"
-        :disabled="!app.confirmState || hasRight('orgMemberConfirm')" 
+        :disabled=" !hasRight('orgMemberConfirm')" 
         @click="getConfirmMemberList"
         >确认机构人员信息
       </el-button>

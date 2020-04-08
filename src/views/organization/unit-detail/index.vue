@@ -85,7 +85,7 @@
           <el-form-item label=" 上级单位">
             <el-input v-model="parentName" :disabled="true"></el-input>
           </el-form-item>
-          <el-form-item label=" 启用状态" prop="organization.removed" v-if="this.$route.name === 'UnitEdit'&&!this.app.option.roles.indexOf('ORG_MANAGER') > -1">
+          <el-form-item label="启用状态" prop="organization.removed" v-if="this.$route.name === 'UnitEdit'&&this.isOrgManage">
             <el-switch v-model="ruleForm.organization.removed" @change="showIptMsg('removed')"></el-switch>
             <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
               <div class="el-form-item__error" v-show="this.iptMsgVisible['removed']">
@@ -291,6 +291,7 @@ export default {
       isShowEditFlag: true,
       disabledFlag: false,
       submitHtml: '保存',
+      isOrgManage:true,
       oldFrom: {},
       tagKeyWord: '',
       tagsName: [],
@@ -331,7 +332,8 @@ export default {
           shortName: '',
           fax: ''
         }
-      }
+      },
+      boolshow:false,
     }
   },
   computed: {
@@ -350,6 +352,16 @@ export default {
   methods: {
     ...mapMutations(['SET_OPTION']),
     init () {
+     let that= this
+      if(this.$route.name === 'UnitEdit'){
+        this.app.option.authorizedEntityVos.forEach(function(item){
+          if(item.name=='ORG_MANAGER'){
+            that.isOrgManage=false
+          }else{
+            that.isOrgManage=true
+          }
+         })
+      }
       if (this.$route.name === 'UnitAdd' || this.$route.name === 'UnitEdit') {
         api[urlNames['findViewNodeById']]({
           id: this.$route.params.parentId || this.$route.params.id
@@ -375,7 +387,7 @@ export default {
               this.ruleForm.nodeId = res.data.id
             }
              this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
-             console.log('ruleForm1:',this.ruleForm,this.oldFrom)
+            //  console.log('ruleForm1:',this.ruleForm,this.oldFrom)
           },
           error => {
             this.$message.error(`没有内容`)
@@ -389,6 +401,7 @@ export default {
     },
     // 设置各个字段的验证提示信息的可见性
     initIptMsgVisible () {
+
       for (let field in this.ruleForm.organization) {
         this.iptMsgVisible[field] = false
       }
@@ -514,9 +527,12 @@ export default {
         res => {
           this.allAreaList = res.data
           this.findMenuByPath(res.data)
-          if (this.areaOption[this.areaOption.length - 1].id) {
+          if(this.areaOption.length>1){
+             if (this.areaOption[this.areaOption.length - 1].id) {
             this.ruleForm.areaId = this.areaOption[this.areaOption.length - 1].id
           }
+          }
+         
           this.areaOption.forEach(item => {
             this.areaCheck += item.name + '/'
           })

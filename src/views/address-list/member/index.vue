@@ -1,36 +1,39 @@
 <template>
   <div  class="memberInfo">
     <div class="moreInfo" v-if="orgInfo.nodeType==2 && activeColor==2||orgInfo.nodeType==3&&activeColor==2">
-      <div class="header-title">部门信息</div>
-      <div class="infoContent">
-        <el-form :inline="true" label-width="100px" label-position='right'>
-          <el-row>
-            <el-col>
-              <el-form-item label="单位名称">
-                <div  class="table-td"  :title="orgInfo.name">{{orgInfo.name}}</div>
-              </el-form-item>
-              <el-form-item label="单位地址">
-                <div  class="table-td">{{orgInfo.address||'无'}}</div>
-              </el-form-item>
-            </el-col>
-            <el-col>
-              <el-form-item label="单位电话">
-                <div  class="table-td">
-                  <span >{{orgInfo.phone||'无'}} </span>
-                <span v-if="orgInfo.phone&&orgInfo.phone!=''&&!orgInfo.isLooked"
-               class="findMobileBtn" @click="findPhone(orgInfo.nodeType,orgInfo.bindId,1)">查看</span>
-                </div>
-              </el-form-item>
-              <el-form-item label="邮   编">
-                <div  class="table-td">{{orgInfo.zipCode||'无'}}</div>
-              </el-form-item>
-            </el-col>
-          </el-row>
+       <div v-if="visableData.allOrgInfo==1">
+        <div class="header-title">部门信息</div>
+        <div class="infoContent">
+          <el-form :inline="true" label-width="100px" label-position='right'>
+            <el-row>
+              <el-col>
+                <el-form-item label="单位名称">
+                  <div  class="table-td"  :title="orgInfo.name">{{orgInfo.name}}</div>
+                </el-form-item>
+                <el-form-item label="单位地址">
+                  <div  class="table-td">{{orgInfo.address||'无'}}</div>
+                </el-form-item>
+              </el-col>
+              <el-col>
+                <el-form-item label="单位电话">
+                  <div  class="table-td">
+                    <span >{{orgInfo.phone||'无'}} </span>
+                  <el-button type="text" v-if="orgInfo.phone&&orgInfo.phone!=''&&!orgInfo.isLooked"
+                   :disabled='visableData.depPhone==0'
+                class="findMobileBtn" @click="findPhone(orgInfo.nodeType,orgInfo.bindId,1)">查看</el-button>
+                  </div>
+                </el-form-item>
+                <el-form-item label="邮   编">
+                  <div  class="table-td">{{orgInfo.zipCode||'无'}}</div>
+                </el-form-item>
+              </el-col>
+            </el-row>
 
-        </el-form>
+          </el-form>
+        </div>
       </div>
     </div>
-    <div class="member-tab">
+    <div class="member-tab" v-if="visableData.allOrgInfo==1">
       <div class="header-title">人员信息</div>
     <el-table
       :data="tableData"
@@ -45,7 +48,10 @@
         </div>
       </template>
       <el-table-column  type="index" label="序号" align="center" width="50"></el-table-column>
-      <el-table-column  prop="name" label="姓名" align="center">
+      <el-table-column   label="姓名" align="center">
+        <template slot-scope="scope">
+          <span >{{ visableData.userName==0 ? hideName(scope.row.name):scope.row.name}}</span>
+        </template>
       </el-table-column>
       <el-table-column prop="duty" label="职务" align="center">
         <template slot-scope="scope">
@@ -55,45 +61,40 @@
       <el-table-column prop="mobile" label="手机号" align="center">
          <template slot-scope="scope">
             <span>{{scope.row.mobile||'无'}}</span>
-            <span v-if="scope.row.mobile&&scope.row.mobile!=''&&!scope.row.isLooked"
+            <el-button type="text" v-if="scope.row.mobile&&scope.row.mobile!=''&&!scope.row.isLooked"
              class="findMobileBtn"
-             @click="findMobileById(scope.row.uid,scope.$index,1)">查看</span>
+              :disabled='visableData.userMobile==0'
+             @click="findMobileById(scope.row.uid,scope.$index,1)">查看</el-button>
            </template>
       </el-table-column>
       <el-table-column  prop="officePhone" label="座机号" align="center">
         <template slot-scope="scope">
           <span>{{scope.row.officePhone||'无'}}</span>
-          <span v-if="scope.row.officePhone&&scope.row.officePhone!=''&&scope.row.officePhone!='无'&&!scope.row.isOfficePhone"
+          <el-button type="text" v-if="scope.row.officePhone&&scope.row.officePhone!=''&&scope.row.officePhone!='无'&&!scope.row.isOfficePhone"
           class="findMobileBtn"
-            @click="findMobileById(scope.row.uid,scope.$index,2)">查看</span>
+            @click="findMobileById(scope.row.uid,scope.$index,2)">查看</el-button>
           </template>
       </el-table-column>
 
-
-<!--            <span v-if="scope.row.portraitUrl !== '0'&&scope.row.portraitUrl!==undefined"><img  :src="scope.row.portraitUrl"></span>-->
-      <!-- <el-table-column
-        align="center"
-        width="120"
-      height="40">
-        <template slot-scope="scope">
-            <span>
-              <span class="header-img">{{scope.row.name.slice(-2,scope.row.name.length)}}</span>
-            </span>
-        </template>
-      </el-table-column> -->
-
     </el-table>
+  </div>
+   <div class="no-right" v-if="visableData.allOrgInfo==0" style="text-align:center;">
+      <img class="no-content-img" :src="imgSrc" alt="" width="250px">
+      <div style="font-size:20px;color:#999"> 该单位信息对外不可见！</div>
   </div>
   </div>
 </template>
 <script>
 import { api, urlNames } from '@src/api'
+import noDataImg from '@src/common/images/no-data.png'
+import handPhoneName from '@src/mixins/phone-name.js'
 
 export default {
-  props: ['tableData', 'memberProps', 'activeColor', 'orgInfo','msg'],
+  props: ['tableData', 'memberProps', 'activeColor', 'orgInfo','msg','visableData'],
+    mixins:[handPhoneName],
   data () {
     return {
-
+        imgSrc: noDataImg
     }
   },
   created () {
