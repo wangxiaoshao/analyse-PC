@@ -182,8 +182,8 @@ export default {
     generateRandomAccount () {
       const lib = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@'
       const libLength = lib.length
-      const usernameLength = 8
-      const passwordlength = 18
+      const usernameLength = 5
+      const passwordlength = 32
 
       this.appFrom.apiAccount = ''
       this.appFrom.apiPassword = ''
@@ -191,6 +191,7 @@ export default {
       for (let i = 0; i < usernameLength; i++) {
         this.appFrom.apiAccount += lib[Math.floor(Math.random() * libLength)]
       }
+      this.appFrom.apiAccount += '' + new Date().getTime()
       for (let i = 0; i < passwordlength; i++) {
         this.appFrom.apiPassword += lib[Math.floor(Math.random() * libLength)]
       }
