@@ -8,13 +8,11 @@ export default {
   },
   methods: {
     checkRole (roleName) {
-      for (let role of this.$store.state.app.option.authorizedEntityVos) {
-        if (role.name === roleName) {
-          return true
-        }
-      }
+      let found = this.$store.state.app.option.authorizedEntityVos.find(function (item) {
+        return roleName === item.name
+      })
 
-      return false
+      return found
     }
   }
 }
