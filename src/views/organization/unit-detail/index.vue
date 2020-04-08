@@ -333,7 +333,7 @@ export default {
           fax: ''
         }
       },
-      boolshow:false,
+      isAudit:false
     }
   },
   computed: {
@@ -401,7 +401,6 @@ export default {
     },
     // 设置各个字段的验证提示信息的可见性
     initIptMsgVisible () {
-
       for (let field in this.ruleForm.organization) {
         this.iptMsgVisible[field] = false
       }
@@ -409,6 +408,7 @@ export default {
     showIptMsg (fieldName) {
       if (this.app.option.options.orgAuditFields.indexOf(fieldName) > -1) {
         this.iptMsgVisible[fieldName] = true
+        this.isAudit=true
       }
     },
     openarea (e) {
@@ -602,7 +602,7 @@ export default {
           if (valid) {
             api[urlNames['createOrganization']](this.ruleForm).then(
               res => {
-                if (this.$route.name === 'UnitEdit') {
+                if (this.$route.name === 'UnitEdit'&&this.isAudit) {
                   this.$alert('保存成功，待审核管理员审核通过后方生效', '保存成功', {
                     confirmButtonText: '确定',
                     callback: action => {

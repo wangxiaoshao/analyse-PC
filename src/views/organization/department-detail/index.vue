@@ -207,7 +207,8 @@ export default {
         }
       ],
       // isChange:false,
-      initCount:0
+      initCount:0,
+      isAudit:false
     }
   },
   computed: {
@@ -270,6 +271,7 @@ export default {
     showIptMsg (fieldName) {
       if (this.app.option.options.departmentAuditFields.indexOf(fieldName) > -1) {
         this.iptMsgVisible[fieldName] = true
+        this.isAudit=true
       }
     },
     getDetail () {
@@ -401,7 +403,7 @@ export default {
       this.$refs[ruleForm].validate((valid) => {
         if (valid) {
           api[urlNames['createDepartment']](this.ruleForm).then((res) => {
-            if (this.$route.name === 'DepartmentEdit') {
+            if (this.$route.name === 'DepartmentEdit'&&this.isAudit) {
               this.$alert('保存成功，待审核管理员审核通过后方生效', '保存成功', {
                 confirmButtonText: '确定',
                 callback: action => {
