@@ -2,20 +2,20 @@
   <div  class="memberInfo">
     <div class="moreInfo" v-if="orgInfo.nodeType==2 && activeColor==2||orgInfo.nodeType==3&&activeColor==2">
        <div v-if="visableData.allOrgInfo==1">
-        <div class="header-title">部门信息</div>
+        <div class="header-title">{{nodePrefix}}信息</div>
         <div class="infoContent">
           <el-form :inline="true" label-width="100px" label-position='right'>
             <el-row>
               <el-col>
-                <el-form-item label="单位名称">
+                <el-form-item :label="nodePrefix + '名称'">
                   <div  class="table-td"  :title="orgInfo.name">{{orgInfo.name}}</div>
                 </el-form-item>
-                <el-form-item label="单位地址">
+                <el-form-item :label="nodePrefix + '地址'">
                   <div  class="table-td">{{orgInfo.address||'无'}}</div>
                 </el-form-item>
               </el-col>
               <el-col>
-                <el-form-item label="单位电话">
+                <el-form-item :label="nodePrefix + '电话'">
                   <div  class="table-td">
                     <span >{{orgInfo.phone||'无'}} </span>
                   <el-button type="text" v-if="orgInfo.phone&&orgInfo.phone!=''&&!orgInfo.isLooked"
@@ -23,7 +23,7 @@
                 class="findMobileBtn" @click="findPhone(orgInfo.nodeType,orgInfo.bindId,1)">查看</el-button>
                   </div>
                 </el-form-item>
-                <el-form-item label="邮   编">
+                <el-form-item label="邮政编码">
                   <div  class="table-td">{{orgInfo.zipCode||'无'}}</div>
                 </el-form-item>
               </el-col>
@@ -99,6 +99,19 @@ export default {
   },
   created () {
 
+  },
+  computed: {
+    nodePrefix () {
+      let prefix = ''
+
+      if (this.orgInfo.nodeType === 2) {
+        prefix = '单位'
+      } else if (this.orgInfo.nodeType === 3) {
+        prefix = '部门'
+      }
+
+      return prefix
+    }
   },
   methods: {
     // 查看电话
