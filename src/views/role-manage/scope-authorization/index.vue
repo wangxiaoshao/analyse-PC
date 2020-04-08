@@ -9,7 +9,7 @@
   </div>
   <div class="table">
           <table>
-            <tr>
+            <tr v-if="hasRight('addArea')">
               <td>区域</td>
               <td>
                 <el-tag
@@ -23,7 +23,7 @@
                 </el-tag>
               </td>
             </tr>
-            <tr>
+            <tr v-if="hasRight('addDep')">
               <td>单位</td>
               <td>
                 <el-tag
