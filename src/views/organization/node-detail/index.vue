@@ -117,7 +117,8 @@ export default {
       rules: {
         name: [{ required: true, message: '请输入节点名称', trigger: 'blur' }]
       },
-      backId: ''
+      backId: '',
+      isAudit:false
     }
   },
   mounted () {
@@ -141,6 +142,7 @@ export default {
     showIptMsg (fieldName) {
       if (this.app.option.options.nodeAuditFields.indexOf(fieldName) > -1) {
         this.iptMsgVisible[fieldName] = true
+        this.isAudit=false
       }
     },
     getSystemType (el) {
@@ -253,7 +255,7 @@ export default {
           }
           api[urlNames['createViewNode']](data).then(
             res => {
-              if (this.$route.name === 'NodeEdit') {
+              if (this.$route.name === 'NodeEdit'&&this.isAudit) {
                 this.$alert('保存成功，待审核管理员审核通过后方生效', '保存成功', {
                   confirmButtonText: '确定',
                   callback: action => {
