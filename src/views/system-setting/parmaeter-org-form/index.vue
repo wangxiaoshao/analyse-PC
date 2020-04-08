@@ -707,12 +707,12 @@ export default {
         passwordStrength: 0
       },
       orgAddressBookSet: { // 通讯录
-        allOrgInfo: 0,
-        userName: 0,
-        userMobile: 0,
-        userPhone: 0,
-        userDetail: 0,
-        depPhone: 0
+        allOrgInfo: 1,
+        userName: 1,
+        userMobile: 1,
+        userPhone: 1,
+        userDetail: 1,
+        depPhone: 1
       },
       orgMsgConfirmOpenVisible: false, // 打开单位信息确认对话框
       orgMsgConfirmCloseVisible: false, // 关闭单位信息确认对话框
@@ -836,7 +836,7 @@ export default {
       }).then((res) => {
         res.data.forEach(item => {
           if (item.name === 'orgAddressBookSet') {
-            this.orgAddressBookSet = JSON.parse(item.value)
+            this.orgAddressBookSet = item.value
             for (let key in this.orgAddressBookSet) {
               this.orgAddressBookSet[key] = this.orgAddressBookSet[key] ? 1 : 0
             }

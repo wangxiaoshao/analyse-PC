@@ -106,7 +106,12 @@ export default {
       selectType: '',
       addressBookSet:[],
       visableData:{
-       
+        allOrgInfo:1,
+        userName:1,
+        userMobile:1,
+        userPhone:1,
+        userDetail:1,
+        depPhone:1
       }
     }
   },
@@ -209,31 +214,94 @@ export default {
       this.orgInfo = node
       this.showDep = true
       this.navigation = []
-      // this.navigation.push({ id: node.id, name: node.name ,nodeType:node.nodeType})
       this.navigation.push(node)
+      if(node.nodeType === 1){
+         this.visableData={
+          allOrgInfo:1,
+          userName:1,
+          userMobile:1,
+          userPhone:1,
+          userDetail:1,
+          depPhone:1
+        }
+      }
       if (node.nodeType === 3) {
         this.selectType = ''
         this.showDep = false
+        let nodeParams={
+          level:2,
+          memberId:node.orgId
+        }
+        this.handtxlOptions(nodeParams)
         this.getAddressListDepartmentMembers(node.bindId)
       } else if (node.nodeType === 2) {
         this.selectType = ''
-         api[urlNames['txlOptions']]({ 
-           level:2,
-          memberId:node.bindId}).then(res => {
-          this.addressBookSet=res.data.filter(function(val){
+        let params={
+          level:2,
+          memberId:node.bindId
+        }
+         api[urlNames['txlOptions']](params).then(res => {
+         if(res.data.length>0){
+            this.addressBookSet=res.data.filter(function(val){
             return val.name=='orgAddressBookSet'
-          })
-          //  this.visableData=JSON.parse(this.addressBookSet[0].value)
-            
+            })
+            this.visableData=this.addressBookSet[0].value
+          }else{
+            this.visableData={
+                allOrgInfo:1,
+                userName:1,
+                userMobile:1,
+                userPhone:1,
+                userDetail:1,
+                depPhone:1
+              }
+          }
+          if(node.bindId==this.app.option.user.orgId){
+              this.visableData={
+                allOrgInfo:1,
+                userName:1,
+                userMobile:1,
+                userPhone:1,
+                userDetail:1,
+                depPhone:1
+              }
+          }
          this.getAddressListOrganizationMembers(node.bindId)
-        })
          
+      })
+        
       }
      
          this.getAddressListdepartment(node.id)
       
      
     },
+
+     handtxlOptions(data){
+      // txlOptions
+       api[urlNames['txlOptions']](data).then(res => {
+         if(res.data.length>0){
+            this.addressBookSet=res.data.filter(function(val){
+            return val.name=='orgAddressBookSet'
+            })
+            this.visableData=this.addressBookSet[0].value
+          }
+          if(data.memberId==this.app.option.user.orgId){
+              this.visableData={
+              allOrgInfo:1,
+              userName:1,
+              userMobile:1,
+              userPhone:1,
+              userDetail:1,
+              depPhone:1
+            }
+        }
+         
+      })
+    },
+
+
+
     handleChildClick (node) {
       console.log('node111:', node)
       this.orgInfo = node
@@ -250,13 +318,7 @@ export default {
       this.getAddressListdepartment(node.id)
     },
 
-    handtxlOptions(data){
-      // txlOptions
-       api[urlNames['txlOptions']](data).then(res => {
-        
-      })
-    },
-
+   
 
 
     /** 单位下内设机构 */

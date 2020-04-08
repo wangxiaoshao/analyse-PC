@@ -99,8 +99,8 @@ export default {
     ...mapMutations(['SET_APPLICATION_PAGE', 'SET_EXAMINE_DETAIL']),
     getGrid () {
       api[urlNames['getAuditDetailsById']]({
-        id: this.$route.params.id,
-        type: this.$route.params.type
+        id: this.$route.params.id
+        // type: this.$route.params.type
       }).then((res) => {
         this.reason = res.data.reason
         this.message = res.data.message

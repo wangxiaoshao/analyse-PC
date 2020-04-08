@@ -4,7 +4,7 @@
       class="moreInfo"
       v-if="orgInfo.nodeType==2 && activeColor==2||orgInfo.nodeType==3&&activeColor==2"
     >
-      <div v-if="!visableData.allOrgInfo||visableData.allOrgInfo==0">
+      <div v-if="visableData.allOrgInfo==1">
         <div class="header-title">部门信息</div>
         <div class="infoContent">
           <el-form :inline="true" label-width="100px" label-position="right">
@@ -38,7 +38,7 @@
         </div>
       </div>
     </div>
-    <div class="department-tab-content" v-if="!visableData.allOrgInfo||visableData.allOrgInfo==0">
+    <div class="department-tab-content" v-if="visableData.allOrgInfo==1">
       <div class="header-title">详细数据</div>
       <!-- v-show="departmentList.length!==0" -->
       <el-table :data="departmentList" style="width: 100%;" class="eltab" border stripe>
@@ -70,7 +70,8 @@
               <span class="iconfont iconbumen" v-if="scope.row.nodeType === 3"></span>
               <span class="el-icon-user" v-if="!scope.row.nodeType"></span>
             </span>
-            <span style="margin-left:5px">{{scope.row.name}}</span>
+            <span v-if="!scope.row.nodeType">{{visableData.userName==0 ? hideName(scope.row.name):scope.row.name}}</span>
+            <span style="margin-left:5px" v-else>{{scope.row.name}}</span>
           </template>
         </el-table-column>
         <el-table-column prop="name" label="下级类型" align="center">
@@ -85,20 +86,22 @@
           <template slot-scope="scope">
             <!-- <span>{{scope.row.phone=='' ||!scope.row.phone ?'无':scope.row.phone}}</span> -->
             <span>{{scope.row.phone || scope.row.mobile ||  '无'}}</span>
-            <span
+            <el-button type="text"
               v-if="scope.row.phone&&scope.row.phone!='' && !scope.row.isLooked"
               class="findMobileBtn"
+              :disabled='visableData.userPhone==0&&scope.row.nodeType==3'
               @click="findPhone(scope.row.nodeType,scope.row.bindId,2,scope.$index)"
-            >
-              查看
-            </span>
-            <span
+            >查看
+            </el-button>
+            <el-button
+             type="text"
               v-if="scope.row.mobile&&scope.row.mobile!='' && !scope.row.isLooked"
               class="findMobileBtn"
+              :disabled='visableData.userMobile==0'
               @click="findMobileById(scope.row.uid,scope.$index,1)"
             >
               查看
-            </span>
+            </el-button>
           </template>
         </el-table-column>
         <el-table-column label="下级" align="center">
@@ -107,8 +110,7 @@
 
             <span v-if="!scope.row.nodeType">无</span>
             <span v-else
-              href="javaScrpit:void(0)"
-              style="color: #FC7049;font-size:12px; cursor: pointer;"
+              class="findMobileBtn"
               @click="childClick(scope.row)"
             >查看下级</span>
 
@@ -117,18 +119,20 @@
         <el-table-column prop label="备注" align="center"></el-table-column>
       </el-table>
     </div>
-    <div class="no-right" v-if="visableData.allOrgInfo&&visableData.allOrgInfo==1" style="text-align:center;">
+    <div class="no-right" v-if="visableData.allOrgInfo==0" style="text-align:center;">
       <img class="no-content-img" :src="imgSrc" alt="" width="250px">
       <div style="font-size:20px;color:#999"> 该单位信息对外不可见！</div>
-  </div>
+    </div>
   </div>
 </template>
 <script>
 import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
 import noDataImg from '@src/common/images/no-data.png'
+import handPhoneName from '@src/mixins/phone-name.js'
 export default {
   props: ['departmentList', 'orgInfo', 'activeColor','msg','visableData'],
+  mixins:[handPhoneName],
   data () {
     //  allOrgInfo
     //     userName
@@ -158,6 +162,7 @@ export default {
     childClick (node) {
       this.$emit('handle-child-click', node)
     },
+   
     // 查看电话
     findPhone (nodeType, bindId, state, index) {
       api[urlNames['getOrgMobile']]({
