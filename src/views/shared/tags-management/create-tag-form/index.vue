@@ -57,10 +57,16 @@ export default {
   },
   created () {
   },
-  mounted () {
-    if (this.actionType === 'edit') {
-      this.labelForm.name = this.flagdata.title
+  watch: {
+    createTagDialogVisible: function (newValue, oldValue) {
+      if (newValue && this.actionType === 'edit') {
+        this.labelForm.name = this.flagdata.title
+      } else {
+        this.labelForm.name = ''
+      }
     }
+  },
+  mounted () {
   },
   methods: {
     disabledBtn () {
