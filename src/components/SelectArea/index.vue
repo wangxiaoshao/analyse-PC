@@ -68,10 +68,12 @@
 
 <script>
 import { api, urlNames } from '@src/api'
+import CheckRole from '@src/mixins/checkRole'
 
 export default {
   name: 'SelectArea',
   props: ['openSelectArea'],
+  mixins: [CheckRole],
   data () {
     return {
       org: false,
@@ -96,7 +98,20 @@ export default {
     }
   },
   created () {
-    this.findNodeTree()
+    if (this.checkRole('AREA_MANAGE')) {
+      this.nodeTree = []
+      let that = this
+      this.$store.state.app.option.authorizedEntityVos.forEach(function (item) {
+        if (item.name === 'AREA_MANAGE' && item.authorizedType === 3) {
+          that.nodeTree.push({
+            id: item.authorizedOid,
+            name: item.authorizedOid
+          })
+        }
+      })
+    } else {
+      this.findNodeTree()
+    }
   },
   methods: {
     // 返回数据

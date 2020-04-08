@@ -2,6 +2,7 @@
   <div class="content-list">
     <select-members
       :seleceDialog="selectDialog"
+      entire="true"
       @dialogReturnMembersInfo="dialogReturnMembersInfo"
       @closeselectMenmber="closeselectMenmber"
     ></select-members>

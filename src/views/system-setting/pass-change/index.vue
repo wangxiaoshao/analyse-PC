@@ -3,6 +3,7 @@
   <div class="pass-change">
     <select-members
       :seleceDialog="selectDialog"
+      entire="true"
       @dialogReturnMembersInfo="dialogReturnMembersInfo"
       @closeselectMenmber="closeselectMenmber"
     ></select-members>

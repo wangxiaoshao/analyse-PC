@@ -130,10 +130,12 @@
 
 <script>
 import { api, urlNames } from '@src/api'
+import CheckRole from '@src/mixins/checkRole'
 
 export default {
   name: 'SelectMembers',
-  props: ['seleceDialog'],
+  props: ['seleceDialog', 'entire'],
+  mixins: [CheckRole],
   data () {
     return {
       submitDisable: '',
@@ -160,8 +162,7 @@ export default {
       selectedOrgs: [],
       selectedOrgsModel: [],
       member: false,
-      org: false,
-      apiName:null
+      org: false
     }
   },
   created () {
@@ -229,21 +230,15 @@ export default {
     },
     // 获取机构树--初始化
     findNodeTree () {
-      this.handArea()
-      api[this.apiName]({}).then((res) => {
-        this.nodeTree = res.data
-      })
-    },
+      let apiName = ''
+      if (!this.entire && this.checkRole('AREA_MANAGE')) {
+        apiName = urlNames['getTree']
+      } else {
+        apiName = urlNames['getViewTree']
+      }
 
-    // 处理区域管理员
-    handArea(){
-      let that=this
-      this.$store.state.app.option.authorizedEntityVos.forEach(function(item){
-        if(item.name=='AREA_MANAGE'){
-            that.apiName = urlNames['getTree']
-        }else{
-           that.apiName = urlNames['getViewTree']
-        }
+      api[apiName]({}).then((res) => {
+        this.nodeTree = res.data
       })
     },
     // 加载下一级
@@ -251,8 +246,14 @@ export default {
       if (node.level === 0) {
         return resolve(this.nodeTree)
       }
-      this.handArea()
-      api[this.apiName]({
+      let apiName = ''
+      if (!this.entire && this.checkRole('AREA_MANAGE')) {
+        apiName = urlNames['getTree']
+      } else {
+        apiName = urlNames['getViewTree']
+      }
+
+      api[apiName]({
         parentId: node.data.id
       }).then((res) => {
         if (res.status === 0) {
@@ -299,16 +300,14 @@ export default {
     },
     // 获取机构树-加载可选
     findcheckNodeTree (parentId) {
-      this.handArea()
-      // let apiName = null
+      let apiName = ''
+      if (!this.entire && this.checkRole('AREA_MANAGE')) {
+        apiName = urlNames['getTree']
+      } else {
+        apiName = urlNames['getViewTree']
+      }
 
-      // if (this.$store.state.app.option.roles.includes('AREA_MANAGE')) {
-      //   // 针对区域管理员
-      //   apiName = urlNames['getTree']
-      // } else {
-      //   apiName = urlNames['getViewTree']
-      // }
-      api[this.apiName]({
+      api[apiName]({
         parentId: parentId
       }).then((res) => {
         this.orgList = []
