@@ -76,9 +76,6 @@
         </el-input>
       </div>
       </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="findCondition">查询</el-button>
-      </el-form-item>
     </el-form>
     <el-table
     :data="logList"
@@ -238,14 +235,20 @@ export default {
         this.getGrid()
       }
     },
-    findCondition () {
-      this.getGrid()
+    dateChange (val) {
+      if (val) {
+        this.date = val
+        this.getGrid()
+      }
     },
     getGrid () {
       let data = {
         page: this.page.current,
-        limit: this.page.limit,
-        appId: this.$route.query.id || 0
+        limit: this.page.limit
+      }
+
+      if (this.$route.query.id) {
+        data.appId = this.$route.query.id
       }
 
       if (Array.isArray(this.date)) {
