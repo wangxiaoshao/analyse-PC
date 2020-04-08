@@ -38,6 +38,48 @@
         </div>
       </el-dialog>
     </div>
+    <el-form inline>
+      <el-form-item>
+          <span class="title">时间</span>
+          <el-select
+            v-model="logParam.selectValue"
+            align="center"
+            placeholder="今天"
+            @change="selectChange(logParam.selectValue)"
+          >
+            <el-option label="今天" :value="['today']"></el-option>
+            <el-option label="昨天" :value="['yesterday']"></el-option>
+            <el-option label="月" :value="['month', '月', 'yyyy-MM']"></el-option>
+            <el-option label="选择日期" :value="['date', '日期', 'yyyy-MM-dd']"></el-option>
+            <el-option label="选择时间段" :value="['daterange', '时间段', 'yyyy-MM-dd']"></el-option>
+          </el-select>
+      </el-form-item>
+      <el-form-item>
+        <div v-if="openPicker">
+          <el-date-picker
+            slot="append"
+            v-model="currentDateVal"
+            :type="logParam.dateType"
+            :default-value="weekstart"
+            :format="format"
+            :value-format="format"
+            :placeholder="'选择'+value"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            :picker-options="pickerOptions"
+            @change="dateChange"
+          ></el-date-picker>
+      </div>
+        <div v-else>
+        <el-input v-model="inputValue" :placeholder="date" :disabled="true">
+          <i slot="prefix" class="el-input__icon el-icon-date"></i>
+        </el-input>
+      </div>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="findCondition">查询</el-button>
+      </el-form-item>
+    </el-form>
     <el-table
     :data="logList"
     border
@@ -122,11 +164,40 @@ export default {
     return {
       logList: [],
       detialInfoVisible: false,
-      detialInfo: {}
+      detialInfo: {},
+      currentDateVal: '',
+      weekstart: '',
+      format: '',
+      value: '',
+      inputValue: '',
+      openPicker: false,
+      logParam: {
+        selectValue: '',
+        dateType: '',
+        actionType: '',
+        name: ''
+      },
+      pickerOptions: {
+        disabledDate (time) {
+          // 月初
+          const now = new Date()
+          const startDate = new Date(now.getFullYear(), now.getMonth(), 1)
+
+          return time.getTime() > Date.now() - 8.64e6 || time.getTime() < startDate
+        },
+        shortcuts: null
+      }
 
     }
   },
   created () {
+    let datefilters = this.$options.filters['date'](
+      new Date().getTime(),
+      'yyyy-MM-dd'
+    )
+    this.date = datefilters
+    this.weekstart = datefilters
+
     this.getGrid()
   },
   mounted () {
@@ -144,12 +215,46 @@ export default {
   },
   methods: {
      ...mapMutations(['SET_APPLICATION_PAGE', 'SET_APPLICATION_SEARCH_QUERY']),
+    selectChange (val) {
+      this.date = ''
+      this.currentDateVal = ''
+      this.openPicker = false
+      let todayDate = new Date()
+      if (val && val.length > 1) {
+        this.openPicker = true
+        this.logParam.dateType = val[0]
+        this.value = val[1]
+        this.format = val[2]
+        return false
+      } else if (val[0] === 'yesterday') {
+        todayDate = new Date(todayDate.setDate(todayDate.getDate() - 1))
+        this.logParam.dateType = val[0]
+      }
+      this.date = this.$options.filters['date'](
+        todayDate.getTime(),
+        'yyyy-MM-dd'
+      )
+      if (this.date) {
+        this.getGrid()
+      }
+    },
+    findCondition () {
+      this.getGrid()
+    },
     getGrid () {
       let data = {
         page: this.page.current,
         limit: this.page.limit,
         appId: this.$route.query.id || 0
       }
+
+      if (Array.isArray(this.date)) {
+        data.date = this.date[0]
+        data.endDate = this.date[1]
+      } else {
+        data.date = this.date
+      }
+
       api[urlNames['findPushLoggers']](data).then(res => {
         this.page.total = res.total
         res.data.forEach(val => {

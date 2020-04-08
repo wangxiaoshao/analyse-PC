@@ -234,7 +234,6 @@ export default {
     ...mapState(['application'])
   },
   created () {
-    // console.log(' this.loginLog:', this.loginLog)
     let datefilters = this.$options.filters['date'](
       new Date().getTime(),
       'yyyy-MM-dd'
