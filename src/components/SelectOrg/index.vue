@@ -124,7 +124,7 @@ export default {
     // 获取机构树--初始化
     findNodeTree () {
       let apiName = ''
-      if (!this.entire && this.checkRole('AREA_MANAGE')) {
+      if (!this.entire && this.isRole('AREA_MANAGE')) {
         apiName = urlNames['getTree']
       } else {
         apiName = urlNames['getViewTree']
@@ -140,7 +140,7 @@ export default {
       }
 
       let apiName = ''
-      if (!this.entire && this.checkRole('AREA_MANAGE')) {
+      if (!this.entire && this.isRole('AREA_MANAGE')) {
         apiName = urlNames['getTree']
       } else {
         apiName = urlNames['getViewTree']
@@ -168,7 +168,7 @@ export default {
     // 获取机构树-加载可选
     findcheckNodeTree (parentId) {
       let apiName = ''
-      if (!this.entire && this.checkRole('AREA_MANAGE')) {
+      if (!this.entire && this.isRole('AREA_MANAGE')) {
         apiName = urlNames['getTree']
       } else {
         apiName = urlNames['getViewTree']

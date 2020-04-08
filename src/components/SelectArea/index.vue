@@ -98,7 +98,7 @@ export default {
     }
   },
   created () {
-    if (this.checkRole('AREA_MANAGE')) {
+    if (this.isRole('AREA_MANAGE')) {
       this.nodeTree = []
       let that = this
       this.$store.state.app.option.authorizedEntityVos.forEach(function (item) {

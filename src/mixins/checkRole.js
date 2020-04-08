@@ -7,7 +7,7 @@ export default {
     return {}
   },
   methods: {
-    checkRole (roleName) {
+    isRole (roleName) {
       let found = this.$store.state.app.option.authorizedEntityVos.find(function (item) {
         return roleName === item.name
       })
