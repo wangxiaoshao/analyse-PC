@@ -102,6 +102,13 @@
       >
     </el-table-column>
     <el-table-column
+      prop="name"
+      label="应用名称"
+      align="center"
+      v-if="!this.$route.query.id"
+      >
+    </el-table-column>
+    <el-table-column
       prop="fieldName"
       label="同步类型"
       align="center"
