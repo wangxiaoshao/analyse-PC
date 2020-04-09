@@ -107,10 +107,10 @@
       <el-table-column label="职务" prop="duty" align="center"></el-table-column>
       <el-table-column label="手机号" width="150" align="center">
         <template slot-scope="scope">
-          <span>{{scope.row.isLooked ? scope.row.mobile:hideMobile(scope.row.mobile) || '无'}}</span>
-          <span v-if="scope.row.mobile&&scope.row.mobile!=''&&scope.row.mobile!='无'&&!scope.row.isLooked"
+          <span>{{scope.row.uid === activeId ? scope.row.mobile:hideMobile(scope.row.mobile) || '无'}}</span>
+          <span v-if="scope.row.mobile&&scope.row.mobile!=''&&scope.row.mobile!='无' && (scope.row.uid !== activeId)"
           class="findMobileBtn"
-            @click="findMobileById(scope.row,scope.$index)">查看</span>
+            @click="findMobileById(scope.row.uid)">查看</span>
         </template>
       </el-table-column>
       <!-- <el-table-column label="身份类型" prop="typeText"></el-table-column> -->
@@ -192,6 +192,7 @@ export default {
   components: { SelectMembers },
   data () {
     return {
+      activeId: 0,
       formFile: {}, // 文件form表单
       fileList: [], // 文件列表
       loading: true,
@@ -258,17 +259,10 @@ export default {
     hideMobile (phone) {
       return (phone + '').replace(/^(.{3})(?:\d+)(.{4})$/, '$1****$2')
     },
-    findMobileById (data, index) {
-      this.list.forEach(function(val,num){
-        if(val.isLooked){
-          val.isLooked=false
-        }
-      })
-       this.list[index].isLooked = true
-      api[urlNames['findMobileById']]({ uid:data.uid }).then(res => {
-        if(res){
-           this.list[index].isLooked = true
-        }
+    findMobileById (uid) {
+      // debugger
+      this.activeId = uid
+      api[urlNames['findMobileById']]({ uid }).then(res => {
       
       })
     },

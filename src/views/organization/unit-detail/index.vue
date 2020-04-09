@@ -628,7 +628,6 @@ export default {
       // this.ruleForm.areaId = val
     },
     submitForm (ruleForm) {
-      //
       //  || this.ruleForm.organization.creditId == ''
       if (this.successVisiable || this.ruleForm.organization.creditId == '') {
         this.ruleForm.organization.removed = this.ruleForm.organization.removed
