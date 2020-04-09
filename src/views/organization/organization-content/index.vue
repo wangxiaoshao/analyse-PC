@@ -331,7 +331,7 @@ export default {
       console.log('nodeData', this.nodeData)
       if (this.nodeData.nodeType === 1) {
         path = `/organization/operate-log/${this.nodeData.id}`
-      } else if(this.nodeData.nodeType === 2) {
+      } else  {
         path = `/organization/operate-log/${this.nodeData.bindId}`
       }
       this.$router.push({

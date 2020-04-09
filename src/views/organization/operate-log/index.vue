@@ -129,13 +129,12 @@ export default {
     this.findEntityChangeLoggerList(this.$route.params.id, this.$route.query.type, 1, 10)
   },
   mounted () {
-    
     this.pushBreadcrumb({
       name: `${this.$route.query.title}日志`,
       parent: {
         name: 'OrganizationContent',
         params: {
-          nodeId: this.$route.params.id? this.$route.params.id: this.$route.query.nodeId
+          nodeId:  this.$route.query.nodeId
         },
         query: {
           type: 'back'
