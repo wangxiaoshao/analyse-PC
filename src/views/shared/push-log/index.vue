@@ -244,7 +244,8 @@ export default {
     getGrid () {
       let data = {
         page: this.page.current,
-        limit: this.page.limit
+        limit: this.page.limit,
+        type: 0
       }
 
       if (this.$route.query.id) {
