@@ -38,7 +38,7 @@
         </div>
       </div>
     </div>
-    <div class="department-tab-content" v-if="visableData.allOrgInfo==1" :style="{'margin-top': '10px'}">
+    <div class="department-tab-content" v-if="visableData.allOrgInfo==1" :style="{'margin-top': '15px'}">
       <div class="header-title">详细数据</div>
       <!-- v-show="departmentList.length!==0" -->
       <el-table :data="departmentList" style="width: 100%;" class="eltab" border stripe>
@@ -156,13 +156,11 @@ export default {
     ...mapState(['app']),
     nodePrefix () {
       let prefix = ''
-
       if (this.orgInfo.nodeType === 2) {
-        prefix = '单位'
+         prefix = '单位'
       } else if (this.orgInfo.nodeType === 3) {
-        prefix = '部门'
+         prefix = '内设机构'
       }
-
       return prefix
     }
   },

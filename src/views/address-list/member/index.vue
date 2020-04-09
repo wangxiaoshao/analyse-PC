@@ -33,7 +33,7 @@
         </div>
       </div>
     </div>
-    <div class="member-tab" v-if="visableData.allOrgInfo==1" :style="{'margin-top': '10px'}">
+    <div class="member-tab" v-if="visableData.allOrgInfo==1" :style="{'margin-top': '15px'}">
       <div class="header-title">人员信息</div>
     <el-table
       :data="tableData"
