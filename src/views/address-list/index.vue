@@ -267,14 +267,14 @@ export default {
               }
           }
          this.getAddressListOrganizationMembers(node.bindId)
-         
+
       })
-        
+
       }
-     
+
          this.getAddressListdepartment(node.id)
-      
-     
+
+
     },
 
      handtxlOptions(data){
@@ -296,7 +296,7 @@ export default {
               depPhone:1
             }
         }
-         
+
       })
     },
 
@@ -318,7 +318,7 @@ export default {
       this.getAddressListdepartment(node.id)
     },
 
-   
+
 
 
     /** 单位下内设机构 */

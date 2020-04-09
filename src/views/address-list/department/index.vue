@@ -38,7 +38,7 @@
         </div>
       </div>
     </div>
-    <div class="department-tab-content" v-if="visableData.allOrgInfo==1">
+    <div class="department-tab-content" v-if="visableData.allOrgInfo==1" :style="{'margin-top': '10px'}">
       <div class="header-title">详细数据</div>
       <!-- v-show="departmentList.length!==0" -->
       <el-table :data="departmentList" style="width: 100%;" class="eltab" border stripe>
