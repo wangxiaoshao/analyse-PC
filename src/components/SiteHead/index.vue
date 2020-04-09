@@ -31,7 +31,7 @@
                 @click.native="changeSessionUser(item.userId,item.uid)"
                 v-for="(item, index) in userList"
                 :key="index"
-              >{{item.orgName}} {{item.dutyName}} {{item.typeName}}</el-dropdown-item>
+              >{{item.orgName || ''}} {{item.dutyName || ''}} {{item.typeName || ''}}</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
           <span style="margin:0 4px;">欢迎您!</span>
@@ -135,7 +135,7 @@ export default {
           } else if (val.type === 3) {
             this.$router.push('/wait-approval')
           }
-          
+
         }
       })
     },
@@ -147,7 +147,7 @@ export default {
         this.userList.forEach(item => {
           if (item.userId === res.data.id) {
             this.defaultName =
-              item.orgName + ' ' + item.dutyName + ' ' + item.typeName
+              (item.orgName || '') + ' ' + (item.dutyName || '') + ' ' + (item.typeName || '')
           }
         })
       })
