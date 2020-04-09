@@ -107,6 +107,7 @@ export default {
       this.PERSON_PAGE({})
       this.ROLE_ID({})
     }
+    this.checkAuthorization()
     this.getGrid()
   },
   mounted () {
@@ -123,13 +124,15 @@ export default {
   methods: {
     ...mapMutations(['PERSON_PAGE', 'ROLE_ID']),
     checkAuthorization () {
+      let that = this
+
       api[urlNames['checkAuthorization']]({
-        roleId: this.$route.query.roleId
-      }).then(res => {
-        this.hasAddArea = res.hasAddArea
-        this.hasAddOrg = res.hasAddOrg
-        this.hasAddUser = res.hasAddUser
-        this.hasAddAuthority = res.hasAddAuthority
+        roleId: this.$route.params.id
+      }).then((res) => {
+        that.hasAddArea = !!res.data.hasAddArea
+        that.hasAddOrg = !!res.data.hasAddOrg
+        that.hasAddUser = !!res.data.hasAddUser
+        that.hasAddAuthority = !!res.data.hasAddAuthority
       })
     },
     toAuthorization (val) {

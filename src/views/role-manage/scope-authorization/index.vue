@@ -72,6 +72,9 @@ export default {
   computed: {
     ...mapState(['app'])
   },
+  created () {
+    this.checkAuthorization()
+  },
   mounted () {
     this.pushBreadcrumb({
       name: '查看成员及权限',
@@ -84,11 +87,13 @@ export default {
   methods: {
     ...mapMutations(['SET_OPTION']),
     checkAuthorization () {
+      let that = this
+
       api[urlNames['checkAuthorization']]({
         roleId: this.$route.query.roleId
       }).then(res => {
-        this.hasAddArea = res.hasAddArea
-        this.hasAddOrg = res.hasAddOrg
+        that.hasAddArea = !!res.data.hasAddArea
+        that.hasAddOrg = !!res.data.hasAddOrg
       })
     },
     addArea () {
