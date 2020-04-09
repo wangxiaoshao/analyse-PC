@@ -93,5 +93,12 @@ export default {
     headers: {
       'Content-Type': 'application/json'
     }
+  },
+  // 检测用户的授权权限
+  [urlNames.checkAuthorization]: {
+    type: 'get',
+    url: '/api/jg_manage/role/checkAuthorization',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    serve: 'organizationManagePC',
   }
 }
