@@ -268,6 +268,8 @@ export default {
       if(value !=='') {
         let reg = /(^\s{0}$)|^[1-9]\d{5}$/
         reg.test(value) ? callback() : callback(new Error('请输入有效邮政编码'))
+      }else{
+        callback()
       }
     }
     // 验证传真
@@ -275,6 +277,8 @@ export default {
       if(value !=='') {
         let reg = /(^\s{0}$)|^(\d{3,4}-)?\d{7,8}$/
         reg.test(value) ? callback() : callback(new Error('请输入有效传真号码'))
+      }else{
+        callback()
       }
     }
 
