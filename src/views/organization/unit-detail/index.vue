@@ -71,7 +71,7 @@
             <div class="tip-msg">
               <p v-if="errorVisiable">
                 <i class="el-icon-error"></i>
-                社会信用代码与单位名称不匹配。
+                统一社会信用代码与单位名称不匹配。
               </p>
               <p style="color:green" v-if="successVisiable">
                 <i class="el-icon-success"></i>
@@ -85,7 +85,8 @@
           <el-form-item label=" 上级单位">
             <el-input v-model="parentName" :disabled="true"></el-input>
           </el-form-item>
-          <el-form-item label="启用状态" prop="organization.removed" v-if="this.$route.name === 'UnitEdit'&&this.isOrgManage">
+          <!-- <el-form-item label="启用状态" prop="organization.removed" v-if="this.$route.name === 'UnitEdit'&&this.isOrgManage"> -->
+            <el-form-item label="启用状态" prop="organization.removed" v-if="false">
             <el-switch v-model="ruleForm.organization.removed" @change="showIptMsg('removed')"></el-switch>
             <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
               <div class="el-form-item__error" v-show="this.iptMsgVisible['removed']">
@@ -628,7 +629,7 @@ export default {
           }
         })
       } else if (this.errorVisiable) {
-        this.$message.error('请输入与单位名称相匹配的社会信用代码')
+        this.$message.error('请输入与单位名称相匹配的统一社会信用代码')
       }
     },
     goBack () {

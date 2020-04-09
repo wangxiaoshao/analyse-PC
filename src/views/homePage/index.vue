@@ -244,7 +244,7 @@ export default {
         organCount: null,
         userChangedCount:null
       },
-      loginNumber: 0,
+      loginNumber: null,
       applyCount: null,
       // 人员变动数
       changeAccount: null,
@@ -274,6 +274,7 @@ export default {
     this.getUserIdentityInfo()
     this.getAccountData()
     this.getNoticeList()
+     this.getLoginIndex()
     // 获取接应用总数
     api[urlNames['findApplicationCount']]().then((res) => {
       this.applyCount = res.data[0]
@@ -281,13 +282,11 @@ export default {
   },
   mounted () {
     this.userIdentityInfo.userName = this.app.option.user.name
-    this.getLoginIndex()
     this.doArray()
   },
   methods: {
     // 获取第几个用户
     getLoginIndex () {
-      // {dataString:'2020-03-15'}
       api[urlNames['loginIndex']]().then(
         res => {
           this.loginNumber = res.data
@@ -351,7 +350,7 @@ export default {
     },
     filterType (val) {
       let typeList = this.userTypeOptions.filter(item => item.value === val)
-      return typeList[0].text
+      return typeList.length>0 ? typeList[0].text :'无'
     },
   
 

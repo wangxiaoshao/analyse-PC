@@ -31,7 +31,7 @@
                 @click.native="changeSessionUser(item.userId,item.uid)"
                 v-for="(item, index) in userList"
                 :key="index"
-              >{{item.orgName}} {{item.dutyName}} {{item.typeName}}</el-dropdown-item>
+              >{{item.orgName}} {{item.dutyName}} {{item.typeName ? item.typeName: '无'}}</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
           <span style="margin:0 4px;">欢迎您!</span>
@@ -145,6 +145,7 @@ export default {
       api[urlNames['findSessionUserList']]().then(res => {
         this.userList = res.data.userIdVos
         this.userList.forEach(item => {
+         item.typeName= item.typeName? item.typeName:' '
           if (item.userId === res.data.id) {
             this.defaultName =
               item.orgName + ' ' + item.dutyName + ' ' + item.typeName

@@ -94,6 +94,7 @@ export default {
       }
     })
     this.getGrid()
+    // console.log("id:",this.$route.params.id)
   },
   methods: {
     ...mapMutations(['SET_APPLICATION_PAGE', 'SET_EXAMINE_DETAIL']),
