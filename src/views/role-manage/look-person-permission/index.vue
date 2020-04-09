@@ -4,8 +4,8 @@
       <div class="button-wrap">
         <el-button type="primary"
                    @click="openselectMenmber"
-                   :disabled="!hasRight('roleAddMember')">添加人员</el-button>
-        <el-button @click="goPermission" :disabled="!hasRight('roleSetAuthority')">权限配置</el-button>
+                   :disabled="!hasAddUser">添加人员</el-button>
+        <el-button @click="goPermission" :disabled="!hasAddAuthority">权限配置</el-button>
          <el-input  placeholder="请输入搜索关键词" v-model="searchName" prefix-icon="el-icon-search" style="width:200px;margin:0px 10px"></el-input>
         <el-button class="creat-btn" @click="findBySearchName">查询</el-button>
       </div>
@@ -36,7 +36,7 @@
         </el-table-column>-->
         <el-table-column label="操作" width="160" align="center">
           <template slot-scope="scope">
-            <el-button size="mini" type="text" @click="toAuthorization(scope.row)" :disabled="!hasRight('addArea') && !hasRight('addDep')">授权范围</el-button>
+            <el-button size="mini" type="text" @click="toAuthorization(scope.row)" :disabled="!hasAddArea && !hasAddOrg">授权范围</el-button>
             <el-button size="mini" type="text" @click="getDelete(scope.row)" :disabled="!hasRight('roleRemoveMember')">删除</el-button>
           </template>
         </el-table-column>
@@ -82,7 +82,11 @@ export default {
         isSingleOrgSelect: false, // 是否为单选框  false为多选（默认），true为单选(与isOnlyOrg一起使用，isOnlyOrg为true时内设机构/单位单选)
         isOnlyOrg: false //  是否选内设机构/单位 false为不是只选内设机构，true为只选内设机构
       },
-      userId: []
+      userId: [],
+      hasAddArea: false,
+      hasAddOrg: false,
+      hasAddUser: false,
+      hasAddAuthority: false
     }
   },
   computed: {
@@ -103,6 +107,7 @@ export default {
       this.PERSON_PAGE({})
       this.ROLE_ID({})
     }
+    this.checkAuthorization()
     this.getGrid()
   },
   mounted () {
@@ -118,6 +123,18 @@ export default {
   },
   methods: {
     ...mapMutations(['PERSON_PAGE', 'ROLE_ID']),
+    checkAuthorization () {
+      let that = this
+
+      api[urlNames['checkAuthorization']]({
+        roleId: this.$route.params.id
+      }).then((res) => {
+        that.hasAddArea = !!res.data.hasAddArea
+        that.hasAddOrg = !!res.data.hasAddOrg
+        that.hasAddUser = !!res.data.hasAddUser
+        that.hasAddAuthority = !!res.data.hasAddAuthority
+      })
+    },
     toAuthorization (val) {
       this.$router.push({ path: `/role-manage/scope-authorization/${val.uid}?roleId=${this.roleId}` })
     },

@@ -3,13 +3,13 @@
   <div class="operate-btn">
     <span>该成员的权限可以在以下范围内行使，若需修改授权范围点击右侧的编辑按钮</span>
     <div style="float: right">
-      <el-button @click="addArea" type="primary" :disabled="!hasRight('addArea')">授权区域</el-button>
-      <el-button @click="addDep" type="primary" :disabled="!hasRight('addDep')">授权单位</el-button>
+      <el-button @click="addArea" type="primary" v-if="hasAddArea">授权区域</el-button>
+      <el-button @click="addDep" type="primary" v-if="hasAddOrg">授权单位</el-button>
     </div>
   </div>
   <div class="table">
           <table>
-            <tr v-if="hasRight('addArea')">
+            <tr v-if="hasAddArea">
               <td>区域</td>
               <td>
                 <el-tag
@@ -23,7 +23,7 @@
                 </el-tag>
               </td>
             </tr>
-            <tr v-if="hasRight('addDep')">
+            <tr v-if="hasAddOrg">
               <td>单位</td>
               <td>
                 <el-tag
@@ -60,8 +60,9 @@ export default {
       openSelectOrg: false,
       openSelectArea: false,
       orgNameList: [],
-      areaNameList: []
-
+      areaNameList: [],
+      hasAddArea: false,
+      hasAddOrg: false
     }
   },
   components: {
@@ -70,6 +71,9 @@ export default {
   },
   computed: {
     ...mapState(['app'])
+  },
+  created () {
+    this.checkAuthorization()
   },
   mounted () {
     this.pushBreadcrumb({
@@ -82,6 +86,16 @@ export default {
   },
   methods: {
     ...mapMutations(['SET_OPTION']),
+    checkAuthorization () {
+      let that = this
+
+      api[urlNames['checkAuthorization']]({
+        roleId: this.$route.query.roleId
+      }).then(res => {
+        that.hasAddArea = !!res.data.hasAddArea
+        that.hasAddOrg = !!res.data.hasAddOrg
+      })
+    },
     addArea () {
       this.openSelectArea = true
     },

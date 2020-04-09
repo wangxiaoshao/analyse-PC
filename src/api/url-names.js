@@ -238,6 +238,7 @@ export default {
   insertAuthorizedEntity: 'insertAuthorizedEntity',
   findAuthorizedEntityByUid: 'findAuthorizedEntityByUid',
   deleteAuthorizedEntity: 'deleteAuthorizedEntity',
+  checkAuthorization: 'checkAuthorization',
 
   /**
    * 用户切换身份
