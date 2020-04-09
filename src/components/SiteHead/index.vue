@@ -145,7 +145,7 @@ export default {
       api[urlNames['findSessionUserList']]().then(res => {
         this.userList = res.data.userIdVos
         this.userList.forEach(item => {
-         item.typeName= item.typeName? item.typeName:' '
+         item.typeName= item.typeName ? item.typeName:' '
           if (item.userId === res.data.id) {
             this.defaultName =
               (item.orgName || '') + ' ' + (item.dutyName || '') + ' ' + (item.typeName || '')

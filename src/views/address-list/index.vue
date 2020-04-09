@@ -240,43 +240,14 @@ export default {
           level:2,
           memberId:node.bindId
         }
-         api[urlNames['txlOptions']](params).then(res => {
-         if(res.data.length>0){
-            this.addressBookSet=res.data.filter(function(val){
-            return val.name=='orgAddressBookSet'
-            })
-            this.visableData=this.addressBookSet[0].value
-          }else{
-            this.visableData={
-                allOrgInfo:1,
-                userName:1,
-                userMobile:1,
-                userPhone:1,
-                userDetail:1,
-                depPhone:1
-              }
-          }
-          if(node.bindId==this.app.option.user.orgId){
-              this.visableData={
-                allOrgInfo:1,
-                userName:1,
-                userMobile:1,
-                userPhone:1,
-                userDetail:1,
-                depPhone:1
-              }
-          }
-         this.getAddressListOrganizationMembers(node.bindId)
-         
-      })
-        
+         this.handNodeOptions(params)
+         this.getAddressListOrganizationMembers(node.bindId)       
       }
      
          this.getAddressListdepartment(node.id)
-      
-     
     },
 
+    // 处理部门 节点类型为3
      handtxlOptions(data){
       // txlOptions
        api[urlNames['txlOptions']](data).then(res => {
@@ -300,26 +271,73 @@ export default {
       })
     },
 
-
+    // 处理单位节点类型为2
+    handNodeOptions(params){
+       api[urlNames['txlOptions']](params).then(res => {
+         if(res.data.length>0){
+            this.addressBookSet=res.data.filter(function(val){
+            return val.name=='orgAddressBookSet'
+            })
+            this.visableData=this.addressBookSet[0].value
+          }else{
+            this.visableData={
+                allOrgInfo:1,
+                userName:1,
+                userMobile:1,
+                userPhone:1,
+                userDetail:1,
+                depPhone:1
+              }
+          }
+          if(params.memberId==this.app.option.user.orgId){
+              this.visableData={
+                allOrgInfo:1,
+                userName:1,
+                userMobile:1,
+                userPhone:1,
+                userDetail:1,
+                depPhone:1
+              }
+          }
+        
+         
+        })
+    },
 
     handleChildClick (node) {
       console.log('node111:', node)
       this.orgInfo = node
       this.selectType = ''
       this.showDep = true
-      //  this.navigation.push({ id: node.id, name: node.name ,nodeType:node.nodeType})
       this.navigation.push(node)
+       if(node.nodeType === 1){
+         this.visableData={
+          allOrgInfo:1,
+          userName:1,
+          userMobile:1,
+          userPhone:1,
+          userDetail:1,
+          depPhone:1
+        }
+      }
       if (node.nodeType === 3) {
         this.showDep = false
+        let nodeParams={
+          level:2,
+          memberId:node.orgId
+        }
+        this.handtxlOptions(nodeParams)
         this.getAddressListDepartmentMembers(node.bindId)
       } else if (node.nodeType === 2) {
+         let params={
+          level:2,
+          memberId:node.bindId
+        }
+        this.handNodeOptions(params)
         this.getAddressListOrganizationMembers(node.bindId)
       }
       this.getAddressListdepartment(node.id)
     },
-
-   
-
 
     /** 单位下内设机构 */
     getAddressListdepartment (id) {
@@ -351,7 +369,7 @@ export default {
         deptId: id
       }).then(res => {
         this.memberList = res.data
-         console.log('data3:',res.data)
+        //  console.log('data3:',res.data)
       })
     },
 

@@ -387,15 +387,22 @@ export default {
     addTags
   },
   data () {
+    // 验证手机号
     let validateMobile = (rule, value, callback) => {
-      if (value === '') {
-        allback(new Error('号码不能为空'))
-      } else {
-        let reg = /^((13[0-9])|(15[^4])|(18[0,2,3,5-9])|(17[0-8])|(147))\d{8}$/
+      if(value !=='') {
+        let reg = /(^\s{0}$)|^((13[0-9])|(15[^4])|(18[0,1,2,3,5-9])|(17[0-8])|(147)|(199))\d{8}$/
         reg.test(value) ? callback() : callback(new Error('请输入11位有效号码'))
-
       }
     }
+
+    // 验证办公电话 
+    let validateOffice = (rule, value, callback) => {
+      if(value !=='') {
+        let reg = /(^\s{0}$)|(0\d{2,3}-\d{7,8}|\(?0\d{2,3}[)-]?\d{7,8}|\(?0\d{2,3}[)-]*\d{7,8})/
+        reg.test(value) ? callback() : callback(new Error('请输入有效的办公电话'))
+      }
+    }
+
     return {
       iptMsgInfoStr: '添加或修改该字段需要提交审核',
       iptMsgVisible: {},
@@ -409,6 +416,10 @@ export default {
           { message: '', trigger: 'change' },
           { validator: validateMobile, trigger: 'blur' }
         ],
+        mobile2: [
+          { validator: validateMobile, trigger: 'blur' }
+        ],
+        officePhone:[{ validator: validateOffice, trigger: 'blur' }],
         type: [
           { required: true, message: '请选择身份类型', trigger: 'blur' },
           { type: 'number', message: '', trigger: 'change' }

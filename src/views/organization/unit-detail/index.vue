@@ -263,6 +263,28 @@ export default {
       }
     }, */
   data () {
+    // 验证邮编
+    let validateZipCode = (rule, value, callback) => {
+      if(value !=='') {
+        let reg = /(^\s{0}$)|^[1-9]\d{5}$/
+        reg.test(value) ? callback() : callback(new Error('请输入有效邮政编码'))
+      }
+    }
+    // 验证传真
+     let validateFax = (rule, value, callback) => {
+      if(value !=='') {
+        let reg = /(^\s{0}$)|^(\d{3,4}-)?\d{7,8}$/
+        reg.test(value) ? callback() : callback(new Error('请输入有效传真号码'))
+      }
+    }
+
+     // 验证单位电话 
+    let validateOffice = (rule, value, callback) => {
+      if(value !=='') {
+        let reg = /(^\s{0}$)|(0\d{2,3}-\d{7,8}|\(?0\d{2,3}[)-]?\d{7,8}|\(?0\d{2,3}[)-]*\d{7,8})/
+        reg.test(value) ? callback() : callback(new Error('请输入有效单位电话'))
+      }
+    }
     return {
       iptMsgInfoStr: '添加或修改该字段需要提交审核',
       iptMsgVisible: {},
@@ -307,7 +329,14 @@ export default {
       rules: {
         'organization.name': [
           { required: true, message: '请输入单位名称', trigger: 'blur' }
-        ]
+        ],
+        'organization.zipCode': [
+          {  validator: validateZipCode, trigger: 'blur' }
+        ],
+        'organization.fax': [
+          {  validator: validateFax, trigger: 'blur' }
+        ],
+        'organization.phone':[ { validator: validateOffice, trigger: 'blur' }]
         // 'organization.creditId':[ { validator: validateCreditId, trigger: 'blur' }]
       },
       ruleForm: {
