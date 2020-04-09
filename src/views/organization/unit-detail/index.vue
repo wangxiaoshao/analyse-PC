@@ -287,6 +287,8 @@ export default {
       if(value !=='') {
         let reg = /(^\s{0}$)|(0\d{2,3}-\d{7,8}|\(?0\d{2,3}[)-]?\d{7,8}|\(?0\d{2,3}[)-]*\d{7,8})/
         reg.test(value) ? callback() : callback(new Error('请输入有效单位电话'))
+      }else{
+        callback()
       }
     }
     return {
