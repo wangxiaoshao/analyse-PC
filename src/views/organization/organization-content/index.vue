@@ -336,7 +336,7 @@ export default {
       }
       this.$router.push({
         path: path,
-        query: { type: this.nodeInfo.nodeType, title: `${this.content[0].name}` }
+        query: { type: this.nodeInfo.nodeType, title: `${this.content[0].name}` ,nodeId:this.nodeData.id}
       })
     }
   },
