@@ -7,7 +7,7 @@
       <div v-if="visableData.allOrgInfo==1">
         <div class="header-title">{{nodePrefix}}信息</div>
         <div class="infoContent">
-          <el-form :inline="true" label-width="100px" label-position="right">
+          <el-form :inline="true" label-width="120px" label-position="right">
             <el-row>
               <el-col>
                 <el-form-item :label="nodePrefix + '名称'">
