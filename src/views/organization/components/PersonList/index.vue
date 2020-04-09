@@ -264,8 +264,9 @@ export default {
           val.isLooked=false
         }
       })
-      this.list[index].isLooked = true
+       this.list[index].isLooked = true
       api[urlNames['findMobileById']]({ uid }).then(res => {
+       
       })
     },
     getGrid () {
