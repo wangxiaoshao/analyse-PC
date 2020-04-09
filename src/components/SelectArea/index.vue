@@ -161,14 +161,14 @@ export default {
     },
     // 节点被点击时
     handleNodeClick (node) {
-      this.findcheckNodeTree(node.id)
+      this.findcheckNodeTree(node)
     },
     // 获取机构树-加载可选
-    findcheckNodeTree (parentId) {
+    findcheckNodeTree (parentNode) {
       api[urlNames['getAreaList']]({
-        parentId: parentId
+        parentId: parentNode.id
       }).then((res) => {
-        this.orgList = []
+        this.orgList = [parentNode]
         res.data.forEach(item => {
           this.orgList.push(item)
         })
