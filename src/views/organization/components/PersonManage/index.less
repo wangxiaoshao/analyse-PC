@@ -32,7 +32,30 @@
     padding: 10px;
     color: #ffffff !important;
   }
-  /deep/.avatar-uploader .el-upload img{
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #FC7049;
+  }
+  .avatar-uploader-icon {
+    font-size: 70px;
+    color: #8c939d;
+    width: 120px;
+    height: 120px;
+    line-height: 120px;
+    text-align: center;
+  }
+  .avatar {
+    width: 120px;
+    height: 120px;
+    display: block;
+  }
+  /deep/.avatar-uploader .el-upload img, .avatar-uploader .el-upload i{
     border: 1px dashed #d9d9d9;
     border-radius: 6px;
     width: 120px;

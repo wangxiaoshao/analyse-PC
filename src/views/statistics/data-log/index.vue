@@ -8,7 +8,7 @@
         <el-tab-pane label="系统日志" name="seccend">
           <personal-log :loginLog="logAry[2]" :showFindBtn='showFindBtn'></personal-log>
         </el-tab-pane>
-        <el-tab-pane label="同步日志" name="third">
+        <el-tab-pane label="共享日志" name="third">
           <push-log :showFindBtn='showFindBtn'></push-log>
         </el-tab-pane>
       </el-tabs>

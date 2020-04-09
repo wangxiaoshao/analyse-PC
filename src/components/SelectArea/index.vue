@@ -68,10 +68,12 @@
 
 <script>
 import { api, urlNames } from '@src/api'
+import CheckRole from '@src/mixins/checkRole'
 
 export default {
   name: 'SelectArea',
   props: ['openSelectArea'],
+  mixins: [CheckRole],
   data () {
     return {
       org: false,
@@ -96,7 +98,20 @@ export default {
     }
   },
   created () {
-    this.findNodeTree()
+    if (this.isRole('AREA_MANAGE')) {
+      this.nodeTree = []
+      let that = this
+      this.$store.state.app.option.authorizedEntityVos.forEach(function (item) {
+        if (item.name === 'AREA_MANAGE' && item.authorizedType === 3) {
+          that.nodeTree.push({
+            id: item.authorizedOid,
+            name: item.authorizedOid
+          })
+        }
+      })
+    } else {
+      this.findNodeTree()
+    }
   },
   methods: {
     // 返回数据
@@ -146,14 +161,14 @@ export default {
     },
     // 节点被点击时
     handleNodeClick (node) {
-      this.findcheckNodeTree(node.id)
+      this.findcheckNodeTree(node)
     },
     // 获取机构树-加载可选
-    findcheckNodeTree (parentId) {
+    findcheckNodeTree (parentNode) {
       api[urlNames['getAreaList']]({
-        parentId: parentId
+        parentId: parentNode.id
       }).then((res) => {
-        this.orgList = []
+        this.orgList = [parentNode]
         res.data.forEach(item => {
           this.orgList.push(item)
         })

@@ -5,20 +5,20 @@
       v-if="orgInfo.nodeType==2 && activeColor==2||orgInfo.nodeType==3&&activeColor==2"
     >
       <div v-if="visableData.allOrgInfo==1">
-        <div class="header-title">部门信息</div>
+        <div class="header-title">{{nodePrefix}}信息</div>
         <div class="infoContent">
           <el-form :inline="true" label-width="100px" label-position="right">
             <el-row>
               <el-col>
-                <el-form-item label="单位名称">
+                <el-form-item :label="nodePrefix + '名称'">
                   <div class="table-td" :title="orgInfo.name">{{orgInfo.name}}</div>
                 </el-form-item>
-                <el-form-item label="单位地址">
+                <el-form-item :label="nodePrefix + '地址'">
                   <div class="table-td">{{orgInfo.address||'无'}}</div>
                 </el-form-item>
               </el-col>
               <el-col>
-                <el-form-item label="单位电话">
+                <el-form-item :label="nodePrefix + '电话'">
                   <div class="table-td">
                     <span>{{orgInfo.phone||'无'}}</span>
                     <a
@@ -153,7 +153,18 @@ export default {
     }
   },
   computed: {
-    ...mapState(['app'])
+    ...mapState(['app']),
+    nodePrefix () {
+      let prefix = ''
+
+      if (this.orgInfo.nodeType === 2) {
+        prefix = '单位'
+      } else if (this.orgInfo.nodeType === 3) {
+        prefix = '部门'
+      }
+
+      return prefix
+    }
   },
   mounted () {
 
@@ -162,7 +173,7 @@ export default {
     childClick (node) {
       this.$emit('handle-child-click', node)
     },
-   
+
     // 查看电话
     findPhone (nodeType, bindId, state, index) {
       api[urlNames['getOrgMobile']]({
