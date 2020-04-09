@@ -1,15 +1,15 @@
 <template>
   <div class="data-log">
     <div class="all-log">
-      <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="操作日志" name="first">
+      <el-tabs @tab-click="handleClick">
+        <el-tab-pane label="操作日志"  v-if="hasRight('systemLogingPushAccess')">
           <personal-log :loginLog="logAry[1]" :showFindBtn='showFindBtn'></personal-log>
         </el-tab-pane>
-        <el-tab-pane label="系统日志" name="seccend">
+        <el-tab-pane label="系统日志"  v-if="hasRight('systemLogingSystemAccess')">
           <personal-log :loginLog="logAry[2]" :showFindBtn='showFindBtn'></personal-log>
         </el-tab-pane>
-        <el-tab-pane label="共享日志" name="third">
-          <push-log :showFindBtn='showFindBtn'></push-log>
+        <el-tab-pane label="共享日志"  v-if="hasRight('systemLogingPushAccess')">
+          <push-log></push-log>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -18,12 +18,13 @@
 
 <script type="text/ecmascript-6">
 import handleTable from '@src/mixins/handle-table'
+import HasRight from '@src/mixins/has-right'
 import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
 import PersonalLog from '@src/components/PersonalLog/index'
 import PushLog from '@src/views/shared/push-log'
 export default {
-  mixins: [handleTable],
+  mixins: [handleTable, HasRight],
   components: { PersonalLog, PushLog },
   data () {
     return {
@@ -33,7 +34,10 @@ export default {
         keyword: ''
       },
       logAry: [1, 2, 3],
-      showFindBtn:true,
+      showFindBtn: true,
+      systemLogingAccess: false,
+      systemLogingSystemAccess: false,
+      systemLogingPushAccess: false,
       systemData: [],
       weekstart: '',
       activeName: 'first',
