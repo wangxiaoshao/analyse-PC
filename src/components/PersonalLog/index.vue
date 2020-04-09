@@ -250,8 +250,12 @@ export default {
       this.SET_APPLICATION_PAGE({})
       this.SET_APPLICATION_SEARCH_QUERY({})
     }
-    this.getGrid()
-    this.getLoggerTypeList()
+
+    if (this.loginLog === 3) {
+      this.getLoggerTypeList()
+    } else if (this.loginLog === 2) {
+      this.getGrid()
+    }
   },
   methods: {
     ...mapMutations(['SET_APPLICATION_PAGE', 'SET_APPLICATION_SEARCH_QUERY']),

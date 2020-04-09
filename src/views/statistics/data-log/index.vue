@@ -1,8 +1,8 @@
 <template>
   <div class="data-log">
     <div class="all-log">
-      <el-tabs @tab-click="handleClick">
-        <el-tab-pane label="操作日志"  v-if="hasRight('systemLogingPushAccess')">
+      <el-tabs>
+        <el-tab-pane label="操作日志"  v-if="hasRight('systemLogingAccess')">
           <personal-log :loginLog="logAry[1]" :showFindBtn='showFindBtn'></personal-log>
         </el-tab-pane>
         <el-tab-pane label="系统日志"  v-if="hasRight('systemLogingSystemAccess')">
@@ -19,7 +19,7 @@
 <script type="text/ecmascript-6">
 import handleTable from '@src/mixins/handle-table'
 import HasRight from '@src/mixins/has-right'
-import { api, urlNames } from '@src/api'
+/* import { api, urlNames } from '@src/api' */
 import { mapState, mapMutations } from 'vuex'
 import PersonalLog from '@src/components/PersonalLog/index'
 import PushLog from '@src/views/shared/push-log'
@@ -63,7 +63,7 @@ export default {
     ...mapState(['application'])
   },
   created () {
-    let datefilters = this.$options.filters['date'](
+    /* let datefilters = this.$options.filters['date'](
       new Date().getTime(),
       'yyyy-MM-dd'
     )
@@ -79,12 +79,12 @@ export default {
       this.SET_APPLICATION_PAGE({})
       this.SET_APPLICATION_SEARCH_QUERY({})
     }
-    this.getGrid(this.date)
+    this.getGrid(this.date) */
   },
   methods: {
     ...mapMutations(['SET_APPLICATION_PAGE', 'SET_APPLICATION_SEARCH_QUERY']),
-    opensystemInfo () {},
-    selectChange (val) {
+    opensystemInfo () {}
+    /* selectChange (val) {
       this.date = ''
       this.currentDateVal = ''
       this.openPicker = false
@@ -131,14 +131,14 @@ export default {
           this.page.total = 0
         }
       )
-    },
-    handleClick (tab, event) {
+    }, */
+    /* handleClick (tab, event) {
       if(this.activeName=='first'){
         this.showFindBtn=true
       }else{
         this.showFindBtn=false
       }
-    }
+    } */
   }
 }
 </script>
