@@ -23,7 +23,7 @@
           <span class="name-span border">{{orgName}}</span>
           <span class="name-span border" v-if="depName !== ''">/{{depName}}</span>
           <el-button @click="addMainLeader" type="primary">选择调出目标单位</el-button>
-          <el-button @click="removeDestOrg" type="primary">不调出到任何单位</el-button>
+          <el-button @click="removeDestOrg" type="primary">不选择单位</el-button>
         </el-form-item>
         <el-form-item label="申请原因" prop="reason">
           <el-input type="textarea" v-model="formCallout.reason"></el-input>
