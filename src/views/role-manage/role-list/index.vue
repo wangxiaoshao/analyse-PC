@@ -28,7 +28,7 @@
       </el-table-column>
       <el-table-column label="操作" width="150" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" type="text" @click="goLookPerson(scope.row)">查看成员及权限</el-button>
+          <el-button size="mini" type="text" @click="goLookPerson(scope.row)" :disabled="!scope.row.allowAction">查看成员及权限</el-button>
         </template>
       </el-table-column>
     </el-table>
