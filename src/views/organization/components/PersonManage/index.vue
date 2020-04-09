@@ -9,10 +9,8 @@
     ></add-tags>
     <!--人员管理-->
     <el-form
-     :model='{
-           ...userDetail,
-          ...postDetail
-        } '
+     :model='{ ...userDetail,
+          ...postDetail}'
       :disabled="disabledFlag"
       ref="userDetail"
       label-width="100px"
@@ -390,8 +388,10 @@ export default {
     // 验证手机号
     let validateMobile = (rule, value, callback) => {
       if(value !=='') {
-        let reg = /(^\s{0}$)|^((13[0-9])|(15[^4])|(18[0,1,2,3,5-9])|(17[0-8])|(147)|(199))\d{8}$/
+        let reg = /(^\s{0}$)|(0\d{2,3}-\d{7,8}|\(?0\d{2,3}[)-]?\d{7,8}|\(?0\d{2,3}[)-]*\d{7,8})|(^((13[0-9])|(15[^4])|(18[0,1,2,3,5-9])|(17[0-8])|(147)|(199))\d{8}$)/
         reg.test(value) ? callback() : callback(new Error('请输入11位有效号码'))
+      }else{
+         callback()
       }
     }
 
@@ -400,6 +400,8 @@ export default {
       if(value !=='') {
         let reg = /(^\s{0}$)|(0\d{2,3}-\d{7,8}|\(?0\d{2,3}[)-]?\d{7,8}|\(?0\d{2,3}[)-]*\d{7,8})/
         reg.test(value) ? callback() : callback(new Error('请输入有效的办公电话'))
+      }else{
+         callback()
       }
     }
 
@@ -531,8 +533,8 @@ export default {
             name: this.personFrom.name
           }).then(
             res => {
-              if (res.data.length !== 0) {
-              }
+              // if (res.data.length !== 0) {
+              // }
               this.loadFlag = false
               this.list = res.data
             },
@@ -676,6 +678,7 @@ export default {
     },
 
     next (userDetail) {
+      // alert(111)
       this.$refs[userDetail].validate(valid => {
         if (valid) {
           this.isChange=false

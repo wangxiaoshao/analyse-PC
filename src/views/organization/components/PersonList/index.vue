@@ -110,7 +110,7 @@
           <span>{{scope.row.isLooked ? scope.row.mobile:hideMobile(scope.row.mobile) || '无'}}</span>
           <span v-if="scope.row.mobile&&scope.row.mobile!=''&&scope.row.mobile!='无'&&!scope.row.isLooked"
           class="findMobileBtn"
-            @click="findMobileById(scope.row.uid,scope.$index)">查看</span>
+            @click="findMobileById(scope.row,scope.$index)">查看</span>
         </template>
       </el-table-column>
       <!-- <el-table-column label="身份类型" prop="typeText"></el-table-column> -->
@@ -258,15 +258,18 @@ export default {
     hideMobile (phone) {
       return (phone + '').replace(/^(.{3})(?:\d+)(.{4})$/, '$1****$2')
     },
-    findMobileById (uid, index) {
-      this.list.forEach(function(val,index){
+    findMobileById (data, index) {
+      this.list.forEach(function(val,num){
         if(val.isLooked){
           val.isLooked=false
         }
       })
        this.list[index].isLooked = true
-      api[urlNames['findMobileById']]({ uid }).then(res => {
-       
+      api[urlNames['findMobileById']]({ uid:data.uid }).then(res => {
+        if(res){
+           this.list[index].isLooked = true
+        }
+      
       })
     },
     getGrid () {

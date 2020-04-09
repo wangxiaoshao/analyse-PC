@@ -72,7 +72,7 @@ export default {
     
     var validateName = (rule, value, callback) => {
       if (value === '') {
-        allback(new Error('登录账号不能为空'))
+        callback(new Error('登录账号不能为空'))
       } else {
        let reg=/^[a-z]([a-z\d\.\@\.\_\-]){5,19}$/
         reg.test(value) ? callback() : callback(new Error('以小写字母开头，不能使用中文或大写字母，特殊符号仅允许"@"、"."、"_"、"—"，长度为6-20个字符。'))
@@ -81,7 +81,7 @@ export default {
     } 
     var validateNickName = (rule, value, callback) => {
       if (value === '') {
-        allback(new Error('登录别名不能为空'))
+        callback(new Error('登录别名不能为空'))
       } else {
         let reg=/^[a-z]([a-z\d\.\@\.\_\-]){5,19}$/
         reg.test(value) ? callback() : callback(new Error('以小写字母开头，不能使用中文或大写字母，特殊符号仅允许"@"、"."、"_"、"—"。长度为6-20个字符。'))
@@ -90,7 +90,7 @@ export default {
     }
      var validatePwd = (rule, value, callback) => {
       if (value === '') {
-        allback(new Error('登录密码不能为空'))
+        callback(new Error('登录密码不能为空'))
       } else {
         let reg=/^(?=.*\d)(?=.*[a-zA-Z])(?=.*[@._-])[\da-zA-Z~@._-]{8,}$/
         reg.test(value) ? callback() : callback(new Error('必须包含字母、数字和特殊字符（特殊符号仅允许“@”、“.”、“_”、“—”。）,长度至少为8个字符。'))
