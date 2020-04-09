@@ -102,12 +102,17 @@ export default {
       this.nodeTree = []
       let that = this
       this.$store.state.app.option.authorizedEntityVos.forEach(function (item) {
-        if (item.name === 'AREA_MANAGE' && item.authorizedType === 3) {
-          that.nodeTree.push({
-            id: item.authorizedOid,
-            name: item.authorizedOid
+        if (item.roleName === 'AREA_MANAGE') {
+          item.authorizedEntityVos.forEach(function (item) {
+            if (item.authorizedType === 3) {
+              that.nodeTree.push({
+                id: item.authorizedOid,
+                name: item.name
+              })
+            }
           })
         }
+
       })
     } else {
       this.findNodeTree()

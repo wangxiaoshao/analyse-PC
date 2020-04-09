@@ -241,9 +241,9 @@ export default {
           memberId:node.bindId
         }
          this.handNodeOptions(params)
-         this.getAddressListOrganizationMembers(node.bindId)       
+         this.getAddressListOrganizationMembers(node.bindId)
       }
-     
+
          this.getAddressListdepartment(node.id)
     },
 
@@ -267,7 +267,7 @@ export default {
               depPhone:1
             }
         }
-         
+
       })
     },
 
@@ -299,8 +299,8 @@ export default {
                 depPhone:1
               }
           }
-        
-         
+
+
         })
     },
 

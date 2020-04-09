@@ -382,15 +382,15 @@ export default {
   methods: {
     ...mapMutations(['SET_OPTION']),
     init () {
-     let that= this
-      if(this.$route.name === 'UnitEdit'){
-        this.app.option.authorizedEntityVos.forEach(function(item){
-          if(item.name=='ORG_MANAGER'){
-            that.isOrgManage=false
-          }else{
-            that.isOrgManage=true
+      let that = this
+      if (this.$route.name === 'UnitEdit') {
+        this.app.option.authorizedEntityVos.forEach(function (item) {
+          if (item.roleName === 'ORG_MANAGER') {
+            that.isOrgManage = false
+          } else {
+            that.isOrgManage = true
           }
-         })
+        })
       }
       if (this.$route.name === 'UnitAdd' || this.$route.name === 'UnitEdit') {
         api[urlNames['findViewNodeById']]({
@@ -416,7 +416,7 @@ export default {
               this.parentName = ''
               this.ruleForm.nodeId = res.data.id
             }
-             this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
+            this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
             //  console.log('ruleForm1:',this.ruleForm,this.oldFrom)
           },
           error => {
@@ -438,7 +438,7 @@ export default {
     showIptMsg (fieldName) {
       if (this.app.option.options.orgAuditFields.indexOf(fieldName) > -1) {
         this.iptMsgVisible[fieldName] = true
-        this.isAudit=true
+        this.isAudit = true
       }
     },
     openarea (e) {
@@ -473,7 +473,7 @@ export default {
               this.creditIddisable = true
             }
             this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
-             console.log('ruleForm2:',this.ruleForm,this.oldFrom)
+            console.log('ruleForm2:',this.ruleForm,this.oldFrom)
 
           }
         },
@@ -557,17 +557,17 @@ export default {
         res => {
           this.allAreaList = res.data
           this.findMenuByPath(res.data)
-          if(this.areaOption.length>1){
-             if (this.areaOption[this.areaOption.length - 1].id) {
-            this.ruleForm.areaId = this.areaOption[this.areaOption.length - 1].id
+          if (this.areaOption.length > 1) {
+            if (this.areaOption[this.areaOption.length - 1].id) {
+              this.ruleForm.areaId = this.areaOption[this.areaOption.length - 1].id
+            }
           }
-          }
-         
+
           this.areaOption.forEach(item => {
             this.areaCheck += item.name + '/'
           })
           this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
-           console.log('ruleForm3:',this.ruleForm,this.oldFrom)
+          console.log('ruleForm3:',this.ruleForm,this.oldFrom)
 
         },
         error => {}
@@ -632,7 +632,7 @@ export default {
           if (valid) {
             api[urlNames['createOrganization']](this.ruleForm).then(
               res => {
-                if (this.$route.name === 'UnitEdit'&&this.isAudit) {
+                if (this.$route.name === 'UnitEdit' && this.isAudit) {
                   this.$alert('保存成功，待审核管理员审核通过后方生效', '保存成功', {
                     confirmButtonText: '确定',
                     callback: action => {
@@ -662,12 +662,12 @@ export default {
       }
     },
     goBack () {
-      this.isChange= this.addWatch(this.ruleForm,this.oldFrom)
+      this.isChange = this.addWatch(this.ruleForm,this.oldFrom)
       if (this.isChange) {
         this.goBackDilog(this.submitForm,'ruleForm')
-        this.isChange=false
+        this.isChange = false
       } else {
-        this.isChange=false
+        this.isChange = false
         this.$router.go(-1)
       }
 

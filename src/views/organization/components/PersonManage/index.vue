@@ -34,7 +34,7 @@
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
           <div style="font-size: 10px;color: #606266">
-            <span style="color: #FC7049">*</span>只支持jpg格式，100*100像素的图片
+            <span style="color: #FC7049">*</span>（支持PNG、JPG、JPEG格式，建议使用100*100像素大小，2M以内）
           </div>
         </el-form-item>
       </el-row>
@@ -618,17 +618,18 @@ export default {
         }
       })
     },
-    beforeAvatarUpload (file) {
+    beforeAvatarUpload (file) {console.log(file)
       const isJPG = file.type === 'image/jpeg'
+      const isPNG = file.type === 'image/png'
       const isLt2M = file.size / 1024 / 1024 < 2
 
-      if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!')
+      if (!isJPG && !isPNG) {
+        this.$message.error('上传头像图片只支持PNG、JPG、JPEG格式!')
       }
       if (!isLt2M) {
         this.$message.error('上传头像图片大小不能超过 2MB!')
       }
-      return isJPG && isLt2M
+      return (isJPG || isPNG) && isLt2M
     },
     getClose (val) {
       this.openSearchFlag = val
