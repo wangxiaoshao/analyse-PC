@@ -37,7 +37,7 @@
         <el-table-column label="操作" width="160" align="center">
           <template slot-scope="scope">
             <el-button size="mini" type="text" @click="toAuthorization(scope.row)" :disabled="!hasAddArea && !hasAddOrg">授权范围</el-button>
-            <el-button size="mini" type="text" @click="getDelete(scope.row)" :disabled="!hasRight('roleRemoveMember')">删除</el-button>
+            <el-button size="mini" type="text" @click="getDelete(scope.row)" :disabled="!hasAddUser">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
