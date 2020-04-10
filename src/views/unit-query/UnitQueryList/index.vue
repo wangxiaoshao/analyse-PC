@@ -34,7 +34,7 @@
               </template>
             </el-autocomplete>
           </el-col>
-          <el-col :span="4" class="text-right">
+          <el-col :span="1" class="text-right">
             <el-button type="primary" plain @click="getGrid(1)"
               :disabled="!hasRight('searchOrg')"
             >查询</el-button>

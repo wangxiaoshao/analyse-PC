@@ -322,7 +322,7 @@
                 <div
                   class="tip-msg"
                   v-show="this.app.option.options.userAuditFields.indexOf('labelId') > -1"
-                >添加或修改该字段需要提交审核</div>
+                > {{iptMsgInfoStr}}</div>
               </div>
             </el-form-item>
           </el-row>
@@ -428,6 +428,7 @@ export default {
         ]
       },
       isChange:false,
+      isAudit:false,
       showPopover: false, // 是否显示 Popover
       hidefooter: false,
       msgVisiable: false,
@@ -457,8 +458,6 @@ export default {
       },
       timer: null,
       showPopoverFlag: false,
-      //  oldUserDetail:{},
-      //  oldPostDetail:{},
        initCount:0
     }
   },
@@ -467,7 +466,7 @@ export default {
   },
   mounted(){
     // this.oldUserDetail = JSON.parse(JSON.stringify(this.userDetail))
-      // this.oldPostDetail ={...this.postDetail}
+    // this.oldPostDetail ={...this.postDetail}
   },
   computed: {
     ...mapState(['app'])
@@ -496,12 +495,13 @@ export default {
     showIptMsg (fieldName) {
       if (this.app.option.options.userAuditFields.indexOf(fieldName) > -1) {
         this.iptMsgVisible[fieldName] = true
+        this.isAudit=true
       }
     },
     modifieUserInfo (userDetail) {
       this.$refs[userDetail].validate(valid => {
         if (valid) {
-          this.$emit('goModifieUserInfo', this.personFrom)
+          this.$emit('goModifieUserInfo', this.personFrom,this.isAudit)
         } else {
           this.$message.warning(`请填写必填字段`)
           return false
@@ -679,12 +679,11 @@ export default {
     },
 
     next (userDetail) {
-      // alert(111)
       this.$refs[userDetail].validate(valid => {
         if (valid) {
           this.isChange=false
-          this.$emit('get-post', this.postFrom)
-          this.$emit('get-user', this.personFrom)
+          this.$emit('get-post', this.postFrom,this.isAudit)
+          this.$emit('get-user', this.personFrom,this.isAudit)
         } else {
           this.$message.warning(`请根据提示填写必填字段`)
            this.isChange=false

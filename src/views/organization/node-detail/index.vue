@@ -255,7 +255,7 @@ export default {
           }
           api[urlNames['createViewNode']](data).then(
             res => {
-              if (this.$route.name === 'NodeEdit'&&this.isAudit) {
+              if (this.isAudit) {
                 this.$alert('保存成功，待审核管理员审核通过后方生效', '保存成功', {
                   confirmButtonText: '确定',
                   callback: action => {

@@ -113,7 +113,8 @@ export default {
         }
       },
       oldPostDetail:{},
-      oldUserDetail:{}
+      oldUserDetail:{},
+      isAudit:false
     }
   },
   mounted () {
@@ -244,17 +245,21 @@ export default {
       }, (error) => {
       })
     },
-    getUser (val) { // 获取用户信息
+    getUser (val,isAudit) { // 获取用户信息
       this.userInfo.user = val
       this.stepTwoFlag = true
       this.stepOneFlag = false
       this.activeIndex = 1
       this.sendUserFlag = true
       // this.submitForm()
+      this.isAudit=isAudit
+      
     },
     // 绑定身份
-    getPost (val) {
+    getPost (val,isAudit) {
       this.userInfo.identity = val
+      this.isAudit=isAudit
+      
     },
     // 获取账号
     getAccount (val) {
@@ -273,11 +278,20 @@ export default {
     },
     // 保存createUser
     submitForm () {
-      // console.log(' this.userInfo:', this.userInfo)
       api[urlNames['createUser']](this.userInfo).then((res) => {
-        this.$message.success(`保存成功`)
+        if(this.isAudit){
+             this.$alert('保存成功，待审核管理员审核通过后方生效', '保存成功', {
+            confirmButtonText: '确定',
+            callback: action => {
+               this.goBack()
+            }
+          })
+          }else{
+             this.$message.success(`保存成功`)
+              this.goBack()
+          }
         this.isExit = true
-        this.goBack()
+       
       }, (error) => {
         if (error) {
           this.isExit = false

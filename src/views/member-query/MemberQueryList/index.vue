@@ -4,7 +4,7 @@
     <el-row class="operator-row">
       <el-col :span="24">
         <el-row :gutter="10" type="flex">
-          <el-col :span="7">
+          <el-col :span="5">
             <el-input placeholder="人员姓名" v-model="searchQuery.name"  @clear="clearSearch()" clearable>
             </el-input>
           </el-col>
@@ -12,14 +12,13 @@
 <!--            <el-input placeholder="人员ID" v-model="searchQuery.uid"  @clear="clearSearch()" clearable>-->
 <!--            </el-input>-->
 <!--          </el-col>-->
-          <el-col :span="7">
+          <el-col :span="5">
             <el-input placeholder="登录账号" v-model="searchQuery.account"  @clear="clearSearch()" clearable>
             </el-input>
           </el-col>
-          <el-col :span="7" class="text-right">
-            <el-button type="primary" plain @click="getGrid"
-              :disabled="!hasRight('searchUser')"
-            >查询</el-button>
+          <el-col :span="5">
+            <el-input placeholder="所属单位" v-model="searchQuery.orgName" clearable>
+            </el-input>
           </el-col>
         </el-row>
       </el-col>
@@ -27,15 +26,12 @@
     <el-row class="operator-row">
       <el-col :span="24">
         <el-row :gutter="10" type="flex">
-          <el-col :span="7">
-            <el-input placeholder="所属单位" v-model="searchQuery.orgName" clearable>
-            </el-input>
-          </el-col>
-          <el-col :span="7">
+         
+          <el-col :span="5">
             <el-input placeholder="所属内设机构" v-model="searchQuery.deptName" clearable>
             </el-input>
           </el-col>
-          <el-col :span="7">
+          <el-col :span="5">
             <el-autocomplete
               v-model="searchQuery.labelName"
               :trigger-on-focus=triggerOnFocus
@@ -47,6 +43,11 @@
                 <div class="name">{{ item.name }}</div>
               </template>
             </el-autocomplete>
+          </el-col>
+           <el-col :span="1" class="text-right">
+            <el-button type="primary" plain @click="getGrid"
+              :disabled="!hasRight('searchUser')"
+            >查询</el-button>
           </el-col>
         </el-row>
       </el-col>

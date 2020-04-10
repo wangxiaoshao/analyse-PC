@@ -3,7 +3,7 @@ const tableConfig = {
   name: {
     key: 'name',
     tooltip: false,
-    label: '人员名称',
+    label: '人员姓名',
     sortable: false,
     showOverflowTooltip: false,
     minWidth: 100
