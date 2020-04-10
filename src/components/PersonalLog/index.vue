@@ -40,7 +40,7 @@
             </el-input>
           </div>
          </el-form-item>
-         <el-form-item v-if="showFindBtn">
+         <el-form-item v-if="showFindBtn && loginLog===2">
              <span class="title">分类  </span>
                 <el-select size='medium'
                   placeholder="请选择日志类型"
@@ -55,7 +55,7 @@
                 ></el-option>
               </el-select>
          </el-form-item>
-          <el-form-item v-if="showFindBtn">
+          <el-form-item v-if="showFindBtn && loginLog===2">
            <span class="title">关键词 </span>
             <el-input  placeholder="请输入搜索关键词" v-model="logParam.name" @blur="iptChange" prefix-icon="el-icon-search" style="width:160px"></el-input>
           </el-form-item>
@@ -251,11 +251,8 @@ export default {
       this.SET_APPLICATION_SEARCH_QUERY({})
     }
 
-    if (this.loginLog === 3) {
-      this.getLoggerTypeList()
-    } else if (this.loginLog === 2) {
-      this.getGrid()
-    }
+    this.getLoggerTypeList()
+    this.getGrid()
   },
   methods: {
     ...mapMutations(['SET_APPLICATION_PAGE', 'SET_APPLICATION_SEARCH_QUERY']),
