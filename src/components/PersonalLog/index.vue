@@ -68,7 +68,7 @@
       <el-table :data="tableData" stripe border style="width: 100%">
         <el-table-column type="index" label="序号" width="80" align="center"></el-table-column>
         <template v-if="loginLog === 1 || loginLog === 2 || !loginLog">
-          <el-table-column prop="actionTime" label="时间" align="center"></el-table-column>
+          <el-table-column prop="actionTime" label="时间" align="center" min-width="100"></el-table-column>
           <el-table-column prop="userName" label="操作人" align="center"></el-table-column>
           <el-table-column prop="description" label="描述" align="center"></el-table-column>
         </template>
@@ -250,8 +250,12 @@ export default {
       this.SET_APPLICATION_PAGE({})
       this.SET_APPLICATION_SEARCH_QUERY({})
     }
-    this.getGrid()
-    this.getLoggerTypeList()
+
+    if (this.loginLog === 3) {
+      this.getLoggerTypeList()
+    } else if (this.loginLog === 2) {
+      this.getGrid()
+    }
   },
   methods: {
     ...mapMutations(['SET_APPLICATION_PAGE', 'SET_APPLICATION_SEARCH_QUERY']),
