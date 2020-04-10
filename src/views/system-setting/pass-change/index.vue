@@ -441,12 +441,21 @@ export default {
       )
     },
 
-    goModifieUserInfo (val) {
+    goModifieUserInfo (val,isAudit) {
       // 保存createUser
       this.userInfo.user = val
       api[urlNames['createUser']](this.userInfo).then(
         res => {
-          this.$message.success(`保存成功`)
+          if(isAudit){
+             this.$alert('保存成功，待审核管理员审核通过后方生效', '保存成功', {
+            confirmButtonText: '确定',
+            callback: action => {
+              //  this.$router.go(0) // 刷新页面
+            }
+          })
+          }else{
+             this.$message.success(`保存成功`)
+          }
         },
         () => {
           this.$message.error(`保存失败，请重试`)
