@@ -166,11 +166,11 @@ export default {
             })
           }
           //  this.oldPostDetail={...this.userInfo.identity}
-        
+
         }, (error) => {
           this.$message.error(`没有内容`)
         })
-         
+
       } else {
         this.getUserDetail(this.$route.params.id)
         this.getIdentity()
@@ -198,12 +198,12 @@ export default {
         }
         let doUserDetail = Object.assign(this.userInfo.user, res.data)
         this.userInfo.user = doUserDetail
-       
+
         this.userInfo.userId = res.data.uid
         this.oldUserDetail={...this.userInfo.user}
         this.getUserAccount(res.data.uid)
         this.findLabel(res.data.uid, 3)
-         
+
         this.loading = false
       }, (error) => {
         this.$message.error(`保存失败，请重试`)
@@ -222,6 +222,9 @@ export default {
       })
     },
     getIdentity () {
+      if (!this.$route.params.identityId) {
+        return null
+      }
       api[urlNames['findIdentityById']]({
         identityId: this.$route.params.identityId
       }).then((res) => {
@@ -253,13 +256,13 @@ export default {
       this.sendUserFlag = true
       // this.submitForm()
       this.isAudit=isAudit
-      
+
     },
     // 绑定身份
     getPost (val,isAudit) {
       this.userInfo.identity = val
       this.isAudit=isAudit
-      
+
     },
     // 获取账号
     getAccount (val) {
@@ -291,7 +294,7 @@ export default {
               this.goBack()
           }
         this.isExit = true
-       
+
       }, (error) => {
         if (error) {
           this.isExit = false
@@ -328,7 +331,7 @@ export default {
       this.stepOneFlag = true
       this.activeIndex = 0
     },
-    
+
     getActive (val) {
       this.active = val
     },

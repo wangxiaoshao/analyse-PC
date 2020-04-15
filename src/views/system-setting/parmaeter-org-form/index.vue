@@ -128,7 +128,7 @@
                     <el-radio :label="0">不可见</el-radio>
                     <el-radio :label="1">可见</el-radio>
                 </el-radio-group>
-            </el-form-item> 
+            </el-form-item>
             <el-form-item label="人员手机号">
                 <el-radio-group v-model="orgAddressBookSet.userMobile" :disabled='orgAddressBookSet.allOrgInfo==0'>
                     <el-radio :label="0">不可见</el-radio>
@@ -918,12 +918,12 @@ export default {
         list.value = this.orgUserSecuritySettings
       } else if (flag === 1) {
         list.name = 'orgAddressBookSet'
-        if(this.orgAddressBookSet.allOrgInfo==0){
-          this.orgAddressBookSet.userName=0
-          this.orgAddressBookSet.userMobile=0
-          this.orgAddressBookSet.userPhone=0
-          this.orgAddressBookSet.userDetail=0
-          this.orgAddressBookSet.depPhone=0
+        if (this.orgAddressBookSet.allOrgInfo === 0) {
+          this.orgAddressBookSet.userName = 0
+          this.orgAddressBookSet.userMobile = 0
+          this.orgAddressBookSet.userPhone = 0
+          this.orgAddressBookSet.userDetail = 0
+          this.orgAddressBookSet.depPhone = 0
         }
         list.value = this.orgAddressBookSet
       } else if (flag === 2) {
@@ -934,26 +934,57 @@ export default {
           this.messageRemind
         ]
       } else if (flag === 3) {
-        list.name = 'nodeAuditFields'
-        list.value = this.orgAuditField.checkedNodeAuditList
-        this.setClientOptions(list)
-        list.name = 'orgAuditFields'
-        list.value = this.orgAuditField.checkedOrgAuditList
-        this.setClientOptions(list)
-        list.name = 'departmentAuditFields'
-        list.value = this.orgAuditField.checkedDepAuditList
-        this.setClientOptions(list)
-        list.name = 'userAuditFields'
-        list.value = this.orgAuditField.checkedUserAuditList
+        list = [
+          {
+            level: level,
+            name: 'nodeAuditFields',
+            value: this.orgAuditField.checkedNodeAuditList
+          },
+          {
+            level: level,
+            name: 'orgAuditFields',
+            value: this.orgAuditField.checkedOrgAuditList
+          },
+          {
+            level: level,
+            name: 'departmentAuditFields',
+            value: this.orgAuditField.checkedDepAuditList
+          },
+          {
+            level: level,
+            name: 'userAuditFields',
+            value: this.orgAuditField.checkedUserAuditList
+          }
+        ]
       }
       this.setClientOptions(list)
     },
     setClientOptions (list) {
-      api[urlNames['setClientOptions']](list).then((res) => {
-        if (res.status === 0) {
-          this.$message.success('设置成功')
-        }
-      })
+      let that = this
+
+      let allSetClientOptions = function (list, index) {
+        let i = index || 0
+
+        api[urlNames['setClientOptions']](list[i]).then((res) => {
+          if (res.status === 0) {
+            if (i === list.length - 1) {
+              that.$message.success('设置成功')
+            } else {
+              allSetClientOptions(list, i + 1)
+            }
+          }
+        })
+      }
+
+      if (Array.isArray(list)) {
+        allSetClientOptions(list)
+      } else {
+        api[urlNames['setClientOptions']](list).then((res) => {
+          if (res.status === 0) {
+            this.$message.success('设置成功')
+          }
+        })
+      }
     }
   }
 }

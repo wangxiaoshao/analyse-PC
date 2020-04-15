@@ -717,12 +717,31 @@ export default {
       })
     },
     setClientOptions (list) {
-      api[urlNames['setClientOptions']](list).then((res) => {
-        if (res.status === 0) {
-          this.getOption()
-          this.$message.success('设置成功')
-        }
-      })
+      let that = this
+
+      let allSetClientOptions = function (list, index) {
+        let i = index || 0
+
+        api[urlNames['setClientOptions']](list[i]).then((res) => {
+          if (res.status === 0) {
+            if (i === list.length - 1) {
+              that.$message.success('设置成功')
+            } else {
+              allSetClientOptions(list, i + 1)
+            }
+          }
+        })
+      }
+
+      if (Array.isArray(list)) {
+        allSetClientOptions(list)
+      } else {
+        api[urlNames['setClientOptions']](list).then((res) => {
+          if (res.status === 0) {
+            this.$message.success('设置成功')
+          }
+        })
+      }
     }
   }
 }
