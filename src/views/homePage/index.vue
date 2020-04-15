@@ -67,45 +67,46 @@
           <p>组织机构注册总人数</p>
           <p>{{countData.userCount}}</p>
           <ul>
-            <li>日<span>0% <i class="el-icon-top"></i></span></li>
-            <li>周<span>10% <i class="el-icon-top"></i></span></li>
-            <li>月<span>30% <i class="el-icon-top"></i></span></li>
+            <li>日<span>{{countData.userCountDay}} <i class="el-icon-top"></i></span></li>
+            <li>周<span>{{countData.userCountWeek}} <i class="el-icon-top"></i></span></li>
+            <li>月<span>{{countData.userCountMonth}} <i class="el-icon-top"></i></span></li>
           </ul>
         </div>
         <div class="detailInfo">
           <p>单位总数</p>
           <p>{{countData.organCount}}</p>
           <ul>
-            <li>日<span>1% <i class="el-icon-top"></i></span></li>
-            <li>周<span>5% <i class="el-icon-top"></i></span></li>
-            <li>月<span>10% <i class="el-icon-top"></i></span></li>
+            <li>日<span>{{countData.organCountDay}} <i class="el-icon-top"></i></span></li>
+            <li>周<span>{{countData.organCountWeek}} <i class="el-icon-top"></i></span></li>
+            <li>月<span>{{countData.organCountMonth}} <i class="el-icon-top"></i></span></li>
           </ul>
         </div>
         <div class="detailInfo">
           <p>内设机构总数</p>
           <p>{{countData.deptCount}}</p>
           <ul>
-            <li>日<span>0% <i class="el-icon-top"></i></span></li>
-            <li>周<span>3% <i class="el-icon-top"></i></span></li>
-            <li>月<span>5% <i class="el-icon-top"></i></span></li>
+            <li>日<span>{{countData.deptCountDay}} <i class="el-icon-top"></i></span></li>
+            <li>周<span>{{countData.deptCountWeek}} <i class="el-icon-top"></i></span></li>
+            <li>月<span>{{countData.deptCountMonth}} <i class="el-icon-top"></i></span></li>
           </ul>
         </div>
         <div class="detailInfo">
           <p>人员变动数</p>
           <p>{{countData.userChangedCount}}</p>
           <ul>
-            <li>日<span>0% <i class="el-icon-top"></i></span></li>
-            <li>周<span>3% <i class="el-icon-top"></i></span></li>
-            <li>月<span>5% <i class="el-icon-top"></i></span></li>
+            <li>日<span>{{countData.userChangedCountDay}} <i class="el-icon-top"></i></span></li>
+            <li>周<span>{{countData.userChangedCountWeek}} <i class="el-icon-top"></i></span></li>
+            <li>月<span>{{countData.userChangedCountMonth}} <i class="el-icon-top"></i></span></li>
           </ul>
         </div>
         <div class="detailInfo">
           <p>接入应用总数</p>
-          <p>{{applyCount}}</p>
+          <p>{{applyCount.shareApplicationCount}}</p>
           <ul>
-            <li>日<span>0% <i class="el-icon-top"></i></span></li>
-            <li>周<span>0% <i class="el-icon-top"></i></span></li>
-            <li>月<span>0% <i class="el-icon-top"></i></span></li>
+            <!--  <i class="el-icon-top"></i>-->
+            <li>日<span>{{applyCount.shareApplicationCountDay || 0}} <i class="el-icon-top"></i></span></li>
+            <li>周<span>{{applyCount.shareApplicationCountWeek || 0}} <i class="el-icon-top"></i></span></li>
+            <li>月<span>{{applyCount.shareApplicationCountMonth || 0}} <i class="el-icon-top"></i></span></li>
           </ul>
         </div>
       </div>
@@ -245,7 +246,7 @@ export default {
         userChangedCount:null
       },
       loginNumber: null,
-      applyCount: null,
+      applyCount: {},
       // 人员变动数
       changeAccount: null,
 
@@ -277,7 +278,7 @@ export default {
      this.getLoginIndex()
     // 获取接应用总数
     api[urlNames['findApplicationCount']]().then((res) => {
-      this.applyCount = res.data[0]
+      this.applyCount = res.data
     })
   },
   mounted () {

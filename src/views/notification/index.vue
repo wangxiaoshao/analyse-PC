@@ -1,6 +1,5 @@
 <template>
   <div class="notification">
-     
           <el-table :show-header="false"  :data='tableData' 	>
              <template slot="empty">
                 <div class="empty">
@@ -13,7 +12,7 @@
               <div class="notice-info">
                 <el-badge :is-dot='scope.row.hasRead===0'>{{scope.row.typeText}}</el-badge>
                 <div class="notice-msg">
-                  <span>{{scope.row.content}}</span>
+                  {{scope.row.content}}
                 </div>
                 <p>{{scope.row.creareTime}}</p>
                 <span class="btn"><el-button type='primary' size="mini"
@@ -49,10 +48,8 @@ export default {
   },
   created () {
     this.getGrid()
-    // this.breadcrumb=[]
-    // console.log(this.breadcrumb)
-    // this.breadcrumb.name = '通知中心'
     this.app.noticeShowBtn=true
+    this.SET_BREADCRUMB([{name:'通知中心'}])
   },
   mounted(){
   },
@@ -60,6 +57,7 @@ export default {
     ...mapState(['app']),
   },
   methods: {
+    ...mapMutations(['SET_BREADCRUMB']),
     getGrid () {
       let data = {
         page: this.page.current,

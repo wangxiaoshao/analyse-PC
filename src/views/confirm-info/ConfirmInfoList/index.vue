@@ -68,7 +68,7 @@
                   :tableHeight="dialogTableHeight"
                   :operateWidth="operateWidth"
                   :operate="DialogOperate"
-                  :tableData="DialogTableData">
+                  :tableData="dialogTableData">
       </site-table>
       <el-row :gutter="20" :style="{marginTop: '20px'}">
         <el-col :span="13" :offset="7">
@@ -135,7 +135,7 @@ export default {
       dialogVisible: false,
       defaultTime: '',
       tableData: [],
-      DialogTableData: [],
+      dialogTableData: [],
       tableHeight: null,
       dialogTableHeight: 300,
       mergeConfig: null,
@@ -195,10 +195,10 @@ export default {
     },
     getConfirmMemberList () {
       api[urlNames['getConfirmMemberList']]().then((res) => {
-        this.DialogTableData = res.data
+        this.dialogTableData = res.data
         this.dialogVisible = true
       }, () => {
-        this.DialogTableData = []
+        this.dialogTableData = []
         this.page.total = 0
       })
     },

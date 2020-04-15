@@ -1,12 +1,38 @@
 <template>
   <div class="site-module mod-dictionary">
+    <el-table :data="tableData" border style="width: 100%">
+       <template slot="empty">
+        <div class="empty">
+          <p><img class="data-pic" src="@src/common/images/no-data.png" alt=""/></p>
+          <p><span style="padding-left: 8px">暂无数据！</span></p>
+        </div>
+        </template>
+       <el-table-column prop="departmentName" align="center" label="单位/内设机构名称">
+       <template slot-scope="scope">
+        <span class="svg-container" style="color:#FC7049">
+          <span class="iconfont iconzuzhijigou" v-if="scope.row.type === 1"></span>
+          <span class="iconfont icondanwei" v-if="scope.row.type === 2"></span>
+          <span class="iconfont iconbumen" v-if="scope.row.type === 3"></span>
+        </span>
+        <span>{{scope.row.departmentName}}</span>
+      </template>
+    </el-table-column>
+    <el-table-column prop="userName" label="人员姓名" align="center" ></el-table-column>
+    <el-table-column prop="userIdType" label="身份类型" align="center" >
+      <template slot-scope="scope">
+        <span>{{filterType(scope.row.userIdType)}}</span>
+      </template>
+    </el-table-column>
+    <el-table-column prop="month" label="确认月份" align="center" ></el-table-column>
+    </el-table>
     <!--表格-->
-    <site-table :tableConfig="tableConfig"
+    <!-- <site-table :tableConfig="tableConfig"
                 :tableHeight="tableHeight"
                 :operateWidth="operateWidth"
                 :operate="operate"
+                :deptIcon='true'
                 :tableData="tableData">
-    </site-table>
+    </site-table> -->
     <!--分页-->
     <el-pagination
       @size-change="handleSizeChange"
@@ -27,10 +53,10 @@ import tableConfig from './tableConfig'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
 import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
-
+import dicOption from '@src/mixins/dic-options.js'
 export default {
   components: { SiteTable },
-  mixins: [handleTable, handleBreadcrumb],
+  mixins: [handleTable, handleBreadcrumb,dicOption],
   data () {
     return {
       tableConfig,
@@ -90,12 +116,28 @@ export default {
         this.tableData = []
         this.page.total = 0
       })
-    }
+    },
+     filterType (val) {
+      let typeList = this.userTypeOptions.filter(item => item.value == val)
+      return  typeList[0].text 
+    },
   }
 }
 </script>
 <style lang="less">
   @import "index";
+  .empty {
+    p {
+      margin: 0;
+      font-size: 0px;
+      text-align: center;
+      line-height: 16px!important;
+    }
+
+    span {
+      font-size: 12px;
+    }
+  }
 </style>
 
 

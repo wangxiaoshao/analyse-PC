@@ -50,7 +50,8 @@
                 v-model="userDetail.name"
                 @blur="blur"
                 @input="loadSearch"
-                @keyup.enter.native="loadSearch"
+                @change="idAutherntication"
+                @keyup.enter.native="loadSearch" 
               ></el-input>
               <div class="result-list" v-if="searchFlag">
                 <div class="default-warn" style="color: #FF6633">
@@ -75,11 +76,10 @@
                   </el-table-column>
                 </el-table>
               </div>
-
             </el-popover>
             <div class="el-form-item__error" v-show="this.iptMsgVisible['name']">
-               {{iptMsgInfoStr}}
-              </div>
+              {{iptMsgInfoStr}}
+            </div>
           </el-form-item>
           <el-form-item label="职务" prop="dutyName">
             <el-input placeholder="请输入职务" v-model="postDetail.dutyName" @focus="showdutyNameList" @input="showIptMsg('dutyName')"></el-input>
@@ -104,15 +104,23 @@
               {{iptMsgInfoStr}}
             </div>
           </el-form-item>
-          <el-form-item label="身份证号" prop="idcard">
+           <el-form-item label="所属单位" v-if="showexportIdentityType" prop="orgName">
+            <el-input placeholder="所属单位" v-model="postDetail.orgName" @input="showIptMsg('orgName')">
+              <el-button type="primary" slot="append" class="form-btn1" @click="exportOrg" :disabled="!hasRight('personUserIdTransfe')">调出</el-button>
+            </el-input>
+            <div class="el-form-item__error" v-show="this.iptMsgVisible['orgName']">
+               {{iptMsgInfoStr}}
+              </div>
+          </el-form-item>
+          <!-- <el-form-item label="身份证号" prop="idcard">
             <el-input placeholder="请输入内容" :disabled="isDefaultFlag" v-model="userDetail.idcard" @input="showIptMsg('idcard')">
-              <el-button slot="append" v-if="!disabledFlag" type="success" class="form-btn1">点击实名认证</el-button>
+              <el-button slot="append" v-if="!disabledFlag" type="success" class="form-btn1" @click="idAutherntication">点击实名认证</el-button>
             </el-input>
             <div class="el-form-item__error" v-show="this.iptMsgVisible['idcard']">
               {{iptMsgInfoStr}}
             </div>
             <span style="font-size: 12px;position: relative;top:-7px;color: #8c939d;">如果不录入不影响新帐号创建</span>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="人员ID" prop="uid" :disabled='true' v-if="this.$route.name === 'QueryPersonDetail'">
             <el-input :placeholder="userDetail.uid" :disabled="isDefaultFlag" v-model="userDetail.uid">
             </el-input>
@@ -142,13 +150,30 @@
                {{iptMsgInfoStr}}
               </div>
           </el-form-item>
-          <el-form-item label="所属单位" v-if="showexportIdentityType" prop="orgName">
-            <el-input placeholder="所属单位" v-model="postDetail.orgName" @input="showIptMsg('orgName')">
-              <el-button type="primary" slot="append" class="form-btn1" @click="exportOrg" :disabled="!hasRight('personUserIdTransfe')">调出</el-button>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="15">
+          <el-form-item label="身份证号" prop="idcard">
+            <el-input placeholder="请输入内容" :disabled="isDefaultFlag" v-model="userDetail.idcard" @input="showIptMsg('idcard')">
+              <el-button slot="append" v-if="!disabledFlag" type="success" class="form-btn1" @click="idAutherntication">点击实名认证</el-button>
             </el-input>
-            <div class="el-form-item__error" v-show="this.iptMsgVisible['orgName']">
-               {{iptMsgInfoStr}}
-              </div>
+            <div class="el-form-item__error" v-show="this.iptMsgVisible['idcard']">
+              {{iptMsgInfoStr}}
+            </div>
+              <p style="color:#8c939d" class="el-form-item__error" v-if="isShowMsg">如果不录入不影响新帐号创建</p>
+              <p v-if="idCardState.errorVisiable" class="el-form-item__error">
+                <i class="el-icon-error"></i>
+                身份证号码与人员姓名不匹配。
+              </p>
+              <p style="color:green" v-if="idCardState.successVisiable" class="el-form-item__error">
+                <i class="el-icon-success"></i>
+               身份证号码验证通过。
+              </p>
+               <p style="color:#8c939d" v-if="idCardState.requiring" class="el-form-item__error">
+                 <i class="el-icon-loading iconload"></i>
+                身份证号码正在验证...
+              </p>
           </el-form-item>
         </el-col>
       </el-row>
@@ -405,6 +430,36 @@ export default {
       }
     }
 
+    // 验证身份证号 
+    let validateId = (rule, value, callback) => {
+      if(value !=='') {
+        let reg = /^([1-6][1-9]|50)\d{4}(18|19|20)\d{2}((0[1-9])|10|11|12)(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/
+        if(reg.test(value)){
+          this.isValidate=true
+          this.isShowMsg=true
+          this.idCardState.successVisiable=false
+          this.idCardState.errorVisiable=false
+          this.idCardState.requiring=false
+          callback()
+        }else{
+          this.isValidate=false
+          this.isShowMsg=false
+          this.idCardState.successVisiable=false
+          this.idCardState.errorVisiable=false
+          this.idCardState.requiring=false
+          callback(new Error('请输入有效身份证号'))
+        }
+        // reg.test(value) ? callback() : callback(new Error('请输入有效身份证号'))
+      }else{
+         this.isValidate=false
+         this.isShowMsg=true
+        this.idCardState.successVisiable=false
+        this.idCardState.errorVisiable=false
+        this.idCardState.requiring=false
+         callback()
+      }
+    }
+
     return {
       iptMsgInfoStr: '添加或修改该字段需要提交审核',
       iptMsgVisible: {},
@@ -425,8 +480,18 @@ export default {
         type: [
           { required: true, message: '请选择身份类型', trigger: 'blur' },
           { type: 'number', message: '', trigger: 'change' }
+        ],
+        idcard:[
+            { validator: validateId, trigger: 'blur' }
         ]
       },
+      idCardState:{
+        errorVisiable:false,
+        successVisiable:false,
+        requiring:false
+      },
+      isValidate:false,
+      isShowMsg:true,
       isChange:false,
       isAudit:false,
       showPopover: false, // 是否显示 Popover
@@ -476,6 +541,48 @@ export default {
 
     exportOrg () {
       this.$emit('exportOrg')
+    },
+    // 身份证认证
+    idAutherntication(){
+      // 522501199512028321
+      let that=this
+      this.idCardState.successVisiable=false
+      this.idCardState.errorVisiable=false
+      this.idCardState.requiring=false
+      // console.log('idcard:',this.userDetail.idcard,this.isValidate)
+      if(this.userDetail.name !==''){
+        if(this.userDetail.idcard !=='' && this.isValidate){
+           if(this.isValidate){
+           this.isShowMsg=false
+           this.idCardState.requiring=true
+            api[urlNames['idCardValidation']]({
+            idCard:this.userDetail.idcard,
+            name:this.userDetail.name
+          }).then((res) => {
+            if(res.data){
+              that.idCardState.successVisiable=true
+              that.idCardState.errorVisiable=false
+              that.idCardState.requiring=false
+              that.isShowMsg=false
+            
+            }else{
+             that.idCardState.errorVisiable=true
+             that.isShowMsg=false
+             that.idCardState.requiring=false
+             that.idCardState.successVisiable=false
+            
+            }
+          }, () => {
+          })
+        }else{
+          this.$message.error('请输入有效身份证号码')
+        }  
+        }  
+      }else{
+         this.$message.error('请先输入人员姓名')
+      }
+     
+     
     },
      getUserAccount (userId) {
       api[urlNames['findUserAccountByUid']]({
@@ -679,17 +786,23 @@ export default {
     },
 
     next (userDetail) {
-      this.$refs[userDetail].validate(valid => {
+      if(this.idCardState.errorVisiable){
+        this.$message.error('身份证号码与人员姓名不匹配，请重新输入')
+      }else if(this.idCardState.successVisiable || this.userDetail.idcard==''){
+        this.$refs[userDetail].validate(valid => {
         if (valid) {
           this.isChange=false
           this.$emit('get-post', this.postFrom,this.isAudit)
           this.$emit('get-user', this.personFrom,this.isAudit)
         } else {
-          this.$message.warning(`请根据提示填写必填字段`)
+          this.$message.warning(`请根据提示填写有效身份信息`)
            this.isChange=false
           return false
         }
       })
+      }else if(this.userDetail.idcard !==''){
+        this.$message.warning(`请先进行身份证号实名认证!`)
+      }
     },
      addWatch(){
        return JSON.stringify(this.userDetail) !== JSON.stringify(this.oldUserDetail) || JSON.stringify(this.postDetail) !== JSON.stringify(this.oldPostDetail)

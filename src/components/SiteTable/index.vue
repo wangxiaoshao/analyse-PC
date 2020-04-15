@@ -19,6 +19,9 @@
     <el-table-column type="index" v-if="tableIndex" width="60" align="center" label="#">
       <template slot-scope="scope">{{scope.$index+(pageConfig.page - 1) * pageConfig.limit + 1}}</template>
     </el-table-column>
+    <el-table-column type="index" v-if="tableIndex" width="60" align="center" label="#">
+      <template slot-scope="scope">{{scope.$index+(pageConfig.page - 1) * pageConfig.limit + 1}}</template>
+    </el-table-column>
     <slot name="prePersonalColumn"></slot>
     <template v-for="item in tableConfig">
       <el-table-column

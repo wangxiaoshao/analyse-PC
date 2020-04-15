@@ -202,6 +202,9 @@ export default {
   updateAccount: 'updateAccount', // 修改账号信息
   deleteRoleBindUser: 'deleteRoleBindUser',
   saveAuthorityManage: 'saveAuthorityManage',
+  // 验证身份证
+  idCardValidation: 'idCardValidation',
+
   // 查询单位下的区域
   findOrgAreaList: 'findOrgAreaList',
   // 查询用户可用配置

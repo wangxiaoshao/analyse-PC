@@ -372,7 +372,15 @@ export default {
   // 社会信用代码
   [urlNames.orgCreditId]: {
     type: 'get',
-    url: '/api//jg_manage/orgCreditId',
+    url: '/api/jg_manage/orgCreditId',
+    keepOriginResponse: true, // 是否保留后端返回数据格式
+    serve: 'organizationManagePC'
+  },
+
+  // 验证身份证号码
+  [urlNames.idCardValidation]: {
+    type: 'get',
+    url: '/api/jg_manage/idCard/idCardValidation',
     keepOriginResponse: true, // 是否保留后端返回数据格式
     serve: 'organizationManagePC'
   }

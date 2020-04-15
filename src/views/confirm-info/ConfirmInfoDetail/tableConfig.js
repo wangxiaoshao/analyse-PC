@@ -3,7 +3,7 @@ const tableConfig = {
   departmentName: {
     key: 'departmentName',
     tooltip: false,
-    label: '内设机构名称',
+    label: '单位/内设机构名称',
     sortable: false,
     showOverflowTooltip: false,
     minWidth: 100
@@ -20,14 +20,6 @@ const tableConfig = {
     key: 'confirmId',
     tooltip: false,
     label: '人员ID',
-    sortable: false,
-    showOverflowTooltip: false,
-    minWidth: 100
-  },
-  userIdType: {
-    key: 'userIdType',
-    tooltip: false,
-    label: '身份类型',
     sortable: false,
     showOverflowTooltip: false,
     minWidth: 100

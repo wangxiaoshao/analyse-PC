@@ -65,7 +65,7 @@
             </div>
           </el-form-item>
           <el-form-item label="统一社会信用代码" prop="organization.creditId">
-            <el-input v-model="ruleForm.organization.creditId" @blur="handleCredit"  @change="handleCredit" :disabled="creditIddisable">
+            <el-input v-model="ruleForm.organization.creditId" @blur="handleCredit" :disabled="creditIddisable">
               <i class="el-icon-loading iconload" v-if="loadVisiable" slot="suffix"></i>
             </el-input>
             <div class="tip-msg">
@@ -715,10 +715,12 @@ export default {
                 this.errorVisiable = false
               }, 2000)
             } else {
+               window.setTimeout(() => {
               this.errorVisiable = true
               this.loadVisiable = false
               this.successVisiable = false
               this.requiring = false
+               }, 2000)
             }
           },
           () => {}
