@@ -5,7 +5,7 @@
       <i class="el-icon-close" @click="closeNotice" style="color:#999"></i>
     </div>
     <div class="notice-content">
-      <el-table :show-header="false" :data="noticeData">
+      <el-table :show-header="false" :data="noticeData" style="width:100%">
         <!-- <template slot="empty">
           <div class="empty">
             <span style="padding-left: 8px">暂无通知消息！</span>

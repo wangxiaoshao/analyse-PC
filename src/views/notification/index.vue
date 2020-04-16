@@ -1,6 +1,6 @@
 <template>
   <div class="notification">
-          <el-table :show-header="false"  :data='tableData' 	>
+          <el-table :show-header="false"  :data='tableData' 	style="width:100%">
              <template slot="empty">
                 <div class="empty">
                   <p><img class="data-pic" src="@src/common/images/no-data.png" alt=""/></p>
