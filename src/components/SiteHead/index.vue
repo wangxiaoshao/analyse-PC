@@ -17,8 +17,8 @@
               <i class="el-icon-bell"></i>
             </el-badge>
           </div>
-          <i class="ico fa fa-file-text-o"></i>
-          <a style="cursor: pointer" @click="goToWordCenter" href="javascript:void(0)">数据文档</a>
+          <!-- <i class="ico fa fa-file-text-o"></i>
+          <a style="cursor: pointer" @click="goToWordCenter" href="javascript:void(0)">数据文档</a> -->
           <!--          <i class="ico fa fa-phone"></i>-->
           <!--          <a href="">联系我们</a>-->
           <el-dropdown trigger="click">
