@@ -126,18 +126,25 @@ export default {
 </script>
 <style lang="less">
   @import "index";
-  .empty {
-    p {
-      margin: 0;
-      font-size: 0px;
-      text-align: center;
-      line-height: 16px!important;
-    }
-
-    span {
-      font-size: 12px;
-    }
+ .empty {
+  p {
+    margin: 0;
+    font-size: 0px;
+    text-align: center;
+    line-height: 16px!important;
   }
+
+  span {
+    font-size: 12px;
+  }
+  .data-pic {
+  padding-top: 20px;
+  width: 60px;
+  height: auto;
+}
+}
+
+
 </style>
 
 

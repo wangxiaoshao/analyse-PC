@@ -25,7 +25,7 @@
         <i class="imenu-icon iconfont icondanwei big-icon" style="margin: 0px 5px;"></i>单位信息
       </div>
       <el-menu class="el-menu-demo" mode="horizontal">
-        <el-menu-item index="1">基础信息11</el-menu-item>
+        <el-menu-item index="1">基础信息</el-menu-item>
       </el-menu>
       <el-row>
         <el-col :span="12">

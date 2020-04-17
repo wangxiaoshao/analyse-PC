@@ -30,8 +30,8 @@
                 :tableData="tableData">
       <el-table-column label="状态" align="center">
         <template slot-scope="scope">
-          <span v-show="scope.row.auditState === 1" class="text-green">通过</span>
-          <span v-show="scope.row.auditState !== 1" class="text-red">不通过</span>
+          <span v-show="scope.row.auditResult === 1" class="text-green">通过</span>
+          <span v-show="scope.row.auditResult !== 1" class="text-red">不通过</span>
         </template>
       </el-table-column>
       <template slot-scope="{slotScope}" slot="operate">

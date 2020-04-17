@@ -141,12 +141,12 @@
                     <el-radio :label="1">可见</el-radio>
                 </el-radio-group>
             </el-form-item>
-            <el-form-item label="人员详情页">
+            <!-- <el-form-item label="人员详情页">
                 <el-radio-group v-model="orgAddressBookSet.userDetail" :disabled='orgAddressBookSet.allOrgInfo==0'>
                     <el-radio :label="0">不可见</el-radio>
                     <el-radio :label="1">可见</el-radio>
                 </el-radio-group>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="内设机构座机号">
                 <el-radio-group v-model="orgAddressBookSet.depPhone" :disabled='orgAddressBookSet.allOrgInfo==0'>
                     <el-radio :label="0">不可见</el-radio>

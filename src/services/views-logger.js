@@ -16,6 +16,7 @@
  */
 
 import ajax from 'axios'
+// import ajax from '@src/api/interceptors'
 
 // 记录页面访问堆栈
 const stacks = [

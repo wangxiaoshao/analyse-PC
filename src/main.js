@@ -19,6 +19,7 @@ import VueCookies from 'vue-cookie'
 import './filters'
 import { api, urlNames } from '@src/api'
 import initRouter from '@src/router/index'
+
 Vue.use(VueCookies)
 Vue.use(elementUI, { size: 'medium' })
 

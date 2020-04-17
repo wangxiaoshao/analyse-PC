@@ -22,7 +22,7 @@
     </el-popover>
     <el-row>
       <el-input v-if="myOrgFlag===1" @change="getResult" placeholder="请输入内容" v-model="keyWord" class="input-with-select">
-        <el-select v-model="selectType"  style="width: 80px"  slot="prepend" placeholder="请选择">
+        <el-select v-model="selectType"  style="width: 94px"  slot="prepend" placeholder="请选择">
           <el-option label="内设机构" value="3"></el-option>
           <el-option label="人员" value="0"></el-option>
         </el-select>
