@@ -29,7 +29,7 @@
       <!-- <div class="header">密码设置</div> -->
       <div class="resetPwd">
         <p style="margin:10px 0;">
-          <i class="el-icon-info" :style="{fontSize: '16px',color:'#FC7049'}"></i>
+          <i class="el-icon-info" :style="{fontSize: '16px',color:'#58a4f3'}"></i>
           点击以下按钮进行密码修改，请确保修改该账号的原密码输入正确，如忘记密码请点击重置密码进行密码重置。
         </p>
         <el-button type="primary" @click="modifiePwd">修改密码</el-button>
@@ -37,7 +37,7 @@
 
       <div class="resetPwd">
         <p style="margin:10px 0;">
-          <i class="el-icon-info" :style="{fontSize: '16px',color:'#FC7049'}"></i>
+          <i class="el-icon-info" :style="{fontSize: '16px',color:'#58a4f3'}"></i>
           忘记原有密码，点击以下按钮进行重置，请确保该账号的手机号能正常接收信息！
         </p>
         <el-button type="primary" @click="resetPwd">重置密码</el-button>

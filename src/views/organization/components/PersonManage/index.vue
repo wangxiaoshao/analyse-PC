@@ -34,7 +34,7 @@
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
           <div style="font-size: 10px;color: #606266">
-            <span style="color: #FC7049">*</span>（支持PNG、JPG、JPEG格式，建议使用100*100像素大小，2M以内）
+            <span style="color: #58a4f3">*</span>（支持PNG、JPG、JPEG格式，建议使用100*100像素大小，2M以内）
           </div>
         </el-form-item>
       </el-row>

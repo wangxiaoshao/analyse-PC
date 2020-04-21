@@ -9,7 +9,7 @@
         </template>
        <el-table-column prop="departmentName" align="center" label="单位/内设机构名称">
        <template slot-scope="scope">
-        <span class="svg-container" style="color:#FC7049">
+        <span class="svg-container" style="color:#58a4f3">
           <span class="iconfont iconzuzhijigou" v-if="scope.row.type === 1"></span>
           <span class="iconfont icondanwei" v-if="scope.row.type === 2"></span>
           <span class="iconfont iconbumen" v-if="scope.row.type === 3"></span>
