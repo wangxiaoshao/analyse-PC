@@ -1,7 +1,7 @@
 <template>
   <div class="exportPersonPage">
     <div class="abtn">
-      <a href="#" v-html="organizationName+ ' &gt;'" style="color:#58a4f3"></a>
+      <a href="#" v-html="organizationName+ ' &gt;'" style="color:#3b93df"></a>
       <span> 批量导入</span>
     </div>
     <!-- <div class="abtn">

@@ -34,7 +34,7 @@
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
           <div style="font-size: 10px;color: #606266">
-            <span style="color: #58a4f3">*</span>（支持PNG、JPG、JPEG格式，建议使用100*100像素大小，2M以内）
+            <span style="color: #3b93df">*</span>（支持PNG、JPG、JPEG格式，建议使用100*100像素大小，2M以内）
           </div>
         </el-form-item>
       </el-row>
@@ -51,7 +51,7 @@
                 @blur="blur"
                 @input="loadSearch"
                 @change="idAutherntication"
-                @keyup.enter.native="loadSearch" 
+                @keyup.enter.native="loadSearch"
               ></el-input>
               <div class="result-list" v-if="searchFlag">
                 <div class="default-warn" style="color: #FF6633">
@@ -420,7 +420,7 @@ export default {
       }
     }
 
-    // 验证办公电话 
+    // 验证办公电话
     let validateOffice = (rule, value, callback) => {
       if(value !=='') {
         let reg = /(^\s{0}$)|(0\d{2,3}-\d{7,8}|\(?0\d{2,3}[)-]?\d{7,8}|\(?0\d{2,3}[)-]*\d{7,8})/
@@ -430,7 +430,7 @@ export default {
       }
     }
 
-    // 验证身份证号 
+    // 验证身份证号
     let validateId = (rule, value, callback) => {
       if(value !=='') {
         let reg = /^([1-6][1-9]|50)\d{4}(18|19|20)\d{2}((0[1-9])|10|11|12)(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/
@@ -565,25 +565,25 @@ export default {
               that.idCardState.errorVisiable=false
               that.idCardState.requiring=false
               that.isShowMsg=false
-            
+
             }else{
              that.idCardState.errorVisiable=true
              that.isShowMsg=false
              that.idCardState.requiring=false
              that.idCardState.successVisiable=false
-            
+
             }
           }, () => {
           })
         }else{
           this.$message.error('请输入有效身份证号码')
-        }  
-        }  
+        }
+        }
       }else{
          this.$message.error('请先输入人员姓名')
       }
-     
-     
+
+
     },
      getUserAccount (userId) {
       api[urlNames['findUserAccountByUid']]({

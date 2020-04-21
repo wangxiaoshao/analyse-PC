@@ -105,7 +105,7 @@
       <el-dialog :visible.sync="detialInfoVisible" width="420px">
         <div slot="title" style="padding:20px">
           日志详情
-          <i class="el-icon-document-copy" style="color:#58a4f3"></i>
+          <i class="el-icon-document-copy" style="color:#3b93df"></i>
         </div>
         <template v-if="loginLog === 1 || loginLog === 2 || !loginLog">
            <el-form
@@ -282,7 +282,7 @@ export default {
         'yyyy-MM'
       )
       }
-     
+
       if (this.date) {
         this.getGrid()
       }
@@ -309,7 +309,7 @@ export default {
         })
     },
     getGrid () {
-      
+
       let data = {
         date: '',
         type: this.logParam.dateType === 'month' ? 4 : 0, // 后端需要传输的数据类型 月份type：4 || 天：0

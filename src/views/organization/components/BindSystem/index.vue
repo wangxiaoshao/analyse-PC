@@ -44,7 +44,7 @@
           @close="handleClose(tag, index)">
           {{tag.appName}}
         </el-tag>
-        <div style="color: #58a4f3;font-size: 10px" v-if="isCreate">请先填写账号和密码，否则关联系统无效</div>
+        <div style="color: #3b93df;font-size: 10px" v-if="isCreate">请先填写账号和密码，否则关联系统无效</div>
     </div>
   </div>
 </template>
@@ -160,7 +160,7 @@ export default {
           })
         })
 
-       
+
       }
     },
 
