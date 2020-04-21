@@ -11,9 +11,9 @@
                     <el-input v-model="ViewFrom.name"></el-input>
                   </el-form-item>
                   <el-form-item label="视图管理员" >
-                    <el-select
+                    <el-select  
                       :disabled="!hasRight('viewSettingManager')"
-                     v-model="ViewFrom.roleBindUserIds" @remove-tag="removeManager" multiple
+                     v-model="ViewFrom.roleBindUserIds"  @remove-tag="removeManager" multiple
                                placeholder="请选择">
                       <el-option
                         v-for="item in adminList"
@@ -226,7 +226,8 @@ export default {
         name: ''
       },
       selectedKeys: [], // 已保存选中
-      checkedKeys: []
+      checkedKeys: [],
+      cancelItem:''
     }
   },
   mounted () {
@@ -289,6 +290,7 @@ export default {
       })
     },
     removeManager (uid) {
+      console.log('uid',uid)
       if (this.$route.params.id !== '0') {
         this.$confirm('此操作将永久删除该管理员, 是否继续?', '提示', {
           confirmButtonText: '确定',
@@ -497,7 +499,8 @@ export default {
         viewId: this.returnViewId
       }).then((res) => {
         if (res.status === 0) {
-          this.backToList()
+          this.findCurrentView(this.$route.params.id)
+          this.activeName='third'
         }
       })
     },
@@ -658,9 +661,13 @@ export default {
         this.ViewFrom.removed = !res.data.removed
         this.ViewFrom.syncChildren = !!res.data.syncChildren
         this.ViewFrom.roleBindUserIds = []
-        res.data.list.forEach(item => {
-          this.ViewFrom.roleBindUserIds.push(item.uid)
+        let that=this
+        if( res.data.list&&res.data.list.length>0){
+           res.data.list.forEach(item => {
+           that.ViewFrom.roleBindUserIds.push(item.uid)
         })
+        }
+       
         this.oldViewFrom = JSON.parse(JSON.stringify(this.ViewFrom))
 
       })

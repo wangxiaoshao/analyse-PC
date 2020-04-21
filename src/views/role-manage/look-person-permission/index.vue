@@ -4,7 +4,7 @@
       <div class="button-wrap">
         <el-button type="primary"
                    @click="openselectMenmber"
-                   :disabled="!hasAddUser">添加人员</el-button>
+                   :disabled="!hasAddUser">添加角色成员</el-button>
         <el-button @click="goPermission" :disabled="!hasAddAuthority">权限配置</el-button>
          <el-input  placeholder="请输入搜索关键词" v-model="searchName" prefix-icon="el-icon-search" style="width:200px;margin:0px 10px"></el-input>
         <el-button class="creat-btn" @click="findBySearchName">查询</el-button>

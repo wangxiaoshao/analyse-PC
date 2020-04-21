@@ -142,7 +142,7 @@ export default {
     showIptMsg (fieldName) {
       if (this.app.option.options.nodeAuditFields.indexOf(fieldName) > -1) {
         this.iptMsgVisible[fieldName] = true
-        this.isAudit=false
+        this.isAudit=true
       }
     },
     getSystemType (el) {

@@ -50,7 +50,7 @@ export default {
       resultFlag: false,
       loadFlag: false,
       keyWord: '',
-      value: '单位',
+      value: '2',
       gridData: [],
       type: 2,
       restaurants: [],

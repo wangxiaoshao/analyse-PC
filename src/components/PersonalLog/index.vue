@@ -266,15 +266,23 @@ export default {
         this.logParam.dateType = val[0]
         this.value = val[1]
         this.format = val[2]
-        return false
+        // return false
       } else if (val[0] === 'yesterday') {
         todayDate = new Date(todayDate.setDate(todayDate.getDate() - 1))
         this.logParam.dateType = val[0]
       }
-      this.date = this.$options.filters['date'](
+       this.date = this.$options.filters['date'](
         todayDate.getTime(),
         'yyyy-MM-dd'
       )
+      if(val[0]=='month'){
+        todayDate=new Date(todayDate.setMonth(todayDate.getMonth()))
+       this.date = this.$options.filters['date'](
+        todayDate.getTime(),
+        'yyyy-MM'
+      )
+      }
+     
       if (this.date) {
         this.getGrid()
       }
@@ -301,13 +309,14 @@ export default {
         })
     },
     getGrid () {
+      
       let data = {
         date: '',
         type: this.logParam.dateType === 'month' ? 4 : 0, // 后端需要传输的数据类型 月份type：4 || 天：0
         page: this.page.current,
         limit: this.page.limit
       }
-
+      // console.log('this.date：',this.date)
       if (Array.isArray(this.date)) {
         data.date = this.date[0]
         data.endDate = this.date[1]

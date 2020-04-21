@@ -10,7 +10,7 @@
       <template>
         <el-table-column label="申请原因" align="center">
           <template>
-            <span>{{reason}}</span>
+            <span>{{reason || '无'}}</span>
           </template>
         </el-table-column>
         <el-table-column label="审核意见" align="center" v-if="!isShowSuggest">

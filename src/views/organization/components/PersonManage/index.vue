@@ -473,6 +473,7 @@ export default {
           { message: '', trigger: 'change' },
           { validator: validateMobile, trigger: 'blur' }
         ],
+        // dutyName:[{required: true, message: '职务不能为空', trigger: 'blur'}],
         mobile2: [
           { validator: validateMobile, trigger: 'blur' }
         ],

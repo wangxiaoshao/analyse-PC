@@ -16,18 +16,18 @@ export default {
     {
       'menuId': '1',
       'name': '信息管理',
-      'path': '',
+      'path': '/organization',
       'type': 1,
       'icon': 'fa fa-sitemap',
-      'key': ['menuOrgManage'],
-      'list': [{
-        'menuId': '11',
-        'name': '组织管理',
-        'path': '/organization',
-        'key': 'menuOrgManage',
-        'type': 1
-      }
-      ]
+      'key': 'menuOrgManage'
+      // 'list': [{
+      //   'menuId': '11',
+      //   'name': '信息管理',
+      //   'path': '/organization',
+      //   'key': 'menuOrgManage',
+      //   'type': 1
+      // }
+      // ]
     },
     {
       'menuId': '12',
