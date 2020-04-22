@@ -1,12 +1,12 @@
 <template>
   <div class="site-module mod-dictionary">
     <!--操作row-->
-   
+   <!--   -->
     <el-row class="operator-row">
       <el-button
         size="small"
         type="primary"
-        :disabled="!app.confirmState || !hasRight('orgMemberConfirm')" 
+        :disabled="!app.confirmState || !hasRight('orgMemberConfirm')"
         @click="getConfirmMemberList"
         >确认机构人员信息
       </el-button>

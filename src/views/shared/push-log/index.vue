@@ -85,8 +85,8 @@
     style="width: 100%">
     <template slot="empty">
       <div class="empty">
-        <p><img class="data-pic" src="@src/common/images/no-data.png" alt=""/></p>
-        <p><span style="padding-left: 8px">暂无数据！</span></p>
+        <p><img class="data-pic" src="@src/common/images/no-data1.png" alt=""/></p>
+        <p><span style="padding-left: 8px;">暂无数据</span></p>
       </div>
     </template>
     <el-table-column
@@ -134,7 +134,7 @@
       label="操作"
       >
       <template slot-scope="scope">
-         <a style="color:#FC7049;"  href="javascript:void(0)" @click="findInfo(scope.row)">详情</a>
+         <a style="color:#58a4f3;"  href="javascript:void(0)" @click="findInfo(scope.row)">详情</a>
       </template>
     </el-table-column>
     <el-table-column

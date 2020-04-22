@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import noDataImg from '@src/common/images/no-data.png'
+import noDataImg from '@src/common/images/no-data1.png'
 
 export default {
   data () {

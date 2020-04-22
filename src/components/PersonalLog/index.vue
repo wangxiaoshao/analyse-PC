@@ -105,7 +105,7 @@
       <el-dialog :visible.sync="detialInfoVisible" width="420px">
         <div slot="title" style="padding:20px">
           日志详情
-          <i class="el-icon-document-copy" style="color:#FC7049"></i>
+          <i class="el-icon-document-copy" style="color:#58a4f3"></i>
         </div>
         <template v-if="loginLog === 1 || loginLog === 2 || !loginLog">
            <el-form

@@ -24,7 +24,7 @@
                     <a
                       href="javaScrpit:void(0)"
                       v-if="orgInfo.phone&&orgInfo.phone!=''&& !orgInfo.isLooked"
-                      style="color: #FC7049;font-size:12px;margin-left:5px"
+                      style="color: #58a4f3;font-size:12px;margin-left:5px"
                       @click="findPhone(orgInfo.nodeType,orgInfo.bindId,1)"
                     >查看</a>
                   </div>
@@ -45,7 +45,7 @@
         <template slot="empty">
           <div class="empty">
             <p>
-              <img class="data-pic" src="@src/common/images/no-data.png" alt />
+              <img class="data-pic" src="@src/common/images/no-data1.png" alt />
             </p>
             <p>
               <span style="padding-left: 8px">暂无数据</span>
@@ -64,7 +64,7 @@
         <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
         <el-table-column prop="name" label="所有下级" width="180px">
           <template slot-scope="scope">
-            <span class="svg-container" style="color:#FC7049">
+            <span class="svg-container" style="color:#58a4f3">
               <span class="iconfont iconzuzhijigou" v-if="scope.row.nodeType === 1"></span>
               <span class="iconfont icondanwei" v-if="scope.row.nodeType === 2"></span>
               <span class="iconfont iconbumen" v-if="scope.row.nodeType === 3"></span>
@@ -128,7 +128,7 @@
 <script>
 import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
-import noDataImg from '@src/common/images/no-data.png'
+import noDataImg from '@src/common/images/no-data1.png'
 import handPhoneName from '@src/mixins/phone-name.js'
 export default {
   props: ['departmentList', 'orgInfo', 'activeColor','msg','visableData'],

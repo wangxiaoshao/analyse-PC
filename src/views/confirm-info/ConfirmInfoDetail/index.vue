@@ -3,13 +3,13 @@
     <el-table :data="tableData" border style="width: 100%">
        <template slot="empty">
         <div class="empty">
-          <p><img class="data-pic" src="@src/common/images/no-data.png" alt=""/></p>
-          <p><span style="padding-left: 8px">暂无数据！</span></p>
+          <p><img class="data-pic" src="@src/common/images/no-data1.png" alt=""/></p>
+          <p><span style="padding-left: 8px;">暂无数据</span></p>
         </div>
         </template>
        <el-table-column prop="departmentName" align="center" label="单位/内设机构名称">
        <template slot-scope="scope">
-        <span class="svg-container" style="color:#FC7049">
+        <span class="svg-container" style="color:#58a4f3">
           <span class="iconfont iconzuzhijigou" v-if="scope.row.type === 1"></span>
           <span class="iconfont icondanwei" v-if="scope.row.type === 2"></span>
           <span class="iconfont iconbumen" v-if="scope.row.type === 3"></span>

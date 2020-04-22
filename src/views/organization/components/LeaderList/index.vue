@@ -23,8 +23,8 @@
         style="width: 100%">
         <template slot="empty">
           <div class="empty">
-            <p><img class="data-pic" src="@src/common/images/no-data.png" alt=""/></p>
-            <p><span style="padding-left: 8px">暂无数据！</span></p>
+            <p><img class="data-pic" src="@src/common/images/no-data1.png" alt=""/></p>
+            <p><span style="padding-left: 8px;">暂无数据</span></p>
           </div>
         </template>
         <el-table-column prop="description" label="序号" width="60" align="center">
@@ -83,8 +83,8 @@
       >
         <template slot="empty">
           <div class="empty">
-            <p><img class="data-pic" src="@src/common/images/no-data.png" alt=""/></p>
-            <p><span style="padding-left: 8px">暂无数据！</span></p>
+            <p><img class="data-pic" src="@src/common/images/no-data1.png" alt=""/></p>
+            <p><span style="padding-left: 8px;">暂无数据</span></p>
           </div>
         </template>
         <el-table-column prop="description" label="序号" width="60" align="center">

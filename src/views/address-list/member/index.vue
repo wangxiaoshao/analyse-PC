@@ -43,7 +43,7 @@
     >
       <template slot="empty">
         <div class="empty">
-          <p><img class="data-pic" src="@src/common/images/no-data.png" alt=""/></p>
+          <p><img class="data-pic" src="@src/common/images/no-data1.png" alt=""/></p>
           <p><span style="padding-left: 8px">{{msg}}</span></p>
         </div>
       </template>
@@ -86,7 +86,7 @@
 </template>
 <script>
 import { api, urlNames } from '@src/api'
-import noDataImg from '@src/common/images/no-data.png'
+import noDataImg from '@src/common/images/no-data1.png'
 import handPhoneName from '@src/mixins/phone-name.js'
 
 export default {

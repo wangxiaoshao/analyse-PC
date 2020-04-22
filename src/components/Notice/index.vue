@@ -79,8 +79,8 @@ export default {
 @import './index';
 .el-button--primary {
   color: #fff;
-  background-color: #fc7049;
-  border-color: #fc7049;
+  background-color: #58a4f3;
+  border-color: #58a4f3;
 }
 .colorB {
   color: #fff;

@@ -6,8 +6,8 @@
     style="width: 100%">
     <template slot="empty">
       <div class="empty">
-        <p><img class="data-pic" src="@src/common/images/no-data.png" alt=""/></p>
-        <p><span style="padding-left: 8px">暂无数据！</span></p>
+        <p><img class="data-pic" src="@src/common/images/no-data1.png" alt=""/></p>
+        <p><span style="padding-left: 8px;">暂无数据</span></p>
       </div>
     </template>
     <el-table-column
@@ -59,7 +59,7 @@
       <el-dialog :visible.sync="detialInfoVisible"  width="450px">
         <div slot="title" style="padding:20px">
           日志详情
-          <i class="el-icon-document-copy" style="color:#FC7049"></i>
+          <i class="el-icon-document-copy" style="color:#58a4f3"></i>
         </div>
            <el-form
               inline

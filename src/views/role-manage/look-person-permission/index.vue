@@ -5,16 +5,16 @@
         <el-button type="primary"
                    @click="openselectMenmber"
                    :disabled="!hasAddUser">添加角色成员</el-button>
-        <el-button @click="goPermission" :disabled="!hasAddAuthority">权限配置</el-button>
+        <el-button  @click="goPermission" :disabled="!hasAddAuthority">权限配置</el-button>
          <el-input  placeholder="请输入搜索关键词" v-model="searchName" prefix-icon="el-icon-search" style="width:200px;margin:0px 10px"></el-input>
-        <el-button class="creat-btn" @click="findBySearchName">查询</el-button>
+        <el-button type="primary" class="creat-btn" @click="findBySearchName">查询</el-button>
       </div>
       <!--表格-->
       <el-table v-loading="loading" :data="list" :max-height="tableMaxHeight" border style="width: 100%">
         <template slot="empty">
           <div class="empty">
-            <p><img class="data-pic" src="@src/common/images/no-data.png" alt=""/></p>
-            <p><span style="padding-left: 8px">暂无数据！</span></p>
+            <p><img class="data-pic" src="@src/common/images/no-data1.png" alt=""/></p>
+            <p><span style="padding-left: 8px;">暂无数据</span></p>
           </div>
         </template>
         <el-table-column prop="description" label="序号" width="60" align="center">
