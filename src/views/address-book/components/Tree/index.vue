@@ -6,7 +6,7 @@
       :load="loadNode"
       node-key="id"
       lazy
-      :expand-on-click-node=false
+      :expand-on-click-node='false'
       @node-click="handleNodeClick"
     >
       <!-- <span class="custom-tree-node" slot-scope="{ node, data }">
@@ -20,7 +20,7 @@
         <span :title="node.label">{{node.label}}</span>
       </span>
 
-       <span class=" svg-container" slot-scope="{ node, data }">
+       <span class="svg-container" slot-scope="{ node, data }">
         <span class="iconfont iconzuzhijigou" v-if="data"></span>
         <span :title="node.label">{{node.label}}</span>
       </span>

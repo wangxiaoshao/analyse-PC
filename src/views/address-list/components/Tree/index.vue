@@ -1,6 +1,7 @@
 <template>
   <div class="tree-list">
     <el-tree
+     ref="addressTreeList"
       :data="treeDate"
       node-key="id"
       :default-expanded-keys="[treeDate[0]!==undefined?treeDate[0].id: '']"
@@ -9,12 +10,13 @@
       :load="loadNode"
       :expand-on-click-node='false'
       @node-click="handleNodeClick"
+      :highlight-current='true'
     >
-      <span class=" svg-container" slot-scope="{ node, data }">
-        <span class="iconfont iconzuzhijigou" v-if="data.nodeType === 1"></span>
-        <span class="iconfont icondanwei" v-if="data.nodeType === 2"></span>
-        <span class="iconfont iconbumen" v-if="data.nodeType === 3"></span>
-        <span :class="[data.id===$route.params.nodeId ?'active':'noActive']" style="margin-left:3px;" :title="node.label">{{node.label}}</span>
+      <span slot-scope="{ node, data }">
+          <span  class="iconfont iconzuzhijigou" v-if="data.nodeType === 1"></span>
+          <span  class="iconfont icondanwei" v-if="data.nodeType === 2"></span>
+          <span  class="iconfont iconbumen" v-if="data.nodeType === 3"></span>
+          <span  style="margin-left:3px;" :title="node.label">{{node.label}}</span>
       </span>
     </el-tree>
   </div>
@@ -39,6 +41,13 @@ export default {
     treeDate () {
       return this.treeList
     }
+  },
+  mounted(){
+  //  $store.state.app.option.user.orgId
+  this.$nextTick(function(){
+    this.$refs.addressTreeList.setCurrentKey(this.$store.state.app.option.user.orgId) 
+  })
+
   },
   methods: {
 
