@@ -368,10 +368,15 @@ text-able{
   color: #fff;
   background-color: #58a4f3;
   border-color: #58a4f3;
-  &:hover,&:active,&.is-disabled,&.is-disabled:hover,&.is-plain{
+  &:hover,&:active,&.is-disabled,&.is-disabled:hover,&.is-plain:active{
     color: #fff;
     background-color: #58a4f3;
     border-color: #58a4f3;
+  }
+  &.look-btn,&.is-plain{
+    color: #58a4f3;
+    border-color: #8fc1d9;
+    background-color: #e2f0fd;
   }
 }
 // .el-button:hover{
@@ -387,6 +392,16 @@ text-able{
   &:hover{
     color: @globColor;
   }
+  &:active{
+    color: @globColor;
+  }
+}
+.el-button{
+  &.globBtn:hover,&.globBtn:active{
+    color: #58a4f3;
+    border-color: #8fc1d9;
+    background-color: #e2f0fd;
+    }
 }
 
 

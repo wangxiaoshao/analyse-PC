@@ -47,7 +47,7 @@
       <el-col :span="20">
         <el-footer style="text-align:center">
           <el-button type="primary" @click="saveAccount">保存</el-button>
-          <el-button  @click="goBack">取消</el-button>
+          <el-button  @click="goBack" class="globBtn">取消</el-button>
         </el-footer>
       </el-col>
     </el-row>
