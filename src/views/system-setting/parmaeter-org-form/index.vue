@@ -190,7 +190,7 @@
         </el-form>
     </div> -->
     <div class="parameter-item" v-if="hasRight('optionOrgLevelAuditSetting')">
-        <div class="header">申请审核字段设置
+        <div class="header">共享字段设置
           <span class="info-msg">（如下字段被选中以后再被修改，则需要审核后方可生效；不选中的字段被修改，不需要审核）</span>
         </div>
         <el-form ref="orgAuditField" :model="orgAuditField" label-width="160px">
@@ -728,7 +728,7 @@ export default {
       /* orgMessageRemindTemplate: '{单位名称}{月份}的单位信息需在{信息确认截止时间}日前确认，请及时前往确认。http://59.215.232.95/api/gate/forward',
       informationAuditTemplate: '{单位名称}{操作人名称}于{操作时间}修改了{修改字段}，请尽快前往后台处理。http://59.215.232.95/api/gate/forward',
       informationAuditThroughTemplate: '{单位名称}{操作人名称}于{操作时间}修改了{修改字段}已通过审核，请前往平台查看', */
-      orgAuditList: orgAuditList, // 单位审核字段数据
+      orgAuditList: orgAuditList, // 单位共享字段数据
       nodeAuditList: nodeAuditList,
       depAuditList: depAuditList,
       userAuditList: userAuditList,

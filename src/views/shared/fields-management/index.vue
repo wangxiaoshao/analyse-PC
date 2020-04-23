@@ -1,7 +1,7 @@
 <template>
 <div class="fields-management">
    <div class="parameter-item">
-      <div class="header">申请审核字段设置
+      <div class="header">共享字段设置
          <span class="info-msg">（如下字段被选中以后再被修改，则需要审核后方可生效；不选中的字段被修改，不需要审核）</span>
       </div>
       <el-form ref="systemAuditField" :model="systemAuditField" label-width="160px">
@@ -417,7 +417,7 @@ const userAuditList = [
 export default {
   data () {
     return {
-      orgAuditList: orgAuditList, // 单位审核字段数据
+      orgAuditList: orgAuditList, // 单位共享字段数据
       nodeAuditList: nodeAuditList,
       depAuditList: depAuditList,
       userAuditList: userAuditList,

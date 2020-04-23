@@ -60,8 +60,8 @@ export default {
   getChildList: 'getChildList',
   getPersonList: 'getPersonList',
   // 共享视图
-  createShareFiled: 'createShareFiled', // 获取审核字段操作
-  findShareFiledByAppId: 'findShareFiledByAppId', // 修改审核字段
+  createShareFiled: 'createShareFiled', // 获取共享字段操作
+  findShareFiledByAppId: 'findShareFiledByAppId', // 修改共享字段
   getViewList: 'getViewList', // 视图列表
   createView: 'createView', // 创建视图
   deleteViewById: 'deleteViewById', // 删除视图
