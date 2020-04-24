@@ -383,6 +383,14 @@ export default {
     url: '/api/jg_manage/idCard/idCardValidation',
     keepOriginResponse: true, // 是否保留后端返回数据格式
     serve: 'organizationManagePC'
+  },
+
+  // 查询手机号是否重复
+  [urlNames.selectMobileIsSame]: {
+    type: 'get',
+    url: '/api/jg_manage/user/selectMobileIsSame',
+    keepOriginResponse: true, 
+    serve: 'organizationManagePC'
   }
 
 }

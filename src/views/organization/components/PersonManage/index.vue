@@ -128,10 +128,13 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="手机号" prop="mobile">
-            <el-input placeholder="请输入手机号" :disabled="isDefaultFlag" v-model="userDetail.mobile" @input="showIptMsg('mobile')"></el-input>
+            <el-input placeholder="请输入手机号" :disabled="isDefaultFlag" v-model="userDetail.mobile"  @input="showIptMsg('mobile')"></el-input>
                <div class="el-form-item__error" v-show="this.iptMsgVisible['mobile']">
-              {{iptMsgInfoStr}}
-            </div>
+                  {{iptMsgInfoStr}}
+                </div>
+                 <div class="el-form-item__error" v-show="isSameMobile">
+                  该手机号已和其他用户绑定
+                </div>
           </el-form-item>
           <el-form-item label="身份类型" prop="type" required>
             <el-select
@@ -414,7 +417,12 @@ export default {
     let validateMobile = (rule, value, callback) => {
       if(value !=='') {
         let reg = /(^\s{0}$)|(0\d{2,3}-\d{7,8}|\(?0\d{2,3}[)-]?\d{7,8}|\(?0\d{2,3}[)-]*\d{7,8})|(^((13[0-9])|(15[^4])|(18[0,1,2,3,5-9])|(17[0-8])|(147)|(199))\d{8}$)/
-        reg.test(value) ? callback() : callback(new Error('请输入11位有效号码'))
+        if( reg.test(value) ){
+          callback()
+          this.findMobileIsSame()
+        }else{
+           callback(new Error('请输入11位有效号码'))
+        }
       }else{
          callback()
       }
@@ -491,6 +499,8 @@ export default {
         successVisiable:false,
         requiring:false
       },
+      isSameMobile:false,
+      isSubmit:false,
       isValidate:false,
       isShowMsg:true,
       isChange:false,
@@ -542,6 +552,25 @@ export default {
 
     exportOrg () {
       this.$emit('exportOrg')
+    },
+    findMobileIsSame(){
+      console.log('mobile:',this.userDetail.mobile)
+        api[urlNames['selectMobileIsSame']]({
+        mobile: this.userDetail.mobile
+        }).then((res) => {
+        if(res.data){
+          this.isSameMobile=false
+          this.isSubmit=true
+        }else{
+          this.$message.error('该手机号已和其他用户绑定，请尝试输入新的手机号码。')
+          this.isSameMobile=true
+          this.isSubmit=false
+        }
+        }, () => {
+          this.isSameMobile=false
+          this.isSubmit=false
+        })
+    
     },
     // 身份证认证
     idAutherntication(){
@@ -790,17 +819,22 @@ export default {
       if(this.idCardState.errorVisiable){
         this.$message.error('身份证号码与人员姓名不匹配，请重新输入')
       }else if(this.idCardState.successVisiable || this.userDetail.idcard==''){
-        this.$refs[userDetail].validate(valid => {
-        if (valid) {
-          this.isChange=false
-          this.$emit('get-post', this.postFrom,this.isAudit)
-          this.$emit('get-user', this.personFrom,this.isAudit)
-        } else {
-          this.$message.warning(`请根据提示填写有效身份信息`)
-           this.isChange=false
-          return false
+        if(this.isSubmit&&!this.isSameMobile){
+           this.$refs[userDetail].validate(valid => {
+            if (valid) {    
+              this.isChange=false
+              this.$emit('get-post', this.postFrom,this.isAudit)
+              this.$emit('get-user', this.personFrom,this.isAudit)
+            } else {
+                this.$message.warning(`请根据提示填写有效身份信息`)
+                this.isChange=false
+                return false
+            }
+          })    
+        }else if(this.isSameMobile){
+          this.$message.warning(`该手机号已和其他用户绑定，请尝试输入新的手机号码。`)
         }
-      })
+           
       }else if(this.userDetail.idcard !==''){
         this.$message.warning(`请先进行身份证号实名认证!`)
       }

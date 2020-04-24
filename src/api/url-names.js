@@ -204,6 +204,8 @@ export default {
   saveAuthorityManage: 'saveAuthorityManage',
   // 验证身份证
   idCardValidation: 'idCardValidation',
+  // 查询手机号是否重复
+  selectMobileIsSame: 'selectMobileIsSame',
 
   // 查询单位下的区域
   findOrgAreaList: 'findOrgAreaList',

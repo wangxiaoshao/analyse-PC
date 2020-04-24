@@ -67,6 +67,7 @@
 </template>
 <script>
 import { api, urlNames } from '@src/api'
+import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
 const nodeAuditList = [/* {
     name: 'id',
     checkname: '结点ID'
@@ -415,6 +416,7 @@ const userAuditList = [
   } */
 ]
 export default {
+  mixins:[handleBreadcrumb],
   data () {
     return {
       orgAuditList: orgAuditList, // 单位共享字段数据
@@ -431,6 +433,17 @@ export default {
     }
   },
   created () {
+    if (this.$route.query.id) {
+      this.pushBreadcrumb({
+        name: '应用配置',
+        parent: {
+          name: 'AppManagement',
+          query: {
+            type: 'back'
+          }
+        }
+      })
+    }
     this.getUserfindShare()
     // this.getShareFields()
   },

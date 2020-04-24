@@ -2,7 +2,7 @@
   <div class="push-log">
     <!-- 详细信息弹窗 -->
     <div class="dialog-box">
-      <el-dialog :visible.sync="detialInfoVisible"  width="450px">
+      <el-dialog :visible.sync="detialInfoVisible"  width="600px">
         <div slot="title" style="padding:20px">
           日志详情
           <i class="el-icon-document-copy" style="color:red"></i>
@@ -19,7 +19,11 @@
               </el-form-item>
               <el-form-item label="异常信息">
                 <div class="table-td">
-                  {{detialInfo.exceptionMessage}}
+                  <span style="color:red"
+                   v-if="detialInfo.exceptionMessage">
+                   {{detialInfo.exceptionMessage}}
+                   </span>
+                   <span v-else>无</span>
                 </div>
               </el-form-item>
               <el-form-item label="同步地址">
@@ -126,7 +130,7 @@
       align="center"
       >
        <template slot-scope="scope">
-         <span>{{scope.row.success=0 ?'失败':'成功'}}</span>
+         <span>{{scope.row.success==0 ?'失败':'成功'}}</span>
       </template>
     </el-table-column>
     <el-table-column
