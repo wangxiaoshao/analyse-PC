@@ -59,7 +59,7 @@
         <template slot-scope="scope">
           <el-button @click="handleClick(scope.row)" type="text" size="small" :disabled="!hasRight('shareAppSetting')">编辑</el-button>
          <!-- <el-button  @click="toDataLog" type="text" size="small" :disabled="!hasRight('shareAppLoggingAccess')">日志</el-button> -->
-          <el-button  @click="toDataLog(scope.row)" type="text" size="small">日志</el-button>
+          <el-button  @click="toDataLog(scope.row)" type="text" size="small" :disabled="!hasRight('minePushAccess')">日志</el-button>
           <el-button  @click="toSetFields(scope.row)" type="text" size="small">配置</el-button>
         </template>
       </el-table-column>
