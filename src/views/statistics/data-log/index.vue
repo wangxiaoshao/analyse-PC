@@ -6,7 +6,7 @@
           <personal-log :loginLog="logAry[1]" :showFindBtn='showFindBtn'></personal-log>
         </el-tab-pane>
         <el-tab-pane label="系统日志"  v-if="hasRight('systemLogingSystemAccess')">
-          <personal-log :loginLog="logAry[2]" :showFindBtn='showFindBtn'></personal-log>
+          <personal-log :loginLog="logAry[2]"></personal-log>
         </el-tab-pane>
         <el-tab-pane label="共享日志"  v-if="hasRight('systemLogingPushAccess')">
           <push-log></push-log>

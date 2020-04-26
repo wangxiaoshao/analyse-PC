@@ -55,7 +55,9 @@ export default {
     type: 'get',
     url: '/api/jg_manage/statistics/getStatistiscCount',
     keepOriginResponse: true,
+    showLoading: true,
     serve: 'organizationManagePC'
+
   },
   // 获取接入应用总数
   [urlNames.findApplicationCount]: {
@@ -69,6 +71,7 @@ export default {
     type: 'get',
     url: '/api/jg_share/app/findPushLoggers',
     keepOriginResponse: true,
+    showLoading: true,
     serve: 'organizationManagePC'
   }
 }

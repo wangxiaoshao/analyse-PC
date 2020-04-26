@@ -44,7 +44,7 @@
     </div>
     <el-form inline>
       <el-form-item>
-          <span class="title">时间</span>
+          <span class="title">时间  </span>
           <el-select
             v-model="logParam.selectValue"
             align="center"
@@ -191,7 +191,7 @@ export default {
           const now = new Date()
           const startDate = new Date(now.getFullYear(), now.getMonth(), 1)
 
-          return time.getTime() > Date.now() - 8.64e6 || time.getTime() < startDate
+          return time.getTime() > Date.now() - 8.64e6
         },
         shortcuts: null
       }
@@ -233,7 +233,7 @@ export default {
         this.logParam.dateType = val[0]
         this.value = val[1]
         this.format = val[2]
-        return false
+        // return false
       } else if (val[0] === 'yesterday') {
         todayDate = new Date(todayDate.setDate(todayDate.getDate() - 1))
         this.logParam.dateType = val[0]
@@ -242,6 +242,13 @@ export default {
         todayDate.getTime(),
         'yyyy-MM-dd'
       )
+       if(val[0]=='month'){
+        todayDate=new Date(todayDate.setMonth(todayDate.getMonth()))
+       this.date = this.$options.filters['date'](
+        todayDate.getTime(),
+        'yyyy-MM'
+      )
+      }
       if (this.date) {
         this.getGrid()
       }
@@ -256,7 +263,7 @@ export default {
       let data = {
         page: this.page.current,
         limit: this.page.limit,
-        type: 0
+        type: this.logParam.dateType === 'month' ? 4 : 0
       }
 
       if (this.$route.query.id) {

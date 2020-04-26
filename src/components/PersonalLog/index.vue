@@ -223,7 +223,8 @@ export default {
           const now = new Date()
           const startDate = new Date(now.getFullYear(), now.getMonth(), 1)
 
-          return time.getTime() > Date.now() - 8.64e6 || time.getTime() < startDate
+          // return time.getTime() > Date.now() - 8.64e6 || time.getTime() < startDate
+          return time.getTime() > Date.now() - 8.64e6
         },
         shortcuts: null
       },
@@ -282,7 +283,7 @@ export default {
         'yyyy-MM'
       )
       }
-     
+
       if (this.date) {
         this.getGrid()
       }
@@ -309,7 +310,7 @@ export default {
         })
     },
     getGrid () {
-      
+
       let data = {
         date: '',
         type: this.logParam.dateType === 'month' ? 4 : 0, // 后端需要传输的数据类型 月份type：4 || 天：0
