@@ -6,9 +6,9 @@
         <span v-if="content[0].nodeType === 2" class="content-ico iconfont icondanwei"></span>
         <span v-if="content[0].nodeType === 3" class="content-ico iconfont iconbumen"></span>
         <span class="organization-value" v-html="content[0].name"></span>
-        <el-button v-if="content[0].nodeType === 1" @click.native="openEditNode(content[0])">编辑</el-button>
+        <el-button v-if="content[0].nodeType === 1" @click.native="openEditNode(content[0])" >编辑</el-button>
         <el-button v-if="content[0].nodeType === 2" @click.native="openEditUnit(content[0])" >编辑</el-button>
-        <el-button v-if="content[0].nodeType === 3" @click.native="openDepartmentEdit(content[0])">编辑</el-button>
+        <el-button v-if="content[0].nodeType === 3" @click.native="openDepartmentEdit(content[0])" >编辑</el-button>
         <el-button @click="toLogData" style="margin-left: 5px">日志</el-button>
       </div>
       <!-- <div class="label-content">

@@ -339,7 +339,7 @@ text-able{
     .table-td{
       margin-left: 20px;
     }
-    
+
   }
   .overline{
     width: 290px;
@@ -364,44 +364,56 @@ text-able{
   cursor: pointer;
 }
 
-.el-button--primary{
-  color: #fff;
-  background-color: #58a4f3;
-  border-color: #58a4f3;
-  &:hover,&:active,&.is-disabled,&.is-disabled:hover,&.is-plain:active{
-    color: #fff;
-    background-color: #58a4f3;
-    border-color: #58a4f3;
-  }
-  &.look-btn,&.is-plain{
-    color: #58a4f3;
-    border-color: #8fc1d9;
-    background-color: #e2f0fd;
-  }
-}
-// .el-button:hover{
-//   color: #fff;
-//   background-color: #58a4f3;
-//   border-color: #58a4f3;
-  
-// }
-.el-button--text{
-  color: #58a4f3;
-  background: 0 0;
-  border: none;
-  &:hover{
-    color: @globColor;
-  }
-  &:active{
-    color: @globColor;
-  }
-}
+
+// 设置全局按钮，树形，表格样式
 .el-button{
-  &.globBtn:hover,&.globBtn:active{
-    color: #58a4f3;
+  &:hover,&:active,&:focus{
+    color:  @globColor;
     border-color: #8fc1d9;
     background-color: #e2f0fd;
     }
 }
 
+.el-button--primary{
+  color: #fff;
+  background-color:  @globColor;
+  border-color:  @globColor;
+  &:hover,&:active,&.is-disabled,&.is-disabled:hover,&.is-plain:active{
+    color: #fff;
+    background-color:  @globColor;
+    border-color:  @globColor;
+  }
+  &.look-btn,&.is-plain{
+    color:  @globColor;
+    border-color: #8fc1d9;
+    background-color: #e2f0fd;
+  }
+}
+
+.el-button--text{
+  color:  @globColor;
+  background: 0 0;
+  border: none;
+  &:hover,&:active,&:focus{
+    color: @globColor;
+    border-color: transparent;
+    background-color: initial;
+  }
+}
+
+.el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content {
+  color: @globColor;
+  // background-color: #fff4f0;
+  background-color: #e2f0fd;
+}
+.el-table__body tr.current-row>td {
+  background-color: #F5F7FA;
+}
+.el-table--striped .el-table__body tr.el-table__row--striped.current-row td {
+  background-color: #F5F7FA;
+}
+.el-dropdown-menu__item:not(.is-disabled):hover {
+  background-color:  #e2f0fd;
+  color:  @globColor;
+}
 

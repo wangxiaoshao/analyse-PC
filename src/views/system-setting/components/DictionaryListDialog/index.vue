@@ -48,7 +48,7 @@
                 prop="value"
                 label="操作">
                 <template slot-scope="scope">
-                  <span class="tag-icon-operate fa fa-trash-o delete" style="color:red;cursor: pointer;"
+                  <span class="tag-icon-operate fa fa-trash-o delete" :title="删除" style="color:#58a4f3;cursor: pointer;"
                     @click="deleteDic(scope.$index, scope.row)"></span>
                   <!-- <el-button
                   size="mini"

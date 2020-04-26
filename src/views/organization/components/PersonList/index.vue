@@ -80,7 +80,7 @@
     <el-table
       v-loading="loading"
       :data="list"
-      stripe
+       stripe
       border
       highlight-current-row
       row-key="id"
@@ -263,7 +263,7 @@ export default {
       // debugger
       this.activeId = uid
       api[urlNames['findMobileById']]({ uid }).then(res => {
-      
+
       })
     },
     getGrid () {

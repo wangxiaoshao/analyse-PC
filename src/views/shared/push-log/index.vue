@@ -85,7 +85,7 @@
     :data="logList"
     border
     stripe
-     highlight-current-row
+
     style="width: 100%">
     <template slot="empty">
       <div class="empty">

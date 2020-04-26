@@ -44,6 +44,7 @@
                 class="tag-icon-operate fa fa-edit"
                 @click="editTag(data, {flag:0,title:node.label})"></span>
           <span v-show="hasDeleteRight(data.type)"
+                 :title="删除"
                 class="tag-icon-operate fa fa-trash-o delete"
                 @click="deleteLabel(data.id)"></span>
         </span>

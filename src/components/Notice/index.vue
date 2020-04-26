@@ -77,11 +77,6 @@ export default {
 </script>
 <style lang="less">
 @import './index';
-.el-button--primary {
-  color: #fff;
-  background-color: #58a4f3;
-  border-color: #58a4f3;
-}
 .colorB {
   color: #fff;
   background-color: #888;
