@@ -78,7 +78,7 @@
     <el-dialog :visible.sync="showSortDilog" width="420px">
       <div slot="title" style=" padding: 20px; background-color: #fff;">
         <span>数值排序</span>
-        <i class="el-icon-document-copy" style="color:red;margin-left:6px"></i>
+        <i class="el-icon-document-copy" style="color:#58a4f3;margin-left:6px"></i>
       </div>
       <div class="sort-ipt">
         请输入排序目标序号：
