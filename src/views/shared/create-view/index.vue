@@ -11,7 +11,7 @@
                     <el-input v-model="ViewFrom.name"></el-input>
                   </el-form-item>
                   <el-form-item label="视图管理员" >
-                    <el-select  
+                    <el-select
                       :disabled="!hasRight('viewSettingManager')"
                      v-model="ViewFrom.roleBindUserIds"  @remove-tag="removeManager" multiple
                                placeholder="请选择">
@@ -151,7 +151,7 @@
                   <el-tree
                     :data="currentView"
                     :props="defaultProps"
-                    :load="loadNode"
+                    :load="findCurrentView"
                     lazy>
                   </el-tree>
                 </div>
@@ -249,7 +249,6 @@ export default {
       this.findNodeDraftList('-1')
       this.findViewById(this.$route.params.id)
 
-      this.findCurrentView(this.$route.params.id)
       this.getViewTime()
     }
     this.oldViewFrom = JSON.parse(JSON.stringify(this.ViewFrom))
@@ -329,7 +328,10 @@ export default {
         parentId: -1
       }).then((res) => {
         if (res.status === 0) {
-          this.viewLastUpdatedTime = res.data.lastUpdateTime
+          if (res.data && res.data.lastUpdateTime) {
+            this.viewLastUpdatedTime = res.data.lastUpdateTime
+            this.currentView = res.data.list
+          }
         }
       })
     },
@@ -372,11 +374,24 @@ export default {
       })
     },
     // 获取当前定型的视图
-    findCurrentView (viewId) {
-      api[urlNames['getViewTree']]({
-        viewId: viewId
+    findCurrentView (node, resolve) {
+      if (node.level === 0) {
+        return resolve(this.nodeTree)
+      }
+      api[urlNames['getViewTime']]({
+        viewId: this.returnViewId,
+        parentId: node.data.id
       }).then((res) => {
-        this.currentView = res.data
+        let treeData = []
+        if (res.data.list) {
+          res.data.list.forEach(item => {
+            if (item.hasChildren === 0) {
+              item.leaf = true
+            }
+            treeData.push(item)
+          })
+        }
+        resolve(treeData)
       })
     },
     // 获取机构树--加载子节点
@@ -499,7 +514,7 @@ export default {
         viewId: this.returnViewId
       }).then((res) => {
         if (res.status === 0) {
-          this.findCurrentView(this.$route.params.id)
+          this.getViewTime()
           this.activeName='third'
         }
       })
@@ -667,7 +682,7 @@ export default {
            that.ViewFrom.roleBindUserIds.push(item.uid)
         })
         }
-       
+
         this.oldViewFrom = JSON.parse(JSON.stringify(this.ViewFrom))
 
       })
