@@ -136,6 +136,7 @@ export default {
     openDialog () {
       // 创建初始化--防止修改数据覆盖
       this.creatTitle = '创建分组'
+      this.editId=''
       this.creategroupdialogVisible = true
     },
     // 编辑分组
