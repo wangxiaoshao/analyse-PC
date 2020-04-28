@@ -199,7 +199,7 @@
                     <div class="table-td" style="text-align: center">模块</div>
                     <div class="table-td" style="text-align: center">功能</div>
                 </div>
-                <div class="table-row">
+                <!-- <div class="table-row">
                   <div class="table-td" style="text-align: center">
                     节点
                   </div>
@@ -209,7 +209,7 @@
                       </el-checkbox>
                     </el-checkbox-group>
                   </div>
-                </div>
+                </div> -->
                 <div class="table-row">
                     <div class="table-td" style="text-align: center">
                         单位
