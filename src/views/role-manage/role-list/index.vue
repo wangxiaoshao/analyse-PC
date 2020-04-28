@@ -14,7 +14,10 @@
       </template>
       <el-table-column prop="title" label="角色名称">
       </el-table-column>
-      <el-table-column prop="description" label="角色描述">
+      <el-table-column prop="description" label="角色描述" align="center">
+         <template slot-scope="scope">
+          <span>{{ scope.row.description || '无'}}</span>
+        </template>
       </el-table-column>
       <el-table-column prop="createTime" label="创建时间" width="150" align="center">
       </el-table-column>
@@ -33,7 +36,7 @@
       </el-table-column>
     </el-table>
     <!--分页-->
-    <el-pagination
+    <!-- <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="page.current"
@@ -41,7 +44,7 @@
       :page-size="page.limit"
       layout="total, sizes, prev, pager, next, jumper"
       :total="page.total">
-    </el-pagination>
+    </el-pagination> -->
   </div>
 </template>
 
@@ -81,20 +84,21 @@ export default {
     ...mapMutations(['SET_ROLEMANAGE_PAGE', 'LIST_ID']),
     getGrid () {
       let data = {
-        page: this.page.current,
+        page: 1,
         parentId: this.$route.params.nodeId,
-        limit: this.page.limit
+        limit: 20
       }
+
       this.loading = true
       api[urlNames['findRoleList']](data).then((res) => {
         this.loading = false
         console.log(res.data)
         this.list = res.data
-        this.page.total = res.total
+        // this.page.total = res.total
       }, () => {
         this.loading = false
         this.list = []
-        this.page.total = 0
+        // this.page.total = 0
       })
     },
     goLookPerson (row) {
