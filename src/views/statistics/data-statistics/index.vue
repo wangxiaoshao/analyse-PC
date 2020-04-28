@@ -193,7 +193,7 @@ export default {
     this.initDataStatistics()
     // 获取接应用总数
     api[urlNames['findApplicationCount']]().then((res) => {
-      this.applyCount = res.data[0]
+      this.applyCount = res.data.shareApplicationCount
     })
   },
   methods: {
