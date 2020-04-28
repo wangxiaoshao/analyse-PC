@@ -378,11 +378,19 @@ text-able{
   color: #fff;
   background-color:  @globColor;
   border-color:  @globColor;
-  &:hover,&:active,&.is-disabled,&.is-disabled:hover,&.is-plain:active{
+  &:hover,&:active,&.is-plain:active{
     color: #fff;
     background-color:  @globColor;
     border-color:  @globColor;
   }
+  &.is-disabled,&.is-disabled:hover{
+    color:#fff;
+    // border-color: #8fc1d9;#e2f0fd;
+    border-color: #d3e7fa;
+  //  
+    background-color: #d3e7fa;
+  }
+ 
   &.look-btn,&.is-plain{
     color:  @globColor;
     border-color: #8fc1d9;

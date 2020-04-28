@@ -2,7 +2,7 @@
     <div class="look-person">
       <select-members :seleceDialog="selectDialog" @dialogReturnMembersInfo="dialogReturnMembersInfo" @closeselectMenmber="closeselectMenmber"></select-members>
       <div class="button-wrap">
-        <el-button type="primary"
+        <el-button type="primary" class="addPerson"
                    @click="openselectMenmber"
                    :disabled="!hasAddUser">添加角色成员</el-button>
         <el-button  @click="goPermission" :disabled="!hasAddAuthority">权限配置</el-button>

@@ -41,7 +41,7 @@
           <el-breadcrumb-item v-if="!showBreadCrumb">个人通讯录</el-breadcrumb-item>
         </el-breadcrumb>
         <transition name="fade-transform" mode="out-in" style="height: 100%">
-          <div style="padding: 0 20px">
+          <div style="padding: 0 20px;height:100%">
             <department
               :activeColor='activeColor'
               :orgInfo='orgInfo'

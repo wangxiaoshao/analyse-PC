@@ -120,7 +120,7 @@
       </el-table>
     </div>
     <div class="no-right" v-if="visableData.allOrgInfo==0" style="text-align:center;">
-      <img class="no-content-img" :src="imgSrc" alt="" width="250px">
+      <img class="no-content-img" :src="imgSrc" alt="" width="180px">
       <div style="font-size:20px;color:#999"> 该单位信息对外不可见！</div>
     </div>
   </div>
