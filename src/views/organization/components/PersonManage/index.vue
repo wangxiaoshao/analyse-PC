@@ -415,56 +415,55 @@ export default {
   data () {
     // 验证手机号
     let validateMobile = (rule, value, callback) => {
-      if(value !=='') {
+      if (value !== '') {
         let reg = /(^\s{0}$)|(0\d{2,3}-\d{7,8}|\(?0\d{2,3}[)-]?\d{7,8}|\(?0\d{2,3}[)-]*\d{7,8})|(^((13[0-9])|(15[^4])|(18[0,1,2,3,5-9])|(17[0-8])|(147)|(199))\d{8}$)/
-        if( reg.test(value) ){
-          callback()
-          this.findMobileIsSame()
-        }else{
-           callback(new Error('请输入11位有效号码'))
+        if (reg.test(value)) {
+          this.findMobileIsSame(callback)
+        } else {
+          callback(new Error('请输入11位有效号码'))
         }
-      }else{
-         callback()
+      } else {
+        callback()
       }
     }
 
     // 验证办公电话
     let validateOffice = (rule, value, callback) => {
-      if(value !=='') {
+      if (value !== '') {
         let reg = /(^\s{0}$)|(0\d{2,3}-\d{7,8}|\(?0\d{2,3}[)-]?\d{7,8}|\(?0\d{2,3}[)-]*\d{7,8})/
         reg.test(value) ? callback() : callback(new Error('请输入有效的办公电话'))
-      }else{
-         callback()
+      }else {
+        callback()
       }
     }
 
     // 验证身份证号
     let validateId = (rule, value, callback) => {
-      if(value !=='') {
+      if (value !== '') {
         let reg = /^([1-6][1-9]|50)\d{4}(18|19|20)\d{2}((0[1-9])|10|11|12)(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/
-        if(reg.test(value)){
-          this.isValidate=true
-          this.isShowMsg=true
-          this.idCardState.successVisiable=false
-          this.idCardState.errorVisiable=false
-          this.idCardState.requiring=false
+        if (reg.test(value)) {
+          this.isValidate = true
+          this.isShowMsg = true
+          this.idCardState.successVisiable = false
+          this.idCardState.errorVisiable = false
+          this.idCardState.requiring = false
           callback()
-        }else{
-          this.isValidate=false
-          this.isShowMsg=false
-          this.idCardState.successVisiable=false
-          this.idCardState.errorVisiable=false
-          this.idCardState.requiring=false
+        }else {
+          this.isValidate = false
+          this.isShowMsg = false
+          this.idCardState.successVisiable = false
+          this.idCardState.errorVisiable = false
+          this.idCardState.requiring = false
           callback(new Error('请输入有效身份证号'))
         }
         // reg.test(value) ? callback() : callback(new Error('请输入有效身份证号'))
-      }else{
-         this.isValidate=false
-         this.isShowMsg=true
-        this.idCardState.successVisiable=false
-        this.idCardState.errorVisiable=false
-        this.idCardState.requiring=false
-         callback()
+      }else {
+        this.isValidate = false
+        this.isShowMsg = true
+        this.idCardState.successVisiable = false
+        this.idCardState.errorVisiable = false
+        this.idCardState.requiring = false
+        callback()
       }
     }
 
@@ -491,7 +490,7 @@ export default {
           { type: 'number', message: '', trigger: 'change' }
         ],
         idcard:[
-            { validator: validateId, trigger: 'blur' }
+          { validator: validateId, trigger: 'blur' }
         ]
       },
       idCardState:{
@@ -534,13 +533,13 @@ export default {
       },
       timer: null,
       showPopoverFlag: false,
-       initCount:0
+      initCount:0
     }
   },
   created () {
     this.initIptMsgVisible()
   },
-  mounted(){
+  mounted() {
     // this.oldUserDetail = JSON.parse(JSON.stringify(this.userDetail))
     // this.oldPostDetail ={...this.postDetail}
   },
@@ -553,68 +552,71 @@ export default {
     exportOrg () {
       this.$emit('exportOrg')
     },
-    findMobileIsSame(){
-      console.log('mobile:',this.userDetail.mobile)
-        api[urlNames['selectMobileIsSame']]({
+    findMobileIsSame (successCallback = null) {
+      // console.log('mobile:',this.userDetail.mobile)
+      api[urlNames['selectMobileIsSame']]({
         mobile: this.userDetail.mobile
-        }).then((res) => {
-        if(res.data){
-          this.isSameMobile=false
-          this.isSubmit=true
-        }else{
+      }).then((res) => {
+        if (!res.data) {
+          this.isSameMobile = false
+          this.isSubmit = true
+          if (successCallback) {
+            successCallback()
+          }
+        } else {
           this.$message.error('该手机号已和其他用户绑定，请尝试输入新的手机号码。')
-          this.isSameMobile=true
-          this.isSubmit=false
+          this.isSameMobile = true
+          this.isSubmit = false
         }
-        }, () => {
-          this.isSameMobile=false
-          this.isSubmit=false
-        })
+      }, () => {
+        this.isSameMobile = false
+        this.isSubmit = false
+      })
 
     },
     // 身份证认证
-    idAutherntication(){
+    idAutherntication() {
       // 522501199512028321
-      let that=this
-      this.idCardState.successVisiable=false
-      this.idCardState.errorVisiable=false
-      this.idCardState.requiring=false
+      let that = this
+      this.idCardState.successVisiable = false
+      this.idCardState.errorVisiable = false
+      this.idCardState.requiring = false
       // console.log('idcard:',this.userDetail.idcard,this.isValidate)
-      if(this.userDetail.name !==''){
-        if(this.userDetail.idcard !=='' && this.isValidate){
-           if(this.isValidate){
-           this.isShowMsg=false
-           this.idCardState.requiring=true
+      if (this.userDetail.name !== '') {
+        if (this.userDetail.idcard !== '' && this.isValidate) {
+          if (this.isValidate) {
+            this.isShowMsg = false
+            this.idCardState.requiring = true
             api[urlNames['idCardValidation']]({
-            idCard:this.userDetail.idcard,
-            name:this.userDetail.name
-          }).then((res) => {
-            if(res.data){
-              that.idCardState.successVisiable=true
-              that.idCardState.errorVisiable=false
-              that.idCardState.requiring=false
-              that.isShowMsg=false
+              idCard:this.userDetail.idcard,
+              name:this.userDetail.name
+            }).then((res) => {
+              if (res.data) {
+                that.idCardState.successVisiable = true
+                that.idCardState.errorVisiable = false
+                that.idCardState.requiring = false
+                that.isShowMsg = false
 
-            }else{
-             that.idCardState.errorVisiable=true
-             that.isShowMsg=false
-             that.idCardState.requiring=false
-             that.idCardState.successVisiable=false
+              }else {
+                that.idCardState.errorVisiable = true
+                that.isShowMsg = false
+                that.idCardState.requiring = false
+                that.idCardState.successVisiable = false
 
-            }
-          }, () => {
-          })
-        }else{
-          this.$message.error('请输入有效身份证号码')
+              }
+            }, () => {
+            })
+          }else {
+            this.$message.error('请输入有效身份证号码')
+          }
         }
-        }
-      }else{
-         this.$message.error('请先输入人员姓名')
+      }else {
+        this.$message.error('请先输入人员姓名')
       }
 
 
     },
-     getUserAccount (userId) {
+    getUserAccount (userId) {
       api[urlNames['findUserAccountByUid']]({
         userId: userId
       }).then((res) => {
@@ -632,7 +634,7 @@ export default {
     showIptMsg (fieldName) {
       if (this.app.option.options.userAuditFields.indexOf(fieldName) > -1) {
         this.iptMsgVisible[fieldName] = true
-        this.isAudit=true
+        this.isAudit = true
       }
     },
     modifieUserInfo (userDetail) {
@@ -755,7 +757,7 @@ export default {
         }
       })
     },
-    beforeAvatarUpload (file) {console.log(file)
+    beforeAvatarUpload (file) {
       const isJPG = file.type === 'image/jpeg'
       const isPNG = file.type === 'image/png'
       const isLt2M = file.size / 1024 / 1024 < 2
@@ -816,49 +818,51 @@ export default {
     },
 
     next (userDetail) {
-      if(this.idCardState.errorVisiable){
-        this.$message.error('身份证号码与人员姓名不匹配，请重新输入')
-      }else if(this.idCardState.successVisiable || this.userDetail.idcard==''){
-        if(this.isSubmit&&!this.isSameMobile){
-           this.$refs[userDetail].validate(valid => {
-            if (valid) {
-              this.isChange=false
-              this.$emit('get-post', this.postFrom,this.isAudit)
-              this.$emit('get-user', this.personFrom,this.isAudit)
-            } else {
+      this.findMobileIsSame(() => {
+        if (this.idCardState.errorVisiable) {
+          this.$message.error('身份证号码与人员姓名不匹配，请重新输入')
+        } else if (this.idCardState.successVisiable || this.userDetail.idcard == '') {
+          if (this.isSubmit && !this.isSameMobile) {
+            this.$refs[userDetail].validate(valid => {
+              if (valid) {
+                this.isChange = false
+                this.$emit('get-post', this.postFrom,this.isAudit)
+                this.$emit('get-user', this.personFrom,this.isAudit)
+              } else {
                 this.$message.warning(`请根据提示填写有效身份信息`)
-                this.isChange=false
+                this.isChange = false
                 return false
-            }
-          })
-        }else if(this.isSameMobile){
-          this.$message.warning(`该手机号已和其他用户绑定，请尝试输入新的手机号码。`)
+              }
+            })
+          } else if (this.isSameMobile) {
+            this.$message.warning(`该手机号已和其他用户绑定，请尝试输入新的手机号码。`)
+          }
+
+        } else if (this.userDetail.idcard !== '') {
+          this.$message.warning(`请先进行身份证号实名认证!`)
         }
-
-      }else if(this.userDetail.idcard !==''){
-        this.$message.warning(`请先进行身份证号实名认证!`)
-      }
+      })
     },
-     addWatch(){
-       return JSON.stringify(this.userDetail) !== JSON.stringify(this.oldUserDetail) || JSON.stringify(this.postDetail) !== JSON.stringify(this.oldPostDetail)
+    addWatch() {
+      return JSON.stringify(this.userDetail) !== JSON.stringify(this.oldUserDetail) || JSON.stringify(this.postDetail) !== JSON.stringify(this.oldPostDetail)
     },
-   goBack () {
-       this.isChange= this.addWatch()
-      console.log('isChange:',this.isChange)
-      if(this.isChange){
+    goBack () {
+      this.isChange = this.addWatch()
+      // console.log('isChange:',this.isChange)
+      if (this.isChange) {
         this.$confirm('修改内容尚未保存, 确定要取消吗?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
-             this.$router.go(-1)
-          }).catch(() => {
-            this.isChange=false
-
-          });
-      }else{
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
           this.$router.go(-1)
-          this.isChange=false
+        }).catch(() => {
+          this.isChange = false
+
+        });
+      }else {
+        this.$router.go(-1)
+        this.isChange = false
       }
     },
     handleSelect (item) {
