@@ -51,7 +51,7 @@
                 @blur="blur"
                 @input="loadSearch"
                 @change="idAutherntication"
-                @keyup.enter.native="loadSearch" 
+                @keyup.enter.native="loadSearch"
               ></el-input>
               <div class="result-list" v-if="searchFlag">
                 <div class="default-warn" style="color: #FF6633">
@@ -428,7 +428,7 @@ export default {
       }
     }
 
-    // 验证办公电话 
+    // 验证办公电话
     let validateOffice = (rule, value, callback) => {
       if(value !=='') {
         let reg = /(^\s{0}$)|(0\d{2,3}-\d{7,8}|\(?0\d{2,3}[)-]?\d{7,8}|\(?0\d{2,3}[)-]*\d{7,8})/
@@ -438,7 +438,7 @@ export default {
       }
     }
 
-    // 验证身份证号 
+    // 验证身份证号
     let validateId = (rule, value, callback) => {
       if(value !=='') {
         let reg = /^([1-6][1-9]|50)\d{4}(18|19|20)\d{2}((0[1-9])|10|11|12)(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/
@@ -570,7 +570,7 @@ export default {
           this.isSameMobile=false
           this.isSubmit=false
         })
-    
+
     },
     // 身份证认证
     idAutherntication(){
@@ -594,25 +594,25 @@ export default {
               that.idCardState.errorVisiable=false
               that.idCardState.requiring=false
               that.isShowMsg=false
-            
+
             }else{
              that.idCardState.errorVisiable=true
              that.isShowMsg=false
              that.idCardState.requiring=false
              that.idCardState.successVisiable=false
-            
+
             }
           }, () => {
           })
         }else{
           this.$message.error('请输入有效身份证号码')
-        }  
-        }  
+        }
+        }
       }else{
          this.$message.error('请先输入人员姓名')
       }
-     
-     
+
+
     },
      getUserAccount (userId) {
       api[urlNames['findUserAccountByUid']]({
@@ -821,7 +821,7 @@ export default {
       }else if(this.idCardState.successVisiable || this.userDetail.idcard==''){
         if(this.isSubmit&&!this.isSameMobile){
            this.$refs[userDetail].validate(valid => {
-            if (valid) {    
+            if (valid) {
               this.isChange=false
               this.$emit('get-post', this.postFrom,this.isAudit)
               this.$emit('get-user', this.personFrom,this.isAudit)
@@ -830,11 +830,11 @@ export default {
                 this.isChange=false
                 return false
             }
-          })    
+          })
         }else if(this.isSameMobile){
           this.$message.warning(`该手机号已和其他用户绑定，请尝试输入新的手机号码。`)
         }
-           
+
       }else if(this.userDetail.idcard !==''){
         this.$message.warning(`请先进行身份证号实名认证!`)
       }
@@ -879,6 +879,8 @@ export default {
   watch: {
     labelList (val) {
       val.forEach(item => {
+        this.tagsName = []
+        this.sendLabelId = []
         this.tagsName.push(item.name)
         this.sendLabelId.push(item.id)
       })
