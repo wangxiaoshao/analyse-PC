@@ -190,7 +190,7 @@
         </el-form>
     </div> -->
     <div class="parameter-item" v-if="hasRight('optionOrgLevelAuditSetting')">
-        <div class="header">共享字段设置
+        <div class="header">审核字段设置
           <span class="info-msg">（如下字段被选中以后再被修改，则需要审核后方可生效；不选中的字段被修改，不需要审核）</span>
         </div>
         <el-form ref="orgAuditField" :model="orgAuditField" label-width="160px">
