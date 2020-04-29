@@ -1,0 +1,195 @@
+.homePage{
+  .homeContent{
+    width: 100%;
+    padding: 12px 20px;
+    // box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+     margin-bottom: 30px;
+    border-radius: 5px;
+    .header-title{
+      font-size: 16px;
+      margin-bottom: 5px;
+      color: #58a4f3;
+    }
+    .notice{
+      padding-bottom: 16px;
+    }
+
+    .userInfo,.notice{
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      .noticeInfo:nth-child(1){
+        padding-right: 25px;
+        border-right: 1px  solid rgba(0, 0, 0, 0.1);
+      }
+      .noticeInfo:nth-child(2){
+        padding-left: 25px;
+        border-left: 1px  solid rgba(0, 0, 0, 0.1);
+      }
+      .noticeInfo{
+        width: 50%;
+        box-sizing: border-box;
+        p{
+          padding: 5px  0px;
+          font-size: 13px;
+          color:#777 ;
+          cursor: pointer;
+          span{
+            cursor: pointer;
+          }
+          .msg{
+            display: inline-block;
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+          .date{
+            display: inline-block;
+            width: 100%;
+            text-align: right;
+          }
+        }
+
+      }
+      a{
+        font-size: 12px;
+        color:#58a4f3;
+        position: absolute;
+        right: 0px;
+        bottom: -4px;
+      }
+    }
+    .userInfo{
+      position: relative;
+      font-size: 13px;
+      .userImg{
+        display: inline-block;
+        border: 2px solid rgba(0, 0, 0, 0.1);
+        color:rgba(0, 0, 0, 0.1);
+        border-radius: 50%;
+        width: 45px;
+        height: 45px;
+        line-height: 45px;
+        text-align: center;
+        position: absolute;
+        left:0px;
+        top:calc(50% - 22.5px);
+        font-size: 30px;
+      }
+      .noticeInfo:nth-child(1){
+        div{
+          display:inline-block;
+          position: absolute;
+          left:65px;
+          top:calc(50% - 30px);
+          p{
+            color:#444;
+            font-size: 13px;
+          }
+        }
+      }
+      .noticeInfo:nth-child(2){
+        // display: flex;
+        // justify-content: space-between;
+        ul{
+          li{
+            color:#444;
+            padding: 3px  0;
+            font-size: 13px;
+            span{
+              color:#444;
+            }
+            span:nth-child(1){
+              display: inline-block;
+              width: 80px;
+              text-align: center;
+            }
+            span:nth-child(2){
+              font-weight: bold;
+              color: rgba(0, 0, 0, 0.1);
+            }
+            span:nth-child(3){
+              margin-left: 10px;
+            }
+          }
+        }
+        div{
+          width: 80px;
+          line-height: 102px;
+          background-color: #58a4f3;
+          color:white;
+          cursor: pointer;
+          text-align: center;
+          position: absolute;
+          right: -20px;
+          top: -12px;
+          border-radius:0px 5px 5px 0px;
+        }
+      }
+
+
+    }
+
+    .info-box{
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0px;
+      .detailInfo{
+        width: 20%;
+        border-right: 2px  solid rgba(0, 0, 0, 0.1);
+        box-sizing: border-box;
+        text-align: center;
+        ul{
+          span{
+            color:#58a4f3;
+            margin-left: 6px;
+          }
+        }
+      }
+      .detailInfo:last-child{
+        border:none
+      }
+      p,ul{
+        padding: 4px  0;
+        color:#444;
+        li{
+          padding: 2px  0;
+          font-size: 12px;
+          color:#999 ;
+          a{
+            color:#58a4f3;
+            margin-left: 6px;
+          }
+        }
+      }
+    }
+  }
+  .homeContent:nth-child(1){
+    height: 102px;
+  }
+
+  .config-button {
+    width: 100%;
+    font-size: 20px;
+    height: 3em;
+    padding: 10px 0;
+  }
+
+  /deep/ .el-dialog {
+    width: 200px;
+
+    .el-dialog__body {
+      padding: 20px 10px 10px 10px;
+
+      .el-table__header-wrapper {
+        display: none;
+      }
+
+      table {
+        width: 100%;
+      }
+    }
+  }
+}

@@ -227,6 +227,14 @@ export default {
         'type': 1,
         'key': 'menuDocumentCenter'
         // 'key': 'menuWordCenter'
+      },
+      // 临时新增的静态界面，key 未申请，需要重新定义一个
+      {
+        'menuId': '57',
+        'name': '认证方式',
+        'path': '/certification',
+        'type': 1,
+        'key': 'menuDocumentCenter'
       }
       ]
     }
