@@ -104,17 +104,7 @@ import { api, urlNames } from '@src/api'
 export default {
   name: 'CreateAppManagement',
   mixins: [handleTable, handleBreadcrumb,goBack],
-  mounted () {
-    this.pushBreadcrumb({
-      name: '创建接入应用',
-      parent: {
-        name: 'AppManagement',
-        query: {
-          type: 'back'
-        }
-      }
-    })
-  },
+ 
   data () {
     // 验证密码
     let validatePass = (rule, value, callback) => {
@@ -168,6 +158,17 @@ export default {
         ]
       }
     }
+  },
+   mounted () {
+    this.pushBreadcrumb({
+      name: this.$route.query.id ?'应用信息':'创建接入应用',
+      parent: {
+        name: 'AppManagement',
+        query: {
+          type: 'back'
+        }
+      }
+    })
   },
   created () {
     this.getViewList()

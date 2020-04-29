@@ -232,7 +232,7 @@ export default {
   },
   mounted () {
     this.pushBreadcrumb({
-      name: '创建视图',
+      name:this.$route.params.id==0? '创建视图':'视图信息',
       parent: {
         name: 'ViewManagement',
         query: {
