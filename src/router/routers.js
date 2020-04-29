@@ -7,6 +7,7 @@ import roleManage from './modules/role-manage'
 import addressbook from './modules/addressbook'
 import addresslist from './modules/addresslist'
 import homePage from './modules/homePage'
+import certification from './modules/certification'
 
 const noRight = () => import('@src/views/no-right/index.vue')
 
@@ -45,5 +46,6 @@ export default [
   ...addressbook,
   ...roleManage,
   ...addresslist,
-  ...homePage
+  ...homePage,
+  ...certification
 ]
