@@ -36,8 +36,9 @@ module.exports = function (options) {
         "/api/": {
           // target: "http://192.168.1.186",
           // target: "http://jg-dev.lonmo.com/",
-          target: "http://59.215.232.95/",
             //  target: "http://10.226.9.210/",
+            // target: "http://59.215.232.95/",
+            target: "http://org.gz.cegn.cn/",
              changeOrigin: false,
           // http:"//jg-dev.lonmo.com",
           // pathRewrite: {

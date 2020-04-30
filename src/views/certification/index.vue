@@ -26,7 +26,7 @@
     </div>
     <el-form inline>
         <el-form-item>
-            <el-button type="primary" @click="detialInfoVisible = true">新增生物生政方式</el-button>
+            <el-button type="primary" @click="detialInfoVisible = true">新增生物认证方式</el-button>
         </el-form-item>
     </el-form>
     <el-table :data="logList" border stripe style="width: 100%">
