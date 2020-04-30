@@ -320,7 +320,7 @@ export default {
       // 对之前已经排序好的
       this.list.forEach(function (item, index) {
         sortList.push({
-          id: item.uid,
+          id: item.identityId,
           sort: that.originList[index].sort,
           name: item.name
         })

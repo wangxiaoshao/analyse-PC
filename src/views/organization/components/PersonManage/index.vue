@@ -807,7 +807,7 @@ export default {
               this.sendLabelId.splice(index, 1)
             }
           })
-        })
+        }) 
         .catch(() => {
           this.$message({
             type: 'info',
