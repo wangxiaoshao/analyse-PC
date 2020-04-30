@@ -6,7 +6,7 @@
     <div class="sort-do" v-if="sortFlag">
       按住左键上下拖动调整排序
       <a @click="sublimeSort" href="javascript: void ( 0 ); ">保存</a>
-      <a  @click="cancelSort"  href="javascript: void ( 0 ); ">取消</a>
+      <a @click="cancelSort" href="javascript: void ( 0 ); ">取消</a>
     </div>
     <el-table
       v-loading="loading"
@@ -17,12 +17,16 @@
       size="medium"
       id="contentTable"
       @current-change="handleRow"
-      :row-class-name='RowClassName'
+      :row-class-name="RowClassName"
     >
       <template slot="empty">
         <div class="empty">
-          <p><img class="data-pic" src="@src/common/images/no-data1.png" alt=""/></p>
-          <p><span style="padding-left: 8px;">暂无数据</span></p>
+          <p>
+            <img class="data-pic" src="@src/common/images/no-data1.png" alt />
+          </p>
+          <p>
+            <span style="padding-left: 8px;">暂无数据</span>
+          </p>
         </div>
       </template>
       <el-table-column prop="description" width="60" align="center" v-if="sortFlag">
@@ -32,7 +36,9 @@
         </template>
       </el-table-column>
       <el-table-column label="序号" type="index" align="center" width="60">
-        <template slot-scope="scope"><span v-text='getIndex(scope.$index)'></span></template>
+        <template slot-scope="scope">
+          <span v-text="getIndex(scope.$index)"></span>
+        </template>
       </el-table-column>
       <el-table-column label="名称" prop="name" align="center"></el-table-column>
       <el-table-column label="启用状态" prop="removed" align="center">
@@ -50,18 +56,28 @@
       </el-table-column>
       <el-table-column prop="act" label="操作" width="100" align="center">
         <template slot-scope="scope">
-          <el-button v-show="scope.row.nodeType === 1" @click.native="openEditNode(scope.row)" type="text" size="small" class="btnMar">
-            修改
-          </el-button>
-          <el-button v-show="scope.row.nodeType === 3" @click.native="openDepartmentEdit(scope.row)" type="text" size="small" class="btnMar">
-            修改
-          </el-button>
-          <el-button v-show="scope.row.nodeType === 2" @click.native="openEditUnit(scope.row)" type="text" size="small" class="btnMar">
-            修改
-          </el-button>
-          <el-button  @click.native="goSort(scope.row)" type="text" size="small">
-            排序
-          </el-button>
+          <el-button
+            v-show="scope.row.nodeType === 1"
+            @click.native="openEditNode(scope.row)"
+            type="text"
+            size="small"
+            class="btnMar"
+          >修改</el-button>
+          <el-button
+            v-show="scope.row.nodeType === 3"
+            @click.native="openDepartmentEdit(scope.row)"
+            type="text"
+            size="small"
+            class="btnMar"
+          >修改</el-button>
+          <el-button
+            v-show="scope.row.nodeType === 2"
+            @click.native="openEditUnit(scope.row)"
+            type="text"
+            size="small"
+            class="btnMar"
+          >修改</el-button>
+          <el-button @click.native="goSort(scope.row)" type="text" size="small">排序</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -73,8 +89,8 @@
       :page-sizes="[10, 30, 50, 100]"
       :page-size="contentPage.limit"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="contentPage.total">
-    </el-pagination>
+      :total="contentPage.total"
+    ></el-pagination>
     <el-dialog :visible.sync="showSortDilog" width="420px">
       <div slot="title" style=" padding: 20px; background-color: #fff;">
         <span>数值排序</span>
@@ -83,7 +99,7 @@
       <div class="sort-ipt">
         请输入排序目标序号：
         <div style="display:inline-block">
-          <el-input v-model="sortValue" placeholder="请输入排序目标序号" ></el-input>
+          <el-input v-model="sortValue" placeholder="请输入排序目标序号"></el-input>
         </div>
       </div>
       <div slot="footer" class="dialog-footer">
@@ -152,7 +168,6 @@ export default {
 
               this.list = items
             }
-
           })
         } else {
           this.sortListFlag = false
@@ -180,7 +195,9 @@ export default {
       }
     },
     getIndex ($index) {
-      return (this.contentPage.current - 1) * this.contentPage.limit + $index + 1
+      return (
+        (this.contentPage.current - 1) * this.contentPage.limit + $index + 1
+      )
     },
     RowClassName ({ row, rowIndex }) {
       rowIndex = this.getIndex(rowIndex)
@@ -213,17 +230,20 @@ export default {
         limit: this.contentPage.limit
       }
       this.loading = true
-      api[urlNames['findViewNodeList']](data).then((res) => {
-        this.loading = false
-        this.list = res.data
-        this.originList = JSON.parse(JSON.stringify(this.list))
-        this.contentPage.total = res.total
-      }, () => {
-        this.loading = false
-        this.list = []
-        this.originList = JSON.parse(JSON.stringify(this.list))
-        this.contentPage.total = 0
-      })
+      api[urlNames['findViewNodeList']](data).then(
+        res => {
+          this.loading = false
+          this.list = res.data
+          this.originList = JSON.parse(JSON.stringify(this.list))
+          this.contentPage.total = res.total
+        },
+        () => {
+          this.loading = false
+          this.list = []
+          this.originList = JSON.parse(JSON.stringify(this.list))
+          this.contentPage.total = 0
+        }
+      )
     },
     cancelSort () {
       this.getGrid()
@@ -250,13 +270,16 @@ export default {
         sortList
       }
 
-      api[urlNames['setViewNodeSort']](data).then((res) => {
-        this.$message.success(`保存成功`)
-        this.$emit('cancel', false)
-        this.$emit('getPage', this.contentPage)
-      }, () => {
-        this.$message.error(`保存失败，请重试`)
-      })
+      api[urlNames['setViewNodeSort']](data).then(
+        res => {
+          this.$message.success(`保存成功`)
+          this.$emit('cancel', false)
+          this.$emit('getPage', this.contentPage)
+        },
+        () => {
+          this.$message.error(`保存失败，请重试`)
+        }
+      )
     },
 
     // 数值排序弹框
@@ -291,39 +314,40 @@ export default {
       )
     },
     NumSortFun (data) {
-      api[urlNames['setViewNodeSortThroughNumerical']](data).then(
-        res => {
-          if (res) {
-            this.showSortDilog = false
-            this.$message.success('排序成功')
-            this.contentPage.current = Math.ceil(this.sortValue / this.contentPage.limit)
-            this.getGrid()
-            this.sortValue = ''
-          }
-        })
+      api[urlNames['setViewNodeSortThroughNumerical']](data).then(res => {
+        if (res) {
+          this.showSortDilog = false
+          this.$message.success('排序成功')
+          this.contentPage.current = Math.ceil(
+            this.sortValue / this.contentPage.limit
+          )
+          this.getGrid()
+          this.sortValue = ''
+        }
+      })
     }
   }
 }
 </script>
 
 <style lang="less">
-  @import "index";
-  .empty {
-    p {
-      margin: 0;
-      font-size: 0px;
-      text-align: center;
-      line-height: 16px!important;
-    }
-
-    span {
-      font-size: 12px;
-    }
+@import 'index';
+.empty {
+  p {
+    margin: 0;
+    font-size: 0px;
+    text-align: center;
+    line-height: 16px !important;
   }
 
-  .data-pic {
-    padding-top: 20px;
-    width: 60px;
-    height: auto;
+  span {
+    font-size: 12px;
   }
+}
+
+.data-pic {
+  padding-top: 20px;
+  width: 60px;
+  height: auto;
+}
 </style>

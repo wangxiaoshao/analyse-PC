@@ -7,7 +7,13 @@
       @getTag="getTag"
       :delSelectLabelId="delSelectLabelId"
     ></search-lable>
-    <el-form :model="ruleForm" :disabled="disabledFlag" ref="ruleForm" label-width="110px" id="ruleForm">
+    <el-form
+      :model="ruleForm"
+      :disabled="disabledFlag"
+      ref="ruleForm"
+      label-width="110px"
+      id="ruleForm"
+    >
       <div class="detail-title">
         <i class="imenu-icon iconfont iconbumen big-icon" style="margin: 0px 5px;"></i>内设机构信息
       </div>
@@ -22,49 +28,54 @@
             :rules="[{ required: true, message: '名称不能为空'}]"
           >
             <el-input v-model="ruleForm.department.name" @input="showIptMsg('name')"></el-input>
-            <div v-if="this.$route.name === 'DepartmentEdit' ||  this.$route.name === 'DepartmentAdd'">
-              <div class="el-form-item__error" v-show="this.iptMsgVisible['name']">
-              {{iptMsgInfoStr}}
-              </div>
+            <div
+              v-if="this.$route.name === 'DepartmentEdit' ||  this.$route.name === 'DepartmentAdd'"
+            >
+              <div class="el-form-item__error" v-show="this.iptMsgVisible['name']">{{iptMsgInfoStr}}</div>
             </div>
           </el-form-item>
           <el-form-item label=" 上级内设机构" prop="parentDep">
             <el-input v-model="ruleForm.department.parentDep" :disabled="true"></el-input>
           </el-form-item>
-           <el-form-item label=" 启用状态" prop="department.removed">
+          <el-form-item label=" 启用状态" prop="department.removed">
             <el-switch v-model="ruleForm.department.removed" @change="showIptMsg('removed')"></el-switch>
-            <div v-if="this.$route.name === 'DepartmentEdit' ||  this.$route.name === 'DepartmentAdd'">
-              <div class="el-form-item__error" v-show="this.iptMsgVisible['removed']">
-              {{iptMsgInfoStr}}
-              </div>
+            <div
+              v-if="this.$route.name === 'DepartmentEdit' ||  this.$route.name === 'DepartmentAdd'"
+            >
+              <div
+                class="el-form-item__error"
+                v-show="this.iptMsgVisible['removed']"
+              >{{iptMsgInfoStr}}</div>
             </div>
           </el-form-item>
-           <el-form-item label="内设机构ID" v-if="disabledFlag">
-            <el-input v-model="ruleForm.department.id" ></el-input>
+          <el-form-item label="内设机构ID" v-if="disabledFlag">
+            <el-input v-model="ruleForm.department.id"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-         <!-- <el-form-item label="内设机构简称" prop="shortName">
+          <!-- <el-form-item label="内设机构简称" prop="shortName">
             <el-input v-model="ruleForm.department.shortName"></el-input>
           </el-form-item>-->
-          <el-form-item
-            label="内设机构电话"
-            prop="department.phone"
-          >
+          <el-form-item label="内设机构电话" prop="department.phone">
             <el-input v-model="ruleForm.department.phone" @input="showIptMsg('phone')"></el-input>
-            <div v-if="this.$route.name === 'DepartmentEdit' ||  this.$route.name === 'DepartmentAdd'">
-              <div class="el-form-item__error" v-show="this.iptMsgVisible['phone']">
-                    {{iptMsgInfoStr}}
-                    </div>
+            <div
+              v-if="this.$route.name === 'DepartmentEdit' ||  this.$route.name === 'DepartmentAdd'"
+            >
+              <div
+                class="el-form-item__error"
+                v-show="this.iptMsgVisible['phone']"
+              >{{iptMsgInfoStr}}</div>
             </div>
           </el-form-item>
           <el-form-item label="上级单位" prop="orgName">
             <el-input v-model="ruleForm.department.orgName" :disabled="true"></el-input>
-            <div v-if="this.$route.name === 'DepartmentEdit' ||  this.$route.name === 'DepartmentAdd'">
-             <!-- <div class="tip-msg"
+            <div
+              v-if="this.$route.name === 'DepartmentEdit' ||  this.$route.name === 'DepartmentAdd'"
+            >
+              <!-- <div class="tip-msg"
                    v-show="this.app.option.options.departmentAuditFields.indexOf('orgName') > -1 && ruleForm.department.orgName !== oldFrom.department.orgName">
                 添加或修改该字段需要提交审核
-              </div> -->
+              </div>-->
             </div>
           </el-form-item>
         </el-col>
@@ -79,14 +90,16 @@
             closable
             :title="tag"
             @close="removeTag(tag,index)"
-          >
-            {{tag}}
+          >{{tag}}</el-tag>
+          <el-tag class="add-tag-btn" v-if="!disabledFlag" @click="openSearchFlag = true">
+            <i class="el-icon-plus"></i>添加标签
           </el-tag>
-          <el-tag class="add-tag-btn" v-if="!disabledFlag" @click="openSearchFlag = true"><i class="el-icon-plus"></i>添加标签</el-tag>
-          <div v-if="this.$route.name === 'DepartmentEdit' ||  this.$route.name === 'DepartmentAdd'">
+          <div
+            v-if="this.$route.name === 'DepartmentEdit' ||  this.$route.name === 'DepartmentAdd'"
+          >
             <!-- <div class="el-form-item__error" v-show="this.iptMsgVisible['phone']">
                     {{iptMsgInfoStr}}
-                    </div> -->
+            </div>-->
           </div>
         </el-form-item>
       </el-row>
@@ -96,30 +109,43 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="内设机构介绍" prop="department.duty">
-            <el-input type="textarea" v-model="ruleForm.department.duty" @input="showIptMsg('duty')"></el-input>
-            <div v-if="this.$route.name === 'DepartmentEdit' ||  this.$route.name === 'DepartmentAdd'">
-              <div class="el-form-item__error" v-show="this.iptMsgVisible['duty']">
-                    {{iptMsgInfoStr}}
-                    </div>
+            <el-input
+              type="textarea"
+              v-model="ruleForm.department.duty"
+              @input="showIptMsg('duty')"
+            ></el-input>
+            <div
+              v-if="this.$route.name === 'DepartmentEdit' ||  this.$route.name === 'DepartmentAdd'"
+            >
+              <div class="el-form-item__error" v-show="this.iptMsgVisible['duty']">{{iptMsgInfoStr}}</div>
             </div>
           </el-form-item>
           <el-form-item label="申请原因" prop="reason">
             <el-input type="textarea" v-model="ruleForm.reason"></el-input>
-            <div v-if="this.$route.name === 'DepartmentEdit' ||  this.$route.name === 'DepartmentAdd'">
+            <div
+              v-if="this.$route.name === 'DepartmentEdit' ||  this.$route.name === 'DepartmentAdd'"
+            >
               <!-- <div class="tip-msg"
                    v-show="this.app.option.options.departmentAuditFields.indexOf('reason') > -1 && ruleForm.reason !== oldFrom.reason">
                 添加或修改该字段需要提交审核
-              </div> -->
+              </div>-->
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="内设机构职责" prop="department.description">
-            <el-input type="textarea" v-model="ruleForm.department.description" @input="showIptMsg('description')"></el-input>
-            <div v-if="this.$route.name === 'DepartmentEdit' ||  this.$route.name === 'DepartmentAdd'">
-              <div class="el-form-item__error" v-show="this.iptMsgVisible['description']">
-                    {{iptMsgInfoStr}}
-                    </div>
+            <el-input
+              type="textarea"
+              v-model="ruleForm.department.description"
+              @input="showIptMsg('description')"
+            ></el-input>
+            <div
+              v-if="this.$route.name === 'DepartmentEdit' ||  this.$route.name === 'DepartmentAdd'"
+            >
+              <div
+                class="el-form-item__error"
+                v-show="this.iptMsgVisible['description']"
+              >{{iptMsgInfoStr}}</div>
             </div>
           </el-form-item>
         </el-col>
@@ -140,7 +166,7 @@ import searchLable from '../components/AddTags/index'
 import { mapState, mapMutations } from 'vuex'
 export default {
   name: 'index',
-  mixins: [ handleBreadcrumb ,goBack],
+  mixins: [handleBreadcrumb, goBack],
   components: { searchLable },
   /* props: {
     // TODO breadcrumb可采用组件传参的模式替换路由判断，将配置权交给调用方
@@ -154,7 +180,7 @@ export default {
       }
     }
   }, */
-  data () {
+  data() {
     return {
       iptMsgInfoStr: '添加或修改该字段需要提交审核',
       iptMsgVisible: {},
@@ -201,61 +227,67 @@ export default {
         {
           label: '人大',
           value: 1
-        }, {
+        },
+        {
           label: '党委',
           value: 2
         }
       ],
       // isChange:false,
-      initCount:0,
-      isAudit:false
+      initCount: 0,
+      isAudit: false
     }
   },
   computed: {
     ...mapState(['app'])
   },
-  mounted () {
+  mounted() {
     this.setBreadcrumbTitle()
   },
-  created () {
+  created() {
     this.init()
     this.initIptMsgVisible()
-
   },
-  beforeRouteUpdate (to, from, next) {
+  beforeRouteUpdate(to, from, next) {
     next()
     this.setBreadcrumbTitle()
   },
   methods: {
     ...mapMutations(['SET_OPTION']),
-    init () {
-      if (this.$route.name === 'DepartmentAdd' || this.$route.name === 'DepartmentEdit') {
+    init() {
+      if (
+        this.$route.name === 'DepartmentAdd' ||
+        this.$route.name === 'DepartmentEdit'
+      ) {
         this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
         api[urlNames['findViewNodeById']]({
           id: this.$route.params.parentId || this.$route.params.id
-        }).then((res) => {
-          this.bindId = res.data.bindId
-          this.ruleForm.nodeId = res.data.id
-          if (res.data.bindId) {
-            this.findLabel(2)
-            if (res.data.nodeType === 2) {
-              api[urlNames['findOrganizationById']]({
-                id: res.data.bindId
-              }).then((res) => {
-                this.ruleForm.department.orgName = res.data.name
-                this.ruleForm.department.orgId = res.data.id
-                this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
-              })
+        }).then(
+          res => {
+            this.bindId = res.data.bindId
+            this.ruleForm.nodeId = res.data.id
+            if (res.data.bindId) {
+              this.findLabel(2)
+              if (res.data.nodeType === 2) {
+                api[urlNames['findOrganizationById']]({
+                  id: res.data.bindId
+                }).then(res => {
+                  this.ruleForm.department.orgName = res.data.name
+                  this.ruleForm.department.orgId = res.data.id
+                  this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
+                })
+              }
+              if (res.data.nodeType === 3) {
+                // 上级内设机构
+                this.ruleForm.department.parentId = res.data.bindId
+                this.getDetail()
+              }
             }
-            if (res.data.nodeType === 3) { // 上级内设机构
-              this.ruleForm.department.parentId = res.data.bindId
-              this.getDetail()
-            }
+          },
+          () => {
+            this.$message.error(`没有内容`)
           }
-
-        }, () => {
-          this.$message.error(`没有内容`)
-        })
+        )
       } else {
         this.bindId = this.$route.params.id
         this.getDetail()
@@ -263,66 +295,73 @@ export default {
       }
     },
     // 设置各个字段的验证提示信息的可见性
-    initIptMsgVisible () {
+    initIptMsgVisible() {
       for (let field in this.ruleForm) {
         this.iptMsgVisible[field] = false
       }
     },
-    showIptMsg (fieldName) {
-      if (this.app.option.options.departmentAuditFields.indexOf(fieldName) > -1) {
+    showIptMsg(fieldName) {
+      if (
+        this.app.option.options.departmentAuditFields.indexOf(fieldName) > -1
+      ) {
         this.iptMsgVisible[fieldName] = true
-        this.isAudit=true
+        this.isAudit = true
       }
     },
-    getDetail () {
+    getDetail() {
       let data = {
         id: this.bindId
       }
       this.loading = true
-      api[urlNames['findDepartmentById']](data).then((res) => {
-        this.loading = false
-        if (this.$route.name === 'DepartmentAdd') {
-          this.ruleForm.department.orgName = res.data.orgName
-          this.ruleForm.department.orgId = res.data.orgId
-        } else {
-          this.ruleForm.department.orgName = res.data.orgName
-          this.ruleForm.department.orgId = res.data.orgId
-          if (res.data.parentId) {
-            this.ruleForm.department.parentDep = res.data.parentName
+      api[urlNames['findDepartmentById']](data).then(
+        res => {
+          this.loading = false
+          if (this.$route.name === 'DepartmentAdd') {
+            this.ruleForm.department.orgName = res.data.orgName
+            this.ruleForm.department.orgId = res.data.orgId
           } else {
-            this.ruleForm.department.parentDep = ''
+            this.ruleForm.department.orgName = res.data.orgName
+            this.ruleForm.department.orgId = res.data.orgId
+            if (res.data.parentId) {
+              this.ruleForm.department.parentDep = res.data.parentName
+            } else {
+              this.ruleForm.department.parentDep = ''
+            }
+            this.ruleForm.department.id = res.data.id
+            this.ruleForm.department.phone = res.data.phone
+            this.ruleForm.department.name = res.data.name
+            this.ruleForm.department.description = res.data.description
+            this.ruleForm.department.duty = res.data.duty
+            this.ruleForm.department.removed = !res.data.removed
+            if (this.$route.name === 'DepartmentEdit') {
+              this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
+            }
           }
-          this.ruleForm.department.id = res.data.id
-          this.ruleForm.department.phone = res.data.phone
-          this.ruleForm.department.name = res.data.name
-          this.ruleForm.department.description = res.data.description
-          this.ruleForm.department.duty = res.data.duty
-          this.ruleForm.department.removed = !res.data.removed
-          if (this.$route.name === 'DepartmentEdit') {
-            this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
-          }
+        },
+        () => {
+          this.$message.error(`没有内容`)
         }
-      }, () => {
-        this.$message.error(`没有内容`)
-      })
+      )
     },
     // 获取标签
-    findLabel (type) {
+    findLabel(type) {
       api[urlNames['findLabel']]({
         id: this.bindId,
         type: type
-      }).then((res) => {
-        res.data.forEach((item) => {
-          this.tagsName.push(item.name)
-          this.ruleForm.labelId.push(item.id)
-        })
-      }, () => {
-      })
+      }).then(
+        res => {
+          res.data.forEach(item => {
+            this.tagsName.push(item.name)
+            this.ruleForm.labelId.push(item.id)
+          })
+        },
+        () => {}
+      )
     },
-    removeTag (tag, index) {
+    removeTag(tag, index) {
       let that = this
       let lIds = []
-      lIds = that.tempLabelId.filter(function (item) {
+      lIds = that.tempLabelId.filter(function(item) {
         return item === that.ruleForm.labelId[index]
       })
       if (lIds.length !== 0) {
@@ -330,38 +369,41 @@ export default {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
-        }).then(() => {
-          api[urlNames['deleteUserLabelOrDeptLabelOrOrgLabel']]({
-            id: this.ruleForm.department.id,
-            type: 2,
-            labelId: this.ruleForm.labelId[index]
-          }).then((res) => {
-            if (res.status === 0) {
-              this.$message.success('删除成功')
-              this.tagsName.splice(index, 1)
-              this.ruleForm.labelId.splice(index, 1)
-            }
-          })
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          })
         })
+          .then(() => {
+            api[urlNames['deleteUserLabelOrDeptLabelOrOrgLabel']]({
+              id: this.ruleForm.department.id,
+              type: 2,
+              labelId: this.ruleForm.labelId[index]
+            }).then(res => {
+              if (res.status === 0) {
+                this.$message.success('删除成功')
+                this.tagsName.splice(index, 1)
+                this.ruleForm.labelId.splice(index, 1)
+              }
+            })
+          })
+          .catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消删除'
+            })
+          })
       } else {
-        that.delSelectLabelId = that.ruleForm.labelId[index] + '|' + that.tagsName[index]
+        that.delSelectLabelId =
+          that.ruleForm.labelId[index] + '|' + that.tagsName[index]
         that.ruleForm.labelId.splice(index, 1)
         that.tagsName.splice(index, 1)
       }
     },
-    getClose (val) {
+    getClose(val) {
       this.openSearchFlag = val
     },
     // 获取选中的标签
-    getTag (val) {
+    getTag(val) {
       const res = new Map()
       let tag = []
-      val.forEach((item) => {
+      val.forEach(item => {
         this.tagsName.push(item.split('|')[1])
         tag.push(item.split('|')[0])
       })
@@ -372,9 +414,13 @@ export default {
         this.ruleForm.labelId.push(parseInt(item))
       })
     },
-    setBreadcrumbTitle () { // 设置面包屑title
+    setBreadcrumbTitle() {
+      // 设置面包屑title
       // TODO breadcrumbTitle可采用组件传参的模式替换路由判断，将配置权交给调用方
-      if (this.$route.name === 'DepartmentEdit' || this.$route.name === 'DepartmentAdd') {
+      if (
+        this.$route.name === 'DepartmentEdit' ||
+        this.$route.name === 'DepartmentAdd'
+      ) {
         this.isShowEditFlag = true
         this.disabledFlag = false
         if (this.$route.name === 'DepartmentEdit') {
@@ -389,60 +435,66 @@ export default {
       }
       this.pushBreadcrumb(this.breadcrumb)
     },
-    getSystemType (el) {
+    getSystemType(el) {
       this.ruleForm.department.systemType = el
     },
-    getType (el) {
+    getType(el) {
       this.ruleForm.department.type = el
     },
-    getAreaId (val) {
+    getAreaId(val) {
       this.ruleForm.areaId = val
     },
-    submitForm (ruleForm) {
-      this.ruleForm.department.removed = this.ruleForm.department.removed ? 0 : 1
-      this.$refs[ruleForm].validate((valid) => {
+    submitForm(ruleForm) {
+      this.ruleForm.department.removed = this.ruleForm.department.removed
+        ? 0
+        : 1
+      this.$refs[ruleForm].validate(valid => {
         if (valid) {
-          api[urlNames['createDepartment']](this.ruleForm).then((res) => {
-            if (this.$route.name === 'DepartmentEdit'&&this.isAudit) {
-              this.$alert('保存成功，待审核管理员审核通过后方生效', '保存成功', {
-                confirmButtonText: '确定',
-                callback: action => {
-                  this.$router.go(-1)
-                }
-              })
-            } else {
-              this.$message.success(`保存成功`)
-              this.$router.go(-1)
-            }
-          }, () => {
-          })
-        }else {
+          api[urlNames['createDepartment']](this.ruleForm).then(
+            res => {
+              if (this.$route.name === 'DepartmentEdit' && this.isAudit) {
+                this.$alert(
+                  '保存成功，待审核管理员审核通过后方生效',
+                  '保存成功',
+                  {
+                    confirmButtonText: '确定',
+                    callback: action => {
+                      this.$router.go(-1)
+                    }
+                  }
+                )
+              } else {
+                this.$message.success(`保存成功`)
+                this.$router.go(-1)
+              }
+            },
+            () => {}
+          )
+        } else {
           this.$message.error('请填写必填字段')
         }
       })
     },
 
-    goBack () {
-      this.isChange= this.addWatch(this.ruleForm,this.oldFrom)
+    goBack() {
+      this.isChange = this.addWatch(this.ruleForm, this.oldFrom)
       if (this.isChange) {
-        this.goBackDilog(this.submitForm,'ruleForm')
-      }else {
-        this.isChange=false
+        this.goBackDilog(this.submitForm, 'ruleForm')
+      } else {
+        this.isChange = false
         this.$router.go(-1)
       }
-
     }
   },
-  watch:{
-    ruleForm:{
-      handler(newForm,oldFrom) {
-      },
-      deep:true
+  watch: {
+    ruleForm: {
+      handler(newForm, oldFrom) {},
+      deep: true
     }
   }
 }
 </script>
 
 <style lang="less">
-  @import "index";
+@import 'index';
 </style>

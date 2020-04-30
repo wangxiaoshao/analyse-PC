@@ -56,7 +56,7 @@
     <el-dialog :visible.sync="submitVisible" width="410px">
       <div slot="title" style="padding:20px; background-color: #fff;">
         <span class="msg-title">{{callMag.title}}</span>
-       <i class="el-icon-document-copy" style="color:red"></i>
+        <i class="el-icon-document-copy" style="color:red"></i>
       </div>
       <div class="msg-box">{{callMag.msg}}</div>
       <div slot="footer" class="dialog-footer">
@@ -69,8 +69,12 @@
       </span>
       <el-button @click="sortList" :disabled="!hasRight('userOrder')">调整排序</el-button>
       <el-button @click="exportUser" :disabled="!hasRight('userExport')">导出人员</el-button>
-      <el-button size="small" type="primary" @click="exportPerson" :disabled="!hasRight('userImport')">导入人员</el-button>
-
+      <el-button
+        size="small"
+        type="primary"
+        @click="exportPerson"
+        :disabled="!hasRight('userImport')"
+      >导入人员</el-button>
     </div>
     <div class="sort-do" v-if="sortFlag">
       按住左键上下拖动调整排序
@@ -80,7 +84,7 @@
     <el-table
       v-loading="loading"
       :data="list"
-       stripe
+      stripe
       border
       highlight-current-row
       row-key="id"
@@ -89,8 +93,12 @@
     >
       <template slot="empty">
         <div class="empty">
-          <p><img class="data-pic" src="@src/common/images/no-data1.png" alt=""/></p>
-          <p><span style="padding-left: 8px;">暂无数据</span></p>
+          <p>
+            <img class="data-pic" src="@src/common/images/no-data1.png" alt />
+          </p>
+          <p>
+            <span style="padding-left: 8px;">暂无数据</span>
+          </p>
         </div>
       </template>
       <el-table-column prop="description" width="60" align="center" v-if="sortFlag">
@@ -100,7 +108,9 @@
         </template>
       </el-table-column>
       <el-table-column label="序号" type="index" align="center" width="60">
-        <template slot-scope="scope"><span v-text='getIndex(scope.$index)'></span></template>
+        <template slot-scope="scope">
+          <span v-text="getIndex(scope.$index)"></span>
+        </template>
       </el-table-column>
       <el-table-column label="姓名" prop="name" align="center"></el-table-column>
       <!-- <el-table-column label="登录账号" prop="account"></el-table-column> -->
@@ -108,9 +118,11 @@
       <el-table-column label="手机号" width="150" align="center">
         <template slot-scope="scope">
           <span>{{scope.row.uid === activeId ? scope.row.mobile:hideMobile(scope.row.mobile) || '无'}}</span>
-          <span v-if="scope.row.mobile&&scope.row.mobile!=''&&scope.row.mobile!='无' && (scope.row.uid !== activeId)"
-          class="findMobileBtn"
-            @click="findMobileById(scope.row.uid)">查看</span>
+          <span
+            v-if="scope.row.mobile&&scope.row.mobile!=''&&scope.row.mobile!='无' && (scope.row.uid !== activeId)"
+            class="findMobileBtn"
+            @click="findMobileById(scope.row.uid)"
+          >查看</span>
         </template>
       </el-table-column>
       <!-- <el-table-column label="身份类型" prop="typeText"></el-table-column> -->
@@ -122,10 +134,20 @@
       </el-table-column>
       <el-table-column prop="act" label="操作" width="200" align="center">
         <template slot-scope="scope">
-          <el-button @click.native.prevent="openEiditPerson(scope.row)" type="text" size="small" class="btnMar"
-           :disabled="!hasRight('userSetting')">修改</el-button>
-          <el-button @click.native.prevent="calloutDialog(scope.row)" type="text" size="small" class="btnMar"
-           :disabled="!hasRight('userIdTransfe')">调出</el-button>
+          <el-button
+            @click.native.prevent="openEiditPerson(scope.row)"
+            type="text"
+            size="small"
+            class="btnMar"
+            :disabled="!hasRight('userSetting')"
+          >修改</el-button>
+          <el-button
+            @click.native.prevent="calloutDialog(scope.row)"
+            type="text"
+            size="small"
+            class="btnMar"
+            :disabled="!hasRight('userIdTransfe')"
+          >调出</el-button>
           <el-button
             v-if="scope.row.type === 1 || scope.row.type === '1'"
             @click.native.prevent="removeDuty(scope.row)"
@@ -141,9 +163,7 @@
             class="btnMar"
             :disabled="!hasRight('userIdRemove')"
           >解除挂职</el-button>
-          <el-button  @click.native="goSort(scope.row)" type="text" size="small" >
-            排序
-          </el-button>
+          <el-button @click.native="goSort(scope.row)" type="text" size="small">排序</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -160,14 +180,14 @@
 
     <!-- 数值排序弹框 -->
     <el-dialog :visible.sync="showSortDilog" width="420px">
-       <div slot="title" style=" padding: 20px; background-color: #fff;">
+      <div slot="title" style=" padding: 20px; background-color: #fff;">
         <span>数值排序</span>
         <i class="el-icon-document-copy" style="color:#58a4f3;margin-left:6px"></i>
       </div>
       <div class="sort-ipt">
         请输入排序目标序号：
         <div style="display:inline-block">
-          <el-input v-model="sortValue" placeholder="请输入排序目标序号" ></el-input>
+          <el-input v-model="sortValue" placeholder="请输入排序目标序号"></el-input>
         </div>
       </div>
       <div slot="footer" class="dialog-footer">
@@ -206,7 +226,7 @@ export default {
       orgName: '',
       depName: '',
       showSortDilog: false,
-      lastIndex:null,
+      lastIndex: null,
       ruleForm: {
         identityId: '',
         reason: ''
@@ -237,9 +257,9 @@ export default {
       sortValue: null,
       // 数值排序参数
       sortParam: {},
-       callMag:{
-        title:'调出申请提交',
-        msg:'您的调出申请已提交，等待管理员审核通过后即可生效。'
+      callMag: {
+        title: '调出申请提交',
+        msg: '您的调出申请已提交，等待管理员审核通过后即可生效。'
       }
     }
   },
@@ -262,9 +282,7 @@ export default {
     findMobileById (uid) {
       // debugger
       this.activeId = uid
-      api[urlNames['findMobileById']]({ uid }).then(res => {
-
-      })
+      api[urlNames['findMobileById']]({ uid }).then(res => {})
     },
     getGrid () {
       // this.cancelSort()
@@ -361,7 +379,9 @@ export default {
       this.$emit('cancel', true)
     },
     getIndex ($index) {
-      return (this.contentPage.current - 1) * this.contentPage.limit + $index + 1
+      return (
+        (this.contentPage.current - 1) * this.contentPage.limit + $index + 1
+      )
     },
     // 数值排序弹框
     goSort (val) {
@@ -424,18 +444,18 @@ export default {
       }
     },
     NumSortFun (data) {
-      api[urlNames['setSortThroughNumerical']](data).then(
-        res => {
-          if (res) {
-            this.showSortDilog = false
-            this.$message.success('排序成功')
-            this.contentPage.current = Math.ceil(this.sortValue / this.contentPage.limit)
-            this.getGrid()
-            this.sortValue = ''
-          }
-        })
+      api[urlNames['setSortThroughNumerical']](data).then(res => {
+        if (res) {
+          this.showSortDilog = false
+          this.$message.success('排序成功')
+          this.contentPage.current = Math.ceil(
+            this.sortValue / this.contentPage.limit
+          )
+          this.getGrid()
+          this.sortValue = ''
+        }
+      })
     },
-
 
     // 表单初始化
     fromInit () {
@@ -482,12 +502,13 @@ export default {
               this.formCallout.deptId = this.formCallout.orgId = ''
               this.orgName = this.depName = ''
             },
-            (error) => {
+            error => {
               if (error) {
                 this.calloutFlag = false
                 this.submitVisible = true
-                this.callMag.title='请勿重复提交调出申请'
-                this.callMag.msg='在此之前，您已经提交过调出申请，请等待管理员审核完成后再操作！'
+                this.callMag.title = '请勿重复提交调出申请'
+                this.callMag.msg =
+                  '在此之前，您已经提交过调出申请，请等待管理员审核完成后再操作！'
               }
             }
           )
@@ -555,7 +576,6 @@ export default {
     }
   },
 
-
   watch: {
     sortFlag: {
       handler (val) {
@@ -607,23 +627,23 @@ export default {
 </script>
 
 <style lang="less"  scoped>
-  @import "index";
-  .empty {
-    p {
-      margin: 0;
-      font-size: 0px;
-      text-align: center;
-      line-height: 16px!important;
-    }
-
-    span {
-      font-size: 12px;
-    }
+@import 'index';
+.empty {
+  p {
+    margin: 0;
+    font-size: 0px;
+    text-align: center;
+    line-height: 16px !important;
   }
 
-  .data-pic {
-    padding-top: 20px;
-    width: 60px;
-    height: auto;
+  span {
+    font-size: 12px;
   }
+}
+
+.data-pic {
+  padding-top: 20px;
+  width: 60px;
+  height: auto;
+}
 </style>

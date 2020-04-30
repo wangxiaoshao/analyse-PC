@@ -2,21 +2,32 @@
   <div class="editAccount">
     <div class="parameter-item">
       <!-- <div class="header">账号设置</div> -->
-      <el-form  label-width="100px">
+      <el-form label-width="100px">
         <el-row>
           <el-col :span="10">
             <el-form-item label="登录账号">
-              <el-input placeholder="请输入登录账号"  v-model="accountInfo.name" style="width:200px" disabled></el-input>
-                <div style="color:rgb(252, 112, 73);font-size:10px"><span style="margin-right:5px">*</span>登录账号暂不支持修改</div>
+              <el-input
+                placeholder="请输入登录账号"
+                v-model="accountInfo.name"
+                style="width:200px"
+                disabled
+              ></el-input>
+              <div style="color:rgb(252, 112, 73);font-size:10px">
+                <span style="margin-right:5px">*</span>登录账号暂不支持修改
+              </div>
             </el-form-item>
             <el-form-item label="关联系统">
               <!--  -->
-              <bind-system :list="accountInfo.account4AppDtos || []"  @app-change="getAppId" :isCreate='false'></bind-system>
+              <bind-system
+                :list="accountInfo.account4AppDtos || []"
+                @app-change="getAppId"
+                :isCreate="false"
+              ></bind-system>
             </el-form-item>
           </el-col>
           <el-col :span="10">
             <el-form-item label="登录别名">
-              <el-input placeholder="请输入登录别名" style="width:200px"  v-model="accountInfo.nickName"></el-input>
+              <el-input placeholder="请输入登录别名" style="width:200px" v-model="accountInfo.nickName"></el-input>
             </el-form-item>
             <el-form-item label="是否启用">
               <el-switch v-model="accountInfo.removed"></el-switch>
@@ -47,7 +58,7 @@
       <el-col :span="20">
         <el-footer style="text-align:center">
           <el-button type="primary" @click="saveAccount">保存</el-button>
-          <el-button  @click="goBack" class="globBtn">取消</el-button>
+          <el-button @click="goBack" class="globBtn">取消</el-button>
         </el-footer>
       </el-col>
     </el-row>
@@ -58,7 +69,7 @@ import { api, urlNames } from '@src/api'
 import bindSystem from '../../../organization/components/BindSystem/index'
 import goBack from '@src/mixins/go-back.js'
 export default {
-  mixins:[goBack],
+  mixins: [goBack],
   components: {
     bindSystem
   },
@@ -66,7 +77,7 @@ export default {
   data () {
     return {
       appId: [],
-      oldAccountInfo:{}
+      oldAccountInfo: {}
     }
   },
   created () {
@@ -101,24 +112,22 @@ export default {
       api[urlNames['updateAccount']](params).then(res => {
         if (res) {
           this.$message.success('设置成功')
-           this.$emit('close')
-            this.isChange=false
+          this.$emit('close')
+          this.isChange = false
         }
       })
     },
 
     // 返回
     goBack () {
-      this.isChange=this.addWatch(this.accountInfo,this.oldAccountInfo)
-       if(this.isChange){
-         this.goBackDilog(this.saveAccount,'',true)
-       }else{
-         this.$emit('close')
-         this.isChange=false
-       }
+      this.isChange = this.addWatch(this.accountInfo, this.oldAccountInfo)
+      if (this.isChange) {
+        this.goBackDilog(this.saveAccount, '', true)
+      } else {
+        this.$emit('close')
+        this.isChange = false
+      }
     }
-
-
   }
 }
 </script>

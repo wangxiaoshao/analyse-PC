@@ -39,7 +39,7 @@
     <el-dialog :visible.sync="submitVisible" width="410px">
       <div slot="title" style="padding:20px; background-color: #fff;">
         <span class="msg-title">{{callMag.title}}</span>
-       <i class="el-icon-document-copy" style="color:red"></i>
+        <i class="el-icon-document-copy" style="color:red"></i>
       </div>
       <div class="msg-box">{{callMag.msg}}</div>
       <div slot="footer" class="dialog-footer">
@@ -131,7 +131,7 @@
           <el-row>
             <el-col :span="18">
               <person-manage
-                :userInfo='userInfo'
+                :userInfo="userInfo"
                 :user-detail="userInfo.user"
                 :post-detail="userInfo.identity"
                 :label-id="userInfo.labelId"
@@ -147,12 +147,22 @@
             </el-col>
           </el-row>
         </el-tab-pane>
-        <el-tab-pane label="多账号管理" >
-          <multiple-accounts :accountInfoList="accountInfoList" @goEdit='goEdit' v-if="showAccountsVisible"></multiple-accounts>
-          <edit-account v-else @resetPwd="resetPwd" @modifiePwd="modifiePwd"  :accountInfo='accountInfo'  @close='goBack'></edit-account>
+        <el-tab-pane label="多账号管理">
+          <multiple-accounts
+            :accountInfoList="accountInfoList"
+            @goEdit="goEdit"
+            v-if="showAccountsVisible"
+          ></multiple-accounts>
+          <edit-account
+            v-else
+            @resetPwd="resetPwd"
+            @modifiePwd="modifiePwd"
+            :accountInfo="accountInfo"
+            @close="goBack"
+          ></edit-account>
         </el-tab-pane>
         <el-tab-pane label="个人日志">
-          <personal-log :showFindBtn='showFindBtn'></personal-log>
+          <personal-log :showFindBtn="showFindBtn"></personal-log>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -210,7 +220,7 @@ export default {
     return {
       accountInfo: '',
       accountId: '',
-      showFindBtn:false,
+      showFindBtn: false,
       showAccountsVisible: true,
       resetPwdVisible: false, // 重置密码弹框
       modifiePwdVisible: false, // 修改密码弹框
@@ -239,10 +249,14 @@ export default {
       },
       rules: {
         oldPass: [
-          { required: true,validator: validateOldPass, trigger: 'blur' }
-          ],
-        checkPass: [{required: true,validator: validateCheckPass, trigger: 'blur' }],
-        newPass: [{required: true, validator: validateNewPass, trigger: 'blur' }],
+          { required: true, validator: validateOldPass, trigger: 'blur' }
+        ],
+        checkPass: [
+          { required: true, validator: validateCheckPass, trigger: 'blur' }
+        ],
+        newPass: [
+          { required: true, validator: validateNewPass, trigger: 'blur' }
+        ]
       },
       oldUserInfo: {},
       userInfo: {
@@ -254,8 +268,8 @@ export default {
           id: '',
           type: null,
           orgId: '',
-          dutyName: '' ,// 职务名称
-          orgName:''
+          dutyName: '', // 职务名称
+          orgName: ''
         },
         userId: '',
         user: {
@@ -289,7 +303,7 @@ export default {
         reason: ''
       },
       depName: '',
-      orgName:'',
+      orgName: '',
       selectDialog: {
         selectMenmberTitle: '选择调出单位或内设机构', // 选人组件标题
         selectMenmberFlag: false, // 显示弹窗，
@@ -299,9 +313,9 @@ export default {
         isSingleOrgSelect: true, // 是否为单选框  false为多选（默认），true为单选(isOnlyOrg为true时内设机构/单位单选)
         isOnlyOrg: true
       },
-      callMag:{
-        title:'调出申请提交',
-        msg:'您的调出申请已提交，等待管理员审核通过后即可生效。'
+      callMag: {
+        title: '调出申请提交',
+        msg: '您的调出申请已提交，等待管理员审核通过后即可生效。'
       }
     }
   },
@@ -398,7 +412,7 @@ export default {
           this.formCallout.identityId = res.data.id
           this.formCallout.orgId = res.data.orgId
           this.userInfo.identity.orgName = res.data.organizationName
-          this.orgName= res.data.organizationName
+          this.orgName = res.data.organizationName
         },
         () => {
           /* this.$message.error(`没有内容`) */
@@ -441,20 +455,20 @@ export default {
       )
     },
 
-    goModifieUserInfo (val,isAudit) {
+    goModifieUserInfo (val, isAudit) {
       // 保存createUser
       this.userInfo.user = val
       api[urlNames['createUser']](this.userInfo).then(
         res => {
-          if(isAudit){
-             this.$alert('保存成功，待审核管理员审核通过后方生效', '保存成功', {
-            confirmButtonText: '确定',
-            callback: action => {
-              //  this.$router.go(0) // 刷新页面
-            }
-          })
-          }else{
-             this.$message.success(`保存成功`)
+          if (isAudit) {
+            this.$alert('保存成功，待审核管理员审核通过后方生效', '保存成功', {
+              confirmButtonText: '确定',
+              callback: action => {
+                //  this.$router.go(0) // 刷新页面
+              }
+            })
+          } else {
+            this.$message.success(`保存成功`)
           }
         },
         () => {
@@ -497,29 +511,31 @@ export default {
             repeatPwd: this.ruleForm.checkPass
           }
           this.$confirm('修改密码成功后将退出系统, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          api[urlNames['updatePwd']](data).then(
-            res => {
-              let status = res.status
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          })
+            .then(() => {
+              api[urlNames['updatePwd']](data).then(
+                res => {
+                  let status = res.status
+                  this.$message({
+                    message: status === 0 ? '修改成功' : '修改失败',
+                    type: status === 0 ? 'success' : 'error'
+                  })
+                  this.modifiePwdVisible = false
+                  window.location.href = '/api/gate/logout'
+                  this.$refs[formName].resetFields()
+                },
+                () => {}
+              )
+            })
+            .catch(() => {
               this.$message({
-                message: status === 0 ? '修改成功' : '修改失败',
-                type: status === 0 ? 'success' : 'error'
+                type: 'info',
+                message: '已取消操作'
               })
-               this.modifiePwdVisible = false
-                window.location.href= '/api/gate/logout'
-                this.$refs[formName].resetFields()
-            },
-            () => {}
-          )
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消操作'
-          });
-        });
+            })
         } else {
           this.$message.error('不符合规则，请重新输入')
           console.log('error submit!!')
@@ -530,7 +546,6 @@ export default {
     resetForm (formName) {
       this.$refs['ruleForm'].resetFields()
       this.modifiePwdVisible = false
-
     },
     // 过滤手机号
     hideMobile (phone) {
@@ -541,20 +556,20 @@ export default {
     resetPwd (val) {
       this.accountId = val
       this.$confirm('重置密码成功后将退出系统, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
           this.resetPwdVisible = true
-           this.sendSmsCode()
-        }).catch(() => {
+          this.sendSmsCode()
+        })
+        .catch(() => {
           this.$message({
             type: 'info',
             message: '已取消操作'
-          });
-        });
-
-
+          })
+        })
     },
     /**
      * 发送验证短信到用户绑定手机号
@@ -608,7 +623,9 @@ export default {
               this.successPwdVisible = true
               this.smsCode = ''
             } else {
-              this.$message.error('验证码已失效或验证码不正确，请重新输入或发送')
+              this.$message.error(
+                '验证码已失效或验证码不正确，请重新输入或发送'
+              )
             }
           },
           () => {}
@@ -616,9 +633,9 @@ export default {
       }
     },
 
-    loginOut(){
-      this.successPwdVisible=false
-      window.location.href= '/api/gate/logout'
+    loginOut () {
+      this.successPwdVisible = false
+      window.location.href = '/api/gate/logout'
     },
 
     // 编辑页面
@@ -651,29 +668,27 @@ export default {
         if (valid) {
           api[urlNames['calloutUser']](this.formCallout).then(
             res => {
-                // this.$message.success(`调出申请已提交`)
-                this.calloutFlag = false
-                this.submitVisible = true
-                // this.getGrid()
-                this.fromInit()
-                this.formCallout.deptId = this.formCallout.orgId = ''
+              // this.$message.success(`调出申请已提交`)
+              this.calloutFlag = false
+              this.submitVisible = true
+              // this.getGrid()
+              this.fromInit()
+              this.formCallout.deptId = this.formCallout.orgId = ''
               this.orgName = this.depName = ''
-
             },
             error => {
               if (error) {
                 this.calloutFlag = false
                 this.submitVisible = true
-                this.callMag.title='请勿重复提交调出申请'
-                this.callMag.msg='在此之前，您已经提交过调出申请，请等待管理员审核完成后再操作！'
+                this.callMag.title = '请勿重复提交调出申请'
+                this.callMag.msg =
+                  '在此之前，您已经提交过调出申请，请等待管理员审核完成后再操作！'
               }
             }
           )
         }
       })
     }
-
-
   }
 }
 </script>

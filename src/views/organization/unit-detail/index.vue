@@ -82,7 +82,7 @@
               </p>
             </div>
           </el-form-item>
-          <el-form-item label=" 上级单位">
+          <el-form-item label=" 上级单位333">
             <el-input v-model="parentName" :disabled="true"></el-input>
           </el-form-item>
           <!-- <el-form-item label="启用状态" prop="organization.removed" v-if="this.$route.name === 'UnitEdit'&&this.isOrgManage"> -->
@@ -248,7 +248,7 @@ import { mapState, mapMutations } from 'vuex'
 
 export default {
   name: 'index',
-  mixins: [handleBreadcrumb, dicOption,goBack],
+  mixins: [handleBreadcrumb, dicOption , goBack],
   components: { areaList, searchLable},
   /* props: {
       // TODO breadcrumb可采用组件传参的模式替换路由判断，将配置权交给调用方
@@ -265,16 +265,16 @@ export default {
   data () {
     // 验证邮编
     let validateZipCode = (rule, value, callback) => {
-      if(value !=='') {
+      if (value !=='') {
         let reg = /(^\s{0}$)|^[1-9]\d{5}$/
         reg.test(value) ? callback() : callback(new Error('请输入有效邮政编码'))
-      }else{
+      } else {
         callback()
       }
     }
     // 验证传真
-     let validateFax = (rule, value, callback) => {
-      if(value !=='') {
+    let validateFax = (rule, value, callback) => {
+      if (value !=='') {
         let reg = /(^\s{0}$)|^(\d{3,4}-)?\d{7,8}$/
         reg.test(value) ? callback() : callback(new Error('请输入有效传真号码'))
       }else{
@@ -282,12 +282,12 @@ export default {
       }
     }
 
-     // 验证单位电话 
+    // 验证单位电话 
     let validateOffice = (rule, value, callback) => {
       if(value !=='') {
         let reg = /(^\s{0}$)|(0\d{2,3}-\d{7,8}|\(?0\d{2,3}[)-]?\d{7,8}|\(?0\d{2,3}[)-]*\d{7,8})/
         reg.test(value) ? callback() : callback(new Error('请输入有效单位电话'))
-      }else{
+      } else {
         callback()
       }
     }
@@ -320,7 +320,7 @@ export default {
       isShowEditFlag: true,
       disabledFlag: false,
       submitHtml: '保存',
-      isOrgManage:true,
+      isOrgManage: true,
       oldFrom: {},
       tagKeyWord: '',
       tagsName: [],
@@ -404,7 +404,7 @@ export default {
         }).then(
           res => {
             if (res.data.bindId) {
-              this.parentName = res.data.name
+              this.parentName = res.data.parentName
               this.bindId = res.data.bindId
               if (this.$route.name !== 'UnitAdd') {
                 this.getArea(res.data.bindId)
@@ -707,7 +707,7 @@ export default {
         }
         api[urlNames['orgCreditId']](param).then(
           res => {
-            if (res.data == 1) {
+            if (res.data === 1) {
               window.setTimeout(() => {
                 this.successVisiable = true
                 this.requiring = false
@@ -715,7 +715,7 @@ export default {
                 this.errorVisiable = false
               }, 2000)
             } else {
-               window.setTimeout(() => {
+              window.setTimeout(() => {
               this.errorVisiable = true
               this.loadVisiable = false
               this.successVisiable = false
