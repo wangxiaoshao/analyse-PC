@@ -366,6 +366,18 @@
               </el-form-item>
             </el-col>
           </el-row>
+          <el-row class="row-item">
+            <el-col :span="12">
+              <el-form-item label="自定义字段1">
+                <el-input type="textarea" v-model="userDetail.ext03"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="自定义字段2">
+                <el-input type="textarea" v-model="userDetail.ext04"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
         </el-collapse-item>
       </el-collapse>
     </el-form>
