@@ -10,28 +10,31 @@
                   <el-form-item label="视图名称" prop="name">
                     <el-input v-model="ViewFrom.name"></el-input>
                   </el-form-item>
-                  <el-form-item label="视图管理员" >
+                  <el-form-item label="视图管理员">
                     <el-select
                       :disabled="!hasRight('viewSettingManager')"
-                     v-model="ViewFrom.roleBindUserIds"  @remove-tag="removeManager" multiple
-                               placeholder="请选择">
+                      v-model="ViewFrom.roleBindUserIds"
+                      @remove-tag="removeManager"
+                      multiple
+                      placeholder="请选择"
+                    >
                       <el-option
                         v-for="item in adminList"
                         :key="item.uid"
                         :label="item.name"
-                        :value="item.uid">
-                      </el-option>
+                        :value="item.uid"
+                      ></el-option>
                     </el-select>
                   </el-form-item>
                   <el-form-item label="启用状态">
                     <el-switch v-model="ViewFrom.removed"></el-switch>
                   </el-form-item>
                   <el-form-item v-if="returnViewId!=='0'" label="视图ID">
-                    <el-input  disabled v-model="returnViewId"></el-input>
+                    <el-input disabled v-model="returnViewId"></el-input>
                   </el-form-item>
                   <el-form-item>
                     <el-checkbox v-model="ViewFrom.syncChildren">关闭新增机构自动同步</el-checkbox>
-                    <br>
+                    <br />
                     <span style="color:rgb(114, 116, 119)">（组织机构新增单位、内设机构将同步至本视图）</span>
                   </el-form-item>
                   <!--                暂时隐藏  <el-form-item label="备注">-->
@@ -50,89 +53,88 @@
       <el-tab-pane :disabled="tabDisable" label="视图组织机构" name="second">
         <div class="from tree-form">
           <el-form ref="form" :model="form">
-          <div class="tree-panel">
-                <div class="grid-content">
-                  <div class="tree-title">选择组织机构</div>
-                  <el-form-item label="">
-                    <div class="select-org">
-                        <el-tree
-                          ref="selecttree"
-                          :data="nodeTree"
-                          node-key="id"
-                          draggable
-                          lazy
-                          :props="defaultProps"
-                          :load="loadNode"
-                          @check-change="currentchange"
-                          :check-strictly="true"
-                          :allow-drag="allowSourceDrag"
-                          :allow-drop="allowSourceDrop"
-                          @node-drag-end="nodeDragEnd"
-                          @node-drag-over="handleDragOver"
-                          :default-expanded-keys="[defaultexpandedkeys]"
-                          :expand-on-click-node="false"
-                          :default-checked-keys="checkedKeys">
-                          <!-- <span class="custom-tree-node" slot-scope="{ node, data }">
+            <div class="tree-panel">
+              <div class="grid-content">
+                <div class="tree-title">选择组织机构</div>
+                <el-form-item label>
+                  <div class="select-org">
+                    <el-tree
+                      ref="selecttree"
+                      :data="nodeTree"
+                      node-key="id"
+                      draggable
+                      lazy
+                      :props="defaultProps"
+                      :load="loadNode"
+                      @check-change="currentchange"
+                      :check-strictly="true"
+                      :allow-drag="allowSourceDrag"
+                      :allow-drop="allowSourceDrop"
+                      @node-drag-end="nodeDragEnd"
+                      @node-drag-over="handleDragOver"
+                      :default-expanded-keys="[defaultexpandedkeys]"
+                      :expand-on-click-node="false"
+                      :default-checked-keys="checkedKeys"
+                    >
+                      <!-- <span class="custom-tree-node" slot-scope="{ node, data }">
                             <i class="imenu-icon fa fa-sitemap" v-if="data.nodeType === 1"></i>
                             <i class="imenu-icon fa fa-building-o" v-if="data.nodeType === 2"></i>
                             <i class="imenu-icon fa fa-institution" v-if="data.nodeType === 3"></i>
                             <span>{{node.label}}</span>
-                          </span> -->
-                              <span class="svg-container" slot-scope="{ node, data }">
-                                <span class="iconfont iconzuzhijigou" v-if="data.nodeType === 1"></span>
-                                <span class="iconfont icondanwei" v-if="data.nodeType === 2"></span>
-                                <span class="iconfont iconbumen" v-if="data.nodeType === 3"></span>
-                                <span class="label">{{node.label}}</span>
-                              </span>
-                        </el-tree>
-                    </div>
-                  </el-form-item>
-                </div>
-                <div class="grid-content drag-tips">
-                  <p class="tips-img"><img src="@src/common/images/drag-drop.svg"></p>
-                  <p class="tips-title"><span>选择左边的组织机构视图，拖动至右边的视图区域，可以组合成你想要的组织机构树形。</span></p>
-                </div>
-                <div class="grid-content">
-                  <div class="tree-title">新机构视图</div>
-                  <!--                select-org-panel   <div class="select-btn">-->
-                  <!--                    <p style="font-size: 14px;color: #606266;padding: 0 10px;">新机构视图</p>-->
-                  <!--                                          <p><el-button type="primary" size="small">新机构视图</el-button></p>-->
-                  <!--                                          <p><el-button size="small">旧机构视图</el-button></p>-->
-                  <!--                  </div>-->
-                  <el-form-item>
-                    <div class="select-org select-org123" ref="coordinates">
-                      <el-tree
-                        :data="viewNodeTree"
-                        node-key="id"
-                        draggable
-                        lazy
-                        :load="loadOrgNode"
-                        :props="defaultProps"
-                        :check-strictly="true"
-                        :allow-drag="allowDestinationDrag"
-                        :allow-drop="allowDestinationDrop"
-                        @node-drag-end="nodeSelectDragEnd"
-                        :expand-on-click-node="false"
-                        :default-checked-keys="checkedKeys">
-                        <!-- <div class="custom-tree-node" slot-scope="{ node, data }">
-                          <i class="imenu-icon fa fa-sitemap" v-if="data.nodeType === 1"></i>
-                          <i class="imenu-icon fa fa-building-o" v-if="data.nodeType === 2"></i>
-                          <i class="imenu-icon fa fa-institution" v-if="data.nodeType === 3"></i>
-                          <span>{{node.label}}</span>
-                          <span @click="deleteNodeTree(data.id)" class="delete-icon fa fa-trash-o"></span>
-                        </div> -->
-                          <div class="svg-container" slot-scope="{ node, data }">
-                            <span class="iconfont iconzuzhijigou" v-if="data.nodeType === 1"></span>
-                            <span class="iconfont icondanwei" v-if="data.nodeType === 2"></span>
-                            <span class="iconfont iconbumen" v-if="data.nodeType === 3"></span>
-                            <span class="label">{{node.label}}</span>
-                            <span @click="deleteNodeTree(data)" class="delete-icon fa fa-trash-o"></span>
-                          </div>
-                      </el-tree>
-                    </div>
-                  </el-form-item>
-                </div>
-          </div>
+                      </span>-->
+                      <span class="svg-container" slot-scope="{ node, data }">
+                        <span class="iconfont iconzuzhijigou nodeColor" v-if="data.nodeType === 1"></span>
+                        <span class="iconfont icondanwei orgColor" v-if="data.nodeType === 2"></span>
+                        <span class="iconfont iconbumen deptColor" v-if="data.nodeType === 3"></span>
+                        <span class="label">{{node.label}}</span>
+                      </span>
+                    </el-tree>
+                  </div>
+                </el-form-item>
+              </div>
+              <div class="grid-content drag-tips">
+                <p class="tips-img">
+                  <img src="@src/common/images/drag-drop.svg" />
+                </p>
+                <p class="tips-title">
+                  <span>选择左边的组织机构视图，拖动至右边的视图区域，可以组合成你想要的组织机构树形。</span>
+                </p>
+              </div>
+              <div class="grid-content">
+                <div class="tree-title">新机构视图</div>
+                <!--                select-org-panel   <div class="select-btn">-->
+                <!--                    <p style="font-size: 14px;color: #606266;padding: 0 10px;">新机构视图</p>-->
+                <!--                                          <p><el-button type="primary" size="small">新机构视图</el-button></p>-->
+                <!--                                          <p><el-button size="small">旧机构视图</el-button></p>-->
+                <!--                  </div>-->
+                <el-form-item>
+                  <div class="select-org select-org123" ref="coordinates">
+                    <el-tree
+                      :data="viewNodeTree"
+                      node-key="id"
+                      draggable
+                      lazy
+                      :load="loadOrgNode"
+                      :props="defaultProps"
+                      :check-strictly="true"
+                      :allow-drag="allowDestinationDrag"
+                      :allow-drop="allowDestinationDrop"
+                      @node-drag-end="nodeSelectDragEnd"
+                      :expand-on-click-node="false"
+                      :default-checked-keys="checkedKeys"
+                    >
+                      <div class="svg-container" slot-scope="{ node, data }">
+                        <span class="iconfont iconzuzhijigou nodeColor" v-if="data.nodeType === 1"></span>
+                        <span class="iconfont icondanwei orgColor" v-if="data.nodeType === 2"></span>
+                        <span class="iconfont iconbumen deptColor" v-if="data.nodeType === 3"></span>
+                        <span class="label">{{node.label}}</span>
+                        <span @click="deleteNodeTree(data)" class="delete-icon fa fa-trash-o"></span>
+                      </div>
+                    </el-tree>
+                  </div>
+                </el-form-item>
+              </div>
+            </div>
             <el-form-item>
               <el-button style="margin-left: 267px" type="primary" @click="synchronizedNode">应用到视图</el-button>
               <el-button @click="backToList">取消</el-button>
@@ -144,20 +146,15 @@
         <div class="from tree-form">
           <div class="tree-title">最新视图（{{ viewLastUpdatedTime }}）</div>
           <el-form ref="form" :model="form">
-          <div class="tree-panel">
-            <div class="grid-content">
-              <el-form-item label="">
-                <div class="select-org">
-                  <el-tree
-                    :data="currentView"
-                    :props="defaultProps"
-                    :load="findCurrentView"
-                    lazy>
-                  </el-tree>
-                </div>
-              </el-form-item>
+            <div class="tree-panel">
+              <div class="grid-content">
+                <el-form-item label>
+                  <div class="select-org">
+                    <el-tree :data="currentView" :props="defaultProps" :load="findCurrentView" lazy></el-tree>
+                  </div>
+                </el-form-item>
+              </div>
             </div>
-          </div>
           </el-form>
         </div>
       </el-tab-pane>
@@ -174,7 +171,7 @@ import goBack from '@src/mixins/go-back.js'
 
 export default {
   name: 'CreateView',
-  mixins: [handleTable, handleBreadcrumb, HasRight,goBack],
+  mixins: [handleTable, handleBreadcrumb, HasRight, goBack],
   data () {
     return {
       currentView: [],
@@ -190,13 +187,11 @@ export default {
         roleBindUserIds: [],
         syncChildren: false
       },
-      oldViewFrom:{},
+      oldViewFrom: {},
       returnViewId: this.$route.params.id, // 228770923203788800
       form: {},
       rules: {
-        name: [
-          { required: true, message: '请输入视图名称', trigger: 'blur' }
-        ]
+        name: [{ required: true, message: '请输入视图名称', trigger: 'blur' }]
       },
       nodeTree: [], // 树节点
       nodeSonTree: [], // 子节点
@@ -227,12 +222,12 @@ export default {
       },
       selectedKeys: [], // 已保存选中
       checkedKeys: [],
-      cancelItem:''
+      cancelItem: ''
     }
   },
   mounted () {
     this.pushBreadcrumb({
-      name:this.$route.params.id==0? '创建视图':'视图信息',
+      name: this.$route.params.id === 0 ? '创建视图' : '视图信息',
       parent: {
         name: 'ViewManagement',
         query: {
@@ -278,7 +273,7 @@ export default {
         removed: this.ViewFrom.removed ? 0 : 1,
         roleBindUserId: this.ViewFrom.roleBindUserIds,
         syncChildren: +this.ViewFrom.syncChildren
-      }).then((res) => {
+      }).then(res => {
         if (res.status === 0) {
           this.returnViewId = res.data
           this.activeName = 'second'
@@ -289,33 +284,35 @@ export default {
       })
     },
     removeManager (uid) {
-      console.log('uid',uid)
+      console.log('uid', uid)
       if (this.$route.params.id !== '0') {
         this.$confirm('此操作将永久删除该管理员, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
-        }).then(() => {
-          api[urlNames['deleteViewAdmin']]({
-            viewId: this.returnViewId,
-            uid: uid
-          }).then((res) => {
-            if (res.status === 0) {
-              this.findViewById(this.$route.params.id)
-              this.$message.success('删除成功')
-            }
-          })
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          })
         })
+          .then(() => {
+            api[urlNames['deleteViewAdmin']]({
+              viewId: this.returnViewId,
+              uid: uid
+            }).then(res => {
+              if (res.status === 0) {
+                this.findViewById(this.$route.params.id)
+                this.$message.success('删除成功')
+              }
+            })
+          })
+          .catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消删除'
+            })
+          })
       }
     },
     // 获取管理员列表
     findViewAdmin () {
-      api[urlNames['findViewAdmin']]({}).then((res) => {
+      api[urlNames['findViewAdmin']]({}).then(res => {
         if (res.status === 0) {
           this.adminList = res.data
         }
@@ -326,7 +323,7 @@ export default {
       api[urlNames['getViewTime']]({
         viewId: this.returnViewId,
         parentId: -1
-      }).then((res) => {
+      }).then(res => {
         if (res.status === 0) {
           if (res.data && res.data.lastUpdateTime) {
             this.viewLastUpdatedTime = res.data.lastUpdateTime
@@ -337,7 +334,7 @@ export default {
     },
     // 获取机构树--初始化
     findNodeTree (parentId) {
-      api[urlNames['getViewTree']]({}).then((res) => {
+      api[urlNames['getViewTree']]({}).then(res => {
         this.nodeTree = res.data
         if (res.data.length !== 0) {
           this.defaultexpandedkeys = res.data[0].id
@@ -362,7 +359,7 @@ export default {
         viewId: this.returnViewId,
         viewNodeDraft: nodeList,
         syncChild: this.syncChild
-      }).then((res) => {
+      }).then(res => {
         if (res.status === 0) {
           if (res.data !== undefined && res.data === '-1') {
             this.$message.info('该节点已存在')
@@ -381,7 +378,7 @@ export default {
       api[urlNames['getViewTime']]({
         viewId: this.returnViewId,
         parentId: node.data.id
-      }).then((res) => {
+      }).then(res => {
         let treeData = []
         if (res.data.list) {
           res.data.list.forEach(item => {
@@ -398,7 +395,7 @@ export default {
     findSonNodeTree (parentId) {
       api[urlNames['getViewTree']]({
         parentId: parentId
-      }).then((res) => {
+      }).then(res => {
         this.nodeSonTree = res.data
       })
     },
@@ -409,7 +406,7 @@ export default {
       }
       api[urlNames['getViewTree']]({
         parentId: node.data.id
-      }).then((res) => {
+      }).then(res => {
         let treeData = []
         res.data.forEach(item => {
           if (item.hasChildren === 0) {
@@ -425,7 +422,7 @@ export default {
       api[urlNames['findNodeDraftList']]({
         parentId: parentId,
         viewId: this.returnViewId
-      }).then((res) => {
+      }).then(res => {
         this.viewNodeTree = res.data
       })
     },
@@ -437,7 +434,7 @@ export default {
       api[urlNames['findNodeDraftList']]({
         parentId: node.data.id,
         viewId: this.returnViewId
-      }).then((res) => {
+      }).then(res => {
         let treeData = []
         res.data.forEach(item => {
           if (item.hasChildren === 0) {
@@ -450,8 +447,7 @@ export default {
       this.viewNodeSonTree = []
     },
     // tab点击切换
-    handleClick () {
-    },
+    handleClick () {},
     // 设置tree选中
     setCheckedKeys () {
       // setChecked
@@ -483,7 +479,12 @@ export default {
     nodeDragEnd (Node, lastNode, lastTree, e) {
       let rect = this.$refs.coordinates.getClientRects()[0]
 
-      if (e.clientX > rect.left && e.clientX < rect.right && e.clientY > rect.top && e.clientY < rect.bottom) {
+      if (
+        e.clientX > rect.left &&
+        e.clientX < rect.right &&
+        e.clientY > rect.top &&
+        e.clientY < rect.bottom
+      ) {
         this.viewNodeDraft.id = Node.data.id
         Node.data.parentId = this.viewNodeDraft.parentId = '-1'
         this.viewNodeDraft.name = Node.data.name
@@ -494,13 +495,15 @@ export default {
           confirmButtonText: '包括',
           cancelButtonText: '不包括',
           type: 'warning'
-        }).then(() => {
-          this.syncChild = true
-          this.createNodeDraft()
-        }).catch(() => {
-          this.syncChild = false
-          this.createNodeDraft()
         })
+          .then(() => {
+            this.syncChild = true
+            this.createNodeDraft()
+          })
+          .catch(() => {
+            this.syncChild = false
+            this.createNodeDraft()
+          })
         this.checkedKeys.push(Node.data.id)
         this.setCheckedKeys()
         this.viewNodeTree.push(Node.data)
@@ -512,10 +515,10 @@ export default {
     synchronizedNode () {
       api[urlNames['synchronizedNode']]({
         viewId: this.returnViewId
-      }).then((res) => {
+      }).then(res => {
         if (res.status === 0) {
           this.getViewTime()
-          this.activeName='third'
+          this.activeName = 'third'
         }
       })
     },
@@ -525,7 +528,7 @@ export default {
         viewId: this.returnViewId,
         viewNodeDraft: nodeList,
         syncChild: false
-      }).then((res) => {
+      }).then(res => {
         if (res.status === 0) {
           if (res.data !== undefined && res.data === '-1') {
             this.$message.info('存在重复的节点')
@@ -552,22 +555,24 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(() => {
-        api[urlNames['deleteViewById']]({
-          viewNodeDraft: [JSON.parse(JSON.stringify(node))],
-          viewId: this.returnViewId
-        }).then((res) => {
-          if (res.status === 0) {
-            this.findNodeDraftList('-1')
-            this.$message.success('删除成功')
-          }
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        })
       })
+        .then(() => {
+          api[urlNames['deleteViewById']]({
+            viewNodeDraft: [JSON.parse(JSON.stringify(node))],
+            viewId: this.returnViewId
+          }).then(res => {
+            if (res.status === 0) {
+              this.findNodeDraftList('-1')
+              this.$message.success('删除成功')
+            }
+          })
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
     },
     // 草稿拖动节点位置
     nodeSelectDragEnd (dragNode, lastNode, seat, e) {
@@ -643,25 +648,27 @@ export default {
           confirmButtonText: '包括',
           cancelButtonText: '不包括',
           type: 'warning'
-        }).then(() => {
-          this.syncChild = true
-          this.createNodeDraft()
-        }).catch(() => {
-          this.syncChild = false
-          this.createNodeDraft()
         })
+          .then(() => {
+            this.syncChild = true
+            this.createNodeDraft()
+          })
+          .catch(() => {
+            this.syncChild = false
+            this.createNodeDraft()
+          })
         this.checkedKeys.push(node.id)
         this.viewNodeTree.push(node)
       }
     },
-    back(){
-      this.isChange=this.addWatch(this.ViewFrom,this.oldViewFrom)
-       if(this.isChange){
-         this.goBackDilog(this.createView)
-       }else{
-         this.$router.push({ path: '/view-management' })
-         this.isChange=false
-       }
+    back () {
+      this.isChange = this.addWatch(this.ViewFrom, this.oldViewFrom)
+      if (this.isChange) {
+        this.goBackDilog(this.createView)
+      } else {
+        this.$router.push({ path: '/view-management' })
+        this.isChange = false
+      }
     },
     // 返回列表
     backToList () {
@@ -671,20 +678,19 @@ export default {
     findViewById (id) {
       api[urlNames['findViewById']]({
         id: id
-      }).then((res) => {
+      }).then(res => {
         this.ViewFrom.name = res.data.name
         this.ViewFrom.removed = !res.data.removed
         this.ViewFrom.syncChildren = !!res.data.syncChildren
         this.ViewFrom.roleBindUserIds = []
-        let that=this
-        if( res.data.list&&res.data.list.length>0){
-           res.data.list.forEach(item => {
-           that.ViewFrom.roleBindUserIds.push(item.uid)
-        })
+        let that = this
+        if (res.data.list && res.data.list.length > 0) {
+          res.data.list.forEach(item => {
+            that.ViewFrom.roleBindUserIds.push(item.uid)
+          })
         }
 
         this.oldViewFrom = JSON.parse(JSON.stringify(this.ViewFrom))
-
       })
     }
   }
@@ -692,11 +698,11 @@ export default {
 </script>
 
 <style scoped lang="less">
-  @import "./index";
+@import './index';
 
-  .el-tree-node__content:hover {
-    .fa-trash-o {
-      display: block;
-    }
+.el-tree-node__content:hover {
+  .fa-trash-o {
+    display: block;
   }
+}
 </style>

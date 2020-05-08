@@ -6,29 +6,44 @@
         <span v-if="content[0].nodeType === 2" class="content-ico iconfont icondanwei"></span>
         <span v-if="content[0].nodeType === 3" class="content-ico iconfont iconbumen"></span>
         <span class="organization-value" v-html="content[0].name"></span>
-        <el-button v-if="content[0].nodeType === 1" @click.native="openEditNode(content[0])" >编辑</el-button>
-        <el-button v-if="content[0].nodeType === 2" @click.native="openEditUnit(content[0])" >编辑</el-button>
-        <el-button v-if="content[0].nodeType === 3" @click.native="openDepartmentEdit(content[0])" >编辑</el-button>
+        <el-button v-if="content[0].nodeType === 1" @click.native="openEditNode(content[0])">编辑</el-button>
+        <el-button v-if="content[0].nodeType === 2" @click.native="openEditUnit(content[0])">编辑</el-button>
+        <el-button
+          v-if="content[0].nodeType === 3"
+          @click.native="openDepartmentEdit(content[0])"
+        >编辑</el-button>
         <el-button @click="toLogData" style="margin-left: 5px">日志</el-button>
       </div>
       <!-- <div class="label-content">
          <span v-for="item in labelList" :key="item.id">{{item.name}}</span>
-       </div>-->
+      </div>-->
       <div class="list-tab">
         <el-tabs v-model="activeName">
-          <div class="content-title">
-            {{activeName}}
-          </div>
+          <div class="content-title">{{activeName}}</div>
           <el-tab-pane label="下级设置" name="下级设置">
-            <el-popover
-              placement="bottom"
-              width="100">
+            <el-popover placement="bottom" width="100">
               <div class="popover" style="text-align: center; margin: 0">
-                <div style="border-bottom: 1px solid rgba(0, 0, 0, 0.1);padding: 5px 0;cursor: pointer" @click="goAddNode" v-if="showAddNodeFlag">添加节点</div>
-                <div style="border-bottom: 1px solid rgba(0, 0, 0, 0.1);padding: 5px 0;cursor: pointer" v-if="showAddDepartmentFlag" @click="goAddDepartment">添加内设机构</div>
-                <div style="padding: 5px 0;cursor: pointer" v-if="showAddUnitFlag && hasRight('orgCreate')" @click="goAddUnit" >添加单位</div>
+                <div
+                  style="border-bottom: 1px solid rgba(0, 0, 0, 0.1);padding: 5px 0;cursor: pointer"
+                  @click="goAddNode"
+                  v-if="showAddNodeFlag"
+                >添加节点</div>
+                <div
+                  style="border-bottom: 1px solid rgba(0, 0, 0, 0.1);padding: 5px 0;cursor: pointer"
+                  v-if="showAddDepartmentFlag"
+                  @click="goAddDepartment"
+                >添加内设机构</div>
+                <div
+                  style="padding: 5px 0;cursor: pointer"
+                  v-if="showAddUnitFlag && hasRight('orgCreate')"
+                  @click="goAddUnit"
+                >添加单位</div>
               </div>
-              <el-button class="add-btn" slot="reference" :disabled="!hasRight('departmentCreate')">添加下级</el-button>
+              <el-button
+                class="add-btn"
+                slot="reference"
+                :disabled="!hasRight('departmentCreate')"
+              >添加下级</el-button>
             </el-popover>
             <!--下级列表-->
             <content-list
@@ -41,15 +56,15 @@
             ></content-list>
           </el-tab-pane>
           <el-tab-pane label="详细信息" name="详细信息" v-if="content[0]===0">
-            <el-table
-              :data="content"
-              border
-              size="medium"
-            >
+            <el-table :data="content" border size="medium">
               <template slot="empty">
                 <div class="empty">
-                  <p><img class="data-pic" src="@src/common/images/no-data1.png" alt=""/></p>
-                  <p><span style="padding-left: 8px;">暂无数据</span></p>
+                  <p>
+                    <img class="data-pic" src="@src/common/images/no-data1.png" alt />
+                  </p>
+                  <p>
+                    <span style="padding-left: 8px;">暂无数据</span>
+                  </p>
                 </div>
               </template>
               <el-table-column label="名称" prop="name"></el-table-column>
@@ -68,18 +83,24 @@
               </el-table-column>
               <el-table-column prop="act" label="操作" width="100" align="center">
                 <template slot-scope="scope">
-                  <el-button v-show="scope.row.nodeType === 1" @click.native="openEditNode(scope.row)" type="text"
-                             size="small">
-                    修改
-                  </el-button>
-                  <el-button v-show="scope.row.nodeType === 3" @click.native="openDepartmentEdit(scope.row)" type="text"
-                             size="small">
-                    修改
-                  </el-button>
-                  <el-button v-show="scope.row.nodeType === 2" @click.native="openEditUnit(scope.row)" type="text"
-                             size="small">
-                    修改
-                  </el-button>
+                  <el-button
+                    v-show="scope.row.nodeType === 1"
+                    @click.native="openEditNode(scope.row)"
+                    type="text"
+                    size="small"
+                  >修改</el-button>
+                  <el-button
+                    v-show="scope.row.nodeType === 3"
+                    @click.native="openDepartmentEdit(scope.row)"
+                    type="text"
+                    size="small"
+                  >修改</el-button>
+                  <el-button
+                    v-show="scope.row.nodeType === 2"
+                    @click.native="openEditUnit(scope.row)"
+                    type="text"
+                    size="small"
+                  >修改</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -89,30 +110,35 @@
               v-if="activeName === '人员管理' & !showExportPage"
               :sortFlag="sortShowFlag"
               @getPage="getPage"
-               @cancel="getSortAction"
+              @cancel="getSortAction"
               :contentPage="currentPage"
               :id="content[0].bindId"
               :type="content[0].nodeType"
               :exportData="content[0]"
-               @goExportPerson="goExportPerson"
+              @goExportPerson="goExportPerson"
             >
               <template slot="AddBtn">
-                <el-button class="add-btn" @click="openAddPerson" :disabled="!hasRight('userCreate')" >添加人员</el-button>
+                <el-button
+                  class="add-btn"
+                  @click="openAddPerson"
+                  :disabled="!hasRight('userCreate')"
+                >添加人员</el-button>
               </template>
             </person-list>
-            <import-person  v-if="showExportPage"
-            :showExportPage="showExportPage"
-            @cancel="goExportPerson"
-            :id="content[0].bindId"
-            :organizationName='content[0].name'
-            :type="content[0].nodeType"></import-person>
-
+            <import-person
+              v-if="showExportPage"
+              :showExportPage="showExportPage"
+              @cancel="goExportPerson"
+              :id="content[0].bindId"
+              :organizationName="content[0].name"
+              :type="content[0].nodeType"
+            ></import-person>
           </el-tab-pane>
           <el-tab-pane label="单位领导" name="单位主要领导" v-if="content[0].nodeType === 2">
             <leader-list
               v-if="activeName === '单位主要领导'"
               :content-id="content[0].bindId"
-              :nodeType = '1'
+              :nodeType="1"
               @getPage="getPage"
               :nodeInfo="nodeInfo"
               :nodeData="nodeData"
@@ -123,7 +149,7 @@
               v-if="activeName === '内设机构主要领导'"
               :content-id="content[0].bindId"
               @getPage="getPage"
-              :nodeType = '2'
+              :nodeType="2"
               :nodeInfo="nodeInfo"
               :nodeData="nodeData"
             ></leader-list>
@@ -148,7 +174,10 @@ export default {
   name: 'OrganizationContent',
   mixins: [organizationEdit, hasRight],
   components: {
-    ContentList, PersonList, leaderList, ImportPerson
+    ContentList,
+    PersonList,
+    leaderList,
+    ImportPerson
   },
   data () {
     return {
@@ -211,7 +240,10 @@ export default {
     },
     init (type) {
       if (type === 'back') {
-        this.currentPage = Object.assign(this.currentPage, this.organization.page)
+        this.currentPage = Object.assign(
+          this.currentPage,
+          this.organization.page
+        )
         this.backInfo = Object.assign(this.backInfo, this.organization.backInfo)
       } else {
         this.SET_ORGANIZATION_PAGE({})
@@ -281,49 +313,54 @@ export default {
       this.loading = true
       api[urlNames['findViewNodeById']]({
         id: this.contentId
-      }).then((res) => {
-        this.nodeData = res.data
-        this.content[0] = res.data
-        this.nodeType = res.data.nodeType
-        this.selectType = this.content.nodeType
-        this.nodeInfo.nodeType = res.data.nodeType
-        this.nodeInfo.parentId = res.data.id
-        this.loading = false
-        if (this.content[0].bindId) {
-          /* if (this.content[0].nodeType === 2) {
+      }).then(
+        res => {
+          this.nodeData = res.data
+          this.content[0] = res.data
+          this.nodeType = res.data.nodeType
+          this.selectType = this.content.nodeType
+          this.nodeInfo.nodeType = res.data.nodeType
+          this.nodeInfo.parentId = res.data.id
+          this.loading = false
+          if (this.content[0].bindId) {
+            /* if (this.content[0].nodeType === 2) {
               this.findLabel(1)
             }
             if (this.content[0].nodeType === 3) {
               this.findLabel(2)
             } */
+          }
+          if (this.content[0].nodeType === 1) {
+            this.showAddNodeFlag = true
+            this.showAddDepartmentFlag = false
+            this.showAddUnitFlag = true
+          }
+          if (this.content[0].nodeType === 3) {
+            this.showAddNodeFlag = false
+            this.showAddDepartmentFlag = true
+            this.showAddUnitFlag = false
+          }
+          if (this.content[0].nodeType === 2) {
+            this.showAddNodeFlag = false
+            this.showAddDepartmentFlag = true
+            this.showAddUnitFlag = true
+          }
+        },
+        () => {
+          this.$message.error(`没有内容`)
         }
-        if (this.content[0].nodeType === 1) {
-          this.showAddNodeFlag = true
-          this.showAddDepartmentFlag = false
-          this.showAddUnitFlag = true
-        }
-        if (this.content[0].nodeType === 3) {
-          this.showAddNodeFlag = false
-          this.showAddDepartmentFlag = true
-          this.showAddUnitFlag = false
-        }
-        if (this.content[0].nodeType === 2) {
-          this.showAddNodeFlag = false
-          this.showAddDepartmentFlag = true
-          this.showAddUnitFlag = true
-        }
-      }, () => {
-        this.$message.error(`没有内容`)
-      })
+      )
     },
     findLabel (type) {
       api[urlNames['findLabel']]({
         id: this.content[0].bindId,
         type: type
-      }).then((res) => {
-        this.labelList = res.data
-      }, () => {
-      })
+      }).then(
+        res => {
+          this.labelList = res.data
+        },
+        () => {}
+      )
     },
     // 跳转日志
     toLogData () {
@@ -331,12 +368,16 @@ export default {
       console.log('nodeData', this.nodeData)
       if (this.nodeData.nodeType === 1) {
         path = `/organization/operate-log/${this.nodeData.id}`
-      } else  {
+      } else {
         path = `/organization/operate-log/${this.nodeData.bindId}`
       }
       this.$router.push({
         path: path,
-        query: { type: this.nodeInfo.nodeType, title: `${this.content[0].name}` ,nodeId:this.nodeData.id}
+        query: {
+          type: this.nodeInfo.nodeType,
+          title: `${this.content[0].name}`,
+          nodeId: this.nodeData.id
+        }
       })
     }
   },
@@ -352,23 +393,23 @@ export default {
 </script>
 
 <style lang="less">
-  @import "index";
-  .empty {
-    p {
-      margin: 0;
-      font-size: 0px;
-      text-align: center;
-      line-height: 16px!important;
-    }
-
-    span {
-      font-size: 12px;
-    }
+@import 'index';
+.empty {
+  p {
+    margin: 0;
+    font-size: 0px;
+    text-align: center;
+    line-height: 16px !important;
   }
 
-  .data-pic {
-    padding-top: 20px;
-    width: 60px;
-    height: auto;
+  span {
+    font-size: 12px;
   }
+}
+
+.data-pic {
+  padding-top: 20px;
+  width: 60px;
+  height: auto;
+}
 </style>

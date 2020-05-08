@@ -1,22 +1,22 @@
 <template>
   <div class="tree-list">
     <el-tree
-     ref="addressTreeList"
+      ref="addressTreeList"
       :data="treeDate"
       node-key="id"
       :default-expanded-keys="[treeDate[0]!==undefined?treeDate[0].id: '']"
       :props="props"
       lazy
       :load="loadNode"
-      :expand-on-click-node='false'
+      :expand-on-click-node="false"
       @node-click="handleNodeClick"
-      :highlight-current='true'
+      :highlight-current="true"
     >
       <span slot-scope="{ node, data }">
-          <span  class="iconfont iconzuzhijigou" v-if="data.nodeType === 1"></span>
-          <span  class="iconfont icondanwei" v-if="data.nodeType === 2"></span>
-          <span  class="iconfont iconbumen" v-if="data.nodeType === 3"></span>
-          <span  style="margin-left:3px;" :title="node.label">{{node.label}}</span>
+        <span class="iconfont iconzuzhijigou nodeColor" v-if="data.nodeType === 1"></span>
+        <span class="iconfont icondanwei orgColor" v-if="data.nodeType === 2"></span>
+        <span class="iconfont iconbumen deptColor" v-if="data.nodeType === 3"></span>
+        <span style="margin-left:3px;" :title="node.label">{{node.label}}</span>
       </span>
     </el-tree>
   </div>
@@ -42,15 +42,15 @@ export default {
       return this.treeList
     }
   },
-  mounted(){
-  //  $store.state.app.option.user.orgId
-  this.$nextTick(function(){
-    this.$refs.addressTreeList.setCurrentKey(this.$store.state.app.option.user.orgId) 
-  })
-
+  mounted () {
+    //  $store.state.app.option.user.orgId
+    this.$nextTick(function () {
+      this.$refs.addressTreeList.setCurrentKey(
+        this.$store.state.app.option.user.orgId
+      )
+    })
   },
   methods: {
-
     // 追加子节点
     loadNode (node, resolve) {
       if (node.level === 0) {
@@ -72,13 +72,11 @@ export default {
         })
       }
     },
-    getSonNode (id) {
-    },
+    getSonNode (id) {},
     handleNodeClick (data) {
       this.$emit('handle-node-click', data)
     }
   }
-
 }
 </script>
 <style lang="less">

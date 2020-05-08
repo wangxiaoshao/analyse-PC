@@ -11,7 +11,7 @@
               :class="activeColor==2?'top-active':''"
               @click="switchAddressView(2)"
             >全省通讯录</div>
-          </div> -->
+          </div>-->
           <search-result
             @searchMyBack="searchMyBack"
             @searchOtherBack="searchOtherBack"
@@ -43,21 +43,23 @@
         <transition name="fade-transform" mode="out-in" style="height: 100%">
           <div style="padding: 0 20px;height:100%">
             <department
-              :activeColor='activeColor'
-              :orgInfo='orgInfo'
+              :activeColor="activeColor"
+              :orgInfo="orgInfo"
               :departmentList="departmentList"
               :treeList="treeList"
-              :msg='msg'
-              :visableData='visableData'
+              :msg="msg"
+              :visableData="visableData"
               v-if="showDep"
               @handle-child-click="handleChildClick"
             ></department>
-            <member :table-data="memberList"
-              :activeColor='activeColor'
-              :orgInfo='orgInfo'
-              :msg='msg'
-              :visableData='visableData'
-              v-if="selectType!='0' && !showDep"></member>
+            <member
+              :table-data="memberList"
+              :activeColor="activeColor"
+              :orgInfo="orgInfo"
+              :msg="msg"
+              :visableData="visableData"
+              v-if="selectType!='0' && !showDep"
+            ></member>
             <person-info
               :personInfoList="personInfoList"
               :activeColor="activeColor"
@@ -77,7 +79,7 @@ import personInfo from './components/PersonInfo/index'
 import department from './department/index'
 import member from './member/index'
 import addressListTree from './components/Tree/index'
-import { mapState, mapMutations } from 'vuex'
+import { mapState } from 'vuex'
 export default {
   components: {
     searchResult,
@@ -90,7 +92,7 @@ export default {
     return {
       isShow: 1,
       activeColor: 1,
-      msg:'暂无数据！',
+      msg: '暂无数据！',
       defaultNodeId: '',
       navigation: [],
       navigation1: [],
@@ -104,14 +106,14 @@ export default {
       showDep: true,
       showBreadCrumb: true,
       selectType: '',
-      addressBookSet:[],
-      visableData:{
-        allOrgInfo:1,
-        userName:1,
-        userMobile:1,
-        userPhone:1,
-        userDetail:1,
-        depPhone:1
+      addressBookSet: [],
+      visableData: {
+        allOrgInfo: 1,
+        userName: 1,
+        userMobile: 1,
+        userPhone: 1,
+        userDetail: 1,
+        depPhone: 1
       }
     }
   },
@@ -166,7 +168,7 @@ export default {
         orgId: this.app.option.user.orgId
       }).then(res => {
         this.treeList = res.data
-        this.departmentList=res.data
+        this.departmentList = res.data
         this.handleNodeClickTree(this.treeList[0])
       })
     },
@@ -215,93 +217,90 @@ export default {
       this.showDep = true
       this.navigation = []
       this.navigation.push(node)
-      if(node.nodeType === 1){
-         this.visableData={
-          allOrgInfo:1,
-          userName:1,
-          userMobile:1,
-          userPhone:1,
-          userDetail:1,
-          depPhone:1
+      if (node.nodeType === 1) {
+        this.visableData = {
+          allOrgInfo: 1,
+          userName: 1,
+          userMobile: 1,
+          userPhone: 1,
+          userDetail: 1,
+          depPhone: 1
         }
       }
       if (node.nodeType === 3) {
         this.selectType = ''
         this.showDep = false
-        let nodeParams={
-          level:2,
-          memberId:node.orgId
+        let nodeParams = {
+          level: 2,
+          memberId: node.orgId
         }
         this.handtxlOptions(nodeParams)
         this.getAddressListDepartmentMembers(node.bindId)
       } else if (node.nodeType === 2) {
         this.selectType = ''
-        let params={
-          level:2,
-          memberId:node.bindId
+        let params = {
+          level: 2,
+          memberId: node.bindId
         }
-         this.handNodeOptions(params)
-         this.getAddressListOrganizationMembers(node.bindId)
+        this.handNodeOptions(params)
+        this.getAddressListOrganizationMembers(node.bindId)
       }
 
-         this.getAddressListdepartment(node.id)
+      this.getAddressListdepartment(node.id)
     },
 
     // 处理部门 节点类型为3
-     handtxlOptions(data){
+    handtxlOptions (data) {
       // txlOptions
-       api[urlNames['txlOptions']](data).then(res => {
-         if(res.data.length>0){
-            this.addressBookSet=res.data.filter(function(val){
-            return val.name=='orgAddressBookSet'
-            })
-            this.visableData=this.addressBookSet[0].value
-          }
-          if(data.memberId==this.app.option.user.orgId){
-              this.visableData={
-              allOrgInfo:1,
-              userName:1,
-              userMobile:1,
-              userPhone:1,
-              userDetail:1,
-              depPhone:1
-            }
+      api[urlNames['txlOptions']](data).then(res => {
+        if (res.data.length > 0) {
+          this.addressBookSet = res.data.filter(function (val) {
+            return val.name === 'orgAddressBookSet'
+          })
+          this.visableData = this.addressBookSet[0].value
         }
-
+        if (data.memberId === this.app.option.user.orgId) {
+          this.visableData = {
+            allOrgInfo: 1,
+            userName: 1,
+            userMobile: 1,
+            userPhone: 1,
+            userDetail: 1,
+            depPhone: 1
+          }
+        }
       })
     },
 
     // 处理单位节点类型为2
-    handNodeOptions(params){
-       api[urlNames['txlOptions']](params).then(res => {
-         if(res.data.length>0){
-            this.addressBookSet=res.data.filter(function(val){
-            return val.name=='orgAddressBookSet'
-            })
-            this.visableData=this.addressBookSet[0].value
-          }else{
-            this.visableData={
-                allOrgInfo:1,
-                userName:1,
-                userMobile:1,
-                userPhone:1,
-                userDetail:1,
-                depPhone:1
-              }
+    handNodeOptions (params) {
+      api[urlNames['txlOptions']](params).then(res => {
+        if (res.data.length > 0) {
+          this.addressBookSet = res.data.filter(function (val) {
+            return val.name === 'orgAddressBookSet'
+          })
+          this.visableData = this.addressBookSet[0].value
+        } else {
+          this.visableData = {
+            allOrgInfo: 1,
+            userName: 1,
+            userMobile: 1,
+            userPhone: 1,
+            userDetail: 1,
+            depPhone: 1
           }
-          if(params.memberId==this.app.option.user.orgId){
-              this.visableData={
-                allOrgInfo:1,
-                userName:1,
-                userMobile:1,
-                userPhone:1,
-                userDetail:1,
-                depPhone:1
-              }
+        }
+        if (params.memberId === this.app.option.user.orgId) {
+          this.visableData = {
+            allOrgInfo: 1,
+            userName: 1,
+            userMobile: 1,
+            userPhone: 1,
+            userDetail: 1,
+            depPhone: 1
           }
-
-
-        })
+        }
+      })
     },
 
     handleChildClick (node) {
@@ -310,28 +309,28 @@ export default {
       this.selectType = ''
       this.showDep = true
       this.navigation.push(node)
-       if(node.nodeType === 1){
-         this.visableData={
-          allOrgInfo:1,
-          userName:1,
-          userMobile:1,
-          userPhone:1,
-          userDetail:1,
-          depPhone:1
+      if (node.nodeType === 1) {
+        this.visableData = {
+          allOrgInfo: 1,
+          userName: 1,
+          userMobile: 1,
+          userPhone: 1,
+          userDetail: 1,
+          depPhone: 1
         }
       }
       if (node.nodeType === 3) {
         this.showDep = false
-        let nodeParams={
-          level:2,
-          memberId:node.orgId
+        let nodeParams = {
+          level: 2,
+          memberId: node.orgId
         }
         this.handtxlOptions(nodeParams)
         this.getAddressListDepartmentMembers(node.bindId)
       } else if (node.nodeType === 2) {
-         let params={
-          level:2,
-          memberId:node.bindId
+        let params = {
+          level: 2,
+          memberId: node.bindId
         }
         this.handNodeOptions(params)
         this.getAddressListOrganizationMembers(node.bindId)
@@ -389,15 +388,12 @@ export default {
       api[urlNames['getAddressListUserByName']]({
         orgId: this.app.option.user.orgId,
         name: this.name
-      }).then(res => {
-
-      })
+      }).then(res => {})
     },
     getAddressListOtherUser () {
       api[urlNames['getAddressListUserByName']]({
         name: this.name
-      }).then(res => {
-      })
+      }).then(res => {})
     }
   }
 }

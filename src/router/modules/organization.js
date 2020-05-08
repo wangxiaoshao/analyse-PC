@@ -56,49 +56,46 @@ export default [
     meta: {
       key: 'menuOrgManage'
     },
-    children: [
-      {
-        path: 'organization-content/:nodeId',
-        name: 'OrganizationContent',
-        component: OrganizationContent
-      }, {
-        path: 'node-edit/:id',
-        name: 'NodeEdit',
-        component: NodeDetail
-      }, {
-        path: 'unit-edit/:id',
-        name: 'UnitEdit',
-        component: UnitDetail
-      }, {
-        path: 'department-edit/:id',
-        name: 'DepartmentEdit',
-        component: DepartmentDetail
-      }, {
-        path: 'person-edit/:id/:identityId',
-        name: 'PersonEdit',
-        component: PersonDetail
-      }, {
-        path: 'node-add/:parentId',
-        name: 'NodeAdd',
-        component: NodeDetail
-      }, {
-        path: 'unit-add/:parentId',
-        name: 'UnitAdd',
-        component: UnitDetail
-      }, {
-        path: 'department-add/:parentId',
-        name: 'DepartmentAdd',
-        component: DepartmentDetail
-      }, {
-        path: 'person-add/:parentId',
-        name: 'PersonAdd',
-        component: PersonDetail
-      }, {
-        path: 'operate-log/:id',
-        name: 'OperateLog',
-        component: OperateLog
-      }
-    ]
+    children: [{
+      path: 'organization-content/:nodeId',
+      name: 'OrganizationContent',
+      component: OrganizationContent
+    }, {
+      path: 'node-edit/:id',
+      name: 'NodeEdit',
+      component: NodeDetail
+    }, {
+      path: 'unit-edit/:id',
+      name: 'UnitEdit',
+      component: UnitDetail
+    }, {
+      path: 'department-edit/:id',
+      name: 'DepartmentEdit',
+      component: DepartmentDetail
+    }, {
+      path: 'person-edit/:id/:identityId',
+      name: 'PersonEdit',
+      component: PersonDetail
+    }, {
+      path: 'node-add/:parentId',
+      name: 'NodeAdd',
+      component: NodeDetail
+    }, {
+      path: 'unit-add/:parentId',
+      name: 'UnitAdd',
+      component: UnitDetail
+    }, {
+      path: 'department-add/:parentId',
+      name: 'DepartmentAdd',
+      component: DepartmentDetail
+    }, {
+      path: 'person-add/:parentId',
+      name: 'PersonAdd',
+      component: PersonDetail
+    }, {
+      path: 'operate-log/:id',
+      name: 'OperateLog',
+      component: OperateLog
+    }]
   }
 ]
-
