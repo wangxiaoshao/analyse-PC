@@ -150,8 +150,8 @@ export default {
         // alert(this.app.option.user.orgId)
         this.navigation1.name = '本单位通讯录'
         this.getAddressListUnitTree()
-        this.getAddressListOrganizationMembers()
-        this.getAddressListdepartment()
+        // this.getAddressListOrganizationMembers()
+        // this.getAddressListdepartment()
         // this.getAddressListUnitUser()
       } else if (e === 2) {
         this.navigation1.name = '全省通讯录'
@@ -168,7 +168,6 @@ export default {
         orgId: this.app.option.user.orgId
       }).then(res => {
         this.treeList = res.data
-        this.departmentList = res.data
         this.handleNodeClickTree(this.treeList[0])
       })
     },
@@ -245,7 +244,6 @@ export default {
         this.handNodeOptions(params)
         this.getAddressListOrganizationMembers(node.bindId)
       }
-
       this.getAddressListdepartment(node.id)
     },
 
@@ -350,6 +348,7 @@ export default {
 
     /** 单位下人员 getAddressListOrganizationMembers */
     getAddressListOrganizationMembers (id) {
+      let that = this
       if (!id) {
         id = this.app.option.user.orgId
       }
@@ -358,7 +357,10 @@ export default {
       }).then(res => {
         let ary = res.data
         this.memberList = res.data
-        this.departmentList = [...this.departmentList, ...ary]
+        ary.forEach(item => {
+          that.departmentList.push(item)
+        })
+        // this.departmentList = [...this.departmentList, ...ary]
       })
     },
 

@@ -72,6 +72,7 @@
                       :allow-drop="allowSourceDrop"
                       @node-drag-end="nodeDragEnd"
                       @node-drag-over="handleDragOver"
+                      @node-click="handleNodeClick"
                       :default-expanded-keys="[defaultexpandedkeys]"
                       :expand-on-click-node="false"
                       :default-checked-keys="checkedKeys"
@@ -474,6 +475,9 @@ export default {
     handleDragOver (draggingNode, dropNode, ev) {
       this.tempNode = draggingNode
       // console.log('Tree drag over: ', draggingNode.label, dropNode, ev.screenX)
+    },
+    handleNodeClick (nodeData) {
+      console.log('nodeData:', nodeData)
     },
     // 拖拽结束时触发的事件--原来机构树
     nodeDragEnd (Node, lastNode, lastTree, e) {

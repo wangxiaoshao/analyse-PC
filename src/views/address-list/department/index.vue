@@ -56,15 +56,6 @@
             </p>
           </div>
         </template>
-        <!-- <el-table-column prop="name" label width="100" align="left" height="0"></el-table-column>
-        <el-table-column label="内设机构电话" width="115">内设机构电话:</el-table-column>
-        <el-table-column prop="phone" label></el-table-column>
-        <el-table-column label="下级" align="right" width class-name="next-btn">
-          <template slot-scope="scope">
-            <i class="el-icon-share"></i>
-            <span @click="childClick(scope.row)">下级</span>
-          </template>
-        </el-table-column>-->
         <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
         <el-table-column prop="name" label="所有下级" width="180px">
           <template slot-scope="scope">
@@ -127,7 +118,7 @@
 </template>
 <script>
 import { api, urlNames } from '@src/api'
-import { mapState, mapMutations } from 'vuex'
+import { mapState } from 'vuex'
 import noDataImg from '@src/common/images/no-data1.png'
 import handPhoneName from '@src/mixins/phone-name.js'
 export default {
@@ -175,11 +166,11 @@ export default {
         nodeType,
         bindId
       }).then(res => {
-        if (res && state == 1) {
+        if (res && state === 1) {
           this.orgInfo.phone = res.data.phone
           this.orgInfo.isLooked = true
         }
-        if (res && state == 2) {
+        if (res && state === 2) {
           this.departmentList[index].phone = res.data.phone
           this.departmentList[index].isLooked = true
         }
@@ -187,11 +178,11 @@ export default {
     },
     findMobileById (uid, index, state) {
       api[urlNames['findMobileById']]({ uid }).then(res => {
-        if (res && state == 1) {
+        if (res && state === 1) {
           this.departmentList[index].mobile = res.data.mobile
           this.departmentList[index].isLooked = true
         }
-        if (res && state == 2) {
+        if (res && state === 2) {
           this.departmentList[index].officePhone = res.data.officePhone
           this.departmentList[index].isOfficePhone = true
         }
