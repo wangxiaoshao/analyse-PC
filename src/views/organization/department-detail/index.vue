@@ -180,7 +180,7 @@ export default {
       }
     }
   }, */
-  data() {
+  data () {
     return {
       iptMsgInfoStr: '添加或修改该字段需要提交审核',
       iptMsgVisible: {},
@@ -241,20 +241,21 @@ export default {
   computed: {
     ...mapState(['app'])
   },
-  mounted() {
+  mounted () {
     this.setBreadcrumbTitle()
   },
-  created() {
+  created () {
     this.init()
     this.initIptMsgVisible()
+    console.log(this.$route.name)
   },
-  beforeRouteUpdate(to, from, next) {
+  beforeRouteUpdate (to, from, next) {
     next()
     this.setBreadcrumbTitle()
   },
   methods: {
     ...mapMutations(['SET_OPTION']),
-    init() {
+    init () {
       if (
         this.$route.name === 'DepartmentAdd' ||
         this.$route.name === 'DepartmentEdit'
@@ -295,20 +296,21 @@ export default {
       }
     },
     // 设置各个字段的验证提示信息的可见性
-    initIptMsgVisible() {
+    initIptMsgVisible () {
       for (let field in this.ruleForm) {
         this.iptMsgVisible[field] = false
       }
     },
-    showIptMsg(fieldName) {
+    showIptMsg (fieldName) {
       if (
-        this.app.option.options.departmentAuditFields.indexOf(fieldName) > -1
+        this.app.option.options.departmentAuditFields.indexOf(fieldName) > -1 &&
+        this.$route.name === 'DepartmentEdit'
       ) {
         this.iptMsgVisible[fieldName] = true
         this.isAudit = true
       }
     },
-    getDetail() {
+    getDetail () {
       let data = {
         id: this.bindId
       }
@@ -344,7 +346,7 @@ export default {
       )
     },
     // 获取标签
-    findLabel(type) {
+    findLabel (type) {
       api[urlNames['findLabel']]({
         id: this.bindId,
         type: type
@@ -358,10 +360,10 @@ export default {
         () => {}
       )
     },
-    removeTag(tag, index) {
+    removeTag (tag, index) {
       let that = this
       let lIds = []
-      lIds = that.tempLabelId.filter(function(item) {
+      lIds = that.tempLabelId.filter(function (item) {
         return item === that.ruleForm.labelId[index]
       })
       if (lIds.length !== 0) {
@@ -396,11 +398,11 @@ export default {
         that.tagsName.splice(index, 1)
       }
     },
-    getClose(val) {
+    getClose (val) {
       this.openSearchFlag = val
     },
     // 获取选中的标签
-    getTag(val) {
+    getTag (val) {
       const res = new Map()
       let tag = []
       val.forEach(item => {
@@ -414,7 +416,7 @@ export default {
         this.ruleForm.labelId.push(parseInt(item))
       })
     },
-    setBreadcrumbTitle() {
+    setBreadcrumbTitle () {
       // 设置面包屑title
       // TODO breadcrumbTitle可采用组件传参的模式替换路由判断，将配置权交给调用方
       if (
@@ -435,16 +437,16 @@ export default {
       }
       this.pushBreadcrumb(this.breadcrumb)
     },
-    getSystemType(el) {
+    getSystemType (el) {
       this.ruleForm.department.systemType = el
     },
-    getType(el) {
+    getType (el) {
       this.ruleForm.department.type = el
     },
-    getAreaId(val) {
+    getAreaId (val) {
       this.ruleForm.areaId = val
     },
-    submitForm(ruleForm) {
+    submitForm (ruleForm) {
       this.ruleForm.department.removed = this.ruleForm.department.removed
         ? 0
         : 1
@@ -476,7 +478,7 @@ export default {
       })
     },
 
-    goBack() {
+    goBack () {
       this.isChange = this.addWatch(this.ruleForm, this.oldFrom)
       if (this.isChange) {
         this.goBackDilog(this.submitForm, 'ruleForm')
@@ -488,7 +490,7 @@ export default {
   },
   watch: {
     ruleForm: {
-      handler(newForm, oldFrom) {},
+      handler (newForm, oldFrom) {},
       deep: true
     }
   }

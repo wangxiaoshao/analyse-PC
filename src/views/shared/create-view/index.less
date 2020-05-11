@@ -3,35 +3,60 @@
     /deep/ .el-tree-node {
       .is-drop-inner {
         .el-tree-node__content {
-          .label{
+          .label {
             background-color: #58a4f3;
             color: #fff
           }
         }
       }
     }
-    .tree-panel{
+
+    .tree-panel {
       display: flex;
       margin-bottom: 20px;
     }
-    .drag-tips{
+
+    .drag-tips {
       width: 160px;
-      p{
+      position: relative;
+
+      p {
         padding: 0 30px;
       }
-      .tips-img{
+
+      .tips-img {
         padding-top: 100px;
         text-align: center;
       }
-      .tips-title{
-       span{
-         color: #6D7278;
-       }
+
+      .tips-title {
+        span {
+          color: #6D7278;
+        }
       }
-      img{
+
+      img {
         width: 28px;
       }
+
+      .rightBtn {
+        display: inline-block;
+        width: 28px;
+        height: 28px;
+        text-align: center;
+        line-height: 28px;
+        color: #fff;
+        font-weight: bold;
+        font-size: 20px;
+        border-radius: 50%;
+        background-color: #58a4f3;
+        position: absolute;
+        bottom: 0px;
+        left: 10px;
+        cursor: pointer;
+      }
     }
+
     .select-org-panel {
       display: flex;
 
@@ -58,14 +83,17 @@
       }
     }
   }
-.tree-form{
-  .el-form-item{
-    margin-bottom: 0px;
+
+  .tree-form {
+    .el-form-item {
+      margin-bottom: 0px;
+    }
+
+    .el-row {
+      margin-bottom: 20px;
+    }
   }
-  .el-row{
-    margin-bottom: 20px;
-  }
-}
+
   .imenu-icon {
     font-size: 16px;
     margin: 0 5px;

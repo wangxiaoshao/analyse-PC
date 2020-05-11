@@ -20,7 +20,13 @@
     <el-dialog title="选择区域" :visible.sync="areaFlag">
       <area-list @get-area="getAreaId" @close="close" v-model="ruleForm.areaId"></area-list>
     </el-dialog>
-    <el-form :model="ruleForm" :disabled="disabledFlag"  :rules="rules" ref="ruleForm" label-width="130px">
+    <el-form
+      :model="ruleForm"
+      :disabled="disabledFlag"
+      :rules="rules"
+      ref="ruleForm"
+      label-width="130px"
+    >
       <div class="detail-title">
         <i class="imenu-icon iconfont icondanwei big-icon" style="margin: 0px 5px;"></i>单位信息
       </div>
@@ -29,43 +35,46 @@
       </el-menu>
       <el-row>
         <el-col :span="12">
-          <el-form-item
-            label="单位名称"
-            prop="organization.name"
-          >
-            <el-input v-model="ruleForm.organization.name"   @change="handleCredit" @input="showIptMsg('name')"></el-input>
+          <el-form-item label="单位名称" prop="organization.name">
+            <el-input
+              v-model="ruleForm.organization.name"
+              @change="handleCredit"
+              @input="showIptMsg('name')"
+            ></el-input>
             <div v-if="this.$route.name === 'UnitEdit'">
-              <div class="el-form-item__error" v-show="this.iptMsgVisible['name']">
-              {{iptMsgInfoStr}}
-              </div>
+              <div class="el-form-item__error" v-show="this.iptMsgVisible['name']">{{iptMsgInfoStr}}</div>
             </div>
           </el-form-item>
           <el-form-item label="其他名称" prop="organization.otherName">
             <el-input v-model="ruleForm.organization.otherName" @input="showIptMsg('otherName')"></el-input>
             <div v-if="this.$route.name === 'UnitEdit' ">
-              <div class="el-form-item__error" v-show="this.iptMsgVisible['otherName']">
-              {{iptMsgInfoStr}}
-              </div>
+              <div
+                class="el-form-item__error"
+                v-show="this.iptMsgVisible['otherName']"
+              >{{iptMsgInfoStr}}</div>
             </div>
           </el-form-item>
           <el-form-item label="单位地址" prop="organization.address">
             <el-input v-model="ruleForm.organization.address" @input="showIptMsg('address')"></el-input>
             <div v-if="this.$route.name === 'UnitEdit' ">
-              <div class="el-form-item__error" v-show="this.iptMsgVisible['address']">
-              {{iptMsgInfoStr}}
-              </div>
+              <div
+                class="el-form-item__error"
+                v-show="this.iptMsgVisible['address']"
+              >{{iptMsgInfoStr}}</div>
             </div>
           </el-form-item>
           <el-form-item label="传真号码" prop="organization.fax">
             <el-input v-model="ruleForm.organization.fax" @input="showIptMsg('fax')"></el-input>
             <div v-if="this.$route.name === 'UnitEdit'">
-              <div class="el-form-item__error" v-show="this.iptMsgVisible['fax']">
-              {{iptMsgInfoStr}}
-              </div>
+              <div class="el-form-item__error" v-show="this.iptMsgVisible['fax']">{{iptMsgInfoStr}}</div>
             </div>
           </el-form-item>
           <el-form-item label="统一社会信用代码" prop="organization.creditId">
-            <el-input v-model="ruleForm.organization.creditId" @blur="handleCredit" :disabled="creditIddisable">
+            <el-input
+              v-model="ruleForm.organization.creditId"
+              @blur="handleCredit"
+              :disabled="creditIddisable"
+            >
               <i class="el-icon-loading iconload" v-if="loadVisiable" slot="suffix"></i>
             </el-input>
             <div class="tip-msg">
@@ -75,23 +84,22 @@
               </p>
               <p style="color:green" v-if="successVisiable">
                 <i class="el-icon-success"></i>
-               统一社会信用代码验证成功。
+                统一社会信用代码验证成功。
               </p>
-               <p style="color:#999" v-if="requiring">
-                统一社会信用代码正在验证...
-              </p>
+              <p style="color:#999" v-if="requiring">统一社会信用代码正在验证...</p>
             </div>
           </el-form-item>
           <el-form-item label=" 上级单位333">
             <el-input v-model="parentName" :disabled="true"></el-input>
           </el-form-item>
           <!-- <el-form-item label="启用状态" prop="organization.removed" v-if="this.$route.name === 'UnitEdit'&&this.isOrgManage"> -->
-            <el-form-item label="启用状态" prop="organization.removed" v-if="false">
+          <el-form-item label="启用状态" prop="organization.removed" v-if="false">
             <el-switch v-model="ruleForm.organization.removed" @change="showIptMsg('removed')"></el-switch>
             <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
-              <div class="el-form-item__error" v-show="this.iptMsgVisible['removed']">
-              {{iptMsgInfoStr}}
-              </div>
+              <div
+                class="el-form-item__error"
+                v-show="this.iptMsgVisible['removed']"
+              >{{iptMsgInfoStr}}</div>
             </div>
           </el-form-item>
         </el-col>
@@ -99,17 +107,19 @@
           <el-form-item label="单位简称" prop="organization.shortName">
             <el-input v-model="ruleForm.organization.shortName" @input="showIptMsg('shortName')"></el-input>
             <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
-              <div class="el-form-item__error" v-show="this.iptMsgVisible['shortName']">
-              {{iptMsgInfoStr}}
-              </div>
+              <div
+                class="el-form-item__error"
+                v-show="this.iptMsgVisible['shortName']"
+              >{{iptMsgInfoStr}}</div>
             </div>
           </el-form-item>
           <el-form-item label="单位电话" prop="organization.phone">
             <el-input v-model="ruleForm.organization.phone" @input="showIptMsg('phone')"></el-input>
             <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
-              <div class="el-form-item__error" v-show="this.iptMsgVisible['phone']">
-              {{iptMsgInfoStr}}
-              </div>
+              <div
+                class="el-form-item__error"
+                v-show="this.iptMsgVisible['phone']"
+              >{{iptMsgInfoStr}}</div>
             </div>
           </el-form-item>
           <el-form-item label="邮政编码" prop="organization.zipCode">
@@ -120,9 +130,10 @@
               @input="showIptMsg('zipCode')"
             ></el-input>
             <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
-              <div class="el-form-item__error" v-show="this.iptMsgVisible['zipCode']">
-              {{iptMsgInfoStr}}
-              </div>
+              <div
+                class="el-form-item__error"
+                v-show="this.iptMsgVisible['zipCode']"
+              >{{iptMsgInfoStr}}</div>
             </div>
           </el-form-item>
           <el-form-item label="所属区域" prop="areaId">
@@ -133,7 +144,7 @@
               <!-- <div
                 class="tip-msg"
                 v-show="this.app.option.options.orgAuditFields.indexOf('areaId') > -1"
-              >添加或修改该字段需要提交审核</div> -->
+              >添加或修改该字段需要提交审核</div>-->
             </div>
           </el-form-item>
           <el-form-item label="所属系统" prop="organization.systemType">
@@ -150,9 +161,10 @@
               ></el-option>
             </el-select>
             <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
-              <div class="el-form-item__error" v-show="this.iptMsgVisible['systemType']">
-              {{iptMsgInfoStr}}
-              </div>
+              <div
+                class="el-form-item__error"
+                v-show="this.iptMsgVisible['systemType']"
+              >{{iptMsgInfoStr}}</div>
             </div>
           </el-form-item>
           <el-form-item label="所属类型" prop="organization.type">
@@ -165,9 +177,7 @@
               ></el-option>
             </el-select>
             <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
-              <div class="el-form-item__error" v-show="this.iptMsgVisible['type']">
-              {{iptMsgInfoStr}}
-              </div>
+              <div class="el-form-item__error" v-show="this.iptMsgVisible['type']">{{iptMsgInfoStr}}</div>
             </div>
           </el-form-item>
         </el-col>
@@ -190,7 +200,7 @@
             <!-- <div
               class="tip-msg"
               v-show="this.app.option.options.orgAuditFields.indexOf('labelId') > -1"
-            >添加或修改该字段需要提交审核</div> -->
+            >添加或修改该字段需要提交审核</div>-->
           </div>
         </el-form-item>
       </el-row>
@@ -200,23 +210,27 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="单位简介" prop="ext01">
-            <el-input type="textarea" v-model="ruleForm.organization.ext01" @input="showIptMsg('ext01')"></el-input>
+            <el-input
+              type="textarea"
+              v-model="ruleForm.organization.ext01"
+              @input="showIptMsg('ext01')"
+            ></el-input>
             <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
-              <div class="el-form-item__error" v-show="this.iptMsgVisible['ext01']">
-              {{iptMsgInfoStr}}
-              </div>
+              <div
+                class="el-form-item__error"
+                v-show="this.iptMsgVisible['ext01']"
+              >{{iptMsgInfoStr}}</div>
             </div>
           </el-form-item>
-
         </el-col>
         <el-col :span="12">
-           <el-form-item label="申请备注" prop="reason">
+          <el-form-item label="申请备注" prop="reason">
             <el-input type="textarea" v-model="ruleForm.reason"></el-input>
             <div v-if="this.$route.name === 'UnitEdit' ||  this.$route.name === 'UnitAdd'">
               <!-- <div
                 class="tip-msg"
                 v-show="this.app.option.options.orgAuditFields.indexOf('reason') > -1 "
-              >添加或修改该字段需要提交审核</div> -->
+              >添加或修改该字段需要提交审核</div>-->
             </div>
           </el-form-item>
           <!-- <el-form-item label="单位职责" prop="ext02">
@@ -226,7 +240,7 @@
               {{iptMsgInfoStr}}
               </div>
             </div>
-          </el-form-item> -->
+          </el-form-item>-->
         </el-col>
       </el-row>
       <el-form-item v-show="isShowEditFlag">
@@ -248,8 +262,8 @@ import { mapState, mapMutations } from 'vuex'
 
 export default {
   name: 'index',
-  mixins: [handleBreadcrumb, dicOption , goBack],
-  components: { areaList, searchLable},
+  mixins: [handleBreadcrumb, dicOption, goBack],
+  components: { areaList, searchLable },
   /* props: {
       // TODO breadcrumb可采用组件传参的模式替换路由判断，将配置权交给调用方
       breadcrumb: {
@@ -265,7 +279,7 @@ export default {
   data () {
     // 验证邮编
     let validateZipCode = (rule, value, callback) => {
-      if (value !=='') {
+      if (value !== '') {
         let reg = /(^\s{0}$)|^[1-9]\d{5}$/
         reg.test(value) ? callback() : callback(new Error('请输入有效邮政编码'))
       } else {
@@ -274,17 +288,17 @@ export default {
     }
     // 验证传真
     let validateFax = (rule, value, callback) => {
-      if (value !=='') {
+      if (value !== '') {
         let reg = /(^\s{0}$)|^(\d{3,4}-)?\d{7,8}$/
         reg.test(value) ? callback() : callback(new Error('请输入有效传真号码'))
-      }else{
+      } else {
         callback()
       }
     }
 
-    // 验证单位电话 
+    // 验证单位电话
     let validateOffice = (rule, value, callback) => {
-      if(value !=='') {
+      if (value !== '') {
         let reg = /(^\s{0}$)|(0\d{2,3}-\d{7,8}|\(?0\d{2,3}[)-]?\d{7,8}|\(?0\d{2,3}[)-]*\d{7,8})/
         reg.test(value) ? callback() : callback(new Error('请输入有效单位电话'))
       } else {
@@ -337,12 +351,10 @@ export default {
           { required: true, message: '请输入单位名称', trigger: 'blur' }
         ],
         'organization.zipCode': [
-          {  validator: validateZipCode, trigger: 'blur' }
+          { validator: validateZipCode, trigger: 'blur' }
         ],
-        'organization.fax': [
-          {  validator: validateFax, trigger: 'blur' }
-        ],
-        'organization.phone':[ { validator: validateOffice, trigger: 'blur' }]
+        'organization.fax': [{ validator: validateFax, trigger: 'blur' }],
+        'organization.phone': [{ validator: validateOffice, trigger: 'blur' }]
         // 'organization.creditId':[ { validator: validateCreditId, trigger: 'blur' }]
       },
       ruleForm: {
@@ -369,7 +381,7 @@ export default {
           fax: ''
         }
       },
-      isAudit:false
+      isAudit: false
     }
   },
   computed: {
@@ -479,8 +491,7 @@ export default {
               this.creditIddisable = true
             }
             this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
-            console.log('ruleForm2:',this.ruleForm,this.oldFrom)
-
+            console.log('ruleForm2:', this.ruleForm, this.oldFrom)
           }
         },
         error => {
@@ -565,7 +576,9 @@ export default {
           this.findMenuByPath(res.data)
           if (this.areaOption.length > 1) {
             if (this.areaOption[this.areaOption.length - 1].id) {
-              this.ruleForm.areaId = this.areaOption[this.areaOption.length - 1].id
+              this.ruleForm.areaId = this.areaOption[
+                this.areaOption.length - 1
+              ].id
             }
           }
 
@@ -573,8 +586,7 @@ export default {
             this.areaCheck += item.name + '/'
           })
           this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
-          console.log('ruleForm3:',this.ruleForm,this.oldFrom)
-
+          console.log('ruleForm3:', this.ruleForm, this.oldFrom)
         },
         error => {}
       )
@@ -638,14 +650,18 @@ export default {
             api[urlNames['createOrganization']](this.ruleForm).then(
               res => {
                 if (this.$route.name === 'UnitEdit' && this.isAudit) {
-                  this.$alert('保存成功，待审核管理员审核通过后方生效', '保存成功', {
-                    confirmButtonText: '确定',
-                    callback: action => {
-                      this.$router.go(-1)
-                      this.isChange = false
-                      this.$emit('on-update-organization-tree')
+                  this.$alert(
+                    '保存成功，待审核管理员审核通过后方生效',
+                    '保存成功',
+                    {
+                      confirmButtonText: '确定',
+                      callback: action => {
+                        this.$router.go(-1)
+                        this.isChange = false
+                        this.$emit('on-update-organization-tree')
+                      }
                     }
-                  })
+                  )
                 } else {
                   this.$message.success(`保存成功`)
                   this.$router.go(-1)
@@ -667,15 +683,14 @@ export default {
       }
     },
     goBack () {
-      this.isChange = this.addWatch(this.ruleForm,this.oldFrom)
+      this.isChange = this.addWatch(this.ruleForm, this.oldFrom)
       if (this.isChange) {
-        this.goBackDilog(this.submitForm,'ruleForm')
+        this.goBackDilog(this.submitForm, 'ruleForm')
         this.isChange = false
       } else {
         this.isChange = false
         this.$router.go(-1)
       }
-
     },
     close (val) {
       this.areaFlag = val
@@ -694,7 +709,10 @@ export default {
       // 51522300C58060003M
       // this.ruleForm.organization.creditId = '51522300C58060003M'
       // this.ruleForm.organization.name = '黔西南布依族苗族自治州消费者协会'
-      if (this.ruleForm.organization.name == '' && this.ruleForm.organization.creditId !== '') {
+      if (
+        this.ruleForm.organization.name == '' &&
+        this.ruleForm.organization.creditId !== ''
+      ) {
         this.$message.error('请输入单位名称')
       } else if (this.ruleForm.organization.creditId !== '') {
         this.loadVisiable = true
@@ -716,11 +734,11 @@ export default {
               }, 2000)
             } else {
               window.setTimeout(() => {
-              this.errorVisiable = true
-              this.loadVisiable = false
-              this.successVisiable = false
-              this.requiring = false
-               }, 2000)
+                this.errorVisiable = true
+                this.loadVisiable = false
+                this.successVisiable = false
+                this.requiring = false
+              }, 2000)
             }
           },
           () => {}
@@ -731,11 +749,8 @@ export default {
         this.successVisiable = false
       }
     }
-
   }
 }
-
-
 </script>
 
 <style lang="less"  scoped>

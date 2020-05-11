@@ -593,6 +593,7 @@ export default {
   },
   created () {
     this.initIptMsgVisible()
+    console.log(this.$route.name)
   },
   mounted () {
     // this.oldUserDetail = JSON.parse(JSON.stringify(this.userDetail))
@@ -691,7 +692,10 @@ export default {
       }
     },
     showIptMsg (fieldName) {
-      if (this.app.option.options.userAuditFields.indexOf(fieldName) > -1) {
+      if (
+        this.app.option.options.userAuditFields.indexOf(fieldName) > -1 &&
+        this.$route.name === 'PersonEdit'
+      ) {
         this.iptMsgVisible[fieldName] = true
         this.isAudit = true
       }
