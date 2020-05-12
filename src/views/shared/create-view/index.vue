@@ -64,6 +64,7 @@
                       node-key="id"
                       draggable
                       lazy
+                      show-checkbox
                       :props="defaultProps"
                       :load="loadNode"
                       @check-change="currentchange"
@@ -77,13 +78,7 @@
                       :expand-on-click-node="false"
                       :default-checked-keys="checkedKeys"
                     >
-                      <!-- <span class="custom-tree-node" slot-scope="{ node, data }">
-                            <i class="imenu-icon fa fa-sitemap" v-if="data.nodeType === 1"></i>
-                            <i class="imenu-icon fa fa-building-o" v-if="data.nodeType === 2"></i>
-                            <i class="imenu-icon fa fa-institution" v-if="data.nodeType === 3"></i>
-                            <span>{{node.label}}</span>
-                      </span>-->
-                      <span class="svg-container" slot-scope="{ node, data }">
+                      <span slot-scope="{ node, data }">
                         <span class="iconfont iconzuzhijigou nodeColor" v-if="data.nodeType === 1"></span>
                         <span class="iconfont icondanwei orgColor" v-if="data.nodeType === 2"></span>
                         <span class="iconfont iconbumen deptColor" v-if="data.nodeType === 3"></span>
@@ -98,8 +93,9 @@
                   <img src="@src/common/images/drag-drop.svg" />
                 </p>
                 <p class="tips-title">
-                  <span>选择左边的组织机构视图，拖动至右边的视图区域，可以组合成你想要的组织机构树形。</span>
+                  <span>选择左边的组织机构视图，点击右箭头将机构数据绑定至右边的视图区域。已绑定至右边的视图可实时自动保存至草稿，点击“应用到视图”可将本次编辑应用到最新的共享视图。</span>
                 </p>
+                <span class="el-icon-arrow-right rightBtn" title="保存到草稿视图" @click="saveToDraft"></span>
               </div>
               <div class="grid-content">
                 <div class="tree-title">新机构视图</div>
@@ -124,7 +120,7 @@
                       :expand-on-click-node="false"
                       :default-checked-keys="checkedKeys"
                     >
-                      <div class="svg-container" slot-scope="{ node, data }">
+                      <div slot-scope="{ node, data }">
                         <span class="iconfont iconzuzhijigou nodeColor" v-if="data.nodeType === 1"></span>
                         <span class="iconfont icondanwei orgColor" v-if="data.nodeType === 2"></span>
                         <span class="iconfont iconbumen deptColor" v-if="data.nodeType === 3"></span>
@@ -173,7 +169,7 @@ import goBack from '@src/mixins/go-back.js'
 export default {
   name: 'CreateView',
   mixins: [handleTable, handleBreadcrumb, HasRight, goBack],
-  data () {
+  data() {
     return {
       currentView: [],
       viewLastUpdatedTime: '',
@@ -223,10 +219,12 @@ export default {
       },
       selectedKeys: [], // 已保存选中
       checkedKeys: [],
-      cancelItem: ''
+      cancelItem: '',
+      nodeDraft: [], // 待添加到视图草稿节点
+      isDraftVivew: false
     }
   },
-  mounted () {
+  mounted() {
     this.pushBreadcrumb({
       name: this.$route.params.id === 0 ? '创建视图' : '视图信息',
       parent: {
@@ -237,7 +235,7 @@ export default {
       }
     })
   },
-  created () {
+  created() {
     this.findViewAdmin()
     this.findNodeTree()
     if (this.$route.params.id !== '0') {
@@ -251,11 +249,11 @@ export default {
   },
   methods: {
     // 获取树的左上点的坐标
-    getCoordinates () {
+    getCoordinates() {
       return { x: window.screenX }
     },
     // 创建视图基本信息
-    createView () {
+    createView() {
       if (this.ViewFrom.name.trim().length === 0) {
         this.$message.warning('请填写视图名称')
         return false
@@ -284,7 +282,7 @@ export default {
         }
       })
     },
-    removeManager (uid) {
+    removeManager(uid) {
       console.log('uid', uid)
       if (this.$route.params.id !== '0') {
         this.$confirm('此操作将永久删除该管理员, 是否继续?', '提示', {
@@ -312,7 +310,7 @@ export default {
       }
     },
     // 获取管理员列表
-    findViewAdmin () {
+    findViewAdmin() {
       api[urlNames['findViewAdmin']]({}).then(res => {
         if (res.status === 0) {
           this.adminList = res.data
@@ -320,7 +318,7 @@ export default {
       })
     },
     // 获取当前定型视图的最新时间
-    getViewTime () {
+    getViewTime() {
       api[urlNames['getViewTime']]({
         viewId: this.returnViewId,
         parentId: -1
@@ -334,7 +332,7 @@ export default {
       })
     },
     // 获取机构树--初始化
-    findNodeTree (parentId) {
+    findNodeTree(parentId) {
       api[urlNames['getViewTree']]({}).then(res => {
         this.nodeTree = res.data
         if (res.data.length !== 0) {
@@ -345,11 +343,18 @@ export default {
     // 创建视图草稿
     createNodeDraft () {
       let nodeList = []
-
-      this.viewNodeTree.forEach((item, index) => {
+      let that = this
+      // this.nodeDraft.forEach(function(item) {
+      //   that.checkedKeys.push(item.id)
+      //   that.viewNodeTree.push(item)
+      // })
+      this.nodeDraft.forEach((item, index) => {
+        that.checkedKeys.push(item.id)
         let tmpObj = JSON.parse(JSON.stringify(item))
-
         tmpObj.sort = index
+        if (this.isDraftVivew) {
+          tmpObj.parentId = -1
+        }
         nodeList.push(tmpObj)
       })
 
@@ -372,7 +377,7 @@ export default {
       })
     },
     // 获取当前定型的视图
-    findCurrentView (node, resolve) {
+    findCurrentView(node, resolve) {
       if (node.level === 0) {
         return resolve(this.nodeTree)
       }
@@ -393,7 +398,7 @@ export default {
       })
     },
     // 获取机构树--加载子节点
-    findSonNodeTree (parentId) {
+    findSonNodeTree(parentId) {
       api[urlNames['getViewTree']]({
         parentId: parentId
       }).then(res => {
@@ -401,7 +406,7 @@ export default {
       })
     },
     // 左边机构-追加子节点
-    loadNode (node, resolve) {
+    loadNode(node, resolve) {
       if (node.level === 0) {
         return resolve(this.nodeTree)
       }
@@ -419,7 +424,7 @@ export default {
       })
     },
     // 获取视图草稿
-    findNodeDraftList (parentId) {
+    findNodeDraftList(parentId) {
       api[urlNames['findNodeDraftList']]({
         parentId: parentId,
         viewId: this.returnViewId
@@ -428,7 +433,7 @@ export default {
       })
     },
     // 视图草稿追加子节点
-    loadOrgNode (node, resolve) {
+    loadOrgNode(node, resolve) {
       if (node.level === 0) {
         return resolve(this.viewNodeTree)
       }
@@ -448,39 +453,39 @@ export default {
       this.viewNodeSonTree = []
     },
     // tab点击切换
-    handleClick () {},
+    handleClick() {},
     // 设置tree选中
-    setCheckedKeys () {
+    setCheckedKeys() {
       // setChecked
       this.$refs.selecttree.setCheckedKeys(this.checkedKeys)
       // this.$refs.selecttree.setChecked(this.checkedKeys, true, this.syncChild)
     },
     // 允许数据源拖拽
-    allowSourceDrag (draggingNode) {
+    allowSourceDrag(draggingNode) {
       return true
     },
     // 允许数据源拖放
-    allowSourceDrop (draggingNode, dropNode, type) {
+    allowSourceDrop(draggingNode, dropNode, type) {
       return false
     },
     // 允许目标拖拽
-    allowDestinationDrag (draggingNode) {
+    allowDestinationDrag(draggingNode) {
       return true
     },
     // 允许目标拖放
-    allowDestinationDrop (draggingNode, dropNode, type) {
+    allowDestinationDrop(draggingNode, dropNode, type) {
       return true
     },
     // 拖拽--暂时无用
-    handleDragOver (draggingNode, dropNode, ev) {
+    handleDragOver(draggingNode, dropNode, ev) {
       this.tempNode = draggingNode
       // console.log('Tree drag over: ', draggingNode.label, dropNode, ev.screenX)
     },
-    handleNodeClick (nodeData) {
+    handleNodeClick(nodeData) {
       console.log('nodeData:', nodeData)
     },
     // 拖拽结束时触发的事件--原来机构树
-    nodeDragEnd (Node, lastNode, lastTree, e) {
+    nodeDragEnd(Node, lastNode, lastTree, e) {
       let rect = this.$refs.coordinates.getClientRects()[0]
 
       if (
@@ -516,7 +521,7 @@ export default {
       // console.log(e.screenY, '425----------725')
     },
     // 草稿-》保存视图(同步草稿)
-    synchronizedNode () {
+    synchronizedNode() {
       api[urlNames['synchronizedNode']]({
         viewId: this.returnViewId
       }).then(res => {
@@ -527,7 +532,7 @@ export default {
       })
     },
     // 草稿拖动排序
-    updateNodeDraft (id, nodeList) {
+    updateNodeDraft(id, nodeList) {
       api[urlNames['createNodeDraft']]({
         viewId: this.returnViewId,
         viewNodeDraft: nodeList,
@@ -554,7 +559,7 @@ export default {
       }) */
     },
     // 删除视图草稿 - deleteViewById
-    deleteNodeTree (node) {
+    deleteNodeTree(node) {
       this.$confirm('是否也要删除该节点以下子节点信息?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -579,10 +584,10 @@ export default {
         })
     },
     // 草稿拖动节点位置
-    nodeSelectDragEnd (dragNode, lastNode, seat, e) {
+    nodeSelectDragEnd(dragNode, lastNode, seat, e) {
+      console.log(dragNode, lastNode)
       let nodeList = []
       let parentId = -1
-
       if (lastNode === null) {
         this.viewNodeTree.forEach((item, index) => {
           nodeList.push({
@@ -621,7 +626,7 @@ export default {
           nodeList.push({
             areaId: item.areaId || 0,
             bindId: item.key,
-            hasChildren: item.hasChildren,
+            hasChildren: item.addChildren,
             id: item.key,
             name: item.label,
             parentId: parentId,
@@ -632,22 +637,47 @@ export default {
           })
         })
       }
+      console.log('nodeList:', nodeList)
 
       this.updateNodeDraft(dragNode.data.id, nodeList)
     },
     // 单选框选中
-    currentchange (node, checked) {
-      if (this.viewNodeTree[this.viewNodeTree.length - 1].id === node.id) {
-        return false
-      }
+    currentchange(node, checked) {
+      // if (this.viewNodeTree[this.viewNodeTree.length - 1].id === node.id) {
+      //   return false
+      // }
       console.log(JSON.parse(JSON.stringify(node)), checked, 'node')
-      if (checked) {
-        this.viewNodeDraft.id = node.id
-        node.parentId = this.viewNodeDraft.parentId = '-1'
-        node.checked = true
-        this.viewNodeDraft.name = node.name
-        this.viewNodeDraft.nodeType = node.nodeType
-        this.viewNodeDraft.bindId = node.bindId
+      // if (checked) {
+      //   this.viewNodeDraft.id = node.id
+      //   node.parentId = this.viewNodeDraft.parentId = '-1'
+      //   node.checked = true
+      //   this.viewNodeDraft.name = node.name
+      //   this.viewNodeDraft.nodeType = node.nodeType
+      //   this.viewNodeDraft.bindId = node.bindId
+      //   this.$confirm('是否包括子节点', '提示', {
+      //     confirmButtonText: '包括',
+      //     cancelButtonText: '不包括',
+      //     type: 'warning'
+      //   })
+      //     .then(() => {
+      //       this.syncChild = true
+      //       this.createNodeDraft()
+      //     })
+      //     .catch(() => {
+      //       this.syncChild = false
+      //       this.createNodeDraft()
+      //     })
+      //   this.checkedKeys.push(node.id)
+      //   this.viewNodeTree.push(node)
+      // }
+    },
+
+    // 应用到草稿
+    saveToDraft() {
+      this.nodeDraft = this.$refs.selecttree.getCheckedNodes()
+      console.log(this.nodeDraft)
+      if (this.nodeDraft.length > 0) {
+        this.isDraftVivew = true
         this.$confirm('是否包括子节点', '提示', {
           confirmButtonText: '包括',
           cancelButtonText: '不包括',
@@ -661,11 +691,11 @@ export default {
             this.syncChild = false
             this.createNodeDraft()
           })
-        this.checkedKeys.push(node.id)
-        this.viewNodeTree.push(node)
+      } else {
+        this.$message.info('请先选择节点')
       }
     },
-    back () {
+    back() {
       this.isChange = this.addWatch(this.ViewFrom, this.oldViewFrom)
       if (this.isChange) {
         this.goBackDilog(this.createView)
@@ -675,11 +705,11 @@ export default {
       }
     },
     // 返回列表
-    backToList () {
+    backToList() {
       this.$router.push({ path: '/view-management' })
     },
     // 获取试图详情
-    findViewById (id) {
+    findViewById(id) {
       api[urlNames['findViewById']]({
         id: id
       }).then(res => {

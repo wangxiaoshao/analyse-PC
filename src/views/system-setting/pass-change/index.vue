@@ -161,6 +161,9 @@
             @close="goBack"
           ></edit-account>
         </el-tab-pane>
+        <el-tab-pane label="多身份管理">
+          <multiple-idetity></multiple-idetity>   
+        </el-tab-pane>
         <el-tab-pane label="个人日志">
           <personal-log :showFindBtn="showFindBtn"></personal-log>
         </el-tab-pane>
@@ -176,6 +179,7 @@ import personManage from '../../organization/components/PersonManage'
 import PersonalLog from '@src/components/PersonalLog/index'
 import SelectMembers from '@src/components/SelectMembers/index'
 import MultipleAccounts from '../components/MultipleAccounts/index'
+import MultipleIdetity from '../components/MultipleIdetity/index'
 import EditAccount from '../components/EditAccount/index'
 const SMS_TIMES_SECOND = 60
 // 定时器
@@ -186,7 +190,8 @@ export default {
     SelectMembers,
     PersonalLog,
     MultipleAccounts,
-    EditAccount
+    EditAccount,
+    MultipleIdetity
   },
   data() {
     var validateOldPass = (rule, value, callback) => {
