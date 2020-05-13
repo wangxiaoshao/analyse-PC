@@ -244,6 +244,10 @@
     <div class="parameter-item" v-if="hasRight('optionSystemLevelCSetting')">
         <div class="header">信息确认设置</div>
         <el-form ref="messageRemind" label-width="160px">
+           <el-form-item label="允许单位配置该参数">
+             <el-switch v-model="allowSetOrg"></el-switch>
+            <div class="info-msg" style="margin-left:-136px">(该配置项打开后，单位管理员可再次配置该参数，且最终以单位配置结果为准）</div>
+           </el-form-item>
             <el-form-item label="设置信息确认弹窗提醒">
               <el-select v-model="remindStartDate" placeholder="选择提醒开始时间" @change="onStartDateChanged" :disabled="startDateDisabled" ref="remindStartDate">
                 <el-option
@@ -417,6 +421,7 @@ export default {
       },
       uploadHost: window.location.host,
       remindStartDate: 1,
+      allowSetOrg:false,//是否允许配置单位参数
       remindEndDate: 31,
       remindStartDateList: [],
       remindEndDateList: [],
@@ -575,7 +580,8 @@ export default {
             this.remindStartDate = parseInt(JSON.parse(item.value)[0])
             this.remindEndDate = parseInt(JSON.parse(item.value)[1])
             this.messageRemind = parseInt(JSON.parse(item.value)[2])
-
+            this.allowSetOrg == item.lockedLevel==0?false:true
+            this.$emit('setOrgParamsFun',this.allowSetOrg)
             if (this.messageRemind === 0) {
               this.startDateDisabled = true
               this.endDateDisabled = true
@@ -693,7 +699,8 @@ export default {
       let list = {
         level: level,
         name: '',
-        value: null
+        value: null,
+        lockedLevel:0
       }
       if (flag === 0) {
         list.name = 'systemUserSecuritySettings'
@@ -702,11 +709,12 @@ export default {
         list.name = 'systemAddressBookSet'
         list.value = this.systemAddressBookSet
       } else if (flag === 2) {
+        list.lockedLevel= this.allowSetOrg ? 1:0
         list.name = 'systemMessageRemind'
         list.value = [
           this.remindStartDate,
           this.remindEndDate,
-          this.messageRemind
+          this.messageRemind,
         ]
       }
       this.setClientOptions(list)
@@ -721,11 +729,11 @@ export default {
 
       let allSetClientOptions = function (list, index) {
         let i = index || 0
-
         api[urlNames['setClientOptions']](list[i]).then((res) => {
           if (res.status === 0) {
             if (i === list.length - 1) {
               that.$message.success('设置成功')
+             
             } else {
               allSetClientOptions(list, i + 1)
             }
@@ -738,7 +746,11 @@ export default {
       } else {
         api[urlNames['setClientOptions']](list).then((res) => {
           if (res.status === 0) {
+             if(list.name = 'systemMessageRemind'){
+                this.$emit('setOrgParamsFun',this.allowSetOrg)
+              }
             this.$message.success('设置成功')
+            
           }
         })
       }

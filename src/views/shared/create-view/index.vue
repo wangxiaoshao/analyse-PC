@@ -434,9 +434,6 @@ export default {
         res.data.forEach(function(item) {
         that.checkedKeys.push(item.id)
       })
-      // this.$nextTick(() => {
-      //     this.$refs.tree.setCheckedKeys(arr);//获取已经设置的资源后渲染
-      // });
       })
     },
     // 视图草稿追加子节点

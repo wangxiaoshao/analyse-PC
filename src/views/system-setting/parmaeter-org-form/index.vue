@@ -159,7 +159,7 @@
             </el-form-item>
         </el-form>
     </div>
-    <!-- <div class="parameter-item">
+    <div class="parameter-item" v-if="isSetOrgParams">
         <div class="header">信息确认设置</div>
         <el-form ref="messageRemind" label-width="160px">
             <el-form-item label="设置信息确认弹窗提醒">
@@ -188,7 +188,7 @@
                 <el-button>取消</el-button>
             </el-form-item>
         </el-form>
-    </div> -->
+    </div>
     <div class="parameter-item" v-if="hasRight('optionOrgLevelAuditSetting')">
         <div class="header">审核字段设置
           <span class="info-msg">（如下字段被选中以后再被修改，则需要审核后方可生效；不选中的字段被修改，不需要审核）</span>
@@ -337,10 +337,7 @@
 </template>
 
 <script>
-import {
-  api,
-  urlNames
-} from '@src/api'
+import {api,urlNames} from '@src/api'
 import insertTextIntoCursor from '@src/mixins/insertIntoCursor'
 import hasRight from '@src/mixins/has-right'
 
@@ -694,6 +691,7 @@ const userAuditList = [
 ]
 export default {
   name: 'parmaeterFrom',
+  props:['isSetOrgParams'],
   mixins: [insertTextIntoCursor, hasRight],
   data () {
     return {

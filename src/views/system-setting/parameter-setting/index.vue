@@ -2,10 +2,10 @@
   <div class="parameter-settings">
     <el-tabs v-model="activeName">
       <el-tab-pane label="全局参数设置" name="first" v-if="hasRight('viewGlobalParameter')">
-        <parmaeter-system-form></parmaeter-system-form>
+        <parmaeter-system-form @setOrgParamsFun='setOrgParamsFun'></parmaeter-system-form>
       </el-tab-pane>
       <el-tab-pane label="单位参数" :name="!hasRight('viewGlobalParameter') && hasRight('viewOrgParameter') ? 'first' : 'second'"  v-if="hasRight('viewOrgParameter')">
-        <parmaeter-org-form></parmaeter-org-form>
+        <parmaeter-org-form :isSetOrgParams='isSetOrgParams'></parmaeter-org-form>
       </el-tab-pane>
       <el-tab-pane label="消息模板配置" v-if="false">
         <msg-setting></msg-setting>
@@ -30,7 +30,13 @@ export default {
   data () {
     return {
       activeName: 'first',
-      submitLevel: 1
+      submitLevel: 1,
+      isSetOrgParams:false
+    }
+  },
+  methods:{
+    setOrgParamsFun(setOrg){
+      this.isSetOrgParams=setOrg
     }
   }
 }
