@@ -111,6 +111,7 @@
                       node-key="id"
                       draggable
                       lazy
+                      :default-expanded-keys="newDefaultExpandedKeys"
                       :load="loadOrgNode"
                       :props="defaultProps"
                       :check-strictly="true"
@@ -174,6 +175,7 @@ export default {
       currentView: [],
       viewLastUpdatedTime: '',
       defaultexpandedkeys: '-1730833917365171641',
+      newDefaultExpandedKeys: [],
       activeName: 'first',
       tabDisable: true,
       adminList: [],
@@ -248,6 +250,9 @@ export default {
     this.oldViewFrom = JSON.parse(JSON.stringify(this.ViewFrom))
   },
   methods: {
+    sleep (ms) {
+      return new Promise(resolve => setTimeout(resolve, ms))
+    },
     // 获取树的左上点的坐标
     getCoordinates() {
       return { x: window.screenX }
@@ -589,7 +594,6 @@ export default {
     },
     // 草稿拖动节点位置
     nodeSelectDragEnd(dragNode, lastNode, seat, e) {
-      console.log(dragNode, lastNode)
       let nodeList = []
       let parentId = -1
       if (lastNode === null) {
@@ -620,30 +624,61 @@ export default {
           syncChildren: 1,
           viewId: this.returnViewId
         })
+
+        this.updateNodeDraft(dragNode.data.id, nodeList)
       } else {
         if (dragNode.data.id === lastNode.data.id) {
           return false
         }
+        switch (seat) {
+          case 'before':
+          case 'after':
+            parentId = lastNode.parent ? lastNode.parent.key || -1 : -1
+            lastNode.parent.childNodes.forEach((item, index) => {
+              nodeList.push({
+                areaId: item.areaId || 0,
+                bindId: item.key,
+                hasChildren: item.addChildren,
+                id: item.key,
+                name: item.label,
+                parentId: parentId,
+                removed: 0,
+                sort: index,
+                syncChildren: 1,
+                viewId: this.returnViewId
+              })
+            })
 
-        parentId = lastNode.parent.key || -1
-        lastNode.parent.childNodes.forEach((item, index) => {
-          nodeList.push({
-            areaId: item.areaId || 0,
-            bindId: item.key,
-            hasChildren: item.addChildren,
-            id: item.key,
-            name: item.label,
-            parentId: parentId,
-            removed: 0,
-            sort: index,
-            syncChildren: 1,
-            viewId: this.returnViewId
-          })
-        })
+            this.updateNodeDraft(dragNode.data.id, nodeList)
+
+            this.newDefaultExpandedKeys = [lastNode.key]
+            let parentNode = lastNode.parent
+            while (parentNode) {
+              this.newDefaultExpandedKeys.push(parentNode.key)
+              parentNode = parentNode.parent
+            }
+            break
+          case 'inner':
+            lastNode.expand(() => {
+              parentId = lastNode.key
+              nodeList.push({
+                areaId: dragNode.areaId || 0,
+                bindId: dragNode.key,
+                hasChildren: dragNode.addChildren,
+                id: dragNode.key,
+                name: dragNode.label,
+                parentId: parentId,
+                removed: 0,
+                sort: lastNode.childNodes.length + 1,
+                syncChildren: 1,
+                viewId: this.returnViewId
+              })
+              this.updateNodeDraft(dragNode.data.id, nodeList)
+              this.newDefaultExpandedKeys.push(lastNode.key)
+            })
+            break
+        }
       }
-      console.log('nodeList:', nodeList)
-
-      this.updateNodeDraft(dragNode.data.id, nodeList)
     },
     // 单选框选中
     currentchange(node, checked) {
