@@ -6,8 +6,8 @@
       @dialogReturnMembersInfo="dialogReturnMembersInfo"
       @closeselectMenmber="closeselectMenmber"
     ></select-members>
-    <!--解除兼职-->
-    <el-dialog title="填写解除挂职说明" :visible.sync="removeFlag" width="40%">
+    <!--解除兼职/挂职说明-->
+    <el-dialog :title='identityTitle' :visible.sync="removeFlag" width="40%">
       <span class="remove-des">您确定解除该人员在本单位的{{identityName}}身份？解除之后该人员将无法使用该身份下的账号使用应用系统。</span>
       <el-form
         :model="ruleForm"
@@ -261,7 +261,9 @@ export default {
         title: '调出申请提交',
         msg: '您的调出申请已提交，等待管理员审核通过后即可生效。'
       },
-      identityName: ''
+      identityName: '',
+      identityTitle: '填写解除挂职说明'
+
     }
   },
   created () {
@@ -487,6 +489,7 @@ export default {
       this.removeFlag = true
       this.$emit('cancel', false)
       this.identityName = row.type === 1 ? '兼职' : '挂职'
+      this.identityTitle = row.type === 1 ? '填写解除兼职说明' : '填写解除挂职说明'
       this.ruleForm.identityId = row.identityId
       // this.ruleForm.type = row.type
     },

@@ -78,7 +78,7 @@
               <i class="el-icon-loading iconload" v-if="loadVisiable" slot="suffix"></i>
             </el-input>
             <div class="tip-msg">
-              <p v-if="errorVisiable">
+              <p style="color:red" v-if="errorVisiable">
                 <i class="el-icon-error"></i>
                 统一社会信用代码与单位名称不匹配。
               </p>

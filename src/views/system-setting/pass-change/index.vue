@@ -7,6 +7,7 @@
       @dialogReturnMembersInfo="dialogReturnMembersInfo"
       @closeselectMenmber="closeselectMenmber"
     ></select-members>
+
     <!--人员调出弹窗-->
     <el-dialog :title="calloutTitle" :visible.sync="calloutFlag" width="50%">
       <el-form
@@ -23,7 +24,7 @@
           <span class="name-span border">{{orgName}}</span>
           <span class="name-span border" v-if="depName !== ''">/{{depName}}</span>
           <el-button @click="addMainLeader" type="primary">选择调出目标单位</el-button>
-          <el-button @click="removeDestOrg" type="primary">不选择单位</el-button>
+          <el-button @click="removeDestOrg" type="primary" v-if="isCallout===3">不选择单位</el-button>
         </el-form-item>
         <el-form-item label="申请原因" prop="reason">
           <el-input type="textarea" v-model="formCallout.reason"></el-input>
@@ -125,6 +126,7 @@
         <el-button type="primary" @click="loginOut" width="120px">确 定</el-button>
       </div>
     </el-dialog>
+
     <div class="pass-change-content">
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="我的信息">
@@ -234,6 +236,7 @@ export default {
       successPwdVisible: false, // 重置密码成功弹框
       calloutFlag: false,
       calloutTitle:'填写调出说明',
+      isCallout:0,
       submitVisible: false,
       showexportIdentityType: true,
       currentIndex: 0,
@@ -392,9 +395,10 @@ export default {
         this.calloutTitle='填写兼职说明'
       }else if(flag==2){
         this.calloutTitle='填写挂出说明'
-      }else{
+      }else if(flag==3){
         this.calloutTitle='填写调出说明'
       }
+       this.isCallout=flag
       this.calloutFlag = true
     },
     getLabelId(val) {

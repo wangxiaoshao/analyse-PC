@@ -344,11 +344,11 @@ export default {
     createNodeDraft () {
       let nodeList = []
       let that = this
-      // this.nodeDraft.forEach(function(item) {
-      //   that.checkedKeys.push(item.id)
-      //   that.viewNodeTree.push(item)
-      // })
-      this.nodeDraft.forEach((item, index) => {
+      this.nodeDraft.forEach(function(item) {
+        that.checkedKeys.push(item.id)
+        that.viewNodeTree.push(item)
+      })
+      this.viewNodeTree.forEach((item, index) => {
         that.checkedKeys.push(item.id)
         let tmpObj = JSON.parse(JSON.stringify(item))
         tmpObj.sort = index
@@ -425,11 +425,18 @@ export default {
     },
     // 获取视图草稿
     findNodeDraftList(parentId) {
+      let that =this
       api[urlNames['findNodeDraftList']]({
         parentId: parentId,
         viewId: this.returnViewId
       }).then(res => {
         this.viewNodeTree = res.data
+        res.data.forEach(function(item) {
+        that.checkedKeys.push(item.id)
+      })
+      // this.$nextTick(() => {
+      //     this.$refs.tree.setCheckedKeys(arr);//获取已经设置的资源后渲染
+      // });
       })
     },
     // 视图草稿追加子节点
@@ -723,7 +730,6 @@ export default {
             that.ViewFrom.roleBindUserIds.push(item.uid)
           })
         }
-
         this.oldViewFrom = JSON.parse(JSON.stringify(this.ViewFrom))
       })
     }
