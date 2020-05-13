@@ -1,7 +1,8 @@
 <template>
   <div class="multiple-accounts">
     <div class="account-title">账号列表</div>
-    <el-table :data="accountInfoList" stripe border align="center" style="width: 100%">
+    <div class="table-box">
+      <el-table :data="accountInfoList" stripe border align="center" style="width: 100%">
        <template slot="empty">
         <div class="empty">
           <p><img class="data-pic" src="@src/common/images/no-data1.png" alt=""/></p>
@@ -46,6 +47,7 @@
         </template>
       </el-table-column>
     </el-table>
+    </div>
     <el-dialog :visible.sync="accountSystemVisible" width="380px">
       <div slot="title" style="padding:15px">
         已关联系统

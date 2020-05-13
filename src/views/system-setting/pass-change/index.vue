@@ -8,7 +8,7 @@
       @closeselectMenmber="closeselectMenmber"
     ></select-members>
     <!--人员调出弹窗-->
-    <el-dialog title="填写调出说明" :visible.sync="calloutFlag" width="50%">
+    <el-dialog :title="calloutTitle" :visible.sync="calloutFlag" width="50%">
       <el-form
         :model="formCallout"
         :rules="rulesCallou"
@@ -127,7 +127,7 @@
     </el-dialog>
     <div class="pass-change-content">
       <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="我的信息" name="first">
+        <el-tab-pane label="我的信息">
           <el-row>
             <el-col :span="18">
               <person-manage
@@ -161,8 +161,8 @@
             @close="goBack"
           ></edit-account>
         </el-tab-pane>
-        <el-tab-pane label="多身份管理">
-          <multiple-idetity></multiple-idetity>   
+        <el-tab-pane label="多身份管理" name="first">
+          <multiple-idetity  @exportOrg="exportOrg"></multiple-idetity>   
         </el-tab-pane>
         <el-tab-pane label="个人日志">
           <personal-log :showFindBtn="showFindBtn"></personal-log>
@@ -233,6 +233,7 @@ export default {
       smsCode: '',
       successPwdVisible: false, // 重置密码成功弹框
       calloutFlag: false,
+      calloutTitle:'填写调出说明',
       submitVisible: false,
       showexportIdentityType: true,
       currentIndex: 0,
@@ -386,7 +387,14 @@ export default {
       this.formCallout.orgId = ''
       this.orgName = '无'
     },
-    exportOrg() {
+    exportOrg(flag) {
+      if(flag==1){
+        this.calloutTitle='填写兼职说明'
+      }else if(flag==2){
+        this.calloutTitle='填写挂出说明'
+      }else{
+        this.calloutTitle='填写调出说明'
+      }
       this.calloutFlag = true
     },
     getLabelId(val) {
