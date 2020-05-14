@@ -89,7 +89,7 @@
               <p style="color:#999" v-if="requiring">统一社会信用代码正在验证...</p>
             </div>
           </el-form-item>
-          <el-form-item label=" 上级单位333">
+          <el-form-item label=" 上级单位">
             <el-input v-model="parentName" :disabled="true"></el-input>
           </el-form-item>
           <!-- <el-form-item label="启用状态" prop="organization.removed" v-if="this.$route.name === 'UnitEdit'&&this.isOrgManage"> -->
@@ -167,7 +167,7 @@
               >{{iptMsgInfoStr}}</div>
             </div>
           </el-form-item>
-          <el-form-item label="所属类型" prop="organization.type">
+          <el-form-item label="所属体系" prop="organization.type">
             <el-select v-model="ruleForm.organization.type" @change="getType" placeholder="请选择所属类型">
               <el-option
                 v-for="item in classOption"

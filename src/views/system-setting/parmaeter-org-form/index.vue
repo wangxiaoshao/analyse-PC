@@ -410,7 +410,7 @@ const orgAuditList = [
   },
   {
     name: 'type',
-    checkname: '所属类型'
+    checkname: '所属体系'
   },
   {
     name: 'systemType',
