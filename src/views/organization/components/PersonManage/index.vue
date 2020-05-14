@@ -79,7 +79,8 @@
             </el-popover>
             <div class="el-form-item__error" v-show="this.iptMsgVisible['name']">{{iptMsgInfoStr}}</div>
           </el-form-item>
-          <el-form-item label="职务" prop="dutyName" v-if="this.$route.name=='PersonAdd' ||this.$route.name=='PersonEdit'">
+          <!-- v-if="this.$route.name=='PersonAdd' ||this.$route.name=='PersonEdit'" -->
+          <el-form-item label="职务" prop="dutyName">
             <el-input
               placeholder="请输入职务"
               v-model="postDetail.dutyName"
@@ -113,7 +114,7 @@
               v-show="this.iptMsgVisible['dutyName']"
             >{{iptMsgInfoStr}}</div>
           </el-form-item>
-          <!-- <el-form-item label="所属单位" v-if="showexportIdentityType&&(this.$route.name=='PersonAdd' ||this.$route.name=='PersonEdit')" prop="orgName">
+          <el-form-item label="所属单位" v-if="showexportIdentityType" prop="orgName">
             <el-input
               placeholder="所属单位"
               v-model="postDetail.orgName"
@@ -131,7 +132,7 @@
               class="el-form-item__error"
               v-show="this.iptMsgVisible['orgName']"
             >{{iptMsgInfoStr}}</div>
-          </el-form-item> -->
+          </el-form-item>
           <!-- <el-form-item label="身份证号" prop="idcard">
             <el-input placeholder="请输入内容" :disabled="isDefaultFlag" v-model="userDetail.idcard" @input="showIptMsg('idcard')">
               <el-button slot="append" v-if="!disabledFlag" type="success" class="form-btn1" @click="idAutherntication">点击实名认证</el-button>
@@ -165,7 +166,8 @@
             <div class="el-form-item__error" v-show="this.iptMsgVisible['mobile']">{{iptMsgInfoStr}}</div>
             <div class="el-form-item__error" v-show="isSameMobile">该手机号已和其他用户绑定</div>
           </el-form-item>
-          <el-form-item label="身份类型" prop="type" required v-if="this.$route.name=='PersonAdd' ||this.$route.name=='PersonEdit'">
+          <!-- v-if="this.$route.name=='PersonAdd' ||this.$route.name=='PersonEdit'" -->
+          <el-form-item label="身份类型" prop="type" required >
             <el-select placeholder="请选择身份类型" v-model="postDetail.type" @change="getIdentityType">
               <el-option
                 v-for="item in userTypeOptions"
@@ -606,7 +608,7 @@ export default {
     ...mapMutations(['SET_OPTION']),
 
     exportOrg () {
-      this.$emit('exportOrg')
+      this.$emit('exportOrg',3)
     },
     findMobileIsSame (successCallback = null) {
       // console.log('mobile:',this.userDetail.mobile)

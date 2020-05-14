@@ -129,7 +129,7 @@
 
     <div class="pass-change-content">
       <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="我的信息">
+        <el-tab-pane label="我的信息" name="first">
           <el-row>
             <el-col :span="18">
               <person-manage
@@ -163,9 +163,9 @@
             @close="goBack"
           ></edit-account>
         </el-tab-pane>
-        <el-tab-pane label="多身份管理" name="first">
+        <!-- <el-tab-pane label="多身份管理">
           <multiple-idetity  @exportOrg="exportOrg"></multiple-idetity>   
-        </el-tab-pane>
+        </el-tab-pane> -->
         <el-tab-pane label="个人日志">
           <personal-log :showFindBtn="showFindBtn"></personal-log>
         </el-tab-pane>
