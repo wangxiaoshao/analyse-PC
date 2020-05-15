@@ -608,7 +608,7 @@ export default {
     ...mapMutations(['SET_OPTION']),
 
     exportOrg () {
-      this.$emit('exportOrg',3)
+      this.$emit('exportOrg', 3)
     },
     findMobileIsSame (successCallback = null) {
       // console.log('mobile:',this.userDetail.mobile)

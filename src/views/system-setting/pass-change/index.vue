@@ -164,7 +164,7 @@
           ></edit-account>
         </el-tab-pane>
         <!-- <el-tab-pane label="多身份管理">
-          <multiple-idetity  @exportOrg="exportOrg"></multiple-idetity>   
+          <multiple-idetity  @exportOrg="exportOrg"></multiple-idetity>
         </el-tab-pane> -->
         <el-tab-pane label="个人日志">
           <personal-log :showFindBtn="showFindBtn"></personal-log>
@@ -195,7 +195,7 @@ export default {
     EditAccount,
     MultipleIdetity
   },
-  data() {
+  data () {
     var validateOldPass = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请输入原始密码'))
@@ -235,8 +235,8 @@ export default {
       smsCode: '',
       successPwdVisible: false, // 重置密码成功弹框
       calloutFlag: false,
-      calloutTitle:'填写调出说明',
-      isCallout:0,
+      calloutTitle: '填写调出说明',
+      isCallout: 0,
       submitVisible: false,
       showexportIdentityType: true,
       currentIndex: 0,
@@ -328,7 +328,7 @@ export default {
       }
     }
   },
-  created() {
+  created () {
     this.getUserDetail(this.app.option.user.uid)
     this.getIdentity(this.app.option.user.identityId)
     // this.getAccountInfo()
@@ -339,7 +339,7 @@ export default {
   },
   methods: {
     // 选人弹窗组件返回的人员信息
-    dialogReturnMembersInfo(data) {
+    dialogReturnMembersInfo (data) {
       if (data[0].nodeType === 2) {
         this.formCallout.orgId = data[0].bindId
         this.orgName = data[0].name
@@ -359,7 +359,7 @@ export default {
       }
     },
     // 获取账号列表
-    getAllAccountList() {
+    getAllAccountList () {
       api[urlNames['findAllAccountByUid']]({
         userId: this.app.option.user.uid
       }).then(
@@ -375,7 +375,7 @@ export default {
     },
 
     // 关闭选人弹窗
-    closeselectMenmber() {
+    closeselectMenmber () {
       this.selectDialog.selectMenmberFlag = false
     },
     addMainLeader () {
@@ -386,25 +386,25 @@ export default {
       this.selectDialog.isOnlyOrg = true
       this.selectDialog.isAllData = true
     },
-    removeDestOrg() {
+    removeDestOrg () {
       this.formCallout.orgId = ''
       this.orgName = '无'
     },
-    exportOrg(flag) {
-      if(flag==1){
-        this.calloutTitle='填写兼职说明'
-      }else if(flag==2){
-        this.calloutTitle='填写挂出说明'
-      }else if(flag==3){
-        this.calloutTitle='填写调出说明'
+    exportOrg (flag) {
+      if (flag == 1) {
+        this.calloutTitle = '填写兼职说明'
+      } else if (flag == 2) {
+        this.calloutTitle = '填写挂出说明'
+      } else if (flag == 3) {
+        this.calloutTitle = '填写调出说明'
       }
-       this.isCallout=flag
+      this.isCallout = flag
       this.calloutFlag = true
     },
-    getLabelId(val) {
+    getLabelId (val) {
       this.userInfo.labelId = val.map(Number)
     },
-    findLabel(id, type) {
+    findLabel (id, type) {
       api[urlNames['findLabel']]({
         id: id,
         type: type
@@ -415,7 +415,7 @@ export default {
         () => {}
       )
     },
-    getIdentity(id) {
+    getIdentity (id) {
       api[urlNames['findIdentityById']]({
         identityId: id
       }).then(
@@ -437,7 +437,7 @@ export default {
       )
     },
 
-    getUserDetail(id) {
+    getUserDetail (id) {
       this.loading = true
       api[urlNames['findUserById']]({
         id: id
@@ -472,7 +472,7 @@ export default {
       )
     },
 
-    goModifieUserInfo(val, isAudit) {
+    goModifieUserInfo (val, isAudit) {
       // 保存createUser
       this.userInfo.user = val
       api[urlNames['createUser']](this.userInfo).then(
@@ -493,7 +493,7 @@ export default {
         }
       )
     },
-    getUser(val) {
+    getUser (val) {
       // 获取用户信息
       this.userInfo.user = val
       this.stepTwoFlag = true
@@ -502,23 +502,23 @@ export default {
       // this.submitForm()
     },
     // 绑定身份
-    getPost(val) {
+    getPost (val) {
       this.userInfo.identity = val
     },
-    handleClick(tab, event) {
+    handleClick (tab, event) {
       this.showAccountsVisible = true
     },
     /**
      * 修改密码
      */
-    modifiePwd(val) {
+    modifiePwd (val) {
       this.accountId = val
       this.modifiePwdVisible = true
       this.$nextTick(() => {
         this.$refs['ruleForm'].resetFields()
       })
     },
-    submitForm(formName) {
+    submitForm (formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           let data = {
@@ -560,17 +560,17 @@ export default {
         }
       })
     },
-    resetForm(formName) {
+    resetForm (formName) {
       this.$refs['ruleForm'].resetFields()
       this.modifiePwdVisible = false
     },
     // 过滤手机号
-    hideMobile(phone) {
+    hideMobile (phone) {
       return (phone + '').replace(/^(.{3})(?:\d+)(.{4})$/, '$1****$2')
     },
 
     // 重置密码
-    resetPwd(val) {
+    resetPwd (val) {
       this.accountId = val
       this.$confirm('重置密码成功后将退出系统, 是否继续?', '提示', {
         confirmButtonText: '确定',
@@ -591,7 +591,7 @@ export default {
     /**
      * 发送验证短信到用户绑定手机号
      */
-    sendSmsCode() {
+    sendSmsCode () {
       if (this.smsTimerCount !== 0) {
         return
       }
@@ -624,7 +624,7 @@ export default {
     },
 
     // 验证验证码
-    beSureSmsCode() {
+    beSureSmsCode () {
       if (this.smsCode === '') {
         this.$message.error('请输入有效验证码')
         this.$refs.smsCodeInput.focus()
@@ -650,25 +650,25 @@ export default {
       }
     },
 
-    loginOut() {
+    loginOut () {
       this.successPwdVisible = false
       window.location.href = '/api/gate/logout'
     },
 
     // 编辑页面
-    goEdit(val) {
+    goEdit (val) {
       this.accountInfo = val
       this.showAccountsVisible = false
     },
 
     // 多账号管理页
-    goBack() {
+    goBack () {
       this.getAllAccountList()
       this.showAccountsVisible = true
     },
 
     // 表单初始化
-    fromInit() {
+    fromInit () {
       // this.calloutFlag = false
       this.formCallout = {
         identityId: '',
@@ -680,7 +680,7 @@ export default {
     },
 
     // 提交调出
-    submitFormCallout(formCallout) {
+    submitFormCallout (formCallout) {
       this.$refs[formCallout].validate(valid => {
         if (valid) {
           api[urlNames['calloutUser']](this.formCallout).then(

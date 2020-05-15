@@ -855,7 +855,6 @@ export default {
             this.remindStartDate = parseInt(JSON.parse(item.value)[0])
             this.remindEndDate = parseInt(JSON.parse(item.value)[1])
             this.messageRemind = parseInt(JSON.parse(item.value)[2])
-
             if (this.messageRemind === 0) {
               this.startDateDisabled = true
               this.endDateDisabled = true
