@@ -4,12 +4,12 @@
  * 获取列表方法名需要统一为 getGrid()
  */
 export default {
-  data () {
-    return {}
-  },
-  methods: {
-    trim (str) {
-      return (str + '').replace(/(\s+)$/g, '').replace(/^\s+/g, '')
-    }
-  }
-}
+    data() {
+        return {};
+    },
+    methods: {
+        trim(str) {
+            return (str + "").replace(/(\s+)$/g, "").replace(/^\s+/g, "");
+        },
+    },
+};

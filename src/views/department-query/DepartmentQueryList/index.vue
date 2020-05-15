@@ -1,64 +1,87 @@
 <template>
-  <div class="site-module mod-dictionary">
-    <!--操作row-->
-    <el-row class="operator-row">
-      <el-col :span="24">
-        <el-row :gutter="10" type="flex">
-          <el-col :span="5">
-            <el-input placeholder="内设机构名称" v-model="searchQuery.name"  @clear="clearSearch()" clearable>
-            </el-input>
-          </el-col>
-<!--          <el-col :span="5">-->
-<!--            <el-input placeholder="内设机构ID" v-model="searchQuery.id"  @clear="clearSearch()" clearable>-->
-<!--            </el-input>-->
-<!--          </el-col>-->
-          <el-col :span="5">
-            <el-input placeholder="所属单位" v-model="searchQuery.orgName"  @clear="clearSearch()" clearable>
-            </el-input>
-          </el-col>
-          <el-col :span="5">
-            <el-autocomplete
-              v-model="searchQuery.labelName"
-              :trigger-on-focus="triggerOnFocus"
-              :fetch-suggestions="querySearchAsync"
-              placeholder="标签"
-              @input="inputClear"
-              @select="handleSelect"
-              clearable>
-              <template slot-scope="{ item }">
-                <div class="name">{{ item.name }}</div>
-              </template>
-            </el-autocomplete>
-          </el-col>
-          <el-col :span="1" class="text-right">
-            <el-button type="primary" plain @click="getGrid"
-              :disabled="!hasRight('searchDepartment')"
-            >查询</el-button>
-          </el-col>
+    <div class="site-module mod-dictionary">
+        <!--操作row-->
+        <el-row class="operator-row">
+            <el-col :span="24">
+                <el-row :gutter="10" type="flex">
+                    <el-col :span="5">
+                        <el-input
+                            placeholder="内设机构名称"
+                            v-model="searchQuery.name"
+                            @clear="clearSearch()"
+                            clearable
+                        >
+                        </el-input>
+                    </el-col>
+                    <!--          <el-col :span="5">-->
+                    <!--            <el-input placeholder="内设机构ID" v-model="searchQuery.id"  @clear="clearSearch()" clearable>-->
+                    <!--            </el-input>-->
+                    <!--          </el-col>-->
+                    <el-col :span="5">
+                        <el-input
+                            placeholder="所属单位"
+                            v-model="searchQuery.orgName"
+                            @clear="clearSearch()"
+                            clearable
+                        >
+                        </el-input>
+                    </el-col>
+                    <el-col :span="5">
+                        <el-autocomplete
+                            v-model="searchQuery.labelName"
+                            :trigger-on-focus="triggerOnFocus"
+                            :fetch-suggestions="querySearchAsync"
+                            placeholder="标签"
+                            @input="inputClear"
+                            @select="handleSelect"
+                            clearable
+                        >
+                            <template slot-scope="{ item }">
+                                <div class="name">{{ item.name }}</div>
+                            </template>
+                        </el-autocomplete>
+                    </el-col>
+                    <el-col :span="1" class="text-right">
+                        <el-button
+                            type="primary"
+                            plain
+                            @click="getGrid"
+                            :disabled="!hasRight('searchDepartment')"
+                            >查询</el-button
+                        >
+                    </el-col>
+                </el-row>
+            </el-col>
         </el-row>
-      </el-col>
-    </el-row>
-    <!--表格-->
-    <site-table :tableConfig="tableConfig"
-                :tableHeight="tableHeight"
-                :operateWidth="operateWidth"
-                :operate="operate"
-                :tableData="tableData">
-      <template slot-scope="{slotScope}" slot="operate">
-        <el-button size="mini" type="text" @click="goDetails(slotScope.row)">查看明细</el-button>
-      </template>
-    </site-table>
-    <!--分页-->
-    <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="page.current"
-      :page-sizes="[10, 30, 50, 100]"
-      :page-size="page.limit"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="page.total">
-    </el-pagination>
-  </div>
+        <!--表格-->
+        <site-table
+            :tableConfig="tableConfig"
+            :tableHeight="tableHeight"
+            :operateWidth="operateWidth"
+            :operate="operate"
+            :tableData="tableData"
+        >
+            <template slot-scope="{ slotScope }" slot="operate">
+                <el-button
+                    size="mini"
+                    type="text"
+                    @click="goDetails(slotScope.row)"
+                    >查看明细</el-button
+                >
+            </template>
+        </site-table>
+        <!--分页-->
+        <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="page.current"
+            :page-sizes="[10, 30, 50, 100]"
+            :page-size="page.limit"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="page.total"
+        >
+        </el-pagination>
+    </div>
 </template>
 
 <script type="text/ecmascript-6">
@@ -206,7 +229,5 @@ export default {
 }
 </script>
 <style lang="less">
-  @import "index";
+@import "index";
 </style>
-
-

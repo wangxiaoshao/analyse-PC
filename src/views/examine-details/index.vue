@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <examine-details></examine-details>
-  </div>
+    <div>
+        <examine-details></examine-details>
+    </div>
 </template>
 
 <script type="text/ecmascript-6">
@@ -14,7 +14,5 @@ export default {
 }
 </script>
 <style lang="less">
-  @import "index";
+@import "index";
 </style>
-
-

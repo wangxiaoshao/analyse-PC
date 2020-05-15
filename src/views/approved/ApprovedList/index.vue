@@ -1,54 +1,68 @@
 <template>
-  <div class="site-module mod-dictionary">
-    <!--操作row-->
-    <el-row class="operator-row">
-      <el-col :span="18">
-        <el-row :gutter="10" type="flex">
-          <!--<el-col :span="6">-->
-          <!--<el-select v-model="searchQuery.id" filterable clearable @change="search" placeholder="单位">-->
-          <!--<el-option-->
-          <!--v-for="item in areaList"-->
-          <!--:key="item.id"-->
-          <!--:label="item.name"-->
-          <!--:value="item.code">-->
-          <!--</el-option>-->
-          <!--</el-select>-->
-          <!--</el-col>-->
-          <el-col :span="8">
-            <!--<el-input placeholder="请输入关键字搜索" v-model="searchQuery.keyword" clearable @change="getGrid">-->
-              <!--<el-button slot="append" icon="el-icon-search" @click="search"></el-button>-->
-            <!--</el-input>-->
-          </el-col>
+    <div class="site-module mod-dictionary">
+        <!--操作row-->
+        <el-row class="operator-row">
+            <el-col :span="18">
+                <el-row :gutter="10" type="flex">
+                    <!--<el-col :span="6">-->
+                    <!--<el-select v-model="searchQuery.id" filterable clearable @change="search" placeholder="单位">-->
+                    <!--<el-option-->
+                    <!--v-for="item in areaList"-->
+                    <!--:key="item.id"-->
+                    <!--:label="item.name"-->
+                    <!--:value="item.code">-->
+                    <!--</el-option>-->
+                    <!--</el-select>-->
+                    <!--</el-col>-->
+                    <el-col :span="8">
+                        <!--<el-input placeholder="请输入关键字搜索" v-model="searchQuery.keyword" clearable @change="getGrid">-->
+                        <!--<el-button slot="append" icon="el-icon-search" @click="search"></el-button>-->
+                        <!--</el-input>-->
+                    </el-col>
+                </el-row>
+            </el-col>
         </el-row>
-      </el-col>
-    </el-row>
-    <!--表格-->
-    <site-table :tableConfig="tableConfig"
-                :tableHeight="tableHeight"
-                :operateWidth="operateWidth"
-                :operate="operate"
-                :tableData="tableData">
-      <el-table-column label="状态" align="center">
-        <template slot-scope="scope">
-          <span v-show="scope.row.auditResult === 1" class="text-green">通过</span>
-          <span v-show="scope.row.auditResult !== 1" class="text-red">不通过</span>
-        </template>
-      </el-table-column>
-      <template slot-scope="{slotScope}" slot="operate">
-        <el-button size="mini" type="text" @click="goConfig(slotScope.row)">查看明细</el-button>
-      </template>
-    </site-table>
-    <!--分页-->
-    <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="page.current"
-      :page-sizes="[10, 30, 50, 100]"
-      :page-size="page.limit"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="page.total">
-    </el-pagination>
-  </div>
+        <!--表格-->
+        <site-table
+            :tableConfig="tableConfig"
+            :tableHeight="tableHeight"
+            :operateWidth="operateWidth"
+            :operate="operate"
+            :tableData="tableData"
+        >
+            <el-table-column label="状态" align="center">
+                <template slot-scope="scope">
+                    <span
+                        v-show="scope.row.auditResult === 1"
+                        class="text-green"
+                        >通过</span
+                    >
+                    <span v-show="scope.row.auditResult !== 1" class="text-red"
+                        >不通过</span
+                    >
+                </template>
+            </el-table-column>
+            <template slot-scope="{ slotScope }" slot="operate">
+                <el-button
+                    size="mini"
+                    type="text"
+                    @click="goConfig(slotScope.row)"
+                    >查看明细</el-button
+                >
+            </template>
+        </site-table>
+        <!--分页-->
+        <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="page.current"
+            :page-sizes="[10, 30, 50, 100]"
+            :page-size="page.limit"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="page.total"
+        >
+        </el-pagination>
+    </div>
 </template>
 
 <script type="text/ecmascript-6">
@@ -160,7 +174,7 @@ export default {
       api[urlNames['getAuditList']](data).then((res) => {
         this.loading = false
         res.data.forEach(ele => {
-          if(ele.reason==''){
+          if(ele.reason ===''){
             ele.reason='无'
           }
         });
@@ -190,7 +204,5 @@ export default {
 }
 </script>
 <style lang="less">
-  @import "index";
+@import "index";
 </style>
-
-

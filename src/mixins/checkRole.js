@@ -3,16 +3,18 @@
  */
 
 export default {
-  data () {
-    return {}
-  },
-  methods: {
-    isRole (roleName) {
-      let found = this.$store.state.app.option.authorizedEntityVos.find(function (item) {
-        return roleName === item.roleName
-      })
+    data() {
+        return {};
+    },
+    methods: {
+        isRole(roleName) {
+            let found = this.$store.state.app.option.authorizedEntityVos.find(
+                function (item) {
+                    return roleName === item.roleName;
+                }
+            );
 
-      return found
-    }
-  }
-}
+            return found;
+        },
+    },
+};

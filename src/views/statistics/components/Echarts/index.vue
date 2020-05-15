@@ -1,5 +1,8 @@
 <template>
-  <div class="myChart" :style="{width: '100%', height: '320px', top: '-40px'}"></div>
+    <div
+        class="myChart"
+        :style="{ width: '100%', height: '320px', top: '-40px' }"
+    ></div>
 </template>
 
 <script type="text/ecmascript-6">
@@ -54,7 +57,5 @@ export default {
 }
 </script>
 <style lang="less">
-  @import "./index";
+@import "./index";
 </style>
-
-

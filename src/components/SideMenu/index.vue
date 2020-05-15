@@ -1,34 +1,43 @@
 <template>
-  <div class="site-aside">
-    <el-aside :width="isCollapse ? '64px' : '210px'">
-      <el-scrollbar :style="asideStyle">
-        <div v-bind:class="isCollapse ? 'collapse' : ''">
-          <!--        <div index="brand" class="site-brand" v-on:click="toggleAsideCollapse">-->
-          <!--          <span v-show="!isCollapse" class="brand-name">组织机构管控平台</span>-->
-          <!--          <span class="aside-toggle"></span>-->
-          <!--        </div>-->
-          <menus :menus="asideMenuList"
-                 :collapse="isCollapse"
-                 :defaultActive="defaultActive"
-                 @open="open"
-                 @close="close"
-                 @select="select"
-                 background-color="#FFFFFF"
-                 text-color="#4A4A4A"
-                 class="example"
-                 :router="false"></menus>
+    <div class="site-aside">
+        <el-aside :width="isCollapse ? '64px' : '210px'">
+            <el-scrollbar :style="asideStyle">
+                <div v-bind:class="isCollapse ? 'collapse' : ''">
+                    <!--        <div index="brand" class="site-brand" v-on:click="toggleAsideCollapse">-->
+                    <!--          <span v-show="!isCollapse" class="brand-name">组织机构管控平台</span>-->
+                    <!--          <span class="aside-toggle"></span>-->
+                    <!--        </div>-->
+                    <menus
+                        :menus="asideMenuList"
+                        :collapse="isCollapse"
+                        :defaultActive="defaultActive"
+                        @open="open"
+                        @close="close"
+                        @select="select"
+                        background-color="#FFFFFF"
+                        text-color="#4A4A4A"
+                        class="example"
+                        :router="false"
+                    ></menus>
+                </div>
+            </el-scrollbar>
+        </el-aside>
+        <div class="aside-toggle" v-on:click="toggleAsideCollapse">
+            <i
+                class="fa"
+                :class="
+                    isCollapse
+                        ? 'rightan fa-angle-double-right'
+                        : 'leftan fa-angle-double-left'
+                "
+            ></i>
         </div>
-      </el-scrollbar>
-    </el-aside>
-    <div class="aside-toggle" v-on:click="toggleAsideCollapse">
-      <i class="fa" :class="isCollapse ? 'rightan fa-angle-double-right': 'leftan fa-angle-double-left'"></i>
     </div>
-  </div>
 </template>
 <script type="text/ecmascript-6">
 import Menus from '@src/components/Packages/menus'
 import './index.less'
-import { mapState, mapMutations } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   components: {

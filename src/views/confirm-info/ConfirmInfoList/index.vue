@@ -1,84 +1,106 @@
 <template>
-  <div class="site-module mod-dictionary">
-    <!--操作row-->
-   <!--   -->
-    <el-row class="operator-row">
-      <el-button
-        size="small"
-        type="primary"
-        :disabled="!app.confirmState || !hasRight('orgMemberConfirm')"
-        @click="getConfirmMemberList"
-        >确认机构人员信息
-      </el-button>
-    </el-row>
-    <el-row class="operator-row">
-      <el-col :span="18">
-        <el-row :gutter="10" type="flex">
-          <div class="block">
-            <el-date-picker
-              v-model="searchQuery.year"
-              type="year"
-              :clearable="dateClearable"
-              placeholder="请选择年份"
-              @change="selectChange('timeField')">
-            </el-date-picker>
-          </div>
-          <el-col :span="8">
-            <el-select
-              v-model="searchQuery.status"
-              placeholder="请选择确认状态"
-              @change="selectChange">
-              <el-option
-                v-for="item in statusOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-select>
-          </el-col>
+    <div class="site-module mod-dictionary">
+        <!--操作row-->
+        <!--   -->
+        <el-row class="operator-row">
+            <el-button
+                size="small"
+                type="primary"
+                :disabled="!app.confirmState || !hasRight('orgMemberConfirm')"
+                @click="getConfirmMemberList"
+                >确认机构人员信息
+            </el-button>
         </el-row>
-      </el-col>
-    </el-row>
-    <!--表格-->
-    <site-table v-if="reRenderTable"
-                :tableConfig="tableConfig"
-                :tableHeight="tableHeight"
+        <el-row class="operator-row">
+            <el-col :span="18">
+                <el-row :gutter="10" type="flex">
+                    <div class="block">
+                        <el-date-picker
+                            v-model="searchQuery.year"
+                            type="year"
+                            :clearable="dateClearable"
+                            placeholder="请选择年份"
+                            @change="selectChange('timeField')"
+                        >
+                        </el-date-picker>
+                    </div>
+                    <el-col :span="8">
+                        <el-select
+                            v-model="searchQuery.status"
+                            placeholder="请选择确认状态"
+                            @change="selectChange"
+                        >
+                            <el-option
+                                v-for="item in statusOptions"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value"
+                            >
+                            </el-option>
+                        </el-select>
+                    </el-col>
+                </el-row>
+            </el-col>
+        </el-row>
+        <!--表格-->
+        <site-table
+            v-if="reRenderTable"
+            :tableConfig="tableConfig"
+            :tableHeight="tableHeight"
+            :operateWidth="operateWidth"
+            :operate="operate"
+            :tableData="tableData"
+        >
+            <el-table-column label="状态" align="center">
+                <template slot-scope="scope">
+                    <span v-show="scope.row.status === 1" class="text-green"
+                        >已确认</span
+                    >
+                    <span v-show="scope.row.status !== 1" class="text-red"
+                        >未确认</span
+                    >
+                </template>
+            </el-table-column>
+            <template slot-scope="{ slotScope }" slot="operate">
+                <el-button
+                    size="mini"
+                    type="text"
+                    @click="goConfig(slotScope.row)"
+                    :disabled="!hasRight('orgMemberConfirmAccess')"
+                    >人员明细</el-button
+                >
+            </template>
+        </site-table>
+        <!--编辑dialog-->
+        <el-dialog
+            title="确认机构人员信息"
+            :visible.sync="dialogVisible"
+            width="50%"
+            center
+            :before-close="handleClose"
+        >
+            <!--表格-->
+            <site-table
+                :tableConfig="dialogTableConfig"
+                :tableHeight="dialogTableHeight"
                 :operateWidth="operateWidth"
-                :operate="operate"
-                :tableData="tableData">
-      <el-table-column label="状态" align="center">
-        <template slot-scope="scope">
-          <span v-show="scope.row.status === 1" class="text-green">已确认</span>
-          <span v-show="scope.row.status !== 1" class="text-red">未确认</span>
-        </template>
-      </el-table-column>
-      <template slot-scope="{slotScope}" slot="operate">
-        <el-button size="mini" type="text" @click="goConfig(slotScope.row)" :disabled="!hasRight('orgMemberConfirmAccess')">人员明细</el-button>
-      </template>
-    </site-table>
-    <!--编辑dialog-->
-    <el-dialog
-      title="确认机构人员信息"
-      :visible.sync="dialogVisible"
-      width="50%"
-      center
-      :before-close="handleClose">
-      <!--表格-->
-      <site-table :tableConfig="dialogTableConfig"
-                  :tableHeight="dialogTableHeight"
-                  :operateWidth="operateWidth"
-                  :operate="DialogOperate"
-                  :tableData="dialogTableData">
-      </site-table>
-      <el-row :gutter="20" :style="{marginTop: '20px'}">
-        <el-col :span="13" :offset="7">
-          <el-button type="primary" @click="goFindDetial">查看详情</el-button>
-          <el-button type="primary" @click="handleConfirm">确认</el-button>
-          <el-button  @click="handleClose">取消</el-button>
-        </el-col>
-      </el-row>
-    </el-dialog>
-  </div>
+                :operate="DialogOperate"
+                :tableData="dialogTableData"
+            >
+            </site-table>
+            <el-row :gutter="20" :style="{ marginTop: '20px' }">
+                <el-col :span="13" :offset="7">
+                    <el-button type="primary" @click="goFindDetial"
+                        >查看详情</el-button
+                    >
+                    <el-button type="primary" @click="handleConfirm"
+                        >确认</el-button
+                    >
+                    <el-button @click="handleClose">取消</el-button>
+                </el-col>
+            </el-row>
+        </el-dialog>
+    </div>
 </template>
 
 <script type="text/ecmascript-6">
@@ -259,7 +281,7 @@ export default {
     },
     goFindDetial(){
       this.$router.push(`/organization/organization-content/${this.app.option.user.orgNodeId}`)
-   
+
     },
     handleConfirm () {
       let newDatefmt = this.$options.filters['date'](new Date().getTime(), 'yyyy-MM')
@@ -286,7 +308,5 @@ export default {
 }
 </script>
 <style lang="less">
-  @import "index";
+@import "index";
 </style>
-
-

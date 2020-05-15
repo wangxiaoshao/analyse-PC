@@ -1,121 +1,183 @@
 <template>
-  <div class="leader-list-content">
-<!--    <candidate-dialog-->
-<!--      :seleceDialog="selectDialog"-->
-<!--      @dialogReturnMembersInfo="dialogReturnMembersInfo"-->
-<!--      @closeselectMenmber="closeselectMenmber">-->
-<!--    </candidate-dialog>-->
-    <select-members :seleceDialog="selectDialog"
-    @dialogReturnMembersInfo="dialogReturnMembersInfo"
-    @closeselectMenmber="closeselectMenmber"></select-members>
+    <div class="leader-list-content">
+        <!--    <candidate-dialog-->
+        <!--      :seleceDialog="selectDialog"-->
+        <!--      @dialogReturnMembersInfo="dialogReturnMembersInfo"-->
+        <!--      @closeselectMenmber="closeselectMenmber">-->
+        <!--    </candidate-dialog>-->
+        <select-members
+            :seleceDialog="selectDialog"
+            @dialogReturnMembersInfo="dialogReturnMembersInfo"
+            @closeselectMenmber="closeselectMenmber"
+        ></select-members>
 
-    <div class="button-wrap" v-if="mainLeaderList.length === 0">
-      <el-button type="primary" @click="addMainLeader(true,true,1)" :disabled="!hasRight('orgLeaderAdd')">添加主要领导</el-button>
-    </div>
-    <div class="list-ground">
-      <el-table
-        :data="mainLeaderList"
-        v-loading="loading"
-        stripe
-        border
-        highlight-current-row
-        size="medium"
-        style="width: 100%">
-        <template slot="empty">
-          <div class="empty">
-            <p><img class="data-pic" src="@src/common/images/no-data1.png" alt=""/></p>
-            <p><span style="padding-left: 8px;">暂无数据</span></p>
-          </div>
-        </template>
-        <el-table-column prop="description" label="序号" width="60" align="center">
-          <template slot-scope="scope">
-            <i class="sortBtnDo menu-icon fa fa-bars"  v-if="sortFlag" style="font-size: 25px"></i>
-            <span :title="scope" v-else>{{scope.$index + 1}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="头像">
-          <template slot-scope="scope">
-            <span class="person-pic">
-             <img v-if="scope.row.portraitUrl !== ''" :src="scope.row.portraitUrl">
-              <img src="@src/common/images/head-pic.png">
-            </span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="name"
-          label="姓名"
-          width="180">
-        </el-table-column>
-        <el-table-column
-          prop="duty"
-          label="职务">
-        </el-table-column>
-        <el-table-column prop="act" label="操作" width="100" align="center">
-          <template slot-scope="scope">
-            <el-button @click.native="deleteRow(scope.row)" type="text" size="small">
-              删除
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
-    <div class="content-title">
-      其他领导
-    </div>
-    <div class="list-ground">
-      <div class="button-wrap">
-        <el-button type="primary" @click="addMainLeader(false,true,2)" :disabled="!hasRight('orgLeaderAdd')">添加领导</el-button>
-       <!-- <el-button @click="sortFlag = true">调整排序</el-button>-->
-      </div>
-      <!--<div class="sort-do" v-if="sortFlag">
+        <div class="button-wrap" v-if="mainLeaderList.length === 0">
+            <el-button
+                type="primary"
+                @click="addMainLeader(true, true, 1)"
+                :disabled="!hasRight('orgLeaderAdd')"
+                >添加主要领导</el-button
+            >
+        </div>
+        <div class="list-ground">
+            <el-table
+                :data="mainLeaderList"
+                v-loading="loading"
+                stripe
+                border
+                highlight-current-row
+                size="medium"
+                style="width: 100%;"
+            >
+                <template slot="empty">
+                    <div class="empty">
+                        <p>
+                            <img
+                                class="data-pic"
+                                src="@src/common/images/no-data1.png"
+                                alt=""
+                            />
+                        </p>
+                        <p><span style="padding-left: 8px;">暂无数据</span></p>
+                    </div>
+                </template>
+                <el-table-column
+                    prop="description"
+                    label="序号"
+                    width="60"
+                    align="center"
+                >
+                    <template slot-scope="scope">
+                        <i
+                            class="sortBtnDo menu-icon fa fa-bars"
+                            v-if="sortFlag"
+                            style="font-size: 25px;"
+                        ></i>
+                        <span :title="scope" v-else>{{
+                            scope.$index + 1
+                        }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="头像">
+                    <template slot-scope="scope">
+                        <span class="person-pic">
+                            <img
+                                v-if="scope.row.portraitUrl !== ''"
+                                :src="scope.row.portraitUrl"
+                            />
+                            <img src="@src/common/images/head-pic.png" />
+                        </span>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="name" label="姓名" width="180">
+                </el-table-column>
+                <el-table-column prop="duty" label="职务"> </el-table-column>
+                <el-table-column
+                    prop="act"
+                    label="操作"
+                    width="100"
+                    align="center"
+                >
+                    <template slot-scope="scope">
+                        <el-button
+                            @click.native="deleteRow(scope.row)"
+                            type="text"
+                            size="small"
+                        >
+                            删除
+                        </el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </div>
+        <div class="content-title">
+            其他领导
+        </div>
+        <div class="list-ground">
+            <div class="button-wrap">
+                <el-button
+                    type="primary"
+                    @click="addMainLeader(false, true, 2)"
+                    :disabled="!hasRight('orgLeaderAdd')"
+                    >添加领导</el-button
+                >
+                <!-- <el-button @click="sortFlag = true">调整排序</el-button>-->
+            </div>
+            <!--<div class="sort-do" v-if="sortFlag">
         按住左键上下拖动调整排序
         <a >保存</a>
         <a  @click="sortFlag = false">取消</a>
       </div>-->
-      <el-table
-        :data="otherLeaderList"
-        stripe
-        border
-        v-loading="loading"
-        highlight-current-row
-        size="medium"
-        id="leaderList"
-      >
-        <template slot="empty">
-          <div class="empty">
-            <p><img class="data-pic" src="@src/common/images/no-data1.png" alt=""/></p>
-            <p><span style="padding-left: 8px;">暂无数据</span></p>
-          </div>
-        </template>
-        <el-table-column prop="description" label="序号" width="60" align="center">
-          <template slot-scope="scope">
-            <i class="sortBtnDo menu-icon iconfont iconpaixu"  v-if="sortFlag" style="font-size: 25px"></i>
-            <span :title="scope" v-else>{{scope.$index + 1}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="头像">
-          <template slot-scope="scope">
-            <span class="person-pic">
-             <img v-if="scope.row.portraitUrl !== ''" :src="scope.row.portraitUrl">
-              <img v-else src="@src/common/images/head-pic.png">
-            </span>
-          </template>
-        </el-table-column>
-        <el-table-column label="姓名" prop="name"></el-table-column>
-        <el-table-column
-          prop="duty"
-          label="职务">
-        </el-table-column>
-        <el-table-column prop="act" label="操作" width="100" align="center">
-          <template slot-scope="scope">
-            <el-button @click.native="deleteRow(scope.row)" type="text" size="small">
-              删除
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <!--分页-->
-      <!--<el-pagination
+            <el-table
+                :data="otherLeaderList"
+                stripe
+                border
+                v-loading="loading"
+                highlight-current-row
+                size="medium"
+                id="leaderList"
+            >
+                <template slot="empty">
+                    <div class="empty">
+                        <p>
+                            <img
+                                class="data-pic"
+                                src="@src/common/images/no-data1.png"
+                                alt=""
+                            />
+                        </p>
+                        <p><span style="padding-left: 8px;">暂无数据</span></p>
+                    </div>
+                </template>
+                <el-table-column
+                    prop="description"
+                    label="序号"
+                    width="60"
+                    align="center"
+                >
+                    <template slot-scope="scope">
+                        <i
+                            class="sortBtnDo menu-icon iconfont iconpaixu"
+                            v-if="sortFlag"
+                            style="font-size: 25px;"
+                        ></i>
+                        <span :title="scope" v-else>{{
+                            scope.$index + 1
+                        }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="头像">
+                    <template slot-scope="scope">
+                        <span class="person-pic">
+                            <img
+                                v-if="scope.row.portraitUrl !== ''"
+                                :src="scope.row.portraitUrl"
+                            />
+                            <img v-else src="@src/common/images/head-pic.png" />
+                        </span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="姓名" prop="name"></el-table-column>
+                <el-table-column prop="duty" label="职务"> </el-table-column>
+                <el-table-column
+                    prop="act"
+                    label="操作"
+                    width="100"
+                    align="center"
+                >
+                    <template slot-scope="scope">
+                        <el-button
+                            @click.native="deleteRow(scope.row)"
+                            type="text"
+                            size="small"
+                        >
+                            删除
+                        </el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <!--分页-->
+            <!--<el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="page.current"
@@ -124,8 +186,8 @@
         layout="total, sizes, prev, pager, next, jumper"
         :total="page.total">
       </el-pagination>-->
+        </div>
     </div>
-  </div>
 </template>
 
 <script type="text/ecmascript-6">
@@ -237,7 +299,7 @@ export default {
         }).then((res) => {
           this.$message.success(`保存成功`)
           this.getGrid()
-        }, (error) => {
+        }, (/* error */) => {
           this.$message.error(`保存失败，请重试`)
         })
       }
@@ -265,7 +327,7 @@ export default {
         this.dialogVisible = false
         this.$message.success(`已删除`)
         this.getGrid()
-      }, (error) => {
+      }, (/* error */) => {
         this.$message.error(`保存失败，请重试`)
       })
     }
@@ -315,23 +377,23 @@ export default {
 </script>
 
 <style lang="less">
-  @import "index";
-  .empty {
+@import "index";
+.empty {
     p {
-      margin: 0;
-      font-size: 0px;
-      text-align: center;
-      line-height: 16px!important;
+        margin: 0;
+        font-size: 0px;
+        text-align: center;
+        line-height: 16px !important;
     }
 
     span {
-      font-size: 12px;
+        font-size: 12px;
     }
-  }
+}
 
-  .data-pic {
+.data-pic {
     padding-top: 20px;
     width: 60px;
     height: auto;
-  }
+}
 </style>

@@ -1,177 +1,268 @@
-
 <template>
-  <div class="pass-change">
-    <select-members
-      :seleceDialog="selectDialog"
-      entire="true"
-      @dialogReturnMembersInfo="dialogReturnMembersInfo"
-      @closeselectMenmber="closeselectMenmber"
-    ></select-members>
+    <div class="pass-change">
+        <select-members
+            :seleceDialog="selectDialog"
+            entire="true"
+            @dialogReturnMembersInfo="dialogReturnMembersInfo"
+            @closeselectMenmber="closeselectMenmber"
+        ></select-members>
 
-    <!--人员调出弹窗-->
-    <el-dialog :title="calloutTitle" :visible.sync="calloutFlag" width="50%">
-      <el-form
-        :model="formCallout"
-        :rules="rulesCallou"
-        ref="formCallout"
-        label-width="100px"
-        class="demo-ruleForm"
-      >
-        <el-form-item label="当前单位">
-          <span class="name-span">{{this.$store.state.app.option.user.orgName}}</span>
-        </el-form-item>
-        <el-form-item label="目标单位">
-          <span class="name-span border">{{orgName}}</span>
-          <span class="name-span border" v-if="depName !== ''">/{{depName}}</span>
-          <el-button @click="addMainLeader" type="primary">选择调出目标单位</el-button>
-          <el-button @click="removeDestOrg" type="primary" v-if="isCallout===3">不选择单位</el-button>
-        </el-form-item>
-        <el-form-item label="申请原因" prop="reason">
-          <el-input type="textarea" v-model="formCallout.reason"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="submitFormCallout('formCallout')">确定</el-button>
-          <el-button @click="calloutFlag = false">取 消</el-button>
-        </el-form-item>
-      </el-form>
-    </el-dialog>
-
-    <!-- 提交调出申请弹框 -->
-    <el-dialog :visible.sync="submitVisible" width="410px">
-      <div slot="title" style="padding:20px; background-color: #fff;">
-        <span class="msg-title">{{callMag.title}}</span>
-        <i class="el-icon-document-copy" style="color:red"></i>
-      </div>
-      <div class="msg-box">{{callMag.msg}}</div>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitVisible = false" width="120px">确 定</el-button>
-      </div>
-    </el-dialog>
-
-    <!-- 修改密码弹框 -->
-    <div class="updatePwd-box">
-      <el-dialog :visible.sync="modifiePwdVisible" :show-close="false" width="410px">
-        <div slot="title" class="header-title" style="background-color: #fff;">
-          修改密码
-          <i class="el-icon-document-copy" style="color:red"></i>
-        </div>
-        <el-form
-          :model="ruleForm"
-          status-icon
-          :rules="rules"
-          inline
-          label-width="100px"
-          ref="ruleForm"
+        <!--人员调出弹窗-->
+        <el-dialog
+            :title="calloutTitle"
+            :visible.sync="calloutFlag"
+            width="50%"
         >
-          <el-form-item label="原密码" prop="oldPass">
-            <el-input type="password" v-model="ruleForm.oldPass" show-password></el-input>
-          </el-form-item>
-          <el-form-item label="新密码" prop="newPass">
-            <el-input type="password" v-model="ruleForm.newPass" autocomplete="off" show-password></el-input>
-          </el-form-item>
-          <el-form-item label="确认密码" prop="checkPass">
-            <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off" show-password></el-input>
-          </el-form-item>
-          <div class="pass-rule">
-            <i class="el-icon-warning" style="color:black"></i>
-            {{passRule}}
-          </div>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
-          <el-button @click="resetForm('ruleForm')">取消</el-button>
-        </div>
-      </el-dialog>
-    </div>
+            <el-form
+                :model="formCallout"
+                :rules="rulesCallou"
+                ref="formCallout"
+                label-width="100px"
+                class="demo-ruleForm"
+            >
+                <el-form-item label="当前单位">
+                    <span class="name-span">{{
+                        this.$store.state.app.option.user.orgName
+                    }}</span>
+                </el-form-item>
+                <el-form-item label="目标单位">
+                    <span class="name-span border">{{ orgName }}</span>
+                    <span class="name-span border" v-if="depName !== ''"
+                        >/{{ depName }}</span
+                    >
+                    <el-button @click="addMainLeader" type="primary"
+                        >选择调出目标单位</el-button
+                    >
+                    <el-button
+                        @click="removeDestOrg"
+                        type="primary"
+                        v-if="isCallout === 3"
+                        >不选择单位</el-button
+                    >
+                </el-form-item>
+                <el-form-item label="申请原因" prop="reason">
+                    <el-input
+                        type="textarea"
+                        v-model="formCallout.reason"
+                    ></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button
+                        type="primary"
+                        @click="submitFormCallout('formCallout')"
+                        >确定</el-button
+                    >
+                    <el-button @click="calloutFlag = false">取 消</el-button>
+                </el-form-item>
+            </el-form>
+        </el-dialog>
 
-    <!-- 重置密码弹框 -->
-    <div class="updatePwd-box">
-      <el-dialog :visible.sync="resetPwdVisible" width="420px" :show-close="true">
-        <div slot="title" class="header-title" style="background-color: #fff;">
-          手机号验证
-          <i class="el-icon-document-copy" style="color:red"></i>
-        </div>
-        <div class="resetPwd-box">
-          <p>验证码已通过手机号：{{hideMobile(userInfo.user.mobile)}}发送请输入验证码：</p>
-          <div style="padding:15px 0;">
-            <el-row>
-              <el-col :span="12">
-                <el-input placeholder="请输入短信验证码" v-model="smsCode" ref="smsCodeInput"></el-input>
-              </el-col>
-              <el-col :span="10" :offset="1">
+        <!-- 提交调出申请弹框 -->
+        <el-dialog :visible.sync="submitVisible" width="410px">
+            <div slot="title" style="padding: 20px; background-color: #fff;">
+                <span class="msg-title">{{ callMag.title }}</span>
+                <i class="el-icon-document-copy" style="color: red;"></i>
+            </div>
+            <div class="msg-box">{{ callMag.msg }}</div>
+            <div slot="footer" class="dialog-footer">
                 <el-button
-                  type="primary"
-                  :disabled="smsTimerCount !== 0"
-                  @click="sendSmsCode"
-                  :style="this.smsTimerCount === 0?'':'background-color:#d8d7d7;border-color:#d8d7d7;'"
-                >{{this.smsTimerCount === 0 ? '重新发送' : this.smsTimerCount + '秒后重新发送'}}</el-button>
-              </el-col>
-            </el-row>
-          </div>
-        </div>
-        <div slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="beSureSmsCode" width="120px">确 定</el-button>
-        </div>
-      </el-dialog>
-    </div>
+                    type="primary"
+                    @click="submitVisible = false"
+                    width="120px"
+                    >确 定</el-button
+                >
+            </div>
+        </el-dialog>
 
-    <!-- 重置密码成功弹框 -->
-    <el-dialog :visible.sync="successPwdVisible" width="420px">
-      <div slot="title" class="header-title" style="background-color: #fff;">
-        密码重置成功
-        <i class="el-icon-document-copy" style="color:red"></i>
-      </div>
-      <div class="sucessPwd-box">验证通过，您的新密码已发送至手机号：{{hideMobile(userInfo.user.mobile)}}，请注意查收。</div>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="loginOut" width="120px">确 定</el-button>
-      </div>
-    </el-dialog>
+        <!-- 修改密码弹框 -->
+        <div class="updatePwd-box">
+            <el-dialog
+                :visible.sync="modifiePwdVisible"
+                :show-close="false"
+                width="410px"
+            >
+                <div
+                    slot="title"
+                    class="header-title"
+                    style="background-color: #fff;"
+                >
+                    修改密码
+                    <i class="el-icon-document-copy" style="color: red;"></i>
+                </div>
+                <el-form
+                    :model="ruleForm"
+                    status-icon
+                    :rules="rules"
+                    inline
+                    label-width="100px"
+                    ref="ruleForm"
+                >
+                    <el-form-item label="原密码" prop="oldPass">
+                        <el-input
+                            type="password"
+                            v-model="ruleForm.oldPass"
+                            show-password
+                        ></el-input>
+                    </el-form-item>
+                    <el-form-item label="新密码" prop="newPass">
+                        <el-input
+                            type="password"
+                            v-model="ruleForm.newPass"
+                            autocomplete="off"
+                            show-password
+                        ></el-input>
+                    </el-form-item>
+                    <el-form-item label="确认密码" prop="checkPass">
+                        <el-input
+                            type="password"
+                            v-model="ruleForm.checkPass"
+                            autocomplete="off"
+                            show-password
+                        ></el-input>
+                    </el-form-item>
+                    <div class="pass-rule">
+                        <i class="el-icon-warning" style="color: black;"></i>
+                        {{ passRule }}
+                    </div>
+                </el-form>
+                <div slot="footer" class="dialog-footer">
+                    <el-button type="primary" @click="submitForm('ruleForm')"
+                        >保存</el-button
+                    >
+                    <el-button @click="resetForm('ruleForm')">取消</el-button>
+                </div>
+            </el-dialog>
+        </div>
 
-    <div class="pass-change-content">
-      <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="我的信息" name="first">
-          <el-row>
-            <el-col :span="18">
-              <person-manage
-                :userInfo="userInfo"
-                :user-detail="userInfo.user"
-                :post-detail="userInfo.identity"
-                :label-id="userInfo.labelId"
-                :label-list="fromLabelList"
-                :old-user-info="oldUserInfo"
-                @get-user="getUser"
-                @get-post="getPost"
-                @get-label="getLabelId"
-                @goModifieUserInfo="goModifieUserInfo"
-                :showexportIdentityType="showexportIdentityType"
-                @exportOrg="exportOrg"
-              ></person-manage>
-            </el-col>
-          </el-row>
-        </el-tab-pane>
-        <el-tab-pane label="多账号管理">
-          <multiple-accounts
-            :accountInfoList="accountInfoList"
-            @goEdit="goEdit"
-            v-if="showAccountsVisible"
-          ></multiple-accounts>
-          <edit-account
-            v-else
-            @resetPwd="resetPwd"
-            @modifiePwd="modifiePwd"
-            :accountInfo="accountInfo"
-            @close="goBack"
-          ></edit-account>
-        </el-tab-pane>
-        <!-- <el-tab-pane label="多身份管理">
-          <multiple-idetity  @exportOrg="exportOrg"></multiple-idetity>   
+        <!-- 重置密码弹框 -->
+        <div class="updatePwd-box">
+            <el-dialog
+                :visible.sync="resetPwdVisible"
+                width="420px"
+                :show-close="true"
+            >
+                <div
+                    slot="title"
+                    class="header-title"
+                    style="background-color: #fff;"
+                >
+                    手机号验证
+                    <i class="el-icon-document-copy" style="color: red;"></i>
+                </div>
+                <div class="resetPwd-box">
+                    <p>
+                        验证码已通过手机号：{{
+                            hideMobile(userInfo.user.mobile)
+                        }}发送请输入验证码：
+                    </p>
+                    <div style="padding: 15px 0;">
+                        <el-row>
+                            <el-col :span="12">
+                                <el-input
+                                    placeholder="请输入短信验证码"
+                                    v-model="smsCode"
+                                    ref="smsCodeInput"
+                                ></el-input>
+                            </el-col>
+                            <el-col :span="10" :offset="1">
+                                <el-button
+                                    type="primary"
+                                    :disabled="smsTimerCount !== 0"
+                                    @click="sendSmsCode"
+                                    :style="
+                                        this.smsTimerCount === 0
+                                            ? ''
+                                            : 'background-color:#d8d7d7;border-color:#d8d7d7;'
+                                    "
+                                    >{{
+                                        this.smsTimerCount === 0
+                                            ? "重新发送"
+                                            : this.smsTimerCount +
+                                              "秒后重新发送"
+                                    }}</el-button
+                                >
+                            </el-col>
+                        </el-row>
+                    </div>
+                </div>
+                <div slot="footer" class="dialog-footer">
+                    <el-button
+                        type="primary"
+                        @click="beSureSmsCode"
+                        width="120px"
+                        >确 定</el-button
+                    >
+                </div>
+            </el-dialog>
+        </div>
+
+        <!-- 重置密码成功弹框 -->
+        <el-dialog :visible.sync="successPwdVisible" width="420px">
+            <div
+                slot="title"
+                class="header-title"
+                style="background-color: #fff;"
+            >
+                密码重置成功
+                <i class="el-icon-document-copy" style="color: red;"></i>
+            </div>
+            <div class="sucessPwd-box">
+                验证通过，您的新密码已发送至手机号：{{
+                    hideMobile(userInfo.user.mobile)
+                }}，请注意查收。
+            </div>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="loginOut" width="120px"
+                    >确 定</el-button
+                >
+            </div>
+        </el-dialog>
+
+        <div class="pass-change-content">
+            <el-tabs v-model="activeName" @tab-click="handleClick">
+                <el-tab-pane label="我的信息" name="first">
+                    <el-row>
+                        <el-col :span="18">
+                            <person-manage
+                                :userInfo="userInfo"
+                                :user-detail="userInfo.user"
+                                :post-detail="userInfo.identity"
+                                :label-id="userInfo.labelId"
+                                :label-list="fromLabelList"
+                                :old-user-info="oldUserInfo"
+                                @get-user="getUser"
+                                @get-post="getPost"
+                                @get-label="getLabelId"
+                                @goModifieUserInfo="goModifieUserInfo"
+                                :showexportIdentityType="showexportIdentityType"
+                                @exportOrg="exportOrg"
+                            ></person-manage>
+                        </el-col>
+                    </el-row>
+                </el-tab-pane>
+                <el-tab-pane label="多账号管理">
+                    <multiple-accounts
+                        :accountInfoList="accountInfoList"
+                        @goEdit="goEdit"
+                        v-if="showAccountsVisible"
+                    ></multiple-accounts>
+                    <edit-account
+                        v-else
+                        @resetPwd="resetPwd"
+                        @modifiePwd="modifiePwd"
+                        :accountInfo="accountInfo"
+                        @close="goBack"
+                    ></edit-account>
+                </el-tab-pane>
+                <!-- <el-tab-pane label="多身份管理">
+          <multiple-idetity  @exportOrg="exportOrg"></multiple-idetity>
         </el-tab-pane> -->
-        <el-tab-pane label="个人日志">
-          <personal-log :showFindBtn="showFindBtn"></personal-log>
-        </el-tab-pane>
-      </el-tabs>
+                <el-tab-pane label="个人日志">
+                    <personal-log :showFindBtn="showFindBtn"></personal-log>
+                </el-tab-pane>
+            </el-tabs>
+        </div>
     </div>
-  </div>
 </template>
 
 <script type="text/ecmascript-6">
@@ -181,7 +272,6 @@ import personManage from '../../organization/components/PersonManage'
 import PersonalLog from '@src/components/PersonalLog/index'
 import SelectMembers from '@src/components/SelectMembers/index'
 import MultipleAccounts from '../components/MultipleAccounts/index'
-import MultipleIdetity from '../components/MultipleIdetity/index'
 import EditAccount from '../components/EditAccount/index'
 const SMS_TIMES_SECOND = 60
 // 定时器
@@ -192,8 +282,7 @@ export default {
     SelectMembers,
     PersonalLog,
     MultipleAccounts,
-    EditAccount,
-    MultipleIdetity
+    EditAccount
   },
   data() {
     var validateOldPass = (rule, value, callback) => {
@@ -207,7 +296,7 @@ export default {
       if (value === '') {
         callback(new Error('请输入新密码'))
       } else {
-        let reg = /^(?!([a-zA-Z\d]*|[\d!@#\$%_\.*/]*|[a-zA-Z!@#\$%_\.*/]*)$)[a-zA-Z\d!@#\$%_\.*/]{8,}$/
+        let reg = /^(?!([a-zA-Z\d]*|[\d!@#$%_.*/]*|[a-zA-Z!@#$%_.*/]*)$)[a-zA-Z\d!@#$%_.*/]{8,}$/
         reg.test(value) ? callback() : callback(new Error('请按照密码规则填写'))
         if (this.ruleForm.checkPass !== '') {
           this.$refs.ruleForm.validateField('checkPass')
@@ -391,11 +480,11 @@ export default {
       this.orgName = '无'
     },
     exportOrg(flag) {
-      if(flag==1){
+      if(flag===1){
         this.calloutTitle='填写兼职说明'
-      }else if(flag==2){
+      }else if(flag===2){
         this.calloutTitle='填写挂出说明'
-      }else if(flag==3){
+      }else if(flag===3){
         this.calloutTitle='填写调出说明'
       }
        this.isCallout=flag
@@ -709,8 +798,6 @@ export default {
   }
 }
 </script>
-<style lang="less"  scoped>
-@import 'index';
+<style lang="less" scoped>
+@import "index";
 </style>
-
-

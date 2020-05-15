@@ -1,11 +1,11 @@
 <template>
-  <div class="data-statistic">
-    <!--顶部时间筛选row-->
-    <div class="">
-      <el-row class="operator-row">
-        <el-col :span="18">
-          <el-row :gutter="10" type="flex">
-            <!-- <el-col :span="6">
+    <div class="data-statistic">
+        <!--顶部时间筛选row-->
+        <div class="">
+            <el-row class="operator-row">
+                <el-col :span="18">
+                    <el-row :gutter="10" type="flex">
+                        <!-- <el-col :span="6">
               <el-select
                 v-model="selected.type"
                 filterable
@@ -20,111 +20,154 @@
                 </el-option>
               </el-select>
             </el-col> -->
-          </el-row>
-        </el-col>
-      </el-row>
+                    </el-row>
+                </el-col>
+            </el-row>
+        </div>
+        <!--四张人数统计背景图片-->
+        <div class="statistic-bgi">
+            <span class="template-one dark-blue">
+                <div style="position: absolute;" class="register">
+                    <div>//截止今天</div>
+                    <div>机构人员注册总数</div>
+                    <div>{{ countData.userCount }}</div>
+                </div>
+            </span>
+            <span class="template-two light-blue">
+                <div style="position: absolute;" class="add-depart">
+                    <!-- <div>//{{dateName}}</div> -->
+                    <div>//截止今天</div>
+                    <div>单位总数</div>
+                    <div>{{ countData.organCount }}</div>
+                </div>
+            </span>
+            <span class="template-two light-purple">
+                <div style="position: absolute;" class="add-unit">
+                    <!-- <div>//{{dateName}}</div> -->
+                    <div>//截止今天</div>
+                    <div>内设机构总数</div>
+                    <div>{{ countData.deptCount }}</div>
+                </div>
+            </span>
+
+            <span class="template-two light-orange">
+                <div style="position: absolute;" class="add-member">
+                    <!-- <div>//{{dateName}}</div> -->
+                    <div>//截止今天</div>
+                    <div>接入应用总数</div>
+                    <div>{{ applyCount }}</div>
+                </div>
+            </span>
+        </div>
+        <el-tabs
+            v-model="activeName"
+            @tab-click="handleClick"
+            class="statistic-tab"
+        >
+            <el-tab-pane label="各市州单位总数占比" name="unit" lazy>
+                <echarts
+                    :echartsAry="echartsAry1"
+                    v-if="activeName == 'unit'"
+                ></echarts>
+            </el-tab-pane>
+            <el-tab-pane label="各市州内设机构数占比" name="department" lazy>
+                <echarts
+                    :echartsAry="echartsAry2"
+                    v-if="activeName == 'department'"
+                ></echarts>
+            </el-tab-pane>
+            <el-tab-pane label="各市州人员总数占比" name="member">
+                <echarts
+                    :echartsAry="echartsAry3"
+                    v-if="activeName == 'member'"
+                ></echarts>
+            </el-tab-pane>
+            <el-tab-pane label="接入应用数占比" name="applyCount">
+                <echarts
+                    :echartsAry="echartsAry3"
+                    v-if="activeName == 'applyCount'"
+                ></echarts>
+            </el-tab-pane>
+        </el-tabs>
+        <el-row>
+            <el-col
+                :span="12"
+                :style="{ padding: '10px 40px', paddingRight: '90px' }"
+            >
+                <!--<div :style="{width: '100%', height: '500px', backgroundColor: 'red'}"></div>-->
+                <el-row>
+                    <el-col :span="24">
+                        <div
+                            class="template-btn unit-query"
+                            @click="jumpQuery('unit')"
+                        >
+                            单位查询
+                        </div>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="24">
+                        <div
+                            class="template-btn depart-query"
+                            @click="jumpQuery('department')"
+                        >
+                            内设机构查询
+                        </div>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="24">
+                        <div
+                            class="template-btn member-query"
+                            @click="jumpQuery('member')"
+                        >
+                            人员查询
+                        </div>
+                    </el-col>
+                </el-row>
+            </el-col>
+            <el-col :span="12" :style="{ paddingRight: '30px' }">
+                <el-card
+                    class="box-card"
+                    shadow="hover"
+                    :style="{ height: '300px' }"
+                >
+                    <div slot="header" class="clearfix">
+                        <span>最新动态</span>
+                        <el-button
+                            style="float: right; padding: 3px 0;"
+                            type="text"
+                            @click="handleMore"
+                            >查看更多</el-button
+                        >
+                    </div>
+                    <div class="timeLine">
+                        <el-timeline :reverse="reverse">
+                            <el-timeline-item
+                                v-for="(activity, index) in newsList"
+                                :key="index"
+                                placement="top"
+                                :timestamp="activity.actionTime"
+                            >
+                                {{ activity.userName
+                                }}{{ activity.description }}
+                            </el-timeline-item>
+                        </el-timeline>
+                    </div>
+                </el-card>
+            </el-col>
+        </el-row>
     </div>
-    <!--四张人数统计背景图片-->
-    <div class="statistic-bgi">
-      <span class="template-one dark-blue">
-        <div style="position: absolute" class="register">
-          <div>//截止今天</div>
-          <div>机构人员注册总数</div>
-          <div>{{countData.userCount}}</div>
-        </div>
-      </span>
-      <span class="template-two light-blue">
-        <div style="position: absolute" class="add-depart">
-          <!-- <div>//{{dateName}}</div> -->
-          <div>//截止今天</div>
-          <div>单位总数</div>
-          <div>{{countData.organCount}}</div>
-        </div>
-      </span>
-      <span class="template-two light-purple">
-        <div style="position: absolute" class="add-unit">
-          <!-- <div>//{{dateName}}</div> -->
-          <div>//截止今天</div>
-          <div>内设机构总数</div>
-          <div>{{countData.deptCount}}</div>
-        </div>
-      </span>
-      
-      <span class="template-two light-orange">
-        <div style="position: absolute" class="add-member">
-          <!-- <div>//{{dateName}}</div> -->
-          <div>//截止今天</div>
-          <div>接入应用总数</div>
-          <div>{{applyCount}}</div>
-        </div>
-      </span>
-    </div>
-    <el-tabs v-model="activeName" @tab-click="handleClick" class="statistic-tab">
-      <el-tab-pane label="各市州单位总数占比" name="unit" lazy >
-        <echarts :echartsAry='echartsAry1' v-if="activeName=='unit'"></echarts>
-      </el-tab-pane>
-      <el-tab-pane label="各市州内设机构数占比" name="department"  lazy>
-         <echarts :echartsAry='echartsAry2' v-if="activeName=='department'"></echarts>
-      </el-tab-pane>
-      <el-tab-pane label="各市州人员总数占比" name="member">
-         <echarts :echartsAry='echartsAry3' v-if="activeName=='member'"></echarts>
-      </el-tab-pane>
-      <el-tab-pane label="接入应用数占比" name="applyCount">
-         <echarts :echartsAry='echartsAry3' v-if="activeName=='applyCount'"></echarts>
-      </el-tab-pane>
-    </el-tabs>
-    <el-row>
-      <el-col :span="12" :style="{padding: '10px 40px', paddingRight: '90px'}">
-        <!--<div :style="{width: '100%', height: '500px', backgroundColor: 'red'}"></div>-->
-        <el-row>
-          <el-col :span="24">
-            <div class="template-btn unit-query" @click="jumpQuery('unit')">单位查询</div>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="24">
-            <div class="template-btn depart-query" @click="jumpQuery('department')">内设机构查询</div>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="24">
-            <div class="template-btn member-query" @click="jumpQuery('member')">人员查询</div>
-          </el-col>
-        </el-row>
-      </el-col>
-      <el-col :span="12" :style="{paddingRight: '30px'}">
-        <el-card class="box-card" shadow="hover" :style="{height:'300px'}">
-          <div slot="header" class="clearfix">
-            <span>最新动态</span>
-            <el-button style="float: right; padding: 3px 0" type="text" @click="handleMore">查看更多</el-button>
-          </div>
-          <div class="timeLine">
-          <el-timeline :reverse="reverse">
-          <el-timeline-item
-          v-for="(activity, index) in newsList"
-          :key="index"
-          placement="top"
-          :timestamp="activity.actionTime">
-            {{activity.userName}}{{activity.description}}
-          </el-timeline-item>
-          </el-timeline>
-          </div>
-        </el-card>
-      </el-col>
-    </el-row>
-  </div>
 </template>
 
 <script type="text/ecmascript-6">
 import handleTable from '@src/mixins/handle-table'
 import echarts from '../components/Echarts'
-import echartsDept from '../components/EchartsDept'
-import echartsPeople from '../components/EchartsPeople'
 import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
 
 export default {
-  components: { echarts, echartsDept, echartsPeople },
+  components: { echarts },
   mixins: [handleTable],
   data () {
     return {
@@ -208,7 +251,7 @@ export default {
     },
     initDataStatistics () {
       let datefilters = this.$options.filters['date'](new Date().getTime(), 'yyyy-MM')
-      let selected = this.dataList.filter(item => item.type == this.selected.type)
+      let selected = this.dataList.filter(item => item.type === this.selected.type)
       this.dateName = selected[0].name
       let data = {
         date: datefilters,
@@ -242,7 +285,5 @@ export default {
 }
 </script>
 <style lang="less">
-  @import "./index";
+@import "./index";
 </style>
-
-

@@ -1,45 +1,68 @@
 <template>
-  <div class="site-module mod-application-config">
-    <!--表格-->
-    <site-table :tableConfig="tableConfig"
-                :tableHeight="tableHeight"
-                :mergeConfig="mergeConfig"
-                :operateWidth="operateWidth"
-                :operate="operate"
-                :tableData="tableData">
-      <template>
-        <el-table-column label="申请原因" align="center">
-          <template>
-            <span>{{reason || '无'}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="审核意见" align="center" v-if="!isShowSuggest">
-          <template>
-            <span>{{message}}</span>
-          </template>
-        </el-table-column>
-      </template>
-    </site-table>
+    <div class="site-module mod-application-config">
+        <!--表格-->
+        <site-table
+            :tableConfig="tableConfig"
+            :tableHeight="tableHeight"
+            :mergeConfig="mergeConfig"
+            :operateWidth="operateWidth"
+            :operate="operate"
+            :tableData="tableData"
+        >
+            <template>
+                <el-table-column label="申请原因" align="center">
+                    <template>
+                        <span>{{ reason || "无" }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    label="审核意见"
+                    align="center"
+                    v-if="!isShowSuggest"
+                >
+                    <template>
+                        <span>{{ message }}</span>
+                    </template>
+                </el-table-column>
+            </template>
+        </site-table>
 
-    <edit-dialog :visible="editDialogVisible"
-                 :config-type="type"
-                 :current="currentEdit"
-                 :dialogTitle="dialogTitle"
-                 :auditResult="auditResult"
-                 @refreshList="getGrid"
-                 @close="closeEditDialog"></edit-dialog>
-    <el-row  style="margin-top: 40px" :gutter="20" v-if="isShowSuggest">
-      <el-col :span="12" class="text-right" style="text-align: left">
-        <el-button type="info" @click="jumpDetailPage($route.params.type)">查看原始数据详情</el-button>
-      </el-col>
-      <el-col :span="12" >
-        <div style="text-align: right">
-          <el-button type="primary" plain @click="openExamineDialog(1)" >通过</el-button>
-          <el-button type="info" plain @click="openExamineDialog(0)"  style="margin-left: 10px">不通过</el-button>
-        </div>
-      </el-col>
-    </el-row>
-  </div>
+        <edit-dialog
+            :visible="editDialogVisible"
+            :config-type="type"
+            :current="currentEdit"
+            :dialogTitle="dialogTitle"
+            :auditResult="auditResult"
+            @refreshList="getGrid"
+            @close="closeEditDialog"
+        ></edit-dialog>
+        <el-row style="margin-top: 40px;" :gutter="20" v-if="isShowSuggest">
+            <el-col :span="12" class="text-right" style="text-align: left;">
+                <el-button
+                    type="info"
+                    @click="jumpDetailPage($route.params.type)"
+                    >查看原始数据详情</el-button
+                >
+            </el-col>
+            <el-col :span="12">
+                <div style="text-align: right;">
+                    <el-button
+                        type="primary"
+                        plain
+                        @click="openExamineDialog(1)"
+                        >通过</el-button
+                    >
+                    <el-button
+                        type="info"
+                        plain
+                        @click="openExamineDialog(0)"
+                        style="margin-left: 10px;"
+                        >不通过</el-button
+                    >
+                </div>
+            </el-col>
+        </el-row>
+    </div>
 </template>
 
 <script type="text/ecmascript-6">
@@ -165,7 +188,5 @@ export default {
 }
 </script>
 <style lang="less">
-  @import "index";
+@import "index";
 </style>
-
-

@@ -1,19 +1,31 @@
 <template>
-  <div class="data-log">
-    <div class="all-log">
-      <el-tabs>
-        <el-tab-pane label="操作日志"  v-if="hasRight('systemLogingAccess')">
-          <personal-log :loginLog="logAry[1]" :showFindBtn='showFindBtn'></personal-log>
-        </el-tab-pane>
-        <el-tab-pane label="系统日志"  v-if="hasRight('systemLogingSystemAccess')">
-          <personal-log :loginLog="logAry[2]"></personal-log>
-        </el-tab-pane>
-        <el-tab-pane label="共享日志"  v-if="hasRight('systemLogingPushAccess')">
-          <push-log></push-log>
-        </el-tab-pane>
-      </el-tabs>
+    <div class="data-log">
+        <div class="all-log">
+            <el-tabs>
+                <el-tab-pane
+                    label="操作日志"
+                    v-if="hasRight('systemLogingAccess')"
+                >
+                    <personal-log
+                        :loginLog="logAry[1]"
+                        :showFindBtn="showFindBtn"
+                    ></personal-log>
+                </el-tab-pane>
+                <el-tab-pane
+                    label="系统日志"
+                    v-if="hasRight('systemLogingSystemAccess')"
+                >
+                    <personal-log :loginLog="logAry[2]"></personal-log>
+                </el-tab-pane>
+                <el-tab-pane
+                    label="共享日志"
+                    v-if="hasRight('systemLogingPushAccess')"
+                >
+                    <push-log></push-log>
+                </el-tab-pane>
+            </el-tabs>
+        </div>
     </div>
-  </div>
 </template>
 
 <script type="text/ecmascript-6">
@@ -143,7 +155,5 @@ export default {
 }
 </script>
 <style lang="less">
-@import './index';
+@import "./index";
 </style>
-
-

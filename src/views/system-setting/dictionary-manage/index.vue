@@ -1,49 +1,62 @@
 <template>
-  <div class="site-module mod-dictionary">
-    <el-row class="operator-row" :gutter="24">
-      <el-col :span="24" class="text-right">
-      </el-col>
-    </el-row>
-    <!--表格-->
-    <site-table :tableConfig="tableConfig"
-                :tableHeight="tableHeight"
-                :operateWidth="operateWidth"
-                :operate="operate"
-                :tableData="tableData">
-      <el-table-column label="启用状态" align="center" min-width="50">
-        <template slot-scope="scope">
-          <span class="text-able" v-show="scope.row.removed===0">启用</span>
-          <span class="text-disable" v-show="scope.row.removed===1">停用</span>
-        </template>
-      </el-table-column>
-      <template slot-scope="{slotScope}" slot="operate">
-        <el-button size="mini" type="text" @click="openDialog(slotScope.row)">添加</el-button>
-      </template>
-    </site-table>
-    <!--分页-->
-    <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="page.current"
-      :page-sizes="[10, 30, 50, 100]"
-      :page-size="page.limit"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="page.total">
-    </el-pagination>
-    <edit-dialog
-      :visible="dialogVisible"
-      :config-type="type"
-      :dialogTitle="title"
-      @refreshList="getGrid"
-      @close="closeAddDialog"></edit-dialog>
-    <dictionary-list
-      :visible="dicDialogVisible"
-      :config-type="type"
-      :dialogTitle="dicTitle"
-      :dictionaryType="dictionaryType"
-      @refreshList="getGrid"
-      @close="closeAddDialog"></dictionary-list>
-  </div>
+    <div class="site-module mod-dictionary">
+        <el-row class="operator-row" :gutter="24">
+            <el-col :span="24" class="text-right"> </el-col>
+        </el-row>
+        <!--表格-->
+        <site-table
+            :tableConfig="tableConfig"
+            :tableHeight="tableHeight"
+            :operateWidth="operateWidth"
+            :operate="operate"
+            :tableData="tableData"
+        >
+            <el-table-column label="启用状态" align="center" min-width="50">
+                <template slot-scope="scope">
+                    <span class="text-able" v-show="scope.row.removed === 0"
+                        >启用</span
+                    >
+                    <span class="text-disable" v-show="scope.row.removed === 1"
+                        >停用</span
+                    >
+                </template>
+            </el-table-column>
+            <template slot-scope="{ slotScope }" slot="operate">
+                <el-button
+                    size="mini"
+                    type="text"
+                    @click="openDialog(slotScope.row)"
+                    >添加</el-button
+                >
+            </template>
+        </site-table>
+        <!--分页-->
+        <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="page.current"
+            :page-sizes="[10, 30, 50, 100]"
+            :page-size="page.limit"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="page.total"
+        >
+        </el-pagination>
+        <edit-dialog
+            :visible="dialogVisible"
+            :config-type="type"
+            :dialogTitle="title"
+            @refreshList="getGrid"
+            @close="closeAddDialog"
+        ></edit-dialog>
+        <dictionary-list
+            :visible="dicDialogVisible"
+            :config-type="type"
+            :dialogTitle="dicTitle"
+            :dictionaryType="dictionaryType"
+            @refreshList="getGrid"
+            @close="closeAddDialog"
+        ></dictionary-list>
+    </div>
 </template>
 
 <script type="text/ecmascript-6">
@@ -153,7 +166,5 @@ export default {
 }
 </script>
 <style lang="less">
-  @import "index";
+@import "index";
 </style>
-
-

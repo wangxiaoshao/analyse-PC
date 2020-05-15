@@ -3,3 +3,4 @@ dist
 meetingseat-web-mob
 node_modules
 test/
+src/common/font*

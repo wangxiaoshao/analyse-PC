@@ -1,20 +1,26 @@
 <template>
-  <el-menu ref="menu"
-             :default-active="defaultActive"
-             :default-openeds="defaultOpeneds"
-             :mode="mode"
-             :collapse="collapse"
-             :background-color="backgroundColor"
-             :text-color="textColor"
-             :active-text-color="activeTextColor"
-             :unique-opened="uniqueOpened"
-             :menu-trigger="menuTrigger"
-             :router="router"
-             @open="openMenu"
-             @close="closeMenu"
-             @select="selectMenu">
-        <sub-menu v-for="(menuItem, index) in innerMenus" :key="index" :menu-item="menuItem"></sub-menu>
-  </el-menu>
+    <el-menu
+        ref="menu"
+        :default-active="defaultActive"
+        :default-openeds="defaultOpeneds"
+        :mode="mode"
+        :collapse="collapse"
+        :background-color="backgroundColor"
+        :text-color="textColor"
+        :active-text-color="activeTextColor"
+        :unique-opened="uniqueOpened"
+        :menu-trigger="menuTrigger"
+        :router="router"
+        @open="openMenu"
+        @close="closeMenu"
+        @select="selectMenu"
+    >
+        <sub-menu
+            v-for="(menuItem, index) in innerMenus"
+            :key="index"
+            :menu-item="menuItem"
+        ></sub-menu>
+    </el-menu>
 </template>
 <script type="text/ecmascript-6">
 
@@ -29,7 +35,7 @@ export default {
   data () {
     return {
       innerMenus: [],
-      _indexMap: {}
+      indexMap: {}
     }
   },
   props: {
@@ -53,7 +59,7 @@ export default {
         * @description 数据检查一遍，查看index是否存在重复的情况，没有则设置index
         * */
     _presetMenus () {
-      this._indexMap = Object.create(null)
+      this.indexMap = Object.create(null)
       this.innerMenus = this.menus.map((menu) => {
         return this._checkIndex(menu)
       })
@@ -68,8 +74,8 @@ export default {
       menu = Object.assign({}, menu)
 
       let id = menu.menuId
-      if (util.asserts.noExistPropertyInMap(id, this._indexMap)) {
-        this._indexMap[id] = menu
+      if (util.asserts.noExistPropertyInMap(id, this.indexMap)) {
+        this.indexMap[id] = menu
       }
 
       // 检查子菜单和分组情况
@@ -102,7 +108,7 @@ export default {
         * @return {Object}
         * */
     getMenuItemById (id) {
-      return this._indexMap[id]
+      return this.indexMap[id]
     },
     /**
         * @description 取得一个菜单项中的子菜单列表
