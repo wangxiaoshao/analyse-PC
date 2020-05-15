@@ -93,7 +93,7 @@ export default {
 		 * 通用弹出确认操作 删除 下架等
 		 * @param {*} text 提示
 		 * @param {*} id row.id
-		 * @param {*} cb 回调 
+		 * @param {*} cb 回调
 		 */
     handleRow (text, id, cb) {
       this.$confirm(text, '提示', {

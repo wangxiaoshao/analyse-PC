@@ -389,7 +389,7 @@ export default {
   [urlNames.selectMobileIsSame]: {
     type: 'get',
     url: '/api/jg_manage/user/selectMobileIsSame',
-    keepOriginResponse: true, 
+    keepOriginResponse: true,
     serve: 'organizationManagePC'
   }
 

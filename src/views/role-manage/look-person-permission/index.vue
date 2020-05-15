@@ -72,7 +72,7 @@ export default {
       loading: false,
       setFlag: false,
       roleId: this.$route.params.id,
-      searchName:'',
+      searchName: '',
       selectDialog: {
         selectMenmberTitle: '添加管理员', // 选人组件标题
         selectMenmberFlag: false, // 显示弹窗，
@@ -153,10 +153,10 @@ export default {
       }, () => {
       })
     },
-    findBySearchName(){
+    findBySearchName () {
       let data = {
         roleId: this.$route.params.id,
-        searchName:this.searchName,
+        searchName: this.searchName,
         page: 1,
         limit: this.page.limit
       }
@@ -173,17 +173,17 @@ export default {
     getDelete (row) {
       this.userId = row.uid
       this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.deleteRoleBindUser()
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });
-        });
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.deleteRoleBindUser()
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
     },
     // 删除角色绑定人员
     deleteRoleBindUser () {

@@ -52,10 +52,10 @@
       <el-table-column label="身份类型" align="center" prop="name"></el-table-column>
       <el-table-column label="创建时间" align="center"  prop="createTime"></el-table-column>
       <el-table-column label="所属单位" align="center" prop="nickName">
-        
+
       </el-table-column>
       <el-table-column label="职务" align="center">
-       
+
       </el-table-column>
       <el-table-column label="岗位" align="center">
       </el-table-column>
@@ -97,19 +97,19 @@
 <script>
 import RmidetityDialog from '@src/components/RmidetityDialog/index'
 export default {
-  name:'multipleIdetity',
-  components:{
+  name: 'multipleIdetity',
+  components: {
     RmidetityDialog
   },
-  data(){
+  data () {
     return {
-      idetitlyList:[{nodeType:1},{nodeType:2},{nodeType:3}],
-      identityDialogParams:{
-        identityTitle:'',
-        identityName:'',
-        removeFlag:false
+      idetitlyList: [{ nodeType: 1 }, { nodeType: 2 }, { nodeType: 3 }],
+      identityDialogParams: {
+        identityTitle: '',
+        identityName: '',
+        removeFlag: false
       },
-       ruleForm: {
+      ruleForm: {
         identityId: '',
         reason: ''
       },
@@ -117,19 +117,18 @@ export default {
         reason: [{ required: true, message: '请填写申请原因', trigger: 'blur' }]
       }
     }
-    
   },
-  methods:{
-     exportOrg (flag) {
-      this.$emit('exportOrg',flag)
+  methods: {
+    exportOrg (flag) {
+      this.$emit('exportOrg', flag)
     },
-    openIdetityDialog(flag){
-       this.identityDialogParams.identityName = flag === 2 ? '兼职' : '挂职'
+    openIdetityDialog (flag) {
+      this.identityDialogParams.identityName = flag === 2 ? '兼职' : '挂职'
       this.identityDialogParams.identityTitle = flag === 2 ? '填写解除兼职说明' : '填写解除挂职说明'
-      this.identityDialogParams.removeFlag=true
+      this.identityDialogParams.removeFlag = true
     },
-    submitRemoveDuty(ruleForm){
-          this.$refs[ruleForm].validate(valid => {
+    submitRemoveDuty (ruleForm) {
+      this.$refs[ruleForm].validate(valid => {
         if (valid) {
           api[urlNames['removeDuty']](this.ruleForm).then(
             res => {
@@ -143,8 +142,8 @@ export default {
         }
       })
     },
-    cancel(){
-       this.identityDialogParams.removeFlag=false
+    cancel () {
+      this.identityDialogParams.removeFlag = false
     }
   }
 }

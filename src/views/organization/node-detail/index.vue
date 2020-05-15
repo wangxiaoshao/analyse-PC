@@ -89,7 +89,7 @@ import areaList from '../components/AreaList/index'
 export default {
   name: 'index',
   components: { areaList },
-  mixins: [handleBreadcrumb, dicOption, hasRight,goBack],
+  mixins: [handleBreadcrumb, dicOption, hasRight, goBack],
   data () {
     return {
       iptMsgInfoStr: '添加或修改该字段需要提交审核',
@@ -118,7 +118,7 @@ export default {
         name: [{ required: true, message: '请输入节点名称', trigger: 'blur' }]
       },
       backId: '',
-      isAudit:false
+      isAudit: false
     }
   },
   mounted () {
@@ -142,7 +142,7 @@ export default {
     showIptMsg (fieldName) {
       if (this.app.option.options.nodeAuditFields.indexOf(fieldName) > -1) {
         this.iptMsgVisible[fieldName] = true
-        this.isAudit=true
+        this.isAudit = true
       }
     },
     getSystemType (el) {
@@ -173,7 +173,7 @@ export default {
       let data = {
         id: this.$route.params.id || this.$route.params.parentId
       }
-      let that=this
+      let that = this
       this.loading = true
       api[urlNames['findViewNodeById']](data).then(
         res => {
@@ -215,7 +215,7 @@ export default {
             }
           })
           this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm))
-          console.log('ruleForm:',this.ruleForm,this.oldFrom)
+          console.log('ruleForm:', this.ruleForm, this.oldFrom)
         },
         () => {
           this.$message.error(`没有内容`)
@@ -273,7 +273,7 @@ export default {
           )
         } else {
           this.$message.error('请填写必要字段')
-          this.isChange=false
+          this.isChange = false
         }
       })
     },
@@ -289,11 +289,11 @@ export default {
       breadcrumb.splice(-1, 1)
       this.SET_PAGE_BREADCRUMB(breadcrumb)
       // this.$router.push(currentPage.parent)
-      this.isChange= this.addWatch(this.ruleForm,this.oldFrom)
+      this.isChange = this.addWatch(this.ruleForm, this.oldFrom)
       if (this.isChange) {
-        this.goBackDilog(this.submitForm,'ruleForm')
+        this.goBackDilog(this.submitForm, 'ruleForm')
       } else {
-        this.isChange=false
+        this.isChange = false
         this.$router.go(-1)
       }
     }

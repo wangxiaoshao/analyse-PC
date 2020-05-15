@@ -49,7 +49,7 @@
           <div>{{countData.deptCount}}</div>
         </div>
       </span>
-      
+
       <span class="template-two light-orange">
         <div style="position: absolute" class="add-member">
           <!-- <div>//{{dateName}}</div> -->
@@ -221,7 +221,7 @@ export default {
       // }).then((res) => {
       //   this.countData = res.data
       // })
-       api[urlNames['getStatistiscManageDto']]().then((res) => {
+      api[urlNames['getStatistiscManageDto']]().then((res) => {
         this.countData = res.data
       })
 

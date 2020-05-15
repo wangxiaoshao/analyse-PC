@@ -160,10 +160,10 @@ export default {
       api[urlNames['getAuditList']](data).then((res) => {
         this.loading = false
         res.data.forEach(ele => {
-          if(ele.reason==''){
-            ele.reason='无'
+          if (ele.reason == '') {
+            ele.reason = '无'
           }
-        });
+        })
         this.tableData = res.data
         this.page.total = res.total
       }, () => {

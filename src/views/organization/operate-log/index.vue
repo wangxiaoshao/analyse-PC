@@ -134,7 +134,7 @@ export default {
       parent: {
         name: 'OrganizationContent',
         params: {
-          nodeId:  this.$route.query.nodeId
+          nodeId: this.$route.query.nodeId
         },
         query: {
           type: 'back'

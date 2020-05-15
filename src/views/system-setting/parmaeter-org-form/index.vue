@@ -337,7 +337,7 @@
 </template>
 
 <script>
-import {api,urlNames} from '@src/api'
+import { api, urlNames } from '@src/api'
 import insertTextIntoCursor from '@src/mixins/insertIntoCursor'
 import hasRight from '@src/mixins/has-right'
 
@@ -691,7 +691,7 @@ const userAuditList = [
 ]
 export default {
   name: 'parmaeterFrom',
-  props:['isSetOrgParams'],
+  props: ['isSetOrgParams'],
   mixins: [insertTextIntoCursor, hasRight],
   data () {
     return {

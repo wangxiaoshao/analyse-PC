@@ -40,7 +40,7 @@ import { mapState, mapMutations } from 'vuex'
 import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
 export default {
   name: 'notification',
-  mixins: [handleTable,handleBreadcrumb],
+  mixins: [handleTable, handleBreadcrumb],
   data () {
     return {
       tableData: []
@@ -48,13 +48,13 @@ export default {
   },
   created () {
     this.getGrid()
-    this.app.noticeShowBtn=true
-    this.SET_BREADCRUMB([{name:'通知中心'}])
+    this.app.noticeShowBtn = true
+    this.SET_BREADCRUMB([{ name: '通知中心' }])
   },
-  mounted(){
+  mounted () {
   },
-  computed:{
-    ...mapState(['app']),
+  computed: {
+    ...mapState(['app'])
   },
   methods: {
     ...mapMutations(['SET_BREADCRUMB']),

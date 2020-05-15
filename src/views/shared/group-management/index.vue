@@ -93,7 +93,7 @@ export default {
       total: 0,
       creatTitle: '',
       creategroupdialogVisible: false,
-      editId:'',
+      editId: '',
       currentPage: 1,
       pageSize: 10,
       groupType: '',
@@ -136,13 +136,13 @@ export default {
     openDialog () {
       // 创建初始化--防止修改数据覆盖
       this.creatTitle = '创建分组'
-      this.editId=''
+      this.editId = ''
       this.creategroupdialogVisible = true
     },
     // 编辑分组
     handleEditGroup (row) {
       this.creatTitle = '编辑分组'
-      this.editId=row.id
+      this.editId = row.id
       // this.findGroupDetail(row.id)
       this.creategroupdialogVisible = true
     },

@@ -272,16 +272,16 @@ export default {
         todayDate = new Date(todayDate.setDate(todayDate.getDate() - 1))
         this.logParam.dateType = val[0]
       }
-       this.date = this.$options.filters['date'](
+      this.date = this.$options.filters['date'](
         todayDate.getTime(),
         'yyyy-MM-dd'
       )
-      if(val[0]=='month'){
-        todayDate=new Date(todayDate.setMonth(todayDate.getMonth()))
-       this.date = this.$options.filters['date'](
-        todayDate.getTime(),
-        'yyyy-MM'
-      )
+      if (val[0] == 'month') {
+        todayDate = new Date(todayDate.setMonth(todayDate.getMonth()))
+        this.date = this.$options.filters['date'](
+          todayDate.getTime(),
+          'yyyy-MM'
+        )
       }
 
       if (this.date) {
@@ -310,7 +310,6 @@ export default {
         })
     },
     getGrid () {
-
       let data = {
         date: '',
         type: this.logParam.dateType === 'month' ? 4 : 0, // 后端需要传输的数据类型 月份type：4 || 天：0

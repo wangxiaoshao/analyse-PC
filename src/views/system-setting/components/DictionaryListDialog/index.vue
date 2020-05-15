@@ -200,25 +200,24 @@ export default {
         type: 'warning'
       }).then(() => {
         api[urlNames['deleteDictItem']](data).then(
-        res => {
-          if (res && res.status === 0) {
-            this.$message.success(`删除成功`)
-            this.getDicByTypeList()
-          } else {
-            this.$message.error(`删除失败`)
-          }
-        },
-        () => {
+          res => {
+            if (res && res.status === 0) {
+              this.$message.success(`删除成功`)
+              this.getDicByTypeList()
+            } else {
+              this.$message.error(`删除失败`)
+            }
+          },
+          () => {
 
-        }
-      )
+          }
+        )
       }).catch(() => {
         this.$message({
           type: 'info',
           message: '已取消删除'
         })
       })
-
     }
   }
 }

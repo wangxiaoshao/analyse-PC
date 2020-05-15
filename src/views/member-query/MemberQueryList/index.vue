@@ -26,7 +26,7 @@
     <el-row class="operator-row">
       <el-col :span="24">
         <el-row :gutter="10" type="flex">
-         
+
           <el-col :span="5">
             <el-input placeholder="所属内设机构" v-model="searchQuery.deptName" clearable>
             </el-input>

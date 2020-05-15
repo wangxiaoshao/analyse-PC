@@ -99,6 +99,6 @@ export default {
     type: 'get',
     url: '/api/jg_manage/role/checkAuthorization',
     keepOriginResponse: true, // 是否保留后端返回数据格式
-    serve: 'organizationManagePC',
+    serve: 'organizationManagePC'
   }
 }

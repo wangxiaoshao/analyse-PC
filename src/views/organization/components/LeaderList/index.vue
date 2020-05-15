@@ -256,7 +256,7 @@ export default {
       this.learderType = learderType
     },
     deleteRow (row) {
-      this.handleRow('确认要删除该领导吗',row.id,this.sublimeDelete)
+      this.handleRow('确认要删除该领导吗', row.id, this.sublimeDelete)
     },
     sublimeDelete (id) {
       api[urlNames['deleteLeader']]({
@@ -269,7 +269,6 @@ export default {
         this.$message.error(`保存失败，请重试`)
       })
     }
-
 
 
   },

@@ -243,7 +243,7 @@ export default {
         userCount: null,
         deptCount: null,
         organCount: null,
-        userChangedCount:null
+        userChangedCount: null
       },
       loginNumber: null,
       applyCount: {},
@@ -275,7 +275,7 @@ export default {
     this.getUserIdentityInfo()
     this.getAccountData()
     this.getNoticeList()
-     this.getLoginIndex()
+    this.getLoginIndex()
     // 获取接应用总数
     api[urlNames['findApplicationCount']]().then((res) => {
       this.applyCount = res.data
@@ -351,9 +351,9 @@ export default {
     },
     filterType (val) {
       let typeList = this.userTypeOptions.filter(item => item.value === val)
-      return typeList.length>0 ? typeList[0].text :'无'
+      return typeList.length > 0 ? typeList[0].text : '无'
     },
-  
+
 
     goPersonalPage () {
       this.$router.push('/pass-change')

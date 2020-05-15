@@ -125,7 +125,7 @@ export default {
     // 去查看
     doFindNotice (val) {
       api[urlNames['notificationRead']]({ id: val.id }).then(res => {
-         this.getList()
+        this.getList()
         if (res) {
           this.showNoticeDilog = false
           if (val.type === 1) {
@@ -135,7 +135,6 @@ export default {
           } else if (val.type === 3) {
             this.$router.push('/wait-approval')
           }
-
         }
       })
     },
@@ -145,7 +144,7 @@ export default {
       api[urlNames['findSessionUserList']]().then(res => {
         this.userList = res.data.userIdVos
         this.userList.forEach(item => {
-         item.typeName= item.typeName ? item.typeName:' '
+          item.typeName = item.typeName ? item.typeName : ' '
           if (item.userId === res.data.id) {
             this.defaultName =
               (item.orgName || '') + ' ' + (item.dutyName || '') + ' ' + (item.typeName || '')

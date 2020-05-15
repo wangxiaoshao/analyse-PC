@@ -43,11 +43,11 @@ import goBack from '@src/mixins/go-back.js'
 
 export default {
   name: 'CreateGroupDialog',
-  props: ['creategroupdialogVisible', 'creatTitle','editId'],
-  mixins: [hasRight,goBack],
+  props: ['creategroupdialogVisible', 'creatTitle', 'editId'],
+  mixins: [hasRight, goBack],
   data () {
     return {
-      oldGroupFrom:{},
+      oldGroupFrom: {},
       rules: {
         name: [
           { required: true, message: '请输入分组名称', trigger: 'blur' }
@@ -58,24 +58,24 @@ export default {
         name: '',
         description: '',
         removed: true
-      },
+      }
     }
   },
   mounted () {
-    
+
   },
-  created(){
+  created () {
   },
   methods: {
     // 提交表单
-    init(){
-      if(this.editId==''){
-          this.groupFrom.ownerType = 1 // 1用户、2内设机构、3单位
-          this.groupFrom.name = ''
-          this.groupFrom.description = ''
-          this.groupFrom.removed = true
-          this.oldGroupFrom = JSON.parse(JSON.stringify(this.groupFrom)) 
-      }else{
+    init () {
+      if (this.editId == '') {
+        this.groupFrom.ownerType = 1 // 1用户、2内设机构、3单位
+        this.groupFrom.name = ''
+        this.groupFrom.description = ''
+        this.groupFrom.removed = true
+        this.oldGroupFrom = JSON.parse(JSON.stringify(this.groupFrom))
+      } else {
         this.findGroupDetail()
       }
     },
@@ -110,26 +110,25 @@ export default {
       }
       if (this.groupFrom.id === undefined || this.groupFrom.id === '') {
         this.$refs[groupFrom].validate(valid => {
-          if(valid){
-             api[urlNames['createGroup']]({
-          ownerType: ownerType,
-          name: this.groupFrom.name,
-          description: this.groupFrom.description,
-          removed: this.groupFrom.removed ? 0 : 1
-        }).then((res) => {
-          if (res.status === 0) {
-              this.isChange=false
-              this.$emit('close')
-            this.$message.success('创建分组成功')
-            this.groupFrom.name = this.groupFrom.description = ''
-          }
-        })
-          }else{
+          if (valid) {
+            api[urlNames['createGroup']]({
+              ownerType: ownerType,
+              name: this.groupFrom.name,
+              description: this.groupFrom.description,
+              removed: this.groupFrom.removed ? 0 : 1
+            }).then((res) => {
+              if (res.status === 0) {
+                this.isChange = false
+                this.$emit('close')
+                this.$message.success('创建分组成功')
+                this.groupFrom.name = this.groupFrom.description = ''
+              }
+            })
+          } else {
             this.$message.error('请填写必填字段')
-            this.isChange=false
+            this.isChange = false
           }
         })
-       
       } else {
         api[urlNames['renameGroup']]({
           id: this.groupFrom.id,
@@ -140,7 +139,7 @@ export default {
         }).then((res) => {
           if (res.status === 0) {
             this.$emit('close')
-            this.isChange=false
+            this.isChange = false
             this.$message.success('修改分组成功')
             this.groupFrom.name = this.groupFrom.description = ''
           }
@@ -148,13 +147,13 @@ export default {
       }
     },
     colseDialog () {
-      this.isChange=this.addWatch(this.groupFrom,this.oldGroupFrom)
-       if(this.isChange){
-         this.goBackDilog(this.createGroup,'groupFrom',true)
-       }else{
-         this.$emit('close')
-         this.isChange=false
-       }
+      this.isChange = this.addWatch(this.groupFrom, this.oldGroupFrom)
+      if (this.isChange) {
+        this.goBackDilog(this.createGroup, 'groupFrom', true)
+      } else {
+        this.$emit('close')
+        this.isChange = false
+      }
     }
   }
 }

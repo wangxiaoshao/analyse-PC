@@ -23,18 +23,18 @@
 </template>
 <script>
 export default {
-  name:'rmidetityDialog',
-  props:['identityDialogParams','ruleForm'],
-  data(){
+  name: 'rmidetityDialog',
+  props: ['identityDialogParams', 'ruleForm'],
+  data () {
     return {
-       rules: {
+      rules: {
         reason: [{ required: true, message: '请填写申请原因', trigger: 'blur' }]
       }
     }
   },
-  methods:{
-    submitRemoveDuty(ruleForm){
-          this.$refs[ruleForm].validate(valid => {
+  methods: {
+    submitRemoveDuty (ruleForm) {
+      this.$refs[ruleForm].validate(valid => {
         if (valid) {
           api[urlNames['removeDuty']](this.ruleForm).then(
             res => {
@@ -49,7 +49,7 @@ export default {
         }
       })
     },
-    cancel(){
+    cancel () {
       this.$emit('cancel')
     }
   }

@@ -132,12 +132,12 @@ export default {
         this.$router.go(-1)
       }
     },
-    goHome(){
+    goHome () {
       // this.SET_PAGE_BREADCRUMB(breadcrumb)
-      this.app.noticeShowBtn=false
+      this.app.noticeShowBtn = false
       this.$router.go(-1)
     },
-     
+
     getDicList () {
       api[urlNames['dicList']]().then(res => {
         this.DIC_LIST(res.data)

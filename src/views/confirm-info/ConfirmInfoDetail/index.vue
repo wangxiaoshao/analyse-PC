@@ -56,7 +56,7 @@ import { mapState, mapMutations } from 'vuex'
 import dicOption from '@src/mixins/dic-options.js'
 export default {
   components: { SiteTable },
-  mixins: [handleTable, handleBreadcrumb,dicOption],
+  mixins: [handleTable, handleBreadcrumb, dicOption],
   data () {
     return {
       tableConfig,
@@ -117,10 +117,10 @@ export default {
         this.page.total = 0
       })
     },
-     filterType (val) {
+    filterType (val) {
       let typeList = this.userTypeOptions.filter(item => item.value == val)
-      return  typeList[0].text 
-    },
+      return typeList[0].text
+    }
   }
 }
 </script>

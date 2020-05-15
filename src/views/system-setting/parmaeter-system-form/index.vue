@@ -421,7 +421,7 @@ export default {
       },
       uploadHost: window.location.host,
       remindStartDate: 1,
-      allowSetOrg:false,//是否允许配置单位参数
+      allowSetOrg: false, // 是否允许配置单位参数
       remindEndDate: 31,
       remindStartDateList: [],
       remindEndDateList: [],
@@ -580,8 +580,8 @@ export default {
             this.remindStartDate = parseInt(JSON.parse(item.value)[0])
             this.remindEndDate = parseInt(JSON.parse(item.value)[1])
             this.messageRemind = parseInt(JSON.parse(item.value)[2])
-            this.allowSetOrg == item.lockedLevel==0?false:true
-            this.$emit('setOrgParamsFun',this.allowSetOrg)
+            this.allowSetOrg === item.lockedLevel !== 0
+            this.$emit('setOrgParamsFun', this.allowSetOrg)
             if (this.messageRemind === 0) {
               this.startDateDisabled = true
               this.endDateDisabled = true
@@ -621,7 +621,7 @@ export default {
       if (!isLt2M) {
         this.$message.error('上传头像图片大小不能超过 2MB!')
       }
-      return  isLt2M
+      return isLt2M
     },
     // 获取系统名称，系统图标
     getSystemNameLogoIon () {
@@ -700,7 +700,7 @@ export default {
         level: level,
         name: '',
         value: null,
-        lockedLevel:0
+        lockedLevel: 0
       }
       if (flag === 0) {
         list.name = 'systemUserSecuritySettings'
@@ -709,12 +709,12 @@ export default {
         list.name = 'systemAddressBookSet'
         list.value = this.systemAddressBookSet
       } else if (flag === 2) {
-        list.lockedLevel= this.allowSetOrg ? 1:0
+        list.lockedLevel = this.allowSetOrg ? 1 : 0
         list.name = 'systemMessageRemind'
         list.value = [
           this.remindStartDate,
           this.remindEndDate,
-          this.messageRemind,
+          this.messageRemind
         ]
       }
       this.setClientOptions(list)
@@ -733,7 +733,6 @@ export default {
           if (res.status === 0) {
             if (i === list.length - 1) {
               that.$message.success('设置成功')
-             
             } else {
               allSetClientOptions(list, i + 1)
             }
@@ -746,11 +745,10 @@ export default {
       } else {
         api[urlNames['setClientOptions']](list).then((res) => {
           if (res.status === 0) {
-             if(list.name = 'systemMessageRemind'){
-                this.$emit('setOrgParamsFun',this.allowSetOrg)
-              }
+            if (list.name === 'systemMessageRemind') {
+              this.$emit('setOrgParamsFun', this.allowSetOrg)
+            }
             this.$message.success('设置成功')
-            
           }
         })
       }

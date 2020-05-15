@@ -416,7 +416,7 @@ const userAuditList = [
   } */
 ]
 export default {
-  mixins:[handleBreadcrumb],
+  mixins: [handleBreadcrumb],
   data () {
     return {
       orgAuditList: orgAuditList, // 单位共享字段数据

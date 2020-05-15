@@ -31,12 +31,12 @@ export default {
     return {
       activeName: 'first',
       submitLevel: 1,
-      isSetOrgParams:false
+      isSetOrgParams: false
     }
   },
-  methods:{
-    setOrgParamsFun(setOrg){
-      this.isSetOrgParams=setOrg
+  methods: {
+    setOrgParamsFun (setOrg) {
+      this.isSetOrgParams = setOrg
     }
   }
 }

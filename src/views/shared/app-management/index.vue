@@ -119,12 +119,12 @@ export default {
     // 每一页请求条数
     handleSizeChange (val) {
       this.pageSize = val
-      this.getGrid (this.currentPage, val)
+      this.getGrid(this.currentPage, val)
     },
     // 分页
     handleCurrentPageChange (val) {
       this.currentPage = val
-      this.getGrid (val, this.pageSize)
+      this.getGrid(val, this.pageSize)
     }
   }
 }

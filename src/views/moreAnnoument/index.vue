@@ -55,14 +55,14 @@ export default {
   mounted () {
   // this.app.breadcrumb=[{name: '平台公告'}]
     this.page.total = 1
-    this.app.noticeShowBtn=true
-    this.SET_BREADCRUMB([{name:'平台公告'}])
+    this.app.noticeShowBtn = true
+    this.SET_BREADCRUMB([{ name: '平台公告' }])
   },
   computed: {
     ...mapState(['app'])
   },
   methods: {
-      ...mapMutations(['SET_BREADCRUMB']),
+    ...mapMutations(['SET_BREADCRUMB'])
   }
 
 }

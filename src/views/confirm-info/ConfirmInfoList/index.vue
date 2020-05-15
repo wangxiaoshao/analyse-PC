@@ -257,9 +257,8 @@ export default {
     handleClose () {
       this.dialogVisible = false
     },
-    goFindDetial(){
+    goFindDetial () {
       this.$router.push(`/organization/organization-content/${this.app.option.user.orgNodeId}`)
-   
     },
     handleConfirm () {
       let newDatefmt = this.$options.filters['date'](new Date().getTime(), 'yyyy-MM')

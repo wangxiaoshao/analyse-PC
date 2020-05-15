@@ -65,34 +65,33 @@
 import bindSystem from '../BindSystem/index'
 import goBack from '@src/mixins/go-back.js'
 export default {
-  mixins:[goBack],
+  mixins: [goBack],
   components: { bindSystem },
   props: ['disabledFlag', 'isShowEditFlag', 'accountList', 'userInfo', 'isDefaultFlag', 'userAccount', 'isExit'],
   data () {
-    
     var validateName = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('登录账号不能为空'))
       } else {
-       let reg=/^[a-z]([a-z\d\.\@\.\_\-]){5,19}$/
+        let reg = /^[a-z]([a-z\d\.\@\.\_\-]){5,19}$/
         reg.test(value) ? callback() : callback(new Error('以小写字母开头，不能使用中文或大写字母，特殊符号仅允许"@"、"."、"_"、"—"，长度为6-20个字符。'))
         callback()
       }
-    } 
+    }
     var validateNickName = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('登录别名不能为空'))
       } else {
-        let reg=/^[a-z]([a-z\d\.\@\.\_\-]){5,19}$/
+        let reg = /^[a-z]([a-z\d\.\@\.\_\-]){5,19}$/
         reg.test(value) ? callback() : callback(new Error('以小写字母开头，不能使用中文或大写字母，特殊符号仅允许"@"、"."、"_"、"—"。长度为6-20个字符。'))
         callback()
       }
     }
-     var validatePwd = (rule, value, callback) => {
+    var validatePwd = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('登录密码不能为空'))
       } else {
-        let reg=/^(?=.*\d)(?=.*[a-zA-Z])(?=.*[@._-])[\da-zA-Z~@._-]{8,}$/
+        let reg = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*[@._-])[\da-zA-Z~@._-]{8,}$/
         reg.test(value) ? callback() : callback(new Error('必须包含字母、数字和特殊字符（特殊符号仅允许“@”、“.”、“_”、“—”。）,长度至少为8个字符。'))
         callback()
       }
@@ -108,9 +107,9 @@ export default {
         defaultAccount: null,
         reason: ''
       },
-      isCreate:true,
-      isCommit:false,
-      updateSystem:false,
+      isCreate: true,
+      isCommit: false,
+      updateSystem: false,
       oldAddAccount: {},
       // addFlag: this.isDefaultFlag,
       addFlag: true,
@@ -120,17 +119,17 @@ export default {
       accountSend: [],
       accountSelect: '',
       doIndex: '',
-      rulesOption:{
-        name:[
+      rulesOption: {
+        name: [
           { required: true, message: '登录账号不能为空', trigger: 'blur' },
           { validator: validateName, trigger: 'blur' }
-          ],
-        nickName:[{ required: true, message: '登录别名不能为空', trigger: 'blur' },
-         { validator: validateNickName, trigger: 'blur' }
+        ],
+        nickName: [{ required: true, message: '登录别名不能为空', trigger: 'blur' },
+          { validator: validateNickName, trigger: 'blur' }
 
         ],
-        password:[{ required: true, message: '登录密码不能为空', trigger: 'blur' },
-         { validator: validatePwd, trigger: 'blur' }
+        password: [{ required: true, message: '登录密码不能为空', trigger: 'blur' },
+          { validator: validatePwd, trigger: 'blur' }
         ]
       }
     }
@@ -172,16 +171,16 @@ export default {
     },
     fromSublime (addAccount) {
       // 情况二：添加账号信息
-        this.addAccount.removed= this.addAccount.removed ? 0 : 1
-        let that = this
-        if (!this.isExit) {
-          that.accountSend.pop()
-           this.$nextTick(() => {                            
+      this.addAccount.removed = this.addAccount.removed ? 0 : 1
+      let that = this
+      if (!this.isExit) {
+        that.accountSend.pop()
+        this.$nextTick(() => {
           this.$refs['addAccount'].resetFields()
-          })
-        }
-        if(this.addAccount.name!==''||this.addAccount.nickName!==''||this.addAccount.password!==''){
-          this.$refs[addAccount].validate(valid => {
+        })
+      }
+      if (this.addAccount.name !== '' || this.addAccount.nickName !== '' || this.addAccount.password !== '') {
+        this.$refs[addAccount].validate(valid => {
           if (valid) {
             that.accountSend.push(that.addAccount)
             this.$emit('get-account', that.accountSend)
@@ -189,34 +188,33 @@ export default {
             this.$message.warning(`请根据提示输入必填字段`)
             return false
           }
-          })
-        }else{
-           if(this.isCommit){
-           this.$emit('get-account', this.accountSend)
-          }
+        })
+      } else {
+        if (this.isCommit) {
+          this.$emit('get-account', this.accountSend)
         }
-        if(this.addAccount.name==''&&this.addAccount.nickName==''&&this.addAccount.password==''){
-           this.$emit('get-account', this.accountSend)
-        }
-    
+      }
+      if (this.addAccount.name === '' && this.addAccount.nickName === '' && this.addAccount.password === '') {
+        this.$emit('get-account', this.accountSend)
+      }
     },
     lastStep () {
       this.$emit('get-back', true)
     },
     goBack () {
-       this.isChange= this.addWatch(this.addAccount,this.oldAddAccount)
-      if(this.isChange){
-        this.goBackDilog(this.fromSublime,'addAccount')
-      }else{
-        this.isChange=false
+      this.isChange = this.addWatch(this.addAccount, this.oldAddAccount)
+      if (this.isChange) {
+        this.goBackDilog(this.fromSublime, 'addAccount')
+      } else {
+        this.isChange = false
         this.$router.go(-1)
       }
     },
-    getAppId (val, index,change) {
+    getAppId (val, index, change) {
       this.addAccount.appId = val
-      this.doIndex=index
-      this.isCommit=change
-      if(index!==undefined&&index!==''&&this.isCommit){
+      this.doIndex = index
+      this.isCommit = change
+      if (index !== undefined && index !== '' && this.isCommit) {
         this.accountSend[index].appId = this.addAccount.appId
       }
     }
