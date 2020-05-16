@@ -4,14 +4,14 @@
     </div>
 </template>
 
-<script type="text/ecmascript-6">
-import ExamineDetails from '../../examine-details/components/ExamineDetails'
+<script>
+import ExamineDetails from "../../examine-details/components/ExamineDetails";
 
 export default {
-  components: {
-    ExamineDetails
-  }
-}
+    components: {
+        ExamineDetails,
+    },
+};
 </script>
 <style lang="less">
 @import "index";

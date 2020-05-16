@@ -59,111 +59,123 @@
     </div>
 </template>
 
-<script type="text/ecmascript-6">
-import EditDialog from '../components/EditDialog/index'
-import DictionaryList from '../components/DictionaryListDialog/index'
-import handleTable from '@src/mixins/handle-table'
-import tableConfig from './tableConfig'
-import { api, urlNames } from '@src/api'
-import SiteTable from '@src/components/SiteTable/index.vue'
-import { mapState, mapMutations } from 'vuex'
+<script>
+import EditDialog from "../components/EditDialog/index";
+import DictionaryList from "../components/DictionaryListDialog/index";
+import handleTable from "@src/mixins/handle-table";
+import tableConfig from "./tableConfig";
+import { api, urlNames } from "@src/api";
+import SiteTable from "@src/components/SiteTable/index.vue";
+import { mapState, mapMutations } from "vuex";
 
 export default {
-  components: { EditDialog, DictionaryList, SiteTable },
-  mixins: [handleTable],
-  data () {
-    return {
-      tableConfig,
-      dialogVisible: false,
-      dicDialogVisible: false,
-      type: '',
-      tableData: [],
-      tableHeight: null,
-      operateWidth: 100,
-      tableCheckbox: true,
-      operate: true,
-      dictionaryType: '',
-      title: '创建字典',
-      dicTitle: '职级字段列表'
-    }
-  },
-  computed: {
-    ...mapState(['application', 'examine'])
-  },
-  created () {
-    if (this.$route.query.type === 'back') {
-      this.page = Object.assign(this.page, this.application.page)
-      this.searchQuery = Object.assign(this.searchQuery, this.examine.searchQuery)
-      this.tableData = Object.assign(this.tableData, this.examine.tableData)
-    } else {
-      this.SET_APPLICATION_PAGE({})
-      this.SET_EXAMINE_SEARCH_QUERY({})
-      this.SET_EXAMINE_TABLEDATA({})
-      this.SET_EXAMINE_DETAIL({})
-      this.SET_EXAMINE_BACKPATH({})
-    }
-    this.getGrid()
-  },
-  methods: {
-    ...mapMutations([
-      'SET_APPLICATION_PAGE',
-      'SET_EXAMINE_TABLEDATA',
-      'SET_EXAMINE_DETAIL',
-      'SET_EXAMINE_SEARCH_QUERY',
-      'SET_EXAMINE_BACKPATH']),
-    addDictionary () {
-      this.dialogVisible = true
+    components: { EditDialog, DictionaryList, SiteTable },
+    mixins: [handleTable],
+    data() {
+        return {
+            tableConfig,
+            dialogVisible: false,
+            dicDialogVisible: false,
+            type: "",
+            tableData: [],
+            tableHeight: null,
+            operateWidth: 100,
+            tableCheckbox: true,
+            operate: true,
+            dictionaryType: "",
+            title: "创建字典",
+            dicTitle: "职级字段列表",
+        };
     },
-    scrollStyle () {
-      return {
-        height: this.$store.state.app.windowHeight - 30 + 'px'
-      }
+    computed: {
+        ...mapState(["application", "examine"]),
     },
-    search () {
-      this.$nextTick(() => {
-        this.page.current = 1
-        this.getGrid()
-      })
-    },
-    getGrid () {
-      let data = {
-        page: this.page.current,
-        limit: this.page.limit
-      }
-      let keys = Object.keys(this.searchQuery)
-      let len = keys.length
-      for (let i = 0; i < len; i++) {
-        let key = keys[i]
-        let value = this.searchQuery[key]
-        if (typeof value !== 'number') {
-          if (value) { data[key] = value }
+    created() {
+        if (this.$route.query.type === "back") {
+            this.page = Object.assign(this.page, this.application.page);
+            this.searchQuery = Object.assign(
+                this.searchQuery,
+                this.examine.searchQuery
+            );
+            this.tableData = Object.assign(
+                this.tableData,
+                this.examine.tableData
+            );
         } else {
-          data[key] = value
+            this.SET_APPLICATION_PAGE({});
+            this.SET_EXAMINE_SEARCH_QUERY({});
+            this.SET_EXAMINE_TABLEDATA({});
+            this.SET_EXAMINE_DETAIL({});
+            this.SET_EXAMINE_BACKPATH({});
         }
-      }
-      api[urlNames['getDictionaryList']](data).then((res) => {
-        this.loading = false
-        this.tableData = res.data
-        this.page.total = res.total
-      }, () => {
-        this.loading = false
-        this.page.total = 0
-      })
+        this.getGrid();
     },
-    openDialog (row) {
-      if (row && row.id) {
-        this.dictionaryType = row.id
+    methods: {
+        ...mapMutations([
+            "SET_APPLICATION_PAGE",
+            "SET_EXAMINE_TABLEDATA",
+            "SET_EXAMINE_DETAIL",
+            "SET_EXAMINE_SEARCH_QUERY",
+            "SET_EXAMINE_BACKPATH",
+        ]),
+        addDictionary() {
+            this.dialogVisible = true;
+        },
+        scrollStyle() {
+            return {
+                height: this.$store.state.app.windowHeight - 30 + "px",
+            };
+        },
+        search() {
+            this.$nextTick(() => {
+                this.page.current = 1;
+                this.getGrid();
+            });
+        },
+        getGrid() {
+            let data = {
+                page: this.page.current,
+                limit: this.page.limit,
+            };
+            let keys = Object.keys(this.searchQuery);
+            let len = keys.length;
+            for (let i = 0; i < len; i++) {
+                let key = keys[i];
+                let value = this.searchQuery[key];
+                if (typeof value !== "number") {
+                    if (value) {
+                        data[key] = value;
+                    }
+                } else {
+                    data[key] = value;
+                }
+            }
+            api[urlNames["getDictionaryList"]](data).then(
+                (res) => {
+                    this.loading = false;
+                    this.tableData = res.data;
+                    this.page.total = res.total;
+                },
+                () => {
+                    this.loading = false;
+                    this.page.total = 0;
+                }
+            );
+        },
+        openDialog(row) {
+            if (row && row.id) {
+                this.dictionaryType = row.id;
 
-        this.dicTitle = row.subject + '字段列表'
+                this.dicTitle = row.subject + "字段列表";
 
-        this.dicDialogVisible = true
-      }
+                this.dicDialogVisible = true;
+            }
+        },
+        closeAddDialog(dialogName) {
+            this[dialogName] = false;
+        },
     },
-    closeAddDialog (dialogName) {
-      this[dialogName] = false
-    }
-  }
-}
+};
 </script>
 <style lang="less">
 @import "index";

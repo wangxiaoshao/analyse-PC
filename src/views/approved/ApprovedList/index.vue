@@ -65,143 +65,155 @@
     </div>
 </template>
 
-<script type="text/ecmascript-6">
-import handleTable from '@src/mixins/handle-table'
-import SiteTable from '@src/components/SiteTable/index.vue'
-import tableConfig from './tableConfig'
-import { api, urlNames } from '@src/api'
-import { mapState, mapMutations } from 'vuex'
+<script>
+import handleTable from "@src/mixins/handle-table";
+import SiteTable from "@src/components/SiteTable/index.vue";
+import tableConfig from "./tableConfig";
+import { api, urlNames } from "@src/api";
+import { mapState, mapMutations } from "vuex";
 
 export default {
-  components: { SiteTable },
-  mixins: [handleTable],
-  data () {
-    return {
-      tableConfig,
-      loading: true,
-      searchQuery: {
-        id: '',
-        status: '',
-        keyword: ''
-      },
-      list: [],
-      areaList: [
-        {
-          'id': 1,
-          'code': '1',
-          'name': '单位'
-        },
-        {
-          'id': 2,
-          'code': '2',
-          'name': '内设机构'
-        },
-        {
-          'id': 3,
-          'code': '3',
-          'name': '人员'
-        }
-      ],
-      tableData: [],
-      tableHeight: null,
-      operateWidth: 100,
-      tableCheckbox: true,
-      operate: true
-    }
-  },
-  computed: {
-    ...mapState(['application', 'examine'])
-  },
-  created () {
-    if (this.$route.query.type === 'back') {
-      this.page = Object.assign(this.page, this.application.page)
-      this.searchQuery = Object.assign(this.searchQuery, this.examine.searchQuery)
-      this.tableData = Object.assign(this.tableData, this.examine.tableData)
-    } else {
-      this.SET_APPLICATION_PAGE({})
-      this.SET_EXAMINE_SEARCH_QUERY({})
-      this.SET_EXAMINE_TABLEDATA({})
-      this.SET_EXAMINE_DETAIL({})
-      this.SET_EXAMINE_BACKPATH({})
-    }
-    this.initQuery()
-    this.getGrid()
-  },
-  methods: {
-    ...mapMutations([
-      'SET_APPLICATION_PAGE',
-      'SET_EXAMINE_TABLEDATA',
-      'SET_EXAMINE_DETAIL',
-      'SET_EXAMINE_SEARCH_QUERY',
-      'SET_EXAMINE_BACKPATH']),
-    initQuery () {
-      let keys = Object.assign({}, this.$route.query)
-      let len = keys.length
-      for (let i = 0; i < len; i++) {
-        let key = keys[i]
-        let value = this.$route.query[key]
-        if (this.page[key] !== undefined) {
-          this.page[key] = value
-        } else if (this.searchQuery[key] !== undefined) {
-          this.searchQuery[key] = value
-        }
-      }
+    components: { SiteTable },
+    mixins: [handleTable],
+    data() {
+        return {
+            tableConfig,
+            loading: true,
+            searchQuery: {
+                id: "",
+                status: "",
+                keyword: "",
+            },
+            list: [],
+            areaList: [
+                {
+                    id: 1,
+                    code: "1",
+                    name: "单位",
+                },
+                {
+                    id: 2,
+                    code: "2",
+                    name: "内设机构",
+                },
+                {
+                    id: 3,
+                    code: "3",
+                    name: "人员",
+                },
+            ],
+            tableData: [],
+            tableHeight: null,
+            operateWidth: 100,
+            tableCheckbox: true,
+            operate: true,
+        };
     },
-    search () {
-      this.$nextTick(() => {
-        this.page.current = 1
-        this.getGrid()
-      })
+    computed: {
+        ...mapState(["application", "examine"]),
     },
-    getGrid () {
-      this.loading = true
-      let data = {
-        type: 1,
-        page: this.page.current,
-        limit: this.page.limit
-      }
-      let keys = Object.keys(this.searchQuery)
-      let len = keys.length
-      for (let i = 0; i < len; i++) {
-        let key = keys[i]
-        let value = this.searchQuery[key]
-        if (typeof value !== 'number') {
-          if (value) { data[key] = value }
+    created() {
+        if (this.$route.query.type === "back") {
+            this.page = Object.assign(this.page, this.application.page);
+            this.searchQuery = Object.assign(
+                this.searchQuery,
+                this.examine.searchQuery
+            );
+            this.tableData = Object.assign(
+                this.tableData,
+                this.examine.tableData
+            );
         } else {
-          data[key] = value
+            this.SET_APPLICATION_PAGE({});
+            this.SET_EXAMINE_SEARCH_QUERY({});
+            this.SET_EXAMINE_TABLEDATA({});
+            this.SET_EXAMINE_DETAIL({});
+            this.SET_EXAMINE_BACKPATH({});
         }
-      }
-      api[urlNames['getAuditList']](data).then((res) => {
-        this.loading = false
-        res.data.forEach(ele => {
-          if(ele.reason ===''){
-            ele.reason='无'
-          }
-        });
-        this.tableData = res.data
-        this.page.total = res.total
-      }, () => {
-        this.loading = false
-        this.tableData = []
-        this.page.total = 0
-      })
+        this.initQuery();
+        this.getGrid();
     },
-    goConfig (row) {
-      this.SET_APPLICATION_PAGE(this.page)
-      this.SET_EXAMINE_SEARCH_QUERY(this.searchQuery)
-      this.SET_EXAMINE_TABLEDATA(this.tableData)
-      this.SET_EXAMINE_DETAIL(row)
-      this.SET_EXAMINE_BACKPATH(this.$route.name)
-      this.$router.push({
-        name: 'ApprovedDetail',
-        params: {
-          id: row.id,
-          type: row.type
-        }
-      })
-    }
-  }
-}
+    methods: {
+        ...mapMutations([
+            "SET_APPLICATION_PAGE",
+            "SET_EXAMINE_TABLEDATA",
+            "SET_EXAMINE_DETAIL",
+            "SET_EXAMINE_SEARCH_QUERY",
+            "SET_EXAMINE_BACKPATH",
+        ]),
+        initQuery() {
+            let keys = Object.assign({}, this.$route.query);
+            let len = keys.length;
+            for (let i = 0; i < len; i++) {
+                let key = keys[i];
+                let value = this.$route.query[key];
+                if (this.page[key] !== undefined) {
+                    this.page[key] = value;
+                } else if (this.searchQuery[key] !== undefined) {
+                    this.searchQuery[key] = value;
+                }
+            }
+        },
+        search() {
+            this.$nextTick(() => {
+                this.page.current = 1;
+                this.getGrid();
+            });
+        },
+        getGrid() {
+            this.loading = true;
+            let data = {
+                type: 1,
+                page: this.page.current,
+                limit: this.page.limit,
+            };
+            let keys = Object.keys(this.searchQuery);
+            let len = keys.length;
+            for (let i = 0; i < len; i++) {
+                let key = keys[i];
+                let value = this.searchQuery[key];
+                if (typeof value !== "number") {
+                    if (value) {
+                        data[key] = value;
+                    }
+                } else {
+                    data[key] = value;
+                }
+            }
+            api[urlNames["getAuditList"]](data).then(
+                (res) => {
+                    this.loading = false;
+                    res.data.forEach((ele) => {
+                        if (ele.reason === "") {
+                            ele.reason = "无";
+                        }
+                    });
+                    this.tableData = res.data;
+                    this.page.total = res.total;
+                },
+                () => {
+                    this.loading = false;
+                    this.tableData = [];
+                    this.page.total = 0;
+                }
+            );
+        },
+        goConfig(row) {
+            this.SET_APPLICATION_PAGE(this.page);
+            this.SET_EXAMINE_SEARCH_QUERY(this.searchQuery);
+            this.SET_EXAMINE_TABLEDATA(this.tableData);
+            this.SET_EXAMINE_DETAIL(row);
+            this.SET_EXAMINE_BACKPATH(this.$route.name);
+            this.$router.push({
+                name: "ApprovedDetail",
+                params: {
+                    id: row.id,
+                    type: row.type,
+                },
+            });
+        },
+    },
+};
 </script>
 <style lang="less">
 @import "index";

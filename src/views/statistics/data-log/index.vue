@@ -28,54 +28,54 @@
     </div>
 </template>
 
-<script type="text/ecmascript-6">
-import handleTable from '@src/mixins/handle-table'
-import HasRight from '@src/mixins/has-right'
+<script>
+import handleTable from "@src/mixins/handle-table";
+import HasRight from "@src/mixins/has-right";
 /* import { api, urlNames } from '@src/api' */
-import { mapState, mapMutations } from 'vuex'
-import PersonalLog from '@src/components/PersonalLog/index'
-import PushLog from '@src/views/shared/push-log'
+import { mapState, mapMutations } from "vuex";
+import PersonalLog from "@src/components/PersonalLog/index";
+import PushLog from "@src/views/shared/push-log";
 export default {
-  mixins: [handleTable, HasRight],
-  components: { PersonalLog, PushLog },
-  data () {
-    return {
-      searchQuery: {
-        areaId: '',
-        status: '',
-        keyword: ''
-      },
-      logAry: [1, 2, 3],
-      showFindBtn: true,
-      systemLogingAccess: false,
-      systemLogingSystemAccess: false,
-      systemLogingPushAccess: false,
-      systemData: [],
-      weekstart: '',
-      activeName: 'first',
-      reverse: true,
-      newsList: [],
-      currentDateVal: '',
-      openPicker: false,
-      selectValue: '',
-      date: '',
-      inputValue: '',
-      dateType: '',
-      format: '',
-      pickerOptions: {
-        disabledDate (time) {
-          return time.getTime() > Date.now() - 8.64e6
-        },
-        shortcuts: null
-      },
-      value: ''
-    }
-  },
-  computed: {
-    ...mapState(['application'])
-  },
-  created () {
-    /* let datefilters = this.$options.filters['date'](
+    mixins: [handleTable, HasRight],
+    components: { PersonalLog, PushLog },
+    data() {
+        return {
+            searchQuery: {
+                areaId: "",
+                status: "",
+                keyword: "",
+            },
+            logAry: [1, 2, 3],
+            showFindBtn: true,
+            systemLogingAccess: false,
+            systemLogingSystemAccess: false,
+            systemLogingPushAccess: false,
+            systemData: [],
+            weekstart: "",
+            activeName: "first",
+            reverse: true,
+            newsList: [],
+            currentDateVal: "",
+            openPicker: false,
+            selectValue: "",
+            date: "",
+            inputValue: "",
+            dateType: "",
+            format: "",
+            pickerOptions: {
+                disabledDate(time) {
+                    return time.getTime() > Date.now() - 8.64e6;
+                },
+                shortcuts: null,
+            },
+            value: "",
+        };
+    },
+    computed: {
+        ...mapState(["application"]),
+    },
+    created() {
+        /* let datefilters = this.$options.filters['date'](
       new Date().getTime(),
       'yyyy-MM-dd'
     )
@@ -92,11 +92,14 @@ export default {
       this.SET_APPLICATION_SEARCH_QUERY({})
     }
     this.getGrid(this.date) */
-  },
-  methods: {
-    ...mapMutations(['SET_APPLICATION_PAGE', 'SET_APPLICATION_SEARCH_QUERY']),
-    opensystemInfo () {}
-    /* selectChange (val) {
+    },
+    methods: {
+        ...mapMutations([
+            "SET_APPLICATION_PAGE",
+            "SET_APPLICATION_SEARCH_QUERY",
+        ]),
+        opensystemInfo() {},
+        /* selectChange (val) {
       this.date = ''
       this.currentDateVal = ''
       this.openPicker = false
@@ -144,15 +147,15 @@ export default {
         }
       )
     }, */
-    /* handleClick (tab, event) {
+        /* handleClick (tab, event) {
       if(this.activeName=='first'){
         this.showFindBtn=true
       }else{
         this.showFindBtn=false
       }
     } */
-  }
-}
+    },
+};
 </script>
 <style lang="less">
 @import "./index";

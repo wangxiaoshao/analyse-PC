@@ -9,17 +9,13 @@
     </div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
 export default {
-  props: {},
-  data () {
-    return {
-
-    }
-  },
-  created () {
-
-  },
-  methods: {}
-}
+    props: {},
+    data() {
+        return {};
+    },
+    created() {},
+    methods: {},
+};
 </script>

@@ -38,50 +38,50 @@
         </el-row>
     </div>
 </template>
-<script type="text/ecmascript-6">
+<script>
 /**
  * Created by lxe on 2019-09-18.
  */
 export default {
-  components: {},
-  name: 'SiteBreadcrumb',
-  props: {
-    user: {
-      type: Object,
-      default () {
-        return {}
-      }
+    components: {},
+    name: "SiteBreadcrumb",
+    props: {
+        user: {
+            type: Object,
+            default() {
+                return {};
+            },
+        },
+        breadcrumb: {
+            type: Array,
+            default() {
+                return [];
+            },
+        },
+        noticeShowBtn: {
+            type: Boolean,
+            default() {
+                return false;
+            },
+        },
+        pageBreadcrumb: {
+            type: Array,
+            default() {
+                return [];
+            },
+        },
     },
-    breadcrumb: {
-      type: Array,
-      default () {
-        return []
-      }
+    data() {
+        return {};
     },
-    noticeShowBtn: {
-      type: Boolean,
-      default () {
-        return false
-      }
+    created() {},
+    methods: {
+        goBack() {
+            this.$emit("go-back");
+        },
+        goHome() {
+            this.$emit("goHome");
+        },
     },
-    pageBreadcrumb: {
-      type: Array,
-      default () {
-        return []
-      }
-    }
-  },
-  data () {
-    return {}
-  },
-  created () {},
-  methods: {
-    goBack () {
-      this.$emit('go-back')
-    },
-    goHome () {
-      this.$emit('goHome')
-    }
-  }
-}
+};
 </script>

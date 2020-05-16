@@ -190,44 +190,44 @@
     </div>
 </template>
 
-<script type="text/ecmascript-6">
-import Sortable from 'sortablejs'
-import handleTable from '@src/mixins/handle-table'
-import { api, urlNames } from '@src/api'
-import SelectMembers from '@src/components/SelectMembers/index'
-import HasRight from '@src/mixins/has-right'
+<script>
+import Sortable from "sortablejs";
+import handleTable from "@src/mixins/handle-table";
+import { api, urlNames } from "@src/api";
+import SelectMembers from "@src/components/SelectMembers/index";
+import HasRight from "@src/mixins/has-right";
 
 export default {
-  mixins: [handleTable, HasRight],
-  props: ['nodeInfo', 'contentId', 'nodeData', 'nodeType'],
-  components: { SelectMembers },
-  data () {
-    return {
-      dialogVisible: false,
-      deleteId: null,
-      sortFlag: false,
-      list: [],
-      userVoList: [],
-      personList: [],
-      selectDialog: {
-        nodeInfo: this.nodeData,
-        selectMenmberTitle: '选择领导', // 选人组件标题
-        selectMenmberFlag: false, // 显示弹窗，
-        isAllData: true, // 是否需完整数据-默认为不需要（false，只包含用户id）
-        notOnlyPerson: true, // 选人，默认为false（只选人）
-        isSingleSelect: false, // 是否为单选框  false为多选（默认）-人员单选(与notOnlyPerson一起使用，notOnlyPerson为true是有效
-        isSingleOrgSelect: false, // 是否为单选框  false为多选（默认），true为单选(与isOnlyOrg一起使用，isOnlyOrg为true时内设机构/单位单选)
-        isOnlyOrg: false //  是否选内设机构/单位 true为选内设机构
-      },
-      learderType: 1,
-      mainLeaderList: [],
-      otherLeaderList: []
-    }
-  },
-  created () {
-    this.getGrid()
-  },
-  /* computed: {
+    mixins: [handleTable, HasRight],
+    props: ["nodeInfo", "contentId", "nodeData", "nodeType"],
+    components: { SelectMembers },
+    data() {
+        return {
+            dialogVisible: false,
+            deleteId: null,
+            sortFlag: false,
+            list: [],
+            userVoList: [],
+            personList: [],
+            selectDialog: {
+                nodeInfo: this.nodeData,
+                selectMenmberTitle: "选择领导", // 选人组件标题
+                selectMenmberFlag: false, // 显示弹窗，
+                isAllData: true, // 是否需完整数据-默认为不需要（false，只包含用户id）
+                notOnlyPerson: true, // 选人，默认为false（只选人）
+                isSingleSelect: false, // 是否为单选框  false为多选（默认）-人员单选(与notOnlyPerson一起使用，notOnlyPerson为true是有效
+                isSingleOrgSelect: false, // 是否为单选框  false为多选（默认），true为单选(与isOnlyOrg一起使用，isOnlyOrg为true时内设机构/单位单选)
+                isOnlyOrg: false, //  是否选内设机构/单位 true为选内设机构
+            },
+            learderType: 1,
+            mainLeaderList: [],
+            otherLeaderList: [],
+        };
+    },
+    created() {
+        this.getGrid();
+    },
+    /* computed: {
     mainLeaderList () {
       return this.list.find(column => +column.leaderType === '1')
     },
@@ -235,145 +235,155 @@ export default {
       return this.list.filter(column => +column.leaderType === '2')
     }
   }, */
-  methods: {
-    getGrid () {
-      let data = {
-        // nodeType: this.nodeInfo.nodeType,
-        nodeType: this.nodeType,
-        nodeId: this.contentId
-      }
-      console.log('data1：', data)
-      this.mainLeaderList = []
-      this.otherLeaderList = []
-      this.loading = true
-      api[urlNames['findLeaderList']](data).then((res) => {
-        this.loading = false
-        this.list = res.data
-        if (this.list.length === 0) {
-          this.mainLeaderList = []
-          this.otherLeaderList = []
-        } else {
-          this.list.forEach((item) => {
-            if (item.leaderType === '1' || item.leaderType === 1) {
-              this.mainLeaderList.push(item)
+    methods: {
+        getGrid() {
+            let data = {
+                // nodeType: this.nodeInfo.nodeType,
+                nodeType: this.nodeType,
+                nodeId: this.contentId,
+            };
+            console.log("data1：", data);
+            this.mainLeaderList = [];
+            this.otherLeaderList = [];
+            this.loading = true;
+            api[urlNames["findLeaderList"]](data).then(
+                (res) => {
+                    this.loading = false;
+                    this.list = res.data;
+                    if (this.list.length === 0) {
+                        this.mainLeaderList = [];
+                        this.otherLeaderList = [];
+                    } else {
+                        this.list.forEach((item) => {
+                            if (
+                                item.leaderType === "1" ||
+                                item.leaderType === 1
+                            ) {
+                                this.mainLeaderList.push(item);
+                            }
+                            if (
+                                item.leaderType === "2" ||
+                                item.leaderType === 2
+                            ) {
+                                this.otherLeaderList.push(item);
+                            }
+                        });
+                    }
+                },
+                () => {
+                    this.loading = false;
+                    this.list = [];
+                }
+            );
+        },
+        // 选人弹窗组件返回的人员信息
+        dialogReturnMembersInfo(data) {
+            if (data.length === 0) {
+                this.$message.info("您没有选择领导");
+                return false;
             }
-            if (item.leaderType === '2' || item.leaderType === 2) {
-              this.otherLeaderList.push(item)
+            // 主要领导1，其他领导2
+            if (this.learderType === 1) {
+                let obj = {
+                    uid: JSON.parse(JSON.stringify(data))[0].uid,
+                    leaderType: this.learderType,
+                };
+                this.personList.push(obj);
+            } else {
+                JSON.parse(JSON.stringify(data)).forEach((item) => {
+                    let obj = {
+                        uid: item.uid,
+                        leaderType: this.learderType,
+                    };
+                    this.personList.push(obj);
+                });
             }
-          })
-        }
-      }, () => {
-        this.loading = false
-        this.list = []
-      })
-    },
-    // 选人弹窗组件返回的人员信息
-    dialogReturnMembersInfo (data) {
-      if (data.length === 0) {
-        this.$message.info('您没有选择领导')
-        return false
-      }
-      // 主要领导1，其他领导2
-      if (this.learderType === 1) {
-        let obj = {
-          uid: JSON.parse(JSON.stringify(data))[0].uid,
-          leaderType: this.learderType
-        }
-        this.personList.push(obj)
-      } else {
-        JSON.parse(JSON.stringify(data)).forEach((item) => {
-          let obj = {
-            uid: item.uid,
-            leaderType: this.learderType
-          }
-          this.personList.push(obj)
-        })
-      }
-      // 保存
-      if (JSON.parse(JSON.stringify(data)) !== []) {
-        console.log('nodeInfo:', this.nodeInfo.nodeType)
-        api[urlNames['createLeader']]({
-          nodeId: this.contentId,
-          nodeType: this.nodeType,
-          leaders: this.personList
-        }).then((res) => {
-          this.$message.success(`保存成功`)
-          this.getGrid()
-        }, (/* error */) => {
-          this.$message.error(`保存失败，请重试`)
-        })
-      }
-      this.personList = []
-    },
-    // 关闭选人弹窗
-    closeselectMenmber () {
-      this.selectDialog.selectMenmberFlag = false
-    },
-    // 打开选人组件
-    addMainLeader (single, all, learderType) {
-      this.selectDialog.selectMenmberFlag = true
-      this.selectDialog.isSingleSelect = single
-      this.selectDialog.notOnlyPerson = true
-      this.selectDialog.isAllData = all
-      this.learderType = learderType
-    },
-    deleteRow (row) {
-      this.handleRow('确认要删除该领导吗',row.id,this.sublimeDelete)
-    },
-    sublimeDelete (id) {
-      api[urlNames['deleteLeader']]({
-        id: id
-      }).then((res) => {
-        this.dialogVisible = false
-        this.$message.success(`已删除`)
-        this.getGrid()
-      }, (/* error */) => {
-        this.$message.error(`保存失败，请重试`)
-      })
-    }
-
-
-
-  },
-  watch: {
-    sortFlag: {
-      handler (val) {
-        const tbody = document.querySelector('#leaderList tbody')
-        const items = this.list
-        if (val) {
-          Sortable.create(tbody, {
-            handle: '.sortBtnDo',
-            animation: 150,
-            onUpdate: function (evt) {
-              console.log('onUpdate.foo:', [evt])
-              const newIndex = evt.newIndex
-              const oldIndex = evt.oldIndex
-              const $li = tbody.children[newIndex]
-              const $oldLi = tbody.children[oldIndex]
-              if (newIndex > oldIndex) {
-                tbody.insertBefore($li, $oldLi)
-              } else {
-                tbody.insertBefore($li, $oldLi.nextSibling)
-              }
-              const item = items.splice(oldIndex, 1)
-              items.splice(newIndex, 0, item[0])
-              this.list = items // 排序后列表
+            // 保存
+            if (JSON.parse(JSON.stringify(data)) !== []) {
+                console.log("nodeInfo:", this.nodeInfo.nodeType);
+                api[urlNames["createLeader"]]({
+                    nodeId: this.contentId,
+                    nodeType: this.nodeType,
+                    leaders: this.personList,
+                }).then(
+                    (res) => {
+                        this.$message.success(`保存成功`);
+                        this.getGrid();
+                    },
+                    (/* error */) => {
+                        this.$message.error(`保存失败，请重试`);
+                    }
+                );
             }
-          })
-        } else {
-          this.sortListFlag = false
-          // this.getGrid()
-        }
-      },
-      deep: true
+            this.personList = [];
+        },
+        // 关闭选人弹窗
+        closeselectMenmber() {
+            this.selectDialog.selectMenmberFlag = false;
+        },
+        // 打开选人组件
+        addMainLeader(single, all, learderType) {
+            this.selectDialog.selectMenmberFlag = true;
+            this.selectDialog.isSingleSelect = single;
+            this.selectDialog.notOnlyPerson = true;
+            this.selectDialog.isAllData = all;
+            this.learderType = learderType;
+        },
+        deleteRow(row) {
+            this.handleRow("确认要删除该领导吗", row.id, this.sublimeDelete);
+        },
+        sublimeDelete(id) {
+            api[urlNames["deleteLeader"]]({
+                id: id,
+            }).then(
+                (res) => {
+                    this.dialogVisible = false;
+                    this.$message.success(`已删除`);
+                    this.getGrid();
+                },
+                (/* error */) => {
+                    this.$message.error(`保存失败，请重试`);
+                }
+            );
+        },
     },
-    mainLeaderList: {
-      handler (val) {
-
-      }
-    }
-  }
-}
+    watch: {
+        sortFlag: {
+            handler(val) {
+                const tbody = document.querySelector("#leaderList tbody");
+                const items = this.list;
+                if (val) {
+                    Sortable.create(tbody, {
+                        handle: ".sortBtnDo",
+                        animation: 150,
+                        onUpdate: function (evt) {
+                            console.log("onUpdate.foo:", [evt]);
+                            const newIndex = evt.newIndex;
+                            const oldIndex = evt.oldIndex;
+                            const $li = tbody.children[newIndex];
+                            const $oldLi = tbody.children[oldIndex];
+                            if (newIndex > oldIndex) {
+                                tbody.insertBefore($li, $oldLi);
+                            } else {
+                                tbody.insertBefore($li, $oldLi.nextSibling);
+                            }
+                            const item = items.splice(oldIndex, 1);
+                            items.splice(newIndex, 0, item[0]);
+                            this.list = items; // 排序后列表
+                        },
+                    });
+                } else {
+                    this.sortListFlag = false;
+                    // this.getGrid()
+                }
+            },
+            deep: true,
+        },
+        mainLeaderList: {
+            handler(val) {},
+        },
+    },
+};
 </script>
 
 <style lang="less">

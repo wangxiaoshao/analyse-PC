@@ -43,58 +43,61 @@
     </div>
 </template>
 
-<script type="text/ecmascript-6">
-import { mapState } from 'vuex'
-import { api, urlNames } from '@src/api'
+<script>
+import { mapState } from "vuex";
+import { api, urlNames } from "@src/api";
 
 export default {
-  props: ['visible', 'close', 'dialogTitle', 'auditResult'],
-  components: {},
-  data () {
-    return {
-      rules: {
-        desc: [
-          { required: true, message: `请输入${this.dialogTitle}`, trigger: 'blur' }
-        ]
-      },
-      textareaVal: '',
-      form: {
-        desc: ''
-      }
-    }
-  },
-  mounted () {
-  },
-  computed: {
-    ...mapState(['app'])
-  },
-  methods: {
-    closeDialog (form) {
-      this.$emit('close')
-      this.$refs[form].resetFields()
+    props: ["visible", "close", "dialogTitle", "auditResult"],
+    components: {},
+    data() {
+        return {
+            rules: {
+                desc: [
+                    {
+                        required: true,
+                        message: `请输入${this.dialogTitle}`,
+                        trigger: "blur",
+                    },
+                ],
+            },
+            textareaVal: "",
+            form: {
+                desc: "",
+            },
+        };
     },
-    passExamine (form) {
-      this.$refs[form].validate((valid) => {
-        if (valid) {
-          this.$emit('close')
-          api[urlNames['saveAudit']]({
-            message: this.form.desc,
-            auditResult: this.auditResult,
-            id: this.$route.params.id
-          }).then((res) => {
-            if (res && res.message === 'success') {
-              this.$message({
-                message: '审批成功',
-                type: 'success'
-              })
-            }
-            this.$router.push({
-              path: '/wait-approval'
-            })
-          })
-        }
-      })
-    }
-  }
-}
+    mounted() {},
+    computed: {
+        ...mapState(["app"]),
+    },
+    methods: {
+        closeDialog(form) {
+            this.$emit("close");
+            this.$refs[form].resetFields();
+        },
+        passExamine(form) {
+            this.$refs[form].validate((valid) => {
+                if (valid) {
+                    this.$emit("close");
+                    api[urlNames["saveAudit"]]({
+                        message: this.form.desc,
+                        auditResult: this.auditResult,
+                        id: this.$route.params.id,
+                    }).then((res) => {
+                        if (res && res.message === "success") {
+                            this.$message({
+                                message: "审批成功",
+                                type: "success",
+                            });
+                        }
+                        this.$router.push({
+                            path: "/wait-approval",
+                        });
+                    });
+                }
+            });
+        },
+    },
+};
 </script>

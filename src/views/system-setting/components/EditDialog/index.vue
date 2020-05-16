@@ -38,62 +38,62 @@
     </div>
 </template>
 
-<script type="text/ecmascript-6">
-import { mapState } from 'vuex'
-import { api, urlNames } from '@src/api'
+<script>
+import { mapState } from "vuex";
+import { api, urlNames } from "@src/api";
 
 export default {
-  props: ['visible', 'close', 'dialogTitle'],
-  components: {},
-  data () {
-    return {
-      form: {
-        name: '',
-        state: false,
-        desc: ''
-      },
-      formLabelWidth: '120px',
-      stateValue: ''
-    }
-  },
-  mounted () {
-  },
-  computed: {
-    ...mapState(['app'])
-  },
-  methods: {
-    passExamine () {
-      this.dialogVisible = true
+    props: ["visible", "close", "dialogTitle"],
+    components: {},
+    data() {
+        return {
+            form: {
+                name: "",
+                state: false,
+                desc: "",
+            },
+            formLabelWidth: "120px",
+            stateValue: "",
+        };
     },
-    closeDialog () {
-      this.$emit('close', 'dialogVisible')
+    mounted() {},
+    computed: {
+        ...mapState(["app"]),
     },
-    submitForm (form) {
-      this.$refs[form].validate((valid) => {
-        if (valid) {
-          let data = new FormData()
-          let keys = Object.keys(this.editForm)
-          let len = keys.length
-          for (let i = 0; i < len; i++) {
-            let key = keys[i]
-            let value = this.editForm[key]
-            if (value) {
-              data.append(key, value)
-            }
-          }
-          api[urlNames['sendEditRightsInfo']](data).then((res) => {
-            this.$message({
-              message: this.current ? '修改成功' : '添加成功',
-              type: 'success'
-            })
-            this.$emit('refreshList')
-            this.closeDialog()
-          }, (/* error */) => {
-
-          })
-        }
-      })
-    }
-  }
-}
+    methods: {
+        passExamine() {
+            this.dialogVisible = true;
+        },
+        closeDialog() {
+            this.$emit("close", "dialogVisible");
+        },
+        submitForm(form) {
+            this.$refs[form].validate((valid) => {
+                if (valid) {
+                    let data = new FormData();
+                    let keys = Object.keys(this.editForm);
+                    let len = keys.length;
+                    for (let i = 0; i < len; i++) {
+                        let key = keys[i];
+                        let value = this.editForm[key];
+                        if (value) {
+                            data.append(key, value);
+                        }
+                    }
+                    api[urlNames["sendEditRightsInfo"]](data).then(
+                        (res) => {
+                            this.$message({
+                                message: this.current ? "修改成功" : "添加成功",
+                                type: "success",
+                            });
+                            this.$emit("refreshList");
+                            this.closeDialog();
+                        },
+                        (/* error */) => {}
+                    );
+                }
+            });
+        },
+    },
+};
 </script>

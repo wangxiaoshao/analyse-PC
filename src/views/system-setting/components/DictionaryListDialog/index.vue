@@ -110,156 +110,166 @@
     </div>
 </template>
 
-<script type="text/ecmascript-6">
-import { mapState } from 'vuex'
-import hasRight from '@src/mixins/has-right'
-import { api, urlNames } from '@src/api'
+<script>
+import { mapState } from "vuex";
+import hasRight from "@src/mixins/has-right";
+import { api, urlNames } from "@src/api";
 
 export default {
-  props: ['visible', 'close', 'dialogTitle', 'dictionaryType'],
-  components: {},
-  mixins: [hasRight],
-  data () {
-    return {
-      dynamicTags: ['正厅级', '副厅级'],
-      inputVisible: false,
-      inputValue: '',
-      stateValue: '',
-      form: {
-        text: '',
-        value: ''
-      },
-      isShow: false,
-      formLabelWidth: '120px',
-      tableData: [],
-      foundDicList: [],
-      newAddList: [],
-      rules: {
-        text: { type: 'string', required: true, message: '字段名称未填写' },
-        value: [
-          { required: true, message: '字段值未填写' },
-          { validator: (rule, value, callback) => {
-            let ok = true
-            let msg = ''
+    props: ["visible", "close", "dialogTitle", "dictionaryType"],
+    components: {},
+    mixins: [hasRight],
+    data() {
+        return {
+            dynamicTags: ["正厅级", "副厅级"],
+            inputVisible: false,
+            inputValue: "",
+            stateValue: "",
+            form: {
+                text: "",
+                value: "",
+            },
+            isShow: false,
+            formLabelWidth: "120px",
+            tableData: [],
+            foundDicList: [],
+            newAddList: [],
+            rules: {
+                text: {
+                    type: "string",
+                    required: true,
+                    message: "字段名称未填写",
+                },
+                value: [
+                    { required: true, message: "字段值未填写" },
+                    {
+                        validator: (rule, value, callback) => {
+                            let ok = true;
+                            let msg = "";
 
-            this.tableData.forEach((item) => {
-              if (parseInt(value) === item.value) {
-                ok = false
-                msg = '重复的值'
-              }
-            })
+                            this.tableData.forEach((item) => {
+                                if (parseInt(value) === item.value) {
+                                    ok = false;
+                                    msg = "重复的值";
+                                }
+                            });
 
-            if (!ok) {
-              return callback(new Error(msg))
-            } else {
-              return callback()
+                            if (!ok) {
+                                return callback(new Error(msg));
+                            } else {
+                                return callback();
+                            }
+                        },
+                        trigger: "blur",
+                    },
+                ],
+            },
+        };
+    },
+    mounted() {},
+    watch: {
+        visible: function (currentVisible) {
+            if (currentVisible) {
+                this.foundDicList = [];
+                this.getDicByTypeList();
             }
-          },
-          trigger: 'blur' }
-        ]
-      }
-    }
-  },
-  mounted () {
-  },
-  watch: {
-    visible: function (currentVisible) {
-      if (currentVisible) {
-        this.foundDicList = []
-        this.getDicByTypeList()
-      }
-    }
-  },
-  computed: {
-    ...mapState(['app']),
-    scrollStyle () {
-      return {
-        maxHeight: this.$store.state.app.windowHeight / 2 + 'px'
-      }
-    }
-  },
-  methods: {
-    getDicByTypeList () {
-      let type = {
-        type: this.dictionaryType
-      }
-      api[urlNames['getDicListByType']](type).then((res) => {
-        this.tableData = res.data
-      }, () => {
-        this.tableData = []
-      })
-    },
-    addDic (form) {
-      this.$refs[form].validate((valid) => {
-        if (valid) {
-          this.form.value = parseInt(this.form.value)
-          let addItem = JSON.parse(JSON.stringify(this.form))
-          this.foundDicList.push(addItem)
-          this.tableData.push(addItem)
-          this.$refs[form].resetFields()
-        }
-      })
-    },
-    addAllDic () {
-      let paraems = {
-        type: this.dictionaryType,
-        data: [...this.foundDicList]
-      }
-      api[urlNames['addDictionary']](paraems).then((res) => {
-        if (res && res.status === 0) {
-          this.$emit('refreshList')
-          this.closeDialog('form')
-          this.$message.success(`保存成功`)
-        }
-      }, () => {
-        this.foundDicList = []
-        this.$message.error(`字典值不可重复`)
-        this.closeDialog('form')
-      })
-    },
-    handleClose (tag) {
-      this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1)
-    },
-    passExamine () {
-      this.dialogVisible = true
-    },
-    closeDialog (form) {
-      this.$refs[form].resetFields()
-      this.$emit('close', 'dicDialogVisible')
-    },
-    deleteDic (index, rowData) {
-      let data = {
-        dictItemIds: [rowData.id],
-        dictId: this.dictionaryType
-      }
-      this.$confirm('此操作将会永久删除该数据, 确认要删除吗?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        api[urlNames['deleteDictItem']](data).then(
-        res => {
-          if (res && res.status === 0) {
-            this.$message.success(`删除成功`)
-            this.getDicByTypeList()
-          } else {
-            this.$message.error(`删除失败`)
-          }
         },
-        () => {
-
-        }
-      )
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        })
-      })
-
-    }
-  }
-}
+    },
+    computed: {
+        ...mapState(["app"]),
+        scrollStyle() {
+            return {
+                maxHeight: this.$store.state.app.windowHeight / 2 + "px",
+            };
+        },
+    },
+    methods: {
+        getDicByTypeList() {
+            let type = {
+                type: this.dictionaryType,
+            };
+            api[urlNames["getDicListByType"]](type).then(
+                (res) => {
+                    this.tableData = res.data;
+                },
+                () => {
+                    this.tableData = [];
+                }
+            );
+        },
+        addDic(form) {
+            this.$refs[form].validate((valid) => {
+                if (valid) {
+                    this.form.value = parseInt(this.form.value);
+                    let addItem = JSON.parse(JSON.stringify(this.form));
+                    this.foundDicList.push(addItem);
+                    this.tableData.push(addItem);
+                    this.$refs[form].resetFields();
+                }
+            });
+        },
+        addAllDic() {
+            let paraems = {
+                type: this.dictionaryType,
+                data: [...this.foundDicList],
+            };
+            api[urlNames["addDictionary"]](paraems).then(
+                (res) => {
+                    if (res && res.status === 0) {
+                        this.$emit("refreshList");
+                        this.closeDialog("form");
+                        this.$message.success(`保存成功`);
+                    }
+                },
+                () => {
+                    this.foundDicList = [];
+                    this.$message.error(`字典值不可重复`);
+                    this.closeDialog("form");
+                }
+            );
+        },
+        handleClose(tag) {
+            this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
+        },
+        passExamine() {
+            this.dialogVisible = true;
+        },
+        closeDialog(form) {
+            this.$refs[form].resetFields();
+            this.$emit("close", "dicDialogVisible");
+        },
+        deleteDic(index, rowData) {
+            let data = {
+                dictItemIds: [rowData.id],
+                dictId: this.dictionaryType,
+            };
+            this.$confirm("此操作将会永久删除该数据, 确认要删除吗?", "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning",
+            })
+                .then(() => {
+                    api[urlNames["deleteDictItem"]](data).then(
+                        (res) => {
+                            if (res && res.status === 0) {
+                                this.$message.success(`删除成功`);
+                                this.getDicByTypeList();
+                            } else {
+                                this.$message.error(`删除失败`);
+                            }
+                        },
+                        () => {}
+                    );
+                })
+                .catch(() => {
+                    this.$message({
+                        type: "info",
+                        message: "已取消删除",
+                    });
+                });
+        },
+    },
+};
 </script>
 <style lang="less">
 @import "index";
