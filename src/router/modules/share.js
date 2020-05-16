@@ -1,19 +1,41 @@
-const Shared = () => import("@src/views/shared/index.vue");
+const Shared = () =>
+    import(/* webpackChunkName: "Shared" */ "@src/views/shared/index.vue");
 const ViewManagement = () =>
-    import("@src/views/shared/view-management/index.vue");
-const CreateView = () => import("@src/views/shared/create-view/index.vue");
+    import(
+        /* webpackChunkName: "Shared" */ "@src/views/shared/view-management/index.vue"
+    );
+const CreateView = () =>
+    import(
+        /* webpackChunkName: "Shared" */ "@src/views/shared/create-view/index.vue"
+    );
 const GroupManagement = () =>
-    import("@src/views/shared/group-management/index.vue");
-const GroupDetail = () => import("@src/views/shared/group-detail/index.vue");
+    import(
+        /* webpackChunkName: "Shared" */ "@src/views/shared/group-management/index.vue"
+    );
+const GroupDetail = () =>
+    import(
+        /* webpackChunkName: "Shared" */ "@src/views/shared/group-detail/index.vue"
+    );
 const AppManagement = () =>
-    import("@src/views/shared/app-management/index.vue");
+    import(
+        /* webpackChunkName: "Shared" */ "@src/views/shared/app-management/index.vue"
+    );
 const CreateAppManagement = () =>
-    import("@src/views/shared/create-app-management/index.vue");
+    import(
+        /* webpackChunkName: "Shared" */ "@src/views/shared/create-app-management/index.vue"
+    );
 const TagsManagement = () =>
-    import("@src/views/shared/tags-management/index.vue");
+    import(
+        /* webpackChunkName: "Shared" */ "@src/views/shared/tags-management/index.vue"
+    );
 const FieldsManagement = () =>
-    import("@src/views/shared/fields-management/index.vue");
-const PushLog = () => import("@src/views/shared/push-log/index.vue");
+    import(
+        /* webpackChunkName: "Shared" */ "@src/views/shared/fields-management/index.vue"
+    );
+const PushLog = () =>
+    import(
+        /* webpackChunkName: "Shared" */ "@src/views/shared/push-log/index.vue"
+    );
 
 export default [
     // 共享管理

@@ -9,10 +9,16 @@ import addresslist from "./modules/addresslist";
 import homePage from "./modules/homePage";
 import certification from "./modules/certification";
 
-const noRight = () => import("@src/views/no-right/index.vue");
+const noRight = () =>
+    import(
+        /* webpackChunkName: "SystemSetting" */ "@src/views/no-right/index.vue"
+    );
 
 // 通知中心
-const Notification = () => import("@src/views/notification/index.vue");
+const Notification = () =>
+    import(
+        /* webpackChunkName: "SystemSetting" */ "@src/views/notification/index.vue"
+    );
 
 /* 路由 */
 export default [

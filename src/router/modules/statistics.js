@@ -1,25 +1,51 @@
 const DataStatistics = () =>
-    import("@src/views/statistics/data-statistics/index.vue");
-const DataLog = () => import("@src/views/statistics/data-log/index.vue");
+    import(
+        /* webpackChunkName: "DataStatistics" */ "@src/views/statistics/data-statistics/index.vue"
+    );
+const DataLog = () =>
+    import(
+        /* webpackChunkName: "DataStatistics" */ "@src/views/statistics/data-log/index.vue"
+    );
 
-const UnitQuery = () => import("@src/views/unit-query/index.vue");
+const UnitQuery = () =>
+    import(
+        /* webpackChunkName: "UnitQuery" */ "@src/views/unit-query/index.vue"
+    );
 const UnitQueryList = () =>
-    import("@src/views/unit-query/UnitQueryList/index.vue");
+    import(
+        /* webpackChunkName: "UnitQuery" */ "@src/views/unit-query/UnitQueryList/index.vue"
+    );
 
-const DepartmentQuery = () => import("@src/views/department-query/index.vue");
+const DepartmentQuery = () =>
+    import(
+        /* webpackChunkName: "DepartmentQuery" */ "@src/views/department-query/index.vue"
+    );
 const DepartmentQueryList = () =>
-    import("@src/views/department-query/DepartmentQueryList/index.vue");
+    import(
+        /* webpackChunkName: "DepartmentQuery" */ "@src/views/department-query/DepartmentQueryList/index.vue"
+    );
 
-const MemberQuery = () => import("@src/views/member-query/index.vue");
+const MemberQuery = () =>
+    import(
+        /* webpackChunkName: "MemberQuery" */ "@src/views/member-query/index.vue"
+    );
 const MemberQueryList = () =>
-    import("@src/views/member-query/MemberQueryList/index.vue");
+    import(
+        /* webpackChunkName: "MemberQuery" */ "@src/views/member-query/MemberQueryList/index.vue"
+    );
 
 const QueryUnitDetail = () =>
-    import("@src/views/organization/unit-detail/index.vue");
+    import(
+        /* webpackChunkName: "Organization" */ "@src/views/organization/unit-detail/index.vue"
+    );
 const QueryPersonDetail = () =>
-    import("@src/views/organization/person-detail/index.vue");
+    import(
+        /* webpackChunkName: "Organization" */ "@src/views/organization/person-detail/index.vue"
+    );
 const QueryDepartmentDetail = () =>
-    import("@src/views/organization/department-detail/index.vue");
+    import(
+        /* webpackChunkName: "Organization" */ "@src/views/organization/department-detail/index.vue"
+    );
 
 export default [
     {

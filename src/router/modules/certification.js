@@ -1,4 +1,7 @@
-const Certification = () => import("@src/views/certification/index.vue");
+const Certification = () =>
+    import(
+        /* webpackChunkName: "Certification" */ "@src/views/certification/index.vue"
+    );
 export default [
     {
         path: "/certification",

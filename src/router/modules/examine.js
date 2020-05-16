@@ -1,43 +1,88 @@
-const WaitApproval = () => import("@src/views/wait-approval/index.vue");
+const WaitApproval = () =>
+    import(
+        /* webpackChunkName: "WaitApproval" */ "@src/views/wait-approval/index.vue"
+    );
 const WaitApprovalList = () =>
-    import("@src/views/wait-approval/WaitApprovalList/index.vue");
+    import(
+        /* webpackChunkName: "WaitApproval" */ "@src/views/wait-approval/WaitApprovalList/index.vue"
+    );
 const WaitApprovalDetail = () =>
-    import("@src/views/wait-approval/WaitApprovalDetail/index.vue");
-const Approved = () => import("@src/views/approved/index.vue");
-const ApprovedList = () => import("@src/views/approved/ApprovedList/index.vue");
+    import(
+        /* webpackChunkName: "WaitApproval" */ "@src/views/wait-approval/WaitApprovalDetail/index.vue"
+    );
+const Approved = () =>
+    import(/* webpackChunkName: "Approved" */ "@src/views/approved/index.vue");
+const ApprovedList = () =>
+    import(
+        /* webpackChunkName: "Approved" */ "@src/views/approved/ApprovedList/index.vue"
+    );
 const ApprovedDetail = () =>
-    import("@src/views/approved/ApprovedDetail/index.vue");
-const MyApplication = () => import("@src/views/my-application/index.vue");
+    import(
+        /* webpackChunkName: "Approved" */ "@src/views/approved/ApprovedDetail/index.vue"
+    );
+const MyApplication = () =>
+    import(
+        /* webpackChunkName: "MyApplication" */ "@src/views/my-application/index.vue"
+    );
 const MyApplicationList = () =>
-    import("@src/views/my-application/MyApplicationList/index.vue");
+    import(
+        /* webpackChunkName: "MyApplication" */ "@src/views/my-application/MyApplicationList/index.vue"
+    );
 const MyApplicationDetail = () =>
-    import("@src/views/my-application/MyApplicationDetail/index.vue");
-const ConfirmInfo = () => import("@src/views/confirm-info/index.vue");
+    import(
+        /* webpackChunkName: "MyApplication" */ "@src/views/my-application/MyApplicationDetail/index.vue"
+    );
+const ConfirmInfo = () =>
+    import(
+        /* webpackChunkName: "ConfirmInfo" */ "@src/views/confirm-info/index.vue"
+    );
 const ConfirmInfoList = () =>
-    import("@src/views/confirm-info/ConfirmInfoList/index.vue");
+    import(
+        /* webpackChunkName: "ConfirmInfo" */ "@src/views/confirm-info/ConfirmInfoList/index.vue"
+    );
 const ConfirmInfoDetail = () =>
-    import("@src/views/confirm-info/ConfirmInfoDetail/index.vue");
+    import(
+        /* webpackChunkName: "ConfirmInfo" */ "@src/views/confirm-info/ConfirmInfoDetail/index.vue"
+    );
 
 const WaitApprovalUnitDetail = () =>
-    import("@src/views/organization/unit-detail/index.vue");
+    import(
+        /* webpackChunkName: "Organization" */ "@src/views/organization/unit-detail/index.vue"
+    );
 const WaitApprovalPersonDetail = () =>
-    import("@src/views/organization/person-detail/index.vue");
+    import(
+        /* webpackChunkName: "Organization" */ "@src/views/organization/person-detail/index.vue"
+    );
 const WaitApprovalDepartmentDetail = () =>
-    import("@src/views/organization/department-detail/index.vue");
+    import(
+        /* webpackChunkName: "Organization" */ "@src/views/organization/department-detail/index.vue"
+    );
 
 const ApprovedUnitDetail = () =>
-    import("@src/views/organization/unit-detail/index.vue");
+    import(
+        /* webpackChunkName: "Organization" */ "@src/views/organization/unit-detail/index.vue"
+    );
 const ApprovedPersonDetail = () =>
-    import("@src/views/organization/person-detail/index.vue");
+    import(
+        /* webpackChunkName: "Organization" */ "@src/views/organization/person-detail/index.vue"
+    );
 const ApprovedDepartmentDetail = () =>
-    import("@src/views/organization/department-detail/index.vue");
+    import(
+        /* webpackChunkName: "Organization" */ "@src/views/organization/department-detail/index.vue"
+    );
 
 const MyApplicationUnitDetail = () =>
-    import("@src/views/organization/unit-detail/index.vue");
+    import(
+        /* webpackChunkName: "Organization" */ "@src/views/organization/unit-detail/index.vue"
+    );
 const MyApplicationPersonDetail = () =>
-    import("@src/views/organization/person-detail/index.vue");
+    import(
+        /* webpackChunkName: "Organization" */ "@src/views/organization/person-detail/index.vue"
+    );
 const MyApplicationDepartmentDetail = () =>
-    import("@src/views/organization/department-detail/index.vue");
+    import(
+        /* webpackChunkName: "Organization" */ "@src/views/organization/department-detail/index.vue"
+    );
 
 export default [
     {

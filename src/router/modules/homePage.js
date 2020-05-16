@@ -1,7 +1,13 @@
-const HomePage = () => import("@src/views/homePage/index.vue");
-const MoreAnnoument = () => import("@src/views/moreAnnoument/index.vue");
+const HomePage = () =>
+    import(/* webpackChunkName: "HomePage" */ "@src/views/homePage/index.vue");
+const MoreAnnoument = () =>
+    import(
+        /* webpackChunkName: "MoreAnnoument" */ "@src/views/moreAnnoument/index.vue"
+    );
 const AnnounceDetail = () =>
-    import("@src/views/moreAnnoument/announceDetail/index.vue");
+    import(
+        /* webpackChunkName: "MoreAnnoument" */ "@src/views/moreAnnoument/announceDetail/index.vue"
+    );
 export default [
     {
         path: "/homePage",

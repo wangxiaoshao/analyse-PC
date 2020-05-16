@@ -1,24 +1,42 @@
 // 角色权限
-const RoleManage = () => import("@src/views/role-manage/index.vue");
-const RoleList = () => import("@src/views/role-manage/role-list/index.vue");
+const RoleManage = () =>
+    import(
+        /* webpackChunkName: "RoleManage" */ "@src/views/role-manage/index.vue"
+    );
+const RoleList = () =>
+    import(
+        /* webpackChunkName: "RoleManage" */ "@src/views/role-manage/role-list/index.vue"
+    );
 const lookPersonPermission = () =>
-    import("@src/views/role-manage/look-person-permission/index.vue");
+    import(
+        /* webpackChunkName: "RoleManage" */ "@src/views/role-manage/look-person-permission/index.vue"
+    );
 // 字典管理
 const DictionaryManage = () =>
-    import("@src/views/system-setting/dictionary-manage/index.vue");
+    import(
+        /* webpackChunkName: "SystemSetting" */ "@src/views/system-setting/dictionary-manage/index.vue"
+    );
 // 系统设置
 // const SystemSetting = () => import("@src/views/system-setting/index.vue");
 // 参数配置
 const ParameterSetting = () =>
-    import("@src/views/system-setting/parameter-setting/index.vue");
+    import(
+        /* webpackChunkName: "SystemSetting" */ "@src/views/system-setting/parameter-setting/index.vue"
+    );
 const PassChange = () =>
-    import("@src/views/system-setting/pass-change/index.vue");
+    import(
+        /* webpackChunkName: "SystemSetting" */ "@src/views/system-setting/pass-change/index.vue"
+    );
 // 菜单权限配置
 const AuthoritySetting = () =>
-    import("@src/views/system-setting/authority-setting/index.vue");
+    import(
+        /* webpackChunkName: "SystemSetting" */ "@src/views/system-setting/authority-setting/index.vue"
+    );
 // 帮助中心
 const WordCenter = () =>
-    import("@src/views/system-setting/word-center/index.vue");
+    import(
+        /* webpackChunkName: "SystemSetting" */ "@src/views/system-setting/word-center/index.vue"
+    );
 export default [
     // 权限管理
     {

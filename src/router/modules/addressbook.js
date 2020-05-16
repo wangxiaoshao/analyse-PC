@@ -1,10 +1,17 @@
 // 通讯录
-const AddressBook = () => import("@src/views/address-book/index.vue");
+const AddressBook = () =>
+    import(
+        /* webpackChunkName: "AddressBook" */ "@src/views/address-book/index.vue"
+    );
 // const UnitAddressBook = () => import("@src/views/address-book/unit-address-book/index.vue");
 const Department = () =>
-    import("@src/views/address-book/components/Department/index.vue");
+    import(
+        /* webpackChunkName: "AddressBook" */ "@src/views/address-book/components/Department/index.vue"
+    );
 const MemberList = () =>
-    import("@src/views/address-book/member-list/index.vue");
+    import(
+        /* webpackChunkName: "AddressBook" */ "@src/views/address-book/member-list/index.vue"
+    );
 
 export default [
     /** 通讯录 */

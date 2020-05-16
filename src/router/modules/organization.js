@@ -1,17 +1,32 @@
 // TODO 所有的url路径，单词与单词之间，用断线链接，不采用驼峰式
-const Organization = () => import("@src/views/organization/index.vue");
+const Organization = () =>
+    import(
+        /* webpackChunkName: "Organization" */ "@src/views/organization/index.vue"
+    );
 const OrganizationContent = () =>
-    import("@src/views/organization/organization-content/index.vue");
+    import(
+        /* webpackChunkName: "Organization" */ "@src/views/organization/organization-content/index.vue"
+    );
 const NodeDetail = () =>
-    import("@src/views/organization/node-detail/index.vue");
+    import(
+        /* webpackChunkName: "Organization" */ "@src/views/organization/node-detail/index.vue"
+    );
 const UnitDetail = () =>
-    import("@src/views/organization/unit-detail/index.vue");
+    import(
+        /* webpackChunkName: "Organization" */ "@src/views/organization/unit-detail/index.vue"
+    );
 const DepartmentDetail = () =>
-    import("@src/views/organization/department-detail/index.vue");
+    import(
+        /* webpackChunkName: "Organization" */ "@src/views/organization/department-detail/index.vue"
+    );
 const PersonDetail = () =>
-    import("@src/views/organization/person-detail/index.vue");
+    import(
+        /* webpackChunkName: "Organization" */ "@src/views/organization/person-detail/index.vue"
+    );
 const OperateLog = () =>
-    import("@src/views/organization/operate-log/index.vue");
+    import(
+        /* webpackChunkName: "Organization" */ "@src/views/organization/operate-log/index.vue"
+    );
 
 /* 路由 */
 export default [
