@@ -349,12 +349,15 @@ export default {
     createNodeDraft () {
       let nodeList = []
       let that = this
-      this.nodeDraft.forEach(function (item) {
-        that.checkedKeys.push(item.id)
-        that.viewNodeTree.push(item)
+      let oldViewNodeTree = []
+      that.viewNodeTree.forEach((item) => {
+        oldViewNodeTree.push(item)
       })
-      this.viewNodeTree.forEach((item, index) => {
-        that.checkedKeys.push(item.id)
+      this.nodeDraft.forEach(function (item) {
+        oldViewNodeTree.push(item)
+      })
+      oldViewNodeTree.forEach((item, index) => {
+        // that.checkedKeys.push(item.id)
         let tmpObj = JSON.parse(JSON.stringify(item))
         tmpObj.sort = index
         if (this.isDraftVivew) {
@@ -375,7 +378,7 @@ export default {
           if (res.data !== undefined && res.data === '-1') {
             this.$message.info('该节点已存在')
           } else {
-            this.$message.success('保存节点成功')
+            this.$message.success('视图保存至草稿成功')
           }
           this.findNodeDraftList('-1')
         }
@@ -436,9 +439,11 @@ export default {
         viewId: this.returnViewId
       }).then(res => {
         this.viewNodeTree = res.data
+        let ary = []
         res.data.forEach(function (item) {
-          that.checkedKeys.push(item.id)
+          ary.push(item.id)
         })
+        that.checkedKeys = ary
       })
     },
     // 视图草稿追加子节点
@@ -581,6 +586,10 @@ export default {
           }).then(res => {
             if (res.status === 0) {
               this.findNodeDraftList('-1')
+              if (this.checkedKeys.indexOf(node.id) > -1) {
+                this.checkedKeys.splice(this.checkedKeys.indexOf(node.id), 1)
+              }
+              this.setCheckedKeys()
               this.$message.success('删除成功')
             }
           })
@@ -685,7 +694,7 @@ export default {
       // if (this.viewNodeTree[this.viewNodeTree.length - 1].id === node.id) {
       //   return false
       // }
-      console.log(JSON.parse(JSON.stringify(node)), checked, 'node')
+      // console.log(JSON.parse(JSON.stringify(node)), checked, 'node')
       // if (checked) {
       //   this.viewNodeDraft.id = node.id
       //   node.parentId = this.viewNodeDraft.parentId = '-1'

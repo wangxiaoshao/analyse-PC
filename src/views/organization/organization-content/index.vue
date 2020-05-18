@@ -21,7 +21,7 @@
         <el-tabs v-model="activeName">
           <div class="content-title">{{activeName}}</div>
           <el-tab-pane label="下级设置" name="下级设置">
-            <el-popover placement="bottom" width="100">
+            <el-popover placement="bottom" width="100"  v-model="visiblePopover">
               <div class="popover" style="text-align: center; margin: 0">
                 <div
                   style="border-bottom: 1px solid rgba(0, 0, 0, 0.1);padding: 5px 0;cursor: pointer"
@@ -43,6 +43,7 @@
                 class="add-btn"
                 slot="reference"
                 :disabled="!hasRight('departmentCreate')"
+                @click='visiblePopover==!visiblePopover'
               >添加下级</el-button>
             </el-popover>
             <!--下级列表-->
@@ -51,6 +52,7 @@
               :content-id="contentId"
               :sortFlag="sortShowFlag"
               @cancel="getSortAction"
+              @closePopoever='closePopoever'
               @getPage="getPage"
               :contentPage="currentPage"
             ></content-list>
@@ -181,6 +183,7 @@ export default {
   },
   data () {
     return {
+      visiblePopover: false,
       contentId: this.$route.params.nodeId,
       loading: true,
       fullscreenLoading: true,
@@ -308,6 +311,9 @@ export default {
     },
     getSortAction (type) {
       this.sortShowFlag = type
+    },
+    closePopoever () {
+      this.visiblePopover = false
     },
     getContent () {
       this.loading = true

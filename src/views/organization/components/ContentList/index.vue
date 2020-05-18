@@ -175,6 +175,11 @@ export default {
       },
       deep: true
     }
+    // list: {
+    //   handler () {
+    //     this.$emit('closePopoever')
+    //   }
+    // }
   },
   beforeRouteUpdate (to, from, next) {
     next()
@@ -224,6 +229,7 @@ export default {
     },
     getGrid () {
       // this.cancelSort()
+      this.$emit('closePopoever')
       let data = {
         page: this.contentPage.current,
         parentId: this.nodeId,
