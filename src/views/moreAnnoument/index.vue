@@ -63,6 +63,9 @@ export default {
   },
   methods: {
     ...mapMutations(['SET_BREADCRUMB'])
+  },
+  destroyed () {
+    this.app.noticeShowBtn = false
   }
 
 }

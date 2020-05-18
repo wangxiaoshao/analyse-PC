@@ -9,6 +9,7 @@ const initRouter = (menus) => {
     routes,
     mode: 'hash'
   })
+
   router.beforeEach((to, from, next) => {
     let route = to.matched[0]
     if (!route) {

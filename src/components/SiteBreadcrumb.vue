@@ -19,6 +19,7 @@
         </el-breadcrumb>
       </el-col>
       <el-col :span="4" class="text-right">
+         <!-- <el-button size="mini" @click="goBack">返回</el-button> -->
         <el-button size="mini" v-show="pageBreadcrumb.length > 0" @click="goBack">返回</el-button>
         <el-button size="mini" class="goBackBtn" v-if="noticeShowBtn" @click="goHome">返回</el-button>
       </el-col>
@@ -61,9 +62,11 @@ export default {
   data () {
     return {}
   },
-  created () {},
+  created () {
+  },
   methods: {
     goBack () {
+      console.log(this.breadcrumb, this.pageBreadcrumb)
       this.$emit('go-back')
     },
     goHome () {

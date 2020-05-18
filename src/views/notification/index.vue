@@ -1,6 +1,6 @@
 <template>
   <div class="notification">
-          <el-table :show-header="false"  :data='tableData' 	style="width:100%">
+          <el-table :show-header="false"  :data='tableData' style="width:100%">
              <template slot="empty">
                 <div class="empty">
                   <p><img class="data-pic" src="@src/common/images/no-data1.png" alt=""/></p>
@@ -57,7 +57,7 @@ export default {
     ...mapState(['app'])
   },
   methods: {
-    ...mapMutations(['SET_BREADCRUMB']),
+    ...mapMutations(['SET_BREADCRUMB', 'SET_PAGE_BREADCRUMB']),
     getGrid () {
       let data = {
         page: this.page.current,
@@ -84,6 +84,9 @@ export default {
         this.$router.push('/my-application')
       }
     }
+  },
+  destroyed () {
+    this.app.noticeShowBtn = false
   }
 }
 

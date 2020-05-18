@@ -580,7 +580,12 @@ export default {
             this.remindStartDate = parseInt(JSON.parse(item.value)[0])
             this.remindEndDate = parseInt(JSON.parse(item.value)[1])
             this.messageRemind = parseInt(JSON.parse(item.value)[2])
-            this.allowSetOrg === item.lockedLevel !== 0
+            if (item.lockedLevel === 1) {
+              this.allowSetOrg = true
+            } else {
+              this.allowSetOrg = false
+            }
+
             this.$emit('setOrgParamsFun', this.allowSetOrg)
             if (this.messageRemind === 0) {
               this.startDateDisabled = true

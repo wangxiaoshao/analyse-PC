@@ -11,8 +11,6 @@ import certification from './modules/certification'
 
 const noRight = () => import('@src/views/no-right/index.vue')
 
-// 通知中心
-const Notification = () => import('@src/views/notification/index.vue')
 
 /* 路由 */
 export default [
@@ -29,15 +27,6 @@ export default [
       breadcrumb: [{ name: '无权限' }]
     }
   },
-  {
-    path: '/notification',
-    name: 'notification',
-    component: Notification,
-    meta: {
-      breadcrumb: [{ name: '通知中心' }]
-    }
-  },
-
   ...organization,
   ...examine,
   ...statistics,
