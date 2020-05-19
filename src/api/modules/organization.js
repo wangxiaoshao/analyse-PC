@@ -185,6 +185,14 @@ export default {
     showLoading: true,
     serve: 'organizationManagePC'
   },
+  // 多身份管理——》添加身份记录
+  [urlNames.getIdentityRecord]: {
+    type: 'get',
+    url: '/api/jg_manage/user/getIdentityRecord',
+    keepOriginResponse: true,
+    showLoading: true,
+    serve: 'organizationManagePC'
+  },
   [urlNames.createUserId]: {
     type: 'post',
     url: '/api/jg_manage/user/createUserId',

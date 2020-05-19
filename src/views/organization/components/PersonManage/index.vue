@@ -61,17 +61,17 @@
                 <el-table max-height="200" :data="list" @row-click="selectRow" :show-header="true">
                   <el-table-column property="name" label="姓名">
                     <template slot-scope="scope">
-                      <span :title="scope.row.name" class="table-span">{{scope.row.name}}</span>
+                      <span :title="scope.row.name" class="table-span">{{scope.row.user.name}}</span>
                     </template>
                   </el-table-column>
                   <el-table-column property="orgName" label="单位名称">
                     <template slot-scope="scope">
-                      <span :title="scope.row.orgName" class="table-span">{{scope.row.orgName}}</span>
+                      <span :title="scope.row.orgName" class="table-span">{{scope.row.userIdentity.orgName}}</span>
                     </template>
                   </el-table-column>
                   <el-table-column property="duty" label="职位">
                     <template slot-scope="scope">
-                      <span :title="scope.row.duty" class="table-span">{{scope.row.duty}}</span>
+                      <span :title="scope.row.duty" class="table-span">{{scope.row.userIdentity.duty || '无'}}</span>
                     </template>
                   </el-table-column>
                 </el-table>
@@ -636,7 +636,6 @@ export default {
     },
     // 身份证认证
     idAutherntication () {
-      // 522501199512028321
       let that = this
       this.idCardState.successVisiable = false
       this.idCardState.errorVisiable = false
@@ -721,7 +720,6 @@ export default {
     loadSearch () {
       this.showIptMsg('name')
       this.searchFlag = false
-      // console.log(' this.personFrom.name:', this.personFrom.name)
       if (this.$route.name === 'PersonAdd' && this.personFrom.name.length > 1) {
         if (this.timer) {
           clearTimeout(this.timer)
@@ -735,8 +733,6 @@ export default {
             name: this.personFrom.name
           }).then(
             res => {
-              // if (res.data.length !== 0) {
-              // }
               this.loadFlag = false
               this.list = res.data
             },

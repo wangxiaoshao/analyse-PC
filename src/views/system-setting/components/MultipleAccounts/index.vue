@@ -1,6 +1,6 @@
 <template>
   <div class="multiple-accounts">
-    <div class="account-title">账号列表</div>
+    <div class="table-title">账号列表</div>
     <div class="table-box">
       <el-table :data="accountInfoList" stripe border align="center" style="width: 100%">
        <template slot="empty">

@@ -9,7 +9,7 @@
           <personal-log :loginLog="logAry[2]"></personal-log>
         </el-tab-pane>
         <el-tab-pane label="共享日志"  v-if="hasRight('systemLogingPushAccess')">
-          <push-log :loginLog="logAry[3]"></push-log>
+          <push-log></push-log>
         </el-tab-pane>
       </el-tabs>
     </div>

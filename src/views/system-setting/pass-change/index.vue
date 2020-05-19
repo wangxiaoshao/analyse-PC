@@ -15,7 +15,6 @@
         :rules="rulesCallou"
         ref="formCallout"
         label-width="100px"
-
       >
         <el-form-item label="当前单位">
           <span class="name-span">{{this.$store.state.app.option.user.orgName}}</span>
@@ -24,9 +23,9 @@
           <span class="name-span border">{{orgName}}</span>
           <span class="name-span border" v-if="depName !== ''">/{{depName}}</span>
           <el-button @click="addMainLeader" type="primary">选择目标单位</el-button>
-          <el-button @click="removeDestOrg" type="primary" v-if="isCallout===6">不选择单位</el-button>
+          <el-button @click="removeDestOrg" type="primary" v-if="isCallout===1">不选择单位</el-button>
         </el-form-item>
-        <el-form-item label="申请原因" prop="reason">
+        <el-form-item :label="isCallout===1?'申请原因':'身份说明'" prop="reason">
           <el-input type="textarea" v-model="formCallout.reason"></el-input>
         </el-form-item>
         <el-form-item>
@@ -129,7 +128,7 @@
 
     <div class="pass-change-content">
       <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="我的信息" name="first">
+        <el-tab-pane label="我的信息" >
           <el-row>
             <el-col :span="18">
               <person-manage
@@ -163,7 +162,7 @@
             @close="goBack"
           ></edit-account>
         </el-tab-pane>
-        <el-tab-pane label="多身份管理">
+        <el-tab-pane label="多身份管理" name="first">
           <multiple-idetity  @exportOrg="exportOrg"></multiple-idetity>
         </el-tab-pane>
         <el-tab-pane label="个人日志">
@@ -394,7 +393,7 @@ export default {
       if (flag === 2) {
         this.calloutTitle = '填写兼职说明'
       } else if (flag === 3) {
-        this.calloutTitle = '填写挂出说明'
+        this.calloutTitle = '填写挂职说明'
       } else if (flag === 1) {
         this.calloutTitle = '填写调出说明'
       }
@@ -682,7 +681,7 @@ export default {
     // 提交调出
     submitFormCallout (formCallout) {
       // 调出
-      if (this.isCallout === 3) {
+      if (this.isCallout === 6) {
         this.$refs[formCallout].validate(valid => {
           if (valid) {
             api[urlNames['calloutUser']](this.formCallout).then(

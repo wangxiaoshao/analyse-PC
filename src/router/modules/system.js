@@ -13,6 +13,11 @@ const PassChange = () => import('@src/views/system-setting/pass-change/index.vue
 const AuthoritySetting = () => import('@src/views/system-setting/authority-setting/index.vue')
 // 帮助中心
 const WordCenter = () => import('@src/views/system-setting/word-center/index.vue')
+// 文章详情
+const WordDetial = () => import('@src/views/system-setting/word-detial/index.vue')
+// 文件上传
+const WordUnload = () => import('@src/views/system-setting/word-unload/index.vue')
+
 export default [
   // 权限管理
   {
@@ -78,6 +83,16 @@ export default [
     meta: {
       key: 'menuDocumentCenter'
     }
+  },
+  {
+    path: '/word-center/word-detial/:id',
+    name: 'WordDetial',
+    component: WordDetial
+  },
+  {
+    path: '/word-center/word-unload',
+    name: 'WordUnload',
+    component: WordUnload
   }
 ]
 

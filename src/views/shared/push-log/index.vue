@@ -32,8 +32,7 @@
         </div>
       </el-dialog>
     </div>
-    <!-- v-if="this.$route.query.id" -->
-    <el-form inline v-if="loginLog===4 || this.$route.query.id">
+    <el-form inline>
       <el-form-item >
         <span class="title">时间</span>
         <el-select
@@ -72,66 +71,56 @@
         </div>
       </el-form-item>
     </el-form>
-    <el-form inline v-else>
-        <el-form-item>
-        <el-input placeholder="请输入接入应用账号"></el-input>
-      </el-form-item>
-       <el-form-item placeholder="请输入接入应用密码">
-          <el-input></el-input>
-       </el-form-item>
-        <el-form-item>
-           <el-button  type="primary">查询</el-button>
-        </el-form-item>
-    </el-form>
+    <div class="table-box">
+      <el-table :data="logList" border stripe style="width: 100%">
+        <template slot="empty">
+          <div class="empty">
+            <p>
+              <img class="data-pic" src="@src/common/images/no-data1.png" alt />
+            </p>
+            <p>
+              <span style="padding-left: 8px;">暂无数据</span>
+            </p>
+          </div>
+        </template>
+        <el-table-column type="index" width="65" label="序号" align="center"></el-table-column>
+        <el-table-column prop="pushTime" label="同步时间" width="180" align="center"></el-table-column>
+        <el-table-column
+          prop="name"
+          label="应用名称"
+          width="180"
+          align="center"
+          v-if="!this.$route.query.id"
+        ></el-table-column>
+        <el-table-column prop="fieldName" label="同步类型" align="center"></el-table-column>
+        <el-table-column prop="executeMs" label="同步耗时" align="center"></el-table-column>
+        <el-table-column prop="success" label="同步状态" align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row.success==0 ?'失败':'成功'}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column width="65" align="center" label="操作">
+          <template slot-scope="scope">
+            <a style="color:#58a4f3;" href="javascript:void(0)" @click="findInfo(scope.row)">详情</a>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" width="70" label="备注">
+          <template>
+            <span>无</span>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="page.current"
+        :page-sizes="[10, 30, 50, 100]"
+        :page-size="page.limit"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="page.total"
+      ></el-pagination>
+    </div>
 
-
-    <el-table :data="logList" border stripe style="width: 100%">
-      <template slot="empty">
-        <div class="empty">
-          <p>
-            <img class="data-pic" src="@src/common/images/no-data1.png" alt />
-          </p>
-          <p>
-            <span style="padding-left: 8px;">暂无数据</span>
-          </p>
-        </div>
-      </template>
-      <el-table-column type="index" width="65" label="序号" align="center"></el-table-column>
-      <el-table-column prop="pushTime" label="同步时间" width="180" align="center"></el-table-column>
-      <el-table-column
-        prop="name"
-        label="应用名称"
-        width="180"
-        align="center"
-        v-if="!this.$route.query.id"
-      ></el-table-column>
-      <el-table-column prop="fieldName" label="同步类型" align="center"></el-table-column>
-      <el-table-column prop="executeMs" label="同步耗时" align="center"></el-table-column>
-      <el-table-column prop="success" label="同步状态" align="center">
-        <template slot-scope="scope">
-          <span>{{scope.row.success==0 ?'失败':'成功'}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column width="65" align="center" label="操作">
-        <template slot-scope="scope">
-          <a style="color:#58a4f3;" href="javascript:void(0)" @click="findInfo(scope.row)">详情</a>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" width="70" label="备注">
-        <template>
-          <span>无</span>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="page.current"
-      :page-sizes="[10, 30, 50, 100]"
-      :page-size="page.limit"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="page.total"
-    ></el-pagination>
   </div>
 </template>
 <script>
@@ -172,7 +161,7 @@ export default {
     }
   },
   created () {
-    console.log(this.loginLog,3333333)
+    console.log(this.loginLog, 3333333)
     let datefilters = this.$options.filters['date'](
       new Date().getTime(),
       'yyyy-MM-dd'
@@ -285,21 +274,5 @@ export default {
 </script>
 <style scoped lang="less">
 @import './index';
-.empty {
-  p {
-    margin: 0;
-    font-size: 0px;
-    text-align: center;
-    line-height: 16px !important;
-  }
 
-  span {
-    font-size: 12px;
-  }
-}
-.data-pic {
-  padding-top: 20px;
-  width: 60px;
-  height: auto;
-}
 </style>

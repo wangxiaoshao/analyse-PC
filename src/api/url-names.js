@@ -201,6 +201,7 @@ export default {
   findAccountById: 'findAccountById', // 获取账号信息
   updateAccount: 'updateAccount', // 修改账号信息
   userIdList: 'userIdList', // 多身份列表,
+  getIdentityRecord: 'getIdentityRecord', // 身份添加记录列表
   createUserId: 'createUserId', // 添加兼职，挂职
   deleteRoleBindUser: 'deleteRoleBindUser',
   saveAuthorityManage: 'saveAuthorityManage',

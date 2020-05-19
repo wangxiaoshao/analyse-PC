@@ -12,16 +12,16 @@
           <p><span style="padding-left: 8px;">暂无数据</span></p>
         </div>
       </template>
-      <el-table-column prop="title" label="角色名称">
+      <el-table-column prop="title" label="角色名称" align="center">
       </el-table-column>
       <el-table-column prop="description" label="角色描述" align="center">
          <template slot-scope="scope">
           <span>{{ scope.row.description || '无'}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="createTime" label="创建时间" width="150" align="center">
+      <el-table-column prop="createTime" label="创建时间" width="180" align="center">
       </el-table-column>
-      <el-table-column prop="updatedTime" label="修改时间" width="150" align="center">
+      <el-table-column prop="updatedTime" label="修改时间" width="180" align="center">
       </el-table-column>
       <el-table-column prop="value" label="启用状态" width="100" align="center">
         <template slot-scope="scope">
