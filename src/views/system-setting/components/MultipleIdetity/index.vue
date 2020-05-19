@@ -26,12 +26,12 @@
       <div class="popover" style="text-align: center; margin: 0">
         <div
           style="border-bottom: 1px solid rgba(0, 0, 0, 0.1);padding: 5px 0;cursor: pointer"
-          @click="exportOrg(1)"
-        >申请兼职</div>
+          @click="exportOrg(2)"
+        >添加兼职</div>
         <div
           style="padding: 5px 0;cursor: pointer"
-          @click="exportOrg(2)"
-        >申请挂职</div>
+          @click="exportOrg(3)"
+        >添加挂职</div>
       </div>
       <el-button
         class="add-btn"
@@ -49,15 +49,18 @@
           <p><span style="padding-left: 8px;">暂无数据</span></p>
         </div>
       </template>
-      <el-table-column label="身份类型" align="center" prop="name"></el-table-column>
+      <el-table-column label="身份类型" align="center" prop="typeName"></el-table-column>
       <el-table-column label="创建时间" align="center"  prop="createTime"></el-table-column>
-      <el-table-column label="所属单位" align="center" prop="nickName">
+      <el-table-column label="所属单位" align="center" prop="orgName" width="200px">
 
       </el-table-column>
-      <el-table-column label="职务" align="center">
+      <el-table-column label="职务" align="center" prop="dutyName">
 
       </el-table-column>
-      <el-table-column label="岗位" align="center">
+      <el-table-column label="岗位" align="center" prop="postName">
+        <template scope="scope">
+          <span>{{scope.row.postName || '无'}}</span>
+        </template>
       </el-table-column>
       <el-table-column label="状态" align="center">
         <template slot-scope="scope">
@@ -67,26 +70,26 @@
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
           <el-button
-            v-if="scope.row.nodeType===1"
+            v-if="scope.row.type===1"
             type="text"
             size="small"
             class="doBtn"
-            @click.native.prevent="exportOrg(3)"
+            @click.native.prevent="exportOrg(scope.row.type)"
           >申请调出</el-button>
-           <el-button
-            v-if="scope.row.nodeType===2"
+           <!-- <el-button
+            v-if="scope.row.type===2&&isOrgManage"
             type="text"
             size="small"
             class="doBtn"
-            @click.native.prevent="openIdetityDialog(2)"
-          >解除兼职</el-button>
-           <el-button
-            v-if="scope.row.nodeType===3"
-            type="text"
-            size="small"
-            class="doBtn"
-            @click.native.prevent="openIdetityDialog(3)"
+            @click.native.prevent="openIdetityDialog(scope.row.type)"
           >解除挂职</el-button>
+           <el-button
+            v-if="scope.row.type===1&&isOrgManage"
+            type="text"
+            size="small"
+            class="doBtn"
+            @click.native.prevent="openIdetityDialog(scope.row.type)"
+          >解除兼职</el-button> -->
         </template>
       </el-table-column>
     </el-table>
@@ -95,15 +98,13 @@
   </div>
 </template>
 <script>
-import RmidetityDialog from '@src/components/RmidetityDialog/index'
+import { api, urlNames } from '@src/api'
 export default {
   name: 'multipleIdetity',
-  components: {
-    RmidetityDialog
-  },
   data () {
     return {
-      idetitlyList: [{ nodeType: 1 }, { nodeType: 2 }, { nodeType: 3 }],
+      idetitlyId: this.$store.state.app.option.user.uid,
+      idetitlyList: [],
       identityDialogParams: {
         identityTitle: '',
         identityName: '',
@@ -118,9 +119,32 @@ export default {
       }
     }
   },
+  created () {
+    // this.isOrgManage=this.userRoles.some(ele => {
+    //   if(ele.roleName==='ORG_MANAGER'){
+    //     return true
+    //   }else{
+    //     return false
+    //   }
+    // })
+
+    this.getIdetitlyList()
+  },
   methods: {
+    // 申请调出，添加兼职，挂职
     exportOrg (flag) {
       this.$emit('exportOrg', flag)
+    },
+    getIdetitlyList () {
+      api[urlNames['userIdList']]({ uid: this.idetitlyId }).then(res => {
+        if (res.data) {
+          this.idetitlyList = res.data
+        }
+      })
+    },
+    // 添加身份类型
+    addIdetityType () {
+
     },
     openIdetityDialog (flag) {
       this.identityDialogParams.identityName = flag === 2 ? '兼职' : '挂职'
@@ -134,8 +158,6 @@ export default {
             res => {
               this.$message.success(`解除成功`)
               this.cancel()
-              // this.fromInit()
-              // this.getGrid()
             },
             () => {}
           )

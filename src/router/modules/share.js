@@ -39,6 +39,14 @@ export default [
         }
       },
       {
+        path: '/app-logs',
+        name: 'AppLogs',
+        component: PushLog,
+        meta: {
+          key: 'menuAppLogs'
+        }
+      },
+      {
         path: '/group-management/group-detail/:id/:type',
         name: 'GroupDetail',
         component: GroupDetail

@@ -95,7 +95,7 @@ export default {
       'name': '共享管理',
       'path': '',
       'type': 1,
-      'key': ['menuShareViews', 'menuGroups', 'menuShareApplication'],
+      'key': ['menuShareViews', 'menuGroups', 'menuShareApplication', 'menuAppLogs'],
       'icon': 'fa fa-address-card-o',
       'list': [{
         'menuId': '31',
@@ -117,6 +117,13 @@ export default {
         'path': '/app-management',
         'type': 1,
         'key': 'menuShareApplication'
+      },
+      {
+        'menuId': '35',
+        'name': '应用日志查询',
+        'path': '/app-logs',
+        'type': 1,
+        'key': 'menuAppLogs'
       }
       ]
     },

@@ -177,6 +177,25 @@ export default {
     serve: 'organizationManagePC'
   },
 
+  // 多身份管理——》身份列表
+  [urlNames.userIdList]: {
+    type: 'get',
+    url: '/api/jg_manage/user/userIdList',
+    keepOriginResponse: true,
+    showLoading: true,
+    serve: 'organizationManagePC'
+  },
+  [urlNames.createUserId]: {
+    type: 'post',
+    url: '/api/jg_manage/user/createUserId',
+    keepOriginResponse: true,
+    showLoading: true,
+    serve: 'organizationManagePC',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  },
+
   // 修改账号信息
   [urlNames.updateAccount]: {
     type: 'post',

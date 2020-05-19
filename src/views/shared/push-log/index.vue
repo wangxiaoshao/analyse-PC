@@ -32,8 +32,9 @@
         </div>
       </el-dialog>
     </div>
-    <el-form inline>
-      <el-form-item>
+    <!-- v-if="this.$route.query.id" -->
+    <el-form inline v-if="loginLog===4 || this.$route.query.id">
+      <el-form-item >
         <span class="title">时间</span>
         <el-select
           v-model="logParam.selectValue"
@@ -71,6 +72,19 @@
         </div>
       </el-form-item>
     </el-form>
+    <el-form inline v-else>
+        <el-form-item>
+        <el-input placeholder="请输入接入应用账号"></el-input>
+      </el-form-item>
+       <el-form-item placeholder="请输入接入应用密码">
+          <el-input></el-input>
+       </el-form-item>
+        <el-form-item>
+           <el-button  type="primary">查询</el-button>
+        </el-form-item>
+    </el-form>
+
+
     <el-table :data="logList" border stripe style="width: 100%">
       <template slot="empty">
         <div class="empty">
@@ -127,6 +141,7 @@ import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
 export default {
   mixins: [handleTable, handleBreadcrumb],
+  props: ['loginLog'],
   data () {
     return {
       logList: [],
@@ -157,6 +172,7 @@ export default {
     }
   },
   created () {
+    console.log(this.loginLog,3333333)
     let datefilters = this.$options.filters['date'](
       new Date().getTime(),
       'yyyy-MM-dd'
@@ -200,7 +216,7 @@ export default {
         todayDate.getTime(),
         'yyyy-MM-dd'
       )
-      if (val[0] == 'month') {
+      if (val[0] === 'month') {
         todayDate = new Date(todayDate.setMonth(todayDate.getMonth()))
         this.date = this.$options.filters['date'](
           todayDate.getTime(),

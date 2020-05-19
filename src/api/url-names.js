@@ -200,6 +200,8 @@ export default {
   findAllAccountByUid: 'findAllAccountByUid', // 获取所有的账号列表
   findAccountById: 'findAccountById', // 获取账号信息
   updateAccount: 'updateAccount', // 修改账号信息
+  userIdList: 'userIdList', // 多身份列表,
+  createUserId: 'createUserId', // 添加兼职，挂职
   deleteRoleBindUser: 'deleteRoleBindUser',
   saveAuthorityManage: 'saveAuthorityManage',
   // 验证身份证

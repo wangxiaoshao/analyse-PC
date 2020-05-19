@@ -63,9 +63,9 @@ export default {
           /* if (key === 'menuAddrBook' || key === 'menuDocumentCenter') {
             return true
           } */
-          if (key === 'menuAddrBook') {
-            return true
-          }
+          // if (key === 'menuAddrBook') {
+          //   return true
+          // }
           let tempMenu = menuList.filter(item => {
             return item.moduleName === key
           })
@@ -87,6 +87,9 @@ export default {
         /* if (this.menuItem.key === 'menuAddrBook' || this.menuItem.key === 'menuDocumentCenter' || this.menuItem.key === 'menuHomePage') {
           return true
         } */
+        if (this.menuItem.key === 'menuAppLogs') {
+            return true
+          }
         let tempMenu = menuList.filter(item => {
           return item.moduleName === this.menuItem.key
         })

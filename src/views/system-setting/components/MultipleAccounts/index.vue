@@ -83,7 +83,6 @@ export default {
       } else {
         return 'even-row'
       }
-      return ''
     },
     // 修改账号信息
     setAccount (val) {

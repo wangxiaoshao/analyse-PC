@@ -15,7 +15,7 @@
         :rules="rulesCallou"
         ref="formCallout"
         label-width="100px"
-        class="demo-ruleForm"
+
       >
         <el-form-item label="当前单位">
           <span class="name-span">{{this.$store.state.app.option.user.orgName}}</span>
@@ -23,8 +23,8 @@
         <el-form-item label="目标单位">
           <span class="name-span border">{{orgName}}</span>
           <span class="name-span border" v-if="depName !== ''">/{{depName}}</span>
-          <el-button @click="addMainLeader" type="primary">选择调出目标单位</el-button>
-          <el-button @click="removeDestOrg" type="primary" v-if="isCallout===3">不选择单位</el-button>
+          <el-button @click="addMainLeader" type="primary">选择目标单位</el-button>
+          <el-button @click="removeDestOrg" type="primary" v-if="isCallout===6">不选择单位</el-button>
         </el-form-item>
         <el-form-item label="申请原因" prop="reason">
           <el-input type="textarea" v-model="formCallout.reason"></el-input>
@@ -163,9 +163,9 @@
             @close="goBack"
           ></edit-account>
         </el-tab-pane>
-        <!-- <el-tab-pane label="多身份管理">
+        <el-tab-pane label="多身份管理">
           <multiple-idetity  @exportOrg="exportOrg"></multiple-idetity>
-        </el-tab-pane> -->
+        </el-tab-pane>
         <el-tab-pane label="个人日志">
           <personal-log :showFindBtn="showFindBtn"></personal-log>
         </el-tab-pane>
@@ -391,11 +391,11 @@ export default {
       this.orgName = '无'
     },
     exportOrg (flag) {
-      if (flag == 1) {
+      if (flag === 2) {
         this.calloutTitle = '填写兼职说明'
-      } else if (flag == 2) {
+      } else if (flag === 3) {
         this.calloutTitle = '填写挂出说明'
-      } else if (flag == 3) {
+      } else if (flag === 1) {
         this.calloutTitle = '填写调出说明'
       }
       this.isCallout = flag
@@ -681,30 +681,60 @@ export default {
 
     // 提交调出
     submitFormCallout (formCallout) {
-      this.$refs[formCallout].validate(valid => {
-        if (valid) {
-          api[urlNames['calloutUser']](this.formCallout).then(
-            res => {
+      // 调出
+      if (this.isCallout === 3) {
+        this.$refs[formCallout].validate(valid => {
+          if (valid) {
+            api[urlNames['calloutUser']](this.formCallout).then(
+              res => {
               // this.$message.success(`调出申请已提交`)
-              this.calloutFlag = false
-              this.submitVisible = true
-              // this.getGrid()
-              this.fromInit()
-              this.formCallout.deptId = this.formCallout.orgId = ''
-              this.orgName = this.depName = ''
-            },
-            error => {
-              if (error) {
                 this.calloutFlag = false
                 this.submitVisible = true
-                this.callMag.title = '请勿重复提交调出申请'
-                this.callMag.msg =
+                // this.getGrid()
+                this.fromInit()
+                this.formCallout.deptId = this.formCallout.orgId = ''
+                this.orgName = this.depName = ''
+              },
+              error => {
+                if (error) {
+                  this.calloutFlag = false
+                  this.submitVisible = true
+                  this.callMag.title = '请勿重复提交调出申请'
+                  this.callMag.msg =
                   '在此之前，您已经提交过调出申请，请等待管理员审核完成后再操作！'
+                }
               }
-            }
-          )
-        }
-      })
+            )
+          }
+        })
+        // 挂职
+      } else {
+        console.log('333333', this.formCallout)
+        this.$refs[formCallout].validate(valid => {
+          if (valid) {
+            api[urlNames['createUserId']]({
+              type: this.isCallout,
+              orgId: this.formCallout.orgId,
+              reason: this.formCallout.reason
+            }).then(
+              res => {
+                if (res) {
+                  this.calloutFlag = false
+                  this.$message.success('身份类型添加成功')
+                  this.fromInit()
+                  this.formCallout.deptId = this.formCallout.orgId = ''
+                  this.orgName = this.depName = ''
+                }
+              },
+              error => {
+                if (error) {
+                  this.$message.error('请求出错')
+                }
+              }
+            )
+          }
+        })
+      }
     }
   }
 }

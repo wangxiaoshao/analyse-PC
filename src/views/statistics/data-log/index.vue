@@ -9,7 +9,7 @@
           <personal-log :loginLog="logAry[2]"></personal-log>
         </el-tab-pane>
         <el-tab-pane label="共享日志"  v-if="hasRight('systemLogingPushAccess')">
-          <push-log></push-log>
+          <push-log :loginLog="logAry[3]"></push-log>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -33,7 +33,7 @@ export default {
         status: '',
         keyword: ''
       },
-      logAry: [1, 2, 3],
+      logAry: [1, 2, 3, 4],
       showFindBtn: true,
       systemLogingAccess: false,
       systemLogingSystemAccess: false,
