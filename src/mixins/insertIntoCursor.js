@@ -4,12 +4,12 @@
  */
 
 export default {
-  data () {
-    return {}
-  },
-  methods: {
-    insertTextIntoCursor (text) {
-      document.execCommand('insertText', false, text)
-    }
-  }
-}
+    data() {
+        return {};
+    },
+    methods: {
+        insertTextIntoCursor(text) {
+            document.execCommand("insertText", false, text);
+        },
+    },
+};

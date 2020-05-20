@@ -15,85 +15,87 @@
  * });
  */
 
-import ajax from 'axios'
+import ajax from "axios";
 // import ajax from '@src/api/interceptors'
 
 // 记录页面访问堆栈
 const stacks = [
-  // {
-  //   route,
-  //   loggerId
-  // }
-]
+    // {
+    //   route,
+    //   loggerId
+    // }
+];
 
-function createLoggerId () {
-  return `${Math.random().toString(16).substr(2, 12)}-${new Date().getTime().toString(16)}`
+function createLoggerId() {
+    return `${Math.random()
+        .toString(16)
+        .substr(2, 12)}-${new Date().getTime().toString(16)}`;
 }
 
-function stackFromLoggerId (from) {
-  let i = stacks.length
-  while (i > 0) {
-    i -= 1
-    if (stacks[i].route === from) {
-      const { loggerId } = stacks[i]
-      stacks.splice(i, 1)
-      return loggerId
+function stackFromLoggerId(from) {
+    let i = stacks.length;
+    while (i > 0) {
+        i -= 1;
+        if (stacks[i].route === from) {
+            const { loggerId } = stacks[i];
+            stacks.splice(i, 1);
+            return loggerId;
+        }
     }
-  }
 
-  return ''
+    return "";
 }
 
-function init ({
-  router, // 路由实例（vue-router实例）
-  serverUrl, // api接口地址
-  requestMethod, // 请求方法，默认POST
-  clientType, // 终端类型
-  clientVersion, // 终端版本号，每次打包上线必须不一样
-  ignoreRouters // 忽略的页面名称数组
+function init({
+    router, // 路由实例（vue-router实例）
+    serverUrl, // api接口地址
+    requestMethod, // 请求方法，默认POST
+    clientType, // 终端类型
+    clientVersion, // 终端版本号，每次打包上线必须不一样
+    ignoreRouters, // 忽略的页面名称数组
 }) {
-  router.afterEach((to, from) => {
-    /** @var {Router} router */
-    /** @var {Route} from */
-    /** @var {Route} to */
-    const routeName = to.name
-    if (ignoreRouters && ignoreRouters.includes(routeName)) {
-      return
-    }
+    router.afterEach((to, from) => {
+        /** @var {Router} router */
+        /** @var {Route} from */
+        /** @var {Route} to */
+        const routeName = to.name;
+        if (ignoreRouters && ignoreRouters.includes(routeName)) {
+            return;
+        }
 
-    const loggerId = createLoggerId()
-    const fromLoggerId = stackFromLoggerId(from)
+        const loggerId = createLoggerId();
+        const fromLoggerId = stackFromLoggerId(from);
 
-    stacks.push({
-      route: to,
-      loggerId
-    })
+        stacks.push({
+            route: to,
+            loggerId,
+        });
 
-    ajax(serverUrl, {
-      method: requestMethod || 'POST',
-      params: {
-        tip: false
-      },
-      data: {
-        loggerId, // 日志唯一标识符，以便分请上次请求与这次请求匹配
-        fromLoggerId,
-        routeName,
-        fromRouteName: from ? from.name : '',
-        params: JSON.stringify({
-          fullPath: to.fullPath,
-          hash: to.hash,
-          query: to.query,
-          params: to.params
-        }),
-        clientType,
-        clientVersion
-      }
-    })
-  })
+        ajax(serverUrl, {
+            method: requestMethod || "POST",
+            params: {
+                tip: false,
+            },
+            data: {
+                loggerId, // 日志唯一标识符，以便分请上次请求与这次请求匹配
+                fromLoggerId,
+                routeName,
+                fromRouteName: from ? from.name : "",
+                params: JSON.stringify({
+                    fullPath: to.fullPath,
+                    hash: to.hash,
+                    query: to.query,
+                    params: to.params,
+                }),
+                clientType,
+                clientVersion,
+            },
+        });
+    });
 }
 
 export default {
-  install (Vue, options) {
-    init(options)
-  }
-}
+    install(Vue, options) {
+        init(options);
+    },
+};

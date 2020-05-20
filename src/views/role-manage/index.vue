@@ -1,27 +1,24 @@
 <template>
-  <div class="site-module mod-dictionary">
-    <transition name="fade-transform" mode="out-in">
-<!--      <keep-alive v-if="$route.meta.keepAlive">-->
-<!--        <router-view></router-view>-->
-<!--      </keep-alive>-->
-      <router-view></router-view>
-    </transition>
-  </div>
+    <div class="site-module mod-dictionary">
+        <transition name="fade-transform" mode="out-in">
+            <!--      <keep-alive v-if="$route.meta.keepAlive">-->
+            <!--        <router-view></router-view>-->
+            <!--      </keep-alive>-->
+            <router-view></router-view>
+        </transition>
+    </div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
 export default {
-  props: {},
-  data () {
-    return {
-
-    }
-  },
-  created () {
-  },
-  methods: {}
-}
+    props: {},
+    data() {
+        return {};
+    },
+    created() {},
+    methods: {},
+};
 </script>
 <style scoped lang="less">
-  @import "./index";
+@import "./index";
 </style>

@@ -1,204 +1,217 @@
 <template>
-<div class="operate-log">
-  <el-table
-    :data="logList"
-    border
-    style="width: 100%">
-    <template slot="empty">
-      <div class="empty">
-        <p><img class="data-pic" src="@src/common/images/no-data1.png" alt=""/></p>
-        <p><span style="padding-left: 8px;">暂无数据</span></p>
-      </div>
-    </template>
-    <el-table-column
-      type="index"
-      width="65"
-      label="序号"
-    align="center">
-    </el-table-column>
-    <el-table-column
-      prop="actionTime"
-      label="时间"
-      align="center"
-      >
-    </el-table-column>
-    <el-table-column
-      prop="actionUserName"
-      label="操作人"
-      align="center"
-      >
-    </el-table-column>
-    <el-table-column
-      label="描述"
-      align="center"
-      >
-      <template slot-scope="scope">
-        <span v-if="scope.row.actionType === 1">信息新增</span>
-        <span v-if="scope.row.actionType === 2">信息修改</span>
-        <span v-if="scope.row.actionType === 3">信息删除</span>
-      </template>
-    </el-table-column>
-    <el-table-column
-      align="center"
-      label="操作"
-      >
-      <template slot-scope="scope">
-         <span class="common-detialBtn"  @click="findInfo(scope.row)">详情</span>
-      </template>
-    </el-table-column>
-    <el-table-column
-      align="center"
-      label="备注">
-      <template>
-        <span>无</span>
-      </template>
-    </el-table-column>
-  </el-table>
-   <!-- 详细信息弹窗 -->
-    <div class="dialog-box">
-      <el-dialog :visible.sync="detialInfoVisible"  width="450px">
-        <div slot="title" style="padding:20px">
-          日志详情
-          <i class="el-icon-document-copy" style="color:#58a4f3"></i>
-        </div>
-           <el-form
-              inline
-              style="width:100%;"
-              label-width="110px"
+    <div class="operate-log">
+        <el-table :data="logList" border style="width: 100%;">
+            <template slot="empty">
+                <div class="empty">
+                    <p>
+                        <img
+                            class="data-pic"
+                            src="@src/common/images/no-data1.png"
+                            alt=""
+                        />
+                    </p>
+                    <p><span style="padding-left: 8px;">暂无数据</span></p>
+                </div>
+            </template>
+            <el-table-column
+                type="index"
+                width="65"
+                label="序号"
+                align="center"
             >
-              <el-form-item label="操作日期" >
-                <div class="table-td">
-                  {{detialInfo.actionTime}}
+            </el-table-column>
+            <el-table-column prop="actionTime" label="时间" align="center">
+            </el-table-column>
+            <el-table-column
+                prop="actionUserName"
+                label="操作人"
+                align="center"
+            >
+            </el-table-column>
+            <el-table-column label="描述" align="center">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.actionType === 1">信息新增</span>
+                    <span v-if="scope.row.actionType === 2">信息修改</span>
+                    <span v-if="scope.row.actionType === 3">信息删除</span>
+                </template>
+            </el-table-column>
+            <el-table-column align="center" label="操作">
+                <template slot-scope="scope">
+                    <span class="common-detialBtn" @click="findInfo(scope.row)"
+                        >详情</span
+                    >
+                </template>
+            </el-table-column>
+            <el-table-column align="center" label="备注">
+                <template>
+                    <span>无</span>
+                </template>
+            </el-table-column>
+        </el-table>
+        <!-- 详细信息弹窗 -->
+        <div class="dialog-box">
+            <el-dialog :visible.sync="detialInfoVisible" width="450px">
+                <div slot="title" style="padding: 20px;">
+                    日志详情
+                    <i
+                        class="el-icon-document-copy"
+                        style="color: #58a4f3;"
+                    ></i>
                 </div>
-              </el-form-item>
-              <el-form-item label="操作人标识">
-                <div class="table-td">
-                 {{detialInfo.actionUid}}
+                <el-form inline style="width: 100%;" label-width="110px">
+                    <el-form-item label="操作日期">
+                        <div class="table-td">
+                            {{ detialInfo.actionTime }}
+                        </div>
+                    </el-form-item>
+                    <el-form-item label="操作人标识">
+                        <div class="table-td">
+                            {{ detialInfo.actionUid }}
+                        </div>
+                    </el-form-item>
+                    <el-form-item label="操作类型">
+                        <div class="table-td">
+                            <span v-if="detialInfo.actionType === 1"
+                                >信息新增</span
+                            >
+                            <span v-if="detialInfo.actionType === 2"
+                                >信息修改</span
+                            >
+                            <span v-if="detialInfo.actionType === 3"
+                                >信息删除</span
+                            >
+                        </div>
+                    </el-form-item>
+                    <el-form-item :label="detialInfo.entityTypeText + '标识'">
+                        <div class="table-td">
+                            {{ detialInfo.entityId }}
+                        </div>
+                    </el-form-item>
+                    <el-form-item label="操作详情">
+                        <div class="table-td">
+                            <p>{{ detialInfo.changeContent }}</p>
+                        </div>
+                    </el-form-item>
+                </el-form>
+                <div slot="footer" class="dialog-footer">
+                    <el-button
+                        type="primary"
+                        @click="detialInfoVisible = false"
+                        width="120px"
+                        >确 定</el-button
+                    >
                 </div>
-              </el-form-item>
-              <el-form-item label="操作类型" >
-                <div class="table-td">
-                  <span v-if="detialInfo.actionType === 1">信息新增</span>
-                  <span v-if="detialInfo.actionType === 2">信息修改</span>
-                  <span v-if="detialInfo.actionType === 3">信息删除</span>
-                </div>
-              </el-form-item>
-              <el-form-item :label="detialInfo.entityTypeText+'标识'">
-                <div class="table-td">
-                  {{detialInfo.entityId }}
-                </div>
-              </el-form-item>
-              <el-form-item label="操作详情">
-                <div class="table-td">
-                 <p> {{detialInfo.changeContent }}</p>
-                </div>
-              </el-form-item>
-            </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="detialInfoVisible = false" width="120px">确 定</el-button>
+            </el-dialog>
         </div>
-      </el-dialog>
     </div>
-</div>
 </template>
 
 <script>
-import handleTable from '@src/mixins/handle-table'
-import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
-import { api, urlNames } from '@src/api'
+import handleTable from "@src/mixins/handle-table";
+import handleBreadcrumb from "@src/mixins/handle-breadcrumb.js";
+import { api, urlNames } from "@src/api";
 export default {
-  mixins: [handleTable, handleBreadcrumb],
-  name: 'OperateLog',
-  data () {
-    return {
-      logList: [],
-      detialInfoVisible: false,
-      detialInfo: {
-        id: '',
-        actionUserName: '',
-        actionType: '',
-        actionTime: '',
-        changeContent: '',
-        entityId: '',
-        entityType: '',
-        entityTypeText: ''
-      }
-    }
-  },
-  created () {
-    this.findEntityChangeLoggerList(this.$route.params.id, this.$route.query.type, 1, 10)
-  },
-  mounted () {
-    this.pushBreadcrumb({
-      name: `${this.$route.query.title}日志`,
-      parent: {
-        name: 'OrganizationContent',
-        params: {
-          nodeId: this.$route.query.nodeId
-        },
-        query: {
-          type: 'back'
-        }
-      }
-    })
-  },
-  methods: {
-    findEntityChangeLoggerList (id, type, page, limit) {
-      // 原有的节点类型和日志类型不匹配，由后台改为保持一致，不用再修正节点类型
-      /* if (type === 2) {
+    mixins: [handleTable, handleBreadcrumb],
+    name: "OperateLog",
+    data() {
+        return {
+            logList: [],
+            detialInfoVisible: false,
+            detialInfo: {
+                id: "",
+                actionUserName: "",
+                actionType: "",
+                actionTime: "",
+                changeContent: "",
+                entityId: "",
+                entityType: "",
+                entityTypeText: "",
+            },
+        };
+    },
+    created() {
+        this.findEntityChangeLoggerList(
+            this.$route.params.id,
+            this.$route.query.type,
+            1,
+            10
+        );
+    },
+    mounted() {
+        this.pushBreadcrumb({
+            name: `${this.$route.query.title}日志`,
+            parent: {
+                name: "OrganizationContent",
+                params: {
+                    nodeId: this.$route.query.nodeId,
+                },
+                query: {
+                    type: "back",
+                },
+            },
+        });
+    },
+    methods: {
+        findEntityChangeLoggerList(id, type, page, limit) {
+            // 原有的节点类型和日志类型不匹配，由后台改为保持一致，不用再修正节点类型
+            /* if (type === 2) {
         type = 3
       } else if (type === 3) {
         type = 2
       } */
-      api[urlNames['findEntityChangeLoggerList']]({
-        entityType: type,
-        entityId: id,
-        page: page,
-        limit: limit
-      }).then((res) => {
-        if (res.status === 0) {
-          this.logList = res.data
-        }
-      }, (error) => {
-      })
-    },
+            api[urlNames["findEntityChangeLoggerList"]]({
+                entityType: type,
+                entityId: id,
+                page: page,
+                limit: limit,
+            }).then(
+                (res) => {
+                    if (res.status === 0) {
+                        this.logList = res.data;
+                    }
+                },
+                (/* error */) => {}
+            );
+        },
 
-    // 查看详情
-    findInfo (data) {
-      api[urlNames['getEntityChangeLoggerDetail']]({
-        id: data.id,
-        entityType: data.entityType,
-        entityId: data.entityId
-      }).then((res) => {
-        if (res) {
-          this.detialInfo = res.data
-        }
-      }, (error) => {
-      })
-      this.detialInfoVisible = true
-    }
-  }
-}
+        // 查看详情
+        findInfo(data) {
+            api[urlNames["getEntityChangeLoggerDetail"]]({
+                id: data.id,
+                entityType: data.entityType,
+                entityId: data.entityId,
+            }).then(
+                (res) => {
+                    if (res) {
+                        this.detialInfo = res.data;
+                    }
+                },
+                (/* error */) => {}
+            );
+            this.detialInfoVisible = true;
+        },
+    },
+};
 </script>
 
 <style scoped lang="less">
 @import "./index";
 .empty {
-  p {
-    margin: 0;
-    font-size: 0px;
-    text-align: center;
-    line-height: 16px!important;
-  }
+    p {
+        margin: 0;
+        font-size: 0px;
+        text-align: center;
+        line-height: 16px !important;
+    }
 
-  span {
-    font-size: 12px;
-  }
+    span {
+        font-size: 12px;
+    }
 }
 
 .data-pic {
-  padding-top: 20px;
-  width: 60px;
-  height: auto;
+    padding-top: 20px;
+    width: 60px;
+    height: auto;
 }
 </style>
