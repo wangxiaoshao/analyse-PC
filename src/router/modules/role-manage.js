@@ -23,7 +23,6 @@ export default [
     // 角色管理
     {
         path: "/role-manage",
-        name: "RoleManage",
         component: RoleManage,
         meta: {
             key: "menuRoles",

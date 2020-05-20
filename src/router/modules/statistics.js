@@ -60,7 +60,6 @@ export default [
     {
         // 单位查询
         path: "/unit-query",
-        name: "UnitQuery",
         component: UnitQuery,
         meta: {
             key: "menuSearchOrg",
@@ -83,7 +82,6 @@ export default [
     {
         // 内设机构查询
         path: "/department-query",
-        name: "DepartmentQuery",
         component: DepartmentQuery,
         meta: {
             key: "menuSearchDepartment",
@@ -106,7 +104,6 @@ export default [
     {
         // 人员查询
         path: "/member-query",
-        name: "MemberQuery",
         component: MemberQuery,
         meta: {
             key: "menuSearchUser",

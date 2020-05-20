@@ -88,7 +88,6 @@ export default [
     {
         // 待我审核
         path: "/wait-approval",
-        name: "WaitApproval",
         component: WaitApproval,
         children: [
             {
@@ -128,7 +127,6 @@ export default [
     {
         // 我已审核
         path: "/approved",
-        name: "Approved",
         component: Approved,
         meta: {
             key: "menuAudited",
@@ -168,7 +166,6 @@ export default [
     {
         // 我的申请
         path: "/my-application",
-        name: "MyApplication",
         component: MyApplication,
         meta: {
             key: "menuMyAudit",
@@ -208,7 +205,6 @@ export default [
     {
         // 信息确认
         path: "/confirm-info",
-        name: "ConfirmInfo",
         component: ConfirmInfo,
         meta: {
             key: "menuOrgConfirm",

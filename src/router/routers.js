@@ -4,7 +4,6 @@ import share from "./modules/share";
 import statistics from "./modules/statistics";
 import system from "./modules/system";
 import roleManage from "./modules/role-manage";
-import addressbook from "./modules/addressbook";
 import addresslist from "./modules/addresslist";
 import homePage from "./modules/homePage";
 import certification from "./modules/certification";
@@ -49,7 +48,6 @@ export default [
     ...statistics,
     ...system,
     ...share,
-    ...addressbook,
     ...roleManage,
     ...addresslist,
     ...homePage,
