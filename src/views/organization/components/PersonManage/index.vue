@@ -181,21 +181,22 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="15">
+        <el-col :span="12">
           <el-form-item label="身份证号" prop="idcard">
             <el-input
               placeholder="请输入内容"
               :disabled="isDefaultFlag"
               v-model="userDetail.idcard"
               @input="showIptMsg('idcard')"
+              @blur="idAutherntication"
             >
-              <el-button
+              <!-- <el-button
                 slot="append"
                 v-if="!disabledFlag"
                 type="success"
                 class="form-btn1"
                 @click="idAutherntication"
-              >点击实名认证</el-button>
+              >点击实名认证</el-button> -->
             </el-input>
             <div class="el-form-item__error" v-show="this.iptMsgVisible['idcard']">{{iptMsgInfoStr}}</div>
             <p style="color:#8c939d" class="el-form-item__error" v-if="isShowMsg">如果不录入不影响新帐号创建</p>

@@ -1,17 +1,6 @@
 <template>
   <div  class="homePage">
-     <div class="homeContent" v-if="hasRight('viewBasicInformation')">
-      <div  class="userInfo">
-        <div class="noticeInfo">
-          <!-- <span class="userImg">
-            <i class="el-icon-user"></i>
-          </span> -->
-          <div>
-            <p>欢迎您，您是今天第&nbsp;<b><big>{{loginNumber}}</big></b>&nbsp;个登录的用户！</p>
-          </div>
-        </div>
-      </div>
-    </div>
+    <p style="display:inline-block; margin-bottom:30px; margin-left:25px;">欢迎您，您是今天第&nbsp;<b><big>{{loginNumber}}</big></b>&nbsp;个登录的用户！</p>
      <div class="homeContent" v-if="hasRight('viewCommissionMatters')">
       <div class="header-title">待办事项</div>
       <div  class="notice">
