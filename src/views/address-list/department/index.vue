@@ -57,7 +57,7 @@
           </div>
         </template>
         <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
-        <el-table-column prop="name" label="所有下级" width="180px">
+        <el-table-column prop="name" label="下级机构及人员" width="180px">
           <template slot-scope="scope">
             <span>
               <span class="iconfont iconzuzhijigou nodeColor" v-if="scope.row.nodeType === 1"></span>
@@ -71,7 +71,7 @@
             <span style="margin-left:5px" v-else>{{scope.row.name}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="name" label="下级类型" align="center">
+        <el-table-column prop="name" label="类型" align="center">
           <template slot-scope="scope">
             <span v-if="scope.row.nodeType==1">节点</span>
             <span v-if="scope.row.nodeType==2">单位</span>
@@ -79,7 +79,7 @@
             <span v-if="!scope.row.nodeType">个人</span>
           </template>
         </el-table-column>
-        <el-table-column prop="phone" label="联系方式" align="center" width="140px">
+        <el-table-column prop="phone" label="手机号码" align="center" width="140px">
           <template slot-scope="scope">
             <!-- <span>{{scope.row.phone=='' ||!scope.row.phone ?'无':scope.row.phone}}</span> -->
             <span>{{scope.row.phone || scope.row.mobile || '无'}}</span>
@@ -99,7 +99,27 @@
             >查看</el-button>
           </template>
         </el-table-column>
-        <el-table-column label="下级" align="center">
+        <el-table-column prop="phone" label="座机号码" align="center" width="140px">
+          <template slot-scope="scope">
+            <!-- <span>{{scope.row.phone=='' ||!scope.row.phone ?'无':scope.row.phone}}</span> -->
+            <span>{{scope.row.officePhone || '无'}}</span>
+            <el-button
+              type="text"
+              v-if="scope.row.phone&&scope.row.phone!='' && !scope.row.isLooked"
+              class="findMobileBtn"
+              :disabled="visableData.userPhone==0&&scope.row.nodeType==3"
+              @click="findPhone(scope.row.nodeType,scope.row.bindId,2,scope.$index)"
+            >查看</el-button>
+            <el-button
+              type="text"
+              v-if="scope.row.mobile&&scope.row.mobile!='' && !scope.row.isLooked"
+              class="findMobileBtn"
+              :disabled="visableData.userMobile==0"
+              @click="findMobileById(scope.row.uid,scope.$index,1)"
+            >查看</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" align="center">
           <template slot-scope="scope">
             <!-- <i class="el-icon-share"></i> -->
 
@@ -107,7 +127,7 @@
             <span v-else class="findMobileBtn" @click="childClick(scope.row)">查看下级</span>
           </template>
         </el-table-column>
-        <el-table-column prop label="备注" align="center"></el-table-column>
+
       </el-table>
     </div>
     <div class="no-right" v-if="visableData.allOrgInfo==0" style="text-align:center;">

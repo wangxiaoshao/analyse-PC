@@ -11,6 +11,9 @@
         <el-tab-pane label="共享日志"  v-if="hasRight('systemLogingPushAccess')">
           <push-log></push-log>
         </el-tab-pane>
+        <el-tab-pane label="通讯录日志" >
+         <personal-log :loginLog='5'></personal-log>
+        </el-tab-pane>
       </el-tabs>
     </div>
   </div>
