@@ -12,6 +12,11 @@
       >
         <el-button slot="append" icon="el-icon-search"></el-button>
       </el-input>
+      <div class="tip">
+        <p v-if="this.addInfo.type === 1">单位标签</p>
+        <p v-else-if="this.addInfo.type === 2">内设机构标签</p>
+        <p v-else-if="this.addInfo.type === 3">人员标签</p>
+      </div>
       <div class="tag-content" v-loading="loading">
         <el-checkbox-group
           v-model="checkTagGroup"

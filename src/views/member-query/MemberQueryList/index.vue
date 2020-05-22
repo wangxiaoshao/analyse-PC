@@ -1,5 +1,13 @@
 <template>
   <div class="site-module mod-dictionary">
+    <search-lable
+      :openSearchFlag="openSearchFlag"
+      :addInfo="addInfo"
+      @close="getClose"
+      @getTag="getTag"
+      :delSelectLabelId="delSelectLabelId"
+    ></search-lable>
+
     <!--操作row-->
     <el-row class="operator-row">
       <el-col :span="24">
@@ -26,30 +34,33 @@
     <el-row class="operator-row">
       <el-col :span="24">
         <el-row :gutter="10" type="flex">
-         
+
           <el-col :span="5">
             <el-input placeholder="所属内设机构" v-model="searchQuery.deptName" clearable>
             </el-input>
           </el-col>
-          <el-col :span="5">
-            <el-autocomplete
-              v-model="searchQuery.labelName"
-              :trigger-on-focus=triggerOnFocus
-              :fetch-suggestions="querySearchAsync"
-              @input="inputClear"
-              placeholder="标签"
-              @select="handleSelect">
-              <template slot-scope="{ item }">
-                <div class="name">{{ item.name }}</div>
-              </template>
-            </el-autocomplete>
+          <el-col :span="2">
+            <el-button type="primary" plain @click="openSearchFlag = true"
+            >标签</el-button>
           </el-col>
-           <el-col :span="1" class="text-right">
+           <el-col :span="2" class="text-left">
             <el-button type="primary" plain @click="getGrid"
               :disabled="!hasRight('searchUser')"
             >查询</el-button>
           </el-col>
         </el-row>
+      </el-col>
+    </el-row>
+    <el-row class="operator-row" :span="24">
+      <el-col :span="24">
+        <el-tag
+          v-for="tag in selectedTags"
+          :key="tag.name"
+          closable
+          type="info"
+          @close="handleClose(tag)">
+          {{tag.name}}
+        </el-tag>
       </el-col>
     </el-row>
     <!--表格-->
@@ -82,12 +93,20 @@ import tableConfig from './tableConfig'
 import { api, urlNames } from '@src/api'
 import { mapState, mapMutations } from 'vuex'
 import HasRight from '@src/mixins/has-right'
+import searchLable from '@src/views/organization/components/AddTags/index.vue'
 
 export default {
-  components: { SiteTable },
+  components: { SiteTable, searchLable },
   mixins: [handleTable, HasRight],
   data () {
     return {
+      openSearchFlag: false,
+      delSelectLabelId: null,
+      addInfo: {
+        searchFlag: false,
+        type: 3 // 1.单位，2、内设机构，3、人员
+      },
+      selectedTags: [],
       tableConfig,
       searchQuery: {
         name: '',
@@ -146,6 +165,28 @@ export default {
       }, () => {
         return []
       })
+    },
+    getClose () {
+      this.openSearchFlag = false
+    },
+    getTag (selectedTagList) {
+      this.selectedTags = []
+      let tmpLabel = []
+      selectedTagList.forEach(item => {
+        this.selectedTags.push({
+          name: item.split('|')[1]
+        })
+        tmpLabel.push(item.split('|')[1])
+      })
+      this.searchQuery.labelName = tmpLabel.join(',')
+    },
+    handleClose (tag) {
+      this.selectedTags.splice(this.selectedTags.indexOf(tag), 1)
+      let tmpLabel = []
+      this.selectedTags.forEach(item => {
+        tmpLabel.push(item.name)
+      })
+      this.searchQuery.labelName = tmpLabel.join(',')
     },
     createStateFilter (queryString) {
       return (state) => {
