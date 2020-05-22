@@ -3,29 +3,12 @@
      <div class="homeContent" v-if="hasRight('viewBasicInformation')">
       <div  class="userInfo">
         <div class="noticeInfo">
-          <span class="userImg">
+          <!-- <span class="userImg">
             <i class="el-icon-user"></i>
-          </span>
+          </span> -->
           <div>
-            <p>{{userIdentityInfo.userName}}</p>
-            <p>欢迎您，您是今天第{{loginNumber}}个登录用户！</p>
+            <p>欢迎您，您是今天第&nbsp;<b><big>{{loginNumber}}</big></b>&nbsp;个登录的用户！</p>
           </div>
-        </div>
-        <div class="noticeInfo">
-          <ul>
-            <li>
-              <span>所属单位</span>
-              <span>|</span>
-            <span>{{userIdentityInfo.organizationName||'无'}}</span></li>
-            <li><span>职位</span>
-            <span>|</span>
-            <span>{{userIdentityInfo.dutyName||'无'}}</span></li>
-            <li><span>身份类型</span>
-            <span>|</span>
-            <span>{{ userIdentityInfo.type&&userIdentityInfo.type!==null&&userIdentityInfo.type!==''? filterType(userIdentityInfo.type):'无'}}</span>
-            </li>
-          </ul>
-          <div  @click="goPersonalPage">完善信息</div>
         </div>
       </div>
     </div>
@@ -353,7 +336,7 @@ export default {
       let typeList = this.userTypeOptions.filter(item => item.value === val)
       return typeList.length>0 ? typeList[0].text :'无'
     },
-  
+
 
     goPersonalPage () {
       this.$router.push('/pass-change')
