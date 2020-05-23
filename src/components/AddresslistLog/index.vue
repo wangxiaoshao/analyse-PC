@@ -42,12 +42,12 @@
          </el-form-item>
          <el-form-item>
              <span class="title">手机号  </span>
-                <el-input  placeholder="请输入手机号" v-model="logParam.mobile" @blur="iptChange" prefix-icon="el-icon-search" style="width:160px"></el-input>
+                <el-input  placeholder="请输入手机号" v-model="logParam.mobile" @blur="iptChange" clearable prefix-icon="el-icon-search" style="width:160px"></el-input>
               </el-select>
          </el-form-item>
           <el-form-item>
            <span class="title">关键词 </span>
-            <el-input  placeholder="请输入搜索关键词" v-model="logParam.keyword" @blur="iptChange" prefix-icon="el-icon-search" style="width:160px"></el-input>
+            <el-input  placeholder="请输入搜索关键词" v-model="logParam.keyword" @blur="iptChange" clearable prefix-icon="el-icon-search" style="width:160px"></el-input>
           </el-form-item>
           <el-form-item>
            <el-button type="primary" @click="findCondition">查询</el-button>
