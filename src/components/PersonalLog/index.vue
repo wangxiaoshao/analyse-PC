@@ -57,7 +57,7 @@
          </el-form-item>
           <el-form-item v-if="showFindBtn && loginLog===2">
            <span class="title">关键词 </span>
-            <el-input  placeholder="请输入搜索关键词" v-model="logParam.name" @blur="iptChange" prefix-icon="el-icon-search" style="width:160px"></el-input>
+            <el-input  placeholder="请输入搜索关键词" v-model="logParam.name" @blur="iptChange" clearable prefix-icon="el-icon-search" style="width:160px"></el-input>
           </el-form-item>
           <el-form-item v-if="showFindBtn">
            <el-button type="primary" @click="findCondition">查询</el-button>

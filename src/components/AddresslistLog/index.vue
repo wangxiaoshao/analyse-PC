@@ -42,12 +42,12 @@
          </el-form-item>
          <el-form-item>
              <span class="title">手机号  </span>
-                <el-input  placeholder="请输入手机号" v-model="logParam.mobile" @blur="iptChange" prefix-icon="el-icon-search" style="width:160px"></el-input>
+                <el-input  placeholder="请输入手机号" v-model="logParam.mobile" @blur="iptChange" clearable prefix-icon="el-icon-search" style="width:160px"></el-input>
               </el-select>
          </el-form-item>
           <el-form-item>
            <span class="title">关键词 </span>
-            <el-input  placeholder="请输入搜索关键词" v-model="logParam.name" @blur="iptChange" prefix-icon="el-icon-search" style="width:160px"></el-input>
+            <el-input  placeholder="请输入搜索关键词" v-model="logParam.keyword" @blur="iptChange" clearable prefix-icon="el-icon-search" style="width:160px"></el-input>
           </el-form-item>
           <el-form-item>
            <el-button type="primary" @click="findCondition">查询</el-button>
@@ -205,7 +205,8 @@ export default {
         selectValue: '',
         dateType: '',
         actionType: '',
-        name: ''
+        name: '',
+        keyword: ''
       },
 
       pickerOptions: {
@@ -307,11 +308,13 @@ export default {
         timeType: this.logParam.dateType === 'month' ? 4 : 0, // 后端需要传输的数据类型 月份type：4 || 天：0
         mobile: this.logParam.mobile,
         page: this.page.current,
-        limit: this.page.limit
+        limit: this.page.limit,
+        keyword: this.logParam.keyword
       }
       // console.log('this.date：',this.date)
       if (Array.isArray(this.date)) {
         data.date = [this.date[0], this.date[1]]
+        data.timeType = -1
       } else {
         data.date = [this.date]
       }
