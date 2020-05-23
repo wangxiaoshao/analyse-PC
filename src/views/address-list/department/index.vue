@@ -197,7 +197,7 @@ export default {
       })
     },
     findMobileById (uid, index, state) {
-      api[urlNames['findMobileById']]({ uid }).then(res => {
+      api[urlNames['findMobileById']]({ uid, type: state }).then(res => {
         if (res && state === 1) {
           this.departmentList[index].mobile = res.data.mobile
           this.departmentList[index].isLooked = true

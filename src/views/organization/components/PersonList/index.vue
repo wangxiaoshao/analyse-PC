@@ -121,7 +121,7 @@
           <span
             v-if="scope.row.mobile&&scope.row.mobile!=''&&scope.row.mobile!='无' && (scope.row.uid !== activeId)"
             class="findMobileBtn"
-            @click="findMobileById(scope.row.uid)"
+            @click="findMobileById(scope.row.uid,1)"
           >查看</span>
         </template>
       </el-table-column>
@@ -149,14 +149,14 @@
             :disabled="!hasRight('userIdTransfe')"
           >调出</el-button>
           <el-button
-            v-if="scope.row.type === 1 || scope.row.type === '1'"
+            v-if="scope.row.type === 2 || scope.row.type === '2'"
             @click.native.prevent="removeDuty(scope.row)"
             type="text"
             size="small"
             class="btnMar"
           >解除兼职</el-button>
           <el-button
-            v-if="scope.row.type === 2 || scope.row.type === '2'"
+            v-if="scope.row.type === 3 || scope.row.type === '3'"
             @click.native.prevent="removeDuty(scope.row)"
             type="text"
             size="small"
@@ -282,10 +282,10 @@ export default {
     hideMobile (phone) {
       return (phone + '').replace(/^(.{3})(?:\d+)(.{4})$/, '$1****$2')
     },
-    findMobileById (uid) {
+    findMobileById (uid, state) {
       // debugger
       this.activeId = uid
-      api[urlNames['findMobileById']]({ uid }).then(res => {})
+      api[urlNames['findMobileById']]({ uid, type: state }).then(res => {})
     },
     getGrid () {
       // this.cancelSort()
@@ -488,8 +488,8 @@ export default {
     removeDuty (row) {
       this.removeFlag = true
       this.$emit('cancel', false)
-      this.identityName = row.type === 1 ? '兼职' : '挂职'
-      this.identityTitle = row.type === 1 ? '填写解除兼职说明' : '填写解除挂职说明'
+      this.identityName = row.type === 2 ? '兼职' : '挂职'
+      this.identityTitle = row.type === 2 ? '填写解除兼职说明' : '填写解除挂职说明'
       this.ruleForm.identityId = row.identityId
       // this.ruleForm.type = row.type
     },

@@ -391,6 +391,7 @@ export default {
     this.setBreadcrumbTitle()
   },
   created () {
+    console.log(this.$route.params, 99999)
     this.init()
     this.initIptMsgVisible()
   },
@@ -641,6 +642,12 @@ export default {
     },
     submitForm (ruleForm) {
       //  || this.ruleForm.organization.creditId == ''
+      if (this.$route.params.nodeType === 1) {
+        this.ruleForm.organization.parentId = '-1'
+      } else {
+        this.ruleForm.organization.parentId = this.$route.params.parentId
+      }
+
       if (this.successVisiable || this.ruleForm.organization.creditId == '') {
         this.ruleForm.organization.removed = this.ruleForm.organization.removed
           ? 0
