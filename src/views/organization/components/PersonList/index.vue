@@ -121,7 +121,7 @@
           <span
             v-if="scope.row.mobile&&scope.row.mobile!=''&&scope.row.mobile!='无' && (scope.row.uid !== activeId)"
             class="findMobileBtn"
-            @click="findMobileById(scope.row.uid)"
+            @click="findMobileById(scope.row.uid,1)"
           >查看</span>
         </template>
       </el-table-column>
@@ -282,10 +282,10 @@ export default {
     hideMobile (phone) {
       return (phone + '').replace(/^(.{3})(?:\d+)(.{4})$/, '$1****$2')
     },
-    findMobileById (uid) {
+    findMobileById (uid, state) {
       // debugger
       this.activeId = uid
-      api[urlNames['findMobileById']]({ uid }).then(res => {})
+      api[urlNames['findMobileById']]({ uid , type: state }).then(res => {})
     },
     getGrid () {
       // this.cancelSort()

@@ -53,13 +53,14 @@ export default {
   methods: {
     findMobile (state) {
       api[urlNames['findMobileById']]({
-        uid: this.personInfoList.uid
+        uid: this.personInfoList.uid,
+        type: state
       }).then(res => {
-        if (res && state == 1) {
+        if (res && state === 1) {
           this.personInfoList.mobile = res.data.mobile
           this.personInfoList.isLooked = true
         }
-        if (res && state == 2) {
+        if (res && state === 2) {
           this.personInfoList.officePhone = res.data.officePhone
           this.personInfoList.isOfficePhone = true
         }
