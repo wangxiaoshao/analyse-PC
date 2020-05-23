@@ -220,6 +220,7 @@ export default {
   importUser: 'importUser', // 导入用户
   logoutUrl: 'logoutUrl', // 登出地址
   deleteViewAdmin: 'deleteViewAdmin', // 删除视图管理员
+  deleteApplicationAdmin:'deleteApplicationAdmin',//删除应用管理员
   deleteUserLabelOrDeptLabelOrOrgLabel: 'deleteUserLabelOrDeptLabelOrOrgLabel', // 删除单位/人员/内设机构绑定标签
   searchMember: 'searchMember', // 选人组件搜索人员
   deleteAppBindAccount: 'deleteAppBindAccount',

@@ -230,6 +230,7 @@ export default {
     this.init(to.query.type)
   },
   created () {
+    console.log(this.$route.query, 9999)
     this.init(this.$route.query.type)
   },
   methods: {

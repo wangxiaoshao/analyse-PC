@@ -391,7 +391,7 @@ export default {
     this.setBreadcrumbTitle()
   },
   created () {
-    console.log(this.$route.params, 99999)
+    console.log(this.$route.params, 'params')
     this.init()
     this.initIptMsgVisible()
   },

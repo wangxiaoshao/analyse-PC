@@ -245,6 +245,7 @@ export default {
     this.setBreadcrumbTitle()
   },
   created () {
+    console.log(this.$route.params, 'params44444')
     this.init()
     this.initIptMsgVisible()
   },
@@ -446,7 +447,6 @@ export default {
       this.ruleForm.areaId = val
     },
     submitForm (ruleForm) {
-      console.log(this.$route.params, 'rrrrrr')
       if (this.$route.params.nodeType === 2) {
         this.ruleForm.department.parentDep = '-1'
       } else {

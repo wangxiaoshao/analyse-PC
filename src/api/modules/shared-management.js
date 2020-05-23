@@ -117,6 +117,7 @@ export default {
     serve: 'organizationManagePC',
     keepOriginResponse: false
   },
+ 
   /**
    创建应用
    */
@@ -171,6 +172,16 @@ export default {
     keepOriginResponse: true,
     // showLoading: true,
     serve: 'organizationManagePC'
+  },
+   
+  /**
+   * 删除应用管理员
+   */
+  [urlNames.deleteApplicationAdmin]: {
+    type: 'get',
+    url: '/api/jg_share/app/deleteApplicationAdmin',
+    serve: 'organizationManagePC',
+    keepOriginResponse: false
   },
   /**
    标签列表

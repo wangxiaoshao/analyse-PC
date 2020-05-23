@@ -103,9 +103,32 @@
           </div>
         </el-col>
       </el-row>
-      <el-form-item label="启用状态">
-        <el-switch v-model="appFrom.removed"></el-switch>
-      </el-form-item>
+
+        <el-row :gutter="80">
+          <el-col :span="12">
+            <el-form-item label="启用状态">
+                <el-switch v-model="appFrom.removed"></el-switch>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+           <el-form-item label="应用管理员" prop="roleBindUserId">
+                    <el-select
+                      v-model="appFrom.roleBindUserId"
+                      @remove-tag="removeManager"
+                      multiple
+                      placeholder="请选择"
+                    >
+                      <el-option
+                        v-for="item in adminList"
+                        :key="item.uid"
+                        :label="item.name"
+                        :value="item.uid"
+                      ></el-option>
+                    </el-select>
+                  </el-form-item>
+          </el-col>
+        </el-row>
+
       <el-form-item align="center">
         <el-button
           v-if="$route.query.id=== undefined"
@@ -144,6 +167,7 @@ export default {
     return {
       selectLoading: false,
       viewList: [],
+      returnViewId: this.$route.query.id || 0, 
       value: [],
       appFrom: {
         id: '',
@@ -155,8 +179,10 @@ export default {
         concatPhone: '',
         apiUrl: '',
         description: '',
-        removed: true
+        removed: true,
+        roleBindUserId: []
       },
+      adminList: [],
       oldAppFrom: {},
       rules: {
         name: [{ required: true, message: '请输入应用名称', trigger: 'blur' }],
@@ -172,19 +198,22 @@ export default {
           }
         ],
         viewId: [
-          { required: true, message: '请选择视图ID', trigger: 'change' }
+          { required: true, message: '请输入视图名称', trigger: 'change' }
         ],
         concatUser: [
           { required: true, message: '请输入应用名称', trigger: 'blur' }
         ],
         concatPhone: [
-          { required: true, message: '请输入应用名称', trigger: 'blur' }
+          { required: true, message: '请输入联系电话', trigger: 'blur' }
         ],
         apiUrl: [
-          { required: true, message: '请输入应用名称', trigger: 'blur' }
+          { required: true, message: '请输入数据同步接口', trigger: 'blur' }
         ],
         description: [
-          { required: true, message: '请输入应用名称', trigger: 'blur' }
+          { required: true, message: '请输入描述字段', trigger: 'blur' }
+        ],
+        roleBindUserId: [
+          { required: true, message: '请选择应用管理员', trigger: 'blur' }
         ]
       }
     }
@@ -201,6 +230,7 @@ export default {
     })
   },
   created () {
+    this.findViewAdmin()
     this.getViewList()
     if (this.$route.query.id !== undefined) {
       this.getAppDetail(this.$route.query.id)
@@ -228,6 +258,41 @@ export default {
         this.appFrom.apiPassword += lib[Math.floor(Math.random() * libLength)]
       }
     },
+    // 获取管理员列表
+    findViewAdmin () {
+      api[urlNames['findViewAdmin']]({}).then(res => {
+        if (res.status === 0) {
+          this.adminList = res.data
+        }
+      })
+    },
+    removeManager (uid) {
+      if (this.$route.params.id !== '0') {
+        this.$confirm('此操作将永久删除该管理员, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+          .then(() => {
+            api[urlNames['deleteApplicationAdmin']]({
+              applicationId: this.returnViewId,
+              uid: uid
+            }).then(res => {
+              if (res.status === 0) {
+                //  this.getAppDetail(this.$route.query.id)
+                this.$message.success('删除成功')
+              }
+            })
+          })
+          .catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消删除'
+            })
+          })
+      }
+    },
+
     toDataLog () {
       this.$router.push({ path: '/data-log' })
     },
@@ -279,7 +344,8 @@ export default {
         concatPhone: this.appFrom.concatPhone,
         apiUrl: this.appFrom.apiUrl,
         description: this.appFrom.description,
-        removed: this.appFrom.removed ? 0 : 1
+        removed: this.appFrom.removed ? 0 : 1,
+        roleBindUserId:this.appFrom.roleBindUserId
       }).then(res => {
         if (res.status === 0 && this.$route.query.id === undefined) {
           this.$message.success('创建成功')
@@ -289,6 +355,7 @@ export default {
       })
     },
     updateApp () {
+      console.log(this.appFrom.roleBindUserId,888888)
       api[urlNames['updateApp']]({
         id: this.appFrom.id,
         name: this.appFrom.name,
@@ -299,7 +366,8 @@ export default {
         concatPhone: this.appFrom.concatPhone,
         apiUrl: this.appFrom.apiUrl,
         description: this.appFrom.description,
-        removed: this.appFrom.removed ? 0 : 1
+        removed: this.appFrom.removed ? 0 : 1,
+        roleBindUserId:this.appFrom.roleBindUserId
       }).then(res => {
         if (res.status === 0) {
           this.$message.success('修改成功')
@@ -312,8 +380,16 @@ export default {
         id: id
       }).then(res => {
         this.appFrom = res.data
+        let tmpRoleBindUserId = []
+        this.appFrom.roleBindUserId.forEach(item => {
+          tmpRoleBindUserId.push(item.uid)
+        })
+        this.appFrom.roleBindUserId = tmpRoleBindUserId
+        let that = this
+        console.log(that.appFrom.roleBindUserId,99999)
+        
         this.appFrom.removed = !res.data.removed
-        this.oldAppFrom = JSON.parse(JSON.stringify(this.appFrom))
+        // this.oldAppFrom = JSON.parse(JSON.stringify(this.appFrom))
       })
     },
     // 搜索选择
