@@ -284,7 +284,8 @@ export default {
       this.$router.push({
         name: 'DepartmentAdd',
         params: {
-          parentId: this.$route.params.nodeId
+          parentId: this.$route.params.nodeId,
+          nodeType: this.$route.params.nodeType
         }
       })
     },
@@ -293,7 +294,8 @@ export default {
       this.$router.push({
         name: 'UnitAdd',
         params: {
-          parentId: this.content[0].id
+          parentId: this.content[0].id,
+          nodeType: this.content[0].nodeType
         }
       })
       this.visible = false

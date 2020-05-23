@@ -247,7 +247,6 @@ export default {
   created () {
     this.init()
     this.initIptMsgVisible()
-    console.log(this.$route.name)
   },
   beforeRouteUpdate (to, from, next) {
     next()
@@ -447,6 +446,12 @@ export default {
       this.ruleForm.areaId = val
     },
     submitForm (ruleForm) {
+      console.log(this.$route.params, 'rrrrrr')
+      if (this.$route.params.nodeType === 2) {
+        this.ruleForm.department.parentDep = '-1'
+      } else {
+        this.ruleForm.department.parentId = this.$route.params.parentId
+      }
       this.ruleForm.department.removed = this.ruleForm.department.removed
         ? 0
         : 1
