@@ -285,7 +285,7 @@ export default {
     findMobileById (uid, state) {
       // debugger
       this.activeId = uid
-      api[urlNames['findMobileById']]({ uid , type: state }).then(res => {})
+      api[urlNames['findMobileById']]({ uid, type: state }).then(res => {})
     },
     getGrid () {
       // this.cancelSort()
