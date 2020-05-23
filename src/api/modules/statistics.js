@@ -49,6 +49,18 @@ export default {
     serve: 'organizationManagePC'
 
   },
+  // 通讯录日志
+  [urlNames.findaddresslistLoggerList]: {
+    type: 'post',
+    url: '/api/jg_manage/logger/findTxlLogs',
+    keepOriginResponse: true,
+    showLoading: true,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    serve: 'organizationManagePC'
+
+  },
   // 登录日志列表
   // 获取首页接入昨日数据
   [urlNames.getStatistiscCount]: {

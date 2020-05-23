@@ -51,6 +51,7 @@ export default {
    */
   findLoggerApiAccessList: 'findLoggerApiAccessList',
   findLoggerApiAccessById: 'findLoggerApiAccessById',
+  findaddresslistLoggerList: 'findaddresslistLoggerList',
   // findLoggerById: 'findLoggerById'
   // 获取视图--机构树
   getViewTree: 'getViewTree',
