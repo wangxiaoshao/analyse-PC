@@ -14,15 +14,17 @@
         <el-col :span="12">
           <div class="grid-content bg-purple-light">
             <el-form-item label="绑定视图" prop="viewId">
-              <el-select
-                v-model="appFrom.viewId"
-                :remote-method="getViewList"
-                filterable
-                remote
-                reserve-keyword
-                placeholder="请输入视图名称"
-                :loading="selectLoading"
-              >
+              <el-row :gutter="10">
+                <el-col :span="15">
+                   <el-select
+                     v-model="appFrom.viewId"
+                    :remote-method="getViewList"
+                    filterable
+                    remote
+                    reserve-keyword
+                    placeholder="请输入视图名称"
+                    :loading="selectLoading"
+                  >
                 <el-option
                   v-for="item in viewList"
                   :key="item.id"
@@ -30,6 +32,13 @@
                   :value="item.id"
                 >{{item.name}}</el-option>
               </el-select>
+                </el-col>
+                 <el-col :span="8">
+                   <el-button  type="primary" title="前往添加新视图" @click="goAddNewView">添加新视图</el-button>
+                 </el-col>
+              </el-row>
+
+
             </el-form-item>
           </div>
         </el-col>
@@ -228,6 +237,9 @@ export default {
           this.viewList = res.data
         })
       }
+    },
+    goAddNewView () {
+      this.$router.push('/view-management/create-view/0')
     },
     onSubmit (ref) {
       this.$refs[ref].validate(valid => {
