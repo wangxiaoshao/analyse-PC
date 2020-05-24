@@ -40,6 +40,7 @@
             </el-input>
           </div>
          </el-form-item>
+         <br />
          <el-form-item>
            <span class="title">查询人 </span>
             <el-input  placeholder="请输入查询人" v-model="logParam.userName" @blur="iptChange" clearable prefix-icon="el-icon-search" style="width:160px"></el-input>
@@ -51,7 +52,6 @@
          <el-form-item>
              <span class="title">被查询手机号 </span>
                 <el-input  placeholder="请输入被查询手机号" v-model="logParam.mobile" @blur="iptChange" clearable prefix-icon="el-icon-search" style="width:160px"></el-input>
-              </el-select>
          </el-form-item>
           <el-form-item>
            <el-button type="primary" @click="findCondition">查询</el-button>
@@ -108,17 +108,20 @@
               label-width="130px"
               class="systemDetial"
             >
-              <el-form-item label="操作日期" >
+              <el-form-item label="时间" >
                 <div class="table-td">{{detialInfoForm.actionTime}}</div>
               </el-form-item>
-              <el-form-item label="操作人标识">
-                <div class="table-td">{{detialInfoForm.actionUid}}</div>
+              <el-form-item label="查询人">
+                <div class="table-td">{{detialInfoForm.userName}}</div>
               </el-form-item>
-              <el-form-item label="操作描述">
+              <el-form-item label="被查询人">
+                <div class="table-td">{{detialInfoForm.toUserName}}</div>
+              </el-form-item>
+              <el-form-item label="被查询手机号">
+                <div class="table-td">{{detialInfoForm.phone}}</div>
+              </el-form-item>
+              <el-form-item label="描述">
                 <div class="table-td" style="color:red;">{{detialInfoForm.description}}</div>
-              </el-form-item>
-              <el-form-item label="操作事件标识">
-                <div class="table-td">{{detialInfoForm.clientId}}</div>
               </el-form-item>
             </el-form>
         </template>
@@ -350,7 +353,7 @@ export default {
           actionTime: val.actionTime.slice(0, 10),
           id: val.id
         }
-        api[urlNames['findLoggerById']](info).then(
+        api[urlNames['findTxlLoggerById']](info).then(
           res => {
             Object.assign(this.detialInfoForm, res.data)
           },
