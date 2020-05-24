@@ -211,10 +211,10 @@ export default {
         ],
         description: [
           { required: true, message: '请输入描述字段', trigger: 'blur' }
-        ],
-        roleBindUserId: [
-          { required: true, message: '请选择应用管理员', trigger: 'blur' }
         ]
+        // roleBindUserId: [
+        //   { required: true, message: '请选择应用管理员', trigger: 'blur' }
+        // ]
       }
     }
   },
@@ -260,7 +260,7 @@ export default {
     },
     // 获取管理员列表
     findViewAdmin () {
-      api[urlNames['findViewAdmin']]({}).then(res => {
+      api[urlNames['findApplicationAdmin']]({}).then(res => {
         if (res.status === 0) {
           this.adminList = res.data
         }

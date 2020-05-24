@@ -173,13 +173,21 @@ export default {
     // showLoading: true,
     serve: 'organizationManagePC'
   },
-   
   /**
    * 删除应用管理员
    */
   [urlNames.deleteApplicationAdmin]: {
     type: 'get',
     url: '/api/jg_share/app/deleteApplicationAdmin',
+    serve: 'organizationManagePC',
+    keepOriginResponse: false
+  },
+  /**
+ * 获取应用管理员
+ */
+  [urlNames.findApplicationAdmin]: {
+    type: 'get',
+    url: '/api/jg_share/app/findApplicationAdmin',
     serve: 'organizationManagePC',
     keepOriginResponse: false
   },

@@ -328,7 +328,7 @@ export default {
       }
     }
   },
-  created() {
+  created () {
     this.getUserDetail(this.app.option.user.uid)
     this.getIdentity(this.app.option.user.identityId)
     // this.getAccountInfo()

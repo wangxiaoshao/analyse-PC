@@ -20,7 +20,8 @@
     <el-table-column prop="userName" label="人员姓名" align="center" ></el-table-column>
     <el-table-column prop="userIdType" label="身份类型" align="center" >
       <template slot-scope="scope">
-        <span>{{filterType(scope.row.userIdType)}}</span>
+        <!-- <span>{{filterType(scope.row.userIdType)}}</span> -->
+        <span>{{scope.row.userIdType}}</span>
       </template>
     </el-table-column>
     <el-table-column prop="month" label="确认月份" align="center" ></el-table-column>
@@ -118,9 +119,9 @@ export default {
       })
     },
      filterType (val) {
-      let typeList = this.userTypeOptions.filter(item => item.value == val)
+      let typeList = this.userTypeOptions.filter(item => item.value === val)
       return  typeList[0].text 
-    },
+    }
   }
 }
 </script>
