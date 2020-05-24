@@ -63,7 +63,7 @@ export default {
         name: '人员详情',
         parent: null
       },
-      isChange:false,
+      isChange: false,
       loading: false,
       breadcrumbTitle: '',
       isShowEditFlag: false,
@@ -112,14 +112,13 @@ export default {
           address: ''
         }
       },
-      oldPostDetail:{},
-      oldUserDetail:{},
-      isAudit:false
+      oldPostDetail: {},
+      oldUserDetail: {},
+      isAudit: false
     }
   },
   mounted () {
     this.setBreadcrumbTitle()
-     this.init()
   },
   created () {
     this.init()
@@ -144,9 +143,9 @@ export default {
               id: res.data.bindId
             }).then((res) => {
               this.userInfo.identity.orgId = res.data.id
-              this.oldPostDetail ={...this.userInfo.identity}
-              this.oldUserDetail={...this.userInfo.user}
-               this.oldUserInfo = JSON.parse(JSON.stringify(this.userInfo))
+              this.oldPostDetail = { ...this.userInfo.identity }
+              this.oldUserDetail = { ...this.userInfo.user }
+              this.oldUserInfo = JSON.parse(JSON.stringify(this.userInfo))
             }, (error) => {
               this.$message.error(`没有内容`)
             })
@@ -158,19 +157,17 @@ export default {
               this.userInfo.identity.departmentId = res.data.id
               this.userInfo.identity.orgId = res.data.orgId
               this.oldUserInfo.identity.orgId = res.data.orgId
-              this.oldPostDetail ={...this.userInfo.identity}
-              this.oldUserDetail={...this.userInfo.user}
+              this.oldPostDetail = { ...this.userInfo.identity }
+              this.oldUserDetail = { ...this.userInfo.user }
               this.oldUserInfo = JSON.parse(JSON.stringify(this.userInfo))
             }, (error) => {
               this.$message.error(`没有内容`)
             })
           }
           //  this.oldPostDetail={...this.userInfo.identity}
-
         }, (error) => {
           this.$message.error(`没有内容`)
         })
-
       } else {
         this.getUserDetail(this.$route.params.id)
         this.getIdentity()
@@ -200,7 +197,7 @@ export default {
         this.userInfo.user = doUserDetail
 
         this.userInfo.userId = res.data.uid
-        this.oldUserDetail={...this.userInfo.user}
+        this.oldUserDetail = { ...this.userInfo.user }
         this.getUserAccount(res.data.uid)
         this.findLabel(res.data.uid, 3)
 
@@ -234,7 +231,7 @@ export default {
         this.userInfo.identity.postName = res.data.postName
         this.userInfo.identity.type = parseInt(res.data.type)
         this.userInfo.identity.dutyName = res.data.dutyName
-        this.oldPostDetail ={...this.userInfo.identity}
+        this.oldPostDetail = { ...this.userInfo.identity }
         this.oldUserInfo = JSON.parse(JSON.stringify(this.userInfo))
       }, (error) => {
       })
@@ -248,21 +245,19 @@ export default {
       }, (error) => {
       })
     },
-    getUser (val,isAudit) { // 获取用户信息
+    getUser (val, isAudit) { // 获取用户信息
       this.userInfo.user = val
       this.stepTwoFlag = true
       this.stepOneFlag = false
       this.activeIndex = 1
       this.sendUserFlag = true
       // this.submitForm()
-      this.isAudit=isAudit
-
+      this.isAudit = isAudit
     },
     // 绑定身份
-    getPost (val,isAudit) {
+    getPost (val, isAudit) {
       this.userInfo.identity = val
-      this.isAudit=isAudit
-
+      this.isAudit = isAudit
     },
     // 获取账号
     getAccount (val) {
@@ -282,19 +277,18 @@ export default {
     // 保存createUser
     submitForm () {
       api[urlNames['createUser']](this.userInfo).then((res) => {
-        if(this.isAudit){
-             this.$alert('保存成功，待审核管理员审核通过后方生效', '保存成功', {
+        if (this.isAudit) {
+          this.$alert('保存成功，待审核管理员审核通过后方生效', '保存成功', {
             confirmButtonText: '确定',
             callback: action => {
-               this.goBack()
+              this.goBack()
             }
           })
-          }else{
-             this.$message.success(`保存成功`)
-              this.goBack()
-          }
+        } else {
+          this.$message.success(`保存成功`)
+          this.goBack()
+        }
         this.isExit = true
-
       }, (error) => {
         if (error) {
           this.isExit = false
@@ -302,7 +296,7 @@ export default {
         }
       })
     },
-    goBack(){
+    goBack () {
       this.$router.go(-1)
     },
     // TODO breadcrumb可采用组件传参的模式替换路由判断，将配置权交给调用方

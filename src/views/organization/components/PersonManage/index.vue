@@ -202,7 +202,7 @@
             <p style="color:#8c939d" class="el-form-item__error" v-if="isShowMsg">如果不录入不影响新帐号创建</p>
             <p v-if="idCardState.errorVisiable" class="el-form-item__error">
               <i class="el-icon-error"></i>
-              身份证号码与人员姓名不匹配。
+              身份证号码不正确。
             </p>
             <p style="color:green" v-if="idCardState.successVisiable" class="el-form-item__error">
               <i class="el-icon-success"></i>
@@ -609,7 +609,7 @@ export default {
     ...mapMutations(['SET_OPTION']),
 
     exportOrg () {
-      this.$emit('exportOrg',3)
+      this.$emit('exportOrg', 3)
     },
     findMobileIsSame (successCallback = null) {
       // console.log('mobile:',this.userDetail.mobile)

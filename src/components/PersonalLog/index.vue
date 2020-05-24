@@ -79,7 +79,11 @@
               <span>{{systemError}}</span>
             </template>
           </el-table-column> -->
-          <el-table-column prop="path" label="接口标识" align="center"></el-table-column>
+          <el-table-column prop="path" label="接口标识" align="center">
+            <template slot-scope="scope">
+              <span style="color:red">{{scope.row.path}}</span>
+            </template>
+          </el-table-column>
         </template>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
@@ -139,7 +143,7 @@
                  <div class="table-td">{{systemInfoForm.applicationName}}</div>
               </el-form-item>
               <el-form-item label="日志类型">
-                <div class="table-td">{{systemError}}</div>
+                <div class="table-td" style="color:red">{{systemError}}</div>
               </el-form-item>
               <el-form-item label="操作事件标识">
                 <div class="overline" :title="systemInfoForm.path">

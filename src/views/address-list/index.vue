@@ -51,6 +51,7 @@
               :visableData="visableData"
               v-if="showDep"
               @handle-child-click="handleChildClick"
+              @changeOfficeState='changeOfficeState'
             ></department>
             <member
               :table-data="memberList"
@@ -299,6 +300,15 @@ export default {
           }
         }
       })
+    },
+    changeOfficeState (index, state, val) {
+      if (state === 1) {
+        this.departmentList[index].mobile = val
+        this.departmentList[index].isLooked = true
+      } else {
+        this.departmentList[index].officePhone = val
+        this.departmentList[index].isOfficePhone = true
+      }
     },
 
     handleChildClick (node) {
