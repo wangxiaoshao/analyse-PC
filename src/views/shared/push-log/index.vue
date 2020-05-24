@@ -2,7 +2,7 @@
   <div class="push-log">
     <!-- 详细信息弹窗 -->
     <div class="dialog-box">
-      <el-dialog :visible.sync="detialInfoVisible" width="600px">
+      <el-dialog :visible.sync="detialInfoVisible" width="700px">
         <div slot="title" style="padding:20px">
           日志详情
           <i class="el-icon-document-copy" style="color:red"></i>
