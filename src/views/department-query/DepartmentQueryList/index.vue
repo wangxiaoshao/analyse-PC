@@ -12,16 +12,16 @@
     <el-row class="operator-row">
       <el-col :span="24">
         <el-row :gutter="10" type="flex">
-          <el-col :span="5">
+          <el-col :span="4">
             <el-input placeholder="内设机构名称" v-model="searchQuery.name"  @clear="clearSearch()" clearable>
             </el-input>
           </el-col>
-          <el-col :span="5">
+          <el-col :span="4">
             <el-input placeholder="所属单位" v-model="searchQuery.orgName"  @clear="clearSearch()" clearable>
             </el-input>
           </el-col>
-          <el-col :span="2">
-            <el-input placeholder="请选择标签" v-model="searchQuery.labelName"  @focus="openSearchFlag = true" clearable @clear="selectedTags = []">
+          <el-col :span="4">
+            <el-input placeholder="请选择标签" v-model="searchQuery.labelName"  @focus="openSearchFlag = true" clearable @clear="selectedTags = []" suffix-icon="el-icon-caret-bottom">
             </el-input>
           </el-col>
           <el-col :span="2" class="text-left">

@@ -24,8 +24,8 @@
             <el-input placeholder="上级名称" v-model="searchQuery.parentName"  @clear="clearSearch()" clearable>
             </el-input>
           </el-col>
-          <el-col :span="2">
-            <el-input placeholder="请选择标签" v-model="searchQuery.labelName"  @focus="openSearchFlag = true" clearable @clear="selectedTags = []">
+          <el-col :span="4">
+            <el-input placeholder="请选择标签" v-model="searchQuery.labelName"  @focus="openSearchFlag = true" clearable @clear="selectedTags = []" suffix-icon="el-icon-caret-bottom">
             </el-input>
           </el-col>
           <el-col :span="2" class="text-left">

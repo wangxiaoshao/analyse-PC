@@ -39,8 +39,8 @@
             <el-input placeholder="所属内设机构" v-model="searchQuery.deptName" clearable>
             </el-input>
           </el-col>
-          <el-col :span="2">
-            <el-input placeholder="请选择标签" v-model="searchQuery.labelName"  @focus="openSearchFlag = true" clearable @clear="selectedTags = []">
+          <el-col :span="5">
+            <el-input placeholder="请选择标签" v-model="searchQuery.labelName"  @focus="openSearchFlag = true" clearable @clear="selectedTags = []" suffix-icon="el-icon-caret-bottom">
             </el-input>
           </el-col>
            <el-col :span="2" class="text-left">
