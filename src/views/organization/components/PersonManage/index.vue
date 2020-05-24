@@ -42,11 +42,12 @@
         <el-col :span="12" styl="position: relative">
           <el-form-item label="姓名" prop="name">
             <el-popover placement="bottom-start" ref="popover" width="500">
+               <!-- :disabled="isDefaultFlag" -->
               <el-input
                 v-popover:popover
                 slot="reference"
                 placeholder="请输入姓名"
-                :disabled="isDefaultFlag"
+               
                 v-model="userDetail.name"
                 @blur="blur"
                 @input="loadSearch"
@@ -165,9 +166,10 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="手机号" prop="mobile">
+            <!-- :disabled="isDefaultFlag" -->
             <el-input
               placeholder="请输入手机号"
-              :disabled="isDefaultFlag"
+              
               v-model="userDetail.mobile"
               @input="showIptMsg('mobile')"
             ></el-input>
