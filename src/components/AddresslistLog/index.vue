@@ -115,7 +115,7 @@
                 <div class="table-td">{{detialInfoForm.actionUid}}</div>
               </el-form-item>
               <el-form-item label="操作描述">
-                <div class="table-td">{{detialInfoForm.description}}</div>
+                <div class="table-td" style="color:red;">{{detialInfoForm.description}}</div>
               </el-form-item>
               <el-form-item label="操作事件标识">
                 <div class="table-td">{{detialInfoForm.clientId}}</div>
