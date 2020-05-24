@@ -78,6 +78,7 @@ export default {
       accountList: [],
       oldUserInfo: {},
       fromLabelList: [],
+      isWriteType: true,
       userInfo: {
         userAccount: [], // 账户
         labelId: [],
@@ -195,6 +196,9 @@ export default {
         }
         let doUserDetail = Object.assign(this.userInfo.user, res.data)
         this.userInfo.user = doUserDetail
+        if (this.isWriteType === 2 || this.isWriteType === 3) {
+          this.userInfo.identity.type = this.isWriteType
+        }
 
         this.userInfo.userId = res.data.uid
         this.oldUserDetail = { ...this.userInfo.user }
@@ -264,7 +268,8 @@ export default {
       this.userInfo.userAccount = val
       this.submitForm()
     },
-    getUid (val) {
+    getUid (val, status) {
+      this.isWriteType = status
       this.getUserAccount(val)
       this.getUserDetail(val)
     },

@@ -725,7 +725,8 @@ export default {
     selectRow (val) {
       let uid = val.user.uid
       this.searchFlag = false
-      this.$emit('get-uid', uid)
+      console.log(val.status, 77777)
+      this.$emit('get-uid', uid,val.status)
       this.$emit('get-defauf', true)
     },
     // 搜索数据
