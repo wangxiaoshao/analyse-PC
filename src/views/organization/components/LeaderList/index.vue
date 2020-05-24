@@ -36,8 +36,8 @@
         <el-table-column label="头像">
           <template slot-scope="scope">
             <span class="person-pic">
-             <img v-if="scope.row.portraitUrl !== ''" :src="scope.row.portraitUrl">
-              <img src="@src/common/images/head-pic.png">
+              <img v-if="scope.row.portraitUrl && scope.row.portraitUrl!=='0'" :src="scope.row.portraitUrl">
+              <img v-else src="@src/common/images/head-pic.png">
             </span>
           </template>
         </el-table-column>
@@ -96,7 +96,7 @@
         <el-table-column label="头像">
           <template slot-scope="scope">
             <span class="person-pic">
-             <img v-if="scope.row.portraitUrl !== ''" :src="scope.row.portraitUrl">
+             <img v-if="scope.row.portraitUrl && scope.row.portraitUrl!=='0'" :src="scope.row.portraitUrl">
               <img v-else src="@src/common/images/head-pic.png">
             </span>
           </template>
