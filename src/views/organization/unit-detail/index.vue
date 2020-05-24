@@ -482,6 +482,7 @@ export default {
             this.ruleForm.organization.fax = res.data.fax
             this.ruleForm.organization.phone = res.data.phone
             this.ruleForm.organization.shortName = res.data.shortName
+            this.ruleForm.organization.otherName = res.data.otherName
             this.ruleForm.organization.systemType = res.data.systemType
             this.ruleForm.organization.type = res.data.type
             this.ruleForm.organization.zipCode = res.data.zipCode

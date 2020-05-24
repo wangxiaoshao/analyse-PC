@@ -113,7 +113,7 @@
         </template>
       </el-table-column>
       <el-table-column label="姓名" prop="name" align="center"></el-table-column>
-      <el-table-column label="身份" prop="name" align="center"></el-table-column>
+      <el-table-column label="身份类型" prop="typeText" align="center"></el-table-column>
       <!-- <el-table-column label="登录账号" prop="account"></el-table-column> -->
       <el-table-column label="职务" prop="duty" align="center"></el-table-column>
       <el-table-column label="手机号" width="150" align="center">
@@ -140,16 +140,14 @@
             type="text"
             size="small"
             class="btnMar"
-            :disabled="!hasRight('userSetting')"
-            v-if="scope.row.removed === 0"
+            :disabled="!hasRight('userSetting')||scope.row.removed===1"
           >修改</el-button>
           <el-button
             @click.native.prevent="calloutDialog(scope.row)"
             type="text"
             size="small"
             class="btnMar"
-            :disabled="!hasRight('userIdTransfe')"
-            v-if="scope.row.removed === 0"
+            :disabled="!hasRight('userIdTransfe')||scope.row.removed===1"
           >调出</el-button>
           <el-button
             v-if="scope.row.removed === 0 && (scope.row.type === 2 || scope.row.type === '2')"
@@ -157,6 +155,7 @@
             type="text"
             size="small"
             class="btnMar"
+            :disabled="scope.row.removed===1"
           >解除兼职</el-button>
           <el-button
             v-if="scope.row.removed === 0 && (scope.row.type === 3 || scope.row.type === '3')"
@@ -164,7 +163,7 @@
             type="text"
             size="small"
             class="btnMar"
-            :disabled="!hasRight('userIdRemove')"
+            :disabled="!hasRight('userIdRemove') || scope.row.removed===1"
           >解除挂职</el-button>
           <el-button @click.native="goSort(scope.row)" type="text" size="small" v-if="scope.row.removed === 0">排序</el-button>
         </template>

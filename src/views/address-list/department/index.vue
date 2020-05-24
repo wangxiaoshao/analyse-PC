@@ -92,30 +92,21 @@
             >查看</el-button>
             <el-button
               type="text"
-              v-if="scope.row.mobile&&scope.row.mobile!='' && !scope.row.isLooked"
+              v-if="scope.row.mobile&&scope.row.mobile!=''&&!scope.row.isLooked"
               class="findMobileBtn"
               :disabled="visableData.userMobile==0"
               @click="findMobileById(scope.row.uid,scope.$index,1)"
             >查看</el-button>
           </template>
         </el-table-column>
-        <el-table-column prop="phone" label="座机号码" align="center" width="140px">
+        <el-table-column prop="officePhone" label="座机号码" align="center" width="140px">
           <template slot-scope="scope">
-            <!-- <span>{{scope.row.phone=='' ||!scope.row.phone ?'无':scope.row.phone}}</span> -->
-            <span>{{scope.row.officePhone || '无'}}</span>
+            <span>{{!scope.row.isOfficePhone?hideMobile(scope.row.officePhone):scope.row.officePhone||'无'}}</span>
             <el-button
               type="text"
-              v-if="scope.row.phone&&scope.row.phone!='' && !scope.row.isLooked"
+              v-if="scope.row.officePhone&&scope.row.officePhone!=''&&scope.row.officePhone!='无'&&!scope.row.isOfficePhone"
               class="findMobileBtn"
-              :disabled="visableData.userPhone==0&&scope.row.nodeType==3"
-              @click="findPhone(scope.row.nodeType,scope.row.bindId,2,scope.$index)"
-            >查看</el-button>
-            <el-button
-              type="text"
-              v-if="scope.row.mobile&&scope.row.mobile!='' && !scope.row.isLooked"
-              class="findMobileBtn"
-              :disabled="visableData.userMobile==0"
-              @click="findMobileById(scope.row.uid,scope.$index,1)"
+              @click="findMobileById(scope.row.uid,scope.$index,2)"
             >查看</el-button>
           </template>
         </el-table-column>
@@ -199,14 +190,21 @@ export default {
     findMobileById (uid, index, state) {
       api[urlNames['findMobileById']]({ uid, type: state }).then(res => {
         if (res && state === 1) {
-          this.departmentList[index].mobile = res.data.mobile
-          this.departmentList[index].isLooked = true
-        }
-        if (res && state === 2) {
-          this.departmentList[index].officePhone = res.data.officePhone
-          this.departmentList[index].isOfficePhone = true
+          this.$emit('changeOfficeState', index, state, res.data.mobile)
+          // this.departmentList[index].mobile = res.data.mobile
+          // this.departmentList[index].isLooked = true
+        } else if (res && state === 2) {
+          this.$emit('changeOfficeState', index, state, res.data.officePhone)
+          // this.departmentList[index].officePhone = res.data.officePhone
         }
       })
+    },
+    hideMobile (phone) {
+      if (phone === '' || !phone || phone === undefined) {
+        return '无'
+      } else {
+        return (phone + '').replace(/^(.{3})(?:\d+)(.{4})$/, '$1****$2')
+      }
     }
   }
 }
