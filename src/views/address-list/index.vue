@@ -305,9 +305,9 @@ export default {
       if (state === 1) {
         this.departmentList[index].mobile = val
         this.departmentList[index].isLooked = true
-      } else {
+      } else if (state === 2) {
         this.departmentList[index].officePhone = val
-        this.departmentList[index].isOfficePhone = true
+        // this.departmentList[index].isOfficePhone = true
       }
     },
 

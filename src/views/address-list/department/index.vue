@@ -81,7 +81,6 @@
         </el-table-column>
         <el-table-column prop="phone" label="手机号码" align="center" width="140px">
           <template slot-scope="scope">
-            <!-- <span>{{scope.row.phone=='' ||!scope.row.phone ?'无':scope.row.phone}}</span> -->
             <span>{{scope.row.phone || scope.row.mobile || '无'}}</span>
             <el-button
               type="text"
@@ -90,7 +89,7 @@
               :disabled="visableData.userPhone==0&&scope.row.nodeType==3"
               @click="findPhone(scope.row.nodeType,scope.row.bindId,2,scope.$index)"
             >查看</el-button>
-            <el-button
+             <el-button
               type="text"
               v-if="scope.row.mobile&&scope.row.mobile!=''&&!scope.row.isLooked"
               class="findMobileBtn"
@@ -101,13 +100,13 @@
         </el-table-column>
         <el-table-column prop="officePhone" label="座机号码" align="center" width="140px">
           <template slot-scope="scope">
-            <span>{{!scope.row.isOfficePhone?hideMobile(scope.row.officePhone):scope.row.officePhone||'无'}}</span>
-            <el-button
-              type="text"
-              v-if="scope.row.officePhone&&scope.row.officePhone!=''&&scope.row.officePhone!='无'&&!scope.row.isOfficePhone"
-              class="findMobileBtn"
-              @click="findMobileById(scope.row.uid,scope.$index,2)"
-            >查看</el-button>
+            <span>{{scope.row.uid === activeId ? scope.row.officePhone:hideMobile(scope.row.officePhone) || '无'}}</span>
+          <el-button
+           type="text"
+            v-if="scope.row.officePhone&&scope.row.officePhone!=''&&scope.row.officePhone!='无' && (scope.row.uid !== activeId)"
+            class="findMobileBtn"
+            @click="findMobileById(scope.row.uid,scope.$index,2)"
+          >查看</el-button>
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center">
@@ -143,6 +142,8 @@ export default {
     //     userDetail
     //     depPhone
     return {
+      mobileActiveId: 0,
+      activeId: 0,
       status: 0,
       isShow: true,
       tableData: [],
@@ -188,6 +189,11 @@ export default {
       })
     },
     findMobileById (uid, index, state) {
+      if (state === 2) {
+        this.activeId = uid
+      } else {
+        this.mobileActiveId = uid
+      }
       api[urlNames['findMobileById']]({ uid, type: state }).then(res => {
         if (res && state === 1) {
           this.$emit('changeOfficeState', index, state, res.data.mobile)
