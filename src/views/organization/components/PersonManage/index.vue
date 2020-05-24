@@ -723,7 +723,7 @@ export default {
     },
     // 搜索表格点击当前行
     selectRow (val) {
-      let uid = val.uid
+      let uid = val.user.uid
       this.searchFlag = false
       this.$emit('get-uid', uid)
       this.$emit('get-defauf', true)
