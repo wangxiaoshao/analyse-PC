@@ -92,7 +92,7 @@
     </div>
     <!-- 详细信息弹窗 -->
     <div class="dialog-box">
-      <el-dialog :visible.sync="detialInfoVisible" width="420px">
+      <el-dialog :visible.sync="detialInfoVisible" width="700px">
         <div slot="title" style="padding:20px">
           日志详情
           <i class="el-icon-document-copy" style="color:#58a4f3"></i>
