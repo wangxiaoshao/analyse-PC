@@ -117,18 +117,18 @@
               label-width="130px"
               class="systemDetial"
             >
-              <el-form-item label="操作日期" >
+              <el-form-item label="时间" >
                 <div class="table-td">{{detialInfoForm.actionTime}}</div>
               </el-form-item>
-              <el-form-item label="操作人标识">
-                <div class="table-td">{{detialInfoForm.actionUid}}</div>
+              <el-form-item label="操作人">
+                <div class="table-td">{{detialInfoForm.userName}}</div>
               </el-form-item>
-              <el-form-item label="操作描述">
+              <el-form-item label="描述">
                 <div class="table-td">{{detialInfoForm.description}}</div>
               </el-form-item>
-              <el-form-item label="操作事件标识">
+              <!-- <el-form-item label="操作事件标识">
                 <div class="table-td">{{detialInfoForm.clientId}}</div>
-              </el-form-item>
+              </el-form-item> -->
             </el-form>
         </template>
          <template v-if="loginLog === 3">
