@@ -70,7 +70,7 @@
         <template v-if="loginLog === 1 || loginLog === 2 || !loginLog">
           <el-table-column prop="actionTime" label="时间" align="center" min-width="100"></el-table-column>
           <el-table-column prop="userName" label="操作人" align="center"></el-table-column>
-          <el-table-column prop="description" label="描述" align="center"></el-table-column>
+          <el-table-column prop="description" label="描述" align="center" min-width="200"></el-table-column>
         </template>
         <template v-if="loginLog === 3">
           <el-table-column prop="accessTime" label="时间" align="center"></el-table-column>
@@ -341,6 +341,9 @@ export default {
       api[urlNames[logUrl]](data).then(
         res => {
           this.tableData = res.data
+          this.tableData.forEach((item, index) => {
+            this.tableData[index]['description'] = item.userName + '于' + ' ' + item.actionTime + ' ' + item.description
+          })
           this.newsList = res.data
           this.page.total = res.total
         },
