@@ -341,9 +341,6 @@ export default {
       api[urlNames[logUrl]](data).then(
         res => {
           this.tableData = res.data
-          this.tableData.forEach((item, index) => {
-            this.tableData[index]['description'] = item.userName + '于' + ' ' + item.actionTime + ' ' + item.description
-          })
           this.newsList = res.data
           this.page.total = res.total
         },
