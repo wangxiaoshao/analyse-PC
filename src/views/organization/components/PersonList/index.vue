@@ -120,7 +120,7 @@
         <template slot-scope="scope">
           <span>{{scope.row.uid === activeId ? scope.row.mobile:hideMobile(scope.row.mobile) || '无'}}</span>
           <span
-            v-if="scope.row.mobile&&scope.row.mobile!=''&&scope.row.mobile!='无' && (scope.row.uid !== activeId)"
+            v-if="scope.row.removed === 0 && scope.row.mobile&&scope.row.mobile!=''&&scope.row.mobile!='无' && (scope.row.uid !== activeId)"
             class="findMobileBtn"
             @click="findMobileById(scope.row.uid,1)"
           >查看</span>
@@ -150,7 +150,7 @@
             :disabled="!hasRight('userIdTransfe')||scope.row.removed===1"
           >调出</el-button>
           <el-button
-            v-if="scope.row.type === 2 || scope.row.type === '2'"
+            v-if="scope.row.removed === 0 && (scope.row.type === 2 || scope.row.type === '2')"
             @click.native.prevent="removeDuty(scope.row)"
             type="text"
             size="small"
@@ -158,14 +158,14 @@
             :disabled="scope.row.removed===1"
           >解除兼职</el-button>
           <el-button
-            v-if="scope.row.type === 3 || scope.row.type === '3'"
+            v-if="scope.row.removed === 0 && (scope.row.type === 3 || scope.row.type === '3')"
             @click.native.prevent="removeDuty(scope.row)"
             type="text"
             size="small"
             class="btnMar"
             :disabled="!hasRight('userIdRemove') || scope.row.removed===1"
           >解除挂职</el-button>
-          <el-button @click.native="goSort(scope.row)" type="text" size="small">排序</el-button>
+          <el-button @click.native="goSort(scope.row)" type="text" size="small" v-if="scope.row.removed === 0">排序</el-button>
         </template>
       </el-table-column>
     </el-table>

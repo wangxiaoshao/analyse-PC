@@ -21,25 +21,13 @@
             </el-input>
           </el-col>
           <el-col :span="2">
-            <el-button type="primary" plain @click="openSearchFlag = true"
-            >标签</el-button>
+            <el-input placeholder="请选择标签" v-model="searchQuery.labelName"  @focus="openSearchFlag = true" clearable @clear="selectedTags = []">
+            </el-input>
           </el-col>
           <el-col :span="2" class="text-left">
             <el-button type="primary" plain @click="getGrid"
               :disabled="!hasRight('searchDepartment')"
             >查询</el-button>
-          </el-col>
-        </el-row>
-        <el-row class="operator-row" :span="24">
-          <el-col :span="24">
-            <el-tag
-              v-for="tag in selectedTags"
-              :key="tag.name"
-              closable
-              type="info"
-              @close="handleClose(tag)">
-              {{tag.name}}
-            </el-tag>
           </el-col>
         </el-row>
       </el-col>
