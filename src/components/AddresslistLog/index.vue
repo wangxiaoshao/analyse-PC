@@ -41,14 +41,18 @@
           </div>
          </el-form-item>
          <el-form-item>
-             <span class="title">手机号  </span>
-                <el-input  placeholder="请输入手机号" v-model="logParam.mobile" @blur="iptChange" clearable prefix-icon="el-icon-search" style="width:160px"></el-input>
+           <span class="title">查询人 </span>
+            <el-input  placeholder="请输入查询人" v-model="logParam.userName" @blur="iptChange" clearable prefix-icon="el-icon-search" style="width:160px"></el-input>
+          </el-form-item>
+          <el-form-item>
+           <span class="title">被查询人 </span>
+            <el-input  placeholder="请输入被查询人" v-model="logParam.toUserName" @blur="iptChange" clearable prefix-icon="el-icon-search" style="width:160px"></el-input>
+          </el-form-item>
+         <el-form-item>
+             <span class="title">被查询手机号 </span>
+                <el-input  placeholder="请输入被查询手机号" v-model="logParam.mobile" @blur="iptChange" clearable prefix-icon="el-icon-search" style="width:160px"></el-input>
               </el-select>
          </el-form-item>
-          <el-form-item>
-           <span class="title">关键词 </span>
-            <el-input  placeholder="请输入搜索关键词" v-model="logParam.keyword" @blur="iptChange" clearable prefix-icon="el-icon-search" style="width:160px"></el-input>
-          </el-form-item>
           <el-form-item>
            <el-button type="primary" @click="findCondition">查询</el-button>
           </el-form-item>
@@ -59,8 +63,9 @@
         <el-table-column type="index" label="序号" width="80" align="center"></el-table-column>
         <template v-if="loginLog === 1 || loginLog === 2 || !loginLog">
           <el-table-column prop="actionTime" label="时间" align="center" min-width="100"></el-table-column>
-          <el-table-column prop="name" label="操作人" align="center"></el-table-column>
-          <el-table-column prop="description" label="描述" align="center" min-width="200"></el-table-column>
+          <el-table-column prop="userName" label="查询人" align="center"></el-table-column>
+          <el-table-column prop="toUserName" label="被查询人" align="center"></el-table-column>
+          <el-table-column prop="phone" label="被查询手机号" align="center"></el-table-column>
         </template>
         <template v-if="loginLog === 3">
           <el-table-column prop="accessTime" label="时间" align="center"></el-table-column>
@@ -206,7 +211,9 @@ export default {
         dateType: '',
         actionType: '',
         name: '',
-        keyword: ''
+        keyword: '',
+        userName: '',
+        toUserName: ''
       },
 
       pickerOptions: {
@@ -309,7 +316,8 @@ export default {
         mobile: this.logParam.mobile,
         page: this.page.current,
         limit: this.page.limit,
-        keyword: this.logParam.keyword
+        userName: this.logParam.userName,
+        toUserName: this.logParam.toUserName
       }
       // console.log('this.date：',this.date)
       if (Array.isArray(this.date)) {
