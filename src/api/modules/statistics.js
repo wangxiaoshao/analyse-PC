@@ -61,6 +61,15 @@ export default {
     serve: 'organizationManagePC'
 
   },
+  // 通讯录日志详情
+  [urlNames.findTxlLoggerById]: {
+    type: 'get',
+    url: '/api/jg_manage/logger/findTxlLoggerById',
+    keepOriginResponse: true,
+    showLoading: true,
+    serve: 'organizationManagePC'
+
+  },
   // 登录日志列表
   // 获取首页接入昨日数据
   [urlNames.getStatistiscCount]: {

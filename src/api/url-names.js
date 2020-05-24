@@ -46,6 +46,8 @@ export default {
   getDataLogList: 'getDataLogList',
   // 日志类型
   findLoggerTypeList: 'findLoggerTypeList',
+  // 通讯录日志详情
+  findTxlLoggerById: 'findTxlLoggerById',
   /**
    * 系统日志
    */
