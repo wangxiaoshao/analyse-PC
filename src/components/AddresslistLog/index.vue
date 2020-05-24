@@ -40,6 +40,7 @@
             </el-input>
           </div>
          </el-form-item>
+         <br />
          <el-form-item>
            <span class="title">查询人 </span>
             <el-input  placeholder="请输入查询人" v-model="logParam.userName" @blur="iptChange" clearable prefix-icon="el-icon-search" style="width:160px"></el-input>
@@ -51,7 +52,6 @@
          <el-form-item>
              <span class="title">被查询手机号 </span>
                 <el-input  placeholder="请输入被查询手机号" v-model="logParam.mobile" @blur="iptChange" clearable prefix-icon="el-icon-search" style="width:160px"></el-input>
-              </el-select>
          </el-form-item>
           <el-form-item>
            <el-button type="primary" @click="findCondition">查询</el-button>
