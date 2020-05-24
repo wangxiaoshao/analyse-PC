@@ -59,19 +59,27 @@
                   若您是为同一个人开通兼职帐号，直接选择以下人员进行帐号开通
                 </div>
                 <el-table max-height="200" :data="list" @row-click="selectRow" :show-header="true">
-                  <el-table-column property="name" label="姓名">
+                  <el-table-column property="name" label="姓名" align="center">
                     <template slot-scope="scope">
-                      <span :title="scope.row.name" class="table-span">{{scope.row.name}}</span>
+                      <span :title="scope.row.name" class="table-span">{{scope.row.user.name}}</span>
                     </template>
                   </el-table-column>
-                  <el-table-column property="orgName" label="单位名称">
+                  <el-table-column property="orgName" label="原单位名称" align="center">
                     <template slot-scope="scope">
-                      <span :title="scope.row.orgName" class="table-span">{{scope.row.orgName}}</span>
+                      <span :title="scope.row.userIdentity.dutyName" class="table-span">{{scope.row.userIdentity.dutyName}}</span>
                     </template>
                   </el-table-column>
-                  <el-table-column property="duty" label="职位">
+                  <el-table-column property="orgName" label="当前状态" align="center">
                     <template slot-scope="scope">
-                      <span :title="scope.row.duty" class="table-span">{{scope.row.duty}}</span>
+                      <span title="申请调入" class="table-span" v-if="scope.row.status === 1">申请调入</span>
+                      <span title="申请兼职" class="table-span" v-if="scope.row.status === 2">申请兼职</span>
+                      <span title="申请挂职" class="table-span" v-if="scope.row.status === 3">申请挂职</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column property="duty" label="是否申请我单位" align="center">
+                    <template slot-scope="scope">
+                      <span  class="table-span" v-if="scope.row.isApplyMyOrg === 1">是</span>
+                      <span class="table-span" v-if="scope.row.isApplyMyOrg === 0">否</span>
                     </template>
                   </el-table-column>
                 </el-table>
