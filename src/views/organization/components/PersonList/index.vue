@@ -38,7 +38,7 @@
           <span class="name-span">{{this.$store.state.app.option.user.orgName}}</span>
         </el-form-item>
         <el-form-item label="目标单位">
-          <span class="name-span border">{{orgName || this.$store.state.app.option.user.orgName}}</span>
+          <span class="name-span border">{{orgName==''?'无': orgName}}</span>
           <span class="name-span border" v-if="depName !== ''">/{{depName}}</span>
           <el-button @click="addMainLeader" type="primary">选择调出目标单位</el-button>
           <el-button @click="removeDestOrg" type="primary">不选择单位</el-button>
