@@ -176,7 +176,7 @@ import { api, urlNames } from "@src/api";
 import { mapState, mapMutations } from "vuex";
 export default {
     mixins: [handleTable, handleBreadcrumb],
-    props: ["loginLog", "isAppLaction", "appAccountInfo","isSuccess"],
+    props: ["loginLog", "isAppLaction", "appAccountInfo", "isSuccess"],
     data() {
         return {
             logList: [],
@@ -302,7 +302,8 @@ export default {
                 data.password = this.appAccountInfo.appPassword;
                 if (
                     this.appAccountInfo.appAccount !== " " &&
-                    this.appAccountInfo.password  !==" " && this.isSuccess
+                    this.appAccountInfo.password !== " " &&
+                    this.isSuccess
                 ) {
                     this.getLogList(pushApi, data);
                 } else {

@@ -105,7 +105,7 @@
                     :isAppLaction="isAppLaction"
                     :appAccountInfo="appAccountInfo"
                     @openAccountDialog="openAccountDialog"
-                    :isSuccess='isSuccess'
+                    :isSuccess="isSuccess"
                 ></push-log>
             </div>
         </div>
@@ -120,7 +120,7 @@ export default {
     data() {
         return {
             isAppLaction: true,
-            isSuccess:false,
+            isSuccess: false,
             appApplictaionVisible: true,
             applactionList: [],
             appLogsList: [],
@@ -156,7 +156,7 @@ export default {
                     })
                         .then((res) => {
                             if (res) {
-                                this.isSuccess=true;
+                                this.isSuccess = true;
                                 this.appApplictaionVisible = false;
                                 this.applactionList[0] = res.data;
                             }
