@@ -176,6 +176,7 @@ import { api, urlNames } from "@src/api";
 import { mapState, mapMutations } from "vuex";
 export default {
     mixins: [handleTable, handleBreadcrumb],
+    props: ["loginLog", "isAppLaction", "appAccountInfo"],
     data() {
         return {
             logList: [],
@@ -195,6 +196,14 @@ export default {
             },
             pickerOptions: {
                 disabledDate(time) {
+                    // 月初
+                    const now = new Date();
+                    const startDate = new Date(
+                        now.getFullYear(),
+                        now.getMonth(),
+                        1
+                    );
+
                     return time.getTime() > Date.now() - 8.64e6;
                 },
                 shortcuts: null,
@@ -202,6 +211,7 @@ export default {
         };
     },
     created() {
+        console.log(this.appAccountInfo, 3333333);
         let datefilters = this.$options.filters["date"](
             new Date().getTime(),
             "yyyy-MM-dd"
@@ -231,7 +241,7 @@ export default {
         ]),
         selectChange(val) {
             this.date = "";
-            this.currentDateVal = "";
+            // this.currentDateVal = ''
             this.openPicker = false;
             let todayDate = new Date();
             if (val && val.length > 1) {
@@ -261,6 +271,7 @@ export default {
                 this.getGrid();
             }
         },
+
         dateChange(val) {
             if (val) {
                 this.date = val;
@@ -284,8 +295,57 @@ export default {
             } else {
                 data.date = this.date;
             }
+            let pushApi = "";
+            if (this.isAppLaction) {
+                pushApi = "findPushLoggersByUserNameAndPassword";
+                data.userName = this.appAccountInfo.appAccount;
+                data.password = this.appAccountInfo.password;
+                if (
+                    this.appAccountInfo.appAccount !== "" &&
+                    this.appAccountInfo.password
+                ) {
+                    this.getLogList(pushApi, data);
+                } else {
+                    this.$confirm("应用日志查询请先输入账号或密码", "提示", {
+                        confirmButtonText: "确定",
+                        cancelButtonText: "取消",
+                        type: "warning",
+                    })
+                        .then(() => {
+                            this.$emit("openAccountDialog");
+                        })
+                        .catch(() => {});
+                }
+            } else {
+                pushApi = "findPushLoggers";
+                this.getLogList(pushApi, data);
+            }
+            console.log(data, 4444);
 
-            api[urlNames["findPushLoggers"]](data).then((res) => {
+            // api[urlNames[pushApi]](data).then(res => {
+            //   this.page.total = res.total
+            //   res.data.forEach(val => {
+            //     if (val.dataType === 1) {
+            //       val.fieldName = '用户变更数据'
+            //     }
+            //     if (val.dataType === 2) {
+            //       val.fieldName = '用户身份变更数据'
+            //     }
+            //     if (val.dataType === 3) {
+            //       val.fieldName = '部门变更数据'
+            //     }
+            //     if (val.dataType === 4) {
+            //       val.fieldName = '单位变更数据'
+            //     }
+            //     if (val.dataType === 5) {
+            //       val.fieldName = '视图变更数据'
+            //     }
+            //   })
+            //   this.logList = res.data
+            // })
+        },
+        getLogList(url, data) {
+            api[urlNames[url]](data).then((res) => {
                 this.page.total = res.total;
                 res.data.forEach((val) => {
                     if (val.dataType === 1) {

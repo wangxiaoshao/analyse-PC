@@ -101,7 +101,12 @@ export default {
             name: "共享管理",
             path: "",
             type: 1,
-            key: ["menuShareViews", "menuGroups", "menuShareApplication"],
+            key: [
+                "menuShareViews",
+                "menuGroups",
+                "menuShareApplication",
+                "menuAppLogs",
+            ],
             icon: "fa fa-address-card-o",
             list: [
                 {
@@ -112,6 +117,13 @@ export default {
                     key: "menuShareViews",
                 },
                 {
+                    menuId: "34",
+                    name: "应用管理",
+                    path: "/app-management",
+                    type: 1,
+                    key: "menuShareApplication",
+                },
+                {
                     menuId: "32",
                     name: "分组管理",
                     path: "/group-management",
@@ -119,11 +131,11 @@ export default {
                     key: "menuGroups",
                 },
                 {
-                    menuId: "34",
-                    name: "应用管理",
-                    path: "/app-management",
+                    menuId: "35",
+                    name: "应用日志查询",
+                    path: "/app-logs",
                     type: 1,
-                    key: "menuShareApplication",
+                    key: "menuAppLogs",
                 },
             ],
         },
@@ -190,6 +202,7 @@ export default {
                 },
             ],
         },
+
         {
             menuId: "5",
             name: "系统设置",

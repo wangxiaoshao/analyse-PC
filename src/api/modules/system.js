@@ -95,4 +95,156 @@ export default {
         keepOriginResponse: true,
         serve: "organizationManagePC",
     },
+    /*
+     * 帮助文档列表 */
+    [urlNames.getDocList]: {
+        type: "get",
+        url: "/api/jg_manage/doc/getDocList",
+        keepOriginResponse: true,
+        serve: "organizationManagePC",
+    },
+    /*
+     * 创建文档 */
+    [urlNames.createDoc]: {
+        type: "post",
+        url: "/api/jg_manage/doc/createDoc",
+        keepOriginResponse: true,
+        serve: "organizationManagePC",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    },
+    /*
+     * 删除文档 */
+    [urlNames.deleteDoc]: {
+        type: "post",
+        url: "/api/jg_manage/doc/deleteDoc",
+        keepOriginResponse: true,
+        serve: "organizationManagePC",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    },
+    /*
+     * 获取文档详情 */
+    [urlNames.findDocById]: {
+        type: "get",
+        url: "/api/jg_manage/doc/findDocById",
+        keepOriginResponse: true,
+        serve: "organizationManagePC",
+    },
+    /*
+     * 帮助文档列表 */
+    [urlNames.getDocList]: {
+        type: "get",
+        url: "/api/jg_manage/doc/getDocList",
+        keepOriginResponse: true,
+        serve: "organizationManagePC",
+    },
+    /*
+     * 创建文档 */
+    [urlNames.createDoc]: {
+        type: "post",
+        url: "/api/jg_manage/doc/createDoc",
+        keepOriginResponse: true,
+        serve: "organizationManagePC",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    },
+    /*
+     * 删除文档 */
+    [urlNames.deleteDoc]: {
+        type: "post",
+        url: "/api/jg_manage/doc/deleteDoc",
+        keepOriginResponse: true,
+        serve: "organizationManagePC",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    },
+    /*
+     * 获取文档详情 */
+    [urlNames.findDocById]: {
+        type: "get",
+        url: "/api/jg_manage/doc/findDocById",
+        keepOriginResponse: true,
+        serve: "organizationManagePC",
+    },
+    /*
+     * 帮助文档列表 */
+    [urlNames.getDocList]: {
+        type: "get",
+        url: "/api/jg_manage/doc/getDocList",
+        keepOriginResponse: true,
+        serve: "organizationManagePC",
+    },
+    /*
+     * 创建文档 */
+    [urlNames.createDoc]: {
+        type: "post",
+        url: "/api/jg_manage/doc/createDoc",
+        keepOriginResponse: true,
+        serve: "organizationManagePC",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    },
+    /*
+     * 删除文档 */
+    [urlNames.deleteDoc]: {
+        type: "post",
+        url: "/api/jg_manage/doc/deleteDoc",
+        keepOriginResponse: true,
+        serve: "organizationManagePC",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    },
+    /*
+     * 获取文档详情 */
+    [urlNames.findDocById]: {
+        type: "get",
+        url: "/api/jg_manage/doc/findDocById",
+        keepOriginResponse: true,
+        serve: "organizationManagePC",
+    },
+    /*
+     * 帮助文档列表 */
+    [urlNames.getDocList]: {
+        type: "get",
+        url: "/api/jg_manage/doc/getDocList",
+        keepOriginResponse: true,
+        serve: "organizationManagePC",
+    },
+    /*
+     * 创建文档 */
+    [urlNames.createDoc]: {
+        type: "post",
+        url: "/api/jg_manage/doc/createDoc",
+        keepOriginResponse: true,
+        serve: "organizationManagePC",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    },
+    /*
+     * 删除文档 */
+    [urlNames.deleteDoc]: {
+        type: "post",
+        url: "/api/jg_manage/doc/deleteDoc",
+        keepOriginResponse: true,
+        serve: "organizationManagePC",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    },
+    /*
+     * 获取文档详情 */
+    [urlNames.findDocById]: {
+        type: "get",
+        url: "/api/jg_manage/doc/findDocById",
+        keepOriginResponse: true,
+        serve: "organizationManagePC",
+    },
 };

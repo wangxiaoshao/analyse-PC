@@ -1,7 +1,7 @@
 <template>
     <div class="article-list">
         <div class="table-box">
-            <el-table :show-header="false" :data="tableData">
+            <el-table :show-header="false" :data="docList">
                 <template slot="empty">
                     <div class="empty">
                         <p>
@@ -21,19 +21,19 @@
                                 class="word_title"
                                 title="点击查看文章详情"
                                 @click="findWordDetial(scope.row.id)"
-                                >{{ scope.row.typeText }}</span
+                                >{{ scope.row.title }}</span
                             >
                             <div
                                 class="notice-msg"
                                 @click="findWordDetial(scope.row.id)"
                             >
-                                <span>{{ scope.row.content }}</span>
+                                <span>{{ scope.row.description }}</span>
                             </div>
                             <span
                                 class="btn"
                                 title="下载文档"
                                 v-if="activeName == 'actionWord'"
-                                @click="downloadWord"
+                                @click="downloadWord(scope.row.id)"
                             >
                                 <i class="el-icon-download"></i>
                             </span>
@@ -41,7 +41,7 @@
                                 class="btn"
                                 title="删除文档"
                                 v-else
-                                @click="deleteWord"
+                                @click="deleteWord(scope.row.id)"
                             >
                                 <i class="el-icon-delete"></i>
                             </span>
@@ -64,26 +64,27 @@
 <script>
 import handleTable from "@src/mixins/handle-table";
 import { api, urlNames } from "@src/api";
-import { mapState, mapMutations } from "vuex";
+import { mapState } from "vuex";
+import downloadBinaryFile from "@src/mixins/downloadBinaryFile";
 export default {
     name: "WordCenter",
     props: ["activeName"],
-    mixins: [handleTable],
+    mixins: [handleTable, downloadBinaryFile],
     data() {
         return {
-            tableData: [
+            docList: [
                 {
                     id: 1,
-                    typeText: "为推进改造，系统登录密码深度优化通知。",
-                    content:
+                    title: "为推进改造，系统登录密码深度优化通知。",
+                    description:
                         '【贵州省电子政务外网组织机构人员数据库及管控平台】贵州省人民政府办公厅门户系统运维人员于{操作时间}修改了单位电话"jcode"修改为"sprufu已通过审核，请前往平台查看。',
                     hasRead: 0,
                     creareTime: "2020-03-12",
                 },
                 {
-                    id: 1,
-                    typeText: "为推进改造，系统登录密码深度优化通知。",
-                    content:
+                    id: 2,
+                    title: "为推进改造，系统登录密码深度优化通知。",
+                    description:
                         "【贵州省电子政务外网组织机构人员数据库及管控平台】贵州省人民政府办公厅门户系统运维人员于{操作时，请前往平台查看。",
                     hasRead: 0,
                     creareTime: "2020-03-12",
@@ -92,25 +93,47 @@ export default {
         };
     },
     created() {
-        this.page.total = 2;
+        this.getGrid();
     },
     methods: {
+        getGrid() {
+            let data = {
+                page: this.page.current,
+                limit: this.page.limit,
+            };
+            api[urlNames["getDocList"]](data).then((res) => {
+                if (res) {
+                    this.docList = res.data;
+                }
+            });
+        },
         // 查看文章详情
         findWordDetial(id) {
             this.$router.push(`/word-center/word-detial/${id}`);
         },
         // 下载文档
-        downloadWord() {},
-        // 删除文档
-        deleteWord() {
-            this.$confirm("确定要删除该文档吗", "提示", {
-                confirmButtonText: "确定",
-                cancelButtonText: "取消",
-                type: "warning",
-            })
-                .then(() => {})
-                .catch(() => {});
+        downloadWord(id) {
+            let host = window.location.href.split("#")[0];
+            this.downloadBinaryFile(host, "", this.type);
         },
+    },
+    // 删除文档
+    deleteWord(id) {
+        this.$confirm("确定要删除该文档吗", "提示", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning",
+        })
+            .then(() => {
+                api[urlNames["deleteDoc"]]({ id }).then((res) => {
+                    if (res) {
+                        this.$message.success("操作成功");
+                    }
+                });
+            })
+            .catch(() => {
+                this.$message.info("已取消操作");
+            });
     },
     computed: {
         ...mapState(["app"]),
