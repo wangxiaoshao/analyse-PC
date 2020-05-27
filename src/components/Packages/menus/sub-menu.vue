@@ -102,6 +102,9 @@ export default {
           return true
         } */
 
+                if (this.menuItem.key === "menuAppLogs") {
+                    return true;
+                }
                 let tempMenu = menuList.filter((item) => {
                     return item.moduleName === this.menuItem.key;
                 });

@@ -254,9 +254,9 @@
                         @close="goBack"
                     ></edit-account>
                 </el-tab-pane>
-                <!-- <el-tab-pane label="多身份管理">
-          <multiple-idetity  @exportOrg="exportOrg"></multiple-idetity>
-        </el-tab-pane> -->
+                <el-tab-pane label="多身份管理">
+                    <multiple-idetity @exportOrg="exportOrg"></multiple-idetity>
+                </el-tab-pane>
                 <el-tab-pane label="个人日志">
                     <personal-log :showFindBtn="showFindBtn"></personal-log>
                 </el-tab-pane>
@@ -272,6 +272,7 @@ import personManage from "../../organization/components/PersonManage";
 import PersonalLog from "@src/components/PersonalLog/index";
 import SelectMembers from "@src/components/SelectMembers/index";
 import MultipleAccounts from "../components/MultipleAccounts/index";
+import MultipleIdetity from "../components/MultipleIdetity/index";
 import EditAccount from "../components/EditAccount/index";
 const SMS_TIMES_SECOND = 60;
 // 定时器
@@ -283,6 +284,7 @@ export default {
         PersonalLog,
         MultipleAccounts,
         EditAccount,
+        MultipleIdetity,
     },
     data() {
         var validateOldPass = (rule, value, callback) => {
@@ -504,11 +506,11 @@ export default {
             this.orgName = "无";
         },
         exportOrg(flag) {
-            if (flag === 1) {
+            if (flag === 2) {
                 this.calloutTitle = "填写兼职说明";
-            } else if (flag === 2) {
-                this.calloutTitle = "填写挂出说明";
             } else if (flag === 3) {
+                this.calloutTitle = "填写挂出说明";
+            } else if (flag === 6) {
                 this.calloutTitle = "填写调出说明";
             }
             this.isCallout = flag;

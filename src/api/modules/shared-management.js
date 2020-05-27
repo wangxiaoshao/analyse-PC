@@ -172,62 +172,6 @@ export default {
         // showLoading: true,
         serve: "organizationManagePC",
     },
-    // 字段分享
-    [urlNames.findShareFiledByAppId]: {
-        type: "get",
-        url: "/api/jg_share/app/findShareFiledByAppId",
-        keepOriginResponse: true,
-        showLoading: true,
-        serve: "organizationManagePC",
-    },
-    // 根据应用账号和密码查询应用
-    [urlNames.findApplicationByUserNameAndPassword]: {
-        type: "get",
-        url: "/api/jg_share/app/findApplicationByUserNameAndPassword",
-        keepOriginResponse: true,
-        showLoading: true,
-        serve: "organizationManagePC",
-    },
-    // 根据应用账号和密码查询应用日志
-    [urlNames.findPushLoggersByUserNameAndPassword]: {
-        type: "get",
-        url: "/api/jg_share/app/findPushLoggersByUserNameAndPassword",
-        keepOriginResponse: true,
-        showLoading: true,
-        serve: "organizationManagePC",
-    },
-    // 根据应用账号和密码查询应用
-    [urlNames.findApplicationByUserNameAndPassword]: {
-        type: "get",
-        url: "/api/jg_share/app/findApplicationByUserNameAndPassword",
-        keepOriginResponse: true,
-        showLoading: true,
-        serve: "organizationManagePC",
-    },
-    // 根据应用账号和密码查询应用日志
-    [urlNames.findPushLoggersByUserNameAndPassword]: {
-        type: "get",
-        url: "/api/jg_share/app/findPushLoggersByUserNameAndPassword",
-        keepOriginResponse: true,
-        showLoading: true,
-        serve: "organizationManagePC",
-    },
-    // 根据应用账号和密码查询应用
-    [urlNames.findApplicationByUserNameAndPassword]: {
-        type: "get",
-        url: "/api/jg_share/app/findApplicationByUserNameAndPassword",
-        keepOriginResponse: true,
-        showLoading: true,
-        serve: "organizationManagePC",
-    },
-    // 根据应用账号和密码查询应用日志
-    [urlNames.findPushLoggersByUserNameAndPassword]: {
-        type: "get",
-        url: "/api/jg_share/app/findPushLoggersByUserNameAndPassword",
-        keepOriginResponse: true,
-        showLoading: true,
-        serve: "organizationManagePC",
-    },
     // 根据应用账号和密码查询应用
     [urlNames.findApplicationByUserNameAndPassword]: {
         type: "get",

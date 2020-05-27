@@ -188,7 +188,14 @@ export default {
             "Content-Type": "application/json",
         },
     },
-
+    // 多身份管理——》添加身份记录
+    [urlNames.getIdentityRecord]: {
+        type: "get",
+        url: "/api/jg_manage/user/getIdentityRecord",
+        keepOriginResponse: true,
+        showLoading: true,
+        serve: "organizationManagePC",
+    },
     [urlNames.findLeaderList]: {
         type: "get",
         url: "/api/jg_manage/user/findLeaderList",
