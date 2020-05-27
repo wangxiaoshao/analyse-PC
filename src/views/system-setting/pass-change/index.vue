@@ -25,18 +25,19 @@
                         this.$store.state.app.option.user.orgName
                     }}</span>
                 </el-form-item>
-                <el-form-item label="目标单位">
-                    <span class="name-span border">{{ orgName }}</span>
+                <el-form-item label="目标单位" prop="orgId">
+                    <el-input v-model="orgName" style="width:180px"></el-input>
+                    <!-- <span class="name-span border">{{ orgName }}</span> -->
                     <span class="name-span border" v-if="depName !== ''"
                         >/{{ depName }}</span
                     >
-                    <el-button @click="addMainLeader" type="primary"
+                    <el-button @click="addMainLeader" type="primary" style="margin-left:5px"
                         >选择调出目标单位</el-button
                     >
                     <el-button
                         @click="removeDestOrg"
                         type="primary"
-                        v-if="isCallout === 6"
+                        v-if="isCallout === 1"
                         >不选择单位</el-button
                     >
                 </el-form-item>
@@ -524,7 +525,7 @@ export default {
             } else if (flag === 3) {
                 this.calloutTitle = "填写挂出说明";
                 this.reasonLabel = "身份说明";
-            } else if (flag === 6) {
+            } else if (flag === 1) {
                 this.calloutTitle = "填写调出说明";
                 this.reasonLabel = "申请原因";
             }
@@ -884,7 +885,8 @@ export default {
                     }
                 });
             }
-        },
+
+},
         // 多身份管理
         getIdetitlyList() {
             api[urlNames["userIdList"]]({ uid: this.idetitlyId }).then(
