@@ -105,6 +105,7 @@
                     :isAppLaction="isAppLaction"
                     :appAccountInfo="appAccountInfo"
                     @openAccountDialog="openAccountDialog"
+                    :isSuccess='isSuccess'
                 ></push-log>
             </div>
         </div>
@@ -119,6 +120,7 @@ export default {
     data() {
         return {
             isAppLaction: true,
+            isSuccess:false,
             appApplictaionVisible: true,
             applactionList: [],
             appLogsList: [],
@@ -150,12 +152,13 @@ export default {
                 if (valid) {
                     api[urlNames["findApplicationByUserNameAndPassword"]]({
                         userName: this.appAccountInfo.appAccount,
-                        password: this.appAccountInfo.password,
+                        password: this.appAccountInfo.appPassword,
                     })
                         .then((res) => {
                             if (res) {
+                                this.isSuccess=true;
                                 this.appApplictaionVisible = false;
-                                this.applactionList = res.data;
+                                this.applactionList[0] = res.data;
                             }
                         })
                         .catch(() => {

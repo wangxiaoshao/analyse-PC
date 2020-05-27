@@ -176,7 +176,7 @@ import { api, urlNames } from "@src/api";
 import { mapState, mapMutations } from "vuex";
 export default {
     mixins: [handleTable, handleBreadcrumb],
-    props: ["loginLog", "isAppLaction", "appAccountInfo"],
+    props: ["loginLog", "isAppLaction", "appAccountInfo","isSuccess"],
     data() {
         return {
             logList: [],
@@ -299,10 +299,10 @@ export default {
             if (this.isAppLaction) {
                 pushApi = "findPushLoggersByUserNameAndPassword";
                 data.userName = this.appAccountInfo.appAccount;
-                data.password = this.appAccountInfo.password;
+                data.password = this.appAccountInfo.appPassword;
                 if (
-                    this.appAccountInfo.appAccount !== "" &&
-                    this.appAccountInfo.password
+                    this.appAccountInfo.appAccount !== " " &&
+                    this.appAccountInfo.password  !==" " && this.isSuccess
                 ) {
                     this.getLogList(pushApi, data);
                 } else {
