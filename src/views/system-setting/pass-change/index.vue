@@ -25,7 +25,10 @@
                         this.$store.state.app.option.user.orgName
                     }}</span>
                 </el-form-item>
-                <el-form-item label="目标单位" :prop="isCallout==1?'':'orgId'">
+                <el-form-item
+                    label="目标单位"
+                    :prop="isCallout == 1 ? '' : 'orgId'"
+                >
                     <el-input
                         v-model="orgName"
                         style="width: 180px;"
