@@ -128,8 +128,15 @@
                             {{ iptMsgInfoStr }}
                         </div>
                     </el-form-item>
-                    <!-- v-if="this.$route.name=='PersonAdd' ||this.$route.name=='PersonEdit'" -->
-                    <el-form-item label="职务" prop="dutyName">
+
+                    <el-form-item
+                        label="职务"
+                        prop="dutyName"
+                        v-if="
+                            this.$route.name == 'PersonAdd' ||
+                            this.$route.name == 'PersonEdit'
+                        "
+                    >
                         <el-input
                             placeholder="请输入职务"
                             v-model="postDetail.dutyName"
@@ -179,7 +186,7 @@
                             {{ iptMsgInfoStr }}
                         </div>
                     </el-form-item>
-                    <el-form-item
+                    <!-- <el-form-item
                         label="所属单位"
                         v-if="showexportIdentityType"
                         prop="orgName"
@@ -204,7 +211,7 @@
                         >
                             {{ iptMsgInfoStr }}
                         </div>
-                    </el-form-item>
+                    </el-form-item> -->
                     <!-- <el-form-item label="身份证号" prop="idcard">
             <el-input placeholder="请输入内容" :disabled="isDefaultFlag" v-model="userDetail.idcard" @input="showIptMsg('idcard')">
               <el-button slot="append" v-if="!disabledFlag" type="success" class="form-btn1" @click="idAutherntication">点击实名认证</el-button>
@@ -245,8 +252,16 @@
                             该手机号已和其他用户绑定
                         </div>
                     </el-form-item>
-                    <!-- v-if="this.$route.name=='PersonAdd' ||this.$route.name=='PersonEdit'" -->
-                    <el-form-item label="身份类型" prop="type" required>
+
+                    <el-form-item
+                        label="身份类型"
+                        prop="type"
+                        required
+                        v-if="
+                            this.$route.name == 'PersonAdd' ||
+                            this.$route.name == 'PersonEdit'
+                        "
+                    >
                         <el-select
                             placeholder="请选择身份类型"
                             v-model="postDetail.type"

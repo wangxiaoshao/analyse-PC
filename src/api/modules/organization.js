@@ -188,6 +188,14 @@ export default {
             "Content-Type": "application/json",
         },
     },
+    // 多身份管理——》获取身份列表
+    [urlNames.userIdList]: {
+        type: "get",
+        url: "/api/jg_manage/user/userIdList",
+        keepOriginResponse: true,
+        showLoading: true,
+        serve: "organizationManagePC",
+    },
     // 多身份管理——》添加身份记录
     [urlNames.getIdentityRecord]: {
         type: "get",
@@ -195,6 +203,17 @@ export default {
         keepOriginResponse: true,
         showLoading: true,
         serve: "organizationManagePC",
+    },
+    // 多身份管理——》添加身份
+    [urlNames.createUserId]: {
+        type: "post",
+        url: "/api/jg_manage/user/createUserId",
+        keepOriginResponse: true,
+        showLoading: true,
+        serve: "organizationManagePC",
+        headers: {
+            "Content-Type": "application/json",
+        },
     },
     [urlNames.findLeaderList]: {
         type: "get",

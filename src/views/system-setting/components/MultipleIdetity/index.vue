@@ -198,11 +198,11 @@
 import { api, urlNames } from "@src/api";
 export default {
     name: "multipleIdetity",
+    props: ["idetitlyList", "recordList"],
     data() {
         return {
             idetitlyId: this.$store.state.app.option.user.uid,
-            idetitlyList: [],
-            recordList: [],
+
             identityDialogParams: {
                 identityTitle: "",
                 identityName: "",
@@ -223,41 +223,12 @@ export default {
             },
         };
     },
-    created() {
-        // this.isOrgManage=this.userRoles.some(ele => {
-        //   if(ele.roleName==='ORG_MANAGER'){
-        //     return true
-        //   }else{
-        //     return false
-        //   }
-        // })
-
-        this.getIdetitlyList();
-        this.getIdentityRecordList();
-    },
     methods: {
         // 申请调出，添加兼职，挂职
         exportOrg(flag) {
             this.$emit("exportOrg", flag);
         },
-        getIdetitlyList() {
-            api[urlNames["userIdList"]]({ uid: this.idetitlyId }).then(
-                (res) => {
-                    if (res.data) {
-                        this.idetitlyList = res.data;
-                    }
-                }
-            );
-        },
-        getIdentityRecordList() {
-            api[urlNames["getIdentityRecord"]]({ uid: this.idetitlyId }).then(
-                (res) => {
-                    if (res.data) {
-                        this.recordList = res.data;
-                    }
-                }
-            );
-        },
+
         // 添加身份类型
         addIdetityType() {},
         openIdetityDialog(flag) {
@@ -267,19 +238,7 @@ export default {
                 flag === 2 ? "填写解除兼职说明" : "填写解除挂职说明";
             this.identityDialogParams.removeFlag = true;
         },
-        submitRemoveDuty(ruleForm) {
-            this.$refs[ruleForm].validate((valid) => {
-                if (valid) {
-                    api[urlNames["removeDuty"]](this.ruleForm).then(
-                        (res) => {
-                            this.$message.success(`解除成功`);
-                            this.cancel();
-                        },
-                        () => {}
-                    );
-                }
-            });
-        },
+
         cancel() {
             this.identityDialogParams.removeFlag = false;
         },

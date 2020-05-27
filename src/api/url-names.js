@@ -435,6 +435,12 @@ export default {
     notificationRead: "notificationRead",
     // 首页登第几个登录
     loginIndex: "loginIndex",
+    // 多身份管理--身份列表
+    getIdentityRecord: "getIdentityRecord",
+    // 多身份管理--添加身份记录
+    userIdList: "userIdList",
+    // 多身份管理--添加兼职或者估值
+    createUserId: "createUserId",
     // 取首页接入昨日数据
     getStatistiscCount: "getStatistiscCount",
     // 接入应用总数

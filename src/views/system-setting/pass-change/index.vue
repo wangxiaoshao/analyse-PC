@@ -36,11 +36,11 @@
                     <el-button
                         @click="removeDestOrg"
                         type="primary"
-                        v-if="isCallout === 3"
+                        v-if="isCallout === 6"
                         >不选择单位</el-button
                     >
                 </el-form-item>
-                <el-form-item label="申请原因" prop="reason">
+                <el-form-item :label="reasonLabel" prop="reason">
                     <el-input
                         type="textarea"
                         v-model="formCallout.reason"
@@ -255,7 +255,11 @@
                     ></edit-account>
                 </el-tab-pane>
                 <el-tab-pane label="多身份管理">
-                    <multiple-idetity @exportOrg="exportOrg"></multiple-idetity>
+                    <multiple-idetity
+                        @exportOrg="exportOrg"
+                        :idetitlyList="idetitlyList"
+                        :recordList="recordList"
+                    ></multiple-idetity>
                 </el-tab-pane>
                 <el-tab-pane label="个人日志">
                     <personal-log :showFindBtn="showFindBtn"></personal-log>
@@ -441,6 +445,12 @@ export default {
                 title: "调出申请提交",
                 msg: "您的调出申请已提交，等待管理员审核通过后即可生效。",
             },
+            reasonLabel: "申请原因",
+            // 多身份管理数据
+            idetitlyId: this.$store.state.app.option.user.uid,
+            isAddIdetity: "",
+            idetitlyList: [],
+            recordList: [],
         };
     },
     created() {
@@ -448,6 +458,8 @@ export default {
         this.getIdentity(this.app.option.user.identityId);
         // this.getAccountInfo()
         this.getAllAccountList();
+        this.getIdetitlyList();
+        this.getIdentityRecordList();
     },
     computed: {
         ...mapState(["app"]),
@@ -508,11 +520,15 @@ export default {
         exportOrg(flag) {
             if (flag === 2) {
                 this.calloutTitle = "填写兼职说明";
+                this.reasonLabel = "身份说明";
             } else if (flag === 3) {
                 this.calloutTitle = "填写挂出说明";
+                this.reasonLabel = "身份说明";
             } else if (flag === 6) {
                 this.calloutTitle = "填写调出说明";
+                this.reasonLabel = "申请原因";
             }
+            this.isAddIdetity = flag;
             this.isCallout = flag;
             this.calloutFlag = true;
         },
@@ -819,31 +835,74 @@ export default {
 
         // 提交调出
         submitFormCallout(formCallout) {
-            this.$refs[formCallout].validate((valid) => {
-                if (valid) {
-                    api[urlNames["calloutUser"]](this.formCallout).then(
-                        (res) => {
-                            // this.$message.success(`调出申请已提交`)
-                            this.calloutFlag = false;
-                            this.submitVisible = true;
-                            // this.getGrid()
-                            this.fromInit();
-                            this.formCallout.deptId = this.formCallout.orgId =
-                                "";
-                            this.orgName = this.depName = "";
-                        },
-                        (error) => {
-                            if (error) {
+            if (this.isAddIdetity === 2 || this.isAddIdetity === 3) {
+                let data = {
+                    type: this.isAddIdetity,
+                    orgId: this.formCallout.orgId,
+                    reason: this.formCallout.reason,
+                };
+                this.$refs[formCallout].validate((valid) => {
+                    if (valid) {
+                        api[urlNames["createUserId"]](data)
+                            .then((res) => {
+                                this.getIdentityRecordList();
+                                this.calloutFlag = false;
+                                this.$message.success(`添加身份成功`);
+                            })
+                            .catch(() => {
+                                this.calloutFlag = false;
+                                // this.$message.error(`添加身份失败`);
+                            });
+                    } else {
+                        this.$message.error("请填写必填字段");
+                    }
+                });
+            } else {
+                this.$refs[formCallout].validate((valid) => {
+                    if (valid) {
+                        api[urlNames["calloutUser"]](this.formCallout).then(
+                            (res) => {
+                                // this.$message.success(`调出申请已提交`)
                                 this.calloutFlag = false;
                                 this.submitVisible = true;
-                                this.callMag.title = "请勿重复提交调出申请";
-                                this.callMag.msg =
-                                    "在此之前，您已经提交过调出申请，请等待管理员审核完成后再操作！";
+                                // this.getGrid()
+                                this.fromInit();
+                                this.formCallout.deptId = this.formCallout.orgId =
+                                    "";
+                                this.orgName = this.depName = "";
+                            },
+                            (error) => {
+                                if (error) {
+                                    this.calloutFlag = false;
+                                    this.submitVisible = true;
+                                    this.callMag.title = "请勿重复提交调出申请";
+                                    this.callMag.msg =
+                                        "在此之前，您已经提交过调出申请，请等待管理员审核完成后再操作！";
+                                }
                             }
-                        }
-                    );
+                        );
+                    }
+                });
+            }
+        },
+        // 多身份管理
+        getIdetitlyList() {
+            api[urlNames["userIdList"]]({ uid: this.idetitlyId }).then(
+                (res) => {
+                    if (res.data) {
+                        this.idetitlyList = res.data;
+                    }
                 }
-            });
+            );
+        },
+        getIdentityRecordList() {
+            api[urlNames["getIdentityRecord"]]({ uid: this.idetitlyId }).then(
+                (res) => {
+                    if (res.data) {
+                        this.recordList = res.data;
+                    }
+                }
+            );
         },
     },
 };
