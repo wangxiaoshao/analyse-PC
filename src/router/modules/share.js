@@ -36,6 +36,10 @@ const PushLog = () =>
     import(
         /* webpackChunkName: "Shared" */ "@src/views/shared/push-log/index.vue"
     );
+const AppLogs = () =>
+    import(
+        /* webpackChunkName: "Shared" */ "@src/views/shared/app-logs/index.vue"
+    );
 
 export default [
     // 共享管理
@@ -99,6 +103,14 @@ export default [
                 component: TagsManagement,
                 meta: {
                     key: "menuLabels",
+                },
+            },
+            {
+                path: "/app-logs",
+                name: "AppLogs",
+                component: AppLogs,
+                meta: {
+                    key: "menuAppLogs",
                 },
             },
         ],

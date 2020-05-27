@@ -159,11 +159,11 @@ export default {
                             }
                         })
                         .catch(() => {
-                            this.appApplictaionVisible = false;
+                            this.$message.error("账号或密码有误，请重新输入");
+                            // this.appApplictaionVisible = false;
                             this.applactionList = [];
                         });
                 } else {
-                    this.appApplictaionVisible = false;
                     this.$message.error("请填写必填字段");
                 }
             });

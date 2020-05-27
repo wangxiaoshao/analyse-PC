@@ -25,13 +25,20 @@
                         this.$store.state.app.option.user.orgName
                     }}</span>
                 </el-form-item>
-                <el-form-item label="目标单位" prop="orgId">
-                    <el-input v-model="orgName" style="width:180px"></el-input>
+                <el-form-item label="目标单位" :prop="isCallout==1?'':'orgId'">
+                    <el-input
+                        v-model="orgName"
+                        style="width: 180px;"
+                        readonly
+                    ></el-input>
                     <!-- <span class="name-span border">{{ orgName }}</span> -->
                     <span class="name-span border" v-if="depName !== ''"
                         >/{{ depName }}</span
                     >
-                    <el-button @click="addMainLeader" type="primary" style="margin-left:5px"
+                    <el-button
+                        @click="addMainLeader"
+                        type="primary"
+                        style="margin-left: 5px;"
                         >选择调出目标单位</el-button
                     >
                     <el-button
@@ -885,8 +892,7 @@ export default {
                     }
                 });
             }
-
-},
+        },
         // 多身份管理
         getIdetitlyList() {
             api[urlNames["userIdList"]]({ uid: this.idetitlyId }).then(
