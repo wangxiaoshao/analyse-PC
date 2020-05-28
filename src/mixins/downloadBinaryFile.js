@@ -10,7 +10,7 @@ export default {
         return {};
     },
     methods: {
-        downloadBinaryFile(url, param, type) {
+        downloadBinaryFile(url, param, type, accessoryUrl) {
             let timestamp = new Date().getTime();
             let openUrl = "";
             console.log(type);
@@ -28,6 +28,16 @@ export default {
                 openUrl =
                     url +
                     "api/jg_manage/user/exportUser" +
+                    "?_=" +
+                    timestamp +
+                    "&deptId=" +
+                    param +
+                    "&sign=" +
+                    this.getSign({ deptId: param }, timestamp);
+            }
+            if (accessoryUrl) {
+                openUrl =
+                    accessoryUrl +
                     "?_=" +
                     timestamp +
                     "&deptId=" +

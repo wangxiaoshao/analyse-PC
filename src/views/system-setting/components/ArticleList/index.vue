@@ -33,7 +33,7 @@
                                 class="btn"
                                 title="下载文档"
                                 v-if="activeName == 'actionWord'"
-                                @click="downloadWord(scope.row.id)"
+                                @click="downloadWord(scope.row)"
                             >
                                 <i class="el-icon-download"></i>
                             </span>
@@ -59,6 +59,42 @@
                 :total="page.total"
             ></el-pagination>
         </div>
+        <div class="dialog-box">
+            <el-dialog :visible.sync="unloadFileVisiable" width="420px">
+                <div slot="title" style="padding: 20px;">
+                    下载附件
+                    <i
+                        class="el-icon-document-copy"
+                        style="color: #58a4f3;"
+                    ></i>
+                </div>
+                <div class="chooseWord" style="text-align: center;">
+                    <!-- <el-checkbox-group v-model="checkAccessoryList">
+                        <el-checkbox
+                            v-for="(item, index) in docDetial.accessorys"
+                            :label="index"
+                            :key="item.id"
+                            >{{ item.name + item.suffix }}</el-checkbox
+                        >
+                    </el-checkbox-group> -->
+                    <a
+                        style="color: #58a4f3;"
+                        href=""
+                        v-for="(item, index) in this.accessoryList"
+                        :key="index"
+                        >《{{ item.name + item.suffix }}》</a
+                    >
+                </div>
+                <div slot="footer" class="dialog-footer">
+                    <el-button
+                        type="primary"
+                        @click="unloadAheckAccessory"
+                        width="120px"
+                        >确 定</el-button
+                    >
+                </div>
+            </el-dialog>
+        </div>
     </div>
 </template>
 <script>
@@ -72,6 +108,8 @@ export default {
     mixins: [handleTable, downloadBinaryFile],
     data() {
         return {
+            unloadFileVisiable: false,
+            accessoryList: [],
             docList: [
                 {
                     id: 1,
@@ -104,6 +142,7 @@ export default {
             api[urlNames["getDocList"]](data).then((res) => {
                 if (res) {
                     this.docList = res.data;
+                    this.page.total = res.total;
                 }
             });
         },
@@ -112,29 +151,34 @@ export default {
             this.$router.push(`/word-center/word-detial/${id}`);
         },
         // 下载文档
-        downloadWord(id) {
-            let host = window.location.href.split("#")[0];
-            this.downloadBinaryFile(host, "", this.type);
+        downloadWord(row) {
+            this.accessoryList = row.accessorys;
+            this.unloadFileVisiable = true;
+        },
+        unloadAheckAccessory() {
+            this.unloadFileVisiable = false;
+        },
+        goto() {},
+        // 删除文档
+        deleteWord(id) {
+            this.$confirm("确定要删除该文档吗", "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning",
+            })
+                .then(() => {
+                    api[urlNames["deleteDoc"]]({ id }).then((res) => {
+                        if (res) {
+                            this.$message.success("操作成功");
+                        }
+                    });
+                })
+                .catch(() => {
+                    this.$message.info("已取消操作");
+                });
         },
     },
-    // 删除文档
-    deleteWord(id) {
-        this.$confirm("确定要删除该文档吗", "提示", {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            type: "warning",
-        })
-            .then(() => {
-                api[urlNames["deleteDoc"]]({ id }).then((res) => {
-                    if (res) {
-                        this.$message.success("操作成功");
-                    }
-                });
-            })
-            .catch(() => {
-                this.$message.info("已取消操作");
-            });
-    },
+
     computed: {
         ...mapState(["app"]),
     },

@@ -106,6 +106,7 @@
                     :appAccountInfo="appAccountInfo"
                     @openAccountDialog="openAccountDialog"
                     :isSuccess="isSuccess"
+                    :appApplictaionVisible="appApplictaionVisible"
                 ></push-log>
             </div>
         </div>
