@@ -79,9 +79,9 @@
                     </el-checkbox-group> -->
                     <a
                         style="color: #58a4f3;"
-                        href=""
                         v-for="(item, index) in this.accessoryList"
                         :key="index"
+                        :href="item.address"
                         >《{{ item.name + item.suffix }}》</a
                     >
                 </div>
