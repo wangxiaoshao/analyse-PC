@@ -54,7 +54,6 @@
                         href=""
                         v-for="(item, index) in docDetial.accessorys"
                         :key="index"
-                        :href="item.address"
                         >《{{ item.name + item.suffix }}》</a
                     >
                 </div>

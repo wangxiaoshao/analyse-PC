@@ -82,8 +82,6 @@
                         href=""
                         v-for="(item, index) in this.accessoryList"
                         :key="index"
-                        :href="item.address"
-                        @click="goto"
                         >《{{ item.name + item.suffix }}》</a
                     >
                 </div>
