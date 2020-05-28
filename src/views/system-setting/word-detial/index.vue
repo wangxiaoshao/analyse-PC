@@ -3,40 +3,92 @@
         <div class="header-title">{{ docDetial.title }}</div>
         <div class="time">{{ docDetial.createTime }}</div>
         <div class="content-box">
-            <div class="article">
+            <div class="article" id="description">
                 {{ docDetial.description }}
             </div>
+            <div
+                class="article"
+                id="description"
+                v-html="docDetial.content"
+            ></div>
             <div class="footer">
                 <p class="articleForm">
                     <span
-                        >文章来源：<a :href="docDetial.accessorys">{{
-                            docDetial.name
-                        }}</a></span
-                    >
+                        >文章来源：
+                        <a
+                            style="color: #58a4f3;"
+                            href=""
+                            v-for="(item, index) in docDetial.accessorys"
+                            :key="index"
+                            >《{{ item.name + item.suffix }}》</a
+                        >
+                    </span>
                 </p>
                 <p class="saveArticle">
-                    <el-button type="primary">保存该文档</el-button>
+                    <el-button type="primary" @click="openSaveDialog"
+                        >下载附件</el-button
+                    >
                 </p>
             </div>
+        </div>
+        <div class="dialog-box">
+            <el-dialog :visible.sync="unloadFileVisiable" width="420px">
+                <div slot="title" style="padding: 20px;">
+                    下载附件
+                    <i
+                        class="el-icon-document-copy"
+                        style="color: #58a4f3;"
+                    ></i>
+                </div>
+                <div class="chooseWord" style="text-align: center;">
+                    <!-- <el-checkbox-group v-model="checkAccessoryList">
+                        <el-checkbox
+                            v-for="(item, index) in docDetial.accessorys"
+                            :label="index"
+                            :key="item.id"
+                            >{{ item.name + item.suffix }}</el-checkbox
+                        >
+                    </el-checkbox-group> -->
+                    <a
+                        style="color: #58a4f3;"
+                        href=""
+                        v-for="(item, index) in docDetial.accessorys"
+                        :key="index"
+                        :href="item.address"
+                        >《{{ item.name + item.suffix }}》</a
+                    >
+                </div>
+                <div slot="footer" class="dialog-footer">
+                    <el-button
+                        type="primary"
+                        @click="unloadAheckAccessory"
+                        width="120px"
+                        >确 定</el-button
+                    >
+                </div>
+            </el-dialog>
         </div>
     </div>
 </template>
 <script>
 import handleBreadcrumb from "@src/mixins/handle-breadcrumb.js";
 import { api, urlNames } from "@src/api";
+import downloadBinaryFile from "@src/mixins/downloadBinaryFile";
 export default {
-    mixins: [handleBreadcrumb],
+    mixins: [handleBreadcrumb, downloadBinaryFile],
     name: "WordDetial",
     data() {
         return {
+            unloadFileVisiable: false,
+            checkAccessoryList: [],
             docDetial: {
-                title: "文章标题",
-                description:
-                    " 一、材料清单<br>1. 本人身份证、学生证或工作证等证件。<br>2. 笔试准考证。<br>",
-                accessorys: "",
-                address: "",
-                name: "",
                 createTime: "",
+                description: "",
+                title: "",
+                files: [],
+                accessorys: [],
+                content:
+                    " <p>这是文档添加测试正文内容，这是文档添加测试正文内容，这是文档添加测试正文内容这是文档添加测试正文内容这是文档添加测试正文内容</p>",
             },
         };
     },
@@ -49,7 +101,7 @@ export default {
         });
     },
     created() {
-        console.log(this.$route, 333333);
+        this.getDocDetial();
     },
     methods: {
         getDocDetial() {
@@ -60,6 +112,19 @@ export default {
                     }
                 }
             );
+        },
+        openSaveDialog() {
+            this.unloadFileVisiable = true;
+        },
+        unloadAheckAccessory() {
+            let that = this;
+            if (this.checkAccessoryList.length > 0) {
+                window.location.href = this.docDetial.accessorys[0].address;
+            } else {
+                this.$message.error("请先选择要下载的附件");
+            }
+
+            console.log(this.checkAccessoryList, 333333);
         },
     },
 };
