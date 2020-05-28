@@ -47,27 +47,25 @@ export default {
         showLoading: true,
         serve: "organizationManagePC",
     },
-  // 通讯录日志
-  [urlNames.findaddresslistLoggerList]: {
-    type: 'post',
-    url: '/api/jg_manage/logger/findTxlLogs',
-    keepOriginResponse: true,
-    showLoading: true,
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
+    // 通讯录日志
+    [urlNames.findaddresslistLoggerList]: {
+        type: "post",
+        url: "/api/jg_manage/logger/findTxlLogs",
+        keepOriginResponse: true,
+        showLoading: true,
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        serve: "organizationManagePC",
     },
-    serve: 'organizationManagePC'
-
-  },
-  // 通讯录日志详情
-  [urlNames.findTxlLoggerById]: {
-    type: 'get',
-    url: '/api/jg_manage/logger/findTxlLoggerById',
-    keepOriginResponse: true,
-    showLoading: true,
-    serve: 'organizationManagePC'
-
-  },
+    // 通讯录日志详情
+    [urlNames.findTxlLoggerById]: {
+        type: "get",
+        url: "/api/jg_manage/logger/findTxlLoggerById",
+        keepOriginResponse: true,
+        showLoading: true,
+        serve: "organizationManagePC",
+    },
     // 登录日志列表
     // 获取首页接入昨日数据
     [urlNames.getStatistiscCount]: {

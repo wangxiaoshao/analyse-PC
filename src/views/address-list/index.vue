@@ -73,7 +73,7 @@
                             :visableData="visableData"
                             v-if="showDep"
                             @handle-child-click="handleChildClick"
-              @changeOfficeState='changeOfficeState'
+                            @changeOfficeState="changeOfficeState"
                         ></department>
                         <member
                             :table-data="memberList"
@@ -323,15 +323,15 @@ export default {
                 }
             });
         },
-    changeOfficeState (index, state, val) {
-      if (state === 1) {
-        this.departmentList[index].mobile = val
-        this.departmentList[index].isLooked = true
-      } else if (state === 2) {
-        this.departmentList[index].officePhone = val
-        // this.departmentList[index].isOfficePhone = true
-      }
-    },
+        changeOfficeState(index, state, val) {
+            if (state === 1) {
+                this.departmentList[index].mobile = val;
+                this.departmentList[index].isLooked = true;
+            } else if (state === 2) {
+                this.departmentList[index].officePhone = val;
+                // this.departmentList[index].isOfficePhone = true
+            }
+        },
 
         handleChildClick(node) {
             console.log("node111:", node);
