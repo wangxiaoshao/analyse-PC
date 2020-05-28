@@ -557,6 +557,7 @@ export default {
         this.setBreadcrumbTitle();
     },
     created() {
+        console.log(this.$route.params, "params");
         this.init();
         this.initIptMsgVisible();
     },
@@ -657,6 +658,8 @@ export default {
                         this.ruleForm.organization.phone = res.data.phone;
                         this.ruleForm.organization.shortName =
                             res.data.shortName;
+                        this.ruleForm.organization.otherName =
+                            res.data.otherName;
                         this.ruleForm.organization.systemType =
                             res.data.systemType;
                         this.ruleForm.organization.type = res.data.type;
@@ -664,7 +667,7 @@ export default {
                         this.ruleForm.organization.ext01 = res.data.ext01;
                         this.ruleForm.organization.ext02 = res.data.ext02;
                         this.ruleForm.organization.creditId = res.data.creditId;
-                        if (res.data.creditId && res.data.creditId !== "") {
+                        if (res.data.creditId && res.data.creditId != "") {
                             this.creditIddisable = true;
                         }
                         this.oldFrom = JSON.parse(
@@ -673,7 +676,7 @@ export default {
                         console.log("ruleForm2:", this.ruleForm, this.oldFrom);
                     }
                 },
-                (/* error */) => {
+                (error) => {
                     this.$message.error(`没有内容`);
                 }
             );
@@ -826,9 +829,15 @@ export default {
         },
         submitForm(ruleForm) {
             //  || this.ruleForm.organization.creditId == ''
+            if (this.$route.params.nodeType === 1) {
+                this.ruleForm.organization.parentId = "-1";
+            } else {
+                this.ruleForm.organization.parentId = this.$route.params.parentId;
+            }
+
             if (
                 this.successVisiable ||
-                this.ruleForm.organization.creditId === ""
+                this.ruleForm.organization.creditId == ""
             ) {
                 this.ruleForm.organization.removed = this.ruleForm.organization
                     .removed

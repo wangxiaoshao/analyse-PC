@@ -23,6 +23,12 @@
                 >
                     <push-log></push-log>
                 </el-tab-pane>
+                <el-tab-pane
+                    label="通讯录日志"
+                    v-if="hasRight('systemLoggingTxlLogs')"
+                >
+                    <addresslist-log></addresslist-log>
+                </el-tab-pane>
             </el-tabs>
         </div>
     </div>
@@ -34,10 +40,11 @@ import HasRight from "@src/mixins/has-right";
 /* import { api, urlNames } from '@src/api' */
 import { mapState, mapMutations } from "vuex";
 import PersonalLog from "@src/components/PersonalLog/index";
+import AddresslistLog from "@src/components/AddresslistLog/index";
 import PushLog from "@src/views/shared/push-log";
 export default {
     mixins: [handleTable, HasRight],
-    components: { PersonalLog, PushLog },
+    components: { PersonalLog, PushLog, AddresslistLog },
     data() {
         return {
             searchQuery: {

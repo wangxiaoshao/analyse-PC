@@ -46,12 +46,16 @@ export default {
         // 点击节点加载子节点
         handleNodeClick(node) {
             // if()
+            console.log(66666, node);
             let id = "";
             id = node.id;
+            let nodeType = "";
+            nodeType = node.nodeType;
             this.$router.push({
                 name: "OrganizationContent",
                 params: {
                     nodeId: id,
+                    nodeType: nodeType,
                 },
             });
         },

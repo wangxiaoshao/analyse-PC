@@ -43,7 +43,8 @@
             ></el-table-column>
             <el-table-column prop="userIdType" label="身份类型" align="center">
                 <template slot-scope="scope">
-                    <span>{{ filterType(scope.row.userIdType) }}</span>
+                    <!-- <span>{{filterType(scope.row.userIdType)}}</span> -->
+                    <span>{{ scope.row.userIdType }}</span>
                 </template>
             </el-table-column>
             <el-table-column

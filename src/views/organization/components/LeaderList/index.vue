@@ -62,10 +62,13 @@
                     <template slot-scope="scope">
                         <span class="person-pic">
                             <img
-                                v-if="scope.row.portraitUrl !== ''"
+                                v-if="
+                                    scope.row.portraitUrl &&
+                                    scope.row.portraitUrl !== '0'
+                                "
                                 :src="scope.row.portraitUrl"
                             />
-                            <img src="@src/common/images/head-pic.png" />
+                            <img v-else src="@src/common/images/head-pic.png" />
                         </span>
                     </template>
                 </el-table-column>
@@ -150,7 +153,10 @@
                     <template slot-scope="scope">
                         <span class="person-pic">
                             <img
-                                v-if="scope.row.portraitUrl !== ''"
+                                v-if="
+                                    scope.row.portraitUrl &&
+                                    scope.row.portraitUrl !== '0'
+                                "
                                 :src="scope.row.portraitUrl"
                             />
                             <img v-else src="@src/common/images/head-pic.png" />

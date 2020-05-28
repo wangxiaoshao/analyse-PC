@@ -1,46 +1,16 @@
 <template>
     <div class="homePage">
-        <div class="homeContent" v-if="hasRight('viewBasicInformation')">
-            <div class="userInfo">
-                <div class="noticeInfo">
-                    <span class="userImg">
-                        <i class="el-icon-user"></i>
-                    </span>
-                    <div>
-                        <p>{{ userIdentityInfo.userName }}</p>
-                        <p>欢迎您，您是今天第{{ loginNumber }}个登录用户！</p>
-                    </div>
-                </div>
-                <div class="noticeInfo">
-                    <ul>
-                        <li>
-                            <span>所属单位</span>
-                            <span>|</span>
-                            <span>{{
-                                userIdentityInfo.organizationName || "无"
-                            }}</span>
-                        </li>
-                        <li>
-                            <span>职位</span>
-                            <span>|</span>
-                            <span>{{ userIdentityInfo.dutyName || "无" }}</span>
-                        </li>
-                        <li>
-                            <span>身份类型</span>
-                            <span>|</span>
-                            <span>{{
-                                userIdentityInfo.type &&
-                                userIdentityInfo.type !== null &&
-                                userIdentityInfo.type !== ""
-                                    ? filterType(userIdentityInfo.type)
-                                    : "无"
-                            }}</span>
-                        </li>
-                    </ul>
-                    <div @click="goPersonalPage">完善信息</div>
-                </div>
-            </div>
-        </div>
+        <p
+            style="
+                display: inline-block;
+                margin-bottom: 30px;
+                margin-left: 25px;
+            "
+        >
+            欢迎您，您是今天第&nbsp;<b
+                ><big>{{ loginNumber }}</big></b
+            >&nbsp;个登录的用户！
+        </p>
         <div class="homeContent" v-if="hasRight('viewCommissionMatters')">
             <div class="header-title">待办事项</div>
             <div class="notice">

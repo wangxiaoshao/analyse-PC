@@ -64,6 +64,7 @@
     .userInfo{
       position: relative;
       font-size: 13px;
+      justify-content: center;
       .userImg{
         display: inline-block;
         border: 2px solid rgba(0, 0, 0, 0.1);
@@ -79,11 +80,12 @@
         font-size: 30px;
       }
       .noticeInfo:nth-child(1){
+        justify-content: center;
+        text-align: center;
+        border-right: none;
         div{
-          display:inline-block;
-          position: absolute;
-          left:65px;
-          top:calc(50% - 30px);
+          display:block;
+          position: relative;
           p{
             color:#444;
             font-size: 13px;
@@ -91,8 +93,8 @@
         }
       }
       .noticeInfo:nth-child(2){
-        // display: flex;
-        // justify-content: space-between;
+        display: flex;
+        justify-content: space-between;
         ul{
           li{
             color:#444;
@@ -167,7 +169,7 @@
     }
   }
   .homeContent:nth-child(1){
-    height: 102px;
+    height: auto;
   }
 
   .config-button {

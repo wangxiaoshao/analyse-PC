@@ -48,6 +48,9 @@ module.exports = function (options) {
                     // target: "http://59.215.232.95/",
                     target: "http://org.gz.cegn.cn/",
                     changeOrigin: false,
+
+            //  target: "http://10.226.11.177/",
+            //  changeOrigin: true,
                     // http:"//jg-dev.lonmo.com",
                     // pathRewrite: {
                     //   "/api/": ""

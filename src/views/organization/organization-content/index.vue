@@ -340,6 +340,7 @@ export default {
         this.init(to.query.type);
     },
     created() {
+        console.log(this.$route.query, 9999);
         this.init(this.$route.query.type);
     },
     methods: {
@@ -401,6 +402,7 @@ export default {
                 name: "DepartmentAdd",
                 params: {
                     parentId: this.$route.params.nodeId,
+                    nodeType: this.$route.params.nodeType,
                 },
             });
         },
@@ -410,6 +412,7 @@ export default {
                 name: "UnitAdd",
                 params: {
                     parentId: this.content[0].id,
+                    nodeType: this.content[0].nodeType,
                 },
             });
             this.visible = false;

@@ -317,9 +317,9 @@ export default {
         this.setBreadcrumbTitle();
     },
     created() {
+        console.log(this.$route.params, "params44444");
         this.init();
         this.initIptMsgVisible();
-        console.log(this.$route.name);
     },
     beforeRouteUpdate(to, from, next) {
         next();
@@ -532,6 +532,11 @@ export default {
             this.ruleForm.areaId = val;
         },
         submitForm(ruleForm) {
+            if (this.$route.params.nodeType === 2) {
+                this.ruleForm.department.parentDep = "-1";
+            } else {
+                this.ruleForm.department.parentId = this.$route.params.parentId;
+            }
             this.ruleForm.department.removed = this.ruleForm.department.removed
                 ? 0
                 : 1;

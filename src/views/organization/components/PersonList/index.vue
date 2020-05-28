@@ -56,7 +56,7 @@
                 </el-form-item>
                 <el-form-item label="目标单位">
                     <span class="name-span border">{{
-                        orgName || this.$store.state.app.option.user.orgName
+                        orgName == "" ? "无" : orgName
                     }}</span>
                     <span class="name-span border" v-if="depName !== ''"
                         >/{{ depName }}</span
@@ -174,6 +174,11 @@
                 prop="name"
                 align="center"
             ></el-table-column>
+            <el-table-column
+                label="身份类型"
+                prop="typeText"
+                align="center"
+            ></el-table-column>
             <!-- <el-table-column label="登录账号" prop="account"></el-table-column> -->
             <el-table-column
                 label="职务"
@@ -189,19 +194,20 @@
                     }}</span>
                     <span
                         v-if="
+                            scope.row.removed === 0 &&
                             scope.row.mobile &&
                             scope.row.mobile != '' &&
                             scope.row.mobile != '无' &&
                             scope.row.uid !== activeId
                         "
                         class="findMobileBtn"
-                        @click="findMobileById(scope.row.uid)"
+                        @click="findMobileById(scope.row.uid, 1)"
                         >查看</span
                     >
                 </template>
             </el-table-column>
             <!-- <el-table-column label="身份类型" prop="typeText"></el-table-column> -->
-            <el-table-column label="启用状态" prop="removed" align="center">
+            <el-table-column label="身份启用状态" prop="removed" align="center">
                 <template slot-scope="scope">
                     <span class="text-able" v-show="scope.row.removed === 0"
                         >启用</span
@@ -218,7 +224,9 @@
                         type="text"
                         size="small"
                         class="btnMar"
-                        :disabled="!hasRight('userSetting')"
+                        :disabled="
+                            !hasRight('userSetting') || scope.row.removed === 1
+                        "
                         >修改</el-button
                     >
                     <el-button
@@ -226,30 +234,43 @@
                         type="text"
                         size="small"
                         class="btnMar"
-                        :disabled="!hasRight('userIdTransfe')"
+                        :disabled="
+                            !hasRight('userIdTransfe') ||
+                            scope.row.removed === 1
+                        "
                         >调出</el-button
                     >
                     <el-button
-                        v-if="scope.row.type === 1 || scope.row.type === '1'"
+                        v-if="
+                            scope.row.removed === 0 &&
+                            (scope.row.type === 2 || scope.row.type === '2')
+                        "
                         @click.native.prevent="removeDuty(scope.row)"
                         type="text"
                         size="small"
                         class="btnMar"
+                        :disabled="scope.row.removed === 1"
                         >解除兼职</el-button
                     >
                     <el-button
-                        v-if="scope.row.type === 2 || scope.row.type === '2'"
+                        v-if="
+                            scope.row.removed === 0 &&
+                            (scope.row.type === 3 || scope.row.type === '3')
+                        "
                         @click.native.prevent="removeDuty(scope.row)"
                         type="text"
                         size="small"
                         class="btnMar"
-                        :disabled="!hasRight('userIdRemove')"
+                        :disabled="
+                            !hasRight('userIdRemove') || scope.row.removed === 1
+                        "
                         >解除挂职</el-button
                     >
                     <el-button
                         @click.native="goSort(scope.row)"
                         type="text"
                         size="small"
+                        v-if="scope.row.removed === 0"
                         >排序</el-button
                     >
                 </template>
@@ -389,10 +410,13 @@ export default {
         hideMobile(phone) {
             return (phone + "").replace(/^(.{3})(?:\d+)(.{4})$/, "$1****$2");
         },
-        findMobileById(uid) {
+        findMobileById(uid, state) {
             // debugger
             this.activeId = uid;
-            api[urlNames["findMobileById"]]({ uid }).then((res) => {});
+            api[urlNames["findMobileById"]]({
+                uid,
+                type: state,
+            }).then((res) => {});
         },
         getGrid() {
             // this.cancelSort()
@@ -597,9 +621,9 @@ export default {
         removeDuty(row) {
             this.removeFlag = true;
             this.$emit("cancel", false);
-            this.identityName = row.type === 1 ? "兼职" : "挂职";
+            this.identityName = row.type === 2 ? "兼职" : "挂职";
             this.identityTitle =
-                row.type === 1 ? "填写解除兼职说明" : "填写解除挂职说明";
+                row.type === 2 ? "填写解除兼职说明" : "填写解除挂职说明";
             this.ruleForm.identityId = row.identityId;
             // this.ruleForm.type = row.type
         },

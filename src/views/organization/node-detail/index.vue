@@ -244,7 +244,6 @@ export default {
             let data = {
                 id: this.$route.params.id || this.$route.params.parentId,
             };
-
             this.loading = true;
             api[urlNames["findViewNodeById"]](data).then(
                 (res) => {

@@ -8,7 +8,7 @@
     <div class="choose-content">
         <el-popover
             ref="popover"
-            width="700"
+      width="750"
             trigger="click"
             popper-class="system-popover"
             placement="bottom-start"

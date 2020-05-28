@@ -70,6 +70,7 @@ export default {
         findMobile(state) {
             api[urlNames["findMobileById"]]({
                 uid: this.personInfoList.uid,
+                type: state,
             }).then((res) => {
                 if (res && state === 1) {
                     this.personInfoList.mobile = res.data.mobile;

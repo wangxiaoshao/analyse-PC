@@ -80,6 +80,7 @@
                         placeholder="请输入搜索关键词"
                         v-model="logParam.name"
                         @blur="iptChange"
+                        clearable
                         prefix-icon="el-icon-search"
                         style="width: 160px;"
                     ></el-input>
@@ -115,6 +116,7 @@
                         prop="description"
                         label="描述"
                         align="center"
+                        min-width="200"
                     ></el-table-column>
                 </template>
                 <template v-if="loginLog === 3">
@@ -132,7 +134,13 @@
                         prop="path"
                         label="接口标识"
                         align="center"
-                    ></el-table-column>
+                    >
+                        <template slot-scope="scope">
+                            <span style="color: red;">{{
+                                scope.row.path
+                            }}</span>
+                        </template>
+                    </el-table-column>
                 </template>
                 <el-table-column label="操作" align="center">
                     <template slot-scope="scope">
@@ -156,7 +164,7 @@
         </div>
         <!-- 详细信息弹窗 -->
         <div class="dialog-box">
-            <el-dialog :visible.sync="detialInfoVisible" width="420px">
+            <el-dialog :visible.sync="detialInfoVisible" width="700px">
                 <div slot="title" style="padding: 20px;">
                     日志详情
                     <i
@@ -166,26 +174,24 @@
                 </div>
                 <template v-if="loginLog === 1 || loginLog === 2 || !loginLog">
                     <el-form inline label-width="130px" class="systemDetial">
-                        <el-form-item label="操作日期">
+                        <el-form-item label="时间">
                             <div class="table-td">
                                 {{ detialInfoForm.actionTime }}
                             </div>
                         </el-form-item>
-                        <el-form-item label="操作人标识">
+                        <el-form-item label="操作人">
                             <div class="table-td">
-                                {{ detialInfoForm.actionUid }}
+                                {{ detialInfoForm.userName }}
                             </div>
                         </el-form-item>
-                        <el-form-item label="操作描述">
+                        <el-form-item label="描述">
                             <div class="table-td">
                                 {{ detialInfoForm.description }}
                             </div>
                         </el-form-item>
-                        <el-form-item label="操作事件标识">
-                            <div class="table-td">
-                                {{ detialInfoForm.clientId }}
-                            </div>
-                        </el-form-item>
+                        <!-- <el-form-item label="操作事件标识">
+                <div class="table-td">{{detialInfoForm.clientId}}</div>
+              </el-form-item> -->
                     </el-form>
                 </template>
                 <template v-if="loginLog === 3">
@@ -201,7 +207,9 @@
                             </div>
                         </el-form-item>
                         <el-form-item label="日志类型">
-                            <div class="table-td">{{ systemError }}</div>
+                            <div class="table-td" style="color: red;">
+                                {{ systemError }}
+                            </div>
                         </el-form-item>
                         <el-form-item label="操作事件标识">
                             <div class="overline" :title="systemInfoForm.path">
@@ -399,6 +407,8 @@ export default {
                 data.name = this.logParam.name;
             } else if (this.loginLog === 3) {
                 logUrl = "findLoggerApiAccessList";
+            } else if (this.loginLog === 5) {
+                logUrl = "";
             } else {
                 logUrl = "findPersonalLoggerList";
             }

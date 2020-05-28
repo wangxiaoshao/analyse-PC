@@ -86,6 +86,7 @@ export default {
             accountList: [],
             oldUserInfo: {},
             fromLabelList: [],
+            isWriteType: true,
             userInfo: {
                 userAccount: [], // 账户
                 labelId: [],
@@ -127,7 +128,6 @@ export default {
     },
     mounted() {
         this.setBreadcrumbTitle();
-        this.init();
     },
     created() {
         this.init();
@@ -197,7 +197,7 @@ export default {
                         }
                         //  this.oldPostDetail={...this.userInfo.identity}
                     },
-                    (/* error */) => {
+                    (error) => {
                         this.$message.error(`没有内容`);
                     }
                 );
@@ -238,6 +238,9 @@ export default {
                         res.data
                     );
                     this.userInfo.user = doUserDetail;
+                    if (this.isWriteType === 2 || this.isWriteType === 3) {
+                        this.userInfo.identity.type = this.isWriteType;
+                    }
 
                     this.userInfo.userId = res.data.uid;
                     this.oldUserDetail = { ...this.userInfo.user };
@@ -318,7 +321,8 @@ export default {
             this.userInfo.userAccount = val;
             this.submitForm();
         },
-        getUid(val) {
+        getUid(val, status) {
+            this.isWriteType = status;
             this.getUserAccount(val);
             this.getUserDetail(val);
         },

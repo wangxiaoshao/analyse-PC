@@ -209,16 +209,19 @@ export default {
             });
         },
         findMobileById(uid, index, state) {
-            api[urlNames["findMobileById"]]({ uid }).then((res) => {
-                if (res && state === 1) {
-                    this.tableData[index].mobile = res.data.mobile;
-                    this.tableData[index].isLooked = true;
+            api[urlNames["findMobileById"]]({ uid, type: state }).then(
+                (res) => {
+                    if (res && state === 1) {
+                        this.tableData[index].mobile = res.data.mobile;
+                        this.tableData[index].isLooked = true;
+                    }
+                    if (res && state === 2) {
+                        this.tableData[index].officePhone =
+                            res.data.officePhone;
+                        this.tableData[index].isOfficePhone = true;
+                    }
                 }
-                if (res && state === 2) {
-                    this.tableData[index].officePhone = res.data.officePhone;
-                    this.tableData[index].isOfficePhone = true;
-                }
-            });
+            );
         },
     },
 };

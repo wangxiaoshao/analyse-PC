@@ -57,11 +57,11 @@
                             ref="popover"
                             width="500"
                         >
+                            <!-- :disabled="isDefaultFlag" -->
                             <el-input
                                 v-popover:popover
                                 slot="reference"
                                 placeholder="请输入姓名"
-                                :disabled="isDefaultFlag"
                                 v-model="userDetail.name"
                                 @blur="blur"
                                 @input="loadSearch"
@@ -85,36 +85,80 @@
                                     <el-table-column
                                         property="name"
                                         label="姓名"
+                                        align="center"
                                     >
                                         <template slot-scope="scope">
                                             <span
                                                 :title="scope.row.name"
                                                 class="table-span"
-                                                >{{ scope.row.name }}</span
+                                                >{{ scope.row.user.name }}</span
                                             >
                                         </template>
                                     </el-table-column>
                                     <el-table-column
                                         property="orgName"
-                                        label="单位名称"
+                                        label="原单位名称"
+                                        align="center"
                                     >
                                         <template slot-scope="scope">
                                             <span
-                                                :title="scope.row.orgName"
+                                                :title="
+                                                    scope.row.userIdentity
+                                                        .dutyName
+                                                "
                                                 class="table-span"
-                                                >{{ scope.row.orgName }}</span
+                                                >{{
+                                                    scope.row.userIdentity
+                                                        .dutyName
+                                                }}</span
+                                            >
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column
+                                        property="orgName"
+                                        label="当前状态"
+                                        align="center"
+                                    >
+                                        <template slot-scope="scope">
+                                            <span
+                                                title="申请调入"
+                                                class="table-span"
+                                                v-if="scope.row.status === 1"
+                                                >申请调入</span
+                                            >
+                                            <span
+                                                title="申请兼职"
+                                                class="table-span"
+                                                v-if="scope.row.status === 2"
+                                                >申请兼职</span
+                                            >
+                                            <span
+                                                title="申请挂职"
+                                                class="table-span"
+                                                v-if="scope.row.status === 3"
+                                                >申请挂职</span
                                             >
                                         </template>
                                     </el-table-column>
                                     <el-table-column
                                         property="duty"
-                                        label="职位"
+                                        label="是否申请我单位"
+                                        align="center"
                                     >
                                         <template slot-scope="scope">
                                             <span
-                                                :title="scope.row.duty"
                                                 class="table-span"
-                                                >{{ scope.row.duty }}</span
+                                                v-if="
+                                                    scope.row.isApplyMyOrg === 1
+                                                "
+                                                >是</span
+                                            >
+                                            <span
+                                                class="table-span"
+                                                v-if="
+                                                    scope.row.isApplyMyOrg === 0
+                                                "
+                                                >否</span
                                             >
                                         </template>
                                     </el-table-column>
@@ -236,9 +280,9 @@
                 </el-col>
                 <el-col :span="12">
                     <el-form-item label="手机号" prop="mobile">
+                        <!-- :disabled="isDefaultFlag" -->
                         <el-input
                             placeholder="请输入手机号"
-                            :disabled="isDefaultFlag"
                             v-model="userDetail.mobile"
                             @input="showIptMsg('mobile')"
                         ></el-input>
@@ -284,22 +328,22 @@
                 </el-col>
             </el-row>
             <el-row>
-                <el-col :span="15">
+                <el-col :span="12">
                     <el-form-item label="身份证号" prop="idcard">
                         <el-input
                             placeholder="请输入内容"
                             :disabled="isDefaultFlag"
                             v-model="userDetail.idcard"
                             @input="showIptMsg('idcard')"
+                            @blur="idAutherntication"
                         >
-                            <el-button
+                            <!-- <el-button
                                 slot="append"
                                 v-if="!disabledFlag"
                                 type="success"
                                 class="form-btn1"
                                 @click="idAutherntication"
-                                >点击实名认证</el-button
-                            >
+              >点击实名认证</el-button> -->
                         </el-input>
                         <div
                             class="el-form-item__error"
@@ -319,7 +363,7 @@
                             class="el-form-item__error"
                         >
                             <i class="el-icon-error"></i>
-                            身份证号码与人员姓名不匹配。
+                            身份证号码不正确。
                         </p>
                         <p
                             style="color: green;"
@@ -914,9 +958,10 @@ export default {
         },
         // 搜索表格点击当前行
         selectRow(val) {
-            let uid = val.uid;
+            let uid = val.user.uid;
             this.searchFlag = false;
-            this.$emit("get-uid", uid);
+            console.log(val.status, 77777);
+            this.$emit("get-uid", uid, val.status);
             this.$emit("get-defauf", true);
         },
         // 搜索数据

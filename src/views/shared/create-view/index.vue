@@ -625,6 +625,21 @@ export default {
                 if (res.status === 0) {
                     this.getViewTime();
                     this.activeName = "third";
+                    this.$confirm(
+                        "视图应用成功，是否立即前往应用管理进行绑定？",
+                        "提示",
+                        {
+                            confirmButtonText: "确定",
+                            cancelButtonText: "取消",
+                            type: "warning",
+                        }
+                    )
+                        .then(() => {
+                            this.$router.push(
+                                "/app-management/create-app-management"
+                            );
+                        })
+                        .catch(() => {});
                 }
             });
         },
