@@ -5,7 +5,7 @@
   "scripts": {
     "mock": "vue-cli-service serve",
     "serve": "vue-cli-service serve --mode test",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service lint --fix && vue-cli-service build",
     "lint": "vue-cli-service lint --fix",
     "dev": "rollup -w -c scripts/config.js --environment TARGET:web-full-dev --sourcemap"
   },
