@@ -22,7 +22,7 @@ export default {
     components: { ArticleList },
     data() {
         return {
-            activeName: "authorityDescript",
+            activeName: "actionWord",
         };
     },
     created() {},

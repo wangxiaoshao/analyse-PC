@@ -17,7 +17,7 @@
                         >文章来源：
                         <a
                             style="color: #58a4f3;"
-                            href=""
+                            href="javascript: void ( 0 );"
                             v-for="(item, index) in docDetial.accessorys"
                             :key="index"
                             >《{{ item.name + item.suffix }}》</a
@@ -35,27 +35,31 @@
             <el-dialog :visible.sync="unloadFileVisiable" width="420px">
                 <div slot="title" style="padding: 20px;">
                     下载附件
-                    <i
-                        class="el-icon-document-copy"
-                        style="color: #58a4f3;"
-                    ></i>
+                    <i class="el-icon-download" style="color: #58a4f3;"></i>
                 </div>
                 <div class="chooseWord" style="text-align: center;">
-                    <!-- <el-checkbox-group v-model="checkAccessoryList">
+                    <el-checkbox-group v-model="checkAccessoryList">
                         <el-checkbox
                             v-for="(item, index) in docDetial.accessorys"
                             :label="index"
                             :key="item.id"
                             >{{ item.name + item.suffix }}</el-checkbox
                         >
-                    </el-checkbox-group> -->
-                    <a
+                    </el-checkbox-group>
+
+                    <!-- <span
+                        v-for="(item, index) in docDetial.accessorys"
+                        :key="index"
+                    >
+                        <span v-down="item.address">(附件)</span>
+                    </span> -->
+                    <!-- <a
                         style="color: #58a4f3;"
                         v-for="(item, index) in docDetial.accessorys"
                         :key="index"
                         :href="item.address"
                         >《{{ item.name + item.suffix }}》</a
-                    >
+                    > -->
                 </div>
                 <div slot="footer" class="dialog-footer">
                     <el-button
@@ -118,7 +122,17 @@ export default {
         unloadAheckAccessory() {
             let that = this;
             if (this.checkAccessoryList.length > 0) {
-                window.location.href = this.docDetial.accessorys[0].address;
+                this.checkAccessoryList.forEach(function (item) {
+                    let a = document.createElement("a");
+                    let fileName = that.docDetial.accessorys[item].name;
+                    console.log(fileName);
+                    a.href = that.docDetial.accessorys[item].address;
+                    console.log(that.docDetial.accessorys[item].address);
+                    a.download = fileName;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                });
             } else {
                 this.$message.error("请先选择要下载的附件");
             }
