@@ -74,15 +74,6 @@
                             >{{ item.name + item.suffix }}</el-checkbox
                         >
                     </el-checkbox-group>
-                    <!-- <a
-                        style="color: #58a4f3;"
-                        v-for="(item, index) in this.accessoryList"
-                        :key="index"
-                        :href="item.address"
-                        @click.stop="goto"
-                        :download="item.name + item.suffix"
-                        >《{{ item.name + item.suffix }}》</a
-                    > -->
                 </div>
                 <div slot="footer" class="dialog-footer">
                     <el-button
@@ -97,14 +88,13 @@
     </div>
 </template>
 <script>
-import handleTable from "@src/mixins/handle-table";
 import { api, urlNames } from "@src/api";
+import handleTable from "@src/mixins/handle-table";
 import { mapState } from "vuex";
-import downloadBinaryFile from "@src/mixins/downloadBinaryFile";
 export default {
     name: "WordCenter",
     props: ["activeName"],
-    mixins: [handleTable, downloadBinaryFile],
+    mixins: [handleTable],
     data() {
         return {
             unloadFileVisiable: false,
@@ -156,9 +146,25 @@ export default {
             this.unloadFileVisiable = true;
         },
         unloadAheckAccessory() {
-            this.unloadFileVisiable = false;
+            let that = this;
+            if (this.checkAccessoryList.length > 0) {
+                this.checkAccessoryList.forEach(function (item) {
+                    let a = document.createElement("a");
+                    let fileName = that.accessoryList[item].name;
+                    a.download = fileName;
+                    a.style.display = "none";
+                    console.log(fileName);
+                    a.href = that.accessoryList[item].address;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                });
+            } else {
+                this.$message.error("请先选择要下载的附件");
+            }
+
+            console.log(this.checkAccessoryList, 333333);
         },
-        goto() {},
         // 删除文档
         deleteWord(id) {
             this.$confirm("确定要删除该文档吗", "提示", {
@@ -169,6 +175,8 @@ export default {
                 .then(() => {
                     api[urlNames["deleteDoc"]]({ id }).then((res) => {
                         if (res) {
+                            this.getGrid();
+                            this.getGrid();
                             this.$message.success("操作成功");
                         }
                     });
