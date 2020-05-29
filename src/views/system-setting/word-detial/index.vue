@@ -125,10 +125,11 @@ export default {
                 this.checkAccessoryList.forEach(function (item) {
                     let a = document.createElement("a");
                     let fileName = that.docDetial.accessorys[item].name;
+                    a.download = fileName;
+                    a.style.display = "none";
                     console.log(fileName);
                     a.href = that.docDetial.accessorys[item].address;
                     console.log(that.docDetial.accessorys[item].address);
-                    a.download = fileName;
                     document.body.appendChild(a);
                     a.click();
                     document.body.removeChild(a);
