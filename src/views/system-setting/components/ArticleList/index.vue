@@ -63,27 +63,26 @@
             <el-dialog :visible.sync="unloadFileVisiable" width="420px">
                 <div slot="title" style="padding: 20px;">
                     下载附件
-                    <i
-                        class="el-icon-document-copy"
-                        style="color: #58a4f3;"
-                    ></i>
+                    <i class="el-icon-download" style="color: #58a4f3;"></i>
                 </div>
                 <div class="chooseWord" style="text-align: center;">
-                    <!-- <el-checkbox-group v-model="checkAccessoryList">
+                    <el-checkbox-group v-model="checkAccessoryList">
                         <el-checkbox
-                            v-for="(item, index) in docDetial.accessorys"
+                            v-for="(item, index) in accessoryList"
                             :label="index"
                             :key="item.id"
                             >{{ item.name + item.suffix }}</el-checkbox
                         >
-                    </el-checkbox-group> -->
-                    <a
+                    </el-checkbox-group>
+                    <!-- <a
                         style="color: #58a4f3;"
                         v-for="(item, index) in this.accessoryList"
                         :key="index"
                         :href="item.address"
+                        @click.stop="goto"
+                        :download="item.name + item.suffix"
                         >《{{ item.name + item.suffix }}》</a
-                    >
+                    > -->
                 </div>
                 <div slot="footer" class="dialog-footer">
                     <el-button
@@ -110,6 +109,7 @@ export default {
         return {
             unloadFileVisiable: false,
             accessoryList: [],
+            checkAccessoryList: [],
             docList: [
                 {
                     id: 1,
