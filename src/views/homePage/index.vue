@@ -229,7 +229,10 @@
             <div slot="footer" class="dialog-footer">
                 <el-button
                     type="info"
-                    @click="validSignatureDialog = false"
+                    @click="
+                        validSignatureDialog = false;
+                        init();
+                    "
                     width="120px"
                     >继续使用系统</el-button
                 >
@@ -366,18 +369,11 @@ export default {
 
             // 验签提示对话框
             validSignatureDialog: false,
+            loader: null,
         };
     },
     created() {
         this.validSignature();
-        this.getUserIdentityInfo();
-        this.getAccountData();
-        this.getNoticeList();
-        this.getLoginIndex();
-        // 获取接应用总数
-        api[urlNames["findApplicationCount"]]().then((res) => {
-            this.applyCount = res.data;
-        });
     },
     mounted() {
         this.userIdentityInfo.userName = this.app.option.user.name;
@@ -385,14 +381,32 @@ export default {
     },
     methods: {
         // 国密验签
-        validSignature() {
+        validSignature(callback) {
+            this.loader = this.$loading({
+                fullscreen: true,
+                text: "用户信息签名校验中...",
+            });
+
             api[urlNames["validSignature"]]()
                 .then((res) => {
-                    console.log("valide sign success");
+                    this.loader.close();
+                    init();
                 })
                 .catch(() => {
+                    this.loader.close();
                     this.validSignatureDialog = true;
                 });
+        },
+
+        init() {
+            this.getUserIdentityInfo();
+            this.getAccountData();
+            this.getNoticeList();
+            this.getLoginIndex();
+            // 获取接应用总数
+            api[urlNames["findApplicationCount"]]().then((res) => {
+                this.applyCount = res.data;
+            });
         },
 
         // 获取第几个用户

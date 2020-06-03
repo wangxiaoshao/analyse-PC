@@ -141,6 +141,5 @@ export default {
         keepOriginResponse: true,
         serve: "organizationManagePC",
         fullscreen: true,
-        text: "用户信息签名校验中...",
     },
 };

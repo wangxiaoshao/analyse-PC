@@ -91,6 +91,10 @@ export default {
         return {
             list: [],
             loading: true,
+
+            // 验签提示对话框
+            validSignatureDialog: false,
+            loading: null,
         };
     },
     computed: {
