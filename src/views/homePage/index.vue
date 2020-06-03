@@ -210,42 +210,36 @@
                 </div>
             </div>
         </div>
-        <!-- <el-button type="primary" @click="configDialogVisible = true" class="config-button">配置</el-button>
 
-    <el-dialog title="首页显示项配置"
-                align="left"
-                :fullscreen="false"
-                :visible.sync="configDialogVisible"
-                :close-on-click-modal="false"
-                :close-on-press-escape="false"
-                :show-close="true"
-                width="50">
-      <el-row :gutter="20">
-        <el-col :span="24">
-          <el-table
-            :data="homepageConfig"
-            stripe
-            style="width: 100%">
-            <el-table-column
-              prop="name">
-            </el-table-column>
-            <el-table-column>
-              <template slot-scope="scope">
-                <el-checkbox v-model="scope.row.isChecked"></el-checkbox>
-              </template>
-            </el-table-column>
-          </el-table>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20" :style="{marginTop: '20px'}">
-        <el-col :span="12" :offset="6">
-          <el-button
-            type="primary"
-            @click="saveHomepageConfig" v-show="hasRight('homepageConfig')">保存</el-button>
-          <el-button @click="configDialogVisible = false" :style="{marginLeft: '60px'}">取消</el-button>
-        </el-col>
-      </el-row>
-    </el-dialog> -->
+        <el-dialog
+            :visible.sync="validSignatureDialog"
+            lock-scroll
+            :close-on-press-escape="false"
+            :close-on-click-modal="false"
+            class="dialog-box"
+            width="500px"
+        >
+            <div slot="title" style="padding: 20px;">
+                校验结果
+            </div>
+            <p>
+                <img src="@src/common/images/v2_qb1b03.png" alt="" />
+                个人信息签名验证未通过，请及时联系运维人员处理。
+            </p>
+            <div slot="footer" class="dialog-footer">
+                <el-button
+                    type="info"
+                    @click="validSignatureDialog = false"
+                    width="120px"
+                    >继续使用系统</el-button
+                >
+                <el-button type="primary" width="120px"
+                    ><a href="/api/gate/logout" style="color: #fff;"
+                        >退出系统</a
+                    ></el-button
+                >
+            </div>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -369,9 +363,13 @@ export default {
                     isChecked: true,
                 },
             ],
+
+            // 验签提示对话框
+            validSignatureDialog: false,
         };
     },
     created() {
+        this.validSignature();
         this.getUserIdentityInfo();
         this.getAccountData();
         this.getNoticeList();
@@ -386,6 +384,17 @@ export default {
         this.doArray();
     },
     methods: {
+        // 国密验签
+        validSignature() {
+            api[urlNames["validSignature"]]()
+                .then((res) => {
+                    console.log("valide sign success");
+                })
+                .catch(() => {
+                    this.validSignatureDialog = true;
+                });
+        },
+
         // 获取第几个用户
         getLoginIndex() {
             api[urlNames["loginIndex"]]().then((res) => {
@@ -474,9 +483,7 @@ export default {
         },
         goMoreAnnounts() {
             this.$router.push("/moreAnnoument");
-        } /* ,
-    // 保存首页配置
-    saveHomepageConfig () {} */,
+        },
     },
     computed: {
         ...mapState(["app"]),
