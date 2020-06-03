@@ -128,7 +128,6 @@ export default {
             );
         },
         isGroup() {
-            console.log(this.menuItem.group && this.menuItem.group.length > 0);
             return this.menuItem.group && this.menuItem.group.length > 0;
         },
         isSubMenu() {
