@@ -24,14 +24,17 @@ module.exports = function (options) {
             }
 
             let gitRevisionPlugin = new GitRevisionPlugin();
-            let fileManagePlugin = new FileManagerPlugin({
-                onEnd: {
-                    delete: ["./dist.zip"],
-                    archive: [{ source: "./dist", destination: "./dist.zip" }],
-                }
-            });
+            config.plugins.push(gitRevisionPlugin);
 
-            config.plugins = [...config.plugins, gitRevisionPlugin, fileManagePlugin];
+            if ("production" === config.mode) {
+                let fileManagePlugin = new FileManagerPlugin({
+                    onEnd: {
+                        delete: ["./dist.zip"],
+                        archive: [{ source: "./dist", destination: "./dist.zip" }],
+                    }
+                });
+                config.plugins.push(fileManagePlugin);
+            }
         },
 
         devServer: {
