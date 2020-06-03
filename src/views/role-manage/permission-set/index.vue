@@ -49,6 +49,37 @@
             >
             <el-button @click="cancel">返回</el-button>
         </el-footer>
+
+        <el-dialog
+            :visible.sync="validSignatureDialog"
+            lock-scroll
+            :close-on-press-escape="false"
+            :close-on-click-modal="false"
+            class="dialog-box"
+            width="500px"
+        >
+            <div slot="title" style="padding: 20px;">
+                校验结果
+            </div>
+            <p>
+                <img src="@src/common/images/v2_qb1b03.png" alt="" />
+                角色权限配置数据校验未通过，请及时联系运维人员处理。
+            </p>
+            <div slot="footer" class="dialog-footer">
+                <el-button
+                    type="info"
+                    @click="
+                        validSignatureDialog = false;
+                        init();
+                    "
+                    width="120px"
+                    >继续使用系统</el-button
+                >
+                <el-button type="primary" @click="$router.back()" width="120px"
+                    >返 回</el-button
+                >
+            </div>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -65,11 +96,13 @@ export default {
             allAction: [], // 所有操作
             checkboxtSelect: [],
             roleId: this.$route.params.id,
+            // 验签提示对话框
+            validSignatureDialog: false,
+            loader: null,
         };
     },
     created() {
-        this.getMenuList();
-        this.getActionList();
+        this.validSignature();
     },
     mounted() {
         this.pushBreadcrumb({
@@ -83,6 +116,27 @@ export default {
         });
     },
     methods: {
+        // 国密验签
+        validSignature(callback) {
+            this.loader = this.$loading({
+                fullscreen: true,
+                text: "用户信息签名校验中...",
+            });
+
+            api[urlNames["validSignature"]]()
+                .then((res) => {
+                    this.loader.close();
+                    this.init();
+                })
+                .catch(() => {
+                    this.loader.close();
+                    this.validSignatureDialog = true;
+                });
+        },
+        init() {
+            this.getMenuList();
+            this.getActionList();
+        },
         // 对菜单进行分类
         sortModuleList(menuList) {
             let that = this;

@@ -390,7 +390,7 @@ export default {
             api[urlNames["validSignature"]]()
                 .then((res) => {
                     this.loader.close();
-                    init();
+                    this.init();
                 })
                 .catch(() => {
                     this.loader.close();

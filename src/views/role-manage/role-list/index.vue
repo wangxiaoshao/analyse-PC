@@ -94,7 +94,7 @@ export default {
 
             // 验签提示对话框
             validSignatureDialog: false,
-            loading: null,
+            loader: null,
         };
     },
     computed: {

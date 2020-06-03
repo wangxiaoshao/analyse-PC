@@ -12,14 +12,14 @@
     //         padding: 10px 0;
     //     }
     //     td{
-    
+
     //         text-align: right;
     //         padding: 8px;
     //     }
-        
+
     //     td:nth-child(1){
     //         width: 20%;
-          
+
     //     }
     //     tr:nth-child(2n){
     //         background-color: rgb(180, 232, 253);
@@ -33,7 +33,7 @@
     //     tr td:nth-child(2) .table-td div{
     //       margin: 5px 10px;
     //        border: 1px solid red;
-    //     } 
+    //     }
     // }
     .table-td{
                 display: flex;
@@ -45,6 +45,37 @@
         margin-top: 20px;
         text-align: center;
       }
+
+    /deep/ .el-dialog {
+    width: 200px;
+    border-radius: 10px;
+
+    .el-dialog__header {
+        border-radius: 10px 10px 0 0;
+    }
+    .el-dialog__footer {
+        border-radius: 0 0 10px 10px;
+    }
+
+    .el-dialog__body {
+        padding: 20px 10px 10px 10px;
+
+        .el-table__header-wrapper {
+        display: none;
+        }
+    }
+
+    p {
+        text-align: center;
+        color: red;
+        line-height: 15px;;
+        img {
+            width: 15px;
+            height: 15px;
+            vertical-align: bottom;
+        }
+    }
+    }
 }
 
 

@@ -52,6 +52,16 @@
             </el-table-column>
             <el-table-column prop="name" label="成员姓名"> </el-table-column>
             <el-table-column prop="type" label="身份类型"> </el-table-column>
+            <el-table-column prop="signStatus" label="签名验证状态">
+                <template slot-scope="scope">
+                    <p v-if="!scope.signStatus" class="valid-sign-failure">
+                        <img
+                            src="@src/common/images/v2_qb1b03.png"
+                            alt=""
+                        />签名验证未通过
+                    </p>
+                </template>
+            </el-table-column>
             <el-table-column prop="orgName" label="单位名称"> </el-table-column>
             <!-- <el-table-column prop="value" label="启用状态" width="150" align="center">
           <template slot-scope="scope">
@@ -125,28 +135,16 @@ export default {
             hasAddOrg: false,
             hasAddUser: false,
             hasAddAuthority: false,
+
+            // 验签提示对话框
+            loader: null,
         };
     },
     computed: {
         ...mapState(["roleManage"]),
     },
     created() {
-        //
-        if (this.$route.query.type === "back") {
-            this.page = Object.assign(this.page, this.roleManage.page);
-            this.$router.push({
-                name: "lookPersonPermission",
-                params: {
-                    type: "back",
-                    id: this.roleManage.roleId,
-                },
-            });
-        } else {
-            this.PERSON_PAGE({});
-            this.ROLE_ID({});
-        }
-        this.checkAuthorization();
-        this.getGrid();
+        this.validSignature();
     },
     mounted() {
         this.pushBreadcrumb({
@@ -161,6 +159,40 @@ export default {
     },
     methods: {
         ...mapMutations(["PERSON_PAGE", "ROLE_ID"]),
+        // 国密验签
+        validSignature(callback) {
+            this.loader = this.$loading({
+                fullscreen: true,
+                text: "角色成员数据签名校验中...",
+            });
+
+            api[urlNames["validSignature"]]()
+                .then((res) => {
+                    this.loader.close();
+                    this.init();
+                })
+                .catch(() => {
+                    this.loader.close();
+                    this.init();
+                });
+        },
+        init() {
+            if (this.$route.query.type === "back") {
+                this.page = Object.assign(this.page, this.roleManage.page);
+                this.$router.push({
+                    name: "lookPersonPermission",
+                    params: {
+                        type: "back",
+                        id: this.roleManage.roleId,
+                    },
+                });
+            } else {
+                this.PERSON_PAGE({});
+                this.ROLE_ID({});
+            }
+            this.checkAuthorization();
+            this.getGrid();
+        },
         checkAuthorization() {
             let that = this;
 
@@ -321,5 +353,16 @@ export default {
     padding-top: 20px;
     width: 60px;
     height: auto;
+}
+p.valid-sign-failure {
+    line-height: 15px;
+    text-indent: 0;
+    color: red;
+    img {
+        width: 15px;
+        height: 15px;
+        vertical-align: bottom;
+        margin-right: 10px;
+    }
 }
 </style>
