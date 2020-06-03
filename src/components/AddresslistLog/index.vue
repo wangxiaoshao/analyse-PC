@@ -204,6 +204,25 @@
                                 {{ detialInfoForm.description }}
                             </div>
                         </el-form-item>
+                        <el-form-item label="签名状态">
+                            <div class="table-td">
+                                <p
+                                    v-if="detialInfoForm.signStatus"
+                                    class="valid-sign-success"
+                                >
+                                    <img
+                                        src="@src/common/images/v2_qb1aza.png"
+                                        alt=""
+                                    />签名验证通过
+                                </p>
+                                <p v-else class="valid-sign-failure">
+                                    <img
+                                        src="@src/common/images/v2_qb1b03.png"
+                                        alt=""
+                                    />签名验证未通过
+                                </p>
+                            </div>
+                        </el-form-item>
                     </el-form>
                 </template>
                 <template v-if="loginLog === 3">
