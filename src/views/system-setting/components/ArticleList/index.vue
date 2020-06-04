@@ -65,7 +65,11 @@
                     下载附件
                     <i class="el-icon-download" style="color: #58a4f3;"></i>
                 </div>
-                <div class="chooseWord" style="text-align: center;">
+                <div
+                    class="chooseWord"
+                    v-if="accessoryList.length > 0"
+                    style="padding: 0 12px;"
+                >
                     <el-checkbox-group v-model="checkAccessoryList">
                         <el-checkbox
                             v-for="(item, index) in accessoryList"
@@ -74,6 +78,9 @@
                             >{{ item.name + item.suffix }}</el-checkbox
                         >
                     </el-checkbox-group>
+                </div>
+                <div class="chooseWord" style="text-align: center;" v-else>
+                    暂无可下载附件信息!
                 </div>
                 <div slot="footer" class="dialog-footer">
                     <el-button
@@ -174,7 +181,6 @@ export default {
                     api[urlNames["deleteDoc"]]({ id }).then((res) => {
                         if (res) {
                             this.getGrid();
-                            this.getGrid();
                             this.$message.success("操作成功");
                         }
                     });
@@ -187,6 +193,11 @@ export default {
 
     computed: {
         ...mapState(["app"]),
+    },
+    watch: {
+        activeName() {
+            this.getGrid();
+        },
     },
 };
 </script>

@@ -14,7 +14,7 @@ import "./ext/font-awesome-4.7.0/css/font-awesome.css";
 import "@src/common/font_1568136_nu78g9xw7jp/iconfont.css";
 import "@src/common/font_1568136_nu78g9xw7jp/iconfont.js";
 import "@src/common/font_1568136_nu78g9xw7jp/icon.css";
-import echarts from "echarts";
+// import echarts from "echarts";
 import VueCookies from "vue-cookie";
 import "./filters";
 import { api, urlNames } from "@src/api";
@@ -26,7 +26,7 @@ Vue.use(elementUI, {
     size: "medium",
 });
 
-Vue.prototype.$echarts = echarts;
+// Vue.prototype.$echarts = echarts;
 // 请求权限配置参数
 // let menusCtrl = []
 api[urlNames["option"]]().then((res) => {

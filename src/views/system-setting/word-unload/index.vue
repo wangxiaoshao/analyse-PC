@@ -39,15 +39,19 @@
                         action="/api/jg_manage/doc/createDoc"
                         :on-preview="handlePreview"
                         :on-remove="handleRemove"
+                        :before-remove="beforeRemove"
                         :file-list="fileList"
                         :auto-upload="false"
                         :on-change="fileChange"
-                        :data="wordForm"
+                        :before-upload="beforeAvatarUpload"
                         multiple
                     >
                         <el-button slot="trigger" size="small" type="primary"
                             >选取文件</el-button
                         >
+                        <div slot="tip" class="el-upload__tip">
+                            上传文件类型为 txt/doc/docx/pdf 等格式!
+                        </div>
                     </el-upload>
                 </el-form-item>
                 <el-form-item>
@@ -130,6 +134,21 @@ export default {
         handlePreview(file) {},
         fileChange(file, fileList) {
             this.fileList = fileList;
+        },
+        beforeRemove(file, fileList) {
+            return this.$confirm(`确定要移除文件 ${file.name}吗？`);
+        },
+        beforeAvatarUpload(file) {
+            const isFile = file.type === "txt/doc/docx/pdf";
+            // const isLt2M = file.size / 1024 / 1024 < 2;
+            if (!isFile) {
+                this.$message.error("上传文件只能是 txt/doc/docx/pdf 格式!");
+            }
+            // if (!isLt2M) {
+            //   this.$message.error('上传头像图片大小不能超过 2MB!');
+            // }
+            // return isFileLimit && isLt2M;
+            return isFile;
         },
         saveWordFile(saveForm) {
             this.wordForm.id = "";
