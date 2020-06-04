@@ -208,7 +208,6 @@ export default {
         },
         // 选人弹窗组件返回的人员信息
         dialogReturnMembersInfo(data) {
-            console.log(data);
             if (data[0].nodeType === 2) {
                 this.formCallout.orgId = data[0].bindId;
                 this.orgName = data[0].name;

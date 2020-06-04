@@ -141,7 +141,6 @@ export default {
         getAreaValue(val) {
             // this.$emit('getAreaId', val[val.length - 2])
             // this.$emit('getAreaId', val)
-            console.log(val);
         },
     },
 };

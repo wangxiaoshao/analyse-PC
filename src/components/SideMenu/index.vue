@@ -59,7 +59,6 @@ export default {
     },
     watch: {
         asideMenu(newVal) {
-            console.log(newVal);
             if (newVal) {
                 this.asideMenuList = newVal.list;
             }
@@ -92,11 +91,10 @@ export default {
     methods: {
         open: function (name, menu) {
             // eslint-disable-next-line
-        console.log(name, menu)
+
         },
         close: function (name, menu) {
             // eslint-disable-next-line
-        console.log(name, menu)
         },
         toggleAsideCollapse() {
             this.isCollapse = !this.isCollapse;

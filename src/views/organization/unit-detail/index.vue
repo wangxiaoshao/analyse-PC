@@ -557,7 +557,6 @@ export default {
         this.setBreadcrumbTitle();
     },
     created() {
-        console.log(this.$route.params, "params");
         this.init();
         this.initIptMsgVisible();
     },
@@ -609,7 +608,7 @@ export default {
                         this.oldFrom = JSON.parse(
                             JSON.stringify(this.ruleForm)
                         );
-                        //  console.log('ruleForm1:',this.ruleForm,this.oldFrom)
+                        //
                     },
                     (/* error */) => {
                         this.$message.error(`没有内容`);
@@ -673,7 +672,6 @@ export default {
                         this.oldFrom = JSON.parse(
                             JSON.stringify(this.ruleForm)
                         );
-                        console.log("ruleForm2:", this.ruleForm, this.oldFrom);
                     }
                 },
                 () => {
@@ -769,7 +767,6 @@ export default {
                         this.areaCheck += item.name + "/";
                     });
                     this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm));
-                    console.log("ruleForm3:", this.ruleForm, this.oldFrom);
                 },
                 (/* error */) => {}
             );

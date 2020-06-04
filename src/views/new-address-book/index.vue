@@ -204,9 +204,7 @@ export default {
         };
     },
     methods: {
-        getChild(val) {
-            console.log(val);
-        },
+        getChild(val) {},
     },
 };
 </script>

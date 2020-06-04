@@ -1058,9 +1058,7 @@ export default {
             this.orgMsgConfirmOpenVisible = false;
             this.orgMsgConfirmCloseVisible = false;
         },
-        onSubmit(flag) {
-            console.log("submit!");
-        },
+        onSubmit(flag) {},
         systemSubmit(flag) {
             // 0 用户安全设置
             // 1通讯录设置

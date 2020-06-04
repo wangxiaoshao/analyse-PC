@@ -428,7 +428,7 @@ export default {
                 page: this.page.current,
                 limit: this.page.limit,
             };
-            // console.log('this.date：',this.date)
+            //
             if (Array.isArray(this.date)) {
                 data.date = this.date[0];
                 data.endDate = this.date[1];

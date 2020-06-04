@@ -195,7 +195,6 @@ export default {
         },
         handleClick(row) {
             this.$router.push({ name: "GroupDetail" });
-            console.log(row);
         },
         handleClickToDetail(row) {
             this.$router.push({

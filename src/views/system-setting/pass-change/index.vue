@@ -711,7 +711,7 @@ export default {
                         });
                 } else {
                     this.$message.error("不符合规则，请重新输入");
-                    console.log("error submit!!");
+
                     return false;
                 }
             });

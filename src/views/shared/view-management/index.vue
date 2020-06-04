@@ -138,9 +138,7 @@ export default {
                 path: `/view-management/create-view/${row.id}`,
             });
         },
-        handleDelete(index, row) {
-            console.log(index, row);
-        },
+        handleDelete(index, row) {},
         handleSizeChange(val) {
             this.pageSize = val;
             this.getViewList(this.currentPage, val);

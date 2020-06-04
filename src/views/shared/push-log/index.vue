@@ -228,7 +228,6 @@ export default {
         };
     },
     created() {
-        console.log(this.appAccountInfo, 3333333);
         let datefilters = this.$options.filters["date"](
             new Date().getTime(),
             "yyyy-MM-dd"
@@ -339,8 +338,6 @@ export default {
                 pushApi = "findPushLoggers";
                 this.getLogList(pushApi, data);
             }
-            console.log(data, 4444);
-
             // api[urlNames[pushApi]](data).then(res => {
             //   this.page.total = res.total
             //   res.data.forEach(val => {

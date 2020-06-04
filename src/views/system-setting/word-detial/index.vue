@@ -127,9 +127,9 @@ export default {
                     let fileName = that.docDetial.accessorys[item].name;
                     a.download = fileName;
                     a.style.display = "none";
-                    console.log(fileName);
+
                     a.href = that.docDetial.accessorys[item].address;
-                    console.log(that.docDetial.accessorys[item].address);
+
                     document.body.appendChild(a);
                     a.click();
                     document.body.removeChild(a);
@@ -137,8 +137,6 @@ export default {
             } else {
                 this.$message.error("请先选择要下载的附件");
             }
-
-            console.log(this.checkAccessoryList, 333333);
         },
     },
 };

@@ -139,7 +139,7 @@ export default {
         ...mapMutations(["SET_OPTION"]),
         init() {
             if (this.$route.name === "PersonAdd") {
-                // console.log('this.oldUserInfo111 :',this.oldUserInfo )
+                //
                 // this.oldUserInfo = JSON.parse(JSON.stringify(this.userInfo))
                 if (this.$route.params.id) {
                     this.getUserDetail(this.$route.params.id);

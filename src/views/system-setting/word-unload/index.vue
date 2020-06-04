@@ -122,15 +122,12 @@ export default {
     },
     methods: {
         getUEContent() {
-            let content = this.$refs.ue.getUEContent();
-            console.log(content);
+            // let content = this.$refs.ue.getUEContent(;
         },
         handleRemove(file, fileList) {
             this.fileList = fileList;
         },
-        handlePreview(file) {
-            console.log(file);
-        },
+        handlePreview(file) {},
         fileChange(file, fileList) {
             this.fileList = fileList;
         },

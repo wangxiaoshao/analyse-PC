@@ -248,7 +248,7 @@ export default {
                 nodeType: this.nodeType,
                 nodeId: this.contentId,
             };
-            console.log("data1：", data);
+
             this.mainLeaderList = [];
             this.otherLeaderList = [];
             this.loading = true;
@@ -306,7 +306,6 @@ export default {
             }
             // 保存
             if (JSON.parse(JSON.stringify(data)) !== []) {
-                console.log("nodeInfo:", this.nodeInfo.nodeType);
                 api[urlNames["createLeader"]]({
                     nodeId: this.contentId,
                     nodeType: this.nodeType,
@@ -363,7 +362,6 @@ export default {
                         handle: ".sortBtnDo",
                         animation: 150,
                         onUpdate: function (evt) {
-                            console.log("onUpdate.foo:", [evt]);
                             const newIndex = evt.newIndex;
                             const oldIndex = evt.oldIndex;
                             const $li = tbody.children[newIndex];

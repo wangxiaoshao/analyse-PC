@@ -371,12 +371,10 @@ export default {
                     this.activeName = "second";
                     this.tabDisable = false;
                     this.$message.success("基本信息保存成功");
-                    console.log(res);
                 }
             });
         },
         removeManager(uid) {
-            console.log("uid", uid);
             if (this.$route.params.id !== "0") {
                 this.$confirm("此操作将永久删除该管理员, 是否继续?", "提示", {
                     confirmButtonText: "确定",
@@ -576,11 +574,9 @@ export default {
         // 拖拽--暂时无用
         handleDragOver(draggingNode, dropNode, ev) {
             this.tempNode = draggingNode;
-            // console.log('Tree drag over: ', draggingNode.label, dropNode, ev.screenX)
+            //
         },
-        handleNodeClick(nodeData) {
-            console.log("nodeData:", nodeData);
-        },
+        handleNodeClick(nodeData) {},
         // 拖拽结束时触发的事件--原来机构树
         nodeDragEnd(Node, lastNode, lastTree, e) {
             let rect = this.$refs.coordinates.getClientRects()[0];
@@ -596,7 +592,7 @@ export default {
                 this.viewNodeDraft.name = Node.data.name;
                 this.viewNodeDraft.nodeType = Node.data.nodeType;
                 this.viewNodeDraft.bindId = Node.data.bindId;
-                console.log(JSON.parse(JSON.stringify(Node.data)), "Node.data");
+
                 this.$confirm("是否包括子节点", "提示", {
                     confirmButtonText: "包括",
                     cancelButtonText: "不包括",
@@ -614,8 +610,8 @@ export default {
                 this.setCheckedKeys();
                 this.viewNodeTree.push(Node.data);
             }
-            // console.log(e.screenX, '1020----------1330')
-            // console.log(e.screenY, '425----------725')
+            //
+            //
         },
         // 草稿-》保存视图(同步草稿)
         synchronizedNode() {
@@ -790,7 +786,6 @@ export default {
             // if (this.viewNodeTree[this.viewNodeTree.length - 1].id === node.id) {
             //   return false
             // }
-            console.log(JSON.parse(JSON.stringify(node)), checked, "node");
             // if (checked) {
             //   this.viewNodeDraft.id = node.id
             //   node.parentId = this.viewNodeDraft.parentId = '-1'
@@ -819,7 +814,7 @@ export default {
         // 应用到草稿
         saveToDraft() {
             this.nodeDraft = this.$refs.selecttree.getCheckedNodes();
-            console.log(this.nodeDraft);
+
             if (this.nodeDraft.length > 0) {
                 this.isDraftVivew = true;
                 this.$confirm("是否包括子节点", "提示", {

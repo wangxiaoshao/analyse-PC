@@ -153,7 +153,7 @@ export default {
                     let fileName = that.accessoryList[item].name;
                     a.download = fileName;
                     a.style.display = "none";
-                    console.log(fileName);
+
                     a.href = that.accessoryList[item].address;
                     document.body.appendChild(a);
                     a.click();
@@ -162,8 +162,6 @@ export default {
             } else {
                 this.$message.error("请先选择要下载的附件");
             }
-
-            console.log(this.checkAccessoryList, 333333);
         },
         // 删除文档
         deleteWord(id) {

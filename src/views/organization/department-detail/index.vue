@@ -317,7 +317,6 @@ export default {
         this.setBreadcrumbTitle();
     },
     created() {
-        console.log(this.$route.params, "params44444");
         this.init();
         this.initIptMsgVisible();
     },

@@ -287,7 +287,6 @@ export default {
                         },
                     });
                     this.oldFrom = JSON.parse(JSON.stringify(this.ruleForm));
-                    console.log("ruleForm:", this.ruleForm, this.oldFrom);
                 },
                 () => {
                     this.$message.error(`没有内容`);

@@ -262,8 +262,8 @@ export default {
             row.index = rowIndex;
         },
         handleRow(row) {
-            // console.log(' row:', row)
-            // console.log(' this.list:', this.list)
+            //
+            //
         },
         handleSizeChange(val) {
             this.contentPage.current = 1;

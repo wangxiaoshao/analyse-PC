@@ -415,7 +415,6 @@ export default {
             });
         },
         updateApp() {
-            console.log(this.appFrom.roleBindUserId, 888888);
             api[urlNames["updateApp"]]({
                 id: this.appFrom.id,
                 name: this.appFrom.name,
@@ -445,18 +444,14 @@ export default {
                     tmpRoleBindUserId.push(item.uid);
                 });
                 this.appFrom.roleBindUserId = tmpRoleBindUserId;
-                let that = this;
-                console.log(that.appFrom.roleBindUserId, 99999);
 
                 this.appFrom.removed = !res.data.removed;
                 // this.oldAppFrom = JSON.parse(JSON.stringify(this.appFrom))
             });
         },
         // 搜索选择
-        handleSelect(item) {
-            console.log(item);
-        },
-        back() {
+        handleSelect(item) {},
+        ack() {
             this.isChange = this.addWatch(this.appFrom, this.oldAppFrom);
             if (this.isChange) {
                 this.goBackDilog(this.onSubmit, "ruleForm");

@@ -13,7 +13,6 @@ export default {
         downloadBinaryFile(url, param, type, accessoryUrl) {
             let timestamp = new Date().getTime();
             let openUrl = "";
-            console.log(type);
             if (type === 2) {
                 openUrl =
                     url +

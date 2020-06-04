@@ -948,9 +948,7 @@ export default {
                 checkedCount > 0 && checkedCount < this.cities.length;
         },
         // 单位设置提交
-        orgFormSetSubmit() {
-            console.log(this.orgFormSet.nameSet, "orgFormSet");
-        },
+        orgFormSetSubmit() {},
         userFormSetSubmit() {
             let list = {
                 level: level,

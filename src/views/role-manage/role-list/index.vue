@@ -129,7 +129,7 @@ export default {
             api[urlNames["findRoleList"]](data).then(
                 (res) => {
                     this.loading = false;
-                    console.log(res.data);
+
                     this.list = res.data;
                     // this.page.total = res.total
                 },

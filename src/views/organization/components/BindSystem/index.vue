@@ -112,10 +112,8 @@ export default {
         },
         selectedIds: {
             handler(newValue, oldValue) {
-                console.log(newValue);
                 if (newValue.length > 0 && !this.isCreate) {
                     this.isChange = true;
-                    console.log("this.isChange:", this.isChange);
                 }
             },
         },

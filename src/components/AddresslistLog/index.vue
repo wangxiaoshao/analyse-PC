@@ -426,7 +426,7 @@ export default {
                 userName: this.logParam.userName,
                 toUserName: this.logParam.toUserName,
             };
-            // console.log('this.date：',this.date)
+            //
             if (Array.isArray(this.date)) {
                 data.date = [this.date[0], this.date[1]];
                 data.timeType = -1;

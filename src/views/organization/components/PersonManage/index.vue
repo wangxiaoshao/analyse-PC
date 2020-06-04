@@ -834,7 +834,6 @@ export default {
     },
     created() {
         this.initIptMsgVisible();
-        console.log(this.$route.name);
     },
     mounted() {
         // this.oldUserDetail = JSON.parse(JSON.stringify(this.userDetail))
@@ -850,7 +849,7 @@ export default {
             this.$emit("exportOrg", 3);
         },
         findMobileIsSame(successCallback = null) {
-            // console.log('mobile:',this.userDetail.mobile)
+            //
             api[urlNames["selectMobileIsSame"]]({
                 mobile: this.userDetail.mobile,
             }).then(
@@ -882,7 +881,7 @@ export default {
             this.idCardState.successVisiable = false;
             this.idCardState.errorVisiable = false;
             this.idCardState.requiring = false;
-            // console.log('idcard:',this.userDetail.idcard,this.isValidate)
+            //
             if (this.userDetail.name !== "") {
                 if (this.userDetail.idcard !== "" && this.isValidate) {
                     if (this.isValidate) {
@@ -960,7 +959,7 @@ export default {
         selectRow(val) {
             let uid = val.user.uid;
             this.searchFlag = false;
-            console.log(val.status, 77777);
+
             this.$emit("get-uid", uid, val.status);
             this.$emit("get-defauf", true);
         },
@@ -968,7 +967,7 @@ export default {
         loadSearch() {
             this.showIptMsg("name");
             this.searchFlag = false;
-            // console.log(' this.personFrom.name:', this.personFrom.name)
+            //
             if (
                 this.$route.name === "PersonAdd" &&
                 this.personFrom.name.length > 1
@@ -1185,7 +1184,7 @@ export default {
         },
         goBack() {
             this.isChange = this.addWatch();
-            // console.log('isChange:',this.isChange)
+            //
             if (this.isChange) {
                 this.$confirm("修改内容尚未保存, 确定要取消吗?", "提示", {
                     confirmButtonText: "确定",
@@ -1203,9 +1202,7 @@ export default {
                 this.isChange = false;
             }
         },
-        handleSelect(item) {
-            console.log(item);
-        },
+        handleSelect(item) {},
         showdutyNameList() {
             this.dutyNameSelectVisible = true;
         },

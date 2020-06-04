@@ -281,7 +281,7 @@ export default {
             });
         },
         handleClick(targetName, num) {
-            // console.log('targetName:',targetName.name)
+            //
             this.echartsName = targetName.name;
         },
         jumpQuery(routerParams) {

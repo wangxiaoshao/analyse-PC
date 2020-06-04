@@ -483,7 +483,7 @@ export default {
         // 跳转日志
         toLogData() {
             let path = "";
-            console.log("nodeData", this.nodeData);
+
             if (this.nodeData.nodeType === 1) {
                 path = `/organization/operate-log/${this.nodeData.id}`;
             } else {

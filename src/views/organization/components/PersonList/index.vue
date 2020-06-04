@@ -521,7 +521,6 @@ export default {
         },
         // 数值排序弹框
         goSort(val) {
-            console.log(" val:", val);
             this.showSortDilog = true;
             this.sortParam.nowId = parseInt(val.identityId);
             this.sortParam = {
@@ -545,7 +544,7 @@ export default {
                         if (res.data.length > 0) {
                             this.sortParam.id = res.data[0].identityId;
                             this.NumSortFun(this.sortParam);
-                            // console.log(' this.sortParam:', this.sortParam)
+                            //
                         }
                         if (res.data.length === 0) {
                             this.$message.error("找不到目标序号，请重新输入");
@@ -568,7 +567,7 @@ export default {
                         if (res.data.length > 0) {
                             this.sortParam.id = res.data[0].identityId;
                             this.NumSortFun(this.sortParam);
-                            // console.log(' this.sortParam:', this.sortParam)
+                            //
                         }
                         if (res.data.length === 0) {
                             this.$message.error("找不到目标序号，请重新输入");

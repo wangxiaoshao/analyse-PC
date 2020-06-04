@@ -105,7 +105,7 @@ export default {
                     this.oldGroupFrom = JSON.parse(
                         JSON.stringify(this.groupFrom)
                     );
-                    //  console.log(this.oldGroupFrom,this.groupFrom)
+                    //
                 }
             });
         },

@@ -186,7 +186,6 @@ export default {
             );
         },
         unameChange(val) {
-            console.log(val);
             // this.editForm.uname = val.name
             this.editForm.name = val.name;
         },

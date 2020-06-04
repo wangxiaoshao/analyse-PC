@@ -186,7 +186,7 @@ export default {
 
         /** 通讯录视图 */
         getAddressListUnitTree() {
-            // console.log(this.app.option.user,'wertyui12345====')
+            //
             api[urlNames["getAddressListTree"]]({
                 orgId: this.app.option.user.orgId,
             }).then((res) => {
@@ -234,7 +234,6 @@ export default {
         },
         /** 点击树节点显示内容 */
         handleNodeClickTree(node) {
-            console.log("node33:", node);
             this.orgInfo = node;
             this.showDep = true;
             this.navigation = [];
@@ -334,7 +333,6 @@ export default {
         },
 
         handleChildClick(node) {
-            console.log("node111:", node);
             this.orgInfo = node;
             this.selectType = "";
             this.showDep = true;
@@ -374,7 +372,7 @@ export default {
                 parentId: id,
             }).then((res) => {
                 this.departmentList = res.data;
-                //  console.log('data1:',res.data)
+                //
             });
         },
 
@@ -402,7 +400,7 @@ export default {
                 deptId: id,
             }).then((res) => {
                 this.memberList = res.data;
-                //  console.log('data3:',res.data)
+                //
             });
         },
 

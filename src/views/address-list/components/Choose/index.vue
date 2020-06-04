@@ -149,7 +149,6 @@ export default {
                     this.resultFlag = true;
                 });
             } else if (this.selectType === "3") {
-                console.log(this.app.option.user.deptId);
                 api[urlNames["searchMyDep"]]({
                     deptName: this.keyWord,
                     orgId: this.app.option.user.orgId,
