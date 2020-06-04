@@ -26,19 +26,21 @@ module.exports = function (options) {
             let gitRevisionPlugin = new GitRevisionPlugin();
             config.plugins.push(gitRevisionPlugin);
 
-            if ("production" === config.mode) {
+            if (config.mode === "production") {
                 let fileManagePlugin = new FileManagerPlugin({
                     onEnd: {
                         delete: ["./dist.zip"],
-                        archive: [{ source: "./dist", destination: "./dist.zip" }],
-                    }
+                        archive: [
+                            { source: "./dist", destination: "./dist.zip" },
+                        ],
+                    },
                 });
                 config.plugins.push(fileManagePlugin);
             }
         },
 
         devServer: {
-            //publicPath: publicPath,
+            // publicPath: publicPath,
             contentBase: ["dist", "mock"],
             disableHostCheck: true,
             host: "0.0.0.0",
@@ -52,8 +54,8 @@ module.exports = function (options) {
                     target: "http://org.gz.cegn.cn/",
                     changeOrigin: false,
 
-            //  target: "http://10.226.11.177/",
-            //  changeOrigin: true,
+                    //  target: "http://10.226.11.177/",
+                    //  changeOrigin: true,
                     // http:"//jg-dev.lonmo.com",
                     // pathRewrite: {
                     //   "/api/": ""
