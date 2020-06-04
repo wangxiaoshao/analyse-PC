@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import echarts from "echarts";
 export default {
     name: "echarts",
     props: ["echartsAry"],
@@ -19,7 +20,10 @@ export default {
     },
     methods: {
         drawLine() {
-            let myChart = this.$echarts.init(
+            // let myChart = this.$echarts.init(
+            //     document.getElementsByClassName("myChart")[0]
+            // );
+            let myChart = echarts.init(
                 document.getElementsByClassName("myChart")[0]
             );
             myChart.setOption({

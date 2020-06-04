@@ -65,28 +65,28 @@
             class="statistic-tab"
         >
             <el-tab-pane label="各市州单位总数占比" name="unit" lazy>
-                <echarts
+                <echarts-com
                     :echartsAry="echartsAry1"
                     v-if="activeName == 'unit'"
-                ></echarts>
+                ></echarts-com>
             </el-tab-pane>
             <el-tab-pane label="各市州内设机构数占比" name="department" lazy>
-                <echarts
+                <echarts-com
                     :echartsAry="echartsAry2"
                     v-if="activeName == 'department'"
-                ></echarts>
+                ></echarts-com>
             </el-tab-pane>
             <el-tab-pane label="各市州人员总数占比" name="member">
-                <echarts
+                <echarts-com
                     :echartsAry="echartsAry3"
                     v-if="activeName == 'member'"
-                ></echarts>
+                ></echarts-com>
             </el-tab-pane>
             <el-tab-pane label="接入应用数占比" name="applyCount">
-                <echarts
+                <echarts-com
                     :echartsAry="echartsAry3"
                     v-if="activeName == 'applyCount'"
-                ></echarts>
+                ></echarts-com>
             </el-tab-pane>
         </el-tabs>
         <el-row>
@@ -161,13 +161,14 @@
 </template>
 
 <script>
+// import echarts from "echarts";
 import handleTable from "@src/mixins/handle-table";
-import echarts from "../components/Echarts";
+import echartsCom from "../components/Echarts";
 import { api, urlNames } from "@src/api";
 import { mapState, mapMutations } from "vuex";
 
 export default {
-    components: { echarts },
+    components: { echartsCom },
     mixins: [handleTable],
     data() {
         return {
