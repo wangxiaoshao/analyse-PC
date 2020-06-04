@@ -10,6 +10,7 @@ import echarts from "echarts";
 export default {
     name: "echartsDept",
     props: ["echartsName"],
+    components: [echarts],
     data() {
         return {
             msg: "Welcome to Your Vue.js App",
