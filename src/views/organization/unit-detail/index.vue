@@ -667,7 +667,7 @@ export default {
                         this.ruleForm.organization.ext01 = res.data.ext01;
                         this.ruleForm.organization.ext02 = res.data.ext02;
                         this.ruleForm.organization.creditId = res.data.creditId;
-                        if (res.data.creditId && res.data.creditId != "") {
+                        if (res.data.creditId && res.data.creditId !== "") {
                             this.creditIddisable = true;
                         }
                         this.oldFrom = JSON.parse(
@@ -676,7 +676,7 @@ export default {
                         console.log("ruleForm2:", this.ruleForm, this.oldFrom);
                     }
                 },
-                (error) => {
+                () => {
                     this.$message.error(`没有内容`);
                 }
             );
@@ -837,7 +837,7 @@ export default {
 
             if (
                 this.successVisiable ||
-                this.ruleForm.organization.creditId == ""
+                this.ruleForm.organization.creditId === ""
             ) {
                 this.ruleForm.organization.removed = this.ruleForm.organization
                     .removed

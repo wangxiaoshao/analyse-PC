@@ -197,7 +197,7 @@ export default {
                         }
                         //  this.oldPostDetail={...this.userInfo.identity}
                     },
-                    (error) => {
+                    () => {
                         this.$message.error(`没有内容`);
                     }
                 );

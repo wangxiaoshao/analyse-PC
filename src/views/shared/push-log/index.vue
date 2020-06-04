@@ -221,14 +221,6 @@ export default {
             },
             pickerOptions: {
                 disabledDate(time) {
-                    // 月初
-                    const now = new Date();
-                    const startDate = new Date(
-                        now.getFullYear(),
-                        now.getMonth(),
-                        1
-                    );
-
                     return time.getTime() > Date.now() - 8.64e6;
                 },
                 shortcuts: null,

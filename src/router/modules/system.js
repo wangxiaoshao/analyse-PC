@@ -1,21 +1,7 @@
-// 角色权限
-const RoleManage = () =>
-    import(
-        /* webpackChunkName: "RoleManage" */ "@src/views/role-manage/index.vue"
-    );
-const lookPersonPermission = () =>
-    import(
-        /* webpackChunkName: "RoleManage" */ "@src/views/role-manage/look-person-permission/index.vue"
-    );
 // 字典管理
 const DictionaryManage = () =>
     import(
         /* webpackChunkName: "SystemSetting" */ "@src/views/system-setting/dictionary-manage/index.vue"
-    );
-// 系统设置
-const SystemSetting = () =>
-    import(
-        /* webpackChunkName: "SystemSetting" */ "@src/views/system-setting/index.vue"
     );
 // 参数配置
 const ParameterSetting = () =>

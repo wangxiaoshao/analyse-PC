@@ -195,7 +195,6 @@
     </div>
 </template>
 <script>
-import { api, urlNames } from "@src/api";
 export default {
     name: "multipleIdetity",
     props: ["idetitlyList", "recordList"],
