@@ -109,7 +109,7 @@
                 <el-table-column label="职务" align="center" prop="dutyName">
                 </el-table-column>
                 <el-table-column label="岗位" align="center" prop="postName">
-                    <template scope="scope">
+                    <template slot-scope="scope">
                         <span>{{ scope.row.postName || "无" }}</span>
                     </template>
                 </el-table-column>

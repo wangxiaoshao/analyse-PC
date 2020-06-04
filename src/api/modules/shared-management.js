@@ -12,7 +12,6 @@ export default {
         url: "/api/jg_manage/view/findViewList",
         serve: "organizationManagePC",
         keepOriginResponse: false,
-        mock: "getViewList.json",
     },
     /**
      * 创建视图
@@ -152,7 +151,6 @@ export default {
         url: "/api/jg_share/app/checkAppDetail",
         serve: "organizationManagePC",
         keepOriginResponse: false,
-        mock: "getAppDetail.json",
     },
     // 修改字段分享
     [urlNames.createShareFiled]: {

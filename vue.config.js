@@ -41,7 +41,7 @@ module.exports = function (options) {
 
         devServer: {
             // publicPath: publicPath,
-            contentBase: ["dist", "mock"],
+            contentBase: ["dist"],
             disableHostCheck: true,
             host: "0.0.0.0",
             port: "8080",

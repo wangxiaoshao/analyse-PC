@@ -23,7 +23,6 @@ export default {
         keepOriginResponse: true, // 是否保留后端返回数据格式
         showLoading: false, // 该请求发送时，是否显示全局loading
         serve: "organizationManagePC",
-        mock: "/option.json", // development模式下，本地mock数据
     },
     [urlNames.getTree]: {
         type: "get",
@@ -31,7 +30,6 @@ export default {
         keepOriginResponse: true, // 是否保留后端返回数据格式
         showLoading: false, // 该请求发送时，是否显示全局loading
         serve: "organizationManagePC",
-        mock: "/getTree.json", // development模式下，本地mock数据
     },
     [urlNames.getViewTree]: {
         type: "get",
@@ -39,7 +37,6 @@ export default {
         keepOriginResponse: true, // 是否保留后端返回数据格式
         showLoading: false, // 该请求发送时，是否显示全局loading
         serve: "organizationManagePC",
-        mock: "/getTree.json", // development模式下，本地mock数据
     },
     [urlNames.searchViewNode]: {
         type: "get",
@@ -47,7 +44,6 @@ export default {
         keepOriginResponse: true, // 是否保留后端返回数据格式
         showLoading: false, // 该请求发送时，是否显示全局loading
         serve: "organizationManagePC",
-        mock: "/searchViewNode.json", // development模式下，本地mock数据
     },
     [urlNames.findViewNodeById]: {
         type: "get",
@@ -55,7 +51,6 @@ export default {
         keepOriginResponse: true, // 是否保留后端返回数据格式
         showLoading: false, // 该请求发送时，是否显示全局loading
         serve: "organizationManagePC",
-        mock: "/findViewNodeById.json", // development模式下，本地mock数据
     },
 
     /*
@@ -87,7 +82,6 @@ export default {
         keepOriginResponse: true,
         showLoading: true,
         serve: "organizationManagePC",
-        mock: "findOrganizationList.json",
     },
     /*
      * 内设机构查询
@@ -98,7 +92,6 @@ export default {
         keepOriginResponse: true,
         showLoading: true,
         serve: "organizationManagePC",
-        mock: "/findDepartmentList.json",
     },
     /*
      * 人员查询
@@ -109,7 +102,6 @@ export default {
         keepOriginResponse: true,
         showLoading: true,
         serve: "organizationManagePC",
-        mock: "/findMemberList.json",
     },
 
     [urlNames.findOrgLabelList]: {
@@ -117,7 +109,6 @@ export default {
         url: "/api/jg_manage/label/findOrgLabelList", // 请求地址
         keepOriginResponse: true, // 返回数据是否保留后端response数据格式
         serve: "organizationManagePC", // 该请求对应服务端，服务端名字在url-prefix中配置
-        mock: "/findOrgLabelList.json", // development模式下，本地mock数据地址
     },
 
     [urlNames.findLabel]: {
@@ -125,7 +116,6 @@ export default {
         url: "/api/jg_manage/label/findLabel", // 请求地址
         keepOriginResponse: true, // 返回数据是否保留后端response数据格式
         serve: "organizationManagePC", // 该请求对应服务端，服务端名字在url-prefix中配置
-        mock: "/findLabel.json", // development模式下，本地mock数据地址
     },
 
     // 标签查询
@@ -134,7 +124,6 @@ export default {
         url: "/api/jg_manage/label/findLabelByType",
         keepOriginResponse: true, // 是否保留后端返回数据格式
         serve: "organizationManagePC",
-        mock: "/findLabelByType.json", // development模式下，本地mock数据
     },
     // 是否显示全局确认信息弹框
     [urlNames.popupWindow]: {
@@ -142,7 +131,6 @@ export default {
         url: "/api/jg_manage/confirmation/popupWindow",
         keepOriginResponse: true, // 是否保留后端返回数据格式
         serve: "organizationManagePC",
-        mock: "/findLabelByType.json", // development模式下，本地mock数据
     },
 
     /**
@@ -153,7 +141,6 @@ export default {
         url: "/api/jg_share/app/checkApps",
         serve: "organizationManagePC",
         keepOriginResponse: false,
-        mock: "getAppList.json",
     },
     /*
      *选人组件搜索人员 */
@@ -162,7 +149,6 @@ export default {
         url: "/api/jg_manage/user/findUserByParams",
         keepOriginResponse: true, // 是否保留后端返回数据格式
         serve: "organizationManagePC",
-        mock: "/findUserByParams.json", // development模式下，本地mock数据
     },
     /**
      * 获取登出地址

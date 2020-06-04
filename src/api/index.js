@@ -139,7 +139,6 @@ function createRequest(config) {
             text: config.text || option.text || "",
             serve: config.serve,
             ignore: config.ignore,
-            mock: config.mock,
             withCredentials: true, // 允许携带cookie
         });
     };

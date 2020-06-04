@@ -73,12 +73,7 @@ axios.interceptors.request.use(
         config.headers = {
             ...config.headers,
         };
-        if (process.env.NODE_ENV === "development" && config.mock) {
-            config.url = config.mock;
-            config.method = "get";
-        } else {
-            config.url = urlPrefix[config.serve] + config.url;
-        }
+        config.url = urlPrefix[config.serve] + config.url;
         // 显示loading
         if (config.showLoading) {
             showGlobalLoading(config.text);

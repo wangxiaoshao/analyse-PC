@@ -8,13 +8,12 @@ export default {
         keepOriginResponse: true,
         showLoading: true,
         serve: "organizationManagePC",
-        mock: "system-setting/getDictionaryList.json",
     },
     [urlNames.addDictionary]: {
         type: "post",
         url: "/api/jg_manage/system/addDictItem",
         serve: "organizationManagePC",
-        mock: "system-setting/addDictionary.json",
+
         headers: {
             "Content-Type": "application/json",
         },
@@ -24,7 +23,6 @@ export default {
         url: "/api/jg_manage/system/dictList",
         keepOriginResponse: true,
         serve: "organizationManagePC",
-        mock: "system-setting/getDicListByType.json",
     },
     [urlNames.deleteDictItem]: {
         type: "post",
@@ -43,7 +41,6 @@ export default {
         headers: {
             "Content-Type": "application/json",
         },
-        mock: "system-setting/updatePassword.json",
     },
     [urlNames.resetPwd]: {
         type: "get",
@@ -64,7 +61,6 @@ export default {
         url: "/api/jg_manage/option",
         keepOriginResponse: true,
         serve: "organizationManagePC",
-        mock: "system-setting/dictionaryList.json",
     },
 
     /*

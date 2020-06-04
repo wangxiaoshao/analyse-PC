@@ -12,7 +12,6 @@ export default {
         url: "/api/jg_manage/statistics/getStatistiscManageDto",
         keepOriginResponse: true,
         serve: "organizationManagePC",
-        mock: "statistics/getStatistiscManageDto.json",
     },
     // 操作日志列表
     [urlNames.getDataLogList]: {
@@ -21,7 +20,6 @@ export default {
         keepOriginResponse: true,
         showLoading: true,
         serve: "organizationManagePC",
-        mock: "statistics/getDataLogList.json",
     },
     // 查询操作日志类型
     // 操作日志列表

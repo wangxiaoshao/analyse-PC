@@ -10,13 +10,12 @@ export default {
         keepOriginResponse: true,
         showLoading: true,
         serve: "organizationManagePC",
-        mock: "system-setting/getDictionaryList.json",
     },
     [urlNames.getAuthorityList]: {
         type: "get",
         url: "/api/jg_manage/authority/findAuthorityList",
         serve: "organizationManagePC",
-        mock: "system-setting/addDictionary.json",
+
         headers: {
             "Content-Type": "application/json",
         },
@@ -26,14 +25,12 @@ export default {
         url: "/api/jg_manage/authority/findAuthorityByModuleId",
         keepOriginResponse: true,
         serve: "organizationManagePC",
-        mock: "system-setting/getDicListByType.json",
     },
     [urlNames.getModuleAuthorityByRoleId]: {
         type: "get",
         url: "/api/jg_manage/authority/findModuleAuthorityByRoleId",
         keepOriginResponse: true,
         serve: "organizationManagePC",
-        mock: "system-setting/updatePassword.json",
     },
     [urlNames.addAuthorityToModule]: {
         type: "post",
@@ -43,7 +40,6 @@ export default {
         headers: {
             "Content-Type": "application/json",
         },
-        mock: "system-setting/updatePassword.json",
     },
     [urlNames.editAuthorityManage]: {
         type: "post",
@@ -53,14 +49,12 @@ export default {
             "Content-Type": "application/json",
         },
         serve: "organizationManagePC",
-        mock: "system-setting/dictionaryList.json",
     },
     [urlNames.getRoleAuthorityList]: {
         type: "get",
         url: "/api/jg_manage/role/findAuthorityManageList",
         keepOriginResponse: true,
         serve: "organizationManagePC",
-        mock: "system-setting/dictionaryList.json",
     },
     // 个人日志
     [urlNames.findPersonalLoggerList]: {

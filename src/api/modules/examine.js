@@ -9,7 +9,6 @@ export default {
         keepOriginResponse: true,
         showLoading: true,
         serve: "organizationManagePC",
-        mock: "examine/getAuditList.json",
     },
     [urlNames.getMyApplyAuditList]: {
         // 我的申请
@@ -18,7 +17,6 @@ export default {
         keepOriginResponse: true,
         showLoading: true,
         serve: "organizationManagePC",
-        mock: "examine/getMyApplyAuditList.json",
     },
     [urlNames.getInfoConfirmList]: {
         // 信息确认
@@ -27,7 +25,6 @@ export default {
         keepOriginResponse: true,
         showLoading: true,
         serve: "organizationManagePC",
-        mock: "examine/getInfoConfirmList.json",
     },
     [urlNames.insertConfirmInfo]: {
         // 信息确认
@@ -44,7 +41,6 @@ export default {
         keepOriginResponse: true,
         serve: "organizationManagePC",
         showLoading: true,
-        mock: "examine/getConfirmMemberList.json",
     },
     [urlNames.findConfirmMemberById]: {
         // 信息确认-人员明细
@@ -52,7 +48,6 @@ export default {
         url: "/api/jg_manage/confirmation/findConfirmationMemberByConfirmId",
         keepOriginResponse: true,
         serve: "organizationManagePC",
-        mock: "examine/findConfirmMemberById.json",
     },
     [urlNames.getAuditDetailsById]: {
         // 审批详情
@@ -61,7 +56,6 @@ export default {
         keepOriginResponse: true,
         showLoading: true,
         serve: "organizationManagePC",
-        mock: "examine/getAuditDetailsById.json",
     },
     [urlNames.saveAudit]: {
         // 保存审批
@@ -73,6 +67,5 @@ export default {
         },
         keepOriginResponse: true,
         serve: "organizationManagePC",
-        mock: "examine/saveAudit.json",
     },
 };
