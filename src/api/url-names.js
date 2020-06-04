@@ -460,4 +460,7 @@ export default {
     deleteDoc: "deleteDoc",
     // 文章详情
     findDocById: "findDocById",
+
+    // 国密验签
+    validSignature: "validSignature",
 };

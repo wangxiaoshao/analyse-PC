@@ -136,6 +136,7 @@ function createRequest(config) {
             headers: Object.assign(headers, option.headers),
             keepOriginResponse: config.keepOriginResponse,
             showLoading: config.showLoading,
+            text: config.text || option.text || "",
             serve: config.serve,
             ignore: config.ignore,
             mock: config.mock,

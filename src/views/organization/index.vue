@@ -45,8 +45,6 @@ export default {
     methods: {
         // 点击节点加载子节点
         handleNodeClick(node) {
-            // if()
-            console.log(66666, node);
             let id = "";
             id = node.id;
             let nodeType = "";

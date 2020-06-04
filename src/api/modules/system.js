@@ -133,4 +133,13 @@ export default {
         keepOriginResponse: true,
         serve: "organizationManagePC",
     },
+
+    // 国密验签
+    [urlNames.validSignature]: {
+        type: "get",
+        url: "/api/signature/validSignature",
+        keepOriginResponse: true,
+        serve: "organizationManagePC",
+        fullscreen: true,
+    },
 };

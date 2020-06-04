@@ -22,10 +22,11 @@ function wrapperHttpException(resp) {
  */
 let needLoadingRequestCount = 0;
 let globalLoading = null;
-const startLoading = () => {
+const startLoading = (tip) => {
     globalLoading = Loading.service({
         fullscreen: true,
-        background: "rgba(0,0,0,0.45)",
+        // background: "rgba(0,0,0,0.45)",
+        text: tip,
     });
 };
 
@@ -36,9 +37,9 @@ const endLoading = () => {
     }, 0);
 };
 
-const showGlobalLoading = () => {
+const showGlobalLoading = (tip) => {
     if (needLoadingRequestCount === 0) {
-        startLoading();
+        startLoading(tip);
     }
     needLoadingRequestCount++;
 };
@@ -80,7 +81,7 @@ axios.interceptors.request.use(
         }
         // 显示loading
         if (config.showLoading) {
-            showGlobalLoading();
+            showGlobalLoading(config.text);
         }
         return config;
     },
