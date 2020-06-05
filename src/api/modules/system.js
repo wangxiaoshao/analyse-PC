@@ -133,7 +133,7 @@ export default {
     // 国密验签
     [urlNames.validSignature]: {
         type: "get",
-        url: "/api/signature/validSignature",
+        url: "/api/jg_manage/signature/validSignature",
         keepOriginResponse: true,
         serve: "organizationManagePC",
         fullscreen: true,
