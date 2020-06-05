@@ -52,16 +52,6 @@
             </el-table-column>
             <el-table-column prop="name" label="成员姓名"> </el-table-column>
             <el-table-column prop="type" label="身份类型"> </el-table-column>
-            <el-table-column prop="signStatus" label="签名验证状态">
-                <template slot-scope="scope">
-                    <p v-if="!scope.signStatus" class="valid-sign-failure">
-                        <img
-                            src="@src/common/images/v2_qb1b03.png"
-                            alt=""
-                        />签名验证未通过
-                    </p>
-                </template>
-            </el-table-column>
             <el-table-column prop="orgName" label="单位名称"> </el-table-column>
             <!-- <el-table-column prop="value" label="启用状态" width="150" align="center">
           <template slot-scope="scope">
@@ -69,7 +59,7 @@
             <span class="text-red" v-show="scope.row.enable === 0">停用</span>
           </template>
         </el-table-column>-->
-            <el-table-column label="操作" width="160" align="center">
+            <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                     <el-button
                         size="mini"
@@ -85,6 +75,12 @@
                         :disabled="!hasAddUser"
                         >删除</el-button
                     >
+                    <el-button
+                        size="mini"
+                        type="text"
+                        @click="validSignature(scope.row)"
+                        >验证签名</el-button
+                    >
                 </template>
             </el-table-column>
         </el-table>
@@ -99,6 +95,36 @@
             :total="page.total"
         >
         </el-pagination>
+
+        <el-dialog
+            :visible.sync="validSignatureDialog"
+            lock-scroll
+            :close-on-press-escape="false"
+            :close-on-click-modal="false"
+            class="dialog-box"
+            width="500px"
+        >
+            <div slot="title" style="padding: 20px;">
+                校验结果
+            </div>
+            <p>
+                <img src="@src/common/images/v2_qb1b03.png" alt="" />
+                角色成员数据签名验证未通过，请及时联系运维人员处理。
+            </p>
+            <div slot="footer" class="dialog-footer">
+                <el-button
+                    type="info"
+                    @click="validSignatureDialog = false"
+                    width="120px"
+                    >继续使用系统</el-button
+                >
+                <el-button type="primary" width="120px"
+                    ><a href="/api/gate/logout" style="color: #fff;"
+                        >退出系统</a
+                    ></el-button
+                >
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -137,6 +163,7 @@ export default {
             hasAddAuthority: false,
 
             // 验签提示对话框
+            validSignatureDialog: false,
             loader: null,
         };
     },
@@ -144,7 +171,7 @@ export default {
         ...mapState(["roleManage"]),
     },
     created() {
-        this.validSignature();
+        this.init();
     },
     mounted() {
         this.pushBreadcrumb({
@@ -160,20 +187,27 @@ export default {
     methods: {
         ...mapMutations(["PERSON_PAGE", "ROLE_ID"]),
         // 国密验签
-        validSignature(callback) {
+        validSignature(memberInfo) {
             this.loader = this.$loading({
                 fullscreen: true,
                 text: "角色成员数据签名校验中...",
             });
 
-            api[urlNames["validSignature"]]()
+            api[urlNames["validSignature"]]({
+                entityId: memberInfo.uid,
+                // 角色
+                entityType: 4,
+            })
                 .then((res) => {
                     this.loader.close();
-                    this.init();
+                    this.$message({
+                        message: "签名验证通过",
+                        type: "success",
+                    });
                 })
                 .catch(() => {
                     this.loader.close();
-                    this.init();
+                    this.validSignatureDialog = true;
                 });
         },
         init() {
