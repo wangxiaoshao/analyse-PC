@@ -120,12 +120,20 @@ export default {
         validSignature(callback) {
             this.loader = this.$loading({
                 fullscreen: true,
-                text: "用户信息签名校验中...",
+                text: "角色权限签名校验中...",
             });
 
-            api[urlNames["validSignature"]]()
+            api[urlNames["validSignature"]]({
+                entityId: this.$route.params.id,
+                // 权限
+                entityType: 5,
+            })
                 .then((res) => {
                     this.loader.close();
+                    this.$message({
+                        message: "签名验证通过",
+                        type: "success",
+                    });
                     this.init();
                 })
                 .catch(() => {
