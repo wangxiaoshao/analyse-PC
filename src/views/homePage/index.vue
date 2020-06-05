@@ -387,9 +387,17 @@ export default {
                 text: "用户信息签名校验中...",
             });
 
-            api[urlNames["validSignature"]]()
+            api[urlNames["validSignature"]]({
+                entityId: this.app.option.user.uid,
+                // 账号
+                entityType: 2,
+            })
                 .then((res) => {
                     this.loader.close();
+                    this.$message({
+                        message: "签名验证通过",
+                        type: "success",
+                    });
                     this.init();
                 })
                 .catch(() => {
