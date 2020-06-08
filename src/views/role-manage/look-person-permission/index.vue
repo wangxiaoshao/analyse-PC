@@ -194,7 +194,7 @@ export default {
             });
 
             api[urlNames["validSignature"]]({
-                entityId: memberInfo.uid,
+                entityId: memberInfo.id,
                 // 角色
                 entityType: 4,
             })
