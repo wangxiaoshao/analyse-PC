@@ -7,31 +7,19 @@ const DataLog = () =>
         /* webpackChunkName: "DataStatistics" */ "@src/views/statistics/data-log/index.vue"
     );
 
-const UnitQuery = () =>
-    import(
-        /* webpackChunkName: "UnitQuery" */ "@src/views/unit-query/index.vue"
-    );
+const Query = () =>
+    import(/* webpackChunkName: "Query" */ "@src/views/query/index.vue");
 const UnitQueryList = () =>
     import(
-        /* webpackChunkName: "UnitQuery" */ "@src/views/unit-query/UnitQueryList/index.vue"
-    );
-
-const DepartmentQuery = () =>
-    import(
-        /* webpackChunkName: "DepartmentQuery" */ "@src/views/department-query/index.vue"
+        /* webpackChunkName: "Query" */ "@src/views/query/components/UnitQueryList/index.vue"
     );
 const DepartmentQueryList = () =>
     import(
-        /* webpackChunkName: "DepartmentQuery" */ "@src/views/department-query/DepartmentQueryList/index.vue"
-    );
-
-const MemberQuery = () =>
-    import(
-        /* webpackChunkName: "MemberQuery" */ "@src/views/member-query/index.vue"
+        /* webpackChunkName: "Query" */ "@src/views/query/components/DepartmentQueryList/index.vue"
     );
 const MemberQueryList = () =>
     import(
-        /* webpackChunkName: "MemberQuery" */ "@src/views/member-query/MemberQueryList/index.vue"
+        /* webpackChunkName: "Query" */ "@src/views/query/components/MemberQueryList/index.vue"
     );
 
 const QueryUnitDetail = () =>
@@ -60,7 +48,7 @@ export default [
     {
         // 单位查询
         path: "/unit-query",
-        component: UnitQuery,
+        component: Query,
         meta: {
             key: "menuSearchOrg",
         },
@@ -82,7 +70,7 @@ export default [
     {
         // 内设机构查询
         path: "/department-query",
-        component: DepartmentQuery,
+        component: Query,
         meta: {
             key: "menuSearchDepartment",
         },
@@ -104,7 +92,7 @@ export default [
     {
         // 人员查询
         path: "/member-query",
-        component: MemberQuery,
+        component: Query,
         meta: {
             key: "menuSearchUser",
         },
