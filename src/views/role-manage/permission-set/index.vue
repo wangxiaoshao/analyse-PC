@@ -37,6 +37,11 @@
                             :label="item.authorityName"
                         >
                             {{ item.authorityTitle }}
+                            <el-button
+                                @click="validSignature(item.authorityId)"
+                                size="mini"
+                                >验签</el-button
+                            >
                         </el-checkbox>
                     </el-checkbox-group>
                 </template>
@@ -68,10 +73,7 @@
             <div slot="footer" class="dialog-footer">
                 <el-button
                     type="info"
-                    @click="
-                        validSignatureDialog = false;
-                        init();
-                    "
+                    @click="validSignatureDialog = false"
                     width="120px"
                     >继续使用系统</el-button
                 >
@@ -102,7 +104,7 @@ export default {
         };
     },
     created() {
-        this.validSignature();
+        this.init();
     },
     mounted() {
         this.pushBreadcrumb({
@@ -117,16 +119,16 @@ export default {
     },
     methods: {
         // 国密验签
-        validSignature(callback) {
+        validSignature(authorityId) {
             this.loader = this.$loading({
                 fullscreen: true,
                 text: "角色权限签名校验中...",
             });
 
             api[urlNames["validSignature"]]({
-                entityId: this.$route.params.id,
+                entityId: authorityId,
                 // 权限
-                entityType: 5,
+                entityType: 6,
             })
                 .then((res) => {
                     this.loader.close();
@@ -134,7 +136,6 @@ export default {
                         message: "签名验证通过",
                         type: "success",
                     });
-                    this.init();
                 })
                 .catch(() => {
                     this.loader.close();
@@ -162,6 +163,7 @@ export default {
                     obj[item.moduleName].authorityList.push({
                         authorityName: item.authorityName,
                         authorityTitle: item.authorityTitle,
+                        authorityId: item.authorityId,
                     });
                 } else {
                     if (item.authorityId === undefined) {
@@ -182,6 +184,7 @@ export default {
                                 {
                                     authorityName: item.authorityName,
                                     authorityTitle: item.authorityTitle,
+                                    authorityId: item.authorityId,
                                 },
                             ],
                         };
