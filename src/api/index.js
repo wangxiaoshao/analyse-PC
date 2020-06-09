@@ -151,6 +151,8 @@ Object.keys(urlConfig).forEach((urlName) => {
     api[urlName] = createRequest(config);
 });
 
+const apiAll = axios.all;
+
 export default api;
 
-export { api, urlNames };
+export { api, urlNames, apiAll };
