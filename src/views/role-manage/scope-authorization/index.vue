@@ -29,7 +29,7 @@
                             {{ area.name }}
 
                             <el-button
-                                @click="validSignature(area.id)"
+                                @click="validSignature(area.authorizedOid)"
                                 size="mini"
                                 >验签</el-button
                             >
@@ -49,7 +49,7 @@
                         >
                             {{ org.name }}
                             <el-button
-                                @click="validSignature(org.id)"
+                                @click="validSignature(org.authorizedOid)"
                                 size="mini"
                                 >验签</el-button
                             >
@@ -226,7 +226,7 @@ export default {
         validSignature(id) {
             this.loader = this.$loading({
                 fullscreen: true,
-                text: "用户信息签名校验中...",
+                text: "角色授权范围签名校验中...",
             });
 
             api[urlNames["validSignature"]]({
