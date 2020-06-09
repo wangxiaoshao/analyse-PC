@@ -11,9 +11,6 @@
                 <el-button @click="addDep" type="primary" v-if="hasAddOrg"
                     >授权单位</el-button
                 >
-                <el-button @click="validSignature" type="primary"
-                    >验证签名</el-button
-                >
             </div>
         </div>
         <div class="table">
@@ -30,6 +27,12 @@
                             @close="deleteAuthorizedEntity(area)"
                         >
                             {{ area.name }}
+
+                            <el-button
+                                @click="validSignature(area.id)"
+                                size="mini"
+                                >验签</el-button
+                            >
                         </el-tag>
                     </td>
                 </tr>
@@ -45,6 +48,11 @@
                             @close="deleteAuthorizedEntity(org)"
                         >
                             {{ org.name }}
+                            <el-button
+                                @click="validSignature(org.id)"
+                                size="mini"
+                                >验签</el-button
+                            >
                         </el-tag>
                     </td>
                 </tr>
@@ -215,14 +223,14 @@ export default {
                 this.getfindAuthorizedEntity();
             });
         },
-        validSignature() {
+        validSignature(id) {
             this.loader = this.$loading({
                 fullscreen: true,
                 text: "用户信息签名校验中...",
             });
 
             api[urlNames["validSignature"]]({
-                entityId: this.$route.query.roleId,
+                entityId: id,
                 // 用户信息
                 entityType: 5,
             })
