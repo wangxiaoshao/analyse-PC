@@ -232,7 +232,6 @@ export default {
                         message: "签名验证通过",
                         type: "success",
                     });
-                    this.init();
                 })
                 .catch(() => {
                     this.loader.close();
