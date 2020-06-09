@@ -393,23 +393,12 @@ export default {
                 entityType: 1,
             })
                 .then((res) => {
-                    api[urlNames["validSignature"]]({
-                        entityId: this.app.option.user.uid,
-                        // 账号
-                        entityType: 2,
-                    })
-                        .then((res) => {
-                            this.loader.close();
-                            this.$message({
-                                message: "签名验证通过",
-                                type: "success",
-                            });
-                            this.init();
-                        })
-                        .catch(() => {
-                            this.loader.close();
-                            this.validSignatureDialog = true;
-                        });
+                    this.loader.close();
+                    this.$message({
+                        message: "签名验证通过",
+                        type: "success",
+                    });
+                    this.init();
                 })
                 .catch(() => {
                     this.loader.close();
