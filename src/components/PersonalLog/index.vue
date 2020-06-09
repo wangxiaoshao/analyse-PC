@@ -471,11 +471,18 @@ export default {
                 text: "日志信息签名校验中...",
             });
 
+            let date = "";
+            if (this.loginLog === 1 || this.loginLog === 2 || !this.loginLog) {
+                date = logInfo.actionTime;
+            } else if (this.loginLog === 3) {
+                date = logInfo.accessTime;
+            }
+
             api[urlNames["validSignature"]]({
                 entityId: logInfo.id,
                 // 日志
                 entityType: 3,
-                date: logInfo.actionTime,
+                date: date,
             })
                 .then((res) => {
                     this.loader.close();

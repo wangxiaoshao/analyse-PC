@@ -29,10 +29,7 @@
                     </el-form-item>
                     <el-form-item label="签名状态">
                         <div class="table-td">
-                            <p
-                                v-if="detialInfo.signStatus"
-                                class="valid-sign-success"
-                            >
+                            <p v-if="validStatus" class="valid-sign-success">
                                 <img
                                     src="@src/common/images/v2_qb1aza.png"
                                     alt=""
@@ -268,7 +265,7 @@ export default {
                 entityId: logInfo.id,
                 // 日志
                 entityType: 3,
-                date: logInfo.actionTime,
+                date: logInfo.pushTime,
             })
                 .then((res) => {
                     this.loader.close();
