@@ -192,7 +192,7 @@
                         <el-form-item label="签名状态">
                             <div class="table-td">
                                 <p
-                                    v-if="detialInfoForm.signStatus"
+                                    v-if="this.validStatus"
                                     class="valid-sign-success"
                                 >
                                     <img
@@ -238,7 +238,7 @@
                         <el-form-item label="签名状态">
                             <div class="table-td">
                                 <p
-                                    v-if="detialInfoForm.signStatus"
+                                    v-if="this.validStatus"
                                     class="valid-sign-success"
                                 >
                                     <img
@@ -337,6 +337,8 @@ export default {
                 shortcuts: null,
             },
             value: "",
+            // 国密验签
+            validStatus: false,
         };
     },
     computed: {
@@ -462,7 +464,30 @@ export default {
                 }
             );
         },
+        // 国密验签
+        validSignature(logInfo) {
+            this.loader = this.$loading({
+                fullscreen: true,
+                text: "日志信息签名校验中...",
+            });
+
+            api[urlNames["validSignature"]]({
+                entityId: logInfo.id,
+                // 日志
+                entityType: 3,
+                date: logInfo.actionTime,
+            })
+                .then((res) => {
+                    this.loader.close();
+                    this.validStatus = true;
+                })
+                .catch(() => {
+                    this.loader.close();
+                    this.validStatus = false;
+                });
+        },
         opendetialInfo(val) {
+            this.validSignature(val);
             this.detialInfoVisible = true;
             if (this.loginLog === 1 || this.loginLog === 2 || !this.loginLog) {
                 let info = {

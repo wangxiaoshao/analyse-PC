@@ -225,6 +225,8 @@ export default {
                 },
                 shortcuts: null,
             },
+            // 国密验签
+            validStatus: false,
         };
     },
     created() {
@@ -255,6 +257,28 @@ export default {
             "SET_APPLICATION_PAGE",
             "SET_APPLICATION_SEARCH_QUERY",
         ]),
+        // 国密验签
+        validSignature(logInfo) {
+            this.loader = this.$loading({
+                fullscreen: true,
+                text: "日志信息签名校验中...",
+            });
+
+            api[urlNames["validSignature"]]({
+                entityId: logInfo.id,
+                // 日志
+                entityType: 3,
+                date: logInfo.actionTime,
+            })
+                .then((res) => {
+                    this.loader.close();
+                    this.validStatus = true;
+                })
+                .catch(() => {
+                    this.loader.close();
+                    this.validStatus = false;
+                });
+        },
         selectChange(val) {
             this.date = "";
             // this.currentDateVal = ''
@@ -384,6 +408,7 @@ export default {
             });
         },
         findInfo(val) {
+            this.validSignature(val);
             this.detialInfo = val;
             this.detialInfoVisible = true;
         },
