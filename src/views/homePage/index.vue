@@ -211,38 +211,14 @@
             </div>
         </div>
 
-        <el-dialog
-            :visible.sync="validSignatureDialog"
-            lock-scroll
-            :close-on-press-escape="false"
-            :close-on-click-modal="false"
-            class="dialog-box"
-            width="500px"
-        >
-            <div slot="title" style="padding: 20px;">
-                校验结果
-            </div>
-            <p>
-                <img src="@src/common/images/v2_qb1b03.png" alt="" />
-                个人信息签名验证未通过，请及时联系运维人员处理。
-            </p>
-            <div slot="footer" class="dialog-footer">
-                <el-button
-                    type="info"
-                    @click="
-                        validSignatureDialog = false;
-                        init();
-                    "
-                    width="120px"
-                    >继续使用系统</el-button
-                >
-                <el-button type="primary" width="120px"
-                    ><a href="/api/gate/logout" style="color: #fff;"
-                        >退出系统</a
-                    ></el-button
-                >
-            </div>
-        </el-dialog>
+        <valid-signature
+            loadingMsg="用户信息签名校验中..."
+            message="个人信息签名验证未通过，请及时联系运维人员处理。"
+            returnOrLogout="logout"
+            :params="validParams"
+            :startValid.sync="startValid"
+            @goOn="init()"
+        ></valid-signature>
     </div>
 </template>
 <script>
@@ -250,9 +226,13 @@ import { api, urlNames } from "@src/api";
 import { mapState } from "vuex";
 import hasRight from "@src/mixins/has-right";
 import dicOption from "@src/mixins/dic-options.js";
+import ValidSignature from "@src/components/ValidSignature";
 
 export default {
     mixins: [dicOption, hasRight],
+    components: {
+        ValidSignature,
+    },
     data() {
         return {
             userIdentityInfo: {
@@ -368,47 +348,27 @@ export default {
             ],
 
             // 验签提示对话框
-            validSignatureDialog: false,
-            loader: null,
+            startValid: false,
+            validParams: [],
         };
     },
     created() {
-        this.validSignature();
+        this.validParams = [
+            // 用户信息
+            {
+                id: this.app.option.user.uid,
+                type: 1,
+            },
+        ];
+        // 国密验签
+        this.startValid = true;
+        // this.init();
     },
     mounted() {
         this.userIdentityInfo.userName = this.app.option.user.name;
         this.doArray();
     },
     methods: {
-        // 国密验签
-        validSignature(callback) {
-            this.loader = this.$loading({
-                fullscreen: true,
-                text: "用户信息签名校验中...",
-            });
-
-            api[urlNames["validSignature"]]({
-                entityId: this.app.option.user.uid,
-                // 用户信息
-                entityType: 1,
-            })
-                .then((res) => {
-                    if (res.message !== "success" || res.data === 0) {
-                        throw new Error("验签不通过");
-                    }
-                    this.loader.close();
-                    this.$message({
-                        message: "签名验证通过",
-                        type: "success",
-                    });
-                    this.init();
-                })
-                .catch(() => {
-                    this.loader.close();
-                    this.validSignatureDialog = true;
-                });
-        },
-
         init() {
             this.getUserIdentityInfo();
             this.getAccountData();
