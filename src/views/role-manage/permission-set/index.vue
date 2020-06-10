@@ -38,7 +38,9 @@
                         >
                             {{ item.authorityTitle }}
                             <el-button
-                                @click="validSignature(6, item.authorityId)"
+                                @click="
+                                    validSignatureManage(6, item.authorityId)
+                                "
                                 size="mini"
                                 >验签</el-button
                             >
@@ -55,23 +57,23 @@
             <el-button @click="cancel">返回</el-button>
         </el-footer>
 
-        <valid-signature
+        <valid-signature-manage
             loadingMsg="角色权限配置信息签名校验中..."
             message="角色权限配置信息签名验证未通过，请及时联系运维人员处理。"
             returnOrLogout="logout"
             :params="validParams"
             :startValid.sync="startValid"
-        ></valid-signature>
+        ></valid-signature-manage>
     </div>
 </template>
 <script>
 import handleBreadcrumb from "@src/mixins/handle-breadcrumb.js";
 import getUserInfo from "@src/mixins/getUserInfo";
 import { api, urlNames } from "@src/api";
-import validSignature from "@src/mixins/valid-signature";
+import validSignatureManage from "@src/mixins/valid-signature-manage";
 
 export default {
-    mixins: [handleBreadcrumb, getUserInfo, validSignature],
+    mixins: [handleBreadcrumb, getUserInfo, validSignatureManage],
     data() {
         return {
             menuList: [],

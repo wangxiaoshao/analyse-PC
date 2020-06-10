@@ -78,7 +78,7 @@
                     <el-button
                         size="mini"
                         type="text"
-                        @click="validSignature(4, scope.row.id)"
+                        @click="validSignatureManage(4, scope.row.id)"
                         >验证签名</el-button
                     >
                 </template>
@@ -96,13 +96,13 @@
         >
         </el-pagination>
 
-        <valid-signature
+        <valid-signature-manage
             loadingMsg="角色成员信息签名校验中..."
             message="角色成员信息签名验证未通过，请及时联系运维人员处理。"
             returnOrLogout="return"
             :params="validParams"
             :startValid.sync="startValid"
-        ></valid-signature>
+        ></valid-signature-manage>
     </div>
 </template>
 
@@ -113,11 +113,11 @@ import hasRight from "@src/mixins/has-right";
 import { api, urlNames } from "@src/api";
 import { mapState, mapMutations } from "vuex";
 import SelectMembers from "@src/components/SelectMembers/index";
-import validSignature from "@src/mixins/valid-signature";
+import validSignatureManage from "@src/mixins/valid-signature-manage";
 
 export default {
     name: "LookPersonPermission",
-    mixins: [handleTable, handleBreadcrumb, hasRight, validSignature],
+    mixins: [handleTable, handleBreadcrumb, hasRight, validSignatureManage],
     components: { SelectMembers },
     data() {
         return {

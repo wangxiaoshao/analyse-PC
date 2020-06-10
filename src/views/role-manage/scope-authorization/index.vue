@@ -29,7 +29,9 @@
                             {{ area.name }}
 
                             <el-button
-                                @click="validSignature(5, area.authorizedOid)"
+                                @click="
+                                    validSignatureManage(5, area.authorizedOid)
+                                "
                                 size="mini"
                                 >验签</el-button
                             >
@@ -49,7 +51,9 @@
                         >
                             {{ org.name }}
                             <el-button
-                                @click="validSignature(5, org.authorizedOid)"
+                                @click="
+                                    validSignatureManage(5, org.authorizedOid)
+                                "
                                 size="mini"
                                 >验签</el-button
                             >
@@ -69,13 +73,13 @@
             @closeSelectArea="closeSelectArea"
         ></select-area>
 
-        <valid-signature
+        <valid-signature-manage
             loadingMsg="角色授权区域信息签名校验中..."
             message="角色授权区域信息签名验证未通过，请及时联系运维人员处理。"
             returnOrLogout="logout"
             :params="validParams"
             :startValid.sync="startValid"
-        ></valid-signature>
+        ></valid-signature-manage>
     </div>
 </template>
 
@@ -87,10 +91,10 @@ import SelectArea from "@src/components/SelectArea/index";
 import hasRight from "@src/mixins/has-right";
 import { api, urlNames } from "@src/api";
 import { mapState, mapMutations } from "vuex";
-import validSignature from "@src/mixins/valid-signature";
+import validSignatureManage from "@src/mixins/valid-signature-manage";
 
 export default {
-    mixins: [handleTable, handleBreadcrumb, hasRight, validSignature],
+    mixins: [handleTable, handleBreadcrumb, hasRight, validSignatureManage],
     name: "ScopeAuthorization",
     data() {
         return {

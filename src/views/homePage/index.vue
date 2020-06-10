@@ -211,14 +211,14 @@
             </div>
         </div>
 
-        <valid-signature
+        <valid-signature-manage
             loadingMsg="用户信息签名校验中..."
             message="个人信息签名验证未通过，请及时联系运维人员处理。"
             returnOrLogout="logout"
             :params="validParams"
             :startValid.sync="startValid"
             @goOn="init()"
-        ></valid-signature>
+        ></valid-signature-manage>
     </div>
 </template>
 <script>
@@ -226,10 +226,10 @@ import { api, urlNames } from "@src/api";
 import { mapState } from "vuex";
 import hasRight from "@src/mixins/has-right";
 import dicOption from "@src/mixins/dic-options.js";
-import validSignature from "@src/mixins/valid-signature";
+import validSignatureManage from "@src/mixins/valid-signature-manage";
 
 export default {
-    mixins: [dicOption, hasRight, validSignature],
+    mixins: [dicOption, hasRight, validSignatureManage],
     data() {
         return {
             userIdentityInfo: {
@@ -350,7 +350,7 @@ export default {
         };
     },
     created() {
-        this.validSignature(1, this.app.option.user.uid);
+        this.validSignatureManage(1, this.app.option.user.uid);
     },
     mounted() {
         this.userIdentityInfo.userName = this.app.option.user.name;
