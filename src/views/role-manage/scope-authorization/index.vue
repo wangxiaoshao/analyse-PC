@@ -69,35 +69,13 @@
             @closeSelectArea="closeSelectArea"
         ></select-area>
 
-        <el-dialog
-            :visible.sync="validSignatureDialog"
-            lock-scroll
-            :close-on-press-escape="false"
-            :close-on-click-modal="false"
-            class="dialog-box"
-            width="500px"
-        >
-            <div slot="title" style="padding: 20px;">
-                校验结果
-            </div>
-            <p>
-                <img src="@src/common/images/v2_qb1b03.png" alt="" />
-                角色授权区域信息签名验证未通过，请及时联系运维人员处理。
-            </p>
-            <div slot="footer" class="dialog-footer">
-                <el-button
-                    type="info"
-                    @click="validSignatureDialog = false"
-                    width="120px"
-                    >继续使用系统</el-button
-                >
-                <el-button type="primary" width="120px"
-                    ><a href="/api/gate/logout" style="color: #fff;"
-                        >退出系统</a
-                    ></el-button
-                >
-            </div>
-        </el-dialog>
+        <valid-signature
+            loadingMsg="角色授权区域信息签名校验中..."
+            message="角色授权区域信息签名验证未通过，请及时联系运维人员处理。"
+            returnOrLogout="logout"
+            :params="validParams"
+            :startValid.sync="startValid"
+        ></valid-signature>
     </div>
 </template>
 
@@ -109,6 +87,8 @@ import SelectArea from "@src/components/SelectArea/index";
 import hasRight from "@src/mixins/has-right";
 import { api, urlNames } from "@src/api";
 import { mapState, mapMutations } from "vuex";
+import ValidSignature from "@src/components/ValidSignature";
+
 export default {
     mixins: [handleTable, handleBreadcrumb, hasRight],
     name: "ScopeAuthorization",
@@ -122,13 +102,14 @@ export default {
             hasAddOrg: false,
 
             // 验签提示对话框
-            validSignatureDialog: false,
-            loader: null,
+            validParams: [],
+            startValid: false,
         };
     },
     components: {
         SelectOrg,
         SelectArea,
+        ValidSignature,
     },
     computed: {
         ...mapState(["app"]),
@@ -224,30 +205,14 @@ export default {
             });
         },
         validSignature(id) {
-            this.loader = this.$loading({
-                fullscreen: true,
-                text: "角色授权范围签名校验中...",
-            });
-
-            api[urlNames["validSignature"]]({
-                entityId: id,
-                // 用户信息
-                entityType: 5,
-            })
-                .then((res) => {
-                    if (res.message !== "success" || res.data === 0) {
-                        throw new Error("验签不通过");
-                    }
-                    this.loader.close();
-                    this.$message({
-                        message: "签名验证通过",
-                        type: "success",
-                    });
-                })
-                .catch(() => {
-                    this.loader.close();
-                    this.validSignatureDialog = true;
-                });
+            this.validParams = [
+                {
+                    id: id,
+                    // 角色授权单位和区域
+                    type: 5,
+                },
+            ];
+            this.startValid = true;
         },
     },
 };

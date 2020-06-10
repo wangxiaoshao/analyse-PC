@@ -55,41 +55,24 @@
             <el-button @click="cancel">返回</el-button>
         </el-footer>
 
-        <el-dialog
-            :visible.sync="validSignatureDialog"
-            lock-scroll
-            :close-on-press-escape="false"
-            :close-on-click-modal="false"
-            class="dialog-box"
-            width="500px"
-        >
-            <div slot="title" style="padding: 20px;">
-                校验结果
-            </div>
-            <p>
-                <img src="@src/common/images/v2_qb1b03.png" alt="" />
-                角色权限配置数据校验未通过，请及时联系运维人员处理。
-            </p>
-            <div slot="footer" class="dialog-footer">
-                <el-button
-                    type="info"
-                    @click="validSignatureDialog = false"
-                    width="120px"
-                    >继续使用系统</el-button
-                >
-                <el-button type="primary" @click="$router.back()" width="120px"
-                    >返 回</el-button
-                >
-            </div>
-        </el-dialog>
+        <valid-signature
+            loadingMsg="角色权限配置信息签名校验中..."
+            message="角色权限配置信息签名验证未通过，请及时联系运维人员处理。"
+            returnOrLogout="logout"
+            :params="validParams"
+            :startValid.sync="startValid"
+        ></valid-signature>
     </div>
 </template>
 <script>
 import handleBreadcrumb from "@src/mixins/handle-breadcrumb.js";
 import getUserInfo from "@src/mixins/getUserInfo";
 import { api, urlNames } from "@src/api";
+import ValidSignature from "@src/components/ValidSignature";
+
 export default {
     mixins: [handleBreadcrumb, getUserInfo],
+    components: { ValidSignature },
     data() {
         return {
             menuList: [],
@@ -99,8 +82,8 @@ export default {
             checkboxtSelect: [],
             roleId: this.$route.params.id,
             // 验签提示对话框
-            validSignatureDialog: false,
-            loader: null,
+            validParams: [],
+            startValid: false,
         };
     },
     created() {
@@ -120,30 +103,14 @@ export default {
     methods: {
         // 国密验签
         validSignature(authorityId) {
-            this.loader = this.$loading({
-                fullscreen: true,
-                text: "角色权限签名校验中...",
-            });
-
-            api[urlNames["validSignature"]]({
-                entityId: authorityId,
-                // 权限
-                entityType: 6,
-            })
-                .then((res) => {
-                    if (res.message !== "success" || res.data === 0) {
-                        throw new Error("验签不通过");
-                    }
-                    this.loader.close();
-                    this.$message({
-                        message: "签名验证通过",
-                        type: "success",
-                    });
-                })
-                .catch(() => {
-                    this.loader.close();
-                    this.validSignatureDialog = true;
-                });
+            this.validParams = [
+                {
+                    id: authorityId,
+                    // 用户权限
+                    type: 6,
+                },
+            ];
+            this.startValid = true;
         },
         init() {
             this.getMenuList();

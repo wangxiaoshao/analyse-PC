@@ -96,35 +96,13 @@
         >
         </el-pagination>
 
-        <el-dialog
-            :visible.sync="validSignatureDialog"
-            lock-scroll
-            :close-on-press-escape="false"
-            :close-on-click-modal="false"
-            class="dialog-box"
-            width="500px"
-        >
-            <div slot="title" style="padding: 20px;">
-                校验结果
-            </div>
-            <p>
-                <img src="@src/common/images/v2_qb1b03.png" alt="" />
-                角色成员数据签名验证未通过，请及时联系运维人员处理。
-            </p>
-            <div slot="footer" class="dialog-footer">
-                <el-button
-                    type="info"
-                    @click="validSignatureDialog = false"
-                    width="120px"
-                    >继续使用系统</el-button
-                >
-                <el-button type="primary" width="120px"
-                    ><a href="/api/gate/logout" style="color: #fff;"
-                        >退出系统</a
-                    ></el-button
-                >
-            </div>
-        </el-dialog>
+        <valid-signature
+            loadingMsg="角色成员信息签名校验中..."
+            message="角色成员信息签名验证未通过，请及时联系运维人员处理。"
+            returnOrLogout="return"
+            :params="validParams"
+            :startValid.sync="startValid"
+        ></valid-signature>
     </div>
 </template>
 
@@ -135,10 +113,12 @@ import hasRight from "@src/mixins/has-right";
 import { api, urlNames } from "@src/api";
 import { mapState, mapMutations } from "vuex";
 import SelectMembers from "@src/components/SelectMembers/index";
+import ValidSignature from "@src/components/ValidSignature";
+
 export default {
     name: "LookPersonPermission",
     mixins: [handleTable, handleBreadcrumb, hasRight],
-    components: { SelectMembers },
+    components: { SelectMembers, ValidSignature },
     data() {
         return {
             list: [],
@@ -163,8 +143,8 @@ export default {
             hasAddAuthority: false,
 
             // 验签提示对话框
-            validSignatureDialog: false,
-            loader: null,
+            validParams: [],
+            startValid: false,
         };
     },
     computed: {
@@ -188,30 +168,17 @@ export default {
         ...mapMutations(["PERSON_PAGE", "ROLE_ID"]),
         // 国密验签
         validSignature(memberInfo) {
-            this.loader = this.$loading({
-                fullscreen: true,
-                text: "角色成员数据签名校验中...",
-            });
-
-            api[urlNames["validSignature"]]({
-                entityId: memberInfo.id,
-                // 角色
-                entityType: 4,
-            })
-                .then((res) => {
-                    if (res.message !== "success" || res.data === 0) {
-                        throw new Error("验签不通过");
-                    }
-                    this.loader.close();
-                    this.$message({
-                        message: "签名验证通过",
-                        type: "success",
-                    });
-                })
-                .catch(() => {
-                    this.loader.close();
-                    this.validSignatureDialog = true;
-                });
+            this.validParams = [
+                {
+                    id: memberInfo.id,
+                    type: 4,
+                },
+                {
+                    id: memberInfo.id,
+                    type: 4,
+                },
+            ];
+            this.startValid = true;
         },
         init() {
             if (this.$route.query.type === "back") {
