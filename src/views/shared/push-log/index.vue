@@ -27,22 +27,6 @@
                     <el-form-item label="同步参数">
                         <div class="table-td">{{ detialInfo.pushBody }}</div>
                     </el-form-item>
-                    <el-form-item label="签名状态">
-                        <div class="table-td">
-                            <p v-if="validStatus" class="valid-sign-success">
-                                <img
-                                    src="@src/common/images/v2_qb1aza.png"
-                                    alt=""
-                                />签名验证通过
-                            </p>
-                            <p v-else class="valid-sign-failure">
-                                <img
-                                    src="@src/common/images/v2_qb1b03.png"
-                                    alt=""
-                                />签名验证未通过
-                            </p>
-                        </div>
-                    </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
                     <el-button
@@ -222,8 +206,6 @@ export default {
                 },
                 shortcuts: null,
             },
-            // 国密验签
-            validStatus: false,
         };
     },
     created() {
@@ -254,28 +236,6 @@ export default {
             "SET_APPLICATION_PAGE",
             "SET_APPLICATION_SEARCH_QUERY",
         ]),
-        // 国密验签
-        validSignature(logInfo) {
-            this.loader = this.$loading({
-                fullscreen: true,
-                text: "日志信息签名校验中...",
-            });
-
-            api[urlNames["validSignature"]]({
-                entityId: logInfo.id,
-                // 日志
-                entityType: 3,
-                date: logInfo.pushTime,
-            })
-                .then((res) => {
-                    this.loader.close();
-                    this.validStatus = true;
-                })
-                .catch(() => {
-                    this.loader.close();
-                    this.validStatus = false;
-                });
-        },
         selectChange(val) {
             this.date = "";
             // this.currentDateVal = ''
@@ -405,7 +365,6 @@ export default {
             });
         },
         findInfo(val) {
-            this.validSignature(val);
             this.detialInfo = val;
             this.detialInfoVisible = true;
         },

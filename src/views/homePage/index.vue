@@ -393,6 +393,9 @@ export default {
                 entityType: 1,
             })
                 .then((res) => {
+                    if (res.message !== "success" || res.data === 0) {
+                        throw new Error("验签不通过");
+                    }
                     this.loader.close();
                     this.$message({
                         message: "签名验证通过",

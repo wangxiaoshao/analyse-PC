@@ -204,25 +204,6 @@
                                 {{ detialInfoForm.description }}
                             </div>
                         </el-form-item>
-                        <el-form-item label="签名状态">
-                            <div class="table-td">
-                                <p
-                                    v-if="validStatus"
-                                    class="valid-sign-success"
-                                >
-                                    <img
-                                        src="@src/common/images/v2_qb1aza.png"
-                                        alt=""
-                                    />签名验证通过
-                                </p>
-                                <p v-else class="valid-sign-failure">
-                                    <img
-                                        src="@src/common/images/v2_qb1b03.png"
-                                        alt=""
-                                    />签名验证未通过
-                                </p>
-                            </div>
-                        </el-form-item>
                     </el-form>
                 </template>
                 <template v-if="loginLog === 3">
@@ -332,9 +313,6 @@ export default {
                 shortcuts: null,
             },
             value: "",
-            // 国密验签
-            loader: null,
-            validStatus: false,
         };
     },
     computed: {
@@ -366,28 +344,6 @@ export default {
             "SET_APPLICATION_PAGE",
             "SET_APPLICATION_SEARCH_QUERY",
         ]),
-        // 国密验签
-        validSignature(logInfo) {
-            this.loader = this.$loading({
-                fullscreen: true,
-                text: "日志信息签名校验中...",
-            });
-
-            api[urlNames["validSignature"]]({
-                entityId: logInfo.id,
-                // 日志
-                entityType: 3,
-                date: logInfo.actionTime,
-            })
-                .then((res) => {
-                    this.loader.close();
-                    this.validStatus = true;
-                })
-                .catch(() => {
-                    this.loader.close();
-                    this.validStatus = false;
-                });
-        },
         selectChange(val) {
             this.date = "";
             this.currentDateVal = "";
@@ -482,7 +438,6 @@ export default {
             );
         },
         opendetialInfo(val) {
-            this.validSignature(val);
             this.detialInfoVisible = true;
             if (this.loginLog === 1 || this.loginLog === 2 || !this.loginLog) {
                 let info = {

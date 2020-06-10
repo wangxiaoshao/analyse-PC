@@ -235,25 +235,6 @@
                                 {{ systemInfoForm.path }}
                             </div>
                         </el-form-item>
-                        <el-form-item label="签名状态">
-                            <div class="table-td">
-                                <p
-                                    v-if="this.validStatus"
-                                    class="valid-sign-success"
-                                >
-                                    <img
-                                        src="@src/common/images/v2_qb1aza.png"
-                                        alt=""
-                                    />签名验证通过
-                                </p>
-                                <p v-else class="valid-sign-failure">
-                                    <img
-                                        src="@src/common/images/v2_qb1b03.png"
-                                        alt=""
-                                    />签名验证未通过
-                                </p>
-                            </div>
-                        </el-form-item>
                     </el-form>
                 </template>
 
@@ -485,6 +466,9 @@ export default {
                 date: date,
             })
                 .then((res) => {
+                    if (res.message !== "success" || res.data === 0) {
+                        throw new Error("验签不通过");
+                    }
                     this.loader.close();
                     this.validStatus = true;
                 })
@@ -494,9 +478,9 @@ export default {
                 });
         },
         opendetialInfo(val) {
-            this.validSignature(val);
             this.detialInfoVisible = true;
             if (this.loginLog === 1 || this.loginLog === 2 || !this.loginLog) {
+                this.validSignature(val);
                 let info = {
                     actionTime: val.actionTime.slice(0, 10),
                     id: val.id,
