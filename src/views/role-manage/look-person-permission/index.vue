@@ -78,7 +78,7 @@
                     <el-button
                         size="mini"
                         type="text"
-                        @click="validSignature(scope.row)"
+                        @click="validSignature(4, scope.row.id)"
                         >验证签名</el-button
                     >
                 </template>
@@ -113,12 +113,12 @@ import hasRight from "@src/mixins/has-right";
 import { api, urlNames } from "@src/api";
 import { mapState, mapMutations } from "vuex";
 import SelectMembers from "@src/components/SelectMembers/index";
-import ValidSignature from "@src/components/ValidSignature";
+import validSignature from "@src/mixins/valid-signature";
 
 export default {
     name: "LookPersonPermission",
-    mixins: [handleTable, handleBreadcrumb, hasRight],
-    components: { SelectMembers, ValidSignature },
+    mixins: [handleTable, handleBreadcrumb, hasRight, validSignature],
+    components: { SelectMembers },
     data() {
         return {
             list: [],
@@ -166,20 +166,6 @@ export default {
     },
     methods: {
         ...mapMutations(["PERSON_PAGE", "ROLE_ID"]),
-        // 国密验签
-        validSignature(memberInfo) {
-            this.validParams = [
-                {
-                    id: memberInfo.id,
-                    type: 4,
-                },
-                {
-                    id: memberInfo.id,
-                    type: 4,
-                },
-            ];
-            this.startValid = true;
-        },
         init() {
             if (this.$route.query.type === "back") {
                 this.page = Object.assign(this.page, this.roleManage.page);

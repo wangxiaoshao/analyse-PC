@@ -38,7 +38,7 @@
                         >
                             {{ item.authorityTitle }}
                             <el-button
-                                @click="validSignature(item.authorityId)"
+                                @click="validSignature(6, item.authorityId)"
                                 size="mini"
                                 >验签</el-button
                             >
@@ -68,11 +68,10 @@
 import handleBreadcrumb from "@src/mixins/handle-breadcrumb.js";
 import getUserInfo from "@src/mixins/getUserInfo";
 import { api, urlNames } from "@src/api";
-import ValidSignature from "@src/components/ValidSignature";
+import validSignature from "@src/mixins/valid-signature";
 
 export default {
-    mixins: [handleBreadcrumb, getUserInfo],
-    components: { ValidSignature },
+    mixins: [handleBreadcrumb, getUserInfo, validSignature],
     data() {
         return {
             menuList: [],
@@ -101,17 +100,6 @@ export default {
         });
     },
     methods: {
-        // 国密验签
-        validSignature(authorityId) {
-            this.validParams = [
-                {
-                    id: authorityId,
-                    // 用户权限
-                    type: 6,
-                },
-            ];
-            this.startValid = true;
-        },
         init() {
             this.getMenuList();
             this.getActionList();

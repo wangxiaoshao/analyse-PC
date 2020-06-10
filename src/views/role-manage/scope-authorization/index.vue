@@ -29,7 +29,7 @@
                             {{ area.name }}
 
                             <el-button
-                                @click="validSignature(area.authorizedOid)"
+                                @click="validSignature(5, area.authorizedOid)"
                                 size="mini"
                                 >验签</el-button
                             >
@@ -49,7 +49,7 @@
                         >
                             {{ org.name }}
                             <el-button
-                                @click="validSignature(org.authorizedOid)"
+                                @click="validSignature(5, org.authorizedOid)"
                                 size="mini"
                                 >验签</el-button
                             >
@@ -87,10 +87,10 @@ import SelectArea from "@src/components/SelectArea/index";
 import hasRight from "@src/mixins/has-right";
 import { api, urlNames } from "@src/api";
 import { mapState, mapMutations } from "vuex";
-import ValidSignature from "@src/components/ValidSignature";
+import validSignature from "@src/mixins/valid-signature";
 
 export default {
-    mixins: [handleTable, handleBreadcrumb, hasRight],
+    mixins: [handleTable, handleBreadcrumb, hasRight, validSignature],
     name: "ScopeAuthorization",
     data() {
         return {
@@ -109,7 +109,6 @@ export default {
     components: {
         SelectOrg,
         SelectArea,
-        ValidSignature,
     },
     computed: {
         ...mapState(["app"]),
@@ -203,16 +202,6 @@ export default {
                 this.$message.success(`删除成功`);
                 this.getfindAuthorizedEntity();
             });
-        },
-        validSignature(id) {
-            this.validParams = [
-                {
-                    id: id,
-                    // 角色授权单位和区域
-                    type: 5,
-                },
-            ];
-            this.startValid = true;
         },
     },
 };
