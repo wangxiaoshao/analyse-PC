@@ -118,6 +118,7 @@ export default {
                     api[urlNames["validSignature"]]({
                         entityId: item.id,
                         entityType: item.type,
+                        date: item.date || "",
                     })
                 );
             });

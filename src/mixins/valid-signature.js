@@ -15,21 +15,23 @@ export default {
         };
     },
     methods: {
-        validSignature(type, idList) {
+        validSignature(type, validInfo, validInfoDate) {
             let params = [];
 
-            if (Array.isArray(idList)) {
-                idList.forEach((id) => {
+            if (Array.isArray(validInfo)) {
+                validInfo.forEach((item) => {
                     params.push({
                         type: type,
-                        id: id,
+                        id: item.id,
+                        date: item.date || "",
                     });
                 });
             } else {
                 params = [
                     {
                         type: type,
-                        id: idList,
+                        id: validInfo,
+                        date: validInfoDate || "",
                     },
                 ];
             }
