@@ -255,8 +255,10 @@
 import handleTable from "@src/mixins/handle-table";
 import { api, urlNames } from "@src/api";
 import { mapState, mapMutations } from "vuex";
+import validSignature from "@src/mixins/valid-signature";
+
 export default {
-    mixins: [handleTable],
+    mixins: [handleTable, validSignature],
     props: ["loginLog", "showFindBtn"],
     data() {
         return {
@@ -445,42 +447,21 @@ export default {
                 }
             );
         },
-        // 国密验签
-        validSignature(logInfo) {
-            this.loader = this.$loading({
-                fullscreen: true,
-                text: "日志信息签名校验中...",
-            });
-
-            let date = "";
-            if (this.loginLog === 1 || this.loginLog === 2 || !this.loginLog) {
-                date = logInfo.actionTime;
-            } else if (this.loginLog === 3) {
-                date = logInfo.accessTime;
-            }
-
-            api[urlNames["validSignature"]]({
-                entityId: logInfo.id,
-                // 日志
-                entityType: 3,
-                date: date,
-            })
-                .then((res) => {
-                    if (res.message !== "success" || res.data === 0) {
-                        throw new Error("验签不通过");
-                    }
-                    this.loader.close();
-                    this.validStatus = true;
-                })
-                .catch(() => {
-                    this.loader.close();
-                    this.validStatus = false;
-                });
-        },
         opendetialInfo(val) {
             this.detialInfoVisible = true;
             if (this.loginLog === 1 || this.loginLog === 2 || !this.loginLog) {
-                this.validSignature(val);
+                this.validSignature(
+                    "日志信息签名校验中...",
+                    [
+                        {
+                            type: 3,
+                            id: val.id,
+                            date: val.actionTime,
+                        },
+                    ],
+                    () => (this.validStatus = true),
+                    () => (this.validStatus = false)
+                );
                 let info = {
                     actionTime: val.actionTime.slice(0, 10),
                     id: val.id,
