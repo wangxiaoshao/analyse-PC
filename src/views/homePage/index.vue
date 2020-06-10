@@ -226,13 +226,10 @@ import { api, urlNames } from "@src/api";
 import { mapState } from "vuex";
 import hasRight from "@src/mixins/has-right";
 import dicOption from "@src/mixins/dic-options.js";
-import ValidSignature from "@src/components/ValidSignature";
+import validSignature from "@src/mixins/valid-signature";
 
 export default {
-    mixins: [dicOption, hasRight],
-    components: {
-        ValidSignature,
-    },
+    mixins: [dicOption, hasRight, validSignature],
     data() {
         return {
             userIdentityInfo: {
@@ -353,16 +350,7 @@ export default {
         };
     },
     created() {
-        this.validParams = [
-            // 用户信息
-            {
-                id: this.app.option.user.uid,
-                type: 1,
-            },
-        ];
-        // 国密验签
-        this.startValid = true;
-        // this.init();
+        this.validSignature(1, this.app.option.user.uid);
     },
     mounted() {
         this.userIdentityInfo.userName = this.app.option.user.name;
