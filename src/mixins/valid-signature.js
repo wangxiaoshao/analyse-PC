@@ -1,43 +1,55 @@
 /**
- * 用于国密验签
+ * 用于国密验签，仅提供验签流程接口，不提供视图界面
  * 传入验签类型和id（或id列表），自动组织验签
  */
-import ValidSignature from "@src/components/ValidSignature";
+import { api, urlNames, apiAll } from "@src/api";
 
 export default {
-    components: { ValidSignature },
     data() {
-        return {
-            // 验签参数列表
-            validParams: [],
-            // 开始验签的开关（验签结束会自动重置为false）
-            startValid: false,
-        };
+        return {};
     },
     methods: {
-        validSignature(type, validInfo, validInfoDate) {
-            let params = [];
+        validSignature(
+            loadingMsg,
+            validInfoList,
+            successCallback,
+            errorCallback
+        ) {
+            let loader = this.$loading({
+                fullscreen: true,
+                text: loadingMsg,
+            });
 
-            if (Array.isArray(validInfo)) {
-                validInfo.forEach((item) => {
-                    params.push({
-                        type: type,
-                        id: item.id,
+            let requests = [];
+            validInfoList.forEach((item) => {
+                requests.push(
+                    api[urlNames["validSignature"]]({
+                        entityId: item.id,
+                        entityType: item.type,
                         date: item.date || "",
-                    });
-                });
-            } else {
-                params = [
-                    {
-                        type: type,
-                        id: validInfo,
-                        date: validInfoDate || "",
-                    },
-                ];
-            }
+                    })
+                );
+            });
 
-            this.validParams = params;
-            this.startValid = true;
+            apiAll(requests)
+                .then((responses) => {
+                    responses.forEach((res) => {
+                        if (res.message !== "success" || res.data === 0) {
+                            throw new Error("验证签名不通过");
+                        }
+                    });
+
+                    loader.close();
+                    this.$message({
+                        message: "签名验证通过",
+                        type: "success",
+                    });
+                    successCallback();
+                })
+                .catch(() => {
+                    loader.close();
+                    errorCallback();
+                });
         },
     },
 };

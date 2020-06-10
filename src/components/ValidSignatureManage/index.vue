@@ -38,10 +38,11 @@
 </template>
 
 <script>
-import { api, urlNames, apiAll } from "@src/api";
+import validSignature from "@src/mixins/valid-signature";
 
 export default {
-    name: "ValidSignature",
+    name: "validSignatureManage",
+    mixins: [validSignature],
     props: {
         startValid: {
             type: Boolean,
@@ -81,7 +82,7 @@ export default {
             immediate: true,
             handler(isStart, oldVal) {
                 if (isStart) {
-                    this.validSignature();
+                    this.doValidSignature();
                 }
             },
         },
@@ -106,42 +107,13 @@ export default {
          * params: [],
          * }
          */
-        validSignature() {
-            this.loader = this.$loading({
-                fullscreen: true,
-                text: this.loadingMsg,
-            });
-
-            let requests = [];
-            this.params.forEach((item) => {
-                requests.push(
-                    api[urlNames["validSignature"]]({
-                        entityId: item.id,
-                        entityType: item.type,
-                        date: item.date || "",
-                    })
-                );
-            });
-
-            apiAll(requests)
-                .then((responses) => {
-                    responses.forEach((res) => {
-                        if (res.message !== "success" || res.data === 0) {
-                            throw new Error("验证签名不通过");
-                        }
-                    });
-
-                    this.loader.close();
-                    this.$message({
-                        message: "签名验证通过",
-                        type: "success",
-                    });
-                    this.onGoOn();
-                })
-                .catch(() => {
-                    this.loader.close();
-                    this.show();
-                });
+        doValidSignature() {
+            this.validSignature(
+                this.loadingMsg,
+                this.params,
+                this.onGoOn,
+                this.show
+            );
         },
     },
 };
