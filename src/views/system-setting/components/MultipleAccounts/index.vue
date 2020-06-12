@@ -74,11 +74,13 @@
                 </el-table-column>
                 <el-table-column label="操作" align="center">
                     <template slot-scope="scope">
-                        <a
-                            href="javascript:void(0);"
-                            style="color: #58a4f3; font-size: 12px;"
-                            @click="setAccount(scope.row.id)"
-                            >编辑</a
+                        <el-button @click="setAccount(scope.row.id)" size="mini"
+                            >编辑</el-button
+                        >
+                        <el-button
+                            @click="validSignatureManage(2, scope.row.id)"
+                            size="mini"
+                            >验签</el-button
                         >
                     </template>
                 </el-table-column>
@@ -110,16 +112,31 @@
                 >
             </div>
         </el-dialog>
+
+        <valid-signature-manage
+            loadingMsg="用户账号签名校验中..."
+            message="用户账号签名验证未通过，请及时联系运维人员处理。"
+            returnOrLogout="logout"
+            :params="validParams"
+            :startValid.sync="startValid"
+        ></valid-signature-manage>
     </div>
 </template>
 <script>
 import { api, urlNames } from "@src/api";
+import validSignatureManage from "@src/mixins/valid-signature-manage";
+
 export default {
     props: ["accountInfoList"],
+    mixins: [validSignatureManage],
     data() {
         return {
             accountSystemVisible: false,
             systeamData: [],
+
+            // 验签提示对话框
+            startValid: false,
+            validParams: [],
         };
     },
 
