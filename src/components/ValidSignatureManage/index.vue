@@ -4,6 +4,7 @@
         lock-scroll
         :close-on-press-escape="false"
         :close-on-click-modal="false"
+        :show-close="false"
         class="dialog-box"
         width="500px"
     >
