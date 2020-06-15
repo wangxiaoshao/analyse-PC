@@ -29,9 +29,7 @@
                             {{ area.name }}
 
                             <el-button
-                                @click="
-                                    validSignatureManage(5, area.authorizedOid)
-                                "
+                                @click="validSignatureManage(5, area.id)"
                                 size="mini"
                                 >验签</el-button
                             >
@@ -51,9 +49,7 @@
                         >
                             {{ org.name }}
                             <el-button
-                                @click="
-                                    validSignatureManage(5, org.authorizedOid)
-                                "
+                                @click="validSignatureManage(5, org.id)"
                                 size="mini"
                                 >验签</el-button
                             >
