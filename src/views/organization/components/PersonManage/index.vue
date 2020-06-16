@@ -852,9 +852,10 @@ export default {
             //
             api[urlNames["selectMobileIsSame"]]({
                 mobile: this.userDetail.mobile,
+                uid: this.userDetail.uid,
             }).then(
                 (res) => {
-                    if (!res.data) {
+                    if (res.data) {
                         this.isSameMobile = false;
                         this.isSubmit = true;
                         if (successCallback) {
