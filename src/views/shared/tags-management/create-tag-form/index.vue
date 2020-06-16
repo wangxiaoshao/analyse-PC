@@ -90,6 +90,10 @@ export default {
             let params = null;
 
             if (this.actionType === "create") {
+                if (this.labelForm.name.trim() === "") {
+                    this.$message.error("标签不能为空");
+                    return false;
+                }
                 let parentId = null;
                 if (
                     this.createData.id === "" ||
