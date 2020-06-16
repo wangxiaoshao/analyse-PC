@@ -451,7 +451,7 @@ export default {
         },
         // 搜索选择
         handleSelect(item) {},
-        ack() {
+        back() {
             this.isChange = this.addWatch(this.appFrom, this.oldAppFrom);
             if (this.isChange) {
                 this.goBackDilog(this.onSubmit, "ruleForm");
