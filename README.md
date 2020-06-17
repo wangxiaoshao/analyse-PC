@@ -5,30 +5,38 @@
 
 vue + element UI + webpack + vuex + less
 
+### 基础必备设置
+git config --global core.autocrlf false
+git config --global core.safecrlf true
+
+### 基础必要工具
+npm install -g yarn
+
 ### 安装依赖
 ```
-npm install
+yarn install --pure-lock
 ```
 
 ### 本地启动项目（本地mock数据）
 ```
-npm run serve
+yarn serve
 ```
-### 本地启动项目（本地链接测试环境）
-```
-npm run test
-```
-
 ### 打包项目
 ```
-npm run build
+yarn build
 ```
 
 ### esLint修复文件
 ```
-npm run lint
+yarn lint
 ```
- 
+
+### 必备工具
+1. Vetur
+2. ESLint
+3. EditorConfig for VS Code
+4. Prettier - Code formatter
+
 ### [vue](https://cn.vuejs.org/v2/guide/)
 
 ## 目录结构
@@ -96,20 +104,20 @@ npm run lint
 ### 文件命名
 ```
 1. vue文件命名：
-  
+
   组件：HelloWorld.vue ────────────── PascalCase单词首字母大写
   页面：hello-world.vue ───────────── kebab-case短线风格
-  
+
 2. js文件：hello-world.js ─────────── kebab-case短线风格
 
 3. less文件：hello-world.less ─────── kebab-case短线风格
 ```
-  
+
 ### 文件夹命名
 ```
 1. components下的子文件夹：PascalCase单词首字母大写
-    
-    注: 
+
+    注:
     a. 全局通用的组件放在 /src/components下
     b. 其他业务页面中的组件，放在各自页面下的 ./components文件夹下
     c. 每个components文件夹下最多只有一层文件夹，且文件夹名称为组件的名称;
