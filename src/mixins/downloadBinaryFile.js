@@ -10,10 +10,11 @@ export default {
         return {};
     },
     methods: {
-        downloadBinaryFile(url, param, type, accessoryUrl) {
+        downloadBinaryFile(url, param, type) {
             let timestamp = new Date().getTime();
             let openUrl = "";
             if (type === 2) {
+                // 导出单位人员
                 openUrl =
                     url +
                     "api/jg_manage/user/exportUser" +
@@ -24,19 +25,10 @@ export default {
                     "&sign=" +
                     this.getSign({ orgId: param }, timestamp);
             } else {
+                // 导出部门人员
                 openUrl =
                     url +
                     "api/jg_manage/user/exportUser" +
-                    "?_=" +
-                    timestamp +
-                    "&deptId=" +
-                    param +
-                    "&sign=" +
-                    this.getSign({ deptId: param }, timestamp);
-            }
-            if (accessoryUrl) {
-                openUrl =
-                    accessoryUrl +
                     "?_=" +
                     timestamp +
                     "&deptId=" +
