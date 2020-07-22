@@ -811,10 +811,13 @@ export default {
             this.$emit("exportOrg", 3);
         },
         findMobileIsSame(successCallback = null) {
-            // console.log('mobile:',this.userDetail.mobile)
-            api[urlNames["selectMobileIsSame"]]({
+            let data = {
                 mobile: this.userDetail.mobile,
-            }).then(
+            };
+            if (this.$route.name === "PersonEdit") {
+                data.uid = this.$route.params.id;
+            }
+            api[urlNames["selectMobileIsSame"]](data).then(
                 (res) => {
                     if (res.data) {
                         this.isSameMobile = false;
