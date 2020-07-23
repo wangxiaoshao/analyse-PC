@@ -182,10 +182,10 @@
                         "
                     >
                         <el-input
-                            placeholder="请输入职务"
+                            placeholder="请选择职务"
+                            ref="dutyNameInput"
                             v-model="postDetail.dutyName"
                             @focus="showdutyNameList"
-                            @input="showIptMsg('dutyName')"
                         ></el-input>
                         <span
                             style="
@@ -203,9 +203,7 @@
                             v-model="dutyNameSelectVisible"
                         >
                             <div>
-                                <el-button
-                                    size="mini"
-                                    @click="dutyNameSelectVisible = false"
+                                <el-button size="mini" @click="hidedutyNameList"
                                     >关闭</el-button
                                 >
                                 <el-checkbox-group
@@ -776,7 +774,14 @@ export default {
                     { message: "", trigger: "change" },
                     { validator: validateMobile, trigger: "blur" },
                 ],
-                // dutyName:[{required: true, message: '职务不能为空', trigger: 'blur'}],
+                dutyName: [
+                    {
+                        required: true,
+                        message: "职务不能为空",
+                        trigger: "blur",
+                    },
+                    { message: "", trigger: "change" },
+                ],
                 mobile2: [{ validator: validateMobile, trigger: "blur" }],
                 officePhone: [{ validator: validateOffice, trigger: "blur" }],
                 type: [
@@ -849,11 +854,13 @@ export default {
             this.$emit("exportOrg", 3);
         },
         findMobileIsSame(successCallback = null) {
-            //
-            api[urlNames["selectMobileIsSame"]]({
+            let data = {
                 mobile: this.userDetail.mobile,
-                uid: this.userDetail.uid,
-            }).then(
+            };
+            if (this.$route.name === "PersonEdit") {
+                data.uid = this.$route.params.id;
+            }
+            api[urlNames["selectMobileIsSame"]](data).then(
                 (res) => {
                     if (res.data) {
                         this.isSameMobile = false;
@@ -1134,46 +1141,38 @@ export default {
         },
 
         next(userDetail) {
-            this.findMobileIsSame(() => {
-                if (this.idCardState.errorVisiable) {
-                    this.$message.error(
-                        "身份证号码与人员姓名不匹配，请重新输入"
-                    );
-                } else if (
-                    this.idCardState.successVisiable ||
-                    this.userDetail.idcard === ""
-                ) {
-                    if (this.isSubmit && !this.isSameMobile) {
-                        this.$refs[userDetail].validate((valid) => {
-                            if (valid) {
-                                this.isChange = false;
-                                this.$emit(
-                                    "get-post",
-                                    this.postFrom,
-                                    this.isAudit
-                                );
-                                this.$emit(
-                                    "get-user",
-                                    this.personFrom,
-                                    this.isAudit
-                                );
-                            } else {
-                                this.$message.warning(
-                                    `请根据提示填写有效身份信息`
-                                );
-                                this.isChange = false;
-                                return false;
-                            }
-                        });
-                    } else if (this.isSameMobile) {
-                        this.$message.warning(
-                            `该手机号已和其他用户绑定，请尝试输入新的手机号码。`
-                        );
+            // this.findMobileIsSame(() => {
+            if (this.idCardState.errorVisiable) {
+                this.$message.error("身份证号码与人员姓名不匹配，请重新输入");
+            } else if (
+                this.idCardState.successVisiable ||
+                this.userDetail.idcard === ""
+            ) {
+                this.$refs[userDetail].validate((valid) => {
+                    if (valid) {
+                        if (this.isSubmit && !this.isSameMobile) {
+                            this.isChange = false;
+                            this.$emit("get-post", this.postFrom, this.isAudit);
+                            this.$emit(
+                                "get-user",
+                                this.personFrom,
+                                this.isAudit
+                            );
+                        } else if (this.isSameMobile) {
+                            this.$message.warning(
+                                `该手机号已和其他用户绑定，请尝试输入新的手机号码。`
+                            );
+                        }
+                    } else {
+                        this.$message.warning(`请根据提示填写有效身份信息`);
+                        this.isChange = false;
+                        return false;
                     }
-                } else if (this.userDetail.idcard !== "") {
-                    this.$message.warning(`请先进行身份证号实名认证!`);
-                }
-            });
+                });
+            } else if (this.userDetail.idcard !== "") {
+                this.$message.warning(`请先进行身份证号实名认证!`);
+            }
+            // });
         },
         addWatch() {
             return (
