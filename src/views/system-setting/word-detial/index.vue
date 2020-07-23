@@ -76,9 +76,8 @@
 <script>
 import handleBreadcrumb from "@src/mixins/handle-breadcrumb.js";
 import { api, urlNames } from "@src/api";
-import downloadBinaryFile from "@src/mixins/downloadBinaryFile";
 export default {
-    mixins: [handleBreadcrumb, downloadBinaryFile],
+    mixins: [handleBreadcrumb],
     name: "WordDetial",
     data() {
         return {
