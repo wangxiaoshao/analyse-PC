@@ -209,10 +209,10 @@
             <!-- <el-table-column label="身份类型" prop="typeText"></el-table-column> -->
             <el-table-column label="身份启用状态" prop="removed" align="center">
                 <template slot-scope="scope">
-                    <span class="text-able" v-show="scope.row.removed === 0"
+                    <span class="text-able" v-show="scope.row.disabled === 0"
                         >启用</span
                     >
-                    <span class="text-disable" v-show="scope.row.removed === 1"
+                    <span class="text-disable" v-show="scope.row.disabled === 1"
                         >停用</span
                     >
                 </template>
