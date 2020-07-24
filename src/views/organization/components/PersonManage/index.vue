@@ -856,6 +856,7 @@ export default {
         findMobileIsSame(successCallback = null) {
             let data = {
                 mobile: this.userDetail.mobile,
+                uid: this.userDetail.uid,
             };
             if (this.$route.name === "PersonEdit") {
                 data.uid = this.$route.params.id;
