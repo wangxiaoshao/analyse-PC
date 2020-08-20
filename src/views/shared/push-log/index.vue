@@ -238,7 +238,7 @@ export default {
         ]),
         selectChange(val) {
             this.date = "";
-            // this.currentDateVal = ''
+            this.currentDateVal = "";
             this.openPicker = false;
             let todayDate = new Date();
             if (val && val.length > 1) {
