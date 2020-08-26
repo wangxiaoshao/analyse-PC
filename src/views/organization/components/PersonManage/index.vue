@@ -173,16 +173,15 @@
                         </div>
                     </el-form-item>
 
-                    <el-form-item
-                        label="职务"
-                        prop="dutyName"
-                    >
+                    <el-form-item label="职务" prop="dutyName">
                         <el-input
                             placeholder="请选择职务"
                             ref="dutyNameInput"
                             v-model="postDetail.dutyName"
                             @focus="showdutyNameList"
-                            :disabled="$route.name === 'PassChange'?true:false"
+                            :disabled="
+                                $route.name === 'PassChange' ? true : false
+                            "
                         ></el-input>
                         <span
                             style="
