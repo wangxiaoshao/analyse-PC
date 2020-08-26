@@ -176,16 +176,13 @@
                     <el-form-item
                         label="职务"
                         prop="dutyName"
-                        v-if="
-                            this.$route.name == 'PersonAdd' ||
-                            this.$route.name == 'PersonEdit'
-                        "
                     >
                         <el-input
                             placeholder="请选择职务"
                             ref="dutyNameInput"
                             v-model="postDetail.dutyName"
                             @focus="showdutyNameList"
+                            :disabled="$route.name === 'PassChange'?true:false"
                         ></el-input>
                         <span
                             style="
