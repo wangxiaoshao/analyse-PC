@@ -43,6 +43,7 @@
                             end-placeholder="结束日期"
                             :picker-options="pickerOptions"
                             @change="dateChange"
+                            @blur="onDateBlur"
                         ></el-date-picker>
                     </div>
                     <div v-else>
@@ -256,9 +257,9 @@ import handleTable from "@src/mixins/handle-table";
 import { api, urlNames } from "@src/api";
 import { mapState, mapMutations } from "vuex";
 import validSignature from "@src/mixins/valid-signature";
-
+import pickerOptions from "@src/mixins/picker-options";
 export default {
-    mixins: [handleTable, validSignature],
+    mixins: [handleTable, validSignature, pickerOptions],
     props: ["loginLog", "showFindBtn"],
     data() {
         return {
@@ -381,8 +382,16 @@ export default {
                     "yyyy-MM"
                 );
             }
-
-            if (this.date) {
+            if (val[0] === "daterange") {
+                this.pickDateOptionRules();
+            } else {
+                this.pickerOptions = {
+                    disabledDate(time) {
+                        return time.getTime() > Date.now() - 8.64e6;
+                    },
+                };
+            }
+            if (this.dateType === "yesterday") {
                 this.getGrid();
             }
         },

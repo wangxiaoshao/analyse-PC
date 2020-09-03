@@ -3,6 +3,44 @@
  */
 
 export default {
+    data() {
+        return {
+            pickerOptions: {
+                disabledDate(time) {
+                    return time.getTime() > Date.now() - 8.64e6;
+                },
+                shortcuts: null,
+            },
+            selectDate: "",
+        };
+    },
+    methods: {
+        pickDateOptionRules() {
+            const that = this;
+            this.pickerOptions = {
+                onPick({ maxDate, minDate }) {
+                    if (maxDate && minDate) {
+                    } else {
+                        const date = maxDate || minDate;
+                        that.selectDate = date;
+                    }
+                },
+                disabledDate(time) {
+                    const { selectDate } = that;
+                    if (selectDate) {
+                        return (
+                            selectDate.getMonth() !== time.getMonth() ||
+                            time.getTime() > Date.now() - 8.64e6
+                        );
+                    }
+                    return time.getTime() > Date.now() - 8.64e6;
+                },
+            };
+        },
+        onDateBlur() {
+            this.selectDate = "";
+        },
+    },
     disabledDate(now) {
         return now.getTime() > Date.now();
     },

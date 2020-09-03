@@ -77,6 +77,7 @@
                         end-placeholder="结束日期"
                         :picker-options="pickerOptions"
                         @change="dateChange"
+                        @blur="onDateBlur"
                     ></el-date-picker>
                 </div>
                 <div v-else>
@@ -174,8 +175,9 @@ import handleTable from "@src/mixins/handle-table";
 import handleBreadcrumb from "@src/mixins/handle-breadcrumb.js";
 import { api, urlNames } from "@src/api";
 import { mapState, mapMutations } from "vuex";
+import pickerOptions from "@src/mixins/picker-options";
 export default {
-    mixins: [handleTable, handleBreadcrumb],
+    mixins: [handleTable, handleBreadcrumb, pickerOptions],
     props: [
         "loginLog",
         "isAppLaction",
@@ -264,7 +266,16 @@ export default {
                     "yyyy-MM"
                 );
             }
-            if (this.date) {
+            if (val[0] === "daterange") {
+                this.pickDateOptionRules();
+            } else {
+                this.pickerOptions = {
+                    disabledDate(time) {
+                        return time.getTime() > Date.now() - 8.64e6;
+                    },
+                };
+            }
+            if (this.dateType === "yesterday") {
                 this.getGrid();
             }
         },
