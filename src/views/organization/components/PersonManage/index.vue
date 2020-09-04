@@ -179,9 +179,6 @@
                             ref="dutyNameInput"
                             v-model="postDetail.dutyName"
                             @focus="showdutyNameList"
-                            :disabled="
-                                $route.name === 'PassChange' ? true : false
-                            "
                         ></el-input>
                         <span
                             style="

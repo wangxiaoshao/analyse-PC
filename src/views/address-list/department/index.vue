@@ -45,7 +45,7 @@
                                                 margin-left: 5px;
                                             "
                                             @click="
-                                                findPhone(
+                                                findNodePhone(
                                                     orgInfo.nodeType,
                                                     orgInfo.bindId,
                                                     1
@@ -72,166 +72,277 @@
             :style="{ 'margin-top': '15px' }"
         >
             <div class="header-title">详细数据</div>
-            <!-- v-show="departmentList.length!==0" -->
-            <el-table
-                :data="departmentList"
-                style="width: 100%;"
-                class="eltab"
-                border
-                stripe
-            >
-                <template slot="empty">
-                    <div class="empty">
-                        <p>
-                            <img
-                                class="data-pic"
-                                src="@src/common/images/no-data1.png"
-                                alt
-                            />
-                        </p>
-                        <p>
-                            <span style="padding-left: 8px;">暂无数据</span>
-                        </p>
-                    </div>
-                </template>
-                <el-table-column
-                    type="index"
-                    label="序号"
-                    align="center"
-                    width="50"
-                ></el-table-column>
-                <el-table-column
-                    prop="name"
-                    label="下级机构及人员"
-                    width="180px"
-                >
-                    <template slot-scope="scope">
-                        <span>
-                            <span
-                                class="iconfont iconzuzhijigou nodeColor"
-                                v-if="scope.row.nodeType === 1"
-                            ></span>
-                            <span
-                                class="iconfont icondanwei orgColor"
-                                v-if="scope.row.nodeType === 2"
-                            ></span>
-                            <span
-                                class="iconfont iconbumen deptColor"
-                                v-if="scope.row.nodeType === 3"
-                            ></span>
-                            <span
-                                class="el-icon-user personColor"
-                                v-if="!scope.row.nodeType"
-                            ></span>
-                        </span>
-                        <span v-if="!scope.row.nodeType">{{
-                            visableData.userName == 0
-                                ? hideName(scope.row.name)
-                                : scope.row.name
-                        }}</span>
-                        <span style="margin-left: 5px;" v-else>{{
-                            scope.row.name
-                        }}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column prop="name" label="类型" align="center">
-                    <template slot-scope="scope">
-                        <span v-if="scope.row.nodeType == 1">节点</span>
-                        <span v-if="scope.row.nodeType == 2">单位</span>
-                        <span v-if="scope.row.nodeType == 3">内设机构</span>
-                        <span v-if="!scope.row.nodeType">个人</span>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    prop="phone"
-                    label="手机号码"
-                    align="center"
-                    width="140px"
-                >
-                    <template slot-scope="scope">
-                        <span>{{
-                            scope.row.phone || scope.row.mobile || "无"
-                        }}</span>
-                        <el-button
-                            type="text"
-                            v-if="
-                                scope.row.phone &&
-                                scope.row.phone != '' &&
-                                !scope.row.isLooked
-                            "
-                            class="findMobileBtn"
-                            :disabled="
-                                visableData.userPhone == 0 &&
-                                scope.row.nodeType == 3
-                            "
-                            @click="
-                                findPhone(
-                                    scope.row.nodeType,
-                                    scope.row.bindId,
-                                    2,
-                                    scope.$index
-                                )
-                            "
-                            >查看</el-button
+            <div class="info-box">
+                <el-tabs v-model="activeName">
+                    <el-tab-pane label="下级机构" name="first">
+                        <el-table
+                            :data="departmentList"
+                            style="width: 100%;"
+                            class="eltab"
+                            border
+                            stripe
                         >
-                        <el-button
-                            type="text"
-                            v-if="
-                                scope.row.mobile &&
-                                scope.row.mobile != '' &&
-                                !scope.row.isLooked
-                            "
-                            class="findMobileBtn"
-                            :disabled="visableData.userMobile == 0"
-                            @click="
-                                findMobileById(scope.row.uid, scope.$index, 1)
-                            "
-                            >查看</el-button
+                            <template slot="empty">
+                                <div class="empty">
+                                    <p>
+                                        <img
+                                            class="data-pic"
+                                            src="@src/common/images/no-data1.png"
+                                            alt
+                                        />
+                                    </p>
+                                    <p>
+                                        <span style="padding-left: 8px;"
+                                            >暂无数据</span
+                                        >
+                                    </p>
+                                </div>
+                            </template>
+                            <el-table-column
+                                type="index"
+                                label="序号"
+                                align="center"
+                                width="50"
+                            ></el-table-column>
+                            <el-table-column
+                                prop="name"
+                                label="下级机构"
+                                width="180px"
+                            >
+                                <template slot-scope="scope">
+                                    <span>
+                                        <span
+                                            class="iconfont iconzuzhijigou nodeColor"
+                                            v-if="scope.row.nodeType === 1"
+                                        ></span>
+                                        <span
+                                            class="iconfont icondanwei orgColor"
+                                            v-if="scope.row.nodeType === 2"
+                                        ></span>
+                                        <span
+                                            class="iconfont iconbumen deptColor"
+                                            v-if="scope.row.nodeType === 3"
+                                        ></span>
+                                    </span>
+                                    <span v-if="!scope.row.nodeType">{{
+                                        visableData.userName == 0
+                                            ? hideName(scope.row.name)
+                                            : scope.row.name
+                                    }}</span>
+                                    <span style="margin-left: 5px;" v-else>{{
+                                        scope.row.name
+                                    }}</span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                prop="name"
+                                label="类型"
+                                align="center"
+                            >
+                                <template slot-scope="scope">
+                                    <span v-if="scope.row.nodeType == 1"
+                                        >节点</span
+                                    >
+                                    <span v-if="scope.row.nodeType == 2"
+                                        >单位</span
+                                    >
+                                    <span v-if="scope.row.nodeType == 3"
+                                        >内设机构</span
+                                    >
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                prop="phone"
+                                label="座机号码"
+                                align="center"
+                                width="160px"
+                            >
+                                <template slot-scope="scope">
+                                    <span>{{
+                                        scope.row.phone ||
+                                        scope.row.mobile ||
+                                        "无"
+                                    }}</span>
+                                    <el-button
+                                        type="text"
+                                        v-if="
+                                            scope.row.phone &&
+                                            scope.row.phone != '' &&
+                                            !scope.row.isLooked
+                                        "
+                                        class="findMobileBtn"
+                                        :disabled="
+                                            visableData.userPhone == 0 &&
+                                            scope.row.nodeType == 3
+                                        "
+                                        @click="
+                                            findNodePhone(
+                                                scope.row.nodeType,
+                                                scope.row.bindId,
+                                                2,
+                                                scope.$index
+                                            )
+                                        "
+                                        >查看</el-button
+                                    >
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="操作" align="center">
+                                <template slot-scope="scope">
+                                    <span v-if="!scope.row.nodeType">无</span>
+                                    <span
+                                        v-else
+                                        class="findMobileBtn"
+                                        @click="childClick(scope.row)"
+                                        >查看下级</span
+                                    >
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </el-tab-pane>
+                    <el-tab-pane
+                        label="人员信息"
+                        name="second"
+                        v-if="orgInfo.nodeType !== 1"
+                    >
+                        <el-table
+                            :data="memberList"
+                            style="width: 100%;"
+                            class="eltab"
+                            border
+                            stripe
                         >
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    prop="officePhone"
-                    label="座机号码"
-                    align="center"
-                    width="140px"
-                >
-                    <template slot-scope="scope">
-                        <span>{{
-                            scope.row.uid === activeId
-                                ? scope.row.officePhone
-                                : hideMobile(scope.row.officePhone) || "无"
-                        }}</span>
-                        <el-button
-                            type="text"
-                            v-if="
-                                scope.row.officePhone &&
-                                scope.row.officePhone != '' &&
-                                scope.row.officePhone != '无' &&
-                                scope.row.uid !== activeId
-                            "
-                            class="findMobileBtn"
-                            @click="
-                                findMobileById(scope.row.uid, scope.$index, 2)
-                            "
-                            >查看</el-button
-                        >
-                    </template>
-                </el-table-column>
-                <el-table-column label="操作" align="center">
-                    <template slot-scope="scope">
-                        <!-- <i class="el-icon-share"></i> -->
+                            <template slot="empty">
+                                <div class="empty">
+                                    <p>
+                                        <img
+                                            class="data-pic"
+                                            src="@src/common/images/no-data1.png"
+                                            alt
+                                        />
+                                    </p>
+                                    <p>
+                                        <span style="padding-left: 8px;"
+                                            >暂无数据</span
+                                        >
+                                    </p>
+                                </div>
+                            </template>
+                            <el-table-column
+                                type="index"
+                                label="序号"
+                                align="center"
+                                width="50"
+                            ></el-table-column>
+                            <el-table-column
+                                prop="name"
+                                label="机构人员"
+                                width="180px"
+                            >
+                                <template slot-scope="scope">
+                                    <span
+                                        class="el-icon-user personColor"
+                                    ></span>
+                                    <span v-if="!scope.row.nodeType">{{
+                                        visableData.userName == 0
+                                            ? hideName(scope.row.name)
+                                            : scope.row.name
+                                    }}</span>
+                                    <span style="margin-left: 5px;" v-else>{{
+                                        scope.row.name
+                                    }}</span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                prop="name"
+                                label="类型"
+                                align="center"
+                                width="120px"
+                            >
+                                <template>
+                                    <span>个人</span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                prop="phone"
+                                label="手机号码"
+                                align="center"
+                            >
+                                <template slot-scope="scope">
+                                    <span>{{
+                                        scope.row.phone ||
+                                        scope.row.mobile ||
+                                        "无"
+                                    }}</span>
+                                    <el-button
+                                        type="text"
+                                        v-if="
+                                            scope.row.mobile &&
+                                            scope.row.mobile != '' &&
+                                            !scope.row.isLooked
+                                        "
+                                        class="findMobileBtn"
+                                        :disabled="visableData.userMobile == 0"
+                                        @click="
+                                            findMobileById(
+                                                scope.row.uid,
+                                                scope.$index,
+                                                1
+                                            )
+                                        "
+                                        >查看222</el-button
+                                    >
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                prop="officePhone"
+                                label="座机号码"
+                                align="center"
+                                width="160px"
+                            >
+                                <template slot-scope="scope">
+                                    <span>{{
+                                        scope.row.uid === activeId
+                                            ? scope.row.officePhone
+                                            : hideMobile(
+                                                  scope.row.officePhone
+                                              ) || "无"
+                                    }}</span>
 
-                        <span v-if="!scope.row.nodeType">无</span>
-                        <span
-                            v-else
-                            class="findMobileBtn"
-                            @click="childClick(scope.row)"
-                            >查看下级</span
-                        >
-                    </template>
-                </el-table-column>
-            </el-table>
+                                    <el-button
+                                        type="text"
+                                        v-if="
+                                            scope.row.officePhone &&
+                                            scope.row.officePhone != '' &&
+                                            scope.row.officePhone != '无' &&
+                                            scope.row.uid !== activeId
+                                        "
+                                        class="findMobileBtn"
+                                        @click="
+                                            findMobileById(
+                                                scope.row.uid,
+                                                scope.$index,
+                                                2
+                                            )
+                                        "
+                                        >查看</el-button
+                                    >
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                        <!--分页-->
+                        <el-pagination
+                            @size-change="handleSizeChange"
+                            @current-change="handleCurrentChange"
+                            :current-page="memberPage.page"
+                            :page-sizes="[10, 30, 50, 100]"
+                            :page-size="memberPage.limit"
+                            layout="total, sizes, prev, pager, next, jumper"
+                            :total="memberPage.total"
+                        ></el-pagination>
+                    </el-tab-pane>
+                </el-tabs>
+            </div>
         </div>
         <div
             class="no-right"
@@ -240,7 +351,7 @@
         >
             <img class="no-content-img" :src="imgSrc" alt width="180px" />
             <div style="font-size: 20px; color: #999;">
-                该单位信息对外不可见！
+                该单位通讯录信息对外不可见！
             </div>
         </div>
     </div>
@@ -250,8 +361,16 @@ import { api, urlNames } from "@src/api";
 import { mapState } from "vuex";
 import noDataImg from "@src/common/images/no-data1.png";
 import handPhoneName from "@src/mixins/phone-name.js";
+
 export default {
-    props: ["departmentList", "orgInfo", "activeColor", "msg", "visableData"],
+    props: [
+        "departmentList",
+        "memberList",
+        "orgInfo",
+        "activeColor",
+        "visableData",
+        "memberPage",
+    ],
     mixins: [handPhoneName],
     data() {
         //  allOrgInfo
@@ -271,6 +390,7 @@ export default {
             infoVisiable: false,
             deptMemberList: [],
             imgSrc: noDataImg,
+            activeName: "first",
         };
     },
     computed: {
@@ -292,7 +412,7 @@ export default {
         },
 
         // 查看电话
-        findPhone(nodeType, bindId, state, index) {
+        findNodePhone(nodeType, bindId, state, index) {
             api[urlNames["getOrgMobile"]]({
                 nodeType,
                 bindId,
@@ -307,32 +427,20 @@ export default {
                 }
             });
         },
+        // state =1 手机号  =2座机号
         findMobileById(uid, index, state) {
             if (state === 2) {
                 this.activeId = uid;
-            } else {
-                this.mobileActiveId = uid;
             }
             api[urlNames["findMobileById"]]({ uid, type: state }).then(
                 (res) => {
+                    let number = "";
                     if (res && state === 1) {
-                        this.$emit(
-                            "changeOfficeState",
-                            index,
-                            state,
-                            res.data.mobile
-                        );
-                        // this.departmentList[index].mobile = res.data.mobile
-                        // this.departmentList[index].isLooked = true
+                        number = res.data.mobile;
                     } else if (res && state === 2) {
-                        this.$emit(
-                            "changeOfficeState",
-                            index,
-                            state,
-                            res.data.officePhone
-                        );
-                        // this.departmentList[index].officePhone = res.data.officePhone
+                        number = res.data.officePhone;
                     }
+                    this.$emit("changeOfficeState", index, state, number);
                 }
             );
         },
@@ -345,6 +453,18 @@ export default {
                     "$1****$2"
                 );
             }
+        },
+        handleSizeChange(val) {
+            this.$emit("handleSizeChange", val);
+        },
+        handleCurrentChange(val) {
+            this.$emit("handleCurrentChange", val);
+        },
+    },
+    watch: {
+        orgInfo() {
+            this.activeName = "first";
+            this.$emit("resetPageChange");
         },
     },
 };

@@ -3,15 +3,6 @@
         <el-row class="address-row">
             <el-col :span="6" style="height: 100%;">
                 <div class="site-scroll">
-                    <!-- <div class="organ-top">
-            <div class="top-one" :class="activeColor==1?'top-active':''" @click="switchAddressView(1)">本单位通讯录</div>
-            <div
-              class="top-two"
-              title="查阅全省各单位的通讯录信息"
-              :class="activeColor==2?'top-active':''"
-              @click="switchAddressView(2)"
-            >全省通讯录</div>
-          </div>-->
                     <search-result
                         @searchMyBack="searchMyBack"
                         @searchOtherBack="searchOtherBack"
@@ -71,24 +62,29 @@
                 >
                     <div style="padding: 0 20px; height: 100%;">
                         <department
+                            :memberPage="memberPage"
                             :activeColor="activeColor"
                             :orgInfo="orgInfo"
                             :departmentList="departmentList"
+                            :memberList="memberList"
                             :treeList="treeList"
-                            :msg="msg"
                             :visableData="visableData"
                             v-if="showDep"
                             @handle-child-click="handleChildClick"
                             @changeOfficeState="changeOfficeState"
+                            @handleSizeChange="handleSizeChange"
+                            @handleCurrentChange="handleCurrentChange"
+                            @resetPageChange="resetPageChange"
                         ></department>
-                        <member
+
+                        <!-- <member
                             :table-data="memberList"
                             :activeColor="activeColor"
                             :orgInfo="orgInfo"
                             :msg="msg"
                             :visableData="visableData"
                             v-if="selectType != '0' && !showDep"
-                        ></member>
+                        ></member> -->
                         <person-info
                             :personInfoList="personInfoList"
                             :activeColor="activeColor"
@@ -106,14 +102,13 @@ import { api, urlNames } from "@src/api";
 import searchResult from "./components/Choose/index";
 import personInfo from "./components/PersonInfo/index";
 import department from "./department/index";
-import member from "./member/index";
+// import member from "./member/index";
 import addressListTree from "./components/Tree/index";
 import { mapState } from "vuex";
 export default {
     components: {
         searchResult,
         department,
-        member,
         addressListTree,
         personInfo,
     },
@@ -143,6 +138,11 @@ export default {
                 userPhone: 1,
                 userDetail: 1,
                 depPhone: 1,
+            },
+            memberPage: {
+                page: 1,
+                limit: 10,
+                total: 0,
             },
         };
     },
@@ -261,7 +261,7 @@ export default {
             }
             if (node.nodeType === 3) {
                 this.selectType = "";
-                this.showDep = false;
+                // this.showDep = false;
                 let nodeParams = {
                     level: 2,
                     memberId: node.orgId,
@@ -310,7 +310,9 @@ export default {
                     this.addressBookSet = res.data.filter(function (val) {
                         return val.name === "orgAddressBookSet";
                     });
-                    this.visableData = this.addressBookSet[0].value;
+                    if (this.addressBookSet.length > 0) {
+                        this.visableData = this.addressBookSet[0].value;
+                    }
                 } else {
                     this.visableData = {
                         allOrgInfo: 1,
@@ -335,14 +337,12 @@ export default {
         },
         changeOfficeState(index, state, val) {
             if (state === 1) {
-                this.departmentList[index].mobile = val;
-                this.departmentList[index].isLooked = true;
-            } else if (state === 2) {
-                this.departmentList[index].officePhone = val;
-                // this.departmentList[index].isOfficePhone = true
+                this.memberList[index].mobile = val;
+                this.memberList[index].isLooked = true;
+            } else {
+                this.memberList[index].officePhone = val;
             }
         },
-
         handleChildClick(node) {
             this.orgInfo = node;
             this.selectType = "";
@@ -359,7 +359,7 @@ export default {
                 };
             }
             if (node.nodeType === 3) {
-                this.showDep = false;
+                // this.showDep = false;
                 let nodeParams = {
                     level: 2,
                     memberId: node.orgId,
@@ -389,18 +389,19 @@ export default {
 
         /** 单位下人员 getAddressListOrganizationMembers */
         getAddressListOrganizationMembers(id) {
-            let that = this;
             if (!id) {
                 id = this.app.option.user.orgId;
             }
             api[urlNames["getAddressListOrganizationMembers"]]({
                 orgId: id,
+                page: this.memberPage.page,
+                limit: this.memberPage.limit,
             }).then((res) => {
-                let ary = res.data;
+                this.memberPage.total = res.total;
                 this.memberList = res.data;
-                ary.forEach((item) => {
-                    that.departmentList.push(item);
-                });
+                // ary.forEach((item) => {
+                //     that.departmentList.push(item);
+                // });
                 // this.departmentList = [...this.departmentList, ...ary]
             });
         },
@@ -409,7 +410,10 @@ export default {
         getAddressListDepartmentMembers(id) {
             api[urlNames["getAddressListDepartmentMembers"]]({
                 deptId: id,
+                page: this.memberPage.page,
+                limit: this.memberPage.limit,
             }).then((res) => {
+                this.memberPage.total = res.total;
                 this.memberList = res.data;
                 //
             });
@@ -437,6 +441,28 @@ export default {
             api[urlNames["getAddressListUserByName"]]({
                 name: this.name,
             }).then((res) => {});
+        },
+        // 人员分页
+        handleSizeChange(val) {
+            this.memberPage.limit = val;
+            if (this.orgInfo.nodeType === 2) {
+                this.getAddressListOrganizationMembers(this.orgInfo.bindId);
+            } else if (this.orgInfo.nodeType === 3) {
+                this.getAddressListDepartmentMembers(this.orgInfo.bindId);
+            }
+        },
+        handleCurrentChange(val) {
+            this.memberPage.page = val;
+            if (this.orgInfo.nodeType === 2) {
+                this.getAddressListOrganizationMembers(this.orgInfo.bindId);
+            } else if (this.orgInfo.nodeType === 3) {
+                this.getAddressListDepartmentMembers(this.orgInfo.bindId);
+            }
+        },
+        resetPageChange() {
+            this.memberPage.page = 1;
+            this.memberPage.limit = 10;
+            this.memberPage.total = 0;
         },
     },
 };

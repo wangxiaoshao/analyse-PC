@@ -14,7 +14,14 @@
                     @click="goBackTree"
                 ></el-button>
             </div>
-            <div class="result-list">
+            <div
+                class="result-list"
+                :style="
+                    gridData.length >= pageParams.limit
+                        ? 'padding-bottom: 40px'
+                        : ''
+                "
+            >
                 <!-- <el-button
                     size=""
                     type="text"
