@@ -290,7 +290,7 @@
                                                 1
                                             )
                                         "
-                                        >查看222</el-button
+                                        >查看</el-button
                                     >
                                 </template>
                             </el-table-column>
@@ -464,7 +464,6 @@ export default {
     watch: {
         orgInfo() {
             this.activeName = "first";
-            this.$emit("resetPageChange");
         },
     },
 };

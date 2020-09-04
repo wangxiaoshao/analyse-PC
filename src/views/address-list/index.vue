@@ -74,7 +74,6 @@
                             @changeOfficeState="changeOfficeState"
                             @handleSizeChange="handleSizeChange"
                             @handleCurrentChange="handleCurrentChange"
-                            @resetPageChange="resetPageChange"
                         ></department>
 
                         <!-- <member
@@ -248,6 +247,11 @@ export default {
             this.orgInfo = node;
             this.showDep = true;
             this.navigation = [];
+            this.memberPage = {
+                total: 0,
+                page: 1,
+                limit: 10,
+            };
             this.navigation.push(node);
             if (node.nodeType === 1) {
                 this.visableData = {
