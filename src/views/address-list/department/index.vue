@@ -10,13 +10,9 @@
             <div v-if="visableData.allOrgInfo == 1">
                 <div class="header-title">{{ nodePrefix }}信息</div>
                 <div class="infoContent">
-                    <el-form
-                        :inline="true"
-                        label-width="120px"
-                        label-position="right"
-                    >
+                    <el-form label-width="120px" label-position="right">
                         <el-row>
-                            <el-col>
+                            <el-col :span="12">
                                 <el-form-item :label="nodePrefix + '名称'">
                                     <div class="table-td" :title="orgInfo.name">
                                         {{ orgInfo.name }}
@@ -28,7 +24,7 @@
                                     </div>
                                 </el-form-item>
                             </el-col>
-                            <el-col>
+                            <el-col :span="12">
                                 <el-form-item :label="nodePrefix + '电话'">
                                     <div class="table-td">
                                         <span>{{ orgInfo.phone || "无" }}</span>

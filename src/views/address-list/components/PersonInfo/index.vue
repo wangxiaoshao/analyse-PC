@@ -1,8 +1,8 @@
 <template>
     <div class="PersonInfo">
-        <el-form :inline="true" label-width="100px" label-position="right">
+        <el-form label-width="100px" label-position="right">
             <el-row>
-                <el-col>
+                <el-col :span="12">
                     <el-form-item label="姓名">
                         <div class="table-td" :title="personInfoList.name">
                             {{ personInfoList.name }}
@@ -14,7 +14,7 @@
                         </div>
                     </el-form-item>
                 </el-col>
-                <el-col>
+                <el-col :span="12">
                     <el-form-item label="手机号码">
                         <div class="table-td">
                             <span>{{ personInfoList.mobile || "无" }}</span>

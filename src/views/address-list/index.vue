@@ -209,7 +209,7 @@ export default {
         searchListResult(data, type) {
             this.orgInfo = data;
             this.selectType = type;
-            this.showDep = false;
+            this.showDep = true;
             this.showBreadCrumb = false;
             this.treeList = this.departmentList = [];
             if (data.nodeType === 2) {
