@@ -52,7 +52,13 @@ export default {
         showLoading: false, // 该请求发送时，是否显示全局loading
         serve: "organizationManagePC",
     },
-
+    [urlNames.searchAllViewNode]: {
+        type: "get",
+        url: "/api/jg_manage/viewNode/searchAllViewNode",
+        keepOriginResponse: true, // 是否保留后端返回数据格式
+        showLoading: false, // 该请求发送时，是否显示全局loading
+        serve: "organizationManagePC",
+    },
     /*
      * 查询内设机构下的所有人员
      * */

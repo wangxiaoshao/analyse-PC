@@ -1,15 +1,15 @@
 <template>
-    <div class="search-content">
-        <el-popover
-            ref="popover"
-            placement="bottom-start"
-            v-if="resultFlag"
-            width="300"
-        >
+    <div class="search-txlcontent">
+        <el-popover ref="popover" placement="bottom-start" v-if="resultFlag">
             <div class="back-btn-address">
-                <el-button size="mini" @click="goBackTree">返回</el-button>
+                <el-button
+                    size="medium"
+                    type="text"
+                    icon="el-icon-close"
+                    @click="goBackTree"
+                ></el-button>
             </div>
-            <div class="result-list" style="overflow-y: auto; height: 300px;">
+            <div class="result-list">
                 <el-table
                     v-loading="loadFlag"
                     :data="gridData"
@@ -17,27 +17,51 @@
                 >
                     <el-table-column property="name">
                         <template slot-scope="scope">
-                            <span
-                                v-if="selectType !== '0'"
-                                :title="scope.row.name"
-                                class="table-span"
-                                @click="getDetail(scope.row)"
-                                >{{ scope.row.name }}</span
-                            >
-                            <span
-                                v-if="selectType === '0'"
-                                :title="
-                                    scope.row.orgName + '-' + scope.row.name
-                                "
-                                @click="handleCurrentChange(scope.row)"
-                                class="table-span"
-                                >{{ scope.row.name }}-{{
-                                    scope.row.mobile
-                                }}</span
-                            >
+                            <div class="result-tr">
+                                <span
+                                    v-if="selectType !== '0'"
+                                    :title="scope.row.name"
+                                    class="table-span"
+                                    @click="getDetail(scope.row)"
+                                    >{{ scope.row.name }}</span
+                                >
+                                <span
+                                    v-if="selectType === '0'"
+                                    :title="scope.row.name"
+                                    @click="handleCurrentChange(scope.row)"
+                                    class="table-span"
+                                    >{{ scope.row.name }}-{{
+                                        scope.row.mobile
+                                    }}</span
+                                >
+                            </div>
                         </template>
                     </el-table-column>
                 </el-table>
+                <div
+                    class="footer-page"
+                    v-if="
+                        gridData.length >= pageParams.limit &&
+                        selectType === '2' &&
+                        myOrgFlag !== 1
+                    "
+                >
+                    <el-button
+                        type="text"
+                        size="mini"
+                        icon="el-icon-arrow-left"
+                        @click="pageReduce"
+                        :disabled="pageParams.page <= 1 ? true : false"
+                        >上一页</el-button
+                    >
+                    <el-button
+                        type="text"
+                        size="mini"
+                        @click="pageAdd"
+                        :disabled="pageParams.page < allPages ? false : true"
+                        >下一页<i class="el-icon-arrow-right el-icon--right"></i
+                    ></el-button>
+                </div>
             </div>
         </el-popover>
         <el-row>
@@ -118,6 +142,12 @@ export default {
             type: 2,
             restaurants: [],
             timer: null,
+            pageParams: {
+                page: 1,
+                limit: 15,
+                total: 0,
+            },
+            allPages: 0,
         };
     },
 
@@ -132,6 +162,10 @@ export default {
         },
         // 获取搜索结果
         getResult() {
+            if (this.keyWord.length < 1) {
+                this.gridData = [];
+                return;
+            }
             if (this.selectType === "0") {
                 api[urlNames["getAddressListUserByName"]]({
                     name: this.keyWord,
@@ -159,6 +193,10 @@ export default {
             }
         },
         getOtherResult() {
+            if (this.keyWord.length < 1) {
+                this.gridData = [];
+                return;
+            }
             if (this.selectType === "0") {
                 api[urlNames["getAddressListUserByName"]]({
                     name: this.keyWord,
@@ -170,8 +208,13 @@ export default {
                 api[urlNames["searchOtherDep"]]({
                     name: this.keyWord,
                     nodeType: this.selectType,
+                    page: this.pageParams.page,
+                    limit: this.pageParams.limit,
                 }).then((res) => {
                     this.gridData = res.data;
+                    this.allPages = Math.ceil(
+                        res.total / this.pageParams.limit
+                    );
                     this.resultFlag = true;
                 });
             }
@@ -191,12 +234,26 @@ export default {
         handleCurrentChange(val) {
             this.$emit("searchPeopleInfo", val, this.selectType);
         },
+        pageReduce() {
+            this.pageParams.page--;
+            if (this.pageParams.page < 1) {
+                this.pageParams.page = 1;
+            }
+            this.getOtherResult();
+        },
+        pageAdd() {
+            this.pageParams.page++;
+            this.getOtherResult();
+        },
     },
     watch: {
         myOrgFlag(val) {
             this.selectType = "0";
             this.keyWord = "";
             this.resultFlag = false;
+        },
+        keyWord(newVal) {
+            this.pageParams.page = 1;
         },
     },
 };

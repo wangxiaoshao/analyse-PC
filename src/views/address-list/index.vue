@@ -55,7 +55,13 @@
                         </el-breadcrumb-item>
                     </template>
                     <el-breadcrumb-item v-if="!showBreadCrumb"
-                        >个人通讯录</el-breadcrumb-item
+                        >{{
+                            selectType === "0"
+                                ? "个人"
+                                : selectType === "2"
+                                ? "单位"
+                                : "部门"
+                        }}通讯录</el-breadcrumb-item
                     >
                 </el-breadcrumb>
                 <transition
@@ -202,11 +208,16 @@ export default {
         },
         // 搜索返回数据点击
         searchListResult(data, type) {
+            this.orgInfo = data;
             this.selectType = type;
             this.showDep = false;
             this.showBreadCrumb = false;
             this.treeList = this.departmentList = [];
-            this.getAddressListDepartmentMembers(data.id);
+            if (data.nodeType === 2) {
+                this.getAddressListOrganizationMembers(data.bindId);
+            } else if (data.nodeType === 3) {
+                this.getAddressListDepartmentMembers(data.bindId);
+            }
         },
 
         // 点击全省通讯录搜索人员
@@ -431,6 +442,6 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 @import "index";
 </style>

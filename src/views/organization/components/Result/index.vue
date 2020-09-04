@@ -15,8 +15,8 @@
                 ></el-button>
             </div>
             <div class="result-list">
-                <el-button
-                    size="medium"
+                <!-- <el-button
+                    size=""
                     type="text"
                     icon="el-icon-d-arrow-left"
                     class="leftBtn btn"
@@ -30,7 +30,7 @@
                     class="rightBtn btn"
                     @click="pageAdd"
                     :disabled="pageParams.page < allPages ? false : true"
-                ></el-button>
+                ></el-button> -->
                 <el-table
                     v-loading="loadFlag"
                     :data="gridData"
@@ -40,14 +40,6 @@
                     <el-table-column property="name">
                         <template slot-scope="scope">
                             <div class="result-tr">
-                                <!-- <span
-                                    :title="scope.row.name"
-                                    class="table-span"
-                                     href
-                                     disabled
-                                    @click="setNodeId(scope.row)"
-                                    >{{ scope.row.name }}</span
-                                > -->
                                 <el-breadcrumb separator="/">
                                     <el-breadcrumb-item
                                         v-for="(item, index) in scope.row
@@ -79,6 +71,26 @@
                         </template>
                     </el-table-column>
                 </el-table>
+                <div
+                    class="footer-page"
+                    v-if="gridData.length >= pageParams.limit"
+                >
+                    <el-button
+                        type="text"
+                        size="mini"
+                        icon="el-icon-arrow-left"
+                        @click="pageReduce"
+                        :disabled="pageParams.page <= 1 ? true : false"
+                        >上一页</el-button
+                    >
+                    <el-button
+                        type="text"
+                        size="mini"
+                        @click="pageAdd"
+                        :disabled="pageParams.page < allPages ? false : true"
+                        >下一页<i class="el-icon-arrow-right el-icon--right"></i
+                    ></el-button>
+                </div>
             </div>
         </el-popover>
         <el-row>
@@ -280,7 +292,6 @@ export default {
     },
 };
 </script>
-
 <style lang="less">
 @import "index";
 </style>

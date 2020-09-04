@@ -59,6 +59,7 @@ export default {
     getTree: "getTree",
     // 搜索视图
     searchViewNode: "searchViewNode",
+    searchAllViewNode: "searchAllViewNode",
     getChildList: "getChildList",
     getPersonList: "getPersonList",
     // 共享视图

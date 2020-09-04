@@ -11,7 +11,7 @@
                 <el-input
                     placeholder="请输入内容"
                     v-model="searchKeyWord"
-                    @input="getResult"
+                    @change="getResult"
                     @keyup.enter.native="getResult"
                     class="input-with-select"
                 >
@@ -58,23 +58,50 @@
                     </el-tree>
                 </div>
                 <div class="wait-select">
-                    <el-checkbox
-                        v-model="org"
-                        class="member-item"
-                        @change="toggleAllOrgs"
-                        >全选</el-checkbox
-                    >
-                    <el-checkbox-group v-model="orgsModel" @change="toggleOrg">
+                    <div class="wait-checkbox">
                         <el-checkbox
-                            style="display: block;"
-                            class="member-item text-ellipsis"
-                            v-for="org in orgList"
-                            :key="org.id"
-                            :label="JSON.stringify(org)"
+                            v-model="org"
+                            class="member-item"
+                            @change="toggleAllOrgs"
+                            >全选</el-checkbox
                         >
-                            {{ org.name }}
-                        </el-checkbox>
-                    </el-checkbox-group>
+                        <el-checkbox-group
+                            v-model="orgsModel"
+                            @change="toggleOrg"
+                        >
+                            <el-checkbox
+                                style="display: block;"
+                                class="member-item text-ellipsis"
+                                v-for="org in orgList"
+                                :key="org.id"
+                                :title="org.name"
+                                :label="JSON.stringify(org)"
+                            >
+                                {{ org.name }}
+                            </el-checkbox>
+                        </el-checkbox-group>
+                    </div>
+                    <div class="wait-page" v-if="searchKeyWord.length > 1">
+                        <el-button
+                            type="text"
+                            size="mini"
+                            icon="el-icon-arrow-left"
+                            @click="pageReduce"
+                            :disabled="pageParams.page <= 1 ? true : false"
+                            >上一页</el-button
+                        >
+                        <el-button
+                            type="text"
+                            size="mini"
+                            @click="pageAdd"
+                            :disabled="
+                                pageParams.page < allPages ? false : true
+                            "
+                            >下一页<i
+                                class="el-icon-arrow-right el-icon--right"
+                            ></i
+                        ></el-button>
+                    </div>
                 </div>
                 <div class="container">
                     <el-button
@@ -123,7 +150,7 @@ export default {
             submitDisable: "",
             searchKeyWord: "",
             searchType: "2", // 搜索类型
-            selectCategory: 0, // 0 人员 ，1 内设机构/单位
+            selectCategory: 0, // 0 人员 ，1 部门/单位
             nodeTree: [], // 树
             defaultProps: {
                 children: "children",
@@ -132,13 +159,19 @@ export default {
                 isLeaf: "leaf",
             },
             // 中间待选择的成员数据，可能是人员，也可能是单位
-            orgList: [], // 内设机构
-            orgsModel: [], // 内设机构
-            orgSingleModel: [], // 内设机构单选
+            orgList: [], // 部门
+            orgsModel: [], // 部门
+            orgSingleModel: [], // 部门单选
             // 右侧已经选择的成员数据
             selectedOrgs: [],
             selectedOrgsModel: [],
             apiName: null,
+            pageParams: {
+                page: 1,
+                limit: 12,
+                total: 0,
+            },
+            allPages: 0,
         };
     },
     created() {
@@ -206,6 +239,7 @@ export default {
         },
         // 节点被点击时
         handleNodeClick(node) {
+            this.searchKeyWord = "";
             this.findcheckNodeTree(node.id);
         },
         // 获取机构树-加载可选
@@ -228,7 +262,7 @@ export default {
                 });
             });
         },
-        // 内设机构/单位处理
+        // 部门/单位处理
         // 全选
         toggleAllOrgs(selected) {
             let that = this;
@@ -318,16 +352,39 @@ export default {
         },
         // 获取搜索结果
         getResult() {
+            if (this.searchKeyWord.length < 1) {
+                this.orgList = [];
+                return;
+            }
             let data = {
                 name: this.searchKeyWord,
                 nodeType: this.searchType,
+                page: this.pageParams.page,
+                limit: this.pageParams.limit,
             };
-            api[urlNames["searchViewNode"]](data).then((res) => {
+            api[urlNames["searchAllViewNode"]](data).then((res) => {
                 this.orgList = res.data;
+                this.allPages = Math.ceil(res.total / this.pageParams.limit);
             });
         },
         getType(el) {
             this.searchType = el;
+        },
+        pageReduce() {
+            this.pageParams.page--;
+            if (this.pageParams.page < 1) {
+                this.pageParams.page = 1;
+            }
+            this.getResult();
+        },
+        pageAdd() {
+            this.pageParams.page++;
+            this.getResult();
+        },
+    },
+    watch: {
+        searchKeyWord(newVal) {
+            this.pageParams.page = 1;
         },
     },
 };
