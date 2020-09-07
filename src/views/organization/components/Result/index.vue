@@ -220,6 +220,7 @@ export default {
             this.timer = null;
         },
         setNodeId(id) {
+            this.goBackTree();
             this.$router.push({
                 name: "OrganizationContent",
                 params: {

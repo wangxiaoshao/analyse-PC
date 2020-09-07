@@ -175,7 +175,7 @@ export default {
                     this.gridData = res.data;
                     this.resultFlag = true;
                 });
-            } else if (this.selectType === "2" || this.selectType === "3") {
+            } else if (this.selectType === "2") {
                 api[urlNames["searchOtherDep"]]({
                     name: this.keyWord,
                     nodeType: this.selectType,
@@ -184,16 +184,15 @@ export default {
                     this.gridData = res.data;
                     this.resultFlag = true;
                 });
+            } else if (this.selectType === "3") {
+                api[urlNames["searchMyDep"]]({
+                    deptName: this.keyWord,
+                    orgId: this.app.option.user.orgId,
+                }).then((res) => {
+                    this.gridData = res.data;
+                    this.resultFlag = true;
+                });
             }
-            // else if (this.selectType === "3") {
-            //     api[urlNames["searchMyDep"]]({
-            //         deptName: this.keyWord,
-            //         orgId: this.app.option.user.orgId,
-            //     }).then((res) => {
-            //         this.gridData = res.data;
-            //         this.resultFlag = true;
-            //     });
-            // }
         },
         getOtherResult() {
             if (this.keyWord.length < 1) {
