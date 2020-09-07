@@ -14,6 +14,7 @@
                     v-loading="loadFlag"
                     :data="gridData"
                     :show-header="false"
+                    highlight-current-row
                 >
                     <el-table-column property="name">
                         <template slot-scope="scope">
@@ -174,23 +175,25 @@ export default {
                     this.gridData = res.data;
                     this.resultFlag = true;
                 });
-            } else if (this.selectType === "2") {
+            } else if (this.selectType === "2" || this.selectType === "3") {
                 api[urlNames["searchOtherDep"]]({
                     name: this.keyWord,
                     nodeType: this.selectType,
-                }).then((res) => {
-                    this.gridData = res.data;
-                    this.resultFlag = true;
-                });
-            } else if (this.selectType === "3") {
-                api[urlNames["searchMyDep"]]({
-                    deptName: this.keyWord,
                     orgId: this.app.option.user.orgId,
                 }).then((res) => {
                     this.gridData = res.data;
                     this.resultFlag = true;
                 });
             }
+            // else if (this.selectType === "3") {
+            //     api[urlNames["searchMyDep"]]({
+            //         deptName: this.keyWord,
+            //         orgId: this.app.option.user.orgId,
+            //     }).then((res) => {
+            //         this.gridData = res.data;
+            //         this.resultFlag = true;
+            //     });
+            // }
         },
         getOtherResult() {
             if (this.keyWord.length < 1) {

@@ -15,6 +15,7 @@ function wrapperHttpException(resp) {
         messageCode: "NETWORK_FAILED",
         status: resp.status,
         statusText: resp.statusText,
+        error: resp.data.error,
     };
 }
 /**
@@ -195,9 +196,9 @@ axios.interceptors.response.use(
         const error = wrapperHttpException(response);
         if (!config.ignore) {
             Message({
-                showClose: true,
+                showClose: !/^(16)/.test(response.data.error),
                 message: error.message || "网络异常，请稍后重试",
-                type: "error",
+                type: /^(16)/.test(response.data.error) ? "warning" : "error", // 签名验证开关统一处理提示类型
             });
         }
         return Promise.reject(error);

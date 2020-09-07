@@ -15,10 +15,11 @@ export default {
             successCallback,
             errorCallback
         ) {
-            let loader = this.$loading({
-                fullscreen: true,
-                text: loadingMsg,
-            });
+            // 暂时关闭签名验证弹窗，签名验证开关开启时打开
+            // let loader = this.$loading({
+            //     fullscreen: true,
+            //     text: loadingMsg,
+            // });
 
             let requests = [];
             validInfoList.forEach((item) => {
@@ -39,15 +40,20 @@ export default {
                         }
                     });
 
-                    loader.close();
+                    // loader.close();
                     this.$message({
                         message: "签名验证通过",
                         type: "success",
                     });
                     successCallback();
                 })
-                .catch(() => {
-                    loader.close();
+                .catch((res) => {
+                    // loader.close();
+                    // 签名验证开关开启未开启时，签名验证弹窗处理
+                    if (/^(16)/.test(res.error)) {
+                        successCallback();
+                        return;
+                    }
                     errorCallback();
                 });
         },

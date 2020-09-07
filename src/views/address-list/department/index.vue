@@ -1,11 +1,15 @@
 <template>
     <div class="departmentStyle">
-        <div
+        <!-- <div
             class="moreInfo"
             v-if="
                 (orgInfo.nodeType == 2 && activeColor == 2) ||
                 (orgInfo.nodeType == 3 && activeColor == 2)
             "
+        > -->
+        <div
+            class="moreInfo"
+            v-if="orgInfo.nodeType == 2 || orgInfo.nodeType == 3"
         >
             <div v-if="visableData.allOrgInfo == 1">
                 <div class="header-title">{{ nodePrefix }}信息</div>

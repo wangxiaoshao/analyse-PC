@@ -2,19 +2,29 @@
     <div class="PersonInfo">
         <el-form label-width="100px" label-position="right">
             <el-row>
-                <el-col :span="12">
+                <el-col :span="14">
                     <el-form-item label="姓名">
                         <div class="table-td" :title="personInfoList.name">
                             {{ personInfoList.name }}
                         </div>
                     </el-form-item>
                     <el-form-item label="职   务">
-                        <div class="table-td">
+                        <div
+                            class="table-td"
+                            :title="
+                                personInfoList.duty ? personInfoList.duty : ''
+                            "
+                        >
                             {{ personInfoList.duty || "无" }}
                         </div>
                     </el-form-item>
+                    <el-form-item label="所属单位" v-if="activeColor === 2">
+                        <div class="table-td">
+                            {{ personInfoList.orgName || "无" }}
+                        </div>
+                    </el-form-item>
                 </el-col>
-                <el-col :span="12">
+                <el-col :span="10">
                     <el-form-item label="手机号码">
                         <div class="table-td">
                             <span>{{ personInfoList.mobile || "无" }}</span>

@@ -211,7 +211,8 @@ export default {
             this.selectType = type;
             this.showDep = true;
             this.showBreadCrumb = false;
-            this.treeList = this.departmentList = [];
+            this.departmentList = [];
+            console.log(data, "ddddd");
             if (data.nodeType === 2) {
                 this.getAddressListOrganizationMembers(data.bindId);
             } else if (data.nodeType === 3) {
@@ -231,15 +232,15 @@ export default {
             this.showDep = true;
             this.showBreadCrumb = true;
             this.getAddressListUnitTree();
-            this.getAddressListOrganizationMembers();
-            this.getAddressListdepartment();
+            // this.getAddressListOrganizationMembers();
+            // this.getAddressListdepartment();
         },
         // 其他单位
         searchOtherBack() {
             this.showDep = true;
             this.showBreadCrumb = true;
             this.getAddressListOthertTree();
-            this.getAddressListOrganizationMembers();
+            // this.getAddressListOrganizationMembers();
             //  this.handleChildClick()
         },
         /** 点击树节点显示内容 */
