@@ -40,6 +40,7 @@
                     placeholder="请输入内容"
                     v-model="searchKeyWord"
                     class="input-with-select"
+                    @change="getResult"
                 >
                     <el-select
                         v-model="searchType"
@@ -187,6 +188,27 @@
                                 </el-radio-group>
                             </div>
                         </div>
+                        <div class="wait-page" v-if="searchKeyWord.length > 1">
+                            <el-button
+                                type="text"
+                                size="mini"
+                                icon="el-icon-arrow-left"
+                                @click="pageReduce"
+                                :disabled="pageParams.page <= 1 ? true : false"
+                                >上一页</el-button
+                            >
+                            <el-button
+                                type="text"
+                                size="mini"
+                                @click="pageAdd"
+                                :disabled="
+                                    pageParams.page < allPages ? false : true
+                                "
+                                >下一页<i
+                                    class="el-icon-arrow-right el-icon--right"
+                                ></i
+                            ></el-button>
+                        </div>
                     </div>
                 </div>
                 <div class="panel">
@@ -290,6 +312,12 @@ export default {
             selectedOrgsModel: [],
             member: false,
             org: false,
+            pageParams: {
+                page: 1,
+                limit: 20,
+                total: 0,
+            },
+            allPages: 0,
         };
     },
     created() {
@@ -660,15 +688,42 @@ export default {
             this.selectedOrgsModel = [];
         },
         // 获取搜索结果
+        // 获取搜索结果
+        // getResult() {
+        //     if (this.searchKeyWord.length < 1) {
+        //         this.orgList = [];
+        //         return;
+        //     }
+        //     let data = {
+        //         name: this.searchKeyWord,
+        //         nodeType: this.searchType,
+        //         page: this.pageParams.page,
+        //         limit: this.pageParams.limit,
+        //     };
+        //     api[urlNames["searchAllViewNode"]](data).then((res) => {
+        //         this.orgList = res.data;
+        //         this.allPages = Math.ceil(res.total / this.pageParams.limit);
+        //     });
+        // },
         getResult() {
+            if (this.searchKeyWord.length < 1) {
+                this.orgList = [];
+                this.memberList = [];
+                return;
+            }
             let data = {};
             if (this.searchType === "2" || this.searchType === "3") {
                 data = {
                     name: this.searchKeyWord,
                     nodeType: this.searchType,
+                    page: this.pageParams.page,
+                    limit: this.pageParams.limit,
                 };
-                api[urlNames["searchViewNode"]](data).then((res) => {
+                api[urlNames["searchAllViewNode"]](data).then((res) => {
                     this.orgList = res.data;
+                    this.allPages = Math.ceil(
+                        res.total / this.pageParams.limit
+                    );
                 });
             } else {
                 data = {
@@ -681,6 +736,22 @@ export default {
         },
         getType(el) {
             this.searchType = el;
+        },
+        pageReduce() {
+            this.pageParams.page--;
+            if (this.pageParams.page < 1) {
+                this.pageParams.page = 1;
+            }
+            this.getResult();
+        },
+        pageAdd() {
+            this.pageParams.page++;
+            this.getResult();
+        },
+    },
+    watch: {
+        searchKeyWord(newVal) {
+            this.pageParams.page = 1;
         },
     },
 };
