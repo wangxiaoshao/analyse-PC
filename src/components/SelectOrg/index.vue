@@ -81,7 +81,10 @@
                             </el-checkbox>
                         </el-checkbox-group>
                     </div>
-                    <div class="wait-page" v-if="searchKeyWord.length > 1">
+                    <div
+                        class="wait-page"
+                        v-if="pageParams.total > searchKeyWord.length"
+                    >
                         <el-button
                             type="text"
                             size="mini"
@@ -364,11 +367,14 @@ export default {
             };
             api[urlNames["searchAllViewNode"]](data).then((res) => {
                 this.orgList = res.data;
+                this.pageParams.total = res.total;
                 this.allPages = Math.ceil(res.total / this.pageParams.limit);
             });
         },
         getType(el) {
             this.searchType = el;
+            this.pageParams.total = 1;
+            this.pageParams.page = 1;
         },
         pageReduce() {
             this.pageParams.page--;
@@ -385,6 +391,7 @@ export default {
     watch: {
         searchKeyWord(newVal) {
             this.pageParams.page = 1;
+            this.pageParams.total = 1;
         },
     },
 };

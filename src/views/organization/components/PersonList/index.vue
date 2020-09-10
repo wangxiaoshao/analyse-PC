@@ -701,7 +701,7 @@ export default {
             this.selectDialog.selectMenmberFlag = true;
             this.selectDialog.isSingleSelect = false;
             this.selectDialog.notOnlyPerson = false;
-            this.selectDialog.isSingleOrgSelect = false;
+            this.selectDialog.isSingleOrgSelect = true;
             this.selectDialog.isOnlyOrg = true;
             this.selectDialog.isAllData = true;
         },

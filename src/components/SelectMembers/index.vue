@@ -149,8 +149,11 @@
                                 </el-radio-group>
                             </div>
                         </div>
-                        <div v-if="selectCategory === 1">
-                            <div v-if="seleceDialog.isSingleOrgSelect !== true">
+                        <div v-if="selectCategory === 1" class="wait-select1">
+                            <div
+                                v-if="seleceDialog.isSingleOrgSelect !== true"
+                                class="wait-checkbox"
+                            >
                                 <!-- v-model="org" -->
                                 <el-checkbox
                                     v-model="org"
@@ -167,13 +170,17 @@
                                         style="display: block;"
                                         v-for="org in orgList"
                                         :key="org.id"
+                                        :title="org.name"
                                         :label="JSON.stringify(org)"
                                     >
                                         {{ org.name }}
                                     </el-checkbox>
                                 </el-checkbox-group>
                             </div>
-                            <div v-if="seleceDialog.isSingleOrgSelect === true">
+                            <div
+                                v-if="seleceDialog.isSingleOrgSelect === true"
+                                class="wait-checkbox"
+                            >
                                 <el-radio-group
                                     v-model="orgSingleModel"
                                     @change="toggleSingleOrg"
@@ -181,33 +188,41 @@
                                     <el-radio
                                         v-for="org in orgList"
                                         :key="org.id"
+                                        :title="org.name"
                                         style="display: block;"
                                         :label="JSON.stringify(org)"
                                         >{{ org.name }}</el-radio
                                     >
                                 </el-radio-group>
                             </div>
-                        </div>
-                        <div class="wait-page" v-if="searchKeyWord.length > 1">
-                            <el-button
-                                type="text"
-                                size="mini"
-                                icon="el-icon-arrow-left"
-                                @click="pageReduce"
-                                :disabled="pageParams.page <= 1 ? true : false"
-                                >上一页</el-button
+                            <div
+                                class="wait-page"
+                                v-if="pageParams.total > orgList.length"
                             >
-                            <el-button
-                                type="text"
-                                size="mini"
-                                @click="pageAdd"
-                                :disabled="
-                                    pageParams.page < allPages ? false : true
-                                "
-                                >下一页<i
-                                    class="el-icon-arrow-right el-icon--right"
-                                ></i
-                            ></el-button>
+                                <el-button
+                                    type="text"
+                                    size="mini"
+                                    icon="el-icon-arrow-left"
+                                    @click="pageReduce"
+                                    :disabled="
+                                        pageParams.page <= 1 ? true : false
+                                    "
+                                    >上一页</el-button
+                                >
+                                <el-button
+                                    type="text"
+                                    size="mini"
+                                    @click="pageAdd"
+                                    :disabled="
+                                        pageParams.page < allPages
+                                            ? false
+                                            : true
+                                    "
+                                    >下一页<i
+                                        class="el-icon-arrow-right el-icon--right"
+                                    ></i
+                                ></el-button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -314,7 +329,7 @@ export default {
             org: false,
             pageParams: {
                 page: 1,
-                limit: 20,
+                limit: 12,
                 total: 0,
             },
             allPages: 0,
@@ -721,6 +736,7 @@ export default {
                 };
                 api[urlNames["searchAllViewNode"]](data).then((res) => {
                     this.orgList = res.data;
+                    this.pageParams.total = res.total;
                     this.allPages = Math.ceil(
                         res.total / this.pageParams.limit
                     );
@@ -736,6 +752,10 @@ export default {
         },
         getType(el) {
             this.searchType = el;
+            this.pageParams.page = 1;
+            this.pageParams.total = 0;
+            this.orgList = [];
+            this.getResult();
         },
         pageReduce() {
             this.pageParams.page--;
@@ -752,6 +772,7 @@ export default {
     watch: {
         searchKeyWord(newVal) {
             this.pageParams.page = 1;
+            this.pageParams.total = 0;
         },
     },
 };
