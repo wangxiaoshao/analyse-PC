@@ -469,6 +469,7 @@ export default {
         },
         // 节点被点击时
         handleNodeClick(node) {
+            this.searchKeyWord = "";
             if (this.seleceDialog.isOnlyOrg) {
                 this.findcheckNodeTree(node.id);
             }

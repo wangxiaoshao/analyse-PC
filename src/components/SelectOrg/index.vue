@@ -83,7 +83,7 @@
                     </div>
                     <div
                         class="wait-page"
-                        v-if="pageParams.total > searchKeyWord.length"
+                        v-if="pageParams.total > orgList.length"
                     >
                         <el-button
                             type="text"
