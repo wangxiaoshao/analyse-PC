@@ -19,6 +19,7 @@
                     @click="
                         selectCategory = 1;
                         searchType = '2';
+                        searchKeyWord = '';
                     "
                     :plain="selectCategory !== 1"
                 >
@@ -29,6 +30,7 @@
                     @click="
                         selectCategory = 0;
                         searchType = '12';
+                        searchKeyWord = '';
                     "
                     :plain="selectCategory === 1"
                 >
@@ -240,7 +242,7 @@
                             </el-button>
                             <el-checkbox-group
                                 v-model="selectedMembersModel"
-                                @change="toggleSelectedOrg"
+                                @change="toggleSelectedMember"
                             >
                                 <el-checkbox
                                     style="display: block;"
@@ -596,13 +598,12 @@ export default {
             while (i >= 0) {
                 const current = this.selectedMembers[i];
                 if (
-                    current.id === member.id &&
+                    current.uid === member.uid &&
                     current.memberType === member.memberType
                 ) {
                     this.selectedMembers.splice(i, 1);
                     return;
                 }
-
                 i -= 1;
             }
         },
@@ -773,6 +774,7 @@ export default {
     },
     watch: {
         searchKeyWord(newVal) {
+            // this.orgList=this.memberList=[];
             this.pageParams.page = 1;
             this.pageParams.total = 0;
         },
