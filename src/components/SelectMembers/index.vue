@@ -41,6 +41,7 @@
                     v-model="searchKeyWord"
                     class="input-with-select"
                     @change="getResult"
+                    @keyup.enter.native="getResult"
                 >
                     <el-select
                         v-model="searchType"
