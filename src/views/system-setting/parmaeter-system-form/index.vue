@@ -399,7 +399,11 @@
             <div class="header">信息确认设置</div>
             <el-form ref="messageRemind" label-width="160px">
                 <el-form-item label="允许单位配置该参数">
-                    <el-switch v-model="allowSetOrg"></el-switch>
+                    <el-switch
+                        v-model="allowSetOrg"
+                        :active-value="0"
+                        :inactive-value="1"
+                    ></el-switch>
                     <div class="info-msg" style="margin-left: -136px;">
                         (该配置项打开后，单位管理员可再次配置该参数，且最终以单位配置结果为准）
                     </div>
@@ -680,7 +684,7 @@ export default {
             },
             uploadHost: window.location.host,
             remindStartDate: 1,
-            allowSetOrg: false, // 是否允许配置单位参数
+            allowSetOrg: 0, // 是否允许配置单位参数
             remindEndDate: 31,
             remindStartDateList: [],
             remindEndDateList: [],
@@ -851,7 +855,7 @@ export default {
                         this.messageRemind = parseInt(
                             JSON.parse(item.value)[2]
                         );
-                        this.allowSetOrg = item.lockedLevel !== 0;
+                        this.allowSetOrg = item.lockedLevel;
                         this.$emit("setOrgParamsFun", this.allowSetOrg);
                         if (this.messageRemind === 0) {
                             this.startDateDisabled = true;

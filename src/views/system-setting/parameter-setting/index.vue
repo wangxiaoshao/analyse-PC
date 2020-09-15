@@ -48,7 +48,7 @@ export default {
         return {
             activeName: "first",
             submitLevel: 1,
-            isSetOrgParams: false,
+            isSetOrgParams: 0,
         };
     },
     methods: {

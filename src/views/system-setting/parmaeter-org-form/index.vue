@@ -247,7 +247,7 @@
                 </el-form-item>
             </el-form>
         </div>
-        <div class="parameter-item" v-if="isSetOrgParams">
+        <div class="parameter-item" v-if="!isSetOrgParams">
             <div class="header">信息确认设置</div>
             <el-form ref="messageRemind" label-width="160px">
                 <el-form-item label="设置信息确认弹窗提醒">
