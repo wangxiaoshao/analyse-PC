@@ -212,7 +212,6 @@ export default {
             this.showDep = true;
             this.showBreadCrumb = false;
             this.departmentList = [];
-            console.log(data, "ddddd");
             if (data.nodeType === 2) {
                 this.getAddressListOrganizationMembers(data.bindId);
             } else if (data.nodeType === 3) {

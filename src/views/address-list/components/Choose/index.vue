@@ -232,9 +232,11 @@ export default {
         },
         getDetail(val) {
             this.$emit("searchListResult", val, this.selectType);
+            this.resultFlag = false;
         },
         handleCurrentChange(val) {
             this.$emit("searchPeopleInfo", val, this.selectType);
+            this.resultFlag = false;
         },
         pageReduce() {
             this.pageParams.page--;
@@ -255,6 +257,9 @@ export default {
             this.resultFlag = false;
         },
         keyWord(newVal) {
+            if (newVal.length === 0) {
+                this.gridData = [];
+            }
             this.pageParams.page = 1;
         },
     },

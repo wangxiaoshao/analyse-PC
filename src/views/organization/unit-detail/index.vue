@@ -834,7 +834,8 @@ export default {
 
             if (
                 this.successVisiable ||
-                this.ruleForm.organization.creditId === ""
+                this.ruleForm.organization.creditId === "" ||
+                !this.ruleForm.organization.creditId
             ) {
                 this.ruleForm.organization.removed = this.ruleForm.organization
                     .removed

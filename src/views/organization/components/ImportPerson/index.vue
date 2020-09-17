@@ -93,6 +93,10 @@ export default {
             this.downloadBinaryFile(host, "", this.type);
         },
         fileSubmit() {
+            if (this.fileList.length === 0) {
+                this.$message.warning("请先导入人员信息文档");
+                return;
+            }
             let that = this;
             let form = that.$refs["formFile"].$el;
             let formData = new FormData(form);
@@ -108,6 +112,7 @@ export default {
                 (res) => {
                     if (res.status === 0) {
                         this.$message.success("导入人员成功");
+                        this.$emit("cancel");
                         this.loading = false;
                         this.fileList = [];
                     }

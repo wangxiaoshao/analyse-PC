@@ -94,11 +94,14 @@ export default {
         this.pushBreadcrumb({
             name: "权限配置",
             parent: {
-                name: "lookPersonPermission",
-                query: {
-                    type: "back",
-                },
+                path: `/role-manage/look-person-permission/${this.$route.params.id}`,
             },
+            // parent: {
+            //     name: "lookPersonPermission",
+            //     query: {
+            //         type: "back",
+            //     },
+            // },
         });
     },
     methods: {

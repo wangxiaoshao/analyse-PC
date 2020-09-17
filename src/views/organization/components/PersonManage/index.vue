@@ -692,7 +692,7 @@ export default {
     data() {
         // 验证手机号
         let validateMobile = (rule, value, callback) => {
-            if (value !== "") {
+            if (value !== "" && value) {
                 let reg = /(^\s{0}$)|(0\d{2,3}-\d{7,8}|\(?0\d{2,3}[)-]?\d{7,8}|\(?0\d{2,3}[)-]*\d{7,8})|(^((13[0-9])|(15[^4])|(18[0,1,2,3,5-9])|(17[0-8])|(147)|(199))\d{8}$)/;
                 if (reg.test(value)) {
                     this.findMobileIsSame(callback);
@@ -706,7 +706,7 @@ export default {
 
         // 验证办公电话
         let validateOffice = (rule, value, callback) => {
-            if (value !== "") {
+            if (value !== "" && value) {
                 let reg = /(^\s{0}$)|(0\d{2,3}-\d{7,8}|\(?0\d{2,3}[)-]?\d{7,8}|\(?0\d{2,3}[)-]*\d{7,8})/;
                 reg.test(value)
                     ? callback()
@@ -718,7 +718,7 @@ export default {
 
         // 验证身份证号
         let validateId = (rule, value, callback) => {
-            if (value !== "") {
+            if (value !== "" && value) {
                 let reg = /^([1-6][1-9]|50)\d{4}(18|19|20)\d{2}((0[1-9])|10|11|12)(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/;
                 if (reg.test(value)) {
                     this.isValidate = true;
@@ -1140,7 +1140,8 @@ export default {
                 this.$message.error("身份证号码与人员姓名不匹配，请重新输入");
             } else if (
                 this.idCardState.successVisiable ||
-                this.userDetail.idcard === ""
+                this.userDetail.idcard === "" ||
+                !this.userDetail.idcard
             ) {
                 this.$refs[userDetail].validate((valid) => {
                     if (valid) {

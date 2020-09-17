@@ -270,7 +270,7 @@
                         @click.native="goSort(scope.row)"
                         type="text"
                         size="small"
-                        v-if="scope.row.removed === 0"
+                        v-if="scope.row.disabled === 0"
                         >排序</el-button
                     >
                 </template>

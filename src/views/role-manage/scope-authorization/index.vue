@@ -118,7 +118,7 @@ export default {
     },
     mounted() {
         this.pushBreadcrumb({
-            name: "查看成员及权限",
+            name: "授权范围",
             parent: {
                 path: `/role-manage/look-person-permission/${this.$route.query.roleId}`,
             },

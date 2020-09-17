@@ -35,10 +35,8 @@
                     <el-button @click="addMainLeader" type="primary"
                         >选择调出目标单位</el-button
                     >
-                    <el-button
-                        @click="removeDestOrg"
-                        type="primary"
-                        v-if="isCallout === 3"
+                    <!-- v-if="isCallout === 3" -->
+                    <el-button @click="removeDestOrg" type="primary"
                         >不选择单位</el-button
                     >
                 </el-form-item>
@@ -543,7 +541,11 @@ export default {
                 type: type,
             }).then(
                 (res) => {
-                    this.fromLabelList = res.data;
+                    if (!res.data[0]) {
+                        this.fromLabelList = [];
+                    } else {
+                        this.fromLabelList = res.data;
+                    }
                 },
                 () => {}
             );
