@@ -835,6 +835,7 @@ export default {
                 orgId: "",
                 reason: "",
             };
+            this.orgName = this.depName = "";
         },
 
         // 提交调出
@@ -871,18 +872,18 @@ export default {
                                 this.submitVisible = true;
                                 // this.getGrid()
                                 this.fromInit();
-                                this.formCallout.deptId = this.formCallout.orgId =
-                                    "";
-                                this.orgName = this.depName = "";
                             },
-                            (error) => {
-                                if (error) {
+                            (msg) => {
+                                if (msg.error === 14002) {
+                                    this.calloutFlag = false;
+                                } else {
                                     this.calloutFlag = false;
                                     this.submitVisible = true;
                                     this.callMag.title = "请勿重复提交调出申请";
                                     this.callMag.msg =
                                         "在此之前，您已经提交过调出申请，请等待管理员审核完成后再操作！";
                                 }
+                                this.fromInit();
                             }
                         );
                     }

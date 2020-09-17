@@ -56,6 +56,7 @@
                                 name="file"
                                 action="/api/jg_manage/import/userImport"
                                 :file-list="fileList"
+                                :on-change="fileChange"
                             >
                                 <el-button size="mini" type="primary" round
                                     >导入人员</el-button
@@ -92,7 +93,11 @@ export default {
             let host = window.location.href.split("#")[0];
             this.downloadBinaryFile(host, "", this.type);
         },
+        fileChange(file, fileList) {
+            this.fileList = fileList;
+        },
         fileSubmit() {
+            console.log(this.fileList);
             if (this.fileList.length === 0) {
                 this.$message.warning("请先导入人员信息文档");
                 return;

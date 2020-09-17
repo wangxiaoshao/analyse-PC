@@ -190,7 +190,9 @@
                     <span>{{
                         scope.row.uid === activeId
                             ? scope.row.mobile
-                            : hideMobile(scope.row.mobile) || "无"
+                            : scope.row.mobile
+                            ? hideMobile(scope.row.mobile)
+                            : "无"
                     }}</span>
                     <span
                         v-if="
@@ -270,7 +272,7 @@
                         @click.native="goSort(scope.row)"
                         type="text"
                         size="small"
-                        v-if="scope.row.disabled === 0"
+                        v-if="scope.row.removed === 0"
                         >排序</el-button
                     >
                 </template>
