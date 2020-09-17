@@ -141,7 +141,7 @@ export default {
                         this.$router.push("/my-application");
                     } else if (val.type === 2) {
                         this.$router.push("/confirm-info");
-                    } else if (val.type === 3) {
+                    } else if (val.type === 3 || val.type === 4) {
                         this.$router.push("/wait-approval");
                     }
                 }

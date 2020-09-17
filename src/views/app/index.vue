@@ -55,6 +55,7 @@ export default {
     components: { sideMenu, siteHead, SiteBreadcrumb },
     watch: {
         $route(newVal, oldVal) {
+            this.app.noticeShowBtn = false;
             const custom = this.$route.meta.breadcrumb;
             if (Array.isArray(custom)) {
                 this.breadcrumb = custom;

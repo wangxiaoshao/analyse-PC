@@ -863,6 +863,9 @@ export default {
                     }
                 });
             } else {
+                if (this.orgName === "" || this.orgName === "无") {
+                    this.formCallout.orgId = "";
+                }
                 this.$refs[formCallout].validate((valid) => {
                     if (valid) {
                         api[urlNames["calloutUser"]](this.formCallout).then(
