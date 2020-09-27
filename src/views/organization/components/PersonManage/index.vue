@@ -935,9 +935,9 @@ export default {
         },
         showIptMsg(fieldName) {
             if (
-                this.app.option.options.userAuditFields.indexOf(fieldName) >
+                this.app.option.options.userAuditFields.indexOf(fieldName) !==
                     -1 &&
-                this.$route.name === "PersonEdit"
+                this.$route.name !== "PersonAdd"
             ) {
                 this.iptMsgVisible[fieldName] = true;
                 this.isAudit = true;
