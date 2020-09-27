@@ -205,7 +205,11 @@ export default {
             api[urlNames["getAreaList"]]({
                 parentId: parentNode.id,
             }).then((res) => {
-                this.orgList = [parentNode];
+                if (parentNode.id === 520000) {
+                    this.orgList = [];
+                } else {
+                    this.orgList = [parentNode];
+                }
                 res.data.forEach((item) => {
                     this.orgList.push(item);
                 });
