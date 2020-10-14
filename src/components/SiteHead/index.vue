@@ -11,18 +11,21 @@
                     </div>
                 </div>
                 <div class="site__head--right">
-                    <a><span class="el-icon-user userIcon"></span>{{ app.option.user.name || "" }}</a>
+                    <a
+                        ><span class="el-icon-user userIcon"></span
+                        >{{ app.option.user.name || "" }}</a
+                    >
                     <a class="my-apply">我的应用情况</a>
-                    <a>退出
+                    <a
+                        >退出
                         <a
-                        style="cursor: pointer;"
-                        class="ico fa fa-sign-in"
-                        title="退出登录"
-                        target="_self"
-                        :href="logoutURL"
-                    ></a>
+                            style="cursor: pointer;"
+                            class="ico fa fa-sign-in"
+                            title="退出登录"
+                            target="_self"
+                            :href="logoutURL"
+                        ></a>
                     </a>
-                   
                 </div>
             </div>
         </div>
