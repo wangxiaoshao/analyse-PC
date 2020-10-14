@@ -11,9 +11,36 @@
                 ><big>{{ loginNumber }}</big></b
             >&nbsp;个登录的用户！
         </p>
-        <div class="home-box">
-            <div class="header-title">平台公告</div>
-            <div class="notice announcement-box">
+        <div class="first-box">
+               <el-card class="box-card">
+                   <div class="statics">
+                       <div class="statics-left">
+                           <h3>昨日登录人数</h3>
+                            <h4>{{yesterdayLogin}}</h4>
+                        </div>
+                        <div class="ststics-right">
+                            <img src="@src/common/images/login.png" alt="">
+                        </div>
+                   </div>                
+                </el-card>
+                <el-card class="box-card">
+                <div class="statics">
+                       <div class="statics-left">
+                           <h3>数据导出</h3>
+                            <h4>{{staticsExportTotal}}</h4>
+                        </div>
+                        <div class="ststics-right">
+                            <img src="@src/common/images/login.png" alt="">
+                        </div>
+                   </div> 
+                </el-card>
+        </div>
+         <div class="home-box">
+             <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                    <span>平台公告</span>
+                </div>
+                 <div class="announcement-box">
                 <div
                     class="noticeInfo"
                     v-for="(itemList, index) in doAnnouncementList"
@@ -42,6 +69,8 @@
                     >查看更多公告 <i class="el-icon-d-arrow-right"></i
                 ></a>
             </div>
+                </el-card>
+           
         </div>
     </div>
 </template>
@@ -51,6 +80,8 @@ import { mapState } from "vuex";
 export default {
     data() {
         return {
+            yesterdayLogin:2345,
+            staticsExportTotal:500,
             // 平台公告列表
             announcementList: [
                 {

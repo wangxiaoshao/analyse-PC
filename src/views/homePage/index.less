@@ -1,24 +1,36 @@
 .homePage{
   .first-box{
-    
+    width: 100%;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    .box-card{
+      width: 400px;
+      border-radius: 15px;
+      .statics{
+        display:flex;
+        justify-content: space-around;
+        .statics-left{
+          h4{
+
+            padding: 5px 0 0 10px;
+          }
+        }
+        .statics-right{
+          img{
+            width: 120px;
+          }
+        }
+      }
+    }
   }
   .home-box{
     width: 100%;
-    padding: 12px 20px;
-    // box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
-    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-     margin-bottom: 30px;
-    border-radius: 5px;
-    .header-title{
-      font-size: 16px;
-      margin-bottom: 5px;
-      color: #b1a8e4;
+    /deep/.box-card .el-card__header{
+      padding: 10px 20px;
     }
-    .notice{
-      padding-bottom: 16px;
-    }
-
   .announcement-box{
+     padding-bottom: 15px;
       display: flex;
       justify-content: space-between;
       position: relative;
