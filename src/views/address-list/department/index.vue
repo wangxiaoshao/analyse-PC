@@ -40,7 +40,7 @@
                                                 !orgInfo.isLooked
                                             "
                                             style="
-                                                color: #58a4f3;
+                                                color: #b1a8e4;
                                                 font-size: 12px;
                                                 margin-left: 5px;
                                             "

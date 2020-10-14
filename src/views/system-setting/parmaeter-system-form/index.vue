@@ -592,7 +592,7 @@
                                     slot="tip"
                                     style="font-size: 10px; color: #606266;"
                                 >
-                                    <span style="color: #58a4f3;">*</span
+                                    <span style="color: #b1a8e4;">*</span
                                     >图片大小为100*100像素
                                     <el-button
                                         type="primary"
@@ -628,7 +628,7 @@
                                     slot="tip"
                                     style="font-size: 10px; color: #606266;"
                                 >
-                                    <span style="color: #58a4f3;">*</span
+                                    <span style="color: #b1a8e4;">*</span
                                     >图片大小为100*100像素
                                     <el-button
                                         type="primary"

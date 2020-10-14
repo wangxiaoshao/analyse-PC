@@ -57,7 +57,7 @@
             >
                 {{ tag.appName }}
             </el-tag>
-            <div style="color: #58a4f3; font-size: 10px;" v-if="isCreate">
+            <div style="color: #b1a8e4; font-size: 10px;" v-if="isCreate">
                 请先填写账号和密码，否则关联系统无效
             </div>
         </div>

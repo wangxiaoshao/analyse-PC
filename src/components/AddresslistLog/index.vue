@@ -175,7 +175,7 @@
                     日志详情
                     <i
                         class="el-icon-document-copy"
-                        style="color: #58a4f3;"
+                        style="color: #b1a8e4;"
                     ></i>
                 </div>
                 <template v-if="loginLog === 1 || loginLog === 2 || !loginLog">

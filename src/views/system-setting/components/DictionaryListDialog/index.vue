@@ -78,7 +78,7 @@
                                 <span
                                     class="tag-icon-operate fa fa-trash-o delete"
                                     :title="删除"
-                                    style="color: #58a4f3; cursor: pointer;"
+                                    style="color: #b1a8e4; cursor: pointer;"
                                     @click="deleteDic(scope.$index, scope.row)"
                                 ></span>
                                 <!-- <el-button

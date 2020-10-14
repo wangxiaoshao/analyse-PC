@@ -19,7 +19,7 @@
                 label="单位/内设机构名称"
             >
                 <template slot-scope="scope">
-                    <span class="svg-container" style="color: #58a4f3;">
+                    <span class="svg-container" style="color: #b1a8e4;">
                         <span
                             class="iconfont iconzuzhijigou"
                             v-if="scope.row.type === 1"

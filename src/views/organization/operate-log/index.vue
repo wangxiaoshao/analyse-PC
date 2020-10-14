@@ -55,7 +55,7 @@
                     日志详情
                     <i
                         class="el-icon-document-copy"
-                        style="color: #58a4f3;"
+                        style="color: #b1a8e4;"
                     ></i>
                 </div>
                 <el-form inline style="width: 100%;" label-width="110px">

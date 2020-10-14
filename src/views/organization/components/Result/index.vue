@@ -284,7 +284,7 @@ export default {
                 // 为所匹配的单词添加颜色
                 return sMatch.replace(
                     sMatch,
-                    '<span style="color:#58a4f3">' + sMatch + "</span>"
+                    '<span style="color:#b1a8e4">' + sMatch + "</span>"
                 );
             });
         },

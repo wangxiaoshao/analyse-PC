@@ -4,7 +4,7 @@
             <a
                 href="#"
                 v-html="organizationName + ' &gt;'"
-                style="color: #58a4f3;"
+                style="color: #b1a8e4;"
             ></a>
             <span> 批量导入</span>
         </div>

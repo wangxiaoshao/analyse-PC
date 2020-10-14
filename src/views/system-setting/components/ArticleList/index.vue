@@ -63,7 +63,7 @@
             <el-dialog :visible.sync="unloadFileVisiable" width="420px">
                 <div slot="title" style="padding: 20px;">
                     下载附件
-                    <i class="el-icon-download" style="color: #58a4f3;"></i>
+                    <i class="el-icon-download" style="color: #b1a8e4;"></i>
                 </div>
                 <div
                     class="chooseWord"

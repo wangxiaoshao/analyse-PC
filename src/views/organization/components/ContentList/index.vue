@@ -144,7 +144,7 @@
                 <span>数值排序</span>
                 <i
                     class="el-icon-document-copy"
-                    style="color: #58a4f3; margin-left: 6px;"
+                    style="color: #b1a8e4; margin-left: 6px;"
                 ></i>
             </div>
             <div class="sort-ipt">

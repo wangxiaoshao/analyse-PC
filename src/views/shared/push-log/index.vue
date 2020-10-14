@@ -146,7 +146,7 @@
             <el-table-column width="65" align="center" label="操作">
                 <template slot-scope="scope">
                     <a
-                        style="color: #58a4f3;"
+                        style="color: #b1a8e4;"
                         href="javascript:void(0)"
                         @click="findInfo(scope.row)"
                         >详情</a
