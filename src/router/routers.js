@@ -1,7 +1,7 @@
 import organization from "./modules/organization";
 import examine from "./modules/examine";
 import share from "./modules/share";
-import statistics from "./modules/statistics";
+// import statistics from "./modules/statistics";
 import system from "./modules/system";
 import addresslist from "./modules/addresslist";
 import certification from "./modules/certification";
