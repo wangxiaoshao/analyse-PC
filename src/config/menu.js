@@ -13,22 +13,32 @@ export default {
             icon: "fa fa-home",
             list: [],
         },
+        // 权限控制key 重新命名
         {
             menuId: "1",
-            name: "信息管理",
-            path: "/organization",
+            name: "数据统计",
+            path: "/data-statistics",
             type: 1,
-            icon: "fa fa-sitemap",
-            key: "menuOrgManage",
-            // 'list': [{
-            //   'menuId': '11',
-            //   'name': '信息管理',
-            //   'path': '/organization',
-            //   'key': 'menuOrgManage',
-            //   'type': 1
-            // }
-            // ]
+            key: "menuHome",
+            icon: "fa fa-bar-chart-o",
+            list: [],
         },
+        // {
+        //     menuId: "1",
+        //     name: "信息管理",
+        //     path: "/organization",
+        //     type: 1,
+        //     icon: "fa fa-sitemap",
+        //     key: "menuOrgManage",
+        //     // 'list': [{
+        //     //   'menuId': '11',
+        //     //   'name': '信息管理',
+        //     //   'path': '/organization',
+        //     //   'key': 'menuOrgManage',
+        //     //   'type': 1
+        //     // }
+        //     // ]
+        // },
         {
             menuId: "12",
             name: "通讯录",

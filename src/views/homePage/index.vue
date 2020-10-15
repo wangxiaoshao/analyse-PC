@@ -11,7 +11,8 @@
                 ><big>{{ loginNumber }}</big></b
             >&nbsp;个登录的用户！
         </p>
-        <div class="first-box">
+        <!--昨日登录数据和数据导出box 不使用背景图 -->
+        <!-- <div class="first-box">
             <el-card class="box-card">
                 <div class="statics">
                     <div class="statics-left">
@@ -34,6 +35,12 @@
                     </div>
                 </div>
             </el-card>
+        </div> -->
+        <!--昨日登录数据和数据导出box 使用背景图 -->
+        <div class="first-box1">
+            <div class="statics"></div>
+
+            <div class="statics"></div>
         </div>
         <div class="home-box">
             <el-card class="box-card">

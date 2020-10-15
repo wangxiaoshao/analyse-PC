@@ -2,6 +2,7 @@ import organization from "./modules/organization";
 import examine from "./modules/examine";
 import share from "./modules/share";
 import statistics from "./modules/statistics";
+import dataStatistics from "./modules/data-statistics";
 import system from "./modules/system";
 import roleManage from "./modules/role-manage";
 import addresslist from "./modules/addresslist";
@@ -42,14 +43,15 @@ export default [
             breadcrumb: [{ name: "通知中心" }],
         },
     },
-
     ...organization,
     ...examine,
-    ...statistics,
+    // ...statistics,
     ...system,
     ...share,
     ...roleManage,
     ...addresslist,
     ...homePage,
     ...certification,
+    // 新页面路由
+    ...dataStatistics,
 ];
