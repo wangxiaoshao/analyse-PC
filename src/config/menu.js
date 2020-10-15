@@ -42,7 +42,7 @@ export default {
             path: "/role-manage",
             type: 1,
             key: "menuHome",
-            icon: "el-icon-first-aid-kit",
+            icon: "el-icon-s-claim",
             list: [],
         },
 
@@ -53,7 +53,7 @@ export default {
             path: "/data-template",
             type: 1,
             key: "menuHome",
-            icon: "el-icon-first-aid-kit",
+            icon: "el-icon-set-up",
             list: [],
         },
 
