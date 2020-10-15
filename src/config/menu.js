@@ -5,7 +5,7 @@
 export default {
     list: [
         {
-            menuId: "0",
+            menuId: "001",
             name: "首页",
             path: "/homePage",
             type: 1,
@@ -13,14 +13,69 @@ export default {
             icon: "fa fa-home",
             list: [],
         },
-        // 权限控制key 重新命名
+        // 权限控制key:menuStatisticsData 重新命名
         {
-            menuId: "1",
+            menuId: "002",
             name: "数据统计",
             path: "/data-statistics",
             type: 1,
             key: "menuHome",
             icon: "fa fa-bar-chart-o",
+            list: [],
+        },
+
+        // key:menuMessageReminding
+        {
+            menuId: "003",
+            name: "通知提醒",
+            path: "/message-reminding",
+            type: 1,
+            key: "menuHome",
+            icon: "el-icon-bell",
+            list: [],
+        },
+
+        // key:menuRoleManage
+        {
+            menuId: "004",
+            name: "权限管理",
+            path: "/role-manage",
+            type: 1,
+            key: "menuHome",
+            icon: "el-icon-first-aid-kit",
+            list: [],
+        },
+
+        // key:menuDataTemplate
+        {
+            menuId: "005",
+            name: "数据模板",
+            path: "/data-template",
+            type: 1,
+            key: "menuHome",
+            icon: "el-icon-first-aid-kit",
+            list: [],
+        },
+
+        // key:menuSystemLog
+        {
+            menuId: "006",
+            name: "系统日志",
+            path: "/system-log",
+            type: 1,
+            key: "menuHome",
+            icon: "fa fa-address-book",
+            list: [],
+        },
+
+        // key:menuHelpCneter
+        {
+            menuId: "007",
+            name: "帮助中心",
+            path: "/help-center",
+            type: 1,
+            key: "menuHome",
+            icon: "el-icon-first-aid-kit",
             list: [],
         },
         // {
@@ -39,30 +94,30 @@ export default {
         //     // }
         //     // ]
         // },
-        {
-            menuId: "12",
-            name: "通讯录",
-            path: "",
-            type: 1,
-            icon: "fa fa-address-book",
-            key: ["menuAddrBookDept", "menuAddrBookAll"],
-            list: [
-                {
-                    menuId: "121",
-                    name: "本单位通讯录",
-                    path: "/address-list-dept",
-                    key: "menuAddrBookDept",
-                    type: 1,
-                },
-                {
-                    menuId: "122",
-                    name: "全省通讯录",
-                    path: "/address-list-all",
-                    key: "menuAddrBookAll",
-                    type: 1,
-                },
-            ],
-        },
+        // {
+        //     menuId: "12",
+        //     name: "通讯录",
+        //     path: "",
+        //     type: 1,
+        //     icon: "fa fa-address-book",
+        //     key: ["menuAddrBookDept", "menuAddrBookAll"],
+        //     list: [
+        //         {
+        //             menuId: "121",
+        //             name: "本单位通讯录",
+        //             path: "/address-list-dept",
+        //             key: "menuAddrBookDept",
+        //             type: 1,
+        //         },
+        //         {
+        //             menuId: "122",
+        //             name: "全省通讯录",
+        //             path: "/address-list-all",
+        //             key: "menuAddrBookAll",
+        //             type: 1,
+        //         },
+        //     ],
+        // },
         {
             menuId: "2",
             name: "信息审核",

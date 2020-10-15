@@ -2,13 +2,18 @@ import organization from "./modules/organization";
 import examine from "./modules/examine";
 import share from "./modules/share";
 import statistics from "./modules/statistics";
-import dataStatistics from "./modules/data-statistics";
 import system from "./modules/system";
-import roleManage from "./modules/role-manage";
 import addresslist from "./modules/addresslist";
-import homePage from "./modules/homePage";
 import certification from "./modules/certification";
 
+// 平台分析
+import homePage from "./modules1/homePage";
+import dataStatistics from "./modules1/data-statistics";
+import messageReminding from "./modules1/message-reminding";
+import roleManage from "./modules1/role-manage";
+import dataTemplate from "./modules1/data-template";
+import systemLog from "./modules1/system-log";
+import helpCenter from "./modules1/help-center";
 const noRight = () =>
     import(
         /* webpackChunkName: "SystemSetting" */ "@src/views/no-right/index.vue"
@@ -48,10 +53,15 @@ export default [
     // ...statistics,
     ...system,
     ...share,
-    ...roleManage,
     ...addresslist,
-    ...homePage,
     ...certification,
-    // 新页面路由
+
+    // 平台分析新页面路由
+    ...homePage,
     ...dataStatistics,
+    ...messageReminding,
+    ...roleManage,
+    ...dataTemplate,
+    ...systemLog,
+    ...helpCenter,
 ];
