@@ -24,31 +24,9 @@ export default {
             list: [],
         },
 
-        // key:menuMessageReminding
-        {
-            menuId: "003",
-            name: "通知提醒",
-            path: "/message-reminding",
-            type: 1,
-            key: "menuHome",
-            icon: "el-icon-bell",
-            list: [],
-        },
-
-        // key:menuRoleManage
-        {
-            menuId: "004",
-            name: "权限管理",
-            path: "/role-manage",
-            type: 1,
-            key: "menuHome",
-            icon: "el-icon-s-claim",
-            list: [],
-        },
-
         // key:menuDataTemplate
         {
-            menuId: "005",
+            menuId: "003",
             name: "数据模板",
             path: "/data-template",
             type: 1,
@@ -88,26 +66,51 @@ export default {
                 },
             ],
         },
-        // key:menuSystemLog
         {
-            menuId: "007",
-            name: "系统日志",
-            path: "/system-log",
+            menuId: "005",
+            name: "系统设置111",
+            path: "",
             type: 1,
-            key: "menuHome",
-            icon: "fa fa-address-book",
-            list: [],
-        },
-
-        // key:menuHelpCneter
-        {
-            menuId: "008",
-            name: "帮助中心",
-            path: "/help-center",
-            type: 1,
-            key: "menuHome",
-            icon: "el-icon-first-aid-kit",
-            list: [],
+            key: ["menuMessageReminding", "menuRoleManage", "menuHome"],
+            icon: "fa fa-address-card-o",
+            list: [
+                {
+                    menuId: "0051",
+                    name: "通知提醒",
+                    path: "/message-reminding",
+                    type: 1,
+                    key: "menuMessageReminding",
+                    icon: "el-icon-bell",
+                    list: [],
+                },
+                {
+                    menuId: "0052",
+                    name: "权限管理",
+                    path: "/role-manage",
+                    type: 1,
+                    key: "menuRoleManage",
+                    icon: "el-icon-s-claim",
+                    list: [],
+                },
+                {
+                    menuId: "0053",
+                    name: "系统日志",
+                    path: "/system-log",
+                    type: 1,
+                    key: "menuSystemLog",
+                    icon: "fa fa-address-book",
+                    list: [],
+                },
+                {
+                    menuId: "0054",
+                    name: "帮助中心",
+                    path: "/help-center",
+                    type: 1,
+                    key: "menuHelpCneter",
+                    icon: "el-icon-first-aid-kit",
+                    list: [],
+                },
+            ],
         },
         // {
         //     menuId: "1",
