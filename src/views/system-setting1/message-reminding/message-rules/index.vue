@@ -53,6 +53,7 @@
                             class="findConsignees"
                             title="查看收件人"
                             @click="findConsignees"
+                            v-if="noticeRulesForm.consignees.length > 0"
                             >查看</span
                         >
                     </el-input>
@@ -138,7 +139,10 @@ export default {
                 isSingleSelect: false, // 是否为单选框  false为多选（默认）-人员单选(与notOnlyPerson一起使用，notOnlyPerson为true是有效
                 isSingleOrgSelect: false, // 是否为单选框  false为多选（默认），true为单选(与isOnlyOrg一起使用，isOnlyOrg为true时部门/单位单选)
                 isOnlyOrg: false, //  是否选部门/单位 false为不是只选部门，true为只选部门
+                isCleanSelected: true, // 是否清空已选待选
+                selectUser: [], // 查看已选人员数据
             },
+            selectUser: [],
         };
     },
     mounted() {
@@ -162,10 +166,14 @@ export default {
         createRules() {},
         cancel() {},
         // 查看收件人
-        findConsignees() {},
+        findConsignees() {
+            this.selectDialog.isCleanSelected = false;
+            this.selectDialog.selectMenmberFlag = true;
+        },
         // 添加收件人
         addConsignees() {},
         openSelectMenmber() {
+            this.selectDialog.isCleanSelected = true;
             this.selectDialog.selectMenmberFlag = true;
         },
         closeSelectMenmber() {
@@ -173,7 +181,15 @@ export default {
         },
         // 选人组件
         dialogReturnMembersInfo(data, flag) {
-            console.log(data, flag);
+            console.log(data);
+            this.selectUser = data;
+            this.selectDialog.selectUser = data;
+            let str = "";
+            this.selectUser.forEach((item) => {
+                str += item.name + ",";
+            });
+            this.noticeRulesForm.consignees = str.substring(0, str.length - 1);
+            console.log(this.noticeRulesForm.consignees);
         },
     },
 };

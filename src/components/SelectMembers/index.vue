@@ -367,6 +367,7 @@ export default {
   isSingleSelect: false, // 是否为单选框  false为多选（默认）-人员单选(与notOnlyPerson一起使用，notOnlyPerson为true是有效
   isSingleOrgSelect: false, // 是否为单选框  false为多选（默认），true为单选(与isOnlyOrg一起使用，isOnlyOrg为true时内设机构/单位单选)
   isOnlyOrg: true //  是否选内设机构/单位 true为选内设机构
+  isCleanSelected:true,//是否清空已选待选
   }
   */
         // 返回数据
@@ -424,10 +425,23 @@ export default {
         },
         // 关闭选人弹窗组件
         handleClose() {
-            this.selectedMembers = this.selectedMembersModel = this.selectedOrgs = this.selectedOrgsModel = this.selectedMembersModel = [];
-            this.orgSingleModel = this.memberSingleModel = [];
-            this.removeAllSelected();
-            this.removeAllSelectedOrg();
+            if (this.selectDialog.isCleanSelected) {
+                // this.selectedMembers = this.selectedMembersModel = this.selectedOrgs = this.selectedOrgsModel = this.selectedMembersModel = [];
+                // this.orgSingleModel = this.memberSingleModel = [];
+                // this.removeAllSelected();
+                console.log(
+                    this.selectedMembers,
+                    this.selectedMembersModel,
+                    this.membersModel
+                );
+                this.removeAllSelectedOrg();
+            } else {
+            }
+
+            // this.selectedMembers = this.selectedMembersModel = this.selectedOrgs = this.selectedOrgsModel = this.selectedMembersModel = [];
+            // this.orgSingleModel = this.memberSingleModel = [];
+            // this.removeAllSelected();
+            // this.removeAllSelectedOrg();
             this.$emit("closeselectMenmber");
         },
         // 获取机构树--初始化
