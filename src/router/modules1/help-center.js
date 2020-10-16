@@ -1,6 +1,6 @@
 const HelpCenter = () =>
     import(
-        /* webpackChunkName: "HelpCenter" */ "@src/views/help-center/index.vue"
+        /* webpackChunkName: "HelpCenter" */ "@src/views/system-setting1/help-center/index.vue"
     );
 export default [
     {

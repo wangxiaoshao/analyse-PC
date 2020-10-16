@@ -1,6 +1,6 @@
 const SystemLog = () =>
     import(
-        /* webpackChunkName: "SystemLog" */ "@src/views/system-log/index.vue"
+        /* webpackChunkName: "SystemLog" */ "@src/views/system-setting1/system-log/index.vue"
     );
 export default [
     {

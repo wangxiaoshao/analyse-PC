@@ -1,10 +1,10 @@
 const MessageReminding = () =>
     import(
-        /* webpackChunkName: "MessageReminding" */ "@src/views/message-reminding/index.vue"
+        /* webpackChunkName: "MessageReminding" */ "@src/views/system-setting1/message-reminding/index.vue"
     );
 const MessageRules = () =>
     import(
-        /* webpackChunkName: "MessageReminding" */ "@src/views/message-reminding/message-rules/index.vue"
+        /* webpackChunkName: "MessageReminding" */ "@src/views/system-setting1/message-reminding/message-rules/index.vue"
     );
 export default [
     {
