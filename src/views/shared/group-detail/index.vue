@@ -3,7 +3,7 @@
         <div class="add-member">
             <el-button
                 type="primary"
-                @click="seleceDialog.selectMenmberFlag = true"
+                @click="selectDialog.selectMenmberFlag = true"
                 :disabled="!hasAddRight()"
                 >添加成员</el-button
             >
@@ -69,10 +69,10 @@
         <select-members
             @dialogReturnMembersInfo="dialogReturnMembersInfo"
             @closeselectMenmber="closeselectMenmber"
-            :seleceDialog="seleceDialog"
+            :selectDialog="selectDialog"
         ></select-members>
         <!--    <candidate-dialog @dialogReturnMembersInfo="dialogReturnMembersInfo" @closeselectMenmber="closeselectMenmber"-->
-        <!--                      :seleceDialog="seleceDialog"></candidate-dialog>-->
+        <!--                      :selectDialog="selectDialog"></candidate-dialog>-->
     </div>
 </template>
 
@@ -96,7 +96,7 @@ export default {
             total: 0,
             memberList: [],
             groupId: this.$route.params.id,
-            seleceDialog: {
+            selectDialog: {
                 selectMenmberTitle: "分组成员添加", // 选人组件标题
                 selectMenmberFlag: false, // 显示弹窗，
                 isAllData: true, // 是否需完整数据-默认为不需要（false，只包含用户id）
@@ -168,7 +168,7 @@ export default {
         },
         // 关闭选人弹窗
         closeselectMenmber() {
-            this.seleceDialog.selectMenmberFlag = false;
+            this.selectDialog.selectMenmberFlag = false;
         },
         dialogReturnMembersInfo(memberData, orgData) {
             if (memberData.length === 0 && orgData.length === 0) {

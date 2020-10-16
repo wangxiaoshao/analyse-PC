@@ -1,6 +1,6 @@
 <template>
     <el-submenu
-        v-if="isSubMenu && isShowMenu()"
+        v-if="isSubMenu && isShowMenu1()"
         :index="menuItem.menuId.toString()"
     >
         <template slot="title">
@@ -27,7 +27,7 @@
         ></sub-menu>
     </el-menu-item-group>
     <el-menu-item
-        v-else-if="menuItem && isShowMenu()"
+        v-else-if="menuItem && isShowMenu1()"
         :index="menuItem.menuId.toString()"
     >
         <template>
@@ -63,6 +63,17 @@ export default {
     },
     created() {},
     methods: {
+        isShowMenu1() {
+            let showFlag = true;
+            // let roles1 = this.$store.state.app.roles;
+            // 角色权限控制菜单显示
+            // if (roles1 === 1) {
+            //     if (this.menuItem.key === "menuDataTemplate") {
+            //         showFlag = false;
+            //     }
+            // }
+            return showFlag;
+        },
         isShowMenu() {
             let menuList = this.$store.state.app.option.menus;
             let actionList = this.$store.state.app.option.actions;
@@ -77,9 +88,6 @@ export default {
                     /* if (key === 'menuAddrBook' || key === 'menuDocumentCenter') {
             return true
           } */
-                    if (key === "menuAddrBook") {
-                        return true;
-                    }
                     let tempMenu = menuList.filter((item) => {
                         return item.moduleName === key;
                     });
@@ -102,9 +110,6 @@ export default {
           return true
         } */
 
-                if (this.menuItem.key === "menuAppLogs") {
-                    return true;
-                }
                 let tempMenu = menuList.filter((item) => {
                     return item.moduleName === this.menuItem.key;
                 });

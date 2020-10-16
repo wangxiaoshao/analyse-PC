@@ -1,12 +1,12 @@
 <template>
     <div class="leader-list-content">
         <!--    <candidate-dialog-->
-        <!--      :seleceDialog="selectDialog"-->
+        <!--      :selectDialog="selectDialog"-->
         <!--      @dialogReturnMembersInfo="dialogReturnMembersInfo"-->
         <!--      @closeselectMenmber="closeselectMenmber">-->
         <!--    </candidate-dialog>-->
         <select-members
-            :seleceDialog="selectDialog"
+            :selectDialog="selectDialog"
             @dialogReturnMembersInfo="dialogReturnMembersInfo"
             @closeselectMenmber="closeselectMenmber"
         ></select-members>

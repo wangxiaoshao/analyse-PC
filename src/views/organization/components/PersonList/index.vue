@@ -1,7 +1,7 @@
 <template>
     <div class="content-list">
         <select-members
-            :seleceDialog="selectDialog"
+            :selectDialog="selectDialog"
             entire="true"
             @dialogReturnMembersInfo="dialogReturnMembersInfo"
             @closeselectMenmber="closeselectMenmber"

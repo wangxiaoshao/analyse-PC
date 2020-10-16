@@ -2,16 +2,16 @@
     <div class="select-members">
         <el-dialog
             custom-class="select-member-dialog"
-            :title="seleceDialog.selectMenmberTitle"
-            :visible.sync="seleceDialog.selectMenmberFlag"
+            :title="selectDialog.selectMenmberTitle"
+            :visible.sync="selectDialog.selectMenmberFlag"
             center
             :before-close="handleClose"
         >
             <div
                 class="select-category"
                 v-if="
-                    seleceDialog.notOnlyPerson === true &&
-                    seleceDialog.isOnlyOrg === true
+                    selectDialog.notOnlyPerson === true &&
+                    selectDialog.isOnlyOrg === true
                 "
             >
                 <el-button
@@ -114,7 +114,7 @@
                     <span class="panel-title">可选</span>
                     <div class="wait-select">
                         <div v-if="selectCategory === 0">
-                            <div v-if="seleceDialog.isSingleSelect !== true">
+                            <div v-if="selectDialog.isSingleSelect !== true">
                                 <!--v-model="member"   -->
                                 <el-checkbox
                                     v-model="member"
@@ -137,7 +137,7 @@
                                     </el-checkbox>
                                 </el-checkbox-group>
                             </div>
-                            <div v-if="seleceDialog.isSingleSelect === true">
+                            <div v-if="selectDialog.isSingleSelect === true">
                                 <el-radio-group
                                     v-model="memberSingleModel"
                                     @change="singleSelectMember"
@@ -154,7 +154,7 @@
                         </div>
                         <div v-if="selectCategory === 1" class="wait-select1">
                             <div
-                                v-if="seleceDialog.isSingleOrgSelect !== true"
+                                v-if="selectDialog.isSingleOrgSelect !== true"
                                 class="wait-checkbox"
                             >
                                 <!-- v-model="org" -->
@@ -181,7 +181,7 @@
                                 </el-checkbox-group>
                             </div>
                             <div
-                                v-if="seleceDialog.isSingleOrgSelect === true"
+                                v-if="selectDialog.isSingleOrgSelect === true"
                                 class="wait-checkbox"
                             >
                                 <el-radio-group
@@ -301,7 +301,7 @@ import CheckRole from "@src/mixins/checkRole";
 
 export default {
     name: "SelectMembers",
-    props: ["seleceDialog", "entire"],
+    props: ["selectDialog", "entire"],
     mixins: [CheckRole],
     data() {
         return {
@@ -340,26 +340,26 @@ export default {
     },
     created() {
         if (
-            this.seleceDialog.notOnlyPerson === true &&
-            this.seleceDialog.isOnlyOrg === false
+            this.selectDialog.notOnlyPerson === true &&
+            this.selectDialog.isOnlyOrg === false
         ) {
             this.selectCategory = 0;
         } else if (
-            this.seleceDialog.notOnlyPerson === false &&
-            this.seleceDialog.isOnlyOrg === true
+            this.selectDialog.notOnlyPerson === false &&
+            this.selectDialog.isOnlyOrg === true
         ) {
             this.selectCategory = 1;
             this.searchType = "2";
         }
-        if (this.seleceDialog.nodeInfo) {
-            this.nodeTree.push(this.seleceDialog.nodeInfo);
+        if (this.selectDialog.nodeInfo) {
+            this.nodeTree.push(this.selectDialog.nodeInfo);
         } else {
             this.findNodeTree();
         }
     },
     methods: {
         /*
-  seleceDialog: {
+  selectDialog: {
   selectMenmberTitle: '分组成员添加', // 选人组件标题
   selectMenmberFlag: false, // 显示弹窗，
   isAllData: true, // 是否需完整数据-默认为不需要（false，只包含用户id）
@@ -372,8 +372,8 @@ export default {
         // 返回数据
         submitBackData() {
             if (
-                this.seleceDialog.isOnlyOrg &&
-                this.seleceDialog.notOnlyPerson
+                this.selectDialog.isOnlyOrg &&
+                this.selectDialog.notOnlyPerson
             ) {
                 this.$emit(
                     "dialogReturnMembersInfo",
@@ -383,7 +383,7 @@ export default {
             } else {
                 // 单独选人或者单独选内设机构
                 if (this.selectCategory === 0) {
-                    if (this.seleceDialog.isAllData) {
+                    if (this.selectDialog.isAllData) {
                         this.$emit(
                             "dialogReturnMembersInfo",
                             this.selectedMembers,
@@ -401,7 +401,7 @@ export default {
                         );
                     }
                 } else if (this.selectCategory === 1) {
-                    if (this.seleceDialog.isAllData) {
+                    if (this.selectDialog.isAllData) {
                         this.$emit(
                             "dialogReturnMembersInfo",
                             this.selectedOrgs,
@@ -473,7 +473,7 @@ export default {
         // 节点被点击时
         handleNodeClick(node) {
             this.searchKeyWord = "";
-            if (this.seleceDialog.isOnlyOrg) {
+            if (this.selectDialog.isOnlyOrg) {
                 this.findcheckNodeTree(node.id);
             }
             // （1:分类结点、3:内设机构结点、2:单位结点）

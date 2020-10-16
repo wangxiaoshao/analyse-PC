@@ -52,14 +52,45 @@ export default {
             name: "数据模板",
             path: "/data-template",
             type: 1,
-            key: "menuHome",
+            key: "menuDataTemplate",
             icon: "el-icon-set-up",
             list: [],
         },
-
-        // key:menuSystemLog
+        // 共享管理
         {
             menuId: "006",
+            name: "共享管理",
+            path: "",
+            type: 1,
+            key: ["menuHome", "menuHome", "menuHome"],
+            icon: "fa fa-address-card-o",
+            list: [
+                {
+                    menuId: "0062",
+                    name: "账号管理",
+                    path: "/count-manage",
+                    type: 1,
+                    key: "menuHome",
+                },
+                {
+                    menuId: "0063",
+                    name: "应用接入",
+                    path: "/app-manage",
+                    type: 1,
+                    key: "menuHome",
+                },
+                {
+                    menuId: "0064",
+                    name: "共享数据",
+                    path: "/share-data-manage",
+                    type: 1,
+                    key: "menuHome",
+                },
+            ],
+        },
+        // key:menuSystemLog
+        {
+            menuId: "007",
             name: "系统日志",
             path: "/system-log",
             type: 1,
@@ -70,7 +101,7 @@ export default {
 
         // key:menuHelpCneter
         {
-            menuId: "007",
+            menuId: "008",
             name: "帮助中心",
             path: "/help-center",
             type: 1,

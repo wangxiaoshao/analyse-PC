@@ -1,7 +1,7 @@
 <template>
     <div class="pass-change">
         <select-members
-            :seleceDialog="selectDialog"
+            :selectDialog="selectDialog"
             entire="true"
             @dialogReturnMembersInfo="dialogReturnMembersInfo"
             @closeselectMenmber="closeselectMenmber"

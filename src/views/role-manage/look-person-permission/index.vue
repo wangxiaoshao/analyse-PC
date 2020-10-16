@@ -1,7 +1,7 @@
 <template>
     <div class="look-person">
         <select-members
-            :seleceDialog="selectDialog"
+            :selectDialog="selectDialog"
             @dialogReturnMembersInfo="dialogReturnMembersInfo"
             @closeselectMenmber="closeselectMenmber"
         ></select-members>

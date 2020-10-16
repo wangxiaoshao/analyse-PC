@@ -3,7 +3,7 @@
         <!--操作row-->
         <!--人员调出弹窗-->
         <select-members
-            :seleceDialog="selectDialog"
+            :selectDialog="selectDialog"
             @dialogReturnMembersInfo="dialogReturnMembersInfo"
             @closeselectMenmber="closeselectMenmber"
         ></select-members>

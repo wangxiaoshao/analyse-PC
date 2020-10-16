@@ -15,6 +15,7 @@ const app = {
             // user: []
             user: {},
         },
+        roles: 1,
         confirmState: "",
     },
     mutations: {
