@@ -425,19 +425,6 @@ export default {
         },
         // 关闭选人弹窗组件
         handleClose() {
-            if (this.selectDialog.isCleanSelected) {
-                // this.selectedMembers = this.selectedMembersModel = this.selectedOrgs = this.selectedOrgsModel = this.selectedMembersModel = [];
-                // this.orgSingleModel = this.memberSingleModel = [];
-                // this.removeAllSelected();
-                console.log(
-                    this.selectedMembers,
-                    this.selectedMembersModel,
-                    this.membersModel
-                );
-                this.removeAllSelectedOrg();
-            } else {
-            }
-
             // this.selectedMembers = this.selectedMembersModel = this.selectedOrgs = this.selectedOrgsModel = this.selectedMembersModel = [];
             // this.orgSingleModel = this.memberSingleModel = [];
             // this.removeAllSelected();
