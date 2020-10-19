@@ -156,7 +156,13 @@ export default {
             },
         });
     },
-    created() {},
+    created() {
+        if (this.$route.query.id !== undefined) {
+            // this.getAppDetail(this.$route.query.id);
+        } else {
+            // this.generateRandomAccount();
+        }
+    },
     methods: {
         noticeTimeChange() {},
         noticeWayChange(val) {

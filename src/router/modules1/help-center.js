@@ -4,7 +4,6 @@ const HelpCenter = () =>
     );
 export default [
     {
-        // 数据统计
         path: "/help-center",
         name: "HelpCenter",
         component: HelpCenter,

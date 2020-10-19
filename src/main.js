@@ -4,7 +4,7 @@
 import "babel-polyfill";
 import Vue from "vue";
 import App from "./views/app";
-// import routerList from './router'
+// import routerList from "./router";
 import store from "./store";
 import elementUI from "element-ui";
 import "@src/common/element-style/index.css";
@@ -25,21 +25,40 @@ Vue.use(elementUI, {
 });
 // 请求权限配置参数
 // let menusCtrl = []
+// api[urlNames["option"]]().then((res) => {
+//     let router = initRouter(res.data.menus);
+//     if (res.status === 0) {
+//         initVueInstance(router, res.data);
+//     } else {
+//         alert(res.message);
+//     }
+// });
+// const initVueInstance = (router, options) => {
+//     new Vue({
+//         router,
+//         store,
+//         render: (h) => h(App),
+//         created() {
+//             this.$store.commit("SET_OPTION", options || {});
+//         },
+//     }).$mount("#app");
+// };
+
+let router = initRouter([]);
+new Vue({
+    router,
+    store,
+    render: (h) => h(App),
+    created() {
+        // this.$store.commit("SET_OPTION", options || {});
+    },
+}).$mount("#app");
 api[urlNames["option"]]().then((res) => {
-    let router = initRouter(res.data.menus);
+    // let router = initRouter();
     if (res.status === 0) {
-        initVueInstance(router, res.data);
+        // initVueInstance(router, res.data);
+        this.$store.commit("SET_OPTION", res.data || {});
     } else {
         alert(res.message);
     }
 });
-const initVueInstance = (router, options) => {
-    new Vue({
-        router,
-        store,
-        render: (h) => h(App),
-        created() {
-            this.$store.commit("SET_OPTION", options || {});
-        },
-    }).$mount("#app");
-};

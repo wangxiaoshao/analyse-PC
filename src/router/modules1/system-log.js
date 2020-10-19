@@ -4,7 +4,6 @@ const SystemLog = () =>
     );
 export default [
     {
-        // 数据统计
         path: "/system-log",
         name: "SystemLog",
         component: SystemLog,
