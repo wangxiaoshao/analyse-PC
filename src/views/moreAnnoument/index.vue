@@ -15,17 +15,16 @@
             </template>
             <el-table-column>
                 <template slot-scope="scope">
-                    <div class="notice-info">
+                    <div
+                        class="notice-info"
+                        @click="goFindAnnountDetial(scope.row.id)"
+                    >
                         <el-badge :is-dot="scope.row.hasRead === 0">{{
                             scope.row.typeText
                         }}</el-badge>
                         <div class="notice-msg">
                             <span>{{ scope.row.content }}</span>
                         </div>
-                        <!-- <p>{{scope.row.creareTime}}</p>
-                <span class="btn"><el-button type='primary' size="mini"
-                :style="scope.row.hasRead===1?'background-color:#d8d7d7;border-color:#d8d7d7':''"
-                 @click="doFindNotice(scope.row)">{{scope.row.hasRead===1?'已查看':'去查看'}}</el-button></span> -->
                     </div>
                 </template>
             </el-table-column>
@@ -55,12 +54,12 @@ export default {
                         "为推进改造，系统登录密码深度优化通知,为推进改造，系统登录密码深度优化通知。",
                     hasRead: 0,
                     creareTime: "2020-03-12",
+                    id: 1,
                 },
             ],
         };
     },
     mounted() {
-        // this.app.breadcrumb=[{name: '平台公告'}]
         this.page.total = 1;
         this.app.noticeShowBtn = true;
         this.SET_BREADCRUMB([{ name: "平台公告" }]);
@@ -70,6 +69,14 @@ export default {
     },
     methods: {
         ...mapMutations(["SET_BREADCRUMB"]),
+        goFindAnnountDetial(val) {
+            this.$router.push({
+                path: "/moreAnnoument/announceDetail",
+                query: {
+                    id: val,
+                },
+            });
+        },
     },
 };
 </script>

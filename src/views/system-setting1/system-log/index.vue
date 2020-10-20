@@ -4,7 +4,7 @@
             <el-form-item>
                 <!-- <span>日期：</span> -->
                 <el-date-picker
-                    v-model="findDate"
+                    v-model="searchDate"
                     type="daterange"
                     start-placeholder="开始日期"
                     end-placeholder="结束日期"
@@ -49,6 +49,7 @@
             >
         </el-form>
         <div class="table-box">
+            <iframe src="" frameborder="0"></iframe>
             <!-- <el-table :data="systemLogList" stripe border style="width: 100%;">
                 <template slot="empty">
                     <div class="empty">
@@ -125,7 +126,7 @@ export default {
                 { type: 3, name: "权限日志" },
             ],
             systemLogList: [{}],
-            findDate: "",
+            searchDate: "",
             searchParams: {
                 startDate: "",
                 endDate: "",

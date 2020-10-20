@@ -2,11 +2,15 @@ const HomePage = () =>
     import(/* webpackChunkName: "HomePage" */ "@src/views/homePage/index.vue");
 const MoreAnnoument = () =>
     import(
-        /* webpackChunkName: "MoreAnnoument" */ "@src/views/moreAnnoument/index.vue"
+        /* webpackChunkName: "HomePage" */ "@src/views/moreAnnoument/index.vue"
     );
 const AnnounceDetail = () =>
     import(
-        /* webpackChunkName: "MoreAnnoument" */ "@src/views/moreAnnoument/announceDetail/index.vue"
+        /* webpackChunkName: "HomePage" */ "@src/views/moreAnnoument/announceDetail/index.vue"
+    );
+const MyApplication = () =>
+    import(
+        /* webpackChunkName: "HomePage" */ "@src/views/my-application/index.vue"
     );
 export default [
     {
@@ -23,11 +27,13 @@ export default [
         },
     },
     {
-        path: "/announceDetail",
+        path: "/moreAnnoument/announceDetail",
         name: "AnnounceDetail",
         component: AnnounceDetail,
-        meta: {
-            breadcrumb: [{ name: "文章详情" }],
-        },
+    },
+    {
+        path: "/my-application",
+        name: "MyApplication",
+        component: MyApplication,
     },
 ];

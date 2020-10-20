@@ -19,14 +19,24 @@
 </template>
 <script>
 import { mapState } from "vuex";
+import handleBreadcrumb from "@src/mixins/new/handle-breadcrumb.js";
 export default {
     name: "announceDetail",
+    mixins: [handleBreadcrumb],
     data() {
         return {};
     },
 
-    created() {
-        // this.app.breadcrumb=[{name: '文章详情'}]
+    created() {},
+    mounted() {
+        this.app.noticeShowBtn = true;
+        this.SET_BREADCRUMB([{ name: "公告详情" }]);
+        // this.pushBreadcrumb({
+        //     name: "公告详情",
+        //     parent: {
+        //         path: `/moreAnnoument`,
+        //     },
+        // });
     },
     computed: {
         ...mapState(["app"]),

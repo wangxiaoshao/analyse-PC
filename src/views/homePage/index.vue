@@ -146,7 +146,7 @@ export default {
         },
         goFindAnnountDetial(val) {
             this.$router.push({
-                path: "/announceDetail",
+                path: "/moreAnnoument/announceDetail",
                 query: {
                     id: val.id,
                 },

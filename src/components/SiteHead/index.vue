@@ -15,7 +15,9 @@
                         ><span class="el-icon-user userIcon"></span
                         >{{ app.option.user.name || "" }}</a
                     >
-                    <a class="my-apply">我的应用情况</a>
+                    <a class="my-apply" @click="goMyApplication"
+                        >我的应用情况</a
+                    >
                     <a
                         >退出
                         <a
@@ -74,6 +76,9 @@ export default {
                     }
                 });
             });
+        },
+        goMyApplication() {
+            this.$router.push("/my-application");
         },
     },
 };
