@@ -49,7 +49,7 @@
             >
         </el-form>
         <div class="table-box">
-            <el-table :data="systemLogList" stripe border style="width: 100%;">
+            <!-- <el-table :data="systemLogList" stripe border style="width: 100%;">
                 <template slot="empty">
                     <div class="empty">
                         <p>
@@ -94,7 +94,7 @@
                         >
                     </template>
                 </el-table-column>
-            </el-table>
+            </el-table> -->
             <el-pagination
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"

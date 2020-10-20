@@ -10,11 +10,7 @@
                 type="primary"
                 class="addPerson"
                 @click="openselectMenmber"
-                :disabled="!hasAddUser"
                 >添加角色成员</el-button
-            >
-            <el-button @click="goPermission" :disabled="!hasAddAuthority"
-                >权限配置</el-button
             >
             <el-input
                 placeholder="请输入搜索关键词"
@@ -27,7 +23,7 @@
             >
         </div>
         <!--表格-->
-        <el-table v-loading="loading" :data="list" border>
+        <el-table :data="list" border>
             <template slot="empty">
                 <div class="empty">
                     <p>
@@ -276,16 +272,6 @@ export default {
         },
         closeselectMenmber() {
             this.selectDialog.selectMenmberFlag = false;
-        },
-        goPermission() {
-            this.PERSON_PAGE(this.page);
-            this.ROLE_ID(this.$route.params.id);
-            this.$router.push({
-                name: "PermissionSet",
-                params: {
-                    id: this.$route.params.id,
-                },
-            });
         },
         getSetFlag(val) {
             this.setFlag = val;

@@ -34,7 +34,6 @@ const WordUnload = () =>
     );
 
 export default [
-    // 权限管理
     {
         path: "/parameter-setting",
         name: "ParameterSettings",

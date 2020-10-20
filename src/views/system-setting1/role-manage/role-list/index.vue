@@ -89,7 +89,7 @@ export default {
     mixins: [handleTable],
     data() {
         return {
-            list: [],
+            list: [{ allowAction: true }],
             loading: true,
 
             // 验签提示对话框
@@ -135,7 +135,7 @@ export default {
                 },
                 () => {
                     this.loading = false;
-                    this.list = [];
+                    // this.list = [];
                     // this.page.total = 0
                 }
             );
