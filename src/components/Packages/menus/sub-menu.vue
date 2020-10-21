@@ -65,8 +65,9 @@ export default {
     methods: {
         isShowMenu1() {
             let showFlag = true;
-            // let roles1 = this.$store.state.app.roles;
-            // 角色权限控制菜单显示
+
+            // let roles1 = this.$store.state.app.rolesInfo.id;
+            // // 角色权限控制菜单显示
             // if (roles1 === 1) {
             //     if (this.menuItem.key === "menuDataTemplate") {
             //         showFlag = false;

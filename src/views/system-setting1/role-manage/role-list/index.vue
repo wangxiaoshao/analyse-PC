@@ -1,7 +1,12 @@
 <template>
     <div>
         <!--表格-->
-        <el-table v-loading="loading" :data="list" border style="width: 100%;">
+        <el-table
+            v-loading="loading"
+            :data="rolesList"
+            border
+            style="width: 100%;"
+        >
             <template slot="empty">
                 <div class="empty">
                     <p>
@@ -61,67 +66,39 @@
                         size="mini"
                         type="text"
                         @click="goLookPerson(scope.row)"
-                        :disabled="!scope.row.allowAction"
                         >查看成员及权限</el-button
                     >
                 </template>
             </el-table-column>
         </el-table>
-        <!--分页-->
-        <!-- <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="page.current"
-      :page-sizes="[10, 30, 50, 100]"
-      :page-size="page.limit"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="page.total">
-    </el-pagination> -->
     </div>
 </template>
 
 <script>
 import handleTable from "@src/mixins/handle-table";
 import { api, urlNames } from "@src/api";
-import { mapState, mapMutations } from "vuex";
 
 export default {
     mixins: [handleTable],
     data() {
         return {
-            list: [{ allowAction: true }],
+            rolesList: [
+                { allowAction: true, id: 1, title: "系统管理员" },
+                { allowAction: true, id: 2, title: "市州管理员" },
+                { allowAction: true, id: 3, title: "区县管理员" },
+                { allowAction: true, id: 4, title: "省级管理员" },
+                { allowAction: true, id: 5, title: "单位管理员" },
+            ],
             loading: true,
-
-            // 验签提示对话框
-            validSignatureDialog: false,
-            loader: null,
         };
     },
-    computed: {
-        ...mapState(["roleManage"]),
-    },
     created() {
-        if (this.$route.query.type === "back") {
-            this.page = Object.assign(this.page, this.roleManage.page);
-            this.$router.push({
-                name: "RoleList",
-                params: {
-                    type: "back",
-                    id: this.roleManage.listId,
-                },
-            });
-        } else {
-            this.SET_ROLEMANAGE_PAGE({});
-            this.LIST_ID({});
-        }
         this.getGrid();
     },
     methods: {
-        ...mapMutations(["SET_ROLEMANAGE_PAGE", "LIST_ID"]),
         getGrid() {
             let data = {
                 page: 1,
-                parentId: this.$route.params.nodeId,
                 limit: 20,
             };
 
@@ -129,20 +106,14 @@ export default {
             api[urlNames["findRoleList"]](data).then(
                 (res) => {
                     this.loading = false;
-
-                    this.list = res.data;
-                    // this.page.total = res.total
+                    this.rolesList = res.data;
                 },
                 () => {
                     this.loading = false;
-                    // this.list = [];
-                    // this.page.total = 0
                 }
             );
         },
         goLookPerson(row) {
-            this.SET_ROLEMANAGE_PAGE(this.page);
-            this.LIST_ID(this.$route.params.id);
             this.$router.push({
                 name: "lookPersonPermission",
                 params: {

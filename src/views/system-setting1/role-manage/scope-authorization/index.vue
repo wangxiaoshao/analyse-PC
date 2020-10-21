@@ -5,38 +5,46 @@
                 >该成员的权限可以在以下范围内行使，若需修改授权范围点击右侧的编辑按钮</span
             >
             <div style="float: right;">
-                <el-button @click="addArea" type="primary" v-if="hasAddArea"
-                    >授权区域</el-button
+                <el-button @click="addCityState" type="primary"
+                    >授权市州</el-button
                 >
-                <el-button @click="addDep" type="primary" v-if="hasAddOrg"
-                    >授权单位</el-button
-                >
+                <el-button @click="addDep" type="primary">授权区县</el-button>
+                <el-button @click="addDep" type="primary">授权单位</el-button>
             </div>
         </div>
         <div class="table">
             <table>
                 <tr v-if="hasAddArea">
-                    <td>区域</td>
+                    <td>市州</td>
                     <td>
                         <el-tag
-                            v-for="area in areaNameList"
-                            :key="area.id"
+                            v-for="item in cityStateList"
+                            :key="item.id"
                             closable
                             size="medium"
                             type="success"
                             @close="deleteAuthorizedEntity(area)"
                         >
                             {{ area.name }}
-
-                            <el-button
-                                @click="validSignatureManage(5, area.id)"
-                                size="mini"
-                                >验签</el-button
-                            >
                         </el-tag>
                     </td>
                 </tr>
                 <tr v-if="hasAddOrg">
+                    <td>区县</td>
+                    <td>
+                        <el-tag
+                            v-for="org in orgNameList"
+                            :key="org.id"
+                            closable
+                            size="medium"
+                            type="success"
+                            @close="deleteAuthorizedEntity(org)"
+                        >
+                            {{ org.name }}
+                        </el-tag>
+                    </td>
+                </tr>
+                <tr>
                     <td>单位</td>
                     <td>
                         <el-tag
@@ -48,11 +56,6 @@
                             @close="deleteAuthorizedEntity(org)"
                         >
                             {{ org.name }}
-                            <el-button
-                                @click="validSignatureManage(5, org.id)"
-                                size="mini"
-                                >验签</el-button
-                            >
                         </el-tag>
                     </td>
                 </tr>
@@ -68,14 +71,11 @@
             @dialogReturnArea="dialogReturnArea"
             @closeSelectArea="closeSelectArea"
         ></select-area>
-
-        <valid-signature-manage
-            loadingMsg="角色授权区域信息签名校验中..."
-            message="角色授权区域信息签名验证未通过，请及时联系运维人员处理。"
-            returnOrLogout="logout"
-            :params="validParams"
-            :startValid.sync="startValid"
-        ></valid-signature-manage>
+        <select-city-state
+            :SelectCityStateDailog="SelectCityStateDailog"
+            @dialogReturnCityState="dialogReturnCityState"
+            @closeSelectCityState="closeSelectCityState"
+        ></select-city-state>
     </div>
 </template>
 
@@ -84,31 +84,35 @@ import handleTable from "@src/mixins/handle-table";
 import handleBreadcrumb from "@src/mixins/handle-breadcrumb.js";
 import SelectOrg from "@src/components/SelectOrg/index";
 import SelectArea from "@src/components/SelectArea/index";
+import SelectCityState from "@src/components/SelectCityState/index";
 import hasRight from "@src/mixins/has-right";
 import { api, urlNames } from "@src/api";
 import { mapState, mapMutations } from "vuex";
-import validSignatureManage from "@src/mixins/valid-signature-manage";
-
 export default {
-    mixins: [handleTable, handleBreadcrumb, hasRight, validSignatureManage],
+    mixins: [handleTable, handleBreadcrumb, hasRight],
     name: "ScopeAuthorization",
     data() {
         return {
             openSelectOrg: false,
             openSelectArea: false,
+            openSelectCityState: true,
             orgNameList: [],
             areaNameList: [],
-            hasAddArea: false,
-            hasAddOrg: false,
-
-            // 验签提示对话框
-            validParams: [],
-            startValid: false,
+            cityStateList: [],
+            hasAddArea: true,
+            hasAddOrg: true,
+            hasAddCityState: true,
+            SelectCityStateDailog: {
+                selectCityStateVisiable: false,
+                isSingleSelect: false, // 是否单选 true单选，false多选
+            },
+            roleId: parseInt(this.$route.query.roleId),
         };
     },
     components: {
         SelectOrg,
         SelectArea,
+        SelectCityState,
     },
     computed: {
         ...mapState(["app"]),
@@ -137,6 +141,9 @@ export default {
                 that.hasAddOrg = !!res.data.hasAddOrg;
             });
         },
+        addCityState() {
+            this.SelectCityStateDailog.selectCityStateVisiable = true;
+        },
         addArea() {
             this.openSelectArea = true;
         },
@@ -148,6 +155,9 @@ export default {
         },
         closeSelectArea() {
             this.openSelectArea = false;
+        },
+        closeSelectCityState() {
+            this.SelectCityStateDailog.selectCityStateVisiable = false;
         },
         getfindAuthorizedEntity() {
             this.orgNameList = [];
@@ -192,6 +202,9 @@ export default {
                 this.$message.success(`授权成功`);
                 this.getfindAuthorizedEntity();
             });
+        },
+        dialogReturnCityState(data) {
+            this.closeSelectCityState();
         },
         deleteAuthorizedEntity(entity) {
             api[urlNames["deleteAuthorizedEntity"]]({

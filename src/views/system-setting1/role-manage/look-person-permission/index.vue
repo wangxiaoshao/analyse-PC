@@ -49,33 +49,20 @@
             <el-table-column prop="name" label="成员姓名"> </el-table-column>
             <el-table-column prop="type" label="身份类型"> </el-table-column>
             <el-table-column prop="orgName" label="单位名称"> </el-table-column>
-            <!-- <el-table-column prop="value" label="启用状态" width="150" align="center">
-          <template slot-scope="scope">
-            <span class="text-green" v-show="scope.row.enable === 1">启用</span>
-            <span class="text-red" v-show="scope.row.enable === 0">停用</span>
-          </template>
-        </el-table-column>-->
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                     <el-button
                         size="mini"
                         type="text"
+                        v-if="roleId === 2 || roleId === 3 || roleId === 5"
                         @click="toAuthorization(scope.row)"
-                        :disabled="!hasAddArea && !hasAddOrg"
                         >授权范围</el-button
                     >
                     <el-button
                         size="mini"
                         type="text"
                         @click="getDelete(scope.row)"
-                        :disabled="!hasAddUser"
                         >删除</el-button
-                    >
-                    <el-button
-                        size="mini"
-                        type="text"
-                        @click="validSignatureManage(4, scope.row.id)"
-                        >验证签名</el-button
                     >
                 </template>
             </el-table-column>
@@ -91,14 +78,6 @@
             :total="page.total"
         >
         </el-pagination>
-
-        <valid-signature-manage
-            loadingMsg="角色成员信息签名校验中..."
-            message="角色成员信息签名验证未通过，请及时联系运维人员处理。"
-            returnOrLogout="return"
-            :params="validParams"
-            :startValid.sync="startValid"
-        ></valid-signature-manage>
     </div>
 </template>
 
@@ -107,21 +86,18 @@ import handleTable from "@src/mixins/handle-table";
 import handleBreadcrumb from "@src/mixins/handle-breadcrumb.js";
 import hasRight from "@src/mixins/has-right";
 import { api, urlNames } from "@src/api";
-import { mapState, mapMutations } from "vuex";
 import SelectMembers from "@src/components/SelectMembers/index";
-import validSignatureManage from "@src/mixins/valid-signature-manage";
-
 export default {
     name: "LookPersonPermission",
-    mixins: [handleTable, handleBreadcrumb, hasRight, validSignatureManage],
+    mixins: [handleTable, handleBreadcrumb, hasRight],
     components: { SelectMembers },
     data() {
         return {
-            list: [],
+            list: [{ uid: 3211 }],
             permissionId: "",
             loading: false,
             setFlag: false,
-            roleId: this.$route.params.id,
+            roleId: parseInt(this.$route.params.id),
             searchName: "",
             selectDialog: {
                 selectMenmberTitle: "添加管理员", // 选人组件标题
@@ -137,14 +113,7 @@ export default {
             hasAddOrg: false,
             hasAddUser: false,
             hasAddAuthority: false,
-
-            // 验签提示对话框
-            validParams: [],
-            startValid: false,
         };
-    },
-    computed: {
-        ...mapState(["roleManage"]),
     },
     created() {
         this.init();
@@ -161,35 +130,8 @@ export default {
         });
     },
     methods: {
-        ...mapMutations(["PERSON_PAGE", "ROLE_ID"]),
         init() {
-            if (this.$route.query.type === "back") {
-                this.page = Object.assign(this.page, this.roleManage.page);
-                this.$router.push({
-                    name: "lookPersonPermission",
-                    params: {
-                        type: "back",
-                        id: this.roleManage.roleId,
-                    },
-                });
-            } else {
-                this.PERSON_PAGE({});
-                this.ROLE_ID({});
-            }
-            this.checkAuthorization();
             this.getGrid();
-        },
-        checkAuthorization() {
-            let that = this;
-
-            api[urlNames["checkAuthorization"]]({
-                roleId: this.$route.params.id,
-            }).then((res) => {
-                that.hasAddArea = !!res.data.hasAddArea;
-                that.hasAddOrg = !!res.data.hasAddOrg;
-                that.hasAddUser = !!res.data.hasAddUser;
-                that.hasAddAuthority = !!res.data.hasAddAuthority;
-            });
         },
         toAuthorization(val) {
             this.$router.push({

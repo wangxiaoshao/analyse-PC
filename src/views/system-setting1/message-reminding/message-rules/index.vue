@@ -15,7 +15,7 @@
                     >
                         <el-checkbox
                             v-for="item in noticeTimeList"
-                            :label="item.name"
+                            :label="item.id"
                             :key="item.name"
                             >{{ item.checkname }}
                         </el-checkbox>
@@ -28,7 +28,7 @@
                     >
                         <el-checkbox
                             v-for="item in noticeWayList"
-                            :label="item.name"
+                            :label="item.value"
                             :key="item.name"
                             >{{ item.checkname }}
                         </el-checkbox>
@@ -98,18 +98,22 @@ export default {
         return {
             noticeTimeList: [
                 {
+                    id: 1,
                     name: "date1",
                     checkname: "每月8号",
                 },
                 {
+                    id: 2,
                     name: "date2",
                     checkname: "每月16号",
                 },
                 {
+                    id: 3,
                     name: "date3",
                     checkname: "每月24号",
                 },
                 {
+                    id: 4,
                     name: "date4",
                     checkname: "每月30号",
                 },
@@ -118,15 +122,17 @@ export default {
                 {
                     name: "message",
                     checkname: "统一消息",
+                    value: 1,
                 },
                 {
                     name: "note",
                     checkname: "短信",
+                    value: 2,
                 },
             ],
             noticeRulesForm: {
-                selectedNoticeTime: [],
-                selectedNoticeWay: [],
+                selectedNoticeTime: [2],
+                selectedNoticeWay: [1, 2],
                 consignees: "", // 收件人
                 rulesState: 1,
             },

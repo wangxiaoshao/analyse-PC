@@ -15,7 +15,7 @@ const app = {
             // user: []
             user: {},
         },
-        roles: 1,
+        rolesInfo: {},
         confirmState: "",
     },
     mutations: {
@@ -39,6 +39,9 @@ const app = {
         },
         [types.GET_CONFIRM_INFO](state, val) {
             state.confirmState = val;
+        },
+        [types.SET_ROLE_INFO](state, val) {
+            state.rolesInfo = val;
         },
     },
 };
