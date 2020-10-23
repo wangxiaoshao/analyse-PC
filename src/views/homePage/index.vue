@@ -129,7 +129,7 @@ export default {
     },
     methods: {
         init() {
-            this.getLoginIndex();
+            // this.getLoginIndex();
             this.doArray();
         },
         doArray() {

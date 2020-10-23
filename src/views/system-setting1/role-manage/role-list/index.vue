@@ -89,11 +89,11 @@ export default {
                 { allowAction: true, id: 4, title: "省级管理员" },
                 { allowAction: true, id: 5, title: "单位管理员" },
             ],
-            loading: true,
+            loading: false,
         };
     },
     created() {
-        this.getGrid();
+        // this.getGrid();
     },
     methods: {
         getGrid() {

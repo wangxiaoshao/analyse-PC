@@ -90,8 +90,8 @@ export default {
     created() {},
     mounted() {
         this.addEventListenForResize();
-        this.getDicList();
-        this.confirmInfo();
+        // this.getDicList();
+        // this.confirmInfo();
     },
     methods: {
         ...mapMutations([

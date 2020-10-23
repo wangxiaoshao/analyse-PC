@@ -18,7 +18,6 @@ import VueCookies from "vue-cookie";
 import "./filters";
 import { api, urlNames } from "@src/api";
 import initRouter from "@src/router/index";
-
 Vue.use(VueCookies);
 Vue.use(elementUI, {
     size: "medium",
@@ -53,14 +52,15 @@ new Vue({
         let obj = { id: 1, name: "系统管理员wxs" };
         this.$store.commit("SET_ROLE_INFO", obj || {});
         // this.$store.commit("SET_OPTION", options || {});
-        api[urlNames["option"]]().then((res) => {
-            // let router = initRouter();
-            if (res.status === 0) {
-                // initVueInstance(router, res.data);
-                // this.$store.commit("SET_OPTION", res.data || {});
-            } else {
-                alert(res.message);
-            }
-        });
+        // api[urlNames["getTreeList"]]().then((res) => {
+        //     // let router = initRouter();
+        //     console.log(res, "bbbbbbb");
+        //     if (res.status === 0) {
+        //         // initVueInstance(router, res.data);
+        //         // this.$store.commit("SET_OPTION", res.data || {});
+        //     } else {
+        //         alert(res.message);
+        //     }
+        // });
     },
 }).$mount("#app");

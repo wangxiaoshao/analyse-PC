@@ -131,7 +131,7 @@ export default {
     },
     methods: {
         init() {
-            this.getGrid();
+            // this.getGrid();
         },
         toAuthorization(val) {
             this.$router.push({
@@ -152,7 +152,9 @@ export default {
                     this.permissionId = res.roleId;
                     this.page.total = res.total;
                 },
-                () => {}
+                () => {
+                    this.loading = false;
+                }
             );
         },
         findBySearchName() {

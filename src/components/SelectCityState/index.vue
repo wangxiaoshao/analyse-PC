@@ -11,10 +11,10 @@
             <div v-if="SelectCityStateDailog.isSingleSelect">
                 <el-radio-group v-model="singleSelected" @change="radioChange">
                     <el-radio
-                        :label="item.id"
+                        :label="item.treeId"
                         v-for="item in allCityStateList"
-                        :key="item.id"
-                        >{{ item.name }}</el-radio
+                        :key="item.treeId"
+                        >{{ item.treeName }}</el-radio
                     >
                 </el-radio-group>
             </div>
@@ -25,9 +25,9 @@
                 >
                     <el-checkbox
                         v-for="item in allCityStateList"
-                        :label="item.id"
-                        :key="item.id"
-                        >{{ item.name }}
+                        :label="item"
+                        :key="item.treeId"
+                        >{{ item.treeName }}
                     </el-checkbox>
                 </el-checkbox-group>
             </div>
@@ -44,29 +44,34 @@
     </div>
 </template>
 <script>
+import { api, urlNames } from "@src/api";
 export default {
     props: ["SelectCityStateDailog"],
     data() {
         return {
-            allCityStateList: [
-                { id: 1, name: "贵阳市" },
-                { id: 2, name: "遵义市" },
-                { id: 3, name: "铜仁市" },
-                { id: 4, name: "毕节市" },
-                { id: 5, name: "六盘水市" },
-                { id: 6, name: "贵安新区" },
-                { id: 7, name: "黔西南自治州" },
-            ],
+            allCityStateList: [],
             singleSelected: "", // 单选值,
             multipleSelected: [], // 多选值，
             allSelectedList: [], // 最终提交值
         };
     },
     created() {
-        this.getAllCityStateList();
+        this.getFirstArea();
     },
     methods: {
-        getAllCityStateList() {},
+        getFirstArea() {
+            api[urlNames["getTreeList"]]().then((res) => {
+                this.getAllCityStateList(
+                    res.data[0].treeId,
+                    res.data[0].treeType
+                );
+            });
+        },
+        getAllCityStateList(treeId, treeType) {
+            api[urlNames["getTreeList"]]({ treeId, treeType }).then((res) => {
+                this.allCityStateList = res.data;
+            });
+        },
         radioChange(val) {
             this.singleSelected = val;
             this.allSelectedList = [];
@@ -83,6 +88,7 @@ export default {
         handleClose() {
             this.singleSelected = "";
             this.multipleSelected = [];
+            this.allSelectedList = [];
             this.$emit("closeSelectCityState");
         },
     },

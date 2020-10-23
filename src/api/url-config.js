@@ -172,6 +172,13 @@ export default {
         keepOriginResponse: true,
         serve: "organizationManagePC",
     },
+    [urlNames.getTreeList]: {
+        type: "get",
+        url: "/api/appdata/areaOrg/getTreeList",
+        keepOriginResponse: true,
+        showLoading: false,
+        serve: "organizationManagePC",
+    },
     // 应用管理
     ...application,
     ...examine, // 申请审核

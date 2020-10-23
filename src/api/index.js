@@ -150,7 +150,6 @@ Object.keys(urlConfig).forEach((urlName) => {
     const config = normalizeUrlConfig(urlConfig[urlName]);
     api[urlName] = createRequest(config);
 });
-
 const apiAll = axios.all;
 
 export default api;

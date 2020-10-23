@@ -8,7 +8,7 @@
                 <el-button @click="addCityState" type="primary"
                     >授权市州</el-button
                 >
-                <el-button @click="addDep" type="primary">授权区县</el-button>
+                <el-button @click="addArea" type="primary">授权区县</el-button>
                 <el-button @click="addDep" type="primary">授权单位</el-button>
             </div>
         </div>
@@ -82,8 +82,8 @@
 <script>
 import handleTable from "@src/mixins/handle-table";
 import handleBreadcrumb from "@src/mixins/handle-breadcrumb.js";
-import SelectOrg from "@src/components/SelectOrg/index";
-import SelectArea from "@src/components/SelectArea/index";
+import SelectOrg from "@src/components/SelectOrg1/index";
+import SelectArea from "@src/components/SelectArea2/index";
 import SelectCityState from "@src/components/SelectCityState/index";
 import hasRight from "@src/mixins/has-right";
 import { api, urlNames } from "@src/api";
@@ -95,7 +95,7 @@ export default {
         return {
             openSelectOrg: false,
             openSelectArea: false,
-            openSelectCityState: true,
+            openSelectCityState: false,
             orgNameList: [],
             areaNameList: [],
             cityStateList: [],
@@ -118,16 +118,17 @@ export default {
         ...mapState(["app"]),
     },
     created() {
-        this.checkAuthorization();
+        // this.checkAuthorization();
     },
     mounted() {
         this.pushBreadcrumb({
             name: "授权范围",
             parent: {
-                path: `/role-manage/look-person-permission/${this.$route.query.roleId}`,
+                path: "/role-manage/look-person-permission",
+                query: { id: this.$route.query.roleId },
             },
         });
-        this.getfindAuthorizedEntity();
+        // this.getfindAuthorizedEntity();
     },
     methods: {
         ...mapMutations(["SET_OPTION"]),
@@ -186,10 +187,11 @@ export default {
                 userAuthorizedEntityList: data,
                 roleId: this.$route.query.roleId,
             };
-            api[urlNames["insertAuthorizedEntity"]](parmas).then((res) => {
-                this.$message.success(`授权成功`);
-                this.getfindAuthorizedEntity();
-            });
+            console.log(parmas);
+            // api[urlNames["insertAuthorizedEntity"]](parmas).then((res) => {
+            //     this.$message.success(`授权成功`);
+            //     this.getfindAuthorizedEntity();
+            // });
         },
         dialogReturnArea(data) {
             let parmas = {
@@ -198,12 +200,15 @@ export default {
                 userAuthorizedEntityList: data,
                 roleId: this.$route.query.roleId,
             };
-            api[urlNames["insertAuthorizedEntity"]](parmas).then((res) => {
-                this.$message.success(`授权成功`);
-                this.getfindAuthorizedEntity();
-            });
+            console.log(parmas);
+            this.closeSelectArea();
+            // api[urlNames["insertAuthorizedEntity"]](parmas).then((res) => {
+            //     this.$message.success(`授权成功`);
+            //     this.getfindAuthorizedEntity();
+            // });
         },
         dialogReturnCityState(data) {
+            console.log(data);
             this.closeSelectCityState();
         },
         deleteAuthorizedEntity(entity) {

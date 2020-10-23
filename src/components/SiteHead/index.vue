@@ -54,7 +54,7 @@ export default {
     },
     created() {
         this.logoutURL = "/api/gate/logout";
-        this.findSessionUserList();
+        // this.findSessionUserList();
     },
     methods: {
         goBack() {
