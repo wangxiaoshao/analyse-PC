@@ -31,7 +31,7 @@
                         :props="defaultProps"
                         @node-click="handleAreaClick"
                     >
-                        <span class="svg-container" slot-scope="{ node, data }">
+                        <span class="svg-container" slot-scope="{ node }">
                             <span :title="node.label">{{ node.label }}</span>
                         </span>
                     </el-tree>
