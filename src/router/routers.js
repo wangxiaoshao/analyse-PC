@@ -8,6 +8,7 @@ import dataTemplate from "./modules1/data-template";
 import systemLog from "./modules1/system-log";
 import helpCenter from "./modules1/help-center";
 import shareManage from "./modules1/share-manage";
+import assessment from "./modules1/assessment";
 const noRight = () =>
     import(
         /* webpackChunkName: "SystemSetting" */ "@src/views/no-right/index.vue"
@@ -37,4 +38,5 @@ export default [
     ...systemLog,
     ...helpCenter,
     ...shareManage,
+    ...assessment,
 ];

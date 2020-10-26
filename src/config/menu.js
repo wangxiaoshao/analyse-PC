@@ -34,9 +34,19 @@ export default {
             icon: "el-icon-set-up",
             list: [],
         },
+        // key:menuAssessment
+        {
+            menuId: "004",
+            name: "考核情况查询",
+            path: "/assessment",
+            type: 1,
+            key: "menuAssessment",
+            icon: "el-icon-set-up",
+            list: [],
+        },
         // 共享管理
         {
-            menuId: "006",
+            menuId: "005",
             name: "共享管理",
             path: "",
             type: 1,
@@ -44,21 +54,21 @@ export default {
             icon: "fa fa-address-card-o",
             list: [
                 {
-                    menuId: "0062",
+                    menuId: "0051",
                     name: "账号管理",
                     path: "/count-manage",
                     type: 1,
                     key: "menuHome",
                 },
                 {
-                    menuId: "0063",
+                    menuId: "0052",
                     name: "应用接入",
                     path: "/app-manage",
                     type: 1,
                     key: "menuHome",
                 },
                 {
-                    menuId: "0064",
+                    menuId: "0053",
                     name: "共享数据",
                     path: "/share-data-manage",
                     type: 1,
@@ -67,7 +77,7 @@ export default {
             ],
         },
         {
-            menuId: "005",
+            menuId: "006",
             name: "系统设置",
             path: "",
             type: 1,
@@ -75,7 +85,7 @@ export default {
             icon: "fa fa-cogs",
             list: [
                 {
-                    menuId: "0051",
+                    menuId: "0061",
                     name: "通知提醒",
                     path: "/message-reminding",
                     type: 1,
@@ -84,7 +94,7 @@ export default {
                     list: [],
                 },
                 {
-                    menuId: "0052",
+                    menuId: "0062",
                     name: "权限管理",
                     path: "/role-manage",
                     type: 1,
@@ -93,7 +103,7 @@ export default {
                     list: [],
                 },
                 {
-                    menuId: "0053",
+                    menuId: "0063",
                     name: "系统日志",
                     path: "/system-log",
                     type: 1,
@@ -102,7 +112,7 @@ export default {
                     list: [],
                 },
                 {
-                    menuId: "0054",
+                    menuId: "0064",
                     name: "帮助中心",
                     path: "/help-center",
                     type: 1,

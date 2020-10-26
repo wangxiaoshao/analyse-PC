@@ -61,16 +61,11 @@
                 </tr>
             </table>
         </div>
-        <select-org
-            :openSelectOrg="openSelectOrg"
-            @dialogReturnOrg="dialogReturnOrg"
-            @closeSelectOrg="closeSelectOrg"
-        ></select-org>
-        <select-area
-            :openSelectArea="openSelectArea"
-            @dialogReturnArea="dialogReturnArea"
-            @closeSelectArea="closeSelectArea"
-        ></select-area>
+        <select-tree
+            :selectTreeDailog="selectTreeDailog"
+            @dialogReturnData="dialogReturnData"
+            @closeSelectDailog="closeSelectDailog"
+        ></select-tree>
         <select-city-state
             :SelectCityStateDailog="SelectCityStateDailog"
             @dialogReturnCityState="dialogReturnCityState"
@@ -82,9 +77,8 @@
 <script>
 import handleTable from "@src/mixins/handle-table";
 import handleBreadcrumb from "@src/mixins/handle-breadcrumb.js";
-import SelectOrg from "@src/components/SelectOrg1/index";
-import SelectArea from "@src/components/SelectArea2/index";
 import SelectCityState from "@src/components/SelectCityState/index";
+import SelectTree from "@src/components/SelectTree/index";
 import hasRight from "@src/mixins/has-right";
 import { api, urlNames } from "@src/api";
 import { mapState, mapMutations } from "vuex";
@@ -93,9 +87,13 @@ export default {
     name: "ScopeAuthorization",
     data() {
         return {
-            openSelectOrg: false,
-            openSelectArea: false,
             openSelectCityState: false,
+            selectTreeDailog: {
+                title: "选择授权区县",
+                openSelectTreeVisiable: false,
+                isSelectType: 2, // 1 区县  2  单位  3 人员
+                isSingSelect: true, // 是否单选,true 单选，false:多选
+            },
             orgNameList: [],
             areaNameList: [],
             cityStateList: [],
@@ -110,9 +108,8 @@ export default {
         };
     },
     components: {
-        SelectOrg,
-        SelectArea,
         SelectCityState,
+        SelectTree,
     },
     computed: {
         ...mapState(["app"]),
@@ -146,16 +143,22 @@ export default {
             this.SelectCityStateDailog.selectCityStateVisiable = true;
         },
         addArea() {
-            this.openSelectArea = true;
+            this.selectTreeDailog.isSelectType = 1;
+            this.selectTreeDailog.title = "选择授权区县";
+            this.selectTreeDailog.openSelectTreeVisiable = true;
+            this.selectTreeDailog.isSingSelect = true;
         },
         addDep() {
-            this.openSelectOrg = true;
+            this.selectTreeDailog.isSelectType = 2;
+            this.selectTreeDailog.title = "选择授权单位";
+            this.selectTreeDailog.openSelectTreeVisiable = true;
+            this.selectTreeDailog.isSingSelect = false;
         },
-        closeSelectOrg() {
-            this.openSelectOrg = false;
+        closeSelectDailog() {
+            this.selectTreeDailog.openSelectTreeVisiable = false;
         },
-        closeSelectArea() {
-            this.openSelectArea = false;
+        dialogReturnData(data) {
+            this.closeSelectDailog();
         },
         closeSelectCityState() {
             this.SelectCityStateDailog.selectCityStateVisiable = false;
@@ -179,33 +182,6 @@ export default {
                     });
                 }
             });
-        },
-        dialogReturnOrg(data) {
-            let parmas = {
-                uid: this.$route.params.id,
-                authorizedType: 1,
-                userAuthorizedEntityList: data,
-                roleId: this.$route.query.roleId,
-            };
-            console.log(parmas);
-            // api[urlNames["insertAuthorizedEntity"]](parmas).then((res) => {
-            //     this.$message.success(`授权成功`);
-            //     this.getfindAuthorizedEntity();
-            // });
-        },
-        dialogReturnArea(data) {
-            let parmas = {
-                uid: this.$route.params.id,
-                authorizedType: 3,
-                userAuthorizedEntityList: data,
-                roleId: this.$route.query.roleId,
-            };
-            console.log(parmas);
-            this.closeSelectArea();
-            // api[urlNames["insertAuthorizedEntity"]](parmas).then((res) => {
-            //     this.$message.success(`授权成功`);
-            //     this.getfindAuthorizedEntity();
-            // });
         },
         dialogReturnCityState(data) {
             console.log(data);

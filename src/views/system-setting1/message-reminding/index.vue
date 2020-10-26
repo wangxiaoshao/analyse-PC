@@ -1,11 +1,9 @@
 <template>
     <div class="message-reminding">
         <el-form inline>
-            <el-form-item>
-                <el-button size="small" type="primary" @click="openCreateRules"
-                    >创建提醒</el-button
-                ></el-form-item
-            >
+            <!-- <el-form-item>
+               </el-form-item
+            > -->
             <el-form-item>
                 <el-input
                     placeholder="请输入搜索关键词"
@@ -61,19 +59,25 @@
                     align="center"
                     min-width="130"
                 ></el-table-column>
-                <el-table-column label="操作" align="center" width="100px">
+                <el-table-column label="操作" align="center" width="150px">
                     <template slot-scope="scope">
                         <el-button
                             size="mini"
                             type="text"
                             @click="openEditRules(scope.row.id)"
-                            >修改</el-button
+                            >编辑</el-button
                         >
                         <el-button
                             size="mini"
                             type="text"
                             @click="deleteRules(scope.row.id)"
                             >删除</el-button
+                        >
+                        <el-button
+                            size="mini"
+                            type="text"
+                            @click="openCreateRules()"
+                            >去创建</el-button
                         >
                     </template>
                 </el-table-column>
