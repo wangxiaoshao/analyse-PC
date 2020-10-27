@@ -38,6 +38,7 @@
                 <div class="wait-select">
                     <div v-if="!selectTreeDailog.isSingSelect">
                         <el-checkbox
+                            v-show="optionalList.length > 0"
                             :indeterminate="isIndeterminate"
                             v-model="isCheckOptionalAll"
                             class="member-item"
@@ -104,10 +105,24 @@
             <div class="submit">
                 <el-button
                     type="primary"
+                    @click="next"
+                    v-if="selectTreeDailog.isNext"
+                    >下一步</el-button
+                >
+                <el-button
+                    v-if="selectTreeDailog.isLast"
+                    type="primary"
+                    @click="last"
+                    >上一步</el-button
+                >
+                <el-button
+                    v-if="!selectTreeDailog.isNext"
+                    type="primary"
                     @click="submitSelectedData"
                     :disabled="selectedList.length === 0"
                     >确定</el-button
                 >
+
                 <el-button @click="handleClose">取消</el-button>
             </div>
         </el-dialog>
@@ -142,6 +157,7 @@ export default {
                 id: "",
                 isLeaf: "leaf",
             },
+            lastData: [],
         };
     },
     created() {
@@ -237,14 +253,14 @@ export default {
                     }).then((res) => {
                         if (this.selectTreeDailog.isSelectType === 2) {
                             res.data.forEach((item) => {
-                                /* 排除单位下面有人员的情况 ：只显示人员 */
+                                /* 排除单位下面有人员的情况 ：只显示单位部门 */
                                 if (item.treeType !== 5) {
                                     this.optionalList.push(item);
                                 }
                             });
                         } else if (this.selectTreeDailog.isSelectType === 3) {
                             res.data.forEach((item) => {
-                                /* 排除单位下面有人员的情况 ：只显示人员 */
+                                /* 排除单位下面有单位部门的情况 ：只显示人员 */
                                 if (item.treeType === 5) {
                                     this.optionalList.push(item);
                                 }
@@ -354,10 +370,25 @@ export default {
             console.log(this.selectingList, this.selectedList);
             this.$emit("dialogReturnData", this.selectingList);
         },
+
         // 关闭授权区域弹窗组件
         handleClose() {
             // this.selectingList = [];
             this.$emit("closeSelectDailog");
+        },
+
+        // 处理授权范围数据
+        next() {
+            this.lastData = [...this.selectingList];
+            this.$emit("next");
+        },
+        last() {
+            this.selectingList = this.lastData.map((item) => {
+                const label = item;
+                this.addToSelected(label);
+                return label;
+            });
+            this.$emit("last");
         },
         getResult() {},
     },

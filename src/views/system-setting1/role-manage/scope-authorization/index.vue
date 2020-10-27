@@ -114,9 +114,7 @@ export default {
     computed: {
         ...mapState(["app"]),
     },
-    created() {
-        // this.checkAuthorization();
-    },
+    created() {},
     mounted() {
         this.pushBreadcrumb({
             name: "授权范围",
@@ -129,16 +127,6 @@ export default {
     },
     methods: {
         ...mapMutations(["SET_OPTION"]),
-        checkAuthorization() {
-            let that = this;
-
-            api[urlNames["checkAuthorization"]]({
-                roleId: this.$route.query.roleId,
-            }).then((res) => {
-                that.hasAddArea = !!res.data.hasAddArea;
-                that.hasAddOrg = !!res.data.hasAddOrg;
-            });
-        },
         addCityState() {
             this.SelectCityStateDailog.selectCityStateVisiable = true;
         },

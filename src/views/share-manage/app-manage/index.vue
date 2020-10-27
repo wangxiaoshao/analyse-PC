@@ -147,6 +147,7 @@
     </div>
 </template>
 <script>
+import { api, urlNames } from "@src/api";
 import handleTable from "@src/mixins/new/handle-table";
 export default {
     mixins: [handleTable],
@@ -180,6 +181,22 @@ export default {
         };
     },
     methods: {
+        getGrid() {
+            let data = {
+                page: this.page.current,
+                limit: this.page.limit,
+            };
+            api[urlNames["findAccountNumberList"]](data).then(
+                (res) => {
+                    this.applyList = res.data;
+                    this.page.total = res.total;
+                },
+                () => {
+                    this.applyList = [];
+                    this.page.total = 0;
+                }
+            );
+        },
         accountChange() {
             console.log(this.createdOrUpdateForm.account);
         },

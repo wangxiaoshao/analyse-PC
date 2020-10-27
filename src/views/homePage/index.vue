@@ -12,36 +12,45 @@
             >&nbsp;个登录的用户！
         </p>
         <!--昨日登录数据和数据导出box 不使用背景图 -->
-        <!-- <div class="first-box">
+        <div class="first-box">
             <el-card class="box-card">
                 <div class="statics">
-                    <div class="statics-left">
+                    <iframe
+                        src="http://localhost:8088/webroot/decision/v10/entry/access/95f55878-4451-4384-8c96-5e393b3e64fe?preview=true"
+                        frameborder="0"
+                        id="frame1"
+                        marginheight="0"
+                        marginwidth="0"
+                        width="100%"
+                        scrolling="no"
+                    ></iframe>
+                    <!-- <div class="statics-left">
                         <h3>昨日登录人数</h3>
                         <h4>{{ yesterdayLogin }}</h4>
                     </div>
                     <div class="ststics-right">
                         <img src="@src/common/images/login.png" alt="" />
-                    </div>
+                    </div> -->
                 </div>
             </el-card>
             <el-card class="box-card">
                 <div class="statics">
-                    <div class="statics-left">
+                    <!-- <div class="statics-left">
                         <h3>数据导出</h3>
                         <h4>{{ staticsExportTotal }}</h4>
                     </div>
                     <div class="ststics-right">
                         <img src="@src/common/images/login.png" alt="" />
-                    </div>
+                    </div> -->
                 </div>
             </el-card>
-        </div> -->
+        </div>
         <!--昨日登录数据和数据导出box 使用背景图 -->
-        <div class="first-box1">
+        <!-- <div class="first-box1">
             <div class="statics"></div>
 
             <div class="statics"></div>
-        </div>
+        </div> -->
         <div class="home-box">
             <el-card class="box-card">
                 <div slot="header" class="clearfix">
@@ -124,7 +133,13 @@ export default {
             loginNumber: null,
         };
     },
+    created() {},
     mounted() {
+        var test = document
+            .getElementById("frame1")
+            .contentWindow.document.getElementById("content-container");
+        console.log(test);
+        // test.style.overflow = "hidden";
         this.init();
     },
     methods: {

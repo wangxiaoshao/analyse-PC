@@ -1,15 +1,17 @@
 <template>
     <div class="look-person">
-        <select-members
-            :selectDialog="selectDialog"
-            @dialogReturnMembersInfo="dialogReturnMembersInfo"
-            @closeselectMenmber="closeselectMenmber"
-        ></select-members>
+        <select-tree
+            :selectTreeDailog="selectTreeDailog"
+            @dialogReturnData="dialogReturnData"
+            @closeSelectDailog="closeselectMenmber"
+            @next="next"
+            @last="last"
+        ></select-tree>
         <div class="button-wrap">
             <el-button
                 type="primary"
                 class="addPerson"
-                @click="openselectMenmber"
+                @click="openselectMember"
                 >添加角色成员</el-button
             >
             <el-input
@@ -18,7 +20,7 @@
                 prefix-icon="el-icon-search"
                 style="width: 200px; margin: 0px 10px;"
             ></el-input>
-            <el-button @click="findBySearchName" type="primary" plain
+            <el-button @click="getGrid(true)" type="primary" plain
                 >查询</el-button
             >
         </div>
@@ -37,14 +39,11 @@
                 </div>
             </template>
             <el-table-column
-                prop="description"
                 label="序号"
                 width="60"
                 align="center"
+                type="index"
             >
-                <template slot-scope="scope">
-                    <span :title="scope">{{ scope.$index + 1 }}</span>
-                </template>
             </el-table-column>
             <el-table-column prop="name" label="成员姓名"> </el-table-column>
             <el-table-column prop="type" label="身份类型"> </el-table-column>
@@ -86,33 +85,26 @@ import handleTable from "@src/mixins/handle-table";
 import handleBreadcrumb from "@src/mixins/handle-breadcrumb.js";
 import hasRight from "@src/mixins/has-right";
 import { api, urlNames } from "@src/api";
-import SelectMembers from "@src/components/SelectMembers/index";
+import SelectTree from "@src/components/SelectTree/index";
 export default {
     name: "LookPersonPermission",
     mixins: [handleTable, handleBreadcrumb, hasRight],
-    components: { SelectMembers },
+    components: { SelectTree },
     data() {
         return {
             list: [{ uid: 3211 }],
-            permissionId: "",
             loading: false,
-            setFlag: false,
             roleId: parseInt(this.$route.params.id),
             searchName: "",
-            selectDialog: {
-                selectMenmberTitle: "添加管理员", // 选人组件标题
-                selectMenmberFlag: false, // 显示弹窗，
-                isAllData: false, // 是否需完整数据-默认为不需要（false，只包含用户id）
-                notOnlyPerson: true, // 是否选人，默认为false（只选人）
-                isSingleSelect: false, // 是否为单选框  false为多选（默认）-人员单选(与notOnlyPerson一起使用，notOnlyPerson为true是有效
-                isSingleOrgSelect: false, // 是否为单选框  false为多选（默认），true为单选(与isOnlyOrg一起使用，isOnlyOrg为true时内设机构/单位单选)
-                isOnlyOrg: false, //  是否选内设机构/单位 false为不是只选内设机构，true为只选内设机构
+            selectTreeDailog: {
+                title: "选择人员",
+                openSelectTreeVisiable: false,
+                isSelectType: 3, // 1 区县  2  单位  3 人员
+                isSingSelect: false, // 是否单选,true 单选，false:多选
+                isNext: true,
+                isLast: false,
             },
             userId: [],
-            hasAddArea: false,
-            hasAddOrg: false,
-            hasAddUser: false,
-            hasAddAuthority: false,
         };
     },
     created() {
@@ -138,10 +130,14 @@ export default {
                 path: `/role-manage/scope-authorization/${val.uid}?roleId=${this.roleId}`,
             });
         },
-        getGrid() {
+        getGrid(flag) {
+            if (flag) {
+                this.page.current = 1;
+            }
             let data = {
-                page: this.page.current,
+                searchName: this.searchName,
                 roleId: this.$route.params.id,
+                page: this.page.current,
                 limit: this.page.limit,
             };
             this.loading = true;
@@ -149,36 +145,14 @@ export default {
                 (res) => {
                     this.loading = false;
                     this.list = res.data;
-                    this.permissionId = res.roleId;
                     this.page.total = res.total;
                 },
                 () => {
                     this.loading = false;
-                }
-            );
-        },
-        findBySearchName() {
-            let data = {
-                roleId: this.$route.params.id,
-                searchName: this.searchName,
-                page: 1,
-                limit: this.page.limit,
-            };
-            api[urlNames["searchRoleBindUserList"]](data).then(
-                (res) => {
-                    this.loading = false;
-                    this.list = res.data;
-                    this.page.total = res.total;
-                },
-                () => {
-                    this.loading = false;
-                    this.list = [];
-                    this.page.total = 0;
                 }
             );
         },
         getDelete(row) {
-            this.userId = row.uid;
             this.$confirm("此操作将永久删除该数据, 是否继续?", "提示", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
@@ -210,45 +184,40 @@ export default {
                 }
             );
         },
-        openselectMenmber() {
-            this.selectDialog.selectMenmberFlag = true;
-            this.userId = [];
+        openselectMember() {
+            this.selectTreeDailog.openSelectTreeVisiable = true;
         },
         closeselectMenmber() {
-            this.selectDialog.selectMenmberFlag = false;
+            this.selectTreeDailog.openSelectTreeVisiable = false;
         },
-        getSetFlag(val) {
-            this.setFlag = val;
+        dialogReturnData(data) {
+            // 保存
+            // if (JSON.parse(JSON.stringify(data)) !== []) {
+            //     api[urlNames["saveRoleBindUser"]]({
+            //         id: this.$route.params.id,
+            //         userList: this.userId,
+            //     }).then(
+            //         (res) => {
+            //             this.$message.success(`添加成功`);
+            //             this.getGrid();
+            //         },
+            //         () => {
+            //             this.$message.error(`保存失败，请重试`);
+            //         }
+            //     );
+            // }
         },
-        dialogReturnMembersInfo(data, flag) {
-            if (data.length === 0) {
-                this.$message.info("您没有选择成员");
-                return false;
-            }
-            if (flag === 0) {
-                JSON.parse(JSON.stringify(data)).forEach((item) => {
-                    let obj = {
-                        uid: item,
-                    };
-                    this.userId.push(obj);
-                });
-                // 保存
-                if (JSON.parse(JSON.stringify(data)) !== []) {
-                    api[urlNames["saveRoleBindUser"]]({
-                        id: this.$route.params.id,
-                        userList: this.userId,
-                    }).then(
-                        (res) => {
-                            this.$message.success(`添加成功`);
-                            this.getGrid();
-                        },
-                        () => {
-                            this.$message.error(`保存失败，请重试`);
-                        }
-                    );
-                }
-            }
-            this.userId = [];
+        next() {
+            this.selectTreeDailog.isNext = false;
+            this.selectTreeDailog.isLast = true;
+            this.selectTreeDailog.title = "授权范围";
+            this.selectTreeDailog.isSelectType = 1;
+        },
+        last() {
+            this.selectTreeDailog.title = "选择人员";
+            this.selectTreeDailog.isSelectType = 3;
+            this.selectTreeDailog.isNext = true;
+            this.selectTreeDailog.isLast = false;
         },
     },
 };
@@ -273,16 +242,5 @@ export default {
     padding-top: 20px;
     width: 60px;
     height: auto;
-}
-p.valid-sign-failure {
-    line-height: 15px;
-    text-indent: 0;
-    color: red;
-    img {
-        width: 15px;
-        height: 15px;
-        vertical-align: bottom;
-        margin-right: 10px;
-    }
 }
 </style>

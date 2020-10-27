@@ -10,10 +10,6 @@ const lookPersonPermission = () =>
     import(
         /* webpackChunkName: "RoleManage" */ "@src/views/system-setting1/role-manage/look-person-permission/index.vue"
     );
-const PermissionSet = () =>
-    import(
-        /* webpackChunkName: "RoleManage" */ "@src/views/system-setting1/role-manage/permission-set/index.vue"
-    );
 const ScopeAuthorization = () =>
     import(
         /* webpackChunkName: "RoleManage" */ "@src/views/system-setting1/role-manage/scope-authorization/index.vue"
@@ -37,11 +33,6 @@ export default [
                 path: "look-person-permission/:id",
                 name: "lookPersonPermission",
                 component: lookPersonPermission,
-            },
-            {
-                path: "permission-set/:id",
-                name: "PermissionSet",
-                component: PermissionSet,
             },
             {
                 path: "scope-authorization/:id",

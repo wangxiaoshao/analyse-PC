@@ -14,46 +14,48 @@
                 :rules="rulesOption"
                 ref="createdOrUpdateForm"
             >
-                <el-form-item label="账号：" prop="account">
+                <el-form-item label="账号：" prop="account_number">
                     <el-input
                         placeholder="请输入账号"
-                        v-model="createdOrUpdateForm.account"
+                        v-model="createdOrUpdateForm.account_number"
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="密码：" prop="password">
                     <el-input
+                        type="password"
+                        show-password
                         placeholder="请输入密码"
                         v-model="createdOrUpdateForm.password"
                     ></el-input>
                 </el-form-item>
-                <el-form-item label="单位名称：" prop="password">
+                <el-form-item label="单位名称：" prop="company">
                     <el-input
                         placeholder="请输入单位名称"
-                        v-model="createdOrUpdateForm.password"
+                        v-model="createdOrUpdateForm.company"
                     ></el-input>
                 </el-form-item>
-                <el-form-item label="联系人：" prop="password">
+                <el-form-item label="联系人：" prop="contacts">
                     <el-input
                         placeholder="请输入联系人"
-                        v-model="createdOrUpdateForm.password"
+                        v-model="createdOrUpdateForm.contacts"
                     ></el-input>
                 </el-form-item>
-                <el-form-item label="联系电话：" prop="telephone">
+                <el-form-item label="联系电话：" prop="telephone_number">
                     <el-input
                         placeholder="请输入联系电话"
-                        v-model="createdOrUpdateForm.telephone"
+                        v-model="createdOrUpdateForm.telephone_number"
                     ></el-input>
                 </el-form-item>
-                <el-form-item label="是否启用：" prop="disabled">
+                <el-form-item label="是否启用：" prop="is_banned">
                     <el-switch
                         :active-value="0"
                         :inactive-value="1"
-                        v-model="createdOrUpdateForm.disabled"
+                        v-model="createdOrUpdateForm.is_banned"
                     ></el-switch>
                 </el-form-item>
-                <el-form-item label="备注说明：" prop="description">
+                <el-form-item label="备注说明：" prop="comment">
                     <el-input
-                        v-model="createdOrUpdateForm.description"
+                        v-model="createdOrUpdateForm.comment"
                         type="textarea"
                         placeholder="请输入..."
                     ></el-input>
@@ -62,7 +64,7 @@
             <div style="text-align: center; margin-top: -25px;" slot="footer">
                 <el-button
                     type="primary"
-                    @click="createdOrUpdateAccount('createdOrUpdateForm')"
+                    @click="submitAccount('createdOrUpdateForm')"
                     >保存</el-button
                 >
                 <el-button @click="closeCreateDailog">取消</el-button>
@@ -72,7 +74,7 @@
             <el-button
                 type="primary"
                 @click="openCreateDailog('createdOrUpdateForm')"
-                >创建账号</el-button
+                >创建关联</el-button
             >
         </div>
         <div class="table-box">
@@ -90,32 +92,38 @@
                     </div>
                 </template>
                 <el-table-column
-                    prop="account"
+                    prop="account_number"
                     label="账号"
                     align="center"
                 ></el-table-column>
 
                 <el-table-column
-                    prop="userName"
+                    prop="create_time"
                     label="创建时间"
                     align="center"
                 ></el-table-column>
                 <el-table-column
-                    prop="userName"
+                    prop="company"
                     label="公司/单位名称"
                     align="center"
                 ></el-table-column>
                 <el-table-column
-                    prop="actionTime"
+                    prop="contacts"
                     label="联系人"
                     align="center"
                 ></el-table-column>
                 <el-table-column
-                    prop="description"
+                    prop="is_banned"
                     label="启用状态"
                     align="center"
-                ></el-table-column>
-                <el-table-column label="操作" align="center" width="100px">
+                >
+                    <template slot-scope="scope">
+                        <span>{{
+                            scope.row.is_banned === 0 ? "正常" : "禁用"
+                        }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="操作" align="center" width="110px">
                     <template slot-scope="scope">
                         <el-button
                             size="mini"
@@ -145,58 +153,167 @@
     </div>
 </template>
 <script>
+import { api, urlNames } from "@src/api";
 import handleTable from "@src/mixins/new/handle-table";
 export default {
     mixins: [handleTable],
     data() {
+        // 验证手机号
+        let validateMobile = (rule, value, callback) => {
+            if (value !== "" && value) {
+                let reg = /^((13[0-9])|(15[^4])|(18[0,1,2,3,5-9])|(17[0-8])|(147)(199))\d{8}$/;
+                reg.test(value)
+                    ? callback()
+                    : callback(new Error("请输入11位有效号码"));
+            } else {
+                callback();
+            }
+        };
         return {
-            accountList: [{ account: "123@" }],
-            dialogTitle: "创建账号",
+            accountList: [
+                { account_number: "123@", is_banned: 0, password: "222" },
+            ],
+            dialogTitle: "创建关联",
             createdOrUpdateVisiable: false,
             createdOrUpdateForm: {
-                account: "",
+                account_number: "",
                 password: "",
-                telephone: "",
-                disabled: 0,
-                description: "",
+                company: "",
+                contacts: "",
+                telephone_number: "",
+                is_banned: 0,
                 id: "",
+                comment: "",
             },
             rulesOption: {
-                account: [
+                account_number: [
                     {
                         required: true,
                         message: "账号不能为空",
                         trigger: "blur",
                     },
                 ],
+                password: [
+                    {
+                        required: true,
+                        message: "密码不能为空",
+                        trigger: "blur",
+                    },
+                ],
+                company: [
+                    {
+                        required: true,
+                        message: "公司名称不能为空",
+                        trigger: "blur",
+                    },
+                ],
+                contacts: [
+                    {
+                        required: true,
+                        message: "联系人不能为空",
+                        trigger: "blur",
+                    },
+                ],
+                telephone_number: [
+                    {
+                        required: true,
+                        message: "联系电话不能为空",
+                        trigger: "blur",
+                    },
+                    { validator: validateMobile, trigger: "blur" },
+                ],
+                is_banned: [
+                    {
+                        required: true,
+                        message: "联系电话不能为空",
+                        trigger: "blur",
+                    },
+                ],
             },
         };
     },
+    mounted() {
+        // this.getGrid();
+    },
     methods: {
-        createdOrUpdateAccount(form) {
+        // 获取关联类表
+        generateRandomAccount() {
+            this.createdOrUpdateForm.account_number = "";
+            this.createdOrUpdateForm.password = "";
+            const lib =
+                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@";
+            const libLength = lib.length;
+            const usernameLength = 5;
+            const passwordlength = 32;
+
+            for (let i = 0; i < usernameLength; i++) {
+                this.createdOrUpdateForm.account_number +=
+                    lib[Math.floor(Math.random() * libLength)];
+            }
+            this.createdOrUpdateForm.account_number +=
+                "" + new Date().getTime();
+            for (let i = 0; i < passwordlength; i++) {
+                this.createdOrUpdateForm.password +=
+                    lib[Math.floor(Math.random() * libLength)];
+            }
+        },
+        getGrid() {
+            let data = {
+                page: this.page.current,
+                limit: this.page.limit,
+            };
+            api[urlNames["findAccountNumberList"]](data).then(
+                (res) => {
+                    this.accountList = res.data;
+                    this.page.total = res.total;
+                },
+                () => {
+                    this.accountList = [];
+                    this.page.total = 0;
+                }
+            );
+        },
+        submitAccount(form) {
             this.$refs[form].validate((valid) => {
                 if (valid) {
-                    // api[urlNames["createTxlGroup"]](
-                    //     this.createdOrUpdateForm
-                    // ).then((res) => {
-                    //     if (res.status === 0) {
-                    //         this.closeAddressDialog();
-                    //         this.getGrid();
-                    //         this.$message.success(
-                    //             this.createdOrUpdateForm.id === ""
-                    //                 ? "创建成功"
-                    //                 : "编辑成功"
-                    //         );
-                    //     } else {
-                    //         this.$message.warning("操作失败，请稍后再试");
-                    //     }
-                    // });
+                    if (this.createdOrUpdateForm.id === "") {
+                        this.createdAccount();
+                    } else {
+                        this.updateAccount();
+                    }
                 } else {
                     this.$message.warning("请根据提示填写必填字段");
                 }
             });
         },
+        createdAccount() {
+            api[urlNames["createSystemMessage"]](this.createdOrUpdateForm).then(
+                (res) => {
+                    if (res.status === 0) {
+                        this.closeAddressDialog();
+                        this.getGrid();
+                        this.$message.success("创建成功");
+                    } else {
+                        this.$message.warning("操作失败，请稍后再试");
+                    }
+                }
+            );
+        },
+        updateAccount() {
+            api[urlNames["updatesSystemMessage"]](
+                this.createdOrUpdateForm
+            ).then((res) => {
+                if (res.status === 0) {
+                    this.closeAddressDialog();
+                    this.getGrid();
+                    this.$message.success("修改成功");
+                } else {
+                    this.$message.warning("操作失败，请稍后再试");
+                }
+            });
+        },
         openCreateDailog(formName) {
+            this.generateRandomAccount();
             this.dialogTitle = "创建账号";
             this.createdOrUpdateForm.id = "";
             this.createdOrUpdateVisiable = true;
@@ -209,10 +326,13 @@ export default {
         },
         openEditDialog(row) {
             this.dialogTitle = "编辑账号";
-            // this.createdOrUpdateForm.id = row.id;
-            // this.createdOrUpdateForm.disabled = row.disabled;
-            this.createdOrUpdateForm.account = row.account;
-            // this.createdOrUpdateForm.description = row.description;
+            this.createdOrUpdateForm.id = row.id;
+            this.createdOrUpdateForm.account_number = row.account_number;
+            this.createdOrUpdateForm.password = row.password;
+            this.createdOrUpdateForm.company = row.company;
+            this.createdOrUpdateForm.contacts = row.contacts;
+            this.createdOrUpdateForm.telephone_number = row.telephone_number;
+            this.createdOrUpdateForm.is_banned = row.is_banned;
             this.createdOrUpdateVisiable = true;
         },
         deleteAccount(id) {},
