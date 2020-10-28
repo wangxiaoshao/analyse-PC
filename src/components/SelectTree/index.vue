@@ -54,7 +54,7 @@
                                 class="member-item"
                                 v-for="(item, index) in optionalList"
                                 :key="index"
-                                :label="item"
+                                :label="JSON.stringify(item)"
                             >
                                 {{ item.treeName }}
                             </el-checkbox>
@@ -69,7 +69,7 @@
                                 v-for="(item, index) in optionalList"
                                 :key="index"
                                 style="display: block;"
-                                :label="item"
+                                :label="JSON.stringify(item)"
                             >
                                 {{ item.treeName }}</el-radio
                             >
@@ -92,9 +92,9 @@
                             <el-checkbox
                                 style="display: block;"
                                 class="member-item"
-                                v-for="(item, index) in selectingList"
+                                v-for="(item, index) in selectCheckList"
                                 :key="index"
-                                :label="item"
+                                :label="JSON.stringify(item)"
                             >
                                 {{ item.treeName }}
                             </el-checkbox>
@@ -106,7 +106,10 @@
                 <el-button
                     type="primary"
                     @click="next"
-                    v-if="selectTreeDailog.isNext"
+                    :disabled="selectingList.length === 0"
+                    v-if="
+                        selectTreeDailog.isNext && roleId !== 1 && roleId !== 2
+                    "
                     >下一步</el-button
                 >
                 <el-button
@@ -116,10 +119,12 @@
                     >上一步</el-button
                 >
                 <el-button
-                    v-if="!selectTreeDailog.isNext"
+                    v-if="
+                        !selectTreeDailog.isNext || roleId === 1 || roleId === 2
+                    "
                     type="primary"
                     @click="submitSelectedData"
-                    :disabled="selectedList.length === 0"
+                    :disabled="selectingList.length === 0"
                     >确定</el-button
                 >
 
@@ -143,6 +148,7 @@ export default {
     props: ["selectTreeDailog"],
     data() {
         return {
+            roleId: parseInt(this.$route.params.roleId),
             searchKeyWord: "",
             optionalList: [], // 可选列表
             treeData: [],
@@ -158,6 +164,8 @@ export default {
                 isLeaf: "leaf",
             },
             lastData: [],
+            nextData: [],
+            selectCheckList: [],
         };
     },
     created() {
@@ -272,7 +280,6 @@ export default {
                 }
             }
         },
-
         // 全选可选区域
         toggleOptionalAll(selected) {
             this.selectingList = selected ? this.optionalList : [];
@@ -280,13 +287,13 @@ export default {
             let that = this;
             if (selected) {
                 that.optionalList.forEach((item) => {
-                    const label = item;
-                    that.addSelecting(item);
-                    that.addToSelected(label);
+                    const label = JSON.stringify(item);
+                    that.addSelecting(label);
+                    that.addToSelected(item);
                 });
             } else {
                 that.optionalList.forEach((item) => {
-                    const label = item;
+                    const label = JSON.stringify(item);
                     that.removeSelecting(item);
                     that.removeSelected(label);
 
@@ -299,6 +306,7 @@ export default {
         },
         // 取消全选候选区域
         removeSelectingAll() {
+            this.isCheckOptionalAll = false;
             this.selectedList = [];
             this.selectingList = [];
         },
@@ -307,17 +315,17 @@ export default {
             this.isCheckOptionalAll = checkedCount === this.optionalList.length;
             this.isIndeterminate =
                 val.length > 0 && val.length < this.optionalList.length;
-            this.selectingList = val.map((item) => {
-                const label = item;
-                this.addToSelected(label);
+            this.selectCheckList = val.map((item) => {
+                const label = JSON.parse(item);
+                this.addToSelected(item);
                 return label;
             });
         },
         selectedChange(val) {
             this.selectingList.forEach((item) => {
                 if (!val.includes(item)) {
-                    this.removeSelected(item);
                     this.removeSelecting(item);
+                    this.removeSelected(JSON.parse(item));
                 }
             });
         },
@@ -340,11 +348,11 @@ export default {
             this.selectingList.push(label);
         },
         removeSelected(label) {
-            let i = this.selectedList.length - 1;
+            let i = this.selectCheckList.length - 1;
             while (i >= 0) {
-                const current = this.selectedList[i];
+                const current = this.selectCheckList[i];
                 if (current.treeId === label.treeId) {
-                    this.selectedList.splice(i, 1);
+                    this.selectCheckList.splice(i, 1);
                     return;
                 }
 
@@ -361,14 +369,14 @@ export default {
         // 单选方法
         singleSelectingChange(val) {
             this.selectingList = [];
-            this.selectingList[0] = this.selectingSingle;
+            this.selectingList[0] = JSON.parse(val);
             this.selectedList[0] = val;
         },
 
         // 返回数据
         submitSelectedData() {
-            console.log(this.selectingList, this.selectedList);
-            this.$emit("dialogReturnData", this.selectingList);
+            console.log(this.selectCheckList, this.lastData);
+            this.$emit("dialogReturnData", this.selectCheckList, this.lastData);
         },
 
         // 关闭授权区域弹窗组件
@@ -383,11 +391,7 @@ export default {
             this.$emit("next");
         },
         last() {
-            this.selectingList = this.lastData.map((item) => {
-                const label = item;
-                this.addToSelected(label);
-                return label;
-            });
+            this.nextData = [...this.selectingList];
             this.$emit("last");
         },
         getResult() {},
@@ -399,9 +403,22 @@ export default {
     },
     watch: {
         type() {
-            this.selectingList = [];
-            this.selectedList = [];
             this.optionalList = [];
+            if (!this.selectTreeDailog.isLast) {
+                this.selectingList = this.lastData.map((item) => {
+                    const label = item;
+                    this.addToSelected(label);
+                    return label;
+                });
+            } else if (!this.selectTreeDailog.isNext) {
+                this.selectingList = this.nextData.map((item) => {
+                    const label = item;
+                    this.addToSelected(label);
+                    return label;
+                });
+            } else {
+                this.selectingList = this.selectedList = [];
+            }
             this.findAreaTree();
         },
     },

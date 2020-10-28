@@ -4,7 +4,6 @@ export const SET_WINDOWWIDTH = "SET_WINDOWWIDTH";
 export const SET_BREADCRUMB = "SET_BREADCRUMB";
 export const SET_PAGE_BREADCRUMB = "SET_PAGE_BREADCRUMB";
 export const GET_CONFIRM_INFO = "GET_CONFIRM_INFO";
-export const SET_OPTION = "SET_OPTION";
 // application
 export const SET_APPLICATION_PAGE = "SET_APPLICATION_PAGE";
 export const SET_APPLICATION_SEARCH_QUERY = "SET_APPLICATION_SEARCH_QUERY";
@@ -21,11 +20,7 @@ export const PERSON_PAGE = "PERSON_PAGE";
 export const LIST_ID = "LIST_ID";
 export const ROLE_ID = "ROLE_ID";
 
-// 组织机构
-export const SET_ORGANIZATION_PAGE = "SET_ORGANIZATION_PAGE";
-export const SET_ORGANIZATION_BACK_INFO = "SET_ORGANIZATION_BACK_INFO";
 export const DIC_LIST = "DIC_LIST";
-export const SET_TREE_ID = "SET_TREE_ID";
 
 // 角色信息
 export const SET_ROLE_INFO = "SET_ROLE_INFO";

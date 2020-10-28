@@ -53,7 +53,7 @@ module.exports = function (options) {
                     // target: "http://59.215.232.95/",
                     //         target: "http://org.gz.cegn.cn/",
                     // target: "http://txl.org.gz.cegn.cn/",
-                    target: "http://172.18.1.89:8080/",
+                    target: "http://172.18.1.90:8080/",
                     changeOrigin: true,
                     // target: "http://10.226.11.177/",
                     //  changeOrigin: true,

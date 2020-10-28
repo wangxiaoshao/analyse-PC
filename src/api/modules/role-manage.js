@@ -1,49 +1,30 @@
 import urlNames from "../url-names";
 export default {
-    // 共享管理--获取树
-    [urlNames.getTreeList]: {
+    // 权限管理--获取权限列表
+    [urlNames.getRoleList]: {
         type: "get",
-        url: "/api/appdata/areaOrg/getTreeList",
+        url: "/api/appdata/auth/getRoleList",
         keepOriginResponse: true,
         showLoading: true,
         serve: "organizationManagePC",
     },
-    // 关联管理--获取列表
-    [urlNames.findAccountNumberList]: {
+    // 权限管理--获取指定角色的人员列表
+    [urlNames.getAuthUsersByRole]: {
         type: "get",
-        url: "/api/createSystem/findAccountNumberList",
+        url: "/api/appdata/auth/getAuthUsersByRole",
         keepOriginResponse: true,
         showLoading: true,
         serve: "organizationManagePC",
     },
-    // 关联管理--创建关联
-    [urlNames.createSystemMessage]: {
+    // 权限管理--添加成员授权范围
+    [urlNames.addUserAuthScope]: {
         type: "post",
-        url: "/api/createSystem/createSystemMessage",
+        url: "/api/appdata/auth/addUserAuthScope",
         keepOriginResponse: true,
         showLoading: true,
         serve: "organizationManagePC",
         headers: {
             "Content-Type": "application/json",
         },
-    },
-    // 关联管理--修改关联
-    [urlNames.updatesSystemMessage]: {
-        type: "post",
-        url: "/api/createSystem/updatesSystemMessage",
-        keepOriginResponse: true,
-        showLoading: true,
-        serve: "organizationManagePC",
-        headers: {
-            "Content-Type": "application/json",
-        },
-    },
-    // 关联管理--删除关联
-    [urlNames.deleteAccountNumber]: {
-        type: "get",
-        url: "/api/createSystem/deleteAccountNumber",
-        keepOriginResponse: true,
-        showLoading: true,
-        serve: "organizationManagePC",
     },
 };

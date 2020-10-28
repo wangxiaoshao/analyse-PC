@@ -25,7 +25,7 @@
             >
         </div>
         <!--表格-->
-        <el-table :data="list" border>
+        <el-table :data="userlist" border>
             <template slot="empty">
                 <div class="empty">
                     <p>
@@ -45,15 +45,28 @@
                 type="index"
             >
             </el-table-column>
-            <el-table-column prop="name" label="成员姓名"> </el-table-column>
-            <el-table-column prop="type" label="身份类型"> </el-table-column>
+            <el-table-column prop="uName" label="成员姓名"> </el-table-column>
             <el-table-column prop="orgName" label="单位名称"> </el-table-column>
+            <el-table-column prop="createTime" label="创建时间" align="center">
+                <template slot-scope="scope">
+                    <span>{{
+                        scope.row.createTime | dataFilter("YYYY-MM-DD HH:mm:ss")
+                    }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column prop="updateTime" label="修改时间" align="center">
+                <template slot-scope="scope">
+                    {{
+                        scope.row.updateTime | dataFilter("YYYY-MM-DD HH:mm:ss")
+                    }}
+                </template>
+            </el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                     <el-button
                         size="mini"
                         type="text"
-                        v-if="roleId === 2 || roleId === 3 || roleId === 5"
+                        v-if="roleId !== 1 && roleId !== 2"
                         @click="toAuthorization(scope.row)"
                         >授权范围</el-button
                     >
@@ -92,9 +105,9 @@ export default {
     components: { SelectTree },
     data() {
         return {
-            list: [{ uid: 3211 }],
+            userlist: [{ uid: 3211 }],
             loading: false,
-            roleId: parseInt(this.$route.params.id),
+            roleId: parseInt(this.$route.params.roleId),
             searchName: "",
             selectTreeDailog: {
                 title: "选择人员",
@@ -108,7 +121,8 @@ export default {
         };
     },
     created() {
-        this.init();
+        this.getGrid();
+        console.log(this.$store.state.app.rolesInfo);
     },
     mounted() {
         this.pushBreadcrumb({
@@ -122,9 +136,6 @@ export default {
         });
     },
     methods: {
-        init() {
-            // this.getGrid();
-        },
         toAuthorization(val) {
             this.$router.push({
                 path: `/role-manage/scope-authorization/${val.uid}?roleId=${this.roleId}`,
@@ -136,15 +147,15 @@ export default {
             }
             let data = {
                 searchName: this.searchName,
-                roleId: this.$route.params.id,
+                roleId: this.$route.params.roleId,
                 page: this.page.current,
-                limit: this.page.limit,
+                pageSize: this.page.limit,
             };
             this.loading = true;
-            api[urlNames["getRoleBindUserList"]](data).then(
+            api[urlNames["getAuthUsersByRole"]](data).then(
                 (res) => {
                     this.loading = false;
-                    this.list = res.data;
+                    this.userlist = res.data;
                     this.page.total = res.total;
                 },
                 () => {
@@ -186,26 +197,45 @@ export default {
         },
         openselectMember() {
             this.selectTreeDailog.openSelectTreeVisiable = true;
+            this.selectTreeDailog.title = "选择人员";
+            this.selectTreeDailog.isSelectType = 3;
+            this.selectTreeDailog.isNext = true;
+            this.selectTreeDailog.isLast = false;
         },
         closeselectMenmber() {
             this.selectTreeDailog.openSelectTreeVisiable = false;
         },
-        dialogReturnData(data) {
+        dialogReturnData(userData, authData) {
+            console.log(this.$store.state.app.rolesInfo);
             // 保存
-            // if (JSON.parse(JSON.stringify(data)) !== []) {
-            //     api[urlNames["saveRoleBindUser"]]({
-            //         id: this.$route.params.id,
-            //         userList: this.userId,
-            //     }).then(
-            //         (res) => {
-            //             this.$message.success(`添加成功`);
-            //             this.getGrid();
-            //         },
-            //         () => {
-            //             this.$message.error(`保存失败，请重试`);
-            //         }
-            //     );
-            // }
+            let uid = [];
+            let authorizedOid = [];
+            userData.forEach((item) => {
+                uid.push(item.treeId);
+            });
+            authData.forEach((item) => {
+                authorizedOid.push(item.treeId);
+            });
+            let data = {
+                roleId: this.$route.params.roleId,
+                authorizedType: this.$store.state.app.rolesInfo.authorizedType,
+                uid,
+                authorizedOid,
+            };
+            this.addUserAuth(data);
+        },
+        addUserAuth(data) {
+            api[urlNames["addUserAuthScope"]](data).then(
+                (res) => {
+                    this.$message.success(`添加成功`);
+                    this.closeselectMenmber();
+                    this.getGrid();
+                },
+                () => {
+                    this.closeselectMenmber();
+                    this.$message.error(`保存失败，请重试`);
+                }
+            );
         },
         next() {
             this.selectTreeDailog.isNext = false;

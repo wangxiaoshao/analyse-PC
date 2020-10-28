@@ -5,7 +5,7 @@
 /* eslint-disable */
 
 import Vue from 'vue'
-
+import moment from 'moment'
 Vue.filter('date', function (time, fmt) {
   if (time) {
     var re = /-?\d+/;
@@ -118,6 +118,16 @@ Vue.filter('millisecondToTime', function (value) {
     return ''
   }
 })
+
+/*
+ * @Description：时间转换：今天/昨天/具体日期（fmt）
+ * @param：
+ *  dataStr: 标准时间：yyyy-MM-dd hh:mm:ss
+ *  patten: 具体日期的显示格式 'YYYY-MM-DD HH:mm:ss' 或者yyyy-MM-dd 等
+ */
+Vue.filter('dataFilter',function (dataStr,patten) {
+  return moment(dataStr).format(patten)
+});
 
 /*----- util function ------*/
 const getDefiniteDateStr = (timestamp) => {

@@ -81,7 +81,7 @@ import SelectCityState from "@src/components/SelectCityState/index";
 import SelectTree from "@src/components/SelectTree/index";
 import hasRight from "@src/mixins/has-right";
 import { api, urlNames } from "@src/api";
-import { mapState, mapMutations } from "vuex";
+import { mapState } from "vuex";
 export default {
     mixins: [handleTable, handleBreadcrumb, hasRight],
     name: "ScopeAuthorization",
@@ -126,7 +126,6 @@ export default {
         // this.getfindAuthorizedEntity();
     },
     methods: {
-        ...mapMutations(["SET_OPTION"]),
         addCityState() {
             this.SelectCityStateDailog.selectCityStateVisiable = true;
         },

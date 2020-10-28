@@ -9,9 +9,9 @@ export default {
     },
     methods: {
         getGlobalInfo() {
-            api[urlNames["option"]]().then((res) => {
+            api[urlNames["getUserRole"]]().then((res) => {
                 if (res.status === 0) {
-                    this.$store.commit("SET_OPTION", res.data || {});
+                    this.$store.commit("SET_ROLE_INFO", res.data || {});
                 } else {
                     alert(res.message);
                 }

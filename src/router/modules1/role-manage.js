@@ -30,7 +30,7 @@ export default [
                 component: RoleList,
             },
             {
-                path: "look-person-permission/:id",
+                path: "look-person-permission/:roleId",
                 name: "lookPersonPermission",
                 component: lookPersonPermission,
             },

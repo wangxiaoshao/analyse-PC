@@ -34,9 +34,6 @@ const app = {
         [types.DIC_LIST](state, val) {
             state.dicList = val;
         },
-        [types.SET_OPTION](state, val) {
-            state.option = val;
-        },
         [types.GET_CONFIRM_INFO](state, val) {
             state.confirmState = val;
         },

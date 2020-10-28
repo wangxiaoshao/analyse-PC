@@ -16,7 +16,7 @@ import "@src/common/font_1568136_nu78g9xw7jp/iconfont.js";
 import "@src/common/font_1568136_nu78g9xw7jp/icon.css";
 import VueCookies from "vue-cookie";
 import "./filters";
-// import { api, urlNames } from "@src/api";
+import { api, urlNames } from "@src/api";
 import initRouter from "@src/router/index";
 Vue.use(VueCookies);
 Vue.use(elementUI, {
@@ -49,18 +49,12 @@ new Vue({
     store,
     render: (h) => h(App),
     created() {
-        let obj = { id: 1, name: "系统管理员wxs" };
-        this.$store.commit("SET_ROLE_INFO", obj || {});
-        // this.$store.commit("SET_OPTION", options || {});
-        // api[urlNames["getTreeList"]]().then((res) => {
-        //     // let router = initRouter();
-        //     console.log(res, "bbbbbbb");
-        //     if (res.status === 0) {
-        //         // initVueInstance(router, res.data);
-        //         // this.$store.commit("SET_OPTION", res.data || {});
-        //     } else {
-        //         alert(res.message);
-        //     }
-        // });
+        api[urlNames["getUserRole"]]().then((res) => {
+            if (res.status === 0) {
+                this.$store.commit("SET_ROLE_INFO", res.data || {});
+            } else {
+                alert(res.message);
+            }
+        });
     },
 }).$mount("#app");

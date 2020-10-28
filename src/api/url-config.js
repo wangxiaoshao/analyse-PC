@@ -10,6 +10,7 @@ import systemLog from "./modules/system-log";
 import helpCenter from "./modules/help-center";
 import shareManage from "./modules/share-manage";
 import assessment from "./modules/assessment";
+import globalData from "./modules/global-data";
 export default {
     // 应用管理
     ...homePage,
@@ -21,4 +22,5 @@ export default {
     ...helpCenter,
     ...shareManage,
     ...assessment,
+    ...globalData,
 };

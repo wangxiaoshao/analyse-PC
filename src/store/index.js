@@ -3,7 +3,6 @@ import Vuex from "vuex";
 
 import app from "./modules/app";
 import application from "./modules/application";
-import organization from "./modules/organization";
 
 import examine from "./modules/examine"; // 申请审核
 import roleManage from "./modules/role-manage";
@@ -21,7 +20,6 @@ const store = new Vuex.Store({
     modules: {
         app,
         application,
-        organization,
         // 申请审核
         examine,
         roleManage,

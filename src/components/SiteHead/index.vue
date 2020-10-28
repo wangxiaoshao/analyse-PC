@@ -13,7 +13,9 @@
                 <div class="site__head--right">
                     <a
                         ><span class="el-icon-user userIcon"></span
-                        >{{ this.$store.state.app.rolesInfo.name || "" }}</a
+                        >{{
+                            this.$store.state.app.rolesInfo.roleTitle || ""
+                        }}</a
                     >
                     <a class="my-apply" @click="goMyApplication"
                         >我的应用情况</a

@@ -20,15 +20,15 @@
                 </div>
             </template>
             <el-table-column
-                prop="title"
+                prop="roleTitle"
                 label="角色名称"
                 width="200"
                 align="center"
             >
             </el-table-column>
-            <el-table-column prop="description" label="角色描述" align="center">
+            <el-table-column prop="roleDesc" label="角色描述" align="center">
                 <template slot-scope="scope">
-                    <span>{{ scope.row.description || "无" }}</span>
+                    <span>{{ scope.row.roleDesc || "无" }}</span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -37,26 +37,36 @@
                 min-width="200"
                 align="center"
             >
+                <template slot-scope="scope">
+                    <span>{{
+                        scope.row.createTime | dataFilter("YYYY-MM-DD HH:mm:ss")
+                    }}</span>
+                </template>
             </el-table-column>
             <el-table-column
-                prop="updatedTime"
+                prop="updateTime"
                 label="修改时间"
                 min-width="200"
                 align="center"
             >
+                <template slot-scope="scope">
+                    {{
+                        scope.row.updateTime | dataFilter("YYYY-MM-DD HH:mm:ss")
+                    }}
+                </template>
             </el-table-column>
             <el-table-column
-                prop="value"
-                label="启用状态"
+                prop="removed"
+                label="是否删除"
                 width="100"
                 align="center"
             >
                 <template slot-scope="scope">
                     <span class="text-able" v-show="scope.row.removed === 0"
-                        >启用</span
+                        >未删除</span
                     >
                     <span class="text-disable" v-show="scope.row.removed === 1"
-                        >停用</span
+                        >已删除</span
                     >
                 </template>
             </el-table-column>
@@ -82,33 +92,28 @@ export default {
     mixins: [handleTable],
     data() {
         return {
-            rolesList: [
-                { allowAction: true, id: 1, title: "系统管理员" },
-                { allowAction: true, id: 2, title: "市州管理员" },
-                { allowAction: true, id: 3, title: "区县管理员" },
-                { allowAction: true, id: 4, title: "省级管理员" },
-                { allowAction: true, id: 5, title: "单位管理员" },
-            ],
+            rolesList: [],
             loading: false,
         };
     },
     created() {
-        // this.getGrid();
+        this.getGrid();
     },
     methods: {
         getGrid() {
             let data = {
                 page: 1,
-                limit: 20,
+                pageSize: 20,
             };
 
             this.loading = true;
-            api[urlNames["findRoleList"]](data).then(
+            api[urlNames["getRoleList"]](data).then(
                 (res) => {
                     this.loading = false;
                     this.rolesList = res.data;
                 },
                 () => {
+                    this.rolesList = [];
                     this.loading = false;
                 }
             );
@@ -117,7 +122,7 @@ export default {
             this.$router.push({
                 name: "lookPersonPermission",
                 params: {
-                    id: row.id,
+                    roleId: row.roleId,
                 },
             });
         },
