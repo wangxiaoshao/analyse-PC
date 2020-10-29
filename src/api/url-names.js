@@ -20,4 +20,24 @@ export default {
     getAuthUsersByRole: "getAuthUsersByRole",
     // 权限管理--添加成员授权范围
     addUserAuthScope: "addUserAuthScope",
+    // 权限管理--删除角色成员
+    deleteRoleUser: "deleteRoleUser",
+    // 权限管理--获取人员的授权区域
+    getAuthAreaByUid: "getAuthAreaByUid",
+    // 权限管理--获取人员的授权单位列表
+    getAuthOrgByUid: "getAuthOrgByUid",
+    // 权限管理--删除人员的授权范围
+    deleteUserScope: "deleteUserScope",
+    // 通知提醒--获取单位通知列表
+    getNoticeList: "getNoticeList",
+    // 通知提醒--创建通知
+    createNoticeRule: "createNoticeRule",
+    // 通知提醒--删除通知
+    deleteOrgNotice: "deleteOrgNotice",
+    // 通知提醒--获取单位通知的具体详情
+    getNoticeDetailById: "getNoticeDetailById",
+    // 通知提醒--获取通知类型和通知方式
+    getNoticeTypePeriod: "getNoticeTypePeriod",
+    // 通知提醒--更新通知
+    updateNoticeRule: "updateNoticeRule",
 };

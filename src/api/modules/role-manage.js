@@ -27,4 +27,36 @@ export default {
             "Content-Type": "application/json",
         },
     },
+    // 权限管理--删除角色成员
+    [urlNames.deleteRoleUser]: {
+        type: "get",
+        url: "/api/appdata/auth/deleteRoleUser",
+        keepOriginResponse: true,
+        showLoading: true,
+        serve: "organizationManagePC",
+    },
+    // 权限管理--获取人员的授权区域
+    [urlNames.getAuthAreaByUid]: {
+        type: "get",
+        url: "/api/appdata/auth/getAuthAreaByUid",
+        keepOriginResponse: true,
+        showLoading: true,
+        serve: "organizationManagePC",
+    },
+    // 权限管理--获取人员的授权单位列表
+    [urlNames.getAuthOrgByUid]: {
+        type: "get",
+        url: "/api/appdata/auth/getAuthOrgByUid",
+        keepOriginResponse: true,
+        showLoading: true,
+        serve: "organizationManagePC",
+    },
+    // 权限管理--删除人员的授权范围
+    [urlNames.deleteUserScope]: {
+        type: "get",
+        url: "/api/appdata/auth/deleteUserScope",
+        keepOriginResponse: true,
+        showLoading: true,
+        serve: "organizationManagePC",
+    },
 };

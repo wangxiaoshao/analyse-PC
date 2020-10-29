@@ -123,6 +123,7 @@ export default {
                 name: "lookPersonPermission",
                 params: {
                     roleId: row.roleId,
+                    roleName: row.roleName,
                 },
             });
         },

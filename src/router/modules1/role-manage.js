@@ -30,12 +30,12 @@ export default [
                 component: RoleList,
             },
             {
-                path: "look-person-permission/:roleId",
+                path: "look-person-permission/:roleId/:roleName",
                 name: "lookPersonPermission",
                 component: lookPersonPermission,
             },
             {
-                path: "scope-authorization/:id",
+                path: "scope-authorization/:roleId/:uid/:roleName",
                 name: "ScopeAuthorization",
                 component: ScopeAuthorization,
             },

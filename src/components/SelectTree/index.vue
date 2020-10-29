@@ -81,7 +81,7 @@
                         <el-button
                             size="small"
                             type="text"
-                            v-show="selectingList.length > 0"
+                            v-show="selectCheckList.length > 0"
                             @click="removeSelectingAll"
                             >取消全部
                         </el-button>
@@ -106,7 +106,7 @@
                 <el-button
                     type="primary"
                     @click="next"
-                    :disabled="selectingList.length === 0"
+                    :disabled="selectCheckList.length === 0"
                     v-if="
                         selectTreeDailog.isNext && roleId !== 1 && roleId !== 2
                     "
@@ -124,7 +124,7 @@
                     "
                     type="primary"
                     @click="submitSelectedData"
-                    :disabled="selectingList.length === 0"
+                    :disabled="selectCheckList.length === 0"
                     >确定</el-button
                 >
 
@@ -139,7 +139,7 @@
 //  selectTreeDailog: {
 //     title: "选择授权区县",//标题 必传
 //     openSelectTreeVisiable: false,
-//     isSelectType: 2, // 1 区县  2  单位  3 人员 必传
+//     isSelectType: 2, // 1 区县  2  单位  3 人员 4 市州 必传
 //     isSingSelect: true, // 是否单选,true 单选，false:多选  必传
 // },
 import { api, urlNames } from "@src/api";
@@ -222,6 +222,12 @@ export default {
                                 treeData.push(item);
                             }
                         });
+                    } else if (this.selectTreeDailog.isSelectType === 4) {
+                        let list = res.data || [];
+                        list.forEach((item) => {
+                            item.leaf = true;
+                        });
+                        treeData = list;
                     }
 
                     resolve(treeData);
@@ -275,28 +281,47 @@ export default {
                             });
                         }
                     });
-                } else {
-                    this.optionalList = [];
                 }
+                // 4 选择市州
+            } else if (
+                this.selectTreeDailog.isSelectType === 4 &&
+                data.treeType === 0
+            ) {
+                api[urlNames["getTreeList"]]({
+                    treeId: data.treeId,
+                    treeType: data.treeType,
+                }).then((res) => {
+                    res.data.forEach((item) => {
+                        this.optionalList.push(item);
+                    });
+                });
+            } else {
+                this.optionalList = [];
             }
         },
         // 全选可选区域
         toggleOptionalAll(selected) {
-            this.selectingList = selected ? this.optionalList : [];
             this.isIndeterminate = false;
+            console.log(
+                this.selectingList,
+                this.selectedList,
+                this.selectCheckList
+            );
             let that = this;
             if (selected) {
                 that.optionalList.forEach((item) => {
                     const label = JSON.stringify(item);
-                    that.addSelecting(label);
-                    that.addToSelected(item);
+                    that.addToSelected(label);
+                    that.addSelecting(item);
+                    if (!that.selectingList.includes(label)) {
+                        that.selectingList.push(label);
+                    }
                 });
             } else {
                 that.optionalList.forEach((item) => {
                     const label = JSON.stringify(item);
-                    that.removeSelecting(item);
-                    that.removeSelected(label);
-
+                    that.removeSelecting(label);
+                    that.removeSelected(item);
                     const indexOf = that.selectingList.indexOf(label);
                     if (indexOf !== -1) {
                         that.selectingList.splice(indexOf, 1);
@@ -309,6 +334,7 @@ export default {
             this.isCheckOptionalAll = false;
             this.selectedList = [];
             this.selectingList = [];
+            this.selectCheckList = [];
         },
         selectOptionalChange(val) {
             let checkedCount = val.length;
@@ -320,6 +346,11 @@ export default {
                 this.addToSelected(item);
                 return label;
             });
+            // console.log(
+            //     this.selectingList,
+            //     this.selectedList,
+            //     this.selectCheckList
+            // );
         },
         selectedChange(val) {
             this.selectingList.forEach((item) => {
@@ -335,17 +366,16 @@ export default {
             }
         },
         addSelecting(label) {
-            let i = this.selectingList.length - 1;
+            let i = this.selectCheckList.length - 1;
             while (i >= 0) {
-                const current = this.selectingList[i];
+                const current = this.selectCheckList[i];
                 if (current.treeId === label.treeId) {
                     return;
                 }
 
                 i -= 1;
             }
-
-            this.selectingList.push(label);
+            this.selectCheckList.push(label);
         },
         removeSelected(label) {
             let i = this.selectCheckList.length - 1;
@@ -368,8 +398,8 @@ export default {
 
         // 单选方法
         singleSelectingChange(val) {
-            this.selectingList = [];
-            this.selectingList[0] = JSON.parse(val);
+            this.selectedList = [];
+            this.selectCheckList[0] = JSON.parse(this.selectingSingle);
             this.selectedList[0] = val;
         },
 
@@ -377,21 +407,26 @@ export default {
         submitSelectedData() {
             console.log(this.selectCheckList, this.lastData);
             this.$emit("dialogReturnData", this.selectCheckList, this.lastData);
+            this.handleClose();
         },
 
         // 关闭授权区域弹窗组件
         handleClose() {
-            // this.selectingList = [];
+            this.selectingList = [];
+            this.selectedList = [];
+            this.selectCheckList = [];
             this.$emit("closeSelectDailog");
         },
 
         // 处理授权范围数据
         next() {
-            this.lastData = [...this.selectingList];
+            console.log(this.selectCheckList, 3333);
+            this.lastData = [...this.selectCheckList];
             this.$emit("next");
         },
         last() {
-            this.nextData = [...this.selectingList];
+            console.log(this.selectCheckList, "gggg");
+            this.nextData = [...this.selectCheckList];
             this.$emit("last");
         },
         getResult() {},
@@ -402,22 +437,27 @@ export default {
         },
     },
     watch: {
-        type() {
+        type(val1, val2) {
             this.optionalList = [];
+            this.selectedList = [];
+            this.selectingList = [];
+            this.selectCheckList = [];
             if (!this.selectTreeDailog.isLast) {
-                this.selectingList = this.lastData.map((item) => {
+                this.selectCheckList = this.lastData.map((item) => {
                     const label = item;
-                    this.addToSelected(label);
+                    this.addToSelected(JSON.stringify(item));
                     return label;
                 });
             } else if (!this.selectTreeDailog.isNext) {
-                this.selectingList = this.nextData.map((item) => {
+                this.selectCheckList = this.nextData.map((item) => {
                     const label = item;
-                    this.addToSelected(label);
+                    this.addToSelected(JSON.stringify(item));
                     return label;
                 });
             } else {
-                this.selectingList = this.selectedList = [];
+                this.selectedList = [];
+                this.selectCheckList = [];
+                this.selectedList = [];
             }
             this.findAreaTree();
         },

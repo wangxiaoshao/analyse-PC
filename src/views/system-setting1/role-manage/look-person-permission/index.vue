@@ -73,7 +73,7 @@
                     <el-button
                         size="mini"
                         type="text"
-                        @click="getDelete(scope.row)"
+                        @click="deleteRoleUser(scope.row)"
                         >删除</el-button
                     >
                 </template>
@@ -112,7 +112,7 @@ export default {
             selectTreeDailog: {
                 title: "选择人员",
                 openSelectTreeVisiable: false,
-                isSelectType: 3, // 1 区县  2  单位  3 人员
+                isSelectType: 3, // 1 区县  2  单位  3 人员 4 市州
                 isSingSelect: false, // 是否单选,true 单选，false:多选
                 isNext: true,
                 isLast: false,
@@ -122,7 +122,11 @@ export default {
     },
     created() {
         this.getGrid();
-        console.log(this.$store.state.app.rolesInfo);
+        console.log(
+            this.$store.state.app.rolesInfo,
+            this.$route.params,
+            this.$route.query
+        );
     },
     mounted() {
         this.pushBreadcrumb({
@@ -136,11 +140,6 @@ export default {
         });
     },
     methods: {
-        toAuthorization(val) {
-            this.$router.push({
-                path: `/role-manage/scope-authorization/${val.uid}?roleId=${this.roleId}`,
-            });
-        },
         getGrid(flag) {
             if (flag) {
                 this.page.current = 1;
@@ -163,14 +162,24 @@ export default {
                 }
             );
         },
-        getDelete(row) {
+        toAuthorization(val) {
+            this.$router.push({
+                name: `ScopeAuthorization`,
+                params: {
+                    oleId: this.roleId,
+                    uid: val.uid,
+                    roleName: this.$route.params.roleName,
+                },
+            });
+        },
+        deleteRoleUser(row) {
             this.$confirm("此操作将永久删除该数据, 是否继续?", "提示", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
                 type: "warning",
             })
                 .then(() => {
-                    this.deleteRoleBindUser();
+                    this.deleteRoleBindUser(row);
                 })
                 .catch(() => {
                     this.$message({
@@ -180,14 +189,13 @@ export default {
                 });
         },
         // 删除角色绑定人员
-        deleteRoleBindUser() {
-            api[urlNames["deleteRoleBindUser"]]({
-                roleId: this.$route.params.id,
-                uid: this.userId,
+        deleteRoleBindUser(row) {
+            api[urlNames["deleteRoleUser"]]({
+                roleId: this.$route.params.roleId,
+                uid: row.uid,
             }).then(
                 (res) => {
                     this.$message.success(`删除成功`);
-                    this.dialogVisible = false;
                     this.getGrid();
                 },
                 (/* error */) => {
@@ -206,15 +214,17 @@ export default {
             this.selectTreeDailog.openSelectTreeVisiable = false;
         },
         dialogReturnData(userData, authData) {
+            authData = authData || [];
             console.log(this.$store.state.app.rolesInfo);
-            // 保存
+            let dataAry = [...userData, ...authData];
             let uid = [];
             let authorizedOid = [];
-            userData.forEach((item) => {
-                uid.push(item.treeId);
-            });
-            authData.forEach((item) => {
-                authorizedOid.push(item.treeId);
+            dataAry.forEach((item) => {
+                if (item.treeType === 5) {
+                    uid.push(item.treeId);
+                } else {
+                    authorizedOid.push(item.treeId);
+                }
             });
             let data = {
                 roleId: this.$route.params.roleId,
@@ -228,11 +238,9 @@ export default {
             api[urlNames["addUserAuthScope"]](data).then(
                 (res) => {
                     this.$message.success(`添加成功`);
-                    this.closeselectMenmber();
                     this.getGrid();
                 },
                 () => {
-                    this.closeselectMenmber();
                     this.$message.error(`保存失败，请重试`);
                 }
             );
@@ -240,8 +248,18 @@ export default {
         next() {
             this.selectTreeDailog.isNext = false;
             this.selectTreeDailog.isLast = true;
-            this.selectTreeDailog.title = "授权范围";
-            this.selectTreeDailog.isSelectType = 1;
+            if (this.$route.params.roleName === "CITY_MANAGER") {
+                this.selectTreeDailog.isSelectType = 4;
+                this.selectTreeDailog.title = "授权市州";
+            } else if (this.$route.params.roleName === "COUNTY_MANAGER") {
+                this.selectTreeDailog.isSelectType = 1;
+                this.selectTreeDailog.title = "授权区县";
+            } else if (this.$route.params.roleName === "UNIT_MANAGER") {
+                this.selectTreeDailog.isSelectType = 2;
+                this.selectTreeDailog.title = "授权单位";
+            } else {
+                this.selectTreeDailog.isSelectType = 3;
+            }
         },
         last() {
             this.selectTreeDailog.title = "选择人员";

@@ -15,14 +15,11 @@
                         slot="append"
                         size="small"
                         type="primary"
-                        @click="getGrid"
+                        @click="getGrid(true)"
                         >查询</el-button
                     >
                 </el-input>
             </el-form-item>
-            <el-button size="small" type="primary" style="float: right;"
-                >导出</el-button
-            >
         </el-form>
         <div class="table-box">
             <el-table :data="messageList" stripe border style="width: 100%;">
@@ -39,44 +36,55 @@
                     </div>
                 </template>
                 <el-table-column
-                    prop="userName"
+                    prop="orgName"
                     label="单位名称"
                     align="center"
                 ></el-table-column>
                 <el-table-column
-                    prop="actionTime"
+                    prop="createUserName"
                     label="创建人"
                     align="center"
                 ></el-table-column>
                 <el-table-column
-                    prop="userName"
+                    prop="createTime"
                     label="创建时间"
                     align="center"
-                ></el-table-column>
+                >
+                    <template slot-scope="scope">
+                        <span>{{
+                            scope.row.createTime
+                                | dataFilter("YYYY-MM-DD HH:mm:ss")
+                        }}</span>
+                    </template></el-table-column
+                >
                 <el-table-column
-                    prop="description"
+                    prop="noticePeriod"
                     label="提醒规则"
                     align="center"
                     min-width="130"
                 ></el-table-column>
                 <el-table-column label="操作" align="center" width="150px">
                     <template slot-scope="scope">
+                        <span v-if="created">
+                            <el-button
+                                size="mini"
+                                type="text"
+                                @click="openEditRules(scope.row.id)"
+                                >编辑</el-button
+                            >
+                            <el-button
+                                size="mini"
+                                type="text"
+                                @click="deleteRules(scope.row.id)"
+                                >删除</el-button
+                            >
+                        </span>
+
                         <el-button
+                            v-else
                             size="mini"
                             type="text"
-                            @click="openEditRules(scope.row.id)"
-                            >编辑</el-button
-                        >
-                        <el-button
-                            size="mini"
-                            type="text"
-                            @click="deleteRules(scope.row.id)"
-                            >删除</el-button
-                        >
-                        <el-button
-                            size="mini"
-                            type="text"
-                            @click="openCreateRules()"
+                            @click="openCreateRules(scope.row)"
                             >去创建</el-button
                         >
                     </template>
@@ -96,6 +104,7 @@
 </template>
 <script>
 import handleTable from "@src/mixins/new/handle-table";
+import { api, urlNames } from "@src/api";
 export default {
     mixins: [handleTable],
     data() {
@@ -109,7 +118,19 @@ export default {
         this.getGrid();
     },
     methods: {
-        getGrid() {},
+        getGrid(flag) {
+            if (flag) {
+                this.page.current = 1;
+            }
+            let data = {
+                roleId: this.$store.state.app.rolesInfo.roleId,
+                page: this.page.current,
+                pageSize: this.page.limit,
+            };
+            api[urlNames["getNoticeList"]](data).then((res) => {
+                this.messageList = res.data;
+            });
+        },
         openCreateRules(id) {
             this.$router.push("/message-reminding/message-rules");
         },
