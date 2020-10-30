@@ -50,9 +50,13 @@
                 align="center"
             >
                 <template slot-scope="scope">
-                    {{
-                        scope.row.updateTime | dataFilter("YYYY-MM-DD HH:mm:ss")
-                    }}
+                    <span v-if="scope.row.updateTime">
+                        {{
+                            scope.row.updateTime
+                                | dataFilter("YYYY-MM-DD HH:mm:ss")
+                        }}
+                    </span>
+                    <span v-else></span>
                 </template>
             </el-table-column>
             <el-table-column

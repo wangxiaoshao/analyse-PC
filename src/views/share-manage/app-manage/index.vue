@@ -26,8 +26,25 @@
                         v-model="createdOrUpdateForm.password"
                     ></el-input>
                 </el-form-item>
-                <el-form-item label="选择账号：" prop="account">
+                <el-form-item label="单位名称：" prop="account">
                     <el-select
+                        v-model="this.companyName"
+                        :remote-method="getCompanyList"
+                        filterable
+                        remote
+                        reserve-keyword
+                        placeholder="请输入视图名称"
+                        :loading="selectLoading"
+                    >
+                        <el-option
+                            v-for="item in companyList"
+                            :key="item.id"
+                            :label="item.company_id"
+                            :value="item.company_id"
+                            >{{ item.system_name }}</el-option
+                        >
+                    </el-select>
+                    <!-- <el-select
                         size="medium"
                         placeholder="请选择账号"
                         @change="accountChange"
@@ -39,7 +56,7 @@
                             :label="item.name"
                             :value="item.id"
                         ></el-option>
-                    </el-select>
+                    </el-select> -->
                 </el-form-item>
                 <el-form-item label="是否启用：" prop="disabled">
                     <el-switch
@@ -87,14 +104,18 @@
                     </div>
                 </template>
                 <el-table-column
-                    prop="account"
-                    label="应用ID"
+                    prop="systemName"
+                    label="应用名称"
                     align="center"
                 ></el-table-column>
-
                 <el-table-column
-                    prop="userName"
-                    label="应用名称"
+                    prop="companyName"
+                    label="公司名称"
+                    align="center"
+                ></el-table-column>
+                <el-table-column
+                    prop="tableName"
+                    label="表名称"
                     align="center"
                 ></el-table-column>
                 <el-table-column
@@ -107,16 +128,11 @@
                     label="联系人"
                     align="center"
                 ></el-table-column>
-                <el-table-column
-                    prop="actionTime"
-                    label="应用账号"
-                    align="center"
-                ></el-table-column>
-                <el-table-column
-                    prop="description"
-                    label="启用状态"
-                    align="center"
-                ></el-table-column>
+                <el-table-column prop="state" label="启用状态" align="center">
+                    <template slot-scope="scope">
+                        <span>{{ scope.row.state ? "禁用" : "启用" }}</span>
+                    </template>
+                </el-table-column>
                 <el-table-column label="操作" align="center" width="100px">
                     <template slot-scope="scope">
                         <el-button
@@ -128,7 +144,7 @@
                         <el-button
                             size="mini"
                             type="text"
-                            @click="deleteApp(scope.row.id)"
+                            @click="comfirmDeleteApp(scope.row.systemId)"
                             >删除</el-button
                         >
                     </template>
@@ -153,17 +169,15 @@ export default {
     mixins: [handleTable],
     data() {
         return {
+            selectLoading: false,
+            companyName: "",
             applyList: [{}],
-            accountList: [
-                { id: 1, name: "cs1" },
-                { id: 2, name: "cs2" },
-                { id: 3, name: "cs3" },
-            ],
+            companyList: [],
             dialogTitle: "创建应用",
             createdOrUpdateVisiable: false,
             createdOrUpdateForm: {
                 appName: "",
-                account: "",
+                company_id: "",
                 password: "",
                 disabled: 0,
                 description: "",
@@ -186,7 +200,7 @@ export default {
                 page: this.page.current,
                 limit: this.page.limit,
             };
-            api[urlNames["findAccountNumberList"]](data).then(
+            api[urlNames["findSystemTableMessage"]](data).then(
                 (res) => {
                     this.applyList = res.data;
                     this.page.total = res.total;
@@ -196,6 +210,13 @@ export default {
                     this.page.total = 0;
                 }
             );
+        },
+        getCompanyList(query) {
+            if (query !== "") {
+                api[urlNames["getViewList"]]().then((res) => {
+                    this.viewList = res.data;
+                });
+            }
         },
         accountChange() {
             console.log(this.createdOrUpdateForm.account);
@@ -243,7 +264,21 @@ export default {
                 }
             });
         },
-        deleteApp(id) {},
+        comfirmDeleteApp(systemId) {
+            this.handleRow("确定要删除该数据吗？", systemId, this.deleteApp);
+        },
+        deleteApp(systemId) {
+            api[urlNames["deleteSystemTableMessage"]]({ systemId }).then(
+                (res) => {
+                    if (res) {
+                        this.$message.success("删除成功");
+                    }
+                },
+                () => {
+                    this.$message.error("操作失败，请稍后重试");
+                }
+            );
+        },
     },
 };
 </script>

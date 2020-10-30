@@ -16,6 +16,8 @@ const app = {
             user: {},
         },
         rolesInfo: {},
+        noticeWayList: [],
+        noticeTypeList: [],
         confirmState: "",
     },
     mutations: {
@@ -36,6 +38,14 @@ const app = {
         },
         [types.GET_CONFIRM_INFO](state, val) {
             state.confirmState = val;
+        },
+
+        // 平台分析
+        [types.SET_NOTICE_WAY](state, val) {
+            state.noticeWayList = val;
+        },
+        [types.SET_NOTICE_TYPE](state, val) {
+            state.noticeTypeList = val;
         },
         [types.SET_ROLE_INFO](state, val) {
             state.rolesInfo = val;

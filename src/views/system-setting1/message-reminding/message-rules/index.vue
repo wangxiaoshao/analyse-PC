@@ -1,10 +1,10 @@
 <template>
     <div class="message-rules">
-        <select-members
-            :selectDialog="selectDialog"
-            @dialogReturnMembersInfo="dialogReturnMembersInfo"
-            @closeselectMenmber="closeSelectMenmber"
-        ></select-members>
+        <select-tree
+            :selectTreeDailog="selectTreeDailog"
+            @dialogReturnData="dialogReturnData"
+            @closeSelectDailog="closeSelectDailog"
+        ></select-tree>
         <div class="message-item">
             <div class="header">设置通知规则</div>
             <el-form label-position="right" label-width="110px">
@@ -14,10 +14,10 @@
                         @change="noticeTimeChange"
                     >
                         <el-checkbox
-                            v-for="item in noticeTimeList"
+                            v-for="item in app.noticeTypeList"
                             :label="item.id"
-                            :key="item.name"
-                            >{{ item.checkname }}
+                            :key="item.id"
+                            >{{ item.periodDesc }}
                         </el-checkbox>
                     </el-checkbox-group>
                 </el-form-item>
@@ -27,10 +27,10 @@
                         @change="noticeWayChange"
                     >
                         <el-checkbox
-                            v-for="item in noticeWayList"
-                            :label="item.value"
-                            :key="item.name"
-                            >{{ item.checkname }}
+                            v-for="item in app.noticeWayList"
+                            :label="item.id"
+                            :key="item.id"
+                            >{{ item.methodDesc }}
                         </el-checkbox>
                     </el-checkbox-group>
                 </el-form-item>
@@ -44,6 +44,7 @@
                 </el-form-item>
                 <el-form-item label="通知收件人：">
                     <el-input
+                        readonly
                         style="width: 280px;"
                         placeholder="请选择通知收件人"
                         v-model="noticeRulesForm.consignees"
@@ -58,28 +59,23 @@
                         >
                     </el-input>
                     <i
+                        v-if="noticeRulesForm.consignees.length === 0"
                         title="添加收件人"
                         class="el-icon-circle-plus addConsignees"
                         @click="openSelectMenmber"
                     ></i>
-                    <!-- <el-button
-                        icon="el-icon-plus"
-                        circle
-                        size="mini"
-                        type="primary"
-                    ></el-button> -->
                 </el-form-item>
                 <el-form-item label="是否启用：">
                     <el-switch
-                        :active-value="1"
-                        :inactive-value="0"
-                        v-model="noticeRulesForm.rulesState"
+                        :active-value="0"
+                        :inactive-value="1"
+                        v-model="noticeRulesForm.disabled"
                     ></el-switch>
                 </el-form-item>
                 <el-form-item>
                     <div>
                         <el-button type="primary" @click="createRules"
-                            >立即创建</el-button
+                            >保存</el-button
                         >
                         <el-button @click="cancel">取消</el-button>
                     </div>
@@ -90,65 +86,29 @@
 </template>
 <script>
 import handleBreadcrumb from "@src/mixins/new/handle-breadcrumb.js";
-import SelectMembers from "@src/components/SelectMembers/index";
+import SelectTree from "@src/components/SelectTree/index";
+import { mapState } from "vuex";
+import { api, urlNames } from "@src/api";
 export default {
     mixins: [handleBreadcrumb],
-    components: { SelectMembers },
+    components: { SelectTree },
     data() {
         return {
-            noticeTimeList: [
-                {
-                    id: 1,
-                    name: "date1",
-                    checkname: "每月8号",
-                },
-                {
-                    id: 2,
-                    name: "date2",
-                    checkname: "每月16号",
-                },
-                {
-                    id: 3,
-                    name: "date3",
-                    checkname: "每月24号",
-                },
-                {
-                    id: 4,
-                    name: "date4",
-                    checkname: "每月30号",
-                },
-            ],
-            noticeWayList: [
-                {
-                    name: "message",
-                    checkname: "统一消息",
-                    value: 1,
-                },
-                {
-                    name: "note",
-                    checkname: "短信",
-                    value: 2,
-                },
-            ],
             noticeRulesForm: {
-                selectedNoticeTime: [2],
-                selectedNoticeWay: [1, 2],
+                selectedNoticeTime: [],
+                selectedNoticeWay: [],
                 consignees: "", // 收件人
-                rulesState: 1,
+                disabled: 0,
             },
             noticeRules: [],
-            selectDialog: {
-                selectMenmberTitle: "添加收件人员", // 选人组件标题
-                selectMenmberFlag: false, // 显示弹窗，
-                isAllData: true, // 是否需完整数据-默认为不需要（false，只包含用户id）
-                notOnlyPerson: true, // 是否选人，默认为false（只选人）
-                isSingleSelect: false, // 是否为单选框  false为多选（默认）-人员单选(与notOnlyPerson一起使用，notOnlyPerson为true是有效
-                isSingleOrgSelect: false, // 是否为单选框  false为多选（默认），true为单选(与isOnlyOrg一起使用，isOnlyOrg为true时部门/单位单选)
-                isOnlyOrg: false, //  是否选部门/单位 false为不是只选部门，true为只选部门
-                isCleanSelected: false, // 是否清空已选待选
-                selectUser: [], // 查看已选人员数据
+            selectTreeDailog: {
+                title: "选择人员",
+                openSelectTreeVisiable: false,
+                isSelectType: 3, // 1 区县  2  单位  3 人员 4 市州
+                isSingSelect: false, // 是否单选,true 单选，false:多选
+                noticeUser: [], // 默认选择人员id
             },
-            selectUser: [],
+            noticeUserIds: [],
         };
     },
     mounted() {
@@ -161,45 +121,111 @@ export default {
                 },
             },
         });
-    },
-    created() {
-        if (this.$route.query.id !== undefined) {
-            // this.getAppDetail(this.$route.query.id);
+        if (this.$route.query.id) {
+            this.getOrgRulesDetail();
         } else {
-            // this.generateRandomAccount();
         }
+        console.log(this.$route.query, "qqq");
+    },
+    computed: {
+        ...mapState(["app"]),
     },
     methods: {
+        // 获取单位通知规则
+        getOrgRulesDetail() {
+            api[urlNames["getNoticeDetailById"]]({
+                noticeId: this.$route.query.id,
+            }).then(
+                (res) => {
+                    if (res) {
+                        this.noticeRulesForm.selectedNoticeTime =
+                            res.data.selectedPeriods;
+                        this.noticeRulesForm.selectedNoticeWay =
+                            res.data.selectedNoticeTypes;
+                        this.noticeRulesForm.disabled = res.data.disabled;
+                        let str = "";
+                        res.data.userList.forEach((item) => {
+                            let obj = {
+                                treeId: item.uid,
+                                treeName: item.name,
+                            };
+                            str += item.name + ",";
+                            this.noticeUserIds.push(item);
+                            this.selectTreeDailog.noticeUser.push(obj);
+                        });
+                        this.noticeRulesForm.consignees = str.substring(
+                            0,
+                            str.length - 1
+                        );
+                    }
+                },
+                () => {
+                    this.$message.error("网络错误，请稍后重试");
+                }
+            );
+        },
         noticeTimeChange() {},
         noticeWayChange(val) {
             console.log(this.selectedNoticeWay, val);
         },
-        // 立即创建
-        createRules() {},
-        cancel() {},
+
+        cancel() {
+            this.$router.go(-1);
+        },
         // 查看收件人
         findConsignees() {
-            this.selectDialog.isCleanSelected = false;
-            this.selectDialog.selectMenmberFlag = true;
+            this.selectTreeDailog.openSelectTreeVisiable = true;
         },
         // 添加收件人
         addConsignees() {},
         openSelectMenmber() {
-            this.selectDialog.isCleanSelected = true;
-            this.selectDialog.selectMenmberFlag = true;
+            this.selectTreeDailog.openSelectTreeVisiable = true;
         },
-        closeSelectMenmber() {
-            this.selectDialog.selectMenmberFlag = false;
+        closeSelectDailog() {
+            this.selectTreeDailog.openSelectTreeVisiable = false;
         },
         // 选人组件
-        dialogReturnMembersInfo(data, flag) {
+        dialogReturnData(data) {
             this.selectUser = data;
-            this.selectDialog.selectUser = data;
+            // this.selectDialog.selectUser = data;
             let str = "";
-            this.selectUser.forEach((item) => {
-                str += item.name + ",";
+            let noticeUserIds = [];
+            data.forEach((item) => {
+                str += item.treeName + ",";
+                noticeUserIds.push(item.treeId);
             });
             this.noticeRulesForm.consignees = str.substring(0, str.length - 1);
+            this.noticeUserIds = noticeUserIds;
+        },
+        // 立即创建
+        createRules() {
+            let data = {
+                orgId: this.$route.query.orgId,
+                selectedPeriods: this.noticeRulesForm.selectedNoticeTime,
+                selectedTypes: this.noticeRulesForm.selectedNoticeWay,
+                noticeUsers: this.noticeUserIds,
+                disabled: this.noticeRulesForm.disabled,
+            };
+            if (this.$route.query.id) {
+                data.id = this.$route.query.id;
+            }
+            console.log(data);
+            api[urlNames["createNoticeRule"]](data).then(
+                (res) => {
+                    if (res) {
+                        this.$message({
+                            type: "success",
+                            message: this.$route.query.id
+                                ? "修改成功"
+                                : "创建成功",
+                        });
+                        this.$router.go(-1);
+                    }
+                },
+                () => {
+                    this.$message.error("操作失败，请稍后重试");
+                }
+            );
         },
     },
 };

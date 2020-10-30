@@ -46,4 +46,40 @@ export default {
         showLoading: true,
         serve: "organizationManagePC",
     },
+    // 应用接入-查询应用接入列表
+    createTable: "createTable",
+    [urlNames.findSystemTableMessage]: {
+        type: "get",
+        url: "/api/createSystem/findSystemTableMessage",
+        keepOriginResponse: true,
+        showLoading: true,
+        serve: "organizationManagePC",
+    },
+    // 应用接入--创建系统表信息
+    [urlNames.createTable]: {
+        type: "post",
+        url: "/api/createSystem/createTable",
+        keepOriginResponse: true,
+        showLoading: true,
+        serve: "organizationManagePC",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    },
+    // 应用接入--删除应用接入
+    [urlNames.deleteSystemTableMessage]: {
+        type: "get",
+        url: "/api/createSystem/deleteSystemTableMessage",
+        keepOriginResponse: true,
+        showLoading: true,
+        serve: "organizationManagePC",
+    },
+    // 应用接入--根据公司名称查询公司id
+    [urlNames.getSystemId]: {
+        type: "get",
+        url: "/api/createSystem/getSystemId",
+        keepOriginResponse: true,
+        showLoading: true,
+        serve: "organizationManagePC",
+    },
 };

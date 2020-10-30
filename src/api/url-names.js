@@ -16,6 +16,14 @@ export default {
     updatesSystemMessage: "updatesSystemMessage",
     // 关联管理--删除关联
     deleteAccountNumber: "deleteAccountNumber",
+    // 应用接入--查询应用接入列表
+    findSystemTableMessage: "findSystemTableMessage",
+    // 应用接入--创建系统表信息
+    createTable: "createTable",
+    // 应用接入--删除应用接入
+    deleteSystemTableMessage: "deleteSystemTableMessage",
+    // 应用接入--根据公司名称查询公司id
+    getSystemId: "getSystemId",
     // 权限管理--获取指定角色的人员列表
     getAuthUsersByRole: "getAuthUsersByRole",
     // 权限管理--添加成员授权范围

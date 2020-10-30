@@ -51,10 +51,13 @@
                     align="center"
                 >
                     <template slot-scope="scope">
-                        <span>{{
-                            scope.row.createTime
-                                | dataFilter("YYYY-MM-DD HH:mm:ss")
-                        }}</span>
+                        <span v-if="scope.row.createTime">
+                            {{
+                                scope.row.createTime
+                                    | dataFilter("YYYY-MM-DD HH:mm:ss")
+                            }}
+                        </span>
+                        <span v-else class="color_gray">—— ——</span>
                     </template></el-table-column
                 >
                 <el-table-column
@@ -62,20 +65,27 @@
                     label="提醒规则"
                     align="center"
                     min-width="130"
-                ></el-table-column>
+                >
+                    <template slot-scope="scope">
+                        <span v-if="scope.row.noticePeriod">{{
+                            scope.row.noticePeriod
+                        }}</span>
+                        <span v-else class="color_gray">—— ——</span>
+                    </template>
+                </el-table-column>
                 <el-table-column label="操作" align="center" width="150px">
                     <template slot-scope="scope">
-                        <span v-if="created">
+                        <span v-if="scope.row.created">
                             <el-button
                                 size="mini"
                                 type="text"
-                                @click="openEditRules(scope.row.id)"
+                                @click="openEditRules(scope.row)"
                                 >编辑</el-button
                             >
                             <el-button
                                 size="mini"
                                 type="text"
-                                @click="deleteRules(scope.row.id)"
+                                @click="confirmDeleteRules(scope.row.id)"
                                 >删除</el-button
                             >
                         </span>
@@ -105,6 +115,7 @@
 <script>
 import handleTable from "@src/mixins/new/handle-table";
 import { api, urlNames } from "@src/api";
+import { mapState } from "vuex";
 export default {
     mixins: [handleTable],
     data() {
@@ -114,7 +125,9 @@ export default {
             messageList: [{ id: "1" }],
         };
     },
-    created() {
+
+    mounted() {
+        console.log(this.app.rolesInfo.roleId);
         this.getGrid();
     },
     methods: {
@@ -129,16 +142,45 @@ export default {
             };
             api[urlNames["getNoticeList"]](data).then((res) => {
                 this.messageList = res.data;
+                this.page.total = res.total;
             });
         },
-        openCreateRules(id) {
-            this.$router.push("/message-reminding/message-rules");
+        openCreateRules(row) {
+            this.$router.push({
+                path: "/message-reminding/message-rules",
+                query: { orgId: row.orgId },
+            });
         },
-        openEditRules(id) {
-            this.$router.push({ name: "MessageRules", query: { id } });
+        openEditRules(row) {
+            this.$router.push({
+                name: "MessageRules",
+                query: { orgId: row.orgId, id: row.id },
+            });
         },
         // 删除通知提醒列表
-        deleteRules(id) {},
+        confirmDeleteRules(id) {
+            this.handleRow(
+                "确定要删除该单位的设置规则吗？",
+                id,
+                this.deleteRules
+            );
+        },
+        deleteRules(id) {
+            api[urlNames["deleteOrgNotice"]]({ noticeId: id }).then(
+                (res) => {
+                    if (res) {
+                        this.$message.success("操作成功");
+                        this.getGrid();
+                    }
+                },
+                () => {
+                    this.$message.error("操作失败，请稍后再试");
+                }
+            );
+        },
+    },
+    computed: {
+        ...mapState(["app"]),
     },
 };
 </script>

@@ -31,44 +31,44 @@
                     <td>市州</td>
                     <td>
                         <el-tag
-                            v-for="item in cityStateList"
-                            :key="item.id"
+                            v-for="item in cityStateOrUnitList"
+                            :key="item.areaCode"
                             closable
                             size="medium"
                             type="success"
-                            @close="deleteAuthorizedEntity(area)"
+                            @close="deleteAuthorizedEntity(item)"
                         >
-                            {{ area.name }}
-                        </el-tag>
-                    </td>
-                </tr>
-                <tr v-if="$route.params.roleName === 'UNIT_MANAGER'">
-                    <td>区县</td>
-                    <td>
-                        <el-tag
-                            v-for="org in orgNameList"
-                            :key="org.id"
-                            closable
-                            size="medium"
-                            type="success"
-                            @close="deleteAuthorizedEntity(org)"
-                        >
-                            {{ org.name }}
+                            {{ item.areaName }}
                         </el-tag>
                     </td>
                 </tr>
                 <tr v-if="$route.params.roleName === 'COUNTY_MANAGER'">
+                    <td>区县</td>
+                    <td>
+                        <el-tag
+                            v-for="item in cityStateOrUnitList"
+                            :key="item.areaCode"
+                            closable
+                            size="medium"
+                            type="success"
+                            @close="deleteAuthorizedEntity(item)"
+                        >
+                            {{ item.areaName }}
+                        </el-tag>
+                    </td>
+                </tr>
+                <tr v-if="$route.params.roleName === 'UNIT_MANAGER'">
                     <td>单位</td>
                     <td>
                         <el-tag
                             v-for="org in orgNameList"
-                            :key="org.id"
+                            :key="org.orgId"
                             closable
                             size="medium"
                             type="success"
                             @close="deleteAuthorizedEntity(org)"
                         >
-                            {{ org.name }}
+                            {{ org.orgName }}
                         </el-tag>
                     </td>
                 </tr>
@@ -85,13 +85,11 @@
 <script>
 import handleTable from "@src/mixins/handle-table";
 import handleBreadcrumb from "@src/mixins/handle-breadcrumb.js";
-// import SelectCityState from "@src/components/SelectCityState/index";
 import SelectTree from "@src/components/SelectTree/index";
-import hasRight from "@src/mixins/has-right";
 import { api, urlNames } from "@src/api";
 import { mapState } from "vuex";
 export default {
-    mixins: [handleTable, handleBreadcrumb, hasRight],
+    mixins: [handleTable, handleBreadcrumb],
     name: "ScopeAuthorization",
     components: {
         SelectTree,
@@ -105,9 +103,9 @@ export default {
                 isSingSelect: true, // 是否单选,true 单选，false:多选
             },
             orgNameList: [],
-            areaNameList: [],
-            cityStateList: [],
+            cityStateOrUnitList: [],
             roleId: parseInt(this.$route.params.roleId),
+            authorizedType: null, // 授权类型: 1[全省]，2[市州],3[区县]，4[单位]
         };
     },
     computed: {
@@ -134,6 +132,14 @@ export default {
             } else {
                 this.getAuthorizedOrg();
             }
+            this.authorizedType =
+                this.$route.params.roleName === "CITY_MANAGER"
+                    ? 2
+                    : this.$route.params.roleName === "COUNTY_MANAGER"
+                    ? 3
+                    : this.$route.params.roleName === "UNIT_MANAGER"
+                    ? 4
+                    : "";
         },
         addCityState() {
             this.selectTreeDailog.isSelectType = 4;
@@ -168,7 +174,7 @@ export default {
             uid.push(this.$route.params.uid);
             let data = {
                 roleId: this.$route.params.roleId,
-                authorizedType: this.$store.state.app.rolesInfo.authorizedType,
+                authorizedType: this.authorizedType,
                 uid,
                 authorizedOid,
             };
@@ -188,12 +194,11 @@ export default {
         // 获取授权市州 区域
         getAuthorizedArea() {
             api[urlNames["getAuthAreaByUid"]]({
-                page: 1,
-                pageSize: 10,
                 uid: this.$route.params.uid,
                 roleId: this.$route.params.roleId,
             }).then((res) => {
                 if (res.data.length > 0) {
+                    this.cityStateOrUnitList = res.data;
                 }
             });
         },
@@ -204,37 +209,31 @@ export default {
                 roleId: this.$route.params.roleId,
             }).then((res) => {
                 if (res.data.length > 0) {
+                    this.orgNameList = res.data;
                 }
             });
         },
-        getfindAuthorizedEntity() {
-            this.orgNameList = [];
-            this.areaNameList = [];
-            api[urlNames["findAuthorizedEntityByUid"]]({
-                uid: this.$route.params.id,
-                roleId: this.$route.query.roleId,
-            }).then((res) => {
-                if (res.data.length > 0) {
-                    let that = this;
-                    res.data.forEach((val) => {
-                        if (val.authorizedType === 1) {
-                            that.orgNameList.push(val);
-                        }
-                        if (val.authorizedType === 3) {
-                            that.areaNameList.push(val);
-                        }
-                    });
-                }
-            });
+        deleteAuthorizedEntity(row) {
+            // authorizedType 2市州 3区县 4 单位
+            let str =
+                this.authorizedType === 2
+                    ? "市州"
+                    : this.authorizedType === 3
+                    ? "区县"
+                    : "单位";
+            let text = "确定要删除该" + str + "吗？";
+            let data = {
+                roleId: this.$route.params.roleId,
+                uid: this.$route.params.uid,
+                entityId: row.areaCode || row.orgId,
+                entityType: this.authorizedType,
+            };
+            this.handleRow(text, data, this.confirmDeleteEntity);
         },
-        deleteAuthorizedEntity(entity) {
-            api[urlNames["deleteAuthorizedEntity"]]({
-                uid: entity.uid,
-                roleId: entity.roleId,
-                entityIds: [entity.authorizedOid],
-            }).then((res) => {
+        confirmDeleteEntity(data) {
+            api[urlNames["deleteUserScope"]](data).then((res) => {
                 this.$message.success(`删除成功`);
-                this.getfindAuthorizedEntity();
+                this.init();
             });
         },
     },

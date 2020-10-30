@@ -56,9 +56,13 @@
             </el-table-column>
             <el-table-column prop="updateTime" label="修改时间" align="center">
                 <template slot-scope="scope">
-                    {{
-                        scope.row.updateTime | dataFilter("YYYY-MM-DD HH:mm:ss")
-                    }}
+                    <span v-if="scope.row.updateTime">
+                        {{
+                            scope.row.updateTime
+                                | dataFilter("YYYY-MM-DD HH:mm:ss")
+                        }}
+                    </span>
+                    <span v-else></span>
                 </template>
             </el-table-column>
             <el-table-column label="操作" align="center">
@@ -118,15 +122,12 @@ export default {
                 isLast: false,
             },
             userId: [],
+            authorizedType: null,
         };
     },
     created() {
+        this.init();
         this.getGrid();
-        console.log(
-            this.$store.state.app.rolesInfo,
-            this.$route.params,
-            this.$route.query
-        );
     },
     mounted() {
         this.pushBreadcrumb({
@@ -140,6 +141,16 @@ export default {
         });
     },
     methods: {
+        init() {
+            this.authorizedType =
+                this.$route.params.roleName === "CITY_MANAGER"
+                    ? 2
+                    : this.$route.params.roleName === "COUNTY_MANAGER"
+                    ? 3
+                    : this.$route.params.roleName === "UNIT_MANAGER"
+                    ? 4
+                    : "";
+        },
         getGrid(flag) {
             if (flag) {
                 this.page.current = 1;
@@ -173,20 +184,11 @@ export default {
             });
         },
         deleteRoleUser(row) {
-            this.$confirm("此操作将永久删除该数据, 是否继续?", "提示", {
-                confirmButtonText: "确定",
-                cancelButtonText: "取消",
-                type: "warning",
-            })
-                .then(() => {
-                    this.deleteRoleBindUser(row);
-                })
-                .catch(() => {
-                    this.$message({
-                        type: "info",
-                        message: "已取消删除",
-                    });
-                });
+            this.handleRow(
+                "此操作将永久删除该数据, 是否继续?",
+                row,
+                this.deleteRoleBindUser
+            );
         },
         // 删除角色绑定人员
         deleteRoleBindUser(row) {
@@ -228,7 +230,7 @@ export default {
             });
             let data = {
                 roleId: this.$route.params.roleId,
-                authorizedType: this.$store.state.app.rolesInfo.authorizedType,
+                authorizedType: this.authorizedType,
                 uid,
                 authorizedOid,
             };

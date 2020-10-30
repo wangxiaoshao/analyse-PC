@@ -405,7 +405,6 @@ export default {
 
         // 返回数据
         submitSelectedData() {
-            console.log(this.selectCheckList, this.lastData);
             this.$emit("dialogReturnData", this.selectCheckList, this.lastData);
             this.handleClose();
         },
@@ -435,6 +434,13 @@ export default {
         type() {
             return this.selectTreeDailog.isSelectType;
         },
+        noticeUser() {
+            if (this.selectTreeDailog.noticeUser) {
+                return this.selectTreeDailog.noticeUser;
+            } else {
+                return [];
+            }
+        },
     },
     watch: {
         type(val1, val2) {
@@ -460,6 +466,15 @@ export default {
                 this.selectedList = [];
             }
             this.findAreaTree();
+        },
+        noticeUserIds() {
+            this.selectCheckList = this.selectTreeDailog.noticeUser.map(
+                (item) => {
+                    const label = item;
+                    this.addToSelected(JSON.stringify(item));
+                    return label;
+                }
+            );
         },
     },
 };

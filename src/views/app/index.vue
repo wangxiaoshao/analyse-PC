@@ -90,7 +90,7 @@ export default {
     created() {},
     mounted() {
         this.addEventListenForResize();
-        // this.getDicList();
+        // this.getNoticeWayList();
         // this.confirmInfo();
     },
     methods: {
@@ -101,6 +101,8 @@ export default {
             "SET_PAGE_BREADCRUMB",
             "DIC_LIST",
             "GET_CONFIRM_INFO",
+            "SET_NOTICE_WAY",
+            "SET_NOTICE_TYPE",
         ]),
         // isCustomBreadcrumb 是否用户定制的
         init(path, isCustomBreadcrumb) {
@@ -137,9 +139,10 @@ export default {
             this.$router.go(-1);
         },
 
-        getDicList() {
-            api[urlNames["dicList"]]().then((res) => {
-                this.DIC_LIST(res.data);
+        getNoticeWayList() {
+            api[urlNames["getNoticeTypePeriod"]]().then((res) => {
+                this.SET_NOTICE_WAY(res.data.typeVOList);
+                this.SET_NOTICE_TYPE(res.data.periodVOList);
             });
         },
         setWindowSize() {

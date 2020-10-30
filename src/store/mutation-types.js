@@ -24,3 +24,6 @@ export const DIC_LIST = "DIC_LIST";
 
 // 角色信息
 export const SET_ROLE_INFO = "SET_ROLE_INFO";
+// 通知类型和通知方式
+export const SET_NOTICE_WAY = "SET_NOTICE_WAY";
+export const SET_NOTICE_TYPE = "SET_NOTICE_TYPE";
