@@ -43,36 +43,36 @@ Vue.use(elementUI, {
 //     }).$mount("#app");
 // };
 
-// api[urlNames["getUserRole"]]().then((res) => {
-//     if (res.status === 0) {
-//         let router = initRouter([]);
-//         initVueInstance(router, res.data);
-//     } else {
-//         alert(res.message);
-//     }
-// });
-// const initVueInstance = (router, userInfo) => {
-//     new Vue({
-//         router,
-//         store,
-//         render: (h) => h(App),
-//         created() {
-//             this.$store.commit("SET_ROLE_INFO", userInfo || {});
-//         },
-//     }).$mount("#app");
-// };
-let router = initRouter([]);
-new Vue({
-    router,
-    store,
-    render: (h) => h(App),
-    created() {
-        // api[urlNames["getUserRole"]]().then((res) => {
-        //     if (res.status === 0) {
-        //         this.$store.commit("SET_ROLE_INFO", res.data || {});
-        //     } else {
-        //         alert(res.message);
-        //     }
-        // });
-    },
-}).$mount("#app");
+api[urlNames["getUserRole"]]().then((res) => {
+    if (res.status === 0) {
+        let router = initRouter([]);
+        initVueInstance(router, res.data);
+    } else {
+        alert(res.message);
+    }
+});
+const initVueInstance = (router, userInfo) => {
+    new Vue({
+        router,
+        store,
+        render: (h) => h(App),
+        created() {
+            this.$store.commit("SET_ROLE_INFO", userInfo || {});
+        },
+    }).$mount("#app");
+};
+// let router = initRouter([]);
+// new Vue({
+//     router,
+//     store,
+//     render: (h) => h(App),
+//     created() {
+//         // api[urlNames["getUserRole"]]().then((res) => {
+//         //     if (res.status === 0) {
+//         //         this.$store.commit("SET_ROLE_INFO", res.data || {});
+//         //     } else {
+//         //         alert(res.message);
+//         //     }
+//         // });
+//     },
+// }).$mount("#app");
