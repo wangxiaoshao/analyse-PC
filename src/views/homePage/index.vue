@@ -1,56 +1,63 @@
 <template>
     <div class="homePage">
-        <p
-            style="
-                display: inline-block;
-                margin-bottom: 30px;
-                margin-left: 25px;
-            "
-        >
-            欢迎您，您是今天第&nbsp;<b
-                ><big>{{ loginNumber }}</big></b
-            >&nbsp;个登录的用户！
-        </p>
-        <!--昨日登录数据和数据导出box 不使用背景图 -->
         <div class="first-box">
-            <el-card class="box-card">
-                <div class="statics">
-                    <iframe
-                        src="http://localhost:8088/webroot/decision/v10/entry/access/95f55878-4451-4384-8c96-5e393b3e64fe?preview=true"
-                        frameborder="0"
-                        id="frame1"
-                        marginheight="0"
-                        marginwidth="0"
-                        width="100%"
-                        scrolling="no"
-                    ></iframe>
-                    <!-- <div class="statics-left">
-                        <h3>昨日登录人数</h3>
-                        <h4>{{ yesterdayLogin }}</h4>
-                    </div>
-                    <div class="ststics-right">
-                        <img src="@src/common/images/login.png" alt="" />
-                    </div> -->
-                </div>
-            </el-card>
-            <el-card class="box-card">
-                <div class="statics">
-                    <!-- <div class="statics-left">
-                        <h3>数据导出</h3>
-                        <h4>{{ staticsExportTotal }}</h4>
-                    </div>
-                    <div class="ststics-right">
-                        <img src="@src/common/images/login.png" alt="" />
-                    </div> -->
-                </div>
-            </el-card>
+            <el-row :gutter="20">
+                <el-col :span="8">
+                    <el-card class="item-card">
+                        <el-row>
+                            <el-col :span="13">
+                                <div class="item-left">
+                                    <h3>欢迎您，</h3>
+                                    <p class="date">
+                                        {{
+                                            new Date()
+                                                | dataFilter("YYYY-MM-DD")
+                                        }}
+                                        {{ weekDate() }}
+                                    </p>
+                                    <p>登录考核应用分析平台！</p>
+                                </div>
+                            </el-col>
+                            <el-col :span="11">
+                                <div class="item-right">
+                                    <img
+                                        src="@src/common/images/today.png"
+                                        alt=""
+                                    />
+                                </div>
+                            </el-col>
+                        </el-row>
+                    </el-card>
+                </el-col>
+                <el-col :span="8">
+                    <el-card class="item-card">
+                        <el-row>
+                            <el-col :span="13">
+                                <div class="item-left">
+                                    <p class="title">昨日登录人员</p>
+                                    <p class="number">
+                                        <span>{{ loginNumber }}</span> 人
+                                    </p>
+                                </div>
+                            </el-col>
+                            <el-col :span="11">
+                                <div class="item-right">
+                                    <img
+                                        class="login_number"
+                                        src="@src/common/images/yesterdaylogin.png"
+                                        alt=""
+                                    />
+                                </div>
+                            </el-col>
+                        </el-row>
+                    </el-card>
+                </el-col>
+                <el-col :span="8">
+                    <el-card class="item-card"></el-card>
+                </el-col>
+            </el-row>
         </div>
-        <!--昨日登录数据和数据导出box 使用背景图 -->
-        <!-- <div class="first-box1">
-            <div class="statics"></div>
 
-            <div class="statics"></div>
-        </div> -->
         <div class="home-box">
             <el-card class="box-card">
                 <div slot="header" class="clearfix">
@@ -90,13 +97,14 @@
     </div>
 </template>
 <script>
-import { api, urlNames } from "@src/api";
+// import { api, urlNames } from "@src/api";
 import { mapState } from "vuex";
 export default {
     data() {
         return {
             yesterdayLogin: 2345,
             staticsExportTotal: 500,
+            loginNumber: 1256,
             // 平台公告列表
             announcementList: [
                 {
@@ -130,34 +138,42 @@ export default {
             ],
             // 处理平台公告列表
             doAnnouncementList: [],
-            loginNumber: null,
         };
     },
     created() {},
     mounted() {
-        var test = document
-            .getElementById("frame1")
-            .contentWindow.document.getElementById("content-container");
-        console.log(test);
+        // var test = document
+        //     .getElementById("frame1")
+        //     .contentWindow.document.getElementById("content-container");
+        // console.log(test);
         // test.style.overflow = "hidden";
         this.init();
     },
     methods: {
         init() {
-            // this.getLoginIndex();
             this.doArray();
+        },
+        // 获取今天是周几
+        weekDate() {
+            let now = new Date();
+            let day = now.getDay();
+            let weeks = [
+                "星期日",
+                "星期一",
+                "星期二",
+                "星期三",
+                "星期四",
+                "星期五",
+                "星期六",
+            ];
+            let week = weeks[day];
+            return week;
         },
         doArray() {
             this.doAnnouncementList.push(
                 this.announcementList.slice(0, 3),
                 this.announcementList.slice(3)
             );
-        },
-        // 获取第几个用户
-        getLoginIndex() {
-            api[urlNames["loginIndex"]]().then((res) => {
-                this.loginNumber = res.data;
-            });
         },
         goFindAnnountDetial(val) {
             this.$router.push({

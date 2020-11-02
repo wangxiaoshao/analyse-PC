@@ -27,3 +27,6 @@ export const SET_ROLE_INFO = "SET_ROLE_INFO";
 // 通知类型和通知方式
 export const SET_NOTICE_WAY = "SET_NOTICE_WAY";
 export const SET_NOTICE_TYPE = "SET_NOTICE_TYPE";
+
+// 系统数据
+export const SET_APPLY_LIST = "SET_APPLY_LIST";

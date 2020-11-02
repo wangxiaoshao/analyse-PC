@@ -18,7 +18,7 @@
                     <el-autocomplete
                         style="width: 100%;"
                         v-model="createdOrUpdateForm.companyName"
-                        value-key="companyName"
+                        value-key="company"
                         :fetch-suggestions="getInfoByCompanyName"
                         placeholder="请输入内容"
                         @select="handleSelect"
@@ -26,17 +26,22 @@
                 </el-form-item>
                 <el-form-item label="应用名称：" prop="system_name">
                     <el-input
-                        readonly
                         placeholder="请输入应用名称"
                         v-model="createdOrUpdateForm.system_name"
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="表格名称：" prop="table_name">
                     <el-input
-                        readonly
                         placeholder="请输入表格名称"
                         v-model="createdOrUpdateForm.table_name"
-                    ></el-input>
+                        :disabled="createdOrUpdateForm.system_id != ''"
+                    >
+                        <span
+                            slot="prepend"
+                            v-if="createdOrUpdateForm.system_id === ''"
+                            >{{ table_header }}</span
+                        >
+                    </el-input>
                 </el-form-item>
                 <el-form-item label="是否启用：" prop="is_banned">
                     <el-switch
@@ -89,7 +94,7 @@
                     align="center"
                 ></el-table-column>
                 <el-table-column
-                    prop="companyName"
+                    prop="company"
                     label="公司名称"
                     align="center"
                 ></el-table-column>
@@ -150,20 +155,8 @@ export default {
     data() {
         return {
             selectLoading: false,
-            applyList: [
-                {
-                    company_id: 233,
-                    system_id: 6248,
-                    systemName: "xUdjWUJ",
-                    comment: "oefwFT",
-                    tableName: "n",
-                    is_banned: 0,
-                    is_delete: 186,
-                    companyName: "惠智",
-                    createTime: "333",
-                    contactName: "wxs",
-                },
-            ],
+            table_header: "logger_server_",
+            applyList: [],
             companyList: [
                 {
                     company_id: 233,
@@ -200,12 +193,11 @@ export default {
             createdOrUpdateVisiable: false,
             name1: "",
             createdOrUpdateForm: {
-                companyName: "测试",
+                companyName: "",
                 system_name: "",
                 table_name: "",
                 is_banned: 0,
                 comment: "",
-                id: "",
                 company_id: "",
                 system_id: "",
             },
@@ -228,12 +220,15 @@ export default {
                 table_name: [
                     {
                         required: true,
-                        message: "表格名称不能为空",
+                        message: `表格名称不能为空，名称前缀已固定为logger_server_`,
                         trigger: "blur",
                     },
                 ],
             },
         };
+    },
+    created() {
+        this.getGrid();
     },
     methods: {
         getGrid() {
@@ -253,27 +248,30 @@ export default {
             );
         },
         getInfoByCompanyName(queryString, cb) {
-            // api[urlNames["getSystemId"]]({ companyName: queryString }).then(
-            //     (res) => {
-            //         this.companyList = res.data;
-            //         let results = queryString
-            //             ? this.companyList.filter(
-            //                   this.createStateFilter(queryString)
-            //               )
-            //             : this.companyList;
-            //         cb(results);
-            //     }
-            // );
+            if (queryString.length === 0) {
+                return;
+            }
+            api[urlNames["getSystemId"]]({
+                companyName: queryString,
+            }).then((res) => {
+                this.companyList = res.data;
+                let results = queryString
+                    ? this.companyList.filter(
+                          this.createStateFilter(queryString)
+                      )
+                    : this.companyList;
+                cb(results);
+            });
             // this.companyList = res.data;
-            let results = queryString
-                ? this.companyList.filter(this.createStateFilter(queryString))
-                : this.companyList;
-            cb(results);
+            // let results = queryString
+            //     ? this.companyList.filter(this.createStateFilter(queryString))
+            //     : this.companyList;
+            // cb(results);
         },
         createStateFilter(queryString) {
             return (state) => {
                 return (
-                    state.companyName
+                    state.company
                         .toLowerCase()
                         .indexOf(queryString.toLowerCase()) === 0
                 );
@@ -282,13 +280,11 @@ export default {
         handleSelect(item) {
             console.log(item);
             this.createdOrUpdateForm.company_id = item.company_id;
-            this.createdOrUpdateForm.system_id = item.system_id;
-            this.createdOrUpdateForm.system_name = item.system_name;
-            this.createdOrUpdateForm.table_name = item.table_name;
         },
         openCreateDailog(formName) {
+            this.createdOrUpdateForm.company_id = "";
+            this.createdOrUpdateForm.system_id = "";
             this.dialogTitle = "创建应用";
-            this.createdOrUpdateForm.id = "";
             this.createdOrUpdateVisiable = true;
             this.$nextTick(() => {
                 this.$refs[formName].resetFields();
@@ -299,10 +295,9 @@ export default {
         },
         openEditDialog(row) {
             this.dialogTitle = "编辑应用";
-            this.createdOrUpdateForm.id = row.id;
-            this.createdOrUpdateForm.company_id = row.company_id;
-            this.createdOrUpdateForm.system_id = row.system_id;
-            this.createdOrUpdateForm.companyName = row.companyName;
+            this.createdOrUpdateForm.company_id = row.companyId;
+            this.createdOrUpdateForm.system_id = row.systemId;
+            this.createdOrUpdateForm.companyName = row.company;
             this.createdOrUpdateForm.table_name = row.tableName;
             this.createdOrUpdateForm.system_name = row.systemName;
             this.createdOrUpdateForm.is_banned = row.is_banned;
@@ -311,29 +306,37 @@ export default {
         },
         createdOrUpdateApp(form) {
             let apiUrl = "";
-            if (this.createdOrUpdateForm.id === "") {
+            let data = {
+                company: this.createdOrUpdateForm.companyName,
+                system_name: this.createdOrUpdateForm.system_name,
+                table_name: this.createdOrUpdateForm.table_name,
+                is_banned: this.createdOrUpdateForm.is_banned,
+                comment: this.createdOrUpdateForm.comment,
+                company_id: this.createdOrUpdateForm.company_id,
+                system_id: this.createdOrUpdateForm.system_id,
+            };
+            if (this.createdOrUpdateForm.system_id === "") {
                 apiUrl = "createTable";
+                data.table_name =
+                    this.createdOrUpdateForm.table_name + this.table_header;
             } else {
                 apiUrl = "updateSystemTableMessage";
             }
-            console.log(this.createdOrUpdateForm);
             this.$refs[form].validate((valid) => {
                 if (valid) {
-                    api[urlNames[apiUrl]](this.createdOrUpdateForm).then(
-                        (res) => {
-                            if (res.status === 0) {
-                                this.getGrid();
-                                this.closeAddressDialog();
-                                this.$message.success(
-                                    this.createdOrUpdateForm.id === ""
-                                        ? "创建成功"
-                                        : "编辑成功"
-                                );
-                            } else {
-                                this.$message.warning("操作失败，请稍后再试");
-                            }
+                    api[urlNames[apiUrl]](data).then((res) => {
+                        if (res.status === 0) {
+                            this.closeCreateDailog();
+                            this.getGrid();
+                            this.$message.success(
+                                this.createdOrUpdateForm.system_id === ""
+                                    ? "创建成功"
+                                    : "编辑成功"
+                            );
+                        } else {
+                            this.$message.warning("操作失败，请稍后再试");
                         }
-                    );
+                    });
                 } else {
                     this.$message.warning("请根据提示填写必填字段");
                 }
@@ -346,6 +349,7 @@ export default {
             api[urlNames["deleteSystemTableMessage"]]({ systemId }).then(
                 (res) => {
                     if (res) {
+                        this.getGrid();
                         this.$message.success("删除成功");
                     }
                 },

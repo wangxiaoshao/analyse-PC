@@ -14,46 +14,36 @@
                 :rules="rulesOption"
                 ref="createdOrUpdateForm"
             >
-                <el-form-item label="共享应用：" prop="appName">
-                    <el-select
-                        size="medium"
-                        placeholder="请选择共享应用名称"
-                        @change="accountChange"
-                        v-model="createdOrUpdateForm.appName"
-                    >
-                        <el-option
-                            v-for="item in appList"
-                            :key="item.id"
-                            :label="item.name"
-                            :value="item.id"
-                        ></el-option>
-                    </el-select>
+                <el-form-item label="应用名称：" prop="system_name">
+                    <el-autocomplete
+                        style="width: 100%;"
+                        v-model="createdOrUpdateForm.system_name"
+                        value-key="systemName"
+                        :fetch-suggestions="getInfoBySystemName"
+                        placeholder="请输入内容"
+                        @select="systemNameSelect"
+                    ></el-autocomplete>
                 </el-form-item>
-                <el-form-item label="推送应用账号：" prop="account">
-                    <el-select
-                        size="medium"
-                        placeholder="请选择推送应用账号"
-                        @change="accountChange"
-                        v-model="createdOrUpdateForm.account"
-                    >
-                        <el-option
-                            v-for="item in accountList"
-                            :key="item.id"
-                            :label="item.name"
-                            :value="item.id"
-                        ></el-option>
-                    </el-select>
+                <el-form-item label="单位名称：" prop="companyName">
+                    <el-autocomplete
+                        style="width: 100%;"
+                        v-model="createdOrUpdateForm.companyName"
+                        value-key="company"
+                        :fetch-suggestions="getInfoByCompanyName"
+                        placeholder="请输入内容"
+                        @select="companyNameSelect"
+                    ></el-autocomplete>
                 </el-form-item>
-                <el-form-item label="是否启用：" prop="disabled">
+                <el-form-item label="是否启用：" prop="is_banned">
                     <el-switch
                         :active-value="0"
                         :inactive-value="1"
-                        v-model="createdOrUpdateForm.disabled"
+                        v-model="createdOrUpdateForm.is_banned"
                     ></el-switch>
                 </el-form-item>
-                <el-form-item label="备注说明：" prop="description">
+                <el-form-item label="备注说明：" prop="comment">
                     <el-input
-                        v-model="createdOrUpdateForm.description"
+                        v-model="createdOrUpdateForm.comment"
                         type="textarea"
                         placeholder="请输入..."
                     ></el-input>
@@ -90,7 +80,7 @@
                     </div>
                 </template>
                 <el-table-column
-                    prop="account"
+                    prop="systemName"
                     label="共享应用名称"
                     align="center"
                 ></el-table-column>
@@ -109,10 +99,14 @@
                     label="联系人"
                     align="center"
                 ></el-table-column>
-                <el-table-column prop="state" label="启用状态" align="center">
+                <el-table-column
+                    prop="is_banned"
+                    label="启用状态"
+                    align="center"
+                >
                     <template slot-scope="scope">
                         <span>{{
-                            scope.row.state === 0 ? "正常" : "禁用"
+                            scope.row.is_banned === 0 ? "正常" : "禁用"
                         }}</span>
                     </template>
                 </el-table-column>
@@ -127,7 +121,7 @@
                         <el-button
                             size="mini"
                             type="text"
-                            @click="comfirmDeleteShareData(scope.row.id)"
+                            @click="comfirmDeleteShareData(scope.row.shareId)"
                             >删除</el-button
                         >
                     </template>
@@ -153,48 +147,165 @@ export default {
     data() {
         return {
             shareDataList: [{}],
-            accountList: [
-                { id: 1, name: "cs1" },
-                { id: 2, name: "cs2" },
-                { id: 3, name: "cs3" },
-            ],
-            appList: [
-                { id: 1, name: "app1" },
-                { id: 2, name: "app2" },
-                { id: 3, name: "cs3" },
+            companyList: [
+                {
+                    company_id: 233,
+                    system_id: 6246,
+                    system_name: "我的",
+                    comment: "oefwFT",
+                    table_name: "表1",
+                    is_banned: 7021,
+                    is_delete: 186,
+                    companyName: "惠智",
+                },
+                {
+                    company_id: 234,
+                    system_id: 6247,
+                    system_name: "惠智应用",
+                    comment: "oefwFT",
+                    table_name: "n",
+                    is_banned: 7021,
+                    is_delete: 186,
+                    companyName: "测试",
+                },
+                {
+                    company_id: 235,
+                    system_id: 6248,
+                    system_name: "测试",
+                    comment: "oefwFT",
+                    table_name: "人员表",
+                    is_banned: 7021,
+                    is_delete: 186,
+                    companyName: "测试惠智公司的数据",
+                },
             ],
             dialogTitle: "创建共享任务",
             createdOrUpdateVisiable: false,
             createdOrUpdateForm: {
-                appName: "",
-                account: "",
-                disabled: 0,
-                description: "",
-                id: "",
+                system_id: "",
+                system_name: "",
+                company_id: "",
+                companyName: "",
+                is_banned: 0,
+                shareId: "",
+                comment: "",
             },
             rulesOption: {
-                appName: [
+                system_name: [
                     {
                         required: true,
                         message: "应用名称不能为空",
                         trigger: "blur",
                     },
                 ],
+                companyName: [
+                    {
+                        required: true,
+                        message: "公司名称不能为空",
+                        trigger: "blur",
+                    },
+                ],
             },
         };
     },
+    created() {
+        this.getGrid();
+    },
     methods: {
-        accountChange() {
-            console.log(this.createdOrUpdateForm.account);
+        getGrid() {
+            let data = {
+                page: this.page.current,
+                limit: this.page.limit,
+            };
+            api[urlNames["findShareList"]](data).then(
+                (res) => {
+                    this.shareDataList = res.data;
+                    this.page.total = res.total;
+                },
+                () => {
+                    this.shareDataList = [];
+                    this.page.total = 0;
+                }
+            );
+        },
+        getInfoBySystemName(queryString, cb) {
+            if (queryString.length === 0) {
+                return;
+            }
+            api[urlNames["findShareIdByName"]]({
+                systemName: queryString,
+                companyName: "",
+            }).then((res) => {
+                this.companyList = res.data;
+                let results = queryString
+                    ? this.companyList.filter(
+                          this.createStateFilterSystemName(queryString)
+                      )
+                    : this.companyList;
+                cb(results);
+            });
+            // let results = queryString
+            //     ? this.companyList.filter(
+            //           this.createStateFilterSystemName(queryString)
+            //       )
+            //     : this.companyList;
+            // cb(results);
+        },
+        createStateFilterSystemName(queryString) {
+            return (state) => {
+                return (
+                    state.systemName
+                        .toLowerCase()
+                        .indexOf(queryString.toLowerCase()) === 0
+                );
+            };
+        },
+        getInfoByCompanyName(queryString, cb) {
+            if (queryString.length === 0) {
+                return;
+            }
+            api[urlNames["findShareIdByName"]]({
+                companyName: queryString,
+                systemName: "",
+            }).then((res) => {
+                this.companyList = res.data;
+                let results = queryString
+                    ? this.companyList.filter(
+                          this.createStateFilter(queryString)
+                      )
+                    : this.companyList;
+                cb(results);
+            });
+            // let results = queryString
+            //     ? this.companyList.filter(this.createStateFilter(queryString))
+            //     : this.companyList;
+            // cb(results);
+        },
+        createStateFilter(queryString) {
+            return (state) => {
+                return (
+                    state.company
+                        .toLowerCase()
+                        .indexOf(queryString.toLowerCase()) === 0
+                );
+            };
+        },
+        systemNameSelect(item) {
+            console.log(item);
+            this.createdOrUpdateForm.system_id = item.systemId;
+        },
+        companyNameSelect(item) {
+            console.log(item);
+            this.createdOrUpdateForm.company_id = item.companyId;
         },
         openCreateDailog(formName) {
             this.dialogTitle = "创建共享任务";
-            this.createdOrUpdateForm.id = "";
-            this.createdOrUpdateForm.account = "";
-            this.createdOrUpdateForm.appName = "";
+            this.createdOrUpdateForm.company_id = "";
+            this.createdOrUpdateForm.system_id = "";
+            this.createdOrUpdateForm.shareId = "";
             this.createdOrUpdateVisiable = true;
             this.$nextTick(() => {
-                this.$refs["createdOrUpdateForm"].resetFields();
+                this.$refs[formName].resetFields();
             });
         },
         closeCreateDailog() {
@@ -202,30 +313,43 @@ export default {
         },
         openEditDialog(row) {
             this.dialogTitle = "编辑共享任务";
-            this.createdOrUpdateForm.id = row.id;
-            // this.createdOrUpdateForm.disabled = row.disabled;
-            this.createdOrUpdateForm.account = row.account;
-            // this.createdOrUpdateForm.description = row.description;
+            this.createdOrUpdateForm.shareId = row.shareId;
+            this.createdOrUpdateForm.system_name = row.systemName;
+            this.createdOrUpdateForm.companyName = row.companyName;
+            this.createdOrUpdateForm.system_id = row.systemId;
+            this.createdOrUpdateForm.company_id = row.companyId;
+            this.createdOrUpdateForm.is_banned = row.is_banned;
+            this.createdOrUpdateForm.comment = row.comment;
             this.createdOrUpdateVisiable = true;
         },
         createdOrUpdateShareData(form) {
             this.$refs[form].validate((valid) => {
                 if (valid) {
-                    // api[urlNames["createTxlGroup"]](
-                    //     this.createdOrUpdateForm
-                    // ).then((res) => {
-                    //     if (res.status === 0) {
-                    //         this.closeAddressDialog();
-                    //         this.getGrid();
-                    //         this.$message.success(
-                    //             this.createdOrUpdateForm.id === ""
-                    //                 ? "创建成功"
-                    //                 : "编辑成功"
-                    //         );
-                    //     } else {
-                    //         this.$message.warning("操作失败，请稍后再试");
-                    //     }
-                    // });
+                    let data = {
+                        system_id: this.createdOrUpdateForm.system_id,
+                        system_name: this.createdOrUpdateForm.system_name,
+                        company_id: this.createdOrUpdateForm.company_id,
+                        comment: this.createdOrUpdateForm.comment,
+                        is_banned: this.createdOrUpdateForm.is_banned,
+                        shareId: this.createdOrUpdateForm.shareId,
+                    };
+                    let apiUrl =
+                        this.createdOrUpdateForm.shareId === ""
+                            ? "saveShareSystemMessage"
+                            : "updateDataShare";
+                    api[urlNames[apiUrl]](data).then((res) => {
+                        if (res.status === 0) {
+                            this.closeCreateDailog();
+                            this.getGrid();
+                            this.$message.success(
+                                this.createdOrUpdateForm.shareId === ""
+                                    ? "创建成功"
+                                    : "编辑成功"
+                            );
+                        } else {
+                            this.$message.warning("操作失败，请稍后再试");
+                        }
+                    });
                 } else {
                     this.$message.warning("请根据提示填写必填字段");
                 }

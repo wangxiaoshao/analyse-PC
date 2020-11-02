@@ -21,17 +21,17 @@
         <el-row :gutter="20">
             <el-col :span="6" v-for="item in templateList" :key="item.id">
                 <div class="template-item">
-                    <p class="title">
+                    <p class="title" :title="item.modelName">
                         {{ item.modelName }}
                     </p>
                     <div class="content">
                         <img
                             :src="
-                                item.type === 'word'
+                                item.type === 'doc'
                                     ? url3
                                     : item.type === 'txt'
                                     ? url2
-                                    : item.type === 'excel'
+                                    : item.type === 'xlsx'
                                     ? url1
                                     : url4
                             "
@@ -57,7 +57,7 @@
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="page.current"
-            :page-sizes="[10, 30, 50, 100]"
+            :page-sizes="[8]"
             :page-size="page.limit"
             layout="total, sizes, prev, pager, next, jumper"
             :total="page.total"
@@ -81,52 +81,46 @@ export default {
             ],
             templateList: [
                 {
-                    modelName: "模板1：安顺市考核情况",
+                    modelName: "模板1：安顺市考核情况.doc",
                     modelId: 6486,
                     createTime: 104172363955,
                     id: 6882,
                     modelUrl: "",
-                    type: "word",
                 },
                 {
-                    modelName: "模板2：安顺市考核情况",
+                    modelName: "模板2：安顺市考核情况.doc",
                     modelId: 6486,
                     createTime: 104172363955,
                     id: 6883,
                     modelUrl: "",
-                    type: "word",
                 },
                 {
-                    modelName: "模板3：安顺市考核情况",
+                    modelName: "模板3：安顺市考核情况.xlsx",
                     modelId: 6486,
                     createTime: 104172363955,
                     id: 6884,
                     modelUrl: "",
-                    type: "excel",
                 },
                 {
-                    modelName: "模板4：安顺市考核情况",
+                    modelName: "模板4：安顺市考核情况.txt",
                     modelId: 6486,
                     createTime: 104172363955,
                     id: 6885,
                     modelUrl: "",
-                    type: "txt",
                 },
                 {
-                    modelName: "模板5：安顺市考核情况",
+                    modelName: "模板5：安顺市考核情况.xlsx",
                     modelId: 6486,
                     createTime: 104172363955,
                     id: 6886,
                     modelUrl: "",
-                    type: "excel",
                 },
                 {
-                    modelName: "模板5：安顺市考核情况",
+                    modelName: "模板5：安顺市考核情况.pdf",
                     modelId: 6486,
                     createTime: 104172363955,
                     id: 6887,
                     modelUrl: "",
-                    type: "pdf",
                 },
             ],
             url1: require("@src/common/images/excel.png"),
@@ -136,7 +130,7 @@ export default {
         };
     },
     mounted() {
-        // this.getGrid();
+        this.getGrid();
     },
     methods: {
         tableChange(data) {
@@ -145,10 +139,24 @@ export default {
         getGrid() {
             let data = {
                 page: this.page.current,
-                pageSize: this.page.limit,
+                pageSize: 8,
             };
+            let reg1 = RegExp(/doc/);
+            let reg2 = RegExp(/xlsx/);
+            let reg3 = RegExp(/txt/);
             api[urlNames["getTemplateList"]](data).then(
                 (res) => {
+                    res.data.forEach((item) => {
+                        if (reg1.test(item.modelName)) {
+                            item.type = "doc";
+                        } else if (reg2.test(item.modelName)) {
+                            item.type = "xlsx";
+                        } else if (reg3.test(item.modelName)) {
+                            item.type = "txt";
+                        } else {
+                            item.type = "pdf";
+                        }
+                    });
                     this.templateList = res.data;
                     this.page.total = res.total;
                 },

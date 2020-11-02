@@ -36,6 +36,8 @@ export default {
     createTable: "createTable",
     // 应用接入--删除应用接入
     deleteSystemTableMessage: "deleteSystemTableMessage",
+    // 应用接入--更新应用
+    updateSystemTableMessage: "updateSystemTableMessage",
     // 应用接入--根据公司名称查询公司id
     getSystemId: "getSystemId",
     // 共享数据--查询共享数据列表
@@ -46,6 +48,8 @@ export default {
     saveShareSystemMessage: "saveShareSystemMessage",
     // 共享数据--更新共享数据
     updateDataShare: "updateDataShare",
+    //  共享数据--查询应用名称和单位名称
+    findShareIdByName: "findShareIdByName",
     // 权限管理--获取指定角色的人员列表
     getAuthUsersByRole: "getAuthUsersByRole",
     // 权限管理--添加成员授权范围
@@ -72,4 +76,6 @@ export default {
     updateNoticeRule: "updateNoticeRule",
     // 数据模板--获取数据模板列表
     getTemplateList: "getTemplateList",
+    // 帮助中心--获取文档列表
+    getHelpFileList: "getHelpFileList",
 };

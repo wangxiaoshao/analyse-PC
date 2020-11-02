@@ -90,7 +90,8 @@ export default {
     created() {},
     mounted() {
         this.addEventListenForResize();
-        // this.getNoticeWayList();
+        this.getNoticeWayList();
+        this.getApplicationList();
         // this.confirmInfo();
     },
     methods: {
@@ -103,6 +104,7 @@ export default {
             "GET_CONFIRM_INFO",
             "SET_NOTICE_WAY",
             "SET_NOTICE_TYPE",
+            "SET_APPLY_LIST",
         ]),
         // isCustomBreadcrumb 是否用户定制的
         init(path, isCustomBreadcrumb) {
@@ -143,6 +145,11 @@ export default {
             api[urlNames["getNoticeTypePeriod"]]().then((res) => {
                 this.SET_NOTICE_WAY(res.data.typeVOList);
                 this.SET_NOTICE_TYPE(res.data.periodVOList);
+            });
+        },
+        getApplicationList() {
+            api[urlNames["getApplicationList"]]().then((res) => {
+                this.SET_APPLY_LIST(res.data);
             });
         },
         setWindowSize() {

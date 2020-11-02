@@ -18,6 +18,7 @@ const app = {
         rolesInfo: {},
         noticeWayList: [],
         noticeTypeList: [],
+        applicationList: [],
         confirmState: "",
     },
     mutations: {
@@ -49,6 +50,9 @@ const app = {
         },
         [types.SET_ROLE_INFO](state, val) {
             state.rolesInfo = val;
+        },
+        [types.SET_APPLY_LIST](state, val) {
+            state.applicationList = val;
         },
     },
 };

@@ -3,9 +3,8 @@ export default {
     // 数据模板--获取数据模板列表
     [urlNames.getTemplateList]: {
         type: "get",
-        url: "/api/appdata/ModelGenerated/getList",
+        url: "/api/appdata/modelGenerated/getList",
         keepOriginResponse: true,
-        showLoading: true,
         serve: "organizationManagePC",
     },
 };

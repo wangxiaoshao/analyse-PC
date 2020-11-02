@@ -16,6 +16,7 @@
             >
                 <el-form-item label="账号：" prop="account_number">
                     <el-input
+                        :disabled="this.createdOrUpdateForm.id != ''"
                         placeholder="请输入账号"
                         v-model="createdOrUpdateForm.account_number"
                     ></el-input>
@@ -233,7 +234,7 @@ export default {
         };
     },
     mounted() {
-        // this.getGrid();
+        this.getGrid();
     },
     methods: {
         // 获取关联类表
@@ -273,38 +274,9 @@ export default {
                 }
             );
         },
-        submitAccount(form) {
-            this.$refs[form].validate((valid) => {
-                if (valid) {
-                    let apiUrl = "";
-                    if (this.createdOrUpdateForm.id === "") {
-                        apiUrl = "createSystemMessage";
-                    } else {
-                        apiUrl = "updatesSystemMessage";
-                    }
-                    api[urlNames[apiUrl]](this.createdOrUpdateForm).then(
-                        (res) => {
-                            if (res.status === 0) {
-                                this.getGrid();
-                                this.closeAddressDialog();
-                                this.$message.success(
-                                    this.createdOrUpdateForm.id === ""
-                                        ? "创建成功"
-                                        : "编辑成功"
-                                );
-                            } else {
-                                this.$message.warning("操作失败，请稍后再试");
-                            }
-                        }
-                    );
-                } else {
-                    this.$message.warning("请根据提示填写必填字段");
-                }
-            });
-        },
         openCreateDailog(formName) {
             this.generateRandomAccount();
-            this.dialogTitle = "创建账号";
+            this.dialogTitle = "创建关联";
             this.createdOrUpdateForm.id = "";
             this.createdOrUpdateVisiable = true;
             this.$nextTick(() => {
@@ -324,6 +296,35 @@ export default {
             this.createdOrUpdateForm.telephone_number = row.telephone_number;
             this.createdOrUpdateForm.is_banned = row.is_banned;
             this.createdOrUpdateVisiable = true;
+        },
+        submitAccount(form) {
+            this.$refs[form].validate((valid) => {
+                if (valid) {
+                    let apiUrl = "";
+                    if (this.createdOrUpdateForm.id === "") {
+                        apiUrl = "createSystemMessage";
+                    } else {
+                        apiUrl = "updatesSystemMessage";
+                    }
+                    api[urlNames[apiUrl]](this.createdOrUpdateForm).then(
+                        (res) => {
+                            if (res.status === 0) {
+                                this.getGrid();
+                                this.closeCreateDailog();
+                                this.$message.success(
+                                    this.createdOrUpdateForm.id === ""
+                                        ? "创建成功"
+                                        : "编辑成功"
+                                );
+                            } else {
+                                this.$message.warning("操作失败，请稍后再试");
+                            }
+                        }
+                    );
+                } else {
+                    this.$message.warning("请根据提示填写必填字段");
+                }
+            });
         },
         comfirmDeleteAccount(id) {
             this.handleRow("确定要删除该数据吗？", id, this.deleteAccount);

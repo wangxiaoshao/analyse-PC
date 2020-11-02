@@ -61,5 +61,17 @@ export default {
             aSign.sort();
             return sha1(aSign.join(""));
         },
+        /**
+         * 将对象构建为url查询
+         */
+        buildUrlQuery(paramsObj) {
+            let paramsList = [];
+
+            for (let key in paramsObj) {
+                paramsList.push(key + "=" + paramsObj[key]);
+            }
+
+            return paramsList.join("&");
+        },
     },
 };

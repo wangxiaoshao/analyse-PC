@@ -16,7 +16,7 @@ import "@src/common/font_1568136_nu78g9xw7jp/iconfont.js";
 import "@src/common/font_1568136_nu78g9xw7jp/icon.css";
 import VueCookies from "vue-cookie";
 import "./filters";
-// import { api, urlNames } from "@src/api";
+import { api, urlNames } from "@src/api";
 import initRouter from "@src/router/index";
 Vue.use(VueCookies);
 Vue.use(elementUI, {
@@ -61,6 +61,7 @@ Vue.use(elementUI, {
 //         },
 //     }).$mount("#app");
 // };
+
 let router = initRouter([]);
 new Vue({
     router,

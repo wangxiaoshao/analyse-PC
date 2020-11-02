@@ -44,58 +44,14 @@
                     >查询</el-button
                 >
             </el-form-item>
-            <el-button size="small" type="primary" style="float: right;"
-                >导出</el-button
-            >
         </el-form>
         <div class="table-box">
-            <iframe src="" frameborder="0"></iframe>
-            <!-- <el-table :data="systemLogList" stripe border style="width: 100%;">
-                <template slot="empty">
-                    <div class="empty">
-                        <p>
-                            <img
-                                class="data-pic"
-                                src="@src/common/images/no-data1.png"
-                                alt=""
-                            />
-                        </p>
-                        <p><span style="padding-left: 8px;">暂无数据</span></p>
-                    </div>
-                </template>
-                <el-table-column
-                    type="index"
-                    label="序号"
-                    align="center"
-                    width="70px"
-                ></el-table-column>
-                <el-table-column
-                    prop="actionTime"
-                    label="操作人"
-                    align="center"
-                ></el-table-column>
-                <el-table-column
-                    prop="userName"
-                    label="操作时间"
-                    align="center"
-                ></el-table-column>
-                <el-table-column
-                    prop="description"
-                    label="描述"
-                    align="center"
-                    min-width="100"
-                ></el-table-column>
-                <el-table-column label="操作" align="center" width="100px">
-                    <template slot-scope="scope">
-                        <el-button
-                            size="mini"
-                            type="text"
-                            @click="openDetialDialog(scope.row.id)"
-                            >查看详情</el-button
-                        >
-                    </template>
-                </el-table-column>
-            </el-table> -->
+            <iframe
+                width="100%"
+                height="100%"
+                src="http://localhost:8088/webroot/decision/v10/entry/access/2da1b288-77f4-4e71-8e09-0f66d59a85f6?preview=true"
+                frameborder="0"
+            ></iframe>
             <el-pagination
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
@@ -125,7 +81,6 @@ export default {
                 { type: 2, name: "导出日志" },
                 { type: 3, name: "权限日志" },
             ],
-            systemLogList: [{}],
             searchDate: "",
             searchParams: {
                 startDate: "",

@@ -18,15 +18,15 @@
             <div class="system-list">
                 <span>系统应用： </span>
                 <el-radio-group
-                    v-model="searchParams.applyId"
+                    v-model="searchParams.id"
                     size="small"
                     @change="applyChange"
                 >
                     <el-radio-button
-                        :label="item.applyId"
-                        v-for="item in systemList"
-                        :key="item.applyId"
-                        >{{ item.name }}</el-radio-button
+                        :label="item.id"
+                        v-for="item in app.applicationList"
+                        :key="item.systemSymbol"
+                        >{{ item.systemName }}</el-radio-button
                     >
                 </el-radio-group>
             </div>
@@ -49,15 +49,8 @@ export default {
                 },
                 shortcuts: null,
             },
-            systemList: [
-                { applyId: 0, name: "台账系统" },
-                { applyId: 1, name: "公文系统" },
-                { applyId: 2, name: "通知公告" },
-                { applyId: 3, name: "快传系统" },
-                { applyId: 4, name: "门户系统" },
-            ],
             searchDate: "",
-            searchParams: { startDate: "", endDate: "", applyId: 2 },
+            searchParams: { startDate: "", endDate: "", id: 1 },
         };
     },
     mounted() {
@@ -71,7 +64,7 @@ export default {
             console.log(val, this.searchParams.date);
         },
         applyChange(val) {
-            this.searchParams.applyId = val;
+            this.searchParams.id = val;
         },
     },
     computed: {
