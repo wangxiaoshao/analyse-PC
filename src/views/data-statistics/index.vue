@@ -1,28 +1,19 @@
 <template>
-    <div class="data-statistics">
-        <el-tabs v-model="activeName" @tab-click="handleClick">
-            <el-tab-pane label="省直属单位" name="first">
-                <apply-search></apply-search>
-            </el-tab-pane>
-            <el-tab-pane label="市州直属单位" name="second"
-                >市州直属单位</el-tab-pane
-            >
-            <el-tab-pane label="区县单位" name="third">区县单位</el-tab-pane>
-        </el-tabs>
+    <div class="site-module mod-dictionary">
+        <transition name="fade-transform" mode="out-in">
+            <keep-alive v-if="$route.meta.keepAlive">
+                <router-view></router-view>
+            </keep-alive>
+            <router-view v-if="!$route.meta.keepAlive"></router-view>
+        </transition>
     </div>
 </template>
 <script>
-import ApplySearch from "./components/ApplySearch/index";
 export default {
-    components: { ApplySearch },
     data() {
-        return {
-            activeName: "first",
-        };
+        return {};
     },
-    methods: {
-        handleClick() {},
-    },
+    methods: {},
 };
 </script>
 <style lang="less" scoped>

@@ -1,5 +1,5 @@
 import sha1 from "js-sha1";
-
+// import { api, urlNames } from "@src/api";
 /**
  * mixins
  * 翻页、排序、过滤、自动计算table高度
@@ -10,34 +10,38 @@ export default {
         return {};
     },
     methods: {
-        downloadBinaryFile(url, param, type) {
-            let timestamp = new Date().getTime();
-            let openUrl = "";
-            if (type === 2) {
-                // 导出单位人员
-                openUrl =
-                    url +
-                    "api/jg_manage/user/exportUser" +
-                    "?_=" +
-                    timestamp +
-                    "&orgId=" +
-                    param +
-                    "&sign=" +
-                    this.getSign({ orgId: param }, timestamp);
-            } else {
-                // 导出部门人员
-                openUrl =
-                    url +
-                    "api/jg_manage/user/exportUser" +
-                    "?_=" +
-                    timestamp +
-                    "&deptId=" +
-                    param +
-                    "&sign=" +
-                    this.getSign({ deptId: param }, timestamp);
+        downloadBinaryFile(type, loadParams) {
+            if (type === "userHeadimg") {
+                // api[urlNames["exportHeadimg"]]({
+                //     orgId: orgId,
+                //     departmentId: deptId,
+                // }).then((res) => {
+                //     window.open(res.data[0]);
+                // });
+
+                return;
             }
+
+            let timestamp = new Date().getTime();
+            let host = window.location.href.split("#")[0];
+            let apiUrl = "";
+            let params = {};
+            let openUrl = "";
+            switch (type) {
+                case "template":
+                    apiUrl = "/api/appdata/modelGenerated/download";
+                    params = { path: loadParams.path };
+                    break;
+                default:
+                    return null;
+            }
+            params = Object.assign({}, params);
+            params._ = timestamp;
+            params.sign = this.getSign(params, timestamp);
+            openUrl = host + apiUrl + "?" + this.buildUrlQuery(params);
             window.open(openUrl);
         },
+
         /*
          * @des: get 请求加签，此方法不适用与post
          */

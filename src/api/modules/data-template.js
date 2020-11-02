@@ -1,8 +1,9 @@
 import urlNames from "../url-names";
 export default {
-    [urlNames.getTreeList]: {
+    // 数据模板--获取数据模板列表
+    [urlNames.getTemplateList]: {
         type: "get",
-        url: "/api/appdata/areaOrg/getTreeList",
+        url: "/api/appdata/ModelGenerated/getList",
         keepOriginResponse: true,
         showLoading: true,
         serve: "organizationManagePC",

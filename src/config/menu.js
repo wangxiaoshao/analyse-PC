@@ -17,11 +17,33 @@ export default {
         {
             menuId: "002",
             name: "数据统计",
-            path: "/data-statistics",
+            path: "",
             type: 1,
             key: "menuHome",
             icon: "fa fa-bar-chart-o",
-            list: [],
+            list: [
+                {
+                    menuId: "0021",
+                    name: "区域汇总",
+                    path: "/area-total",
+                    type: 1,
+                    key: "menuHome",
+                },
+                {
+                    menuId: "0022",
+                    name: "单位汇总",
+                    path: "/unit-total",
+                    type: 1,
+                    key: "menuHome",
+                },
+                {
+                    menuId: "0023",
+                    name: "人员汇总",
+                    path: "/member-total",
+                    type: 1,
+                    key: "menuHome",
+                },
+            ],
         },
         {
             menuId: "003",
@@ -64,7 +86,7 @@ export default {
                 {
                     menuId: "0061",
                     name: "关联管理",
-                    path: "/count-manage",
+                    path: "/related-manage",
                     type: 1,
                     key: "menuHome",
                 },

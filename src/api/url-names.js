@@ -4,10 +4,24 @@
  */
 export default {
     // logout: "logout",
+
+    /** 全局接口 */
     // 获取用户信息
     getUserRole: "getUserRole",
-    // 共享管理--获取树
+    // 获取树
     getTreeList: "getTreeList",
+    // 通过区域列表获取区域名称
+    getAreaList: "getAreaList",
+    // 获取区域下面的单位
+    getOrgByAreaCode: "getOrgByAreaCode",
+    // 通过单位Id 获取单位名称
+    getOrgList: "getOrgList",
+    // 获取应用列表
+    getApplicationList: "getApplicationList",
+    // 获取系统通知列表
+    getSystemNoticeList: "getSystemNoticeList",
+
+    /** 模块接口 */
     // 关联管理--获取列表
     findAccountNumberList: "findAccountNumberList",
     // 关联管理--创建关联
@@ -24,6 +38,14 @@ export default {
     deleteSystemTableMessage: "deleteSystemTableMessage",
     // 应用接入--根据公司名称查询公司id
     getSystemId: "getSystemId",
+    // 共享数据--查询共享数据列表
+    findShareList: "findShareList",
+    // 共享数据--删除共享数据列表
+    deleteDataShare: "deleteDataShare",
+    // 共享管理--创建共享数据
+    saveShareSystemMessage: "saveShareSystemMessage",
+    // 共享数据--更新共享数据
+    updateDataShare: "updateDataShare",
     // 权限管理--获取指定角色的人员列表
     getAuthUsersByRole: "getAuthUsersByRole",
     // 权限管理--添加成员授权范围
@@ -48,4 +70,6 @@ export default {
     getNoticeTypePeriod: "getNoticeTypePeriod",
     // 通知提醒--更新通知
     updateNoticeRule: "updateNoticeRule",
+    // 数据模板--获取数据模板列表
+    getTemplateList: "getTemplateList",
 };

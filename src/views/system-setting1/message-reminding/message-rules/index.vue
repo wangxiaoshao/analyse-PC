@@ -206,11 +206,15 @@ export default {
                 noticeUsers: this.noticeUserIds,
                 disabled: this.noticeRulesForm.disabled,
             };
+            let apiUrl = "";
             if (this.$route.query.id) {
                 data.id = this.$route.query.id;
+                apiUrl = "updateNoticeRule";
+            } else {
+                apiUrl = "createNoticeRule";
             }
             console.log(data);
-            api[urlNames["createNoticeRule"]](data).then(
+            api[urlNames[apiUrl]](data).then(
                 (res) => {
                     if (res) {
                         this.$message({

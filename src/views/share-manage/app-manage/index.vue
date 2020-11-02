@@ -14,60 +14,40 @@
                 :rules="rulesOption"
                 ref="createdOrUpdateForm"
             >
-                <el-form-item label="应用名称：" prop="appName">
+                <el-form-item label="单位名称：" prop="companyName">
+                    <el-autocomplete
+                        style="width: 100%;"
+                        v-model="createdOrUpdateForm.companyName"
+                        value-key="companyName"
+                        :fetch-suggestions="getInfoByCompanyName"
+                        placeholder="请输入内容"
+                        @select="handleSelect"
+                    ></el-autocomplete>
+                </el-form-item>
+                <el-form-item label="应用名称：" prop="system_name">
                     <el-input
+                        readonly
                         placeholder="请输入应用名称"
-                        v-model="createdOrUpdateForm.appName"
+                        v-model="createdOrUpdateForm.system_name"
                     ></el-input>
                 </el-form-item>
-                <el-form-item label="表格名称：" prop="password">
+                <el-form-item label="表格名称：" prop="table_name">
                     <el-input
+                        readonly
                         placeholder="请输入表格名称"
-                        v-model="createdOrUpdateForm.password"
+                        v-model="createdOrUpdateForm.table_name"
                     ></el-input>
                 </el-form-item>
-                <el-form-item label="单位名称：" prop="account">
-                    <el-select
-                        v-model="this.companyName"
-                        :remote-method="getCompanyList"
-                        filterable
-                        remote
-                        reserve-keyword
-                        placeholder="请输入视图名称"
-                        :loading="selectLoading"
-                    >
-                        <el-option
-                            v-for="item in companyList"
-                            :key="item.id"
-                            :label="item.company_id"
-                            :value="item.company_id"
-                            >{{ item.system_name }}</el-option
-                        >
-                    </el-select>
-                    <!-- <el-select
-                        size="medium"
-                        placeholder="请选择账号"
-                        @change="accountChange"
-                        v-model="createdOrUpdateForm.account"
-                    >
-                        <el-option
-                            v-for="item in accountList"
-                            :key="item.id"
-                            :label="item.name"
-                            :value="item.id"
-                        ></el-option>
-                    </el-select> -->
-                </el-form-item>
-                <el-form-item label="是否启用：" prop="disabled">
+                <el-form-item label="是否启用：" prop="is_banned">
                     <el-switch
                         :active-value="0"
                         :inactive-value="1"
-                        v-model="createdOrUpdateForm.disabled"
+                        v-model="createdOrUpdateForm.is_banned"
                     ></el-switch>
                 </el-form-item>
-                <el-form-item label="备注说明：" prop="description">
+                <el-form-item label="备注说明：" prop="comment">
                     <el-input
-                        v-model="createdOrUpdateForm.description"
+                        v-model="createdOrUpdateForm.comment"
                         type="textarea"
                         placeholder="请输入..."
                     ></el-input>
@@ -119,12 +99,12 @@
                     align="center"
                 ></el-table-column>
                 <el-table-column
-                    prop="userName"
+                    prop="createTime"
                     label="创建时间"
                     align="center"
                 ></el-table-column>
                 <el-table-column
-                    prop="actionTime"
+                    prop="contactName"
                     label="联系人"
                     align="center"
                 ></el-table-column>
@@ -170,24 +150,85 @@ export default {
     data() {
         return {
             selectLoading: false,
-            companyName: "",
-            applyList: [{}],
-            companyList: [],
+            applyList: [
+                {
+                    company_id: 233,
+                    system_id: 6248,
+                    systemName: "xUdjWUJ",
+                    comment: "oefwFT",
+                    tableName: "n",
+                    is_banned: 0,
+                    is_delete: 186,
+                    companyName: "惠智",
+                    createTime: "333",
+                    contactName: "wxs",
+                },
+            ],
+            companyList: [
+                {
+                    company_id: 233,
+                    system_id: 6248,
+                    system_name: "xUdjWUJ",
+                    comment: "oefwFT",
+                    table_name: "n",
+                    is_banned: 7021,
+                    is_delete: 186,
+                    companyName: "惠智",
+                },
+                {
+                    company_id: 234,
+                    system_id: 6248,
+                    system_name: "xUdjWUJ",
+                    comment: "oefwFT",
+                    table_name: "n",
+                    is_banned: 7021,
+                    is_delete: 186,
+                    companyName: "测试",
+                },
+                {
+                    company_id: 235,
+                    system_id: 6248,
+                    system_name: "应用系统",
+                    comment: "oefwFT",
+                    table_name: "人员表",
+                    is_banned: 7021,
+                    is_delete: 186,
+                    companyName: "测试惠智公司的数据",
+                },
+            ],
             dialogTitle: "创建应用",
             createdOrUpdateVisiable: false,
+            name1: "",
             createdOrUpdateForm: {
-                appName: "",
-                company_id: "",
-                password: "",
-                disabled: 0,
-                description: "",
+                companyName: "测试",
+                system_name: "",
+                table_name: "",
+                is_banned: 0,
+                comment: "",
                 id: "",
+                company_id: "",
+                system_id: "",
             },
+            timeout: null,
             rulesOption: {
-                appName: [
+                companyName: [
                     {
                         required: true,
                         message: "应用名称不能为空",
+                        trigger: "blur",
+                    },
+                ],
+                system_name: [
+                    {
+                        required: true,
+                        message: "系统名称不能为空",
+                        trigger: "blur",
+                    },
+                ],
+                table_name: [
+                    {
+                        required: true,
+                        message: "表格名称不能为空",
                         trigger: "blur",
                     },
                 ],
@@ -211,20 +252,43 @@ export default {
                 }
             );
         },
-        getCompanyList(query) {
-            if (query !== "") {
-                api[urlNames["getViewList"]]().then((res) => {
-                    this.viewList = res.data;
-                });
-            }
+        getInfoByCompanyName(queryString, cb) {
+            // api[urlNames["getSystemId"]]({ companyName: queryString }).then(
+            //     (res) => {
+            //         this.companyList = res.data;
+            //         let results = queryString
+            //             ? this.companyList.filter(
+            //                   this.createStateFilter(queryString)
+            //               )
+            //             : this.companyList;
+            //         cb(results);
+            //     }
+            // );
+            // this.companyList = res.data;
+            let results = queryString
+                ? this.companyList.filter(this.createStateFilter(queryString))
+                : this.companyList;
+            cb(results);
         },
-        accountChange() {
-            console.log(this.createdOrUpdateForm.account);
+        createStateFilter(queryString) {
+            return (state) => {
+                return (
+                    state.companyName
+                        .toLowerCase()
+                        .indexOf(queryString.toLowerCase()) === 0
+                );
+            };
+        },
+        handleSelect(item) {
+            console.log(item);
+            this.createdOrUpdateForm.company_id = item.company_id;
+            this.createdOrUpdateForm.system_id = item.system_id;
+            this.createdOrUpdateForm.system_name = item.system_name;
+            this.createdOrUpdateForm.table_name = item.table_name;
         },
         openCreateDailog(formName) {
             this.dialogTitle = "创建应用";
             this.createdOrUpdateForm.id = "";
-            this.createdOrUpdateForm.account = "";
             this.createdOrUpdateVisiable = true;
             this.$nextTick(() => {
                 this.$refs[formName].resetFields();
@@ -235,30 +299,41 @@ export default {
         },
         openEditDialog(row) {
             this.dialogTitle = "编辑应用";
-            // this.createdOrUpdateForm.id = row.id;
-            // this.createdOrUpdateForm.disabled = row.disabled;
-            this.createdOrUpdateForm.account = row.account;
-            // this.createdOrUpdateForm.description = row.description;
+            this.createdOrUpdateForm.id = row.id;
+            this.createdOrUpdateForm.company_id = row.company_id;
+            this.createdOrUpdateForm.system_id = row.system_id;
+            this.createdOrUpdateForm.companyName = row.companyName;
+            this.createdOrUpdateForm.table_name = row.tableName;
+            this.createdOrUpdateForm.system_name = row.systemName;
+            this.createdOrUpdateForm.is_banned = row.is_banned;
+            this.createdOrUpdateForm.comment = row.comment;
             this.createdOrUpdateVisiable = true;
         },
         createdOrUpdateApp(form) {
+            let apiUrl = "";
+            if (this.createdOrUpdateForm.id === "") {
+                apiUrl = "createTable";
+            } else {
+                apiUrl = "updateSystemTableMessage";
+            }
+            console.log(this.createdOrUpdateForm);
             this.$refs[form].validate((valid) => {
                 if (valid) {
-                    // api[urlNames["createTxlGroup"]](
-                    //     this.createdOrUpdateForm
-                    // ).then((res) => {
-                    //     if (res.status === 0) {
-                    //         this.closeAddressDialog();
-                    //         this.getGrid();
-                    //         this.$message.success(
-                    //             this.createdOrUpdateForm.id === ""
-                    //                 ? "创建成功"
-                    //                 : "编辑成功"
-                    //         );
-                    //     } else {
-                    //         this.$message.warning("操作失败，请稍后再试");
-                    //     }
-                    // });
+                    api[urlNames[apiUrl]](this.createdOrUpdateForm).then(
+                        (res) => {
+                            if (res.status === 0) {
+                                this.getGrid();
+                                this.closeAddressDialog();
+                                this.$message.success(
+                                    this.createdOrUpdateForm.id === ""
+                                        ? "创建成功"
+                                        : "编辑成功"
+                                );
+                            } else {
+                                this.$message.warning("操作失败，请稍后再试");
+                            }
+                        }
+                    );
                 } else {
                     this.$message.warning("请根据提示填写必填字段");
                 }

@@ -1,13 +1,5 @@
 import urlNames from "../url-names";
 export default {
-    // 共享管理--获取树
-    [urlNames.getTreeList]: {
-        type: "get",
-        url: "/api/appdata/areaOrg/getTreeList",
-        keepOriginResponse: true,
-        showLoading: true,
-        serve: "organizationManagePC",
-    },
     // 关联管理--获取列表
     [urlNames.findAccountNumberList]: {
         type: "get",
@@ -47,7 +39,6 @@ export default {
         serve: "organizationManagePC",
     },
     // 应用接入-查询应用接入列表
-    createTable: "createTable",
     [urlNames.findSystemTableMessage]: {
         type: "get",
         url: "/api/createSystem/findSystemTableMessage",
@@ -81,5 +72,42 @@ export default {
         keepOriginResponse: true,
         showLoading: true,
         serve: "organizationManagePC",
+    },
+    // 共享数据--查询共享数据列表
+    [urlNames.findShareList]: {
+        type: "get",
+        url: "/api/shareSystem/findShareList",
+        keepOriginResponse: true,
+        showLoading: true,
+        serve: "organizationManagePC",
+    },
+    // 共享数据--删除共享数据列表
+    [urlNames.deleteDataShare]: {
+        type: "get",
+        url: "/api/shareSystem/deleteDataShare",
+        keepOriginResponse: true,
+        showLoading: true,
+        serve: "organizationManagePC",
+    },
+    // 共享管理--创建共享数据
+    [urlNames.saveShareSystemMessage]: {
+        type: "post",
+        url: "/api/shareSystem/saveShareSystemMessage",
+        keepOriginResponse: true,
+        showLoading: true,
+        serve: "organizationManagePC",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    },
+    // 共享数据--更新共享数据
+    [urlNames.updateDataShare]: {
+        type: "post",
+        url: "/api/shareSystem/updateDataShare",
+        keepOriginResponse: true,
+        serve: "organizationManagePC",
+        headers: {
+            "Content-Type": "application/json",
+        },
     },
 };

@@ -95,33 +95,29 @@
                     align="center"
                 ></el-table-column>
                 <el-table-column
-                    prop="userName"
+                    prop="companyName"
+                    label="公司/单位名称"
+                    align="center"
+                ></el-table-column>
+                <el-table-column
+                    prop="createTime"
                     label="创建时间"
                     align="center"
                 ></el-table-column>
                 <el-table-column
-                    prop="actionTime"
+                    prop="contactName"
                     label="联系人"
                     align="center"
                 ></el-table-column>
-                <el-table-column
-                    prop="actionTime"
-                    label="共享应用账号"
-                    align="center"
-                ></el-table-column>
-                <el-table-column
-                    prop="description"
-                    label="启用状态"
-                    align="center"
-                ></el-table-column>
+                <el-table-column prop="state" label="启用状态" align="center">
+                    <template slot-scope="scope">
+                        <span>{{
+                            scope.row.state === 0 ? "正常" : "禁用"
+                        }}</span>
+                    </template>
+                </el-table-column>
                 <el-table-column label="操作" align="center" width="150px">
                     <template slot-scope="scope">
-                        <el-button
-                            size="mini"
-                            type="text"
-                            @click="openEditDialog(scope.row)"
-                            >日志</el-button
-                        >
                         <el-button
                             size="mini"
                             type="text"
@@ -131,7 +127,7 @@
                         <el-button
                             size="mini"
                             type="text"
-                            @click="deleteShareData(scope.row.id)"
+                            @click="comfirmDeleteShareData(scope.row.id)"
                             >删除</el-button
                         >
                     </template>
@@ -150,6 +146,7 @@
     </div>
 </template>
 <script>
+import { api, urlNames } from "@src/api";
 import handleTable from "@src/mixins/new/handle-table";
 export default {
     mixins: [handleTable],
@@ -205,7 +202,7 @@ export default {
         },
         openEditDialog(row) {
             this.dialogTitle = "编辑共享任务";
-            // this.createdOrUpdateForm.id = row.id;
+            this.createdOrUpdateForm.id = row.id;
             // this.createdOrUpdateForm.disabled = row.disabled;
             this.createdOrUpdateForm.account = row.account;
             // this.createdOrUpdateForm.description = row.description;
@@ -234,7 +231,26 @@ export default {
                 }
             });
         },
-        deleteShareData(id) {},
+        comfirmDeleteShareData(shareId) {
+            this.handleRow(
+                "确定要删除该数据吗？",
+                shareId,
+                this.deleteShareData
+            );
+        },
+        deleteShareData(shareId) {
+            api[urlNames["deleteDataShare"]]({ shareId }).then(
+                (res) => {
+                    if (res) {
+                        this.getGrid();
+                        this.$message.success("删除成功");
+                    }
+                },
+                () => {
+                    this.$message.error("操作失败，请稍后重试");
+                }
+            );
+        },
     },
 };
 </script>

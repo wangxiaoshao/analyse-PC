@@ -72,7 +72,7 @@
                         type="text"
                         v-if="roleId !== 1 && roleId !== 2"
                         @click="toAuthorization(scope.row)"
-                        >授权范围</el-button
+                        >授权{{ authorizedName }}</el-button
                     >
                     <el-button
                         size="mini"
@@ -113,6 +113,7 @@ export default {
             loading: false,
             roleId: parseInt(this.$route.params.roleId),
             searchName: "",
+            authorizedName: "市州",
             selectTreeDailog: {
                 title: "选择人员",
                 openSelectTreeVisiable: false,
@@ -142,14 +143,30 @@ export default {
     },
     methods: {
         init() {
-            this.authorizedType =
-                this.$route.params.roleName === "CITY_MANAGER"
-                    ? 2
-                    : this.$route.params.roleName === "COUNTY_MANAGER"
-                    ? 3
-                    : this.$route.params.roleName === "UNIT_MANAGER"
-                    ? 4
-                    : "";
+            switch (this.$route.params.roleName) {
+                case "CITY_MANAGER":
+                    this.authorizedType = 2;
+                    this.authorizedName = "市州";
+                    break;
+                case "COUNTY_MANAGER":
+                    this.authorizedType = 3;
+                    this.authorizedName = "区县";
+                    break;
+                case "UNIT_MANAGER":
+                    this.authorizedType = 4;
+                    this.authorizedName = "单位";
+                    break;
+                default:
+                    return "";
+            }
+            // this.authorizedType =
+            //     this.$route.params.roleName === "CITY_MANAGER"
+            //         ? 2
+            //         : this.$route.params.roleName === "COUNTY_MANAGER"
+            //         ? 3
+            //         : this.$route.params.roleName === "UNIT_MANAGER"
+            //         ? 4
+            //         : "";
         },
         getGrid(flag) {
             if (flag) {

@@ -8,7 +8,7 @@ const AppManage = () =>
     );
 const CountManage = () =>
     import(
-        /* webpackChunkName: "Shared" */ "@src/views/share-manage/count-manage/index.vue"
+        /* webpackChunkName: "Shared" */ "@src/views/share-manage/related-manage/index.vue"
     );
 const ShareDataManage = () =>
     import(
@@ -35,7 +35,7 @@ export default [
             //     component: CreateView,
             // },
             {
-                path: "/count-manage",
+                path: "/related-manage",
                 name: "CountManage",
                 component: CountManage,
                 // meta: {

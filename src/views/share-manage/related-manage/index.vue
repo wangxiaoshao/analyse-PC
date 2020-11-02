@@ -1,5 +1,5 @@
 <template>
-    <div class="count-manage">
+    <div class="related-manage">
         <!-- 创建账号弹窗 -->
         <el-dialog
             width="40%"
@@ -134,7 +134,7 @@
                         <el-button
                             size="mini"
                             type="text"
-                            @click="deleteAccount(scope.row.id)"
+                            @click="comfirmDeleteAccount(scope.row.id)"
                             >删除</el-button
                         >
                     </template>
@@ -276,39 +276,29 @@ export default {
         submitAccount(form) {
             this.$refs[form].validate((valid) => {
                 if (valid) {
+                    let apiUrl = "";
                     if (this.createdOrUpdateForm.id === "") {
-                        this.createdAccount();
+                        apiUrl = "createSystemMessage";
                     } else {
-                        this.updateAccount();
+                        apiUrl = "updatesSystemMessage";
                     }
+                    api[urlNames[apiUrl]](this.createdOrUpdateForm).then(
+                        (res) => {
+                            if (res.status === 0) {
+                                this.getGrid();
+                                this.closeAddressDialog();
+                                this.$message.success(
+                                    this.createdOrUpdateForm.id === ""
+                                        ? "创建成功"
+                                        : "编辑成功"
+                                );
+                            } else {
+                                this.$message.warning("操作失败，请稍后再试");
+                            }
+                        }
+                    );
                 } else {
                     this.$message.warning("请根据提示填写必填字段");
-                }
-            });
-        },
-        createdAccount() {
-            api[urlNames["createSystemMessage"]](this.createdOrUpdateForm).then(
-                (res) => {
-                    if (res.status === 0) {
-                        this.closeAddressDialog();
-                        this.getGrid();
-                        this.$message.success("创建成功");
-                    } else {
-                        this.$message.warning("操作失败，请稍后再试");
-                    }
-                }
-            );
-        },
-        updateAccount() {
-            api[urlNames["updatesSystemMessage"]](
-                this.createdOrUpdateForm
-            ).then((res) => {
-                if (res.status === 0) {
-                    this.closeAddressDialog();
-                    this.getGrid();
-                    this.$message.success("修改成功");
-                } else {
-                    this.$message.warning("操作失败，请稍后再试");
                 }
             });
         },
@@ -335,7 +325,22 @@ export default {
             this.createdOrUpdateForm.is_banned = row.is_banned;
             this.createdOrUpdateVisiable = true;
         },
-        deleteAccount(id) {},
+        comfirmDeleteAccount(id) {
+            this.handleRow("确定要删除该数据吗？", id, this.deleteAccount);
+        },
+        deleteAccount(id) {
+            api[urlNames["deleteAccountNumber"]]({ id }).then(
+                (res) => {
+                    if (res) {
+                        this.getGrid();
+                        this.$message.success("删除成功");
+                    }
+                },
+                () => {
+                    this.$message.error("操作失败，请稍后重试");
+                }
+            );
+        },
     },
 };
 </script>
