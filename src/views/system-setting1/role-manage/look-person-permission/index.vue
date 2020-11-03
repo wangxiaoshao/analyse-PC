@@ -270,6 +270,7 @@ export default {
             if (this.$route.params.roleName === "CITY_MANAGER") {
                 this.selectTreeDailog.isSelectType = 4;
                 this.selectTreeDailog.title = "授权市州";
+                this.selectTreeDailog.isSingSelect = true;
             } else if (this.$route.params.roleName === "COUNTY_MANAGER") {
                 this.selectTreeDailog.isSelectType = 1;
                 this.selectTreeDailog.title = "授权区县";

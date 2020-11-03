@@ -19,12 +19,10 @@
                         class="notice-info"
                         @click="goFindAnnountDetial(scope.row.id)"
                     >
-                        <el-badge :is-dot="scope.row.hasRead === 0">{{
-                            scope.row.typeText
-                        }}</el-badge>
-                        <div class="notice-msg">
+                        <span>{{ scope.row.title }}</span>
+                        <!-- <div class="notice-msg">
                             <span>{{ scope.row.content }}</span>
-                        </div>
+                        </div> -->
                     </div>
                 </template>
             </el-table-column>
@@ -43,18 +41,19 @@
 <script>
 import handleTable from "@src/mixins/handle-table";
 import { mapState, mapMutations } from "vuex";
+import { api, urlNames } from "@src/api";
 export default {
     mixins: [handleTable],
     data() {
         return {
             tableData: [
                 {
-                    typeText: "为推进改造，系统登录密码深度优化通知。",
+                    title: "为推进改造，系统登录密码深度优化通知。",
                     content:
                         "为推进改造，系统登录密码深度优化通知,为推进改造，系统登录密码深度优化通知。",
-                    hasRead: 0,
                     creareTime: "2020-03-12",
                     id: 1,
+                    url: "",
                 },
             ],
         };
@@ -69,11 +68,22 @@ export default {
     },
     methods: {
         ...mapMutations(["SET_BREADCRUMB"]),
-        goFindAnnountDetial(val) {
+        getSystemNoticeList() {
+            let data = {
+                page: this.page.current,
+                pageSize: this.page.limit,
+            };
+            api[urlNames["getSystemNoticeList"]](data).then((res) => {
+                if (res) {
+                    this.tableData = res.data;
+                }
+            });
+        },
+        goFindAnnountDetial(id) {
             this.$router.push({
                 path: "/moreAnnoument/announceDetail",
                 query: {
-                    id: val,
+                    id: id,
                 },
             });
         },

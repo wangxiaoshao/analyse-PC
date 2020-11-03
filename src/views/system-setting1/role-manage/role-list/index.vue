@@ -91,7 +91,7 @@
 <script>
 import handleTable from "@src/mixins/handle-table";
 import { api, urlNames } from "@src/api";
-
+import { mapState } from "vuex";
 export default {
     mixins: [handleTable],
     data() {
@@ -103,13 +103,16 @@ export default {
     created() {
         this.getGrid();
     },
+    computed: {
+        ...mapState(["app"]),
+    },
     methods: {
         getGrid() {
             let data = {
                 page: 1,
                 pageSize: 20,
+                roleId: this.app.rolesInfo.roleId,
             };
-
             this.loading = true;
             api[urlNames["getRoleList"]](data).then(
                 (res) => {

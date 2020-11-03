@@ -143,6 +143,7 @@
 //     isSingSelect: true, // 是否单选,true 单选，false:多选  必传
 // },
 import { api, urlNames } from "@src/api";
+import { mapState } from "vuex";
 export default {
     name: "SelectTree",
     props: ["selectTreeDailog"],
@@ -169,14 +170,39 @@ export default {
         };
     },
     created() {
+        console.log(this.app.rolesInfo);
         this.findAreaTree();
     },
     methods: {
         // 初始化树
         findAreaTree() {
-            api[urlNames["getTreeList"]]().then((res) => {
-                this.treeData = res.data;
-            });
+            if (
+                this.app.rolesInfo.roleName === "CITY_MANAGER" ||
+                this.app.rolesInfo.roleName === "COUNTY_MANAGER"
+            ) {
+                let data = {
+                    codeList: this.app.rolesInfo.authorizedOid,
+                    authorizedType: this.app.rolesInfo.authorizedType,
+                };
+                api[urlNames["getAreaList"]](data).then((res) => {
+                    if (res.data) {
+                        let aryList = [];
+                        res.data.forEach((item) => {
+                            let obj = {
+                                treeId: item.areaCode,
+                                treeName: item.areaName,
+                                treeType: item.areaType,
+                            };
+                            aryList.push(obj);
+                        });
+                        this.treeData = aryList;
+                    }
+                });
+            } else {
+                api[urlNames["getTreeList"]]().then((res) => {
+                    this.treeData = res.data;
+                });
+            }
         },
         // 加载下一级
         loadArea(node, resolve) {
@@ -419,18 +445,17 @@ export default {
 
         // 处理授权范围数据
         next() {
-            console.log(this.selectCheckList, 3333);
             this.lastData = [...this.selectCheckList];
             this.$emit("next");
         },
         last() {
-            console.log(this.selectCheckList, "gggg");
             this.nextData = [...this.selectCheckList];
             this.$emit("last");
         },
         getResult() {},
     },
     computed: {
+        ...mapState(["app"]),
         type() {
             return this.selectTreeDailog.isSelectType;
         },

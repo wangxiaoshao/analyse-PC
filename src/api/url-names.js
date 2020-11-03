@@ -10,8 +10,6 @@ export default {
     getUserRole: "getUserRole",
     // 获取树
     getTreeList: "getTreeList",
-    // 通过区域列表获取区域名称
-    getAreaList: "getAreaList",
     // 获取区域下面的单位
     getOrgByAreaCode: "getOrgByAreaCode",
     // 通过单位Id 获取单位名称
@@ -20,7 +18,10 @@ export default {
     getApplicationList: "getApplicationList",
     // 获取系统通知列表
     getSystemNoticeList: "getSystemNoticeList",
-
+    // 获取系统通知详情
+    getSystemNoticeDetail: "getSystemNoticeDetail",
+    // 获取昨日登录人数
+    getLastDayLoginUser: "getLastDayLoginUser",
     /** 模块接口 */
     // 关联管理--获取列表
     findAccountNumberList: "findAccountNumberList",
@@ -78,4 +79,12 @@ export default {
     getTemplateList: "getTemplateList",
     // 帮助中心--获取文档列表
     getHelpFileList: "getHelpFileList",
+    // 数据统计--通过区域列表获取区域名称
+    getAreaList: "getAreaList",
+    // 数据统计--获取市州区县下面的单位列表
+    getCityCountyOrgList: "getCityCountyOrgList",
+    // 数据统计--获取区县下面的单位列表
+    getCountyOrgList: "getCountyOrgList",
+    // 数据统计--通过单位Id列表获取单位
+    getOrgListByIds: "getOrgListByIds",
 };

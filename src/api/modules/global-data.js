@@ -15,13 +15,6 @@ export default {
         keepOriginResponse: true,
         serve: "organizationManagePC",
     },
-    // 通过区域列表获取区域名称
-    [urlNames.getAreaList]: {
-        type: "get",
-        url: "/api/appdata/areaOrg/getAreaList",
-        keepOriginResponse: true,
-        serve: "organizationManagePC",
-    },
     // 获取区域下面的单位
     [urlNames.getOrgByAreaCode]: {
         type: "get",
@@ -47,6 +40,21 @@ export default {
     [urlNames.getSystemNoticeList]: {
         type: "get",
         url: "/api/appdata/index/getSystemNoticeList",
+        keepOriginResponse: true,
+        serve: "organizationManagePC",
+    },
+    // 获取系统通知详情
+    [urlNames.getSystemNoticeDetail]: {
+        type: "get",
+        url: "/api/appdata/index/getSystemNoticeDetail",
+        keepOriginResponse: true,
+        showLoading: true,
+        serve: "organizationManagePC",
+    },
+    // 获取昨日登录人数
+    [urlNames.getLastDayLoginUser]: {
+        type: "get",
+        url: "/api/appdata/index/getLastDayLoginUser",
         keepOriginResponse: true,
         serve: "organizationManagePC",
     },

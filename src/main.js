@@ -16,7 +16,7 @@ import "@src/common/font_1568136_nu78g9xw7jp/iconfont.js";
 import "@src/common/font_1568136_nu78g9xw7jp/icon.css";
 import VueCookies from "vue-cookie";
 import "./filters";
-// import { api, urlNames } from "@src/api";
+import { api, urlNames } from "@src/api";
 import initRouter from "@src/router/index";
 Vue.use(VueCookies);
 Vue.use(elementUI, {
@@ -43,37 +43,37 @@ Vue.use(elementUI, {
 //     }).$mount("#app");
 // };
 
-// api[urlNames["getUserRole"]]().then((res) => {
-//     if (res.status === 0) {
-//         let router = initRouter([]);
-//         initVueInstance(router, res.data);
-//     } else {
-//         alert(res.message);
-//     }
-// });
-// const initVueInstance = (router, userInfo) => {
-//     new Vue({
-//         router,
-//         store,
-//         render: (h) => h(App),
-//         created() {
-//             this.$store.commit("SET_ROLE_INFO", userInfo || {});
-//         },
-//     }).$mount("#app");
-// };
+api[urlNames["getUserRole"]]().then((res) => {
+    if (res.status === 0) {
+        let router = initRouter([]);
+        initVueInstance(router, res.data);
+    } else {
+        alert(res.message);
+    }
+});
+const initVueInstance = (router, userInfo) => {
+    new Vue({
+        router,
+        store,
+        render: (h) => h(App),
+        created() {
+            this.$store.commit("SET_ROLE_INFO", userInfo || {});
+        },
+    }).$mount("#app");
+};
 
-let router = initRouter([]);
-new Vue({
-    router,
-    store,
-    render: (h) => h(App),
-    created() {
-        // api[urlNames["getUserRole"]]().then((res) => {
-        //     if (res.status === 0) {
-        //         this.$store.commit("SET_ROLE_INFO", res.data || {});
-        //     } else {
-        //         alert(res.message);
-        //     }
-        // });
-    },
-}).$mount("#app");
+// let router = initRouter([]);
+// new Vue({
+//     router,
+//     store,
+//     render: (h) => h(App),
+//     created() {
+//         // api[urlNames["getUserRole"]]().then((res) => {
+//         //     if (res.status === 0) {
+//         //         this.$store.commit("SET_ROLE_INFO", res.data || {});
+//         //     } else {
+//         //         alert(res.message);
+//         //     }
+//         // });
+//     },
+// }).$mount("#app");

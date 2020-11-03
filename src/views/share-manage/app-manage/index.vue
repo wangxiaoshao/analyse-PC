@@ -318,7 +318,7 @@ export default {
             if (this.createdOrUpdateForm.system_id === "") {
                 apiUrl = "createTable";
                 data.table_name =
-                    this.createdOrUpdateForm.table_name + this.table_header;
+                    this.table_header + this.createdOrUpdateForm.table_name;
             } else {
                 apiUrl = "updateSystemTableMessage";
             }

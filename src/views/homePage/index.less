@@ -6,6 +6,7 @@
     margin-bottom: 20px;
     .item-card{
       height: 120px;
+      margin-bottom: 20px;
       .item-left{
         width: 100%;
         .date{
@@ -41,9 +42,23 @@
         }
       }
     }
+    .item-card-person{
+      height: 100%;
+      text-align: center;
+      .item-right{
+        padding-top: 10px;
+        img{
+          width: 50px;
+        }
+      }
+      .date{
+        padding: 8px 0;
+      }
+    }
   }
   .home-box{
     width: 100%;
+    // margin: 20px 0;
     /deep/.box-card .el-card__header{
       padding: 10px 20px;
     }
@@ -71,7 +86,14 @@
           span{
             cursor: pointer;
           }
+          .icon{
+            img{
+              width: 14px;
+             
+            }
+          }
           .msg{
+            vertical-align: middle;
             display: inline-block;
             width: 100%;
             overflow: hidden;
@@ -95,5 +117,29 @@
       }
     }
   }
+  .total-box{
+    margin: 20px 0;
+    .total-card{
+      // height: 200px;
+      .system-left{
+        text-align: center;
+        p{
+          cursor: pointer;
+          font-size: 14px;
+          color:#606266;
+          padding: 5px 0;
+         
+        }
+        .isActive {
+          color: #b1a8e4;
+      }
+      }
+      .system-right{
+        border: 1px solid yellow;
+      
+      }
+    }
+  }
+ 
 
 }
