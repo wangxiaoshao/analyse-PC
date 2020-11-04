@@ -107,6 +107,7 @@ export default {
                 isSelectType: 3, // 1 区县  2  单位  3 人员 4 市州
                 isSingSelect: false, // 是否单选,true 单选，false:多选
                 noticeUser: [], // 默认选择人员id
+                orgId: this.$route.query.orgId,
             },
             noticeUserIds: [],
         };
@@ -121,6 +122,7 @@ export default {
                 },
             },
         });
+        console.log(this.$route.params, "hhhh");
         if (this.$route.query.id) {
             this.getOrgRulesDetail();
         } else {
@@ -150,7 +152,7 @@ export default {
                                 treeName: item.name,
                             };
                             str += item.name + ",";
-                            this.noticeUserIds.push(item);
+                            this.noticeUserIds.push(item.uid);
                             this.selectTreeDailog.noticeUser.push(obj);
                         });
                         this.noticeRulesForm.consignees = str.substring(

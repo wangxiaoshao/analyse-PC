@@ -59,4 +59,31 @@ export default {
         showLoading: true,
         serve: "organizationManagePC",
     },
+    // 授权范围--搜索人员
+    [urlNames.searchAreaUsers]: {
+        type: "post",
+        url: "/api/appdata/areaOrg/searchAreaUsers",
+        keepOriginResponse: true,
+        serve: "organizationManagePC",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    },
+    // 通知提醒--搜索人员
+    [urlNames.searchOrgUser]: {
+        type: "get",
+        url: "/api/appdata/orgNotice/searchOrgUser",
+        keepOriginResponse: true,
+        serve: "organizationManagePC",
+    },
+    // 授权范围--搜索单位
+    [urlNames.searchAreaOrgs]: {
+        type: "post",
+        url: "/api/appdata/areaOrg/searchAreaOrgs",
+        keepOriginResponse: true,
+        serve: "organizationManagePC",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    },
 };

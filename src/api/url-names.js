@@ -87,4 +87,10 @@ export default {
     getCountyOrgList: "getCountyOrgList",
     // 数据统计--通过单位Id列表获取单位
     getOrgListByIds: "getOrgListByIds",
+    // 授权范围--搜索人员
+    searchAreaUsers: "searchAreaUsers",
+    // 通知提醒 搜索人员
+    searchOrgUser: "searchOrgUser",
+    // 授权范围--搜索单位
+    searchAreaOrgs: "searchAreaOrgs",
 };

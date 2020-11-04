@@ -2,7 +2,11 @@
     <div class="announceDetail">
         <div class="content">
             <div class="header-title">{{ noticeDetail.title }}</div>
-            <div class="createTime">{{ noticeDetail.creareTime }}</div>
+            <div class="createTime">
+                {{
+                    noticeDetail.createTime | dataFilter("YYYY-MM-DD HH:mm:ss")
+                }}
+            </div>
             <div class="msg">
                 {{ noticeDetail.content }}
                 <!-- <p>一、品牌定位</p>
@@ -32,7 +36,7 @@ export default {
                 title: "p",
                 content: "B",
                 url: "t0WA67xwi",
-                creareTime: "2020-03-12",
+                createTime: "2020-03-12",
             },
         };
     },
@@ -41,17 +45,22 @@ export default {
     mounted() {
         this.app.noticeShowBtn = true;
         this.SET_BREADCRUMB([{ name: "公告详情" }]);
-        // this.getSystemNoticeDetail();
+        this.getSystemNoticeDetail();
     },
     methods: {
         getSystemNoticeDetail() {
             api[urlNames["getSystemNoticeDetail"]]({
                 id: this.$route.query.id,
-            }).then((res) => {
-                if (res) {
-                    this.noticeDetail = res.data;
+            }).then(
+                (res) => {
+                    if (res) {
+                        this.noticeDetail = res.data;
+                    }
+                },
+                () => {
+                    this.noticeDetail = {};
                 }
-            });
+            );
         },
     },
     computed: {

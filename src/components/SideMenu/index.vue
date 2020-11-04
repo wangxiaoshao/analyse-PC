@@ -91,7 +91,6 @@ export default {
     methods: {
         open: function (name, menu) {
             // eslint-disable-next-line
-
         },
         close: function (name, menu) {
             // eslint-disable-next-line

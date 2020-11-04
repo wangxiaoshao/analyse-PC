@@ -139,6 +139,7 @@ export default {
                 roleId: this.$store.state.app.rolesInfo.roleId,
                 page: this.page.current,
                 pageSize: this.page.limit,
+                keyword: this.keyWord,
             };
             api[urlNames["getNoticeList"]](data).then((res) => {
                 this.messageList = res.data;
@@ -148,13 +149,13 @@ export default {
         openCreateRules(row) {
             this.$router.push({
                 path: "/message-reminding/message-rules",
-                query: { orgId: row.orgId },
+                query: { orgId: row.orgId, treeName: row.orgName },
             });
         },
         openEditRules(row) {
             this.$router.push({
                 name: "MessageRules",
-                query: { orgId: row.orgId, id: row.id },
+                query: { orgId: row.orgId, id: row.id, treeName: row.orgName },
             });
         },
         // 删除通知提醒列表

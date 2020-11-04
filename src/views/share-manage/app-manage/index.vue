@@ -115,7 +115,11 @@
                 ></el-table-column>
                 <el-table-column prop="state" label="启用状态" align="center">
                     <template slot-scope="scope">
-                        <span>{{ scope.row.state ? "禁用" : "启用" }}</span>
+                        <span>{{
+                            parseInt(scope.row.is_banned) === 0
+                                ? "启用"
+                                : "禁用"
+                        }}</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" align="center" width="100px">
@@ -201,6 +205,7 @@ export default {
                 company_id: "",
                 system_id: "",
             },
+            oldState: 0,
             timeout: null,
             rulesOption: {
                 companyName: [
@@ -300,7 +305,8 @@ export default {
             this.createdOrUpdateForm.companyName = row.company;
             this.createdOrUpdateForm.table_name = row.tableName;
             this.createdOrUpdateForm.system_name = row.systemName;
-            this.createdOrUpdateForm.is_banned = row.is_banned;
+            this.createdOrUpdateForm.is_banned = parseInt(row.is_banned);
+            this.oldState = parseInt(row.is_banned);
             this.createdOrUpdateForm.comment = row.comment;
             this.createdOrUpdateVisiable = true;
         },
@@ -321,24 +327,62 @@ export default {
                     this.table_header + this.createdOrUpdateForm.table_name;
             } else {
                 apiUrl = "updateSystemTableMessage";
+                if (this.oldState === 1) {
+                    this.createdOrUpdateForm.next = 2;
+                } else {
+                    if (this.createdOrUpdateForm.is_banned === 1) {
+                        this.createdOrUpdateForm.next = 1;
+                    } else {
+                        this.createdOrUpdateForm.next = 2;
+                    }
+                }
             }
             this.$refs[form].validate((valid) => {
                 if (valid) {
-                    api[urlNames[apiUrl]](data).then((res) => {
-                        if (res.status === 0) {
-                            this.closeCreateDailog();
-                            this.getGrid();
-                            this.$message.success(
-                                this.createdOrUpdateForm.system_id === ""
-                                    ? "创建成功"
-                                    : "编辑成功"
-                            );
-                        } else {
-                            this.$message.warning("操作失败，请稍后再试");
+                    api[urlNames[apiUrl]](data).then(
+                        (res) => {
+                            if (res.status === 0) {
+                                this.closeCreateDailog();
+                                this.getGrid();
+                                this.$message.success(
+                                    this.createdOrUpdateForm.system_id === ""
+                                        ? "创建成功"
+                                        : "编辑成功"
+                                );
+                            } else {
+                                this.$message.warning("操作失败，请稍后再试");
+                            }
+                        },
+                        (error) => {
+                            if (error) {
+                                this.handleRow(
+                                    "该账号正在使用，禁用后会导致与之关联的应用和数据共享任务失败！您确定要禁用吗？",
+                                    this.createdOrUpdateForm,
+                                    this.saveUpdate
+                                );
+                            }
+                            console.log(error);
                         }
-                    });
+                    );
                 } else {
                     this.$message.warning("请根据提示填写必填字段");
+                }
+            });
+        },
+        saveUpdate() {
+            let apiUrl = "updateSystemTableMessage";
+            this.createdOrUpdateForm.next = 2;
+            api[urlNames[apiUrl]](this.createdOrUpdateForm).then((res) => {
+                if (res.status === 0) {
+                    this.getGrid();
+                    this.closeCreateDailog();
+                    this.$message.success(
+                        this.createdOrUpdateForm.id === ""
+                            ? "创建成功"
+                            : "编辑成功"
+                    );
+                } else {
+                    this.$message.warning("操作失败，请稍后再试");
                 }
             });
         },

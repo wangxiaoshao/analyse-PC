@@ -62,13 +62,14 @@ export default {
         this.page.total = 1;
         this.app.noticeShowBtn = true;
         this.SET_BREADCRUMB([{ name: "平台公告" }]);
+        this.getGird();
     },
     computed: {
         ...mapState(["app"]),
     },
     methods: {
         ...mapMutations(["SET_BREADCRUMB"]),
-        getSystemNoticeList() {
+        getGird() {
             let data = {
                 page: this.page.current,
                 pageSize: this.page.limit,

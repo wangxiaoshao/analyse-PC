@@ -16,7 +16,10 @@
                     ></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="选择区域">
+            <el-form-item
+                label="选择区域"
+                v-if="app.rolesInfo.roleName !== 'COUNTY_MANAGER'"
+            >
                 <el-select
                     size="medium"
                     placeholder="请选择区域"
@@ -146,6 +149,9 @@ export default {
                             aryList.push(obj);
                         });
                         this.stateList = aryList;
+                        if (this.app.rolesInfo.roleName === "COUNTY_MANAGER") {
+                            this.areaList = aryList;
+                        }
                     }
                 });
             }

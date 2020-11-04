@@ -205,7 +205,7 @@ export default {
         // 获取授权单位
         getAuthorizedOrg() {
             api[urlNames["getAuthOrgByUid"]]({
-                uid: this.$route.params.id,
+                uid: this.$route.params.uid,
                 roleId: this.$route.params.roleId,
             }).then((res) => {
                 if (res.data.length > 0) {

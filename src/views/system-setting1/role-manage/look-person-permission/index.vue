@@ -173,7 +173,7 @@ export default {
                 this.page.current = 1;
             }
             let data = {
-                searchName: this.searchName,
+                keyword: this.searchName,
                 roleId: this.$route.params.roleId,
                 page: this.page.current,
                 pageSize: this.page.limit,

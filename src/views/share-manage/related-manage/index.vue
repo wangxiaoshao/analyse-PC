@@ -16,7 +16,6 @@
             >
                 <el-form-item label="账号：" prop="account_number">
                     <el-input
-                        :disabled="this.createdOrUpdateForm.id != ''"
                         placeholder="请输入账号"
                         v-model="createdOrUpdateForm.account_number"
                     ></el-input>
@@ -185,6 +184,7 @@ export default {
                 is_banned: 0,
                 id: "",
                 comment: "",
+                oldState: 0,
             },
             rulesOption: {
                 account_number: [
@@ -295,6 +295,7 @@ export default {
             this.createdOrUpdateForm.contacts = row.contacts;
             this.createdOrUpdateForm.telephone_number = row.telephone_number;
             this.createdOrUpdateForm.is_banned = row.is_banned;
+            this.oldState = row.is_banned;
             this.createdOrUpdateVisiable = true;
         },
         submitAccount(form) {
@@ -305,6 +306,15 @@ export default {
                         apiUrl = "createSystemMessage";
                     } else {
                         apiUrl = "updatesSystemMessage";
+                        if (this.oldState === 1) {
+                            this.createdOrUpdateForm.next = 2;
+                        } else {
+                            if (this.createdOrUpdateForm.is_banned === 1) {
+                                this.createdOrUpdateForm.next = 1;
+                            } else {
+                                this.createdOrUpdateForm.next = 2;
+                            }
+                        }
                     }
                     api[urlNames[apiUrl]](this.createdOrUpdateForm).then(
                         (res) => {
@@ -319,10 +329,37 @@ export default {
                             } else {
                                 this.$message.warning("操作失败，请稍后再试");
                             }
+                        },
+                        (error) => {
+                            if (error) {
+                                this.handleRow(
+                                    "该账号正在使用，禁用后会导致与之关联的应用和数据共享任务失败！您确定要禁用吗？",
+                                    this.createdOrUpdateForm,
+                                    this.saveUpdate
+                                );
+                            }
+                            console.log(error);
                         }
                     );
                 } else {
                     this.$message.warning("请根据提示填写必填字段");
+                }
+            });
+        },
+        saveUpdate() {
+            let apiUrl = "updatesSystemMessage";
+            this.createdOrUpdateForm.next = 2;
+            api[urlNames[apiUrl]](this.createdOrUpdateForm).then((res) => {
+                if (res.status === 0) {
+                    this.getGrid();
+                    this.closeCreateDailog();
+                    this.$message.success(
+                        this.createdOrUpdateForm.id === ""
+                            ? "创建成功"
+                            : "编辑成功"
+                    );
+                } else {
+                    this.$message.warning("操作失败，请稍后再试");
                 }
             });
         },

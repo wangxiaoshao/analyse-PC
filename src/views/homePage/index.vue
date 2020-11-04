@@ -2,7 +2,7 @@
     <div class="homePage">
         <div class="first-box">
             <el-row :gutter="20">
-                <el-col :span="8" v-if="!app.rolesInfo.roleName">
+                <el-col :span="8" v-if="app.rolesInfo.roleName">
                     <el-card class="item-card">
                         <el-row>
                             <el-col :span="13">
@@ -44,17 +44,14 @@
                         </div>
                     </el-card>
                 </el-col>
-                <el-col
-                    :span="8"
-                    v-if="app.rolesInfo.roleName === 'SYSTEM_MANAGER'"
-                >
+                <el-col :span="8">
                     <el-card class="item-card">
                         <el-row>
                             <el-col :span="13">
                                 <div class="item-left">
                                     <p class="title">昨日登录人员</p>
                                     <p class="number">
-                                        <span>{{ loginNumber }}</span> 人
+                                        <span>{{ yesterdayLogin }}</span> 人
                                     </p>
                                 </div>
                             </el-col>
@@ -70,15 +67,12 @@
                         </el-row>
                     </el-card>
                 </el-col>
-                <el-col
-                    :span="8"
-                    v-if="app.rolesInfo.roleName === 'SYSTEM_MANAGER'"
-                >
+                <el-col :span="8">
                     <el-card class="item-card">
                         <iframe src="" frameborder="0"></iframe>
                     </el-card>
                 </el-col>
-                <el-col :span="8">
+                <!-- <el-col :span="8">
                     <el-card class="item-card">
                         <iframe :src="unitSrc" frameborder="0"></iframe>
                     </el-card>
@@ -87,8 +81,8 @@
                     <el-card class="item-card">
                         <iframe :src="userSrc" frameborder="0"></iframe>
                     </el-card>
-                </el-col>
-                <el-col :span="!app.rolesInfo.roleName ? 24 : 19">
+                </el-col> -->
+                <el-col :span="app.rolesInfo.roleName ? 24 : 19">
                     <div class="home-box">
                         <el-card class="box-card">
                             <div slot="header" class="clearfix">
@@ -168,7 +162,7 @@
                         <div class="system-left">
                             <p
                                 :class="{ isActive: index == current }"
-                                v-for="(item, index) in applicationList"
+                                v-for="(item, index) in app.applicationList"
                                 :key="item.id"
                                 @click="applyChange(index, item.id)"
                             >
@@ -274,8 +268,8 @@ export default {
         //     .contentWindow.document.getElementById("content-container");
         // console.log(test);
         // test.style.overflow = "hidden";
-        // this.init();
-        this.doArray();
+        this.init();
+        // this.doArray();
     },
     methods: {
         init() {
@@ -299,7 +293,7 @@ export default {
         getLastDayLoginUser() {
             api[urlNames["getLastDayLoginUser"]]().then((res) => {
                 if (res) {
-                    this.yesterdayLogin = res.data.loginUsers;
+                    this.yesterdayLogin = res.data;
                 }
             });
         },

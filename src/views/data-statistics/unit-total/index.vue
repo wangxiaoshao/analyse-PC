@@ -19,7 +19,7 @@
             <el-form-item
                 label="选择区域"
                 v-if="
-                    app.rolesInfo.roleName != 'COUNTY_MANAGER' ||
+                    app.rolesInfo.roleName != 'COUNTY_MANAGER' &&
                     app.rolesInfo.roleName != 'UNIT_MANAGER'
                 "
             >
@@ -171,16 +171,17 @@ export default {
             }
         },
         initArea(treeId, treeType) {
-            if (treeId === "520000" && treeType === 1) {
-                this.areaList = [];
-                this.areaName = "";
-                return;
-            }
             api[urlNames["getTreeList"]]({
                 treeId,
                 treeType,
             }).then((res) => {
                 if (res.data) {
+                    if (treeId === "520000" && treeType === 1) {
+                        this.areaList = [];
+                        this.areaName = "";
+                        this.unitList = res.data;
+                        return;
+                    }
                     this.areaList = res.data;
                 }
             });
@@ -199,7 +200,7 @@ export default {
                 apiUrl = "getCountyOrgList";
             } else if (this.app.rolesInfo.roleName === "UNIT_MANAGER") {
                 data.assessType = assessType;
-                data.requestBody = this.app.rolesInfo.authorizedOid;
+                data.orgIds = this.app.rolesInfo.authorizedOid;
                 apiUrl = "getOrgListByIds";
             } else {
                 data.treeId = countyCode;

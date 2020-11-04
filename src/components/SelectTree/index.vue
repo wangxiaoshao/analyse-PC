@@ -7,7 +7,13 @@
             center
             :before-close="handleClose"
         >
-            <div class="search">
+            <div
+                class="search"
+                v-if="
+                    selectTreeDailog.isSelectType === 2 ||
+                    selectTreeDailog.isSelectType === 3
+                "
+            >
                 <el-input
                     placeholder="请输入内容"
                     v-model="searchKeyWord"
@@ -53,10 +59,28 @@
                                 style="display: block;"
                                 class="member-item"
                                 v-for="(item, index) in optionalList"
+                                :disabled="
+                                    item.treeType === 5 &&
+                                    !item.canSelected &&
+                                    item.canSelected !== null
+                                "
                                 :key="index"
                                 :label="JSON.stringify(item)"
                             >
-                                {{ item.treeName }}
+                                {{
+                                    item.treeType === 5 &&
+                                    !item.canSelected &&
+                                    item.canSelected !== null
+                                        ? item.treeName +
+                                          "(已绑定其他角色不可选)" +
+                                          (item.orgName
+                                              ? "--" + item.orgName
+                                              : "")
+                                        : item.treeName +
+                                          (item.orgName
+                                              ? "--" + item.orgName
+                                              : "")
+                                }}
                             </el-checkbox>
                         </el-checkbox-group>
                     </div>
@@ -71,7 +95,14 @@
                                 style="display: block;"
                                 :label="JSON.stringify(item)"
                             >
-                                {{ item.treeName }}</el-radio
+                                {{
+                                    item.orgName
+                                        ? item.treeName +
+                                          "(" +
+                                          item.orgName +
+                                          ")"
+                                        : item.treeName
+                                }}</el-radio
                             >
                         </el-radio-group>
                     </div>
@@ -176,6 +207,21 @@ export default {
     methods: {
         // 初始化树
         findAreaTree() {
+            // 通知提醒加载树
+            if (this.selectTreeDailog.orgId) {
+                // this.
+                let data = {
+                    treeId: this.selectTreeDailog.orgId,
+                    treeType: 3,
+                    treeName: this.$route.query.treeName,
+                };
+                this.treeData[0] = data;
+                // api[urlNames["getTreeList"]](data).then((res) => {
+                //     this.treeData = res.data;
+                // });
+                return;
+            }
+            // 授权范围--区域管理员  市州管理员加载树
             if (
                 this.app.rolesInfo.roleName === "CITY_MANAGER" ||
                 this.app.rolesInfo.roleName === "COUNTY_MANAGER"
@@ -186,19 +232,48 @@ export default {
                 };
                 api[urlNames["getAreaList"]](data).then((res) => {
                     if (res.data) {
-                        let aryList = [];
-                        res.data.forEach((item) => {
-                            let obj = {
-                                treeId: item.areaCode,
-                                treeName: item.areaName,
-                                treeType: item.areaType,
-                            };
-                            aryList.push(obj);
-                        });
-                        this.treeData = aryList;
+                        // 授权区县的时候处理贵安新区和省直单位
+                        if (this.selectTreeDailog.isSelectType === 1) {
+                            res.data.map((item, index) => {
+                                if (
+                                    item.areaCode === "522800" ||
+                                    item.areaCode === "520000"
+                                ) {
+                                    res.data.splice(index, 1);
+                                }
+                            });
+                            let list = res.data;
+                            let aryList = [];
+                            list.forEach((item, index) => {
+                                if (item.treeType === 2) {
+                                    item.leaf = true;
+                                }
+                                let obj = {
+                                    treeId: item.areaCode,
+                                    treeName: item.areaName,
+                                    // treeType: this.app.rolesInfo.authorizedType,
+                                    treeType: item.areaType,
+                                };
+                                aryList.push(obj);
+                            });
+                            this.treeData = aryList;
+                        } else {
+                            let aryList = [];
+                            res.data.forEach((item) => {
+                                let obj = {
+                                    treeId: item.areaCode,
+                                    treeName: item.areaName,
+                                    // treeType: this.app.rolesInfo.authorizedType,
+                                    treeType: item.areaType,
+                                };
+                                aryList.push(obj);
+                            });
+                            this.treeData = aryList;
+                        }
                     }
                 });
             } else {
+                // 其他管理员加载树
                 api[urlNames["getTreeList"]]().then((res) => {
                     this.treeData = res.data;
                 });
@@ -452,7 +527,83 @@ export default {
             this.nextData = [...this.selectCheckList];
             this.$emit("last");
         },
-        getResult() {},
+        getResult() {
+            // 搜索人
+            if (this.selectTreeDailog.isSelectType === 3) {
+                // 通知提醒的搜索人
+                if (this.selectTreeDailog.orgId) {
+                    let data = {
+                        orgId: this.selectTreeDailog.orgId,
+                        keyword: this.searchKeyWord,
+                    };
+                    api[urlNames["searchOrgUser"]](data).then((res) => {
+                        let userList = [];
+                        res.data.forEach((item) => {
+                            let obj = {
+                                treeId: item.userId,
+                                treeType: 5,
+                                treeName: item.userName,
+                                orgName: item.orgName,
+                                canSelected: item.canSelected,
+                            };
+                            userList.push(obj);
+                        });
+                        this.optionalList = userList;
+                    });
+                    return;
+                }
+                // 其他管理员搜索人
+                let data = {
+                    keyword: this.searchKeyWord,
+                };
+                // 区县管理员 区域管理员搜索人
+                if (
+                    this.app.rolesInfo.roleName === "CITY_MANAGER" ||
+                    this.app.rolesInfo.roleName === "COUNTY_MANAGER"
+                ) {
+                    data.codeList = this.app.rolesInfo.authorizedOid;
+                    data.authorizedType = this.app.rolesInfo.authorizedType;
+                }
+                api[urlNames["searchAreaUsers"]](data).then((res) => {
+                    let userList = [];
+                    res.data.forEach((item) => {
+                        let obj = {
+                            treeId: item.userId,
+                            treeType: 5,
+                            treeName: item.userName,
+                            orgName: item.orgName,
+                            canSelected: item.canSelected,
+                        };
+                        userList.push(obj);
+                    });
+                    this.optionalList = userList;
+                });
+            } else if (this.selectTreeDailog.isSelectType === 2) {
+                // 其他管理员搜索单位
+                let data = {
+                    keyword: this.searchKeyWord,
+                };
+                // 区县管理员 区域管理员搜索单位
+                if (
+                    this.app.rolesInfo.roleName === "CITY_MANAGER" ||
+                    this.app.rolesInfo.roleName === "COUNTY_MANAGER"
+                ) {
+                    data.codeList = this.app.rolesInfo.authorizedOid;
+                    data.authorizedType = this.app.rolesInfo.authorizedType;
+                }
+                api[urlNames["searchAreaOrgs"]](data).then((res) => {
+                    let userList = [];
+                    res.data.forEach((item) => {
+                        let obj = {
+                            treeId: item.orgId,
+                            treeName: item.orgName,
+                        };
+                        userList.push(obj);
+                    });
+                    this.optionalList = userList;
+                });
+            }
+        },
     },
     computed: {
         ...mapState(["app"]),
@@ -469,6 +620,7 @@ export default {
     },
     watch: {
         type(val1, val2) {
+            this.searchKeyWord = "";
             this.optionalList = [];
             this.selectedList = [];
             this.selectingList = [];

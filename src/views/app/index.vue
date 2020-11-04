@@ -4,6 +4,11 @@
             <el-header>
                 <site-head :user="user"></site-head>
             </el-header>
+            <!-- <side-menu
+                @select="select"
+                :asideMenu="asideMenu"
+                :defaultActive="asideMenuActive"
+            ></side-menu> -->
             <el-container>
                 <side-menu
                     @select="select"

@@ -45,10 +45,12 @@ export default {
     },
     // 通知提醒--更新通知
     [urlNames.updateNoticeRule]: {
-        type: "get",
+        type: "post",
         url: "/api/appdata/orgNotice/updateNoticeRule",
         keepOriginResponse: true,
-        showLoading: true,
         serve: "organizationManagePC",
+        headers: {
+            "Content-Type": "application/json",
+        },
     },
 };

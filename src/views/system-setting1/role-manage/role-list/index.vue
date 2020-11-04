@@ -56,7 +56,7 @@
                                 | dataFilter("YYYY-MM-DD HH:mm:ss")
                         }}
                     </span>
-                    <span v-else></span>
+                    <span v-else>—— ——</span>
                 </template>
             </el-table-column>
             <el-table-column
