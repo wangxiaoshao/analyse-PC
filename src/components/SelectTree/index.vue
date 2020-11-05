@@ -644,7 +644,8 @@ export default {
             }
             this.findAreaTree();
         },
-        noticeUserIds() {
+        noticeUser() {
+            console.log(this.selectTreeDailog.noticeUser, "uuuuu");
             this.selectCheckList = this.selectTreeDailog.noticeUser.map(
                 (item) => {
                     const label = item;
@@ -652,6 +653,7 @@ export default {
                     return label;
                 }
             );
+            console.log(this.selectCheckList, this.selectedList, "ddd");
         },
     },
 };

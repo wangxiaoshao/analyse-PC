@@ -12,7 +12,7 @@
                 label-width="100px"
                 :model="createdOrUpdateForm"
                 :rules="rulesOption"
-                ref="createdOrUpdateForm"
+                ref="createdOrUpdateForm1"
             >
                 <el-form-item label="账号：" prop="account_number">
                     <el-input
@@ -64,7 +64,7 @@
             <div style="text-align: center; margin-top: -25px;" slot="footer">
                 <el-button
                     type="primary"
-                    @click="submitAccount('createdOrUpdateForm')"
+                    @click="submitAccount('createdOrUpdateForm1')"
                     >保存</el-button
                 >
                 <el-button @click="closeCreateDailog">取消</el-button>
@@ -73,7 +73,7 @@
         <div style="margin-bottom: 10px;">
             <el-button
                 type="primary"
-                @click="openCreateDailog('createdOrUpdateForm')"
+                @click="openCreateDailog('createdOrUpdateForm1')"
                 >创建关联</el-button
             >
         </div>
@@ -275,13 +275,10 @@ export default {
             );
         },
         openCreateDailog(formName) {
+            this.resetForm();
             this.generateRandomAccount();
             this.dialogTitle = "创建关联";
-            this.createdOrUpdateForm.id = "";
             this.createdOrUpdateVisiable = true;
-            this.$nextTick(() => {
-                this.$refs[formName].resetFields();
-            });
         },
         closeCreateDailog() {
             this.createdOrUpdateVisiable = false;
@@ -378,6 +375,19 @@ export default {
                     this.$message.error("操作失败，请稍后重试");
                 }
             );
+        },
+        resetForm() {
+            this.createdOrUpdateForm = {
+                account_number: "",
+                password: "",
+                company: "",
+                contacts: "",
+                telephone_number: "",
+                is_banned: 0,
+                id: "",
+                comment: "",
+                oldState: 0,
+            };
         },
     },
 };

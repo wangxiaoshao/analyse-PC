@@ -223,6 +223,8 @@ export default {
             this.stateName = data.treeName;
             this.stateId = data.treeId;
             this.treeType = data.treeType;
+            this.unitId = "";
+            this.unitList = [];
             this.initArea(this.stateId, this.treeType);
         },
         areaChange(val) {
@@ -231,6 +233,7 @@ export default {
             this.areaId = val.treeId;
             this.treeType = val.treeType;
             this.unitId = "";
+            this.unitList = [];
             this.initUnit(
                 this.stateId,
                 this.areaId,

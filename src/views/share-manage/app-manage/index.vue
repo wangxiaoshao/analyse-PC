@@ -287,13 +287,9 @@ export default {
             this.createdOrUpdateForm.company_id = item.company_id;
         },
         openCreateDailog(formName) {
-            this.createdOrUpdateForm.company_id = "";
-            this.createdOrUpdateForm.system_id = "";
+            this.resetForm();
             this.dialogTitle = "创建应用";
             this.createdOrUpdateVisiable = true;
-            this.$nextTick(() => {
-                this.$refs[formName].resetFields();
-            });
         },
         closeCreateDailog() {
             this.createdOrUpdateVisiable = false;
@@ -401,6 +397,17 @@ export default {
                     this.$message.error("操作失败，请稍后重试");
                 }
             );
+        },
+        resetForm() {
+            this.createdOrUpdateForm = {
+                companyName: "",
+                system_name: "",
+                table_name: "",
+                is_banned: 0,
+                comment: "",
+                company_id: "",
+                system_id: "",
+            };
         },
     },
 };

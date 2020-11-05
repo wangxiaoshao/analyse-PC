@@ -300,13 +300,8 @@ export default {
         },
         openCreateDailog(formName) {
             this.dialogTitle = "创建共享任务";
-            this.createdOrUpdateForm.company_id = "";
-            this.createdOrUpdateForm.system_id = "";
-            this.createdOrUpdateForm.shareId = "";
+            this.resetForm();
             this.createdOrUpdateVisiable = true;
-            this.$nextTick(() => {
-                this.$refs[formName].resetFields();
-            });
         },
         closeCreateDailog() {
             this.createdOrUpdateVisiable = false;
@@ -374,6 +369,17 @@ export default {
                     this.$message.error("操作失败，请稍后重试");
                 }
             );
+        },
+        resetForm() {
+            this.createdOrUpdateForm = {
+                system_id: "",
+                system_name: "",
+                company_id: "",
+                companyName: "",
+                is_banned: 0,
+                shareId: "",
+                comment: "",
+            };
         },
     },
 };

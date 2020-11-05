@@ -106,9 +106,10 @@ export default {
                 openSelectTreeVisiable: false,
                 isSelectType: 3, // 1 区县  2  单位  3 人员 4 市州
                 isSingSelect: false, // 是否单选,true 单选，false:多选
-                noticeUser: [], // 默认选择人员id
+                noticeUser: [], // 默认选择人员
                 orgId: this.$route.query.orgId,
             },
+            oldNoticeUser:[],
             noticeUserIds: [],
         };
     },
@@ -122,12 +123,10 @@ export default {
                 },
             },
         });
-        console.log(this.$route.params, "hhhh");
         if (this.$route.query.id) {
             this.getOrgRulesDetail();
         } else {
         }
-        console.log(this.$route.query, "qqq");
     },
     computed: {
         ...mapState(["app"]),
@@ -153,7 +152,7 @@ export default {
                             };
                             str += item.name + ",";
                             this.noticeUserIds.push(item.uid);
-                            this.selectTreeDailog.noticeUser.push(obj);
+                            this.oldNoticeUser.push(obj);
                         });
                         this.noticeRulesForm.consignees = str.substring(
                             0,
@@ -176,6 +175,8 @@ export default {
         },
         // 查看收件人
         findConsignees() {
+            console.log(this.oldNoticeUser)
+            this.selectTreeDailog.noticeUser=[...this.oldNoticeUser];
             this.selectTreeDailog.openSelectTreeVisiable = true;
         },
         // 添加收件人
