@@ -12,7 +12,7 @@
                 label-width="100px"
                 :model="createdOrUpdateForm"
                 :rules="rulesOption"
-                ref="createdOrUpdateForm1"
+                ref="createdOrUpdateForm"
             >
                 <el-form-item label="账号：" prop="account_number">
                     <el-input
@@ -64,7 +64,7 @@
             <div style="text-align: center; margin-top: -25px;" slot="footer">
                 <el-button
                     type="primary"
-                    @click="submitAccount('createdOrUpdateForm1')"
+                    @click="submitAccount('createdOrUpdateForm')"
                     >保存</el-button
                 >
                 <el-button @click="closeCreateDailog">取消</el-button>
@@ -73,7 +73,7 @@
         <div style="margin-bottom: 10px;">
             <el-button
                 type="primary"
-                @click="openCreateDailog('createdOrUpdateForm1')"
+                @click="openCreateDailog('createdOrUpdateForm')"
                 >创建关联</el-button
             >
         </div>
@@ -119,7 +119,7 @@
                 >
                     <template slot-scope="scope">
                         <span>{{
-                            scope.row.is_banned === 0 ? "正常" : "禁用"
+                            scope.row.is_banned === 0 ? "启用" : "禁用"
                         }}</span>
                     </template>
                 </el-table-column>
@@ -327,15 +327,16 @@ export default {
                                 this.$message.warning("操作失败，请稍后再试");
                             }
                         },
-                        (error) => {
-                            if (error) {
+                        (msg) => {
+                            if (msg.error === 8006) {
                                 this.handleRow(
                                     "该账号正在使用，禁用后会导致与之关联的应用和数据共享任务失败！您确定要禁用吗？",
                                     this.createdOrUpdateForm,
                                     this.saveUpdate
                                 );
+                            } else {
+                                this.$message.error("网络错误，请稍后重试");
                             }
-                            console.log(error);
                         }
                     );
                 } else {

@@ -54,7 +54,7 @@
                     }}</span>
                 </template>
             </el-table-column>
-            <el-table-column prop="updateTime" label="修改时间" align="center">
+            <!-- <el-table-column prop="updateTime" label="修改时间" align="center">
                 <template slot-scope="scope">
                     <span v-if="scope.row.updateTime">
                         {{
@@ -64,7 +64,7 @@
                     </span>
                     <span v-else></span>
                 </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                     <el-button
@@ -119,8 +119,9 @@ export default {
                 openSelectTreeVisiable: false,
                 isSelectType: 3, // 1 区县  2  单位  3 人员 4 市州
                 isSingSelect: false, // 是否单选,true 单选，false:多选
-                isNext: true,
-                isLast: false,
+                isNext: true, // 显示授权范围上一步，
+                isLast: false, // 显示授权范围下一步
+                isDisabled: true, // 是否禁止选择人员有其他角色的情况  true  禁选人员有其他角色的情况；
             },
             userId: [],
             authorizedType: null,
@@ -159,14 +160,6 @@ export default {
                 default:
                     return "";
             }
-            // this.authorizedType =
-            //     this.$route.params.roleName === "CITY_MANAGER"
-            //         ? 2
-            //         : this.$route.params.roleName === "COUNTY_MANAGER"
-            //         ? 3
-            //         : this.$route.params.roleName === "UNIT_MANAGER"
-            //         ? 4
-            //         : "";
         },
         getGrid(flag) {
             if (flag) {

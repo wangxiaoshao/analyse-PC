@@ -171,7 +171,14 @@
                         </div>
                     </el-col>
                     <el-col :span="21">
-                        <div class="system-right"></div>
+                        <div class="system-right">
+                            <iframe
+                                :src="srcUrl"
+                                id="staticFrame"
+                                frameborder="0"
+                                width="100%"
+                            ></iframe>
+                        </div>
                     </el-col>
                 </el-row>
             </el-card>
@@ -188,6 +195,8 @@ export default {
                 { label: "单位应用情况使用趋势", val: 0 },
                 { label: "个人应用情况使用趋势", val: 1 },
             ],
+            srcUrl:
+                "http://localhost:8088/webroot/decision/view/report?viewlet=homepage_whole_province%252F%25E5%2585%25A8%25E7%259C%2581%25E5%258F%25B0%25E8%25B4%25A6%25E5%25BA%2594%25E7%2594%25A8%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=16273013-f2a2-4631-a99c-89b7f6f25783",
             current: 0,
             systemId: "",
             useType: 0,

@@ -15,14 +15,25 @@
                 ref="createdOrUpdateForm"
             >
                 <el-form-item label="单位名称：" prop="companyName">
-                    <el-autocomplete
-                        style="width: 100%;"
+                    <el-select
+                        value-key="company_id"
                         v-model="createdOrUpdateForm.companyName"
-                        value-key="company"
-                        :fetch-suggestions="getInfoByCompanyName"
-                        placeholder="请输入内容"
-                        @select="handleSelect"
-                    ></el-autocomplete>
+                        filterable
+                        remote
+                        reserve-keyword
+                        placeholder="请输入关键词"
+                        @change="companyChange"
+                        :remote-method="getInfoByCompanyName"
+                        :loading="loading"
+                    >
+                        <el-option
+                            v-for="item in companyList"
+                            :key="item.company_id"
+                            :label="item.company"
+                            :value="item"
+                        >
+                        </el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="应用名称：" prop="system_name">
                     <el-input
@@ -45,8 +56,8 @@
                 </el-form-item>
                 <el-form-item label="是否启用：" prop="is_banned">
                     <el-switch
-                        :active-value="0"
-                        :inactive-value="1"
+                        active-value="0"
+                        inactive-value="1"
                         v-model="createdOrUpdateForm.is_banned"
                     ></el-switch>
                 </el-form-item>
@@ -158,41 +169,12 @@ export default {
     mixins: [handleTable],
     data() {
         return {
+            loading: false,
+            companyParams: {},
             selectLoading: false,
             table_header: "logger_server_",
             applyList: [],
-            companyList: [
-                {
-                    company_id: 233,
-                    system_id: 6248,
-                    system_name: "xUdjWUJ",
-                    comment: "oefwFT",
-                    table_name: "n",
-                    is_banned: 7021,
-                    is_delete: 186,
-                    companyName: "惠智",
-                },
-                {
-                    company_id: 234,
-                    system_id: 6248,
-                    system_name: "xUdjWUJ",
-                    comment: "oefwFT",
-                    table_name: "n",
-                    is_banned: 7021,
-                    is_delete: 186,
-                    companyName: "测试",
-                },
-                {
-                    company_id: 235,
-                    system_id: 6248,
-                    system_name: "应用系统",
-                    comment: "oefwFT",
-                    table_name: "人员表",
-                    is_banned: 7021,
-                    is_delete: 186,
-                    companyName: "测试惠智公司的数据",
-                },
-            ],
+            companyList: [],
             dialogTitle: "创建应用",
             createdOrUpdateVisiable: false,
             name1: "",
@@ -256,38 +238,26 @@ export default {
             if (queryString.length === 0) {
                 return;
             }
+            this.loading = true;
             api[urlNames["getSystemId"]]({
                 companyName: queryString,
-            }).then((res) => {
-                this.companyList = res.data;
-                let results = queryString
-                    ? this.companyList.filter(
-                          this.createStateFilter(queryString)
-                      )
-                    : this.companyList;
-                cb(results);
-            });
-            // this.companyList = res.data;
-            // let results = queryString
-            //     ? this.companyList.filter(this.createStateFilter(queryString))
-            //     : this.companyList;
-            // cb(results);
+            }).then(
+                (res) => {
+                    this.loading = false;
+                    this.companyList = res.data;
+                },
+                () => {
+                    this.loading = false;
+                }
+            );
         },
-        createStateFilter(queryString) {
-            return (state) => {
-                return (
-                    state.company
-                        .toLowerCase()
-                        .indexOf(queryString.toLowerCase()) === 0
-                );
-            };
-        },
-        handleSelect(item) {
-            console.log(item);
-            this.createdOrUpdateForm.company_id = item.company_id;
+        companyChange(val) {
+            this.createdOrUpdateForm.company_id = val.company_id;
+            this.createdOrUpdateForm.companyName = val.company;
         },
         openCreateDailog(formName) {
             this.resetForm();
+            this.companyList = [];
             this.dialogTitle = "创建应用";
             this.createdOrUpdateVisiable = true;
         },
@@ -301,8 +271,8 @@ export default {
             this.createdOrUpdateForm.companyName = row.company;
             this.createdOrUpdateForm.table_name = row.tableName;
             this.createdOrUpdateForm.system_name = row.systemName;
-            this.createdOrUpdateForm.is_banned = parseInt(row.is_banned);
-            this.oldState = parseInt(row.is_banned);
+            this.createdOrUpdateForm.is_banned = row.is_banned;
+            this.oldState = row.is_banned;
             this.createdOrUpdateForm.comment = row.comment;
             this.createdOrUpdateVisiable = true;
         },
@@ -323,13 +293,14 @@ export default {
                     this.table_header + this.createdOrUpdateForm.table_name;
             } else {
                 apiUrl = "updateSystemTableMessage";
-                if (this.oldState === 1) {
-                    this.createdOrUpdateForm.next = 2;
+                console.log(this.oldState);
+                if (parseInt(this.oldState) === 1) {
+                    data.next = 2;
                 } else {
-                    if (this.createdOrUpdateForm.is_banned === 1) {
-                        this.createdOrUpdateForm.next = 1;
+                    if (parseInt(this.createdOrUpdateForm.is_banned) === 1) {
+                        data.next = 1;
                     } else {
-                        this.createdOrUpdateForm.next = 2;
+                        data.next = 2;
                     }
                 }
             }
@@ -349,15 +320,16 @@ export default {
                                 this.$message.warning("操作失败，请稍后再试");
                             }
                         },
-                        (error) => {
-                            if (error) {
+                        (msg) => {
+                            if (msg.error === 8006) {
                                 this.handleRow(
-                                    "该账号正在使用，禁用后会导致与之关联的应用和数据共享任务失败！您确定要禁用吗？",
+                                    "该应用正在执行数据共享任务，禁用后将会导致数据共享任务失败！您确定要禁用吗？",
                                     this.createdOrUpdateForm,
                                     this.saveUpdate
                                 );
+                            } else {
+                                this.$message.error("网络错误，请稍后重试");
                             }
-                            console.log(error);
                         }
                     );
                 } else {
@@ -403,7 +375,7 @@ export default {
                 companyName: "",
                 system_name: "",
                 table_name: "",
-                is_banned: 0,
+                is_banned: "0",
                 comment: "",
                 company_id: "",
                 system_id: "",

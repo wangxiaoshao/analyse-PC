@@ -109,7 +109,7 @@ export default {
                 noticeUser: [], // 默认选择人员
                 orgId: this.$route.query.orgId,
             },
-            oldNoticeUser:[],
+            oldNoticeUser: [],
             noticeUserIds: [],
         };
     },
@@ -175,8 +175,8 @@ export default {
         },
         // 查看收件人
         findConsignees() {
-            console.log(this.oldNoticeUser)
-            this.selectTreeDailog.noticeUser=[...this.oldNoticeUser];
+            console.log(this.oldNoticeUser);
+            this.selectTreeDailog.noticeUser = [...this.oldNoticeUser];
             this.selectTreeDailog.openSelectTreeVisiable = true;
         },
         // 添加收件人

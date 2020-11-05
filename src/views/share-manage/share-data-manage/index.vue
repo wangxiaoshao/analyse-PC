@@ -15,29 +15,49 @@
                 ref="createdOrUpdateForm"
             >
                 <el-form-item label="应用名称：" prop="system_name">
-                    <el-autocomplete
-                        style="width: 100%;"
+                    <el-select
                         v-model="createdOrUpdateForm.system_name"
-                        value-key="systemName"
-                        :fetch-suggestions="getInfoBySystemName"
-                        placeholder="请输入内容"
-                        @select="systemNameSelect"
-                    ></el-autocomplete>
+                        filterable
+                        remote
+                        reserve-keyword
+                        value-key="systemId"
+                        placeholder="请输入关键词"
+                        @change="systemNameSelect"
+                        :remote-method="getInfoBySystemName"
+                    >
+                        <el-option
+                            v-for="item in systemList"
+                            :key="item.systemId"
+                            :label="item.systemName"
+                            :value="item"
+                        >
+                        </el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="单位名称：" prop="companyName">
-                    <el-autocomplete
-                        style="width: 100%;"
+                    <el-select
                         v-model="createdOrUpdateForm.companyName"
-                        value-key="company"
-                        :fetch-suggestions="getInfoByCompanyName"
-                        placeholder="请输入内容"
-                        @select="companyNameSelect"
-                    ></el-autocomplete>
+                        filterable
+                        remote
+                        reserve-keyword
+                        value-key="companyId"
+                        placeholder="请输入关键词"
+                        @change="companyNameSelect"
+                        :remote-method="getInfoByCompanyName"
+                    >
+                        <el-option
+                            v-for="item in companyList"
+                            :key="item.companyId"
+                            :label="item.company"
+                            :value="item"
+                        >
+                        </el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="是否启用：" prop="is_banned">
                     <el-switch
-                        :active-value="0"
-                        :inactive-value="1"
+                        active-value="0"
+                        inactive-value="1"
                         v-model="createdOrUpdateForm.is_banned"
                     ></el-switch>
                 </el-form-item>
@@ -106,7 +126,7 @@
                 >
                     <template slot-scope="scope">
                         <span>{{
-                            scope.row.is_banned === 0 ? "正常" : "禁用"
+                            scope.row.is_banned === "0" ? "启用" : "禁用"
                         }}</span>
                     </template>
                 </el-table-column>
@@ -147,38 +167,8 @@ export default {
     data() {
         return {
             shareDataList: [{}],
-            companyList: [
-                {
-                    company_id: 233,
-                    system_id: 6246,
-                    system_name: "我的",
-                    comment: "oefwFT",
-                    table_name: "表1",
-                    is_banned: 7021,
-                    is_delete: 186,
-                    companyName: "惠智",
-                },
-                {
-                    company_id: 234,
-                    system_id: 6247,
-                    system_name: "惠智应用",
-                    comment: "oefwFT",
-                    table_name: "n",
-                    is_banned: 7021,
-                    is_delete: 186,
-                    companyName: "测试",
-                },
-                {
-                    company_id: 235,
-                    system_id: 6248,
-                    system_name: "测试",
-                    comment: "oefwFT",
-                    table_name: "人员表",
-                    is_banned: 7021,
-                    is_delete: 186,
-                    companyName: "测试惠智公司的数据",
-                },
-            ],
+            companyList: [],
+            systemList: [],
             dialogTitle: "创建共享任务",
             createdOrUpdateVisiable: false,
             createdOrUpdateForm: {
@@ -186,7 +176,7 @@ export default {
                 system_name: "",
                 company_id: "",
                 companyName: "",
-                is_banned: 0,
+                is_banned: "0",
                 shareId: "",
                 comment: "",
             },
@@ -236,29 +226,8 @@ export default {
                 systemName: queryString,
                 companyName: "",
             }).then((res) => {
-                this.companyList = res.data;
-                let results = queryString
-                    ? this.companyList.filter(
-                          this.createStateFilterSystemName(queryString)
-                      )
-                    : this.companyList;
-                cb(results);
+                this.systemList = res.data;
             });
-            // let results = queryString
-            //     ? this.companyList.filter(
-            //           this.createStateFilterSystemName(queryString)
-            //       )
-            //     : this.companyList;
-            // cb(results);
-        },
-        createStateFilterSystemName(queryString) {
-            return (state) => {
-                return (
-                    state.systemName
-                        .toLowerCase()
-                        .indexOf(queryString.toLowerCase()) === 0
-                );
-            };
         },
         getInfoByCompanyName(queryString, cb) {
             if (queryString.length === 0) {
@@ -269,17 +238,7 @@ export default {
                 systemName: "",
             }).then((res) => {
                 this.companyList = res.data;
-                let results = queryString
-                    ? this.companyList.filter(
-                          this.createStateFilter(queryString)
-                      )
-                    : this.companyList;
-                cb(results);
             });
-            // let results = queryString
-            //     ? this.companyList.filter(this.createStateFilter(queryString))
-            //     : this.companyList;
-            // cb(results);
         },
         createStateFilter(queryString) {
             return (state) => {
@@ -291,7 +250,6 @@ export default {
             };
         },
         systemNameSelect(item) {
-            console.log(item);
             this.createdOrUpdateForm.system_id = item.systemId;
         },
         companyNameSelect(item) {
@@ -376,7 +334,7 @@ export default {
                 system_name: "",
                 company_id: "",
                 companyName: "",
-                is_banned: 0,
+                is_banned: "0",
                 shareId: "",
                 comment: "",
             };

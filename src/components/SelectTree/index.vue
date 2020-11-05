@@ -92,16 +92,29 @@
                             <el-radio
                                 v-for="(item, index) in optionalList"
                                 :key="index"
+                                :disabled="
+                                    item.treeType === 5 &&
+                                    !item.canSelected &&
+                                    item.canSelected !== null &&
+                                    singleSelectingChange.isDisabled
+                                "
                                 style="display: block;"
                                 :label="JSON.stringify(item)"
                             >
                                 {{
-                                    item.orgName
+                                    item.treeType === 5 &&
+                                    !item.canSelected &&
+                                    item.canSelected !== null &&
+                                    singleSelectingChange.isDisabled
                                         ? item.treeName +
-                                          "(" +
-                                          item.orgName +
-                                          ")"
-                                        : item.treeName
+                                          "(已绑定其他角色不可选)" +
+                                          (item.orgName
+                                              ? "--" + item.orgName
+                                              : "")
+                                        : item.treeName +
+                                          (item.orgName
+                                              ? "--" + item.orgName
+                                              : "")
                                 }}</el-radio
                             >
                         </el-radio-group>
@@ -403,19 +416,16 @@ export default {
         // 全选可选区域
         toggleOptionalAll(selected) {
             this.isIndeterminate = false;
-            console.log(
-                this.selectingList,
-                this.selectedList,
-                this.selectCheckList
-            );
             let that = this;
             if (selected) {
                 that.optionalList.forEach((item) => {
                     const label = JSON.stringify(item);
-                    that.addToSelected(label);
-                    that.addSelecting(item);
-                    if (!that.selectingList.includes(label)) {
-                        that.selectingList.push(label);
+                    if (item.canSelected === 1) {
+                        that.addToSelected(label);
+                        that.addSelecting(item);
+                        if (!that.selectingList.includes(label)) {
+                            that.selectingList.push(label);
+                        }
                     }
                 });
             } else {
@@ -447,11 +457,6 @@ export default {
                 this.addToSelected(item);
                 return label;
             });
-            // console.log(
-            //     this.selectingList,
-            //     this.selectedList,
-            //     this.selectCheckList
-            // );
         },
         selectedChange(val) {
             this.selectingList.forEach((item) => {
@@ -506,6 +511,11 @@ export default {
 
         // 返回数据
         submitSelectedData() {
+            console.log(
+                this.selectCheckList,
+                this.selectedList,
+                this.selectingList
+            );
             this.$emit("dialogReturnData", this.selectCheckList, this.lastData);
             this.handleClose();
         },
@@ -648,12 +658,15 @@ export default {
             console.log(this.selectTreeDailog.noticeUser, "uuuuu");
             this.selectCheckList = this.selectTreeDailog.noticeUser.map(
                 (item) => {
-                    const label = item;
+                    const label1 = item;
+                    const label = JSON.stringify(item);
+                    if (!this.selectingList.includes(label)) {
+                        this.selectingList.push(label);
+                    }
                     this.addToSelected(JSON.stringify(item));
-                    return label;
+                    return label1;
                 }
             );
-            console.log(this.selectCheckList, this.selectedList, "ddd");
         },
     },
 };
