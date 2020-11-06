@@ -65,11 +65,11 @@ const initVueInstance = (router, userInfo) => {
 
 // const userInfo = {
 //     authorizedType: 2,
-//     roleId: 3,
+//     roleId: 1,
 //     roleName: "CITY_MANAGER",
 //     roleTitle: "市州管理员",
 //     uid: "7713347423288511675",
-//   }
+// };
 
 // let router = initRouter(userInfo);
 // new Vue({

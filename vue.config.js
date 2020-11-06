@@ -44,7 +44,7 @@ module.exports = function (options) {
             contentBase: ["dist"],
             disableHostCheck: true,
             host: "0.0.0.0",
-            port: "8080",
+            // port: "8080",
             proxy: {
                 "/api/": {
                     // target: "http://192.168.1.186",
@@ -54,6 +54,7 @@ module.exports = function (options) {
                     //         target: "http://org.gz.cegn.cn/",
                     // target: "http://txl.org.gz.cegn.cn/",
                     target: "http://172.16.68.62:8080/",
+                    // target: "http://tjpt.gz.cegn.com/",
                     changeOrigin: true,
                     // target: "http://10.226.11.177/",
                     //  changeOrigin: true,

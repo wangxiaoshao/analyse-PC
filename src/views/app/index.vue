@@ -43,7 +43,7 @@ import { mapState, mapMutations } from "vuex";
 import sideMenu from "@src/components/SideMenu";
 import siteHead from "@src/components/SiteHead";
 import SiteBreadcrumb from "@src/components/SiteBreadcrumb.vue";
-import asideMenu from "@src/config/menu";
+// import asideMenu from "@src/config/menu";
 import handleBreadcrumb from "@src/mixins/handle-breadcrumb";
 export default {
     name: "app",
@@ -53,7 +53,7 @@ export default {
             user: null,
             userInfo: {},
             asideMenu: {
-              list: this.$router.options.routes
+                list: this.$router.options.routes,
             },
             asideMenuActive: "0",
         };

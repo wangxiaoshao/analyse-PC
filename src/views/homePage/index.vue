@@ -44,7 +44,7 @@
                         </div>
                     </el-card>
                 </el-col>
-                <el-col :span="8">
+                <el-col :span="8" v-if="isShow()">
                     <el-card class="item-card">
                         <el-row>
                             <el-col :span="13">
@@ -67,21 +67,22 @@
                         </el-row>
                     </el-card>
                 </el-col>
-                <el-col :span="8">
+                <el-col :span="8" v-if="isShow()">
                     <el-card class="item-card">
                         <iframe src="" frameborder="0"></iframe>
                     </el-card>
                 </el-col>
-                <!-- <el-col :span="8">
+
+                <el-col :span="8" v-if="!isShow()">
                     <el-card class="item-card">
                         <iframe :src="unitSrc" frameborder="0"></iframe>
                     </el-card>
                 </el-col>
-                <el-col :span="8">
+                <el-col :span="8" v-if="!isShow()">
                     <el-card class="item-card">
                         <iframe :src="userSrc" frameborder="0"></iframe>
                     </el-card>
-                </el-col> -->
+                </el-col>
                 <el-col :span="app.rolesInfo.roleName ? 24 : 19">
                     <div class="home-box">
                         <el-card class="box-card">
@@ -147,15 +148,26 @@
         </div>
         <div class="total-box">
             <el-card class="total-card">
-                <div>
-                    <el-radio-group v-model="useType" @change="typeChange">
-                        <el-radio-button
-                            :label="item.val"
-                            v-for="item in typeList"
-                            :key="item.val"
-                            >{{ item.label }}</el-radio-button
-                        >
-                    </el-radio-group>
+                <div class="params-box">
+                    <el-select
+                        size="small"
+                        style="width: 100px;"
+                        v-model="areaId"
+                        @change="areaChange"
+                        placeholder="请选择"
+                    >
+                        <el-option
+                            v-for="item in areaList"
+                            :key="item.treeId"
+                            :label="item.treeName"
+                            :value="item.treeId"
+                        ></el-option>
+                    </el-select>
+                    <span> 各应用使用情况趋势</span>
+                    <el-divider direction="vertical"></el-divider>
+                    <span>个人应用情况使用趋势</span>
+                    <!-- <el-divider direction="vertical"></el-divider> -->
+                    <!-- <span>草木深</span> -->
                 </div>
                 <el-row>
                     <el-col :span="3">
@@ -191,10 +203,10 @@ import { mapState } from "vuex";
 export default {
     data() {
         return {
-            typeList: [
-                { label: "单位应用情况使用趋势", val: 0 },
-                { label: "个人应用情况使用趋势", val: 1 },
-            ],
+            // typeList: [
+            //     { label: "单位应用情况使用趋势", val: 0 },
+            //     { label: "个人应用情况使用趋势", val: 1 },
+            // ],
             srcUrl:
                 "http://localhost:8088/webroot/decision/view/report?viewlet=homepage_whole_province%252F%25E5%2585%25A8%25E7%259C%2581%25E5%258F%25B0%25E8%25B4%25A6%25E5%25BA%2594%25E7%2594%25A8%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=16273013-f2a2-4631-a99c-89b7f6f25783",
             current: 0,
@@ -204,6 +216,21 @@ export default {
             loginNumber: 1256,
             unitSrc: "",
             userSrc: "",
+            areaId: 1,
+            areaList: [
+                {
+                    treeName: "贵阳市",
+                    treeId: 1,
+                },
+                {
+                    treeName: "贵阳市333",
+                    treeId: 2,
+                },
+                {
+                    treeName: "贵阳市444",
+                    treeId: 3,
+                },
+            ],
             // 平台公告列表
             announcementList: [
                 {
@@ -285,6 +312,9 @@ export default {
             this.getSystemNoticeList();
             this.getLastDayLoginUser();
         },
+        isShow() {
+            return this.app.rolesInfo.roleName === "PROVINCE_MANAGER";
+        },
         // 获取平台公告列表
         getSystemNoticeList() {
             let data = {
@@ -306,7 +336,6 @@ export default {
                 }
             });
         },
-        typeChange() {},
         applyChange(index, id) {
             this.current = index;
             this.systemId = id;
@@ -344,6 +373,7 @@ export default {
         goMoreAnnounts() {
             this.$router.push("/moreAnnoument");
         },
+        areaChange(val) {},
     },
     computed: {
         ...mapState(["app"]),

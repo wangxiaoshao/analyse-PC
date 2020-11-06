@@ -27,7 +27,8 @@
                     size="medium"
                     placeholder="请选择区域"
                     @change="stateChange"
-                    v-model="stateName"
+                    v-model="stateParams"
+                    value-key="treeId"
                 >
                     <el-option
                         v-for="item in stateList"
@@ -45,7 +46,8 @@
                     size="medium"
                     placeholder="请选择区县"
                     @change="areaChange"
-                    v-model="areaName"
+                    v-model="areaParams"
+                    value-key="treeId"
                 >
                     <el-option
                         v-for="item in areaList"
@@ -79,6 +81,7 @@
                     end-placeholder="结束日期"
                     :picker-options="pickerOptions"
                     @change="dateChange"
+                    @blur="onDateBlur"
                     value-format="yyyy-MM-dd"
                 >
                 </el-date-picker>
@@ -87,43 +90,62 @@
                 <el-button type="primary" @click="searchData">查询</el-button>
             </el-form-item>
         </el-form>
+        <div class="system-list">
+            <span>系统应用： </span>
+            <el-radio-group v-model="systemId" @change="applyChange">
+                <el-radio-button
+                    :label="item.id"
+                    v-for="item in app.applicationList"
+                    :key="item.systemSymbol"
+                    >{{ item.systemName }}</el-radio-button
+                >
+            </el-radio-group>
+        </div>
+        <div class="system-data">
+            <div class="chart-box">
+                <iframe
+                    :src="srcUrl"
+                    id="unitFrame"
+                    frameborder="0"
+                    scrolling="no"
+                    ref="iframe"
+                ></iframe>
+            </div>
+        </div>
     </div>
 </template>
 <script>
 import { mapState } from "vuex";
 import { api, urlNames } from "@src/api";
+import dataStatistics from "@src/mixins/data-statistics";
+import pickerOptions from "@src/mixins/picker-options";
 export default {
+    mixins: [dataStatistics, pickerOptions],
     data() {
         return {
-            searchDate: "",
             unitType: 2,
-            stateName: "",
+            stateParams: {},
+            areaParams: {},
             stateId: "",
+            systemId: 1,
             treeType: "",
             areaId: "",
-            areaName: "",
             startDate: "",
             endDate: "",
             unitId: "",
-            unitTypeList: [
-                { name: "非考核单位", type: 0 },
-                { name: "考核单位", type: 1 },
-                { name: "全部", type: 2 },
-            ],
             stateList: [],
             areaList: [],
             unitList: [],
-            pickerOptions: {
-                disabledDate(time) {
-                    return time.getTime() > Date.now() - 8.64e6;
-                },
-                shortcuts: null,
-            },
         };
     },
     created() {
+        this.pickDateOptionRules();
+        this.initializeDate();
         console.log(this.app.rolesInfo);
         this.getStateList();
+    },
+    mounted() {
+        // this.searchData();
     },
     computed: {
         ...mapState(["app"]),
@@ -135,7 +157,7 @@ export default {
                 return;
             }
             if (
-                this.app.rolesInfo.roleName === "SYSTEM_MANAGER" ||
+                this.app.rolesInfo.roleName === "SUPER_MANAGER" ||
                 this.app.rolesInfo.roleName === "PROVINCE_MANAGER"
             ) {
                 api[urlNames["getTreeList"]]({
@@ -144,6 +166,9 @@ export default {
                 }).then((res) => {
                     if (res.data) {
                         this.stateList = res.data;
+                        if (this.stateList.length > 0) {
+                            this.stateParams = this.stateList[0];
+                        }
                     }
                 });
             } else {
@@ -163,8 +188,18 @@ export default {
                             aryList.push(obj);
                         });
                         this.stateList = aryList;
+                        if (this.stateList.length > 0) {
+                            this.stateParams = this.stateList[0];
+                            this.initArea(
+                                this.stateParams.treeId,
+                                this.stateParams.treeType
+                            );
+                        }
                         if (this.app.rolesInfo.roleName === "COUNTY_MANAGER") {
                             this.areaList = aryList;
+                            if (this.areaList.length > 0) {
+                                this.areaParams = this.stateList[0];
+                            }
                         }
                     }
                 });
@@ -178,11 +213,17 @@ export default {
                 if (res.data) {
                     if (treeId === "520000" && treeType === 1) {
                         this.areaList = [];
-                        this.areaName = "";
+                        this.areaParams = {};
                         this.unitList = res.data;
+                        if (this.unitList.length > 0) {
+                            this.unitId = this.unitList[0].treeId;
+                        }
                         return;
                     }
                     this.areaList = res.data;
+                    if (this.areaList.length > 0) {
+                        this.areaParams = this.stateList[0];
+                    }
                 }
             });
         },
@@ -210,6 +251,9 @@ export default {
             api[urlNames[apiUrl]](data).then((res) => {
                 if (res.data) {
                     this.unitList = res.data;
+                    if (this.unitList.length > 0) {
+                        this.unitId = res.data[0].orgId || res.data[0].treeId;
+                    }
                 }
             });
         },
@@ -218,9 +262,9 @@ export default {
             console.log(val);
             this.startDate = val[0];
             this.endDate = val[1];
+            this.doformatParams();
         },
         stateChange(data) {
-            this.stateName = data.treeName;
             this.stateId = data.treeId;
             this.treeType = data.treeType;
             this.unitId = "";
@@ -229,7 +273,6 @@ export default {
         },
         areaChange(val) {
             console.log(val, "kkkkk");
-            this.areaName = val.treeName;
             this.areaId = val.treeId;
             this.treeType = val.treeType;
             this.unitId = "";
@@ -242,17 +285,52 @@ export default {
             );
         },
         unitChange() {},
+        applyChange(val) {
+            console.log(this.systemId);
+            this.searchData();
+        },
         searchData() {
             let data = {
-                isStat: this.unitType,
-                codeNum: this.stateId,
-                qxNum: this.areaId,
+                isStat: this.unitType === 2 ? "" : this.unitType,
+                cityNum:
+                    this.stateParams.treeId === "520000"
+                        ? 0
+                        : this.stateParams.treeId,
+                codeNum:
+                    this.stateParams.treeId === "520000"
+                        ? this.stateParams.treeId
+                        : this.areaParams.treeId,
+                qxNum:
+                    this.stateParams.treeId === "520000"
+                        ? 0
+                        : this.areaParams.treeId,
                 startDate: this.startDate,
                 endDate: this.endDate,
                 orgId: this.unitId,
+                format1: this.formatParams.format1,
+                format2: this.formatParams.format2,
+                startDay: this.formatParams.format3,
+                size: this.formatParams.format4,
             };
             console.log(data);
+            this.initSystem("unit", this.doSrcParams(data));
+        },
+    },
+    watch: {
+        unitId(val1, val2) {
+            this.searchData();
         },
     },
 };
 </script>
+<style lang="less" scoped>
+.chart-box {
+    width: 100%;
+    padding: 20px 0;
+}
+#unitFrame {
+    width: 100%;
+    height: 480px;
+    overflow: hidden;
+}
+</style>

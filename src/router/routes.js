@@ -239,7 +239,34 @@ export default [
             {
                 path: "/message-reminding",
                 meta: { title: "通知提醒" },
-                onlyRolesShow: [roles.unit],
+                onlyRolesShow: [roles.sys, roles.unit],
+                component: () =>
+                    import(
+                        /* webpackChunkName: "MessageReminding" */ "@src/views/system-setting/message-reminding/index.vue"
+                    ),
+                // children: [
+                //     {
+                //         hidden: true,
+                //         path: "/message-reminding/message-rules",
+                //         name: "MessageRules",
+                //         meta: { title: "通知规则设置" },
+                //         component: () =>
+                //             import(
+                //                 /* webpackChunkName: "MessageReminding" */ "@src/views/system-setting/message-reminding/message-rules/index.vue"
+                //             ),
+                //         // meta: { activeMenu: "/message-reminding" },
+                //     },
+                // ],
+            },
+            {
+                hidden: true,
+                path: "/message-reminding/message-rules",
+                name: "MessageRules",
+                meta: { title: "通知规则设置" },
+                component: () =>
+                    import(
+                        /* webpackChunkName: "MessageReminding" */ "@src/views/system-setting/message-reminding/message-rules/index.vue"
+                    ),
             },
             {
                 meta: { title: "权限管理" },

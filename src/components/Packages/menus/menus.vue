@@ -22,7 +22,7 @@
 </template>
 <script>
 import subMenu from "./sub-menu.vue";
-import util from "../utils";
+// import util from "../utils";
 
 export default {
     name: "menus",

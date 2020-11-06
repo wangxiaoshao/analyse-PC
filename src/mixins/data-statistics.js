@@ -1,14 +1,26 @@
 /**
  * Created by wangxiaoshao on 2020/11/05.
  */
-import pickerOptions from "@src/mixins/picker-options";
+import urlList from "@src/views/data-statistics/index";
 export default {
-    mixins: [pickerOptions],
     data() {
         return {
+            searchDate: [],
+            reportSrcList: urlList,
             hostApi:
                 "http://localhost:8088/webroot/decision/view/report?viewlet=",
             srcUrl: "",
+            unitTypeList: [
+                { name: "非考核单位", type: 0 },
+                { name: "考核单位", type: 1 },
+                { name: "全部", type: 2 },
+            ],
+            formatParams: {
+                format1: "",
+                format2: "",
+                format3: "",
+                format4: "",
+            },
         };
     },
     methods: {
@@ -61,11 +73,35 @@ export default {
                 return "";
             }
         },
-        initSystem(reportSrcList, str) {
-            let ary = reportSrcList.filter((item) => {
+        initSystem(type, str) {
+            let ary = this.reportSrcList.filter((item) => {
                 return item.id === this.systemId;
             });
-            this.srcUrl = this.hostApi + ary[0].url + str;
+            console.log(ary, "fffff");
+            let url = "";
+            switch (type) {
+                case "area":
+                    url = this.hostApi + ary[0].areaUrl + str;
+                    break;
+                case "unit":
+                    url = this.hostApi + ary[0].unitUrl + str;
+                    break;
+                case "person":
+                    url = this.hostApi + ary[0].personUrl + str;
+                    break;
+                default:
+                    return null;
+            }
+            this.srcUrl = url;
+        },
+        doSrcParams(data) {
+            let str = "";
+            Object.getOwnPropertyNames(data).forEach(function (key) {
+                if (data[key] !== "") {
+                    str += "&" + key + "=" + data[key];
+                }
+            });
+            return str;
         },
     },
 };

@@ -90,7 +90,7 @@
             <div class="chart-box">
                 <iframe
                     :src="srcUrl"
-                    id="reportFrame"
+                    id="areaFrame"
                     frameborder="0"
                     scrolling="no"
                     ref="iframe"
@@ -103,86 +103,23 @@
 import { mapState } from "vuex";
 import { api, urlNames } from "@src/api";
 import pickerOptions from "@src/mixins/picker-options";
-const reportList = [
-    {
-        id: 1,
-        systemName: "门户",
-        url:
-            "mh_statistics%252F%25E9%2597%25A8%25E6%2588%25B7%25E5%258C%25BA%25E5%259F%259F%25E6%2595%25B0%25E6%258D%25AE%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=16273013-f2a2-4631-a99c-89b7f6f25783",
-    },
-    {
-        id: 2,
-        systemName: "台账",
-        url:
-            "tz_statistics%252F%25E5%258F%25B0%25E8%25B4%25A6%25E4%25BA%25BA%25E5%2591%2598%25E8%25AF%25A6%25E7%25BB%2586%25E6%2595%25B0%25E6%258D%25AE.cpt&ref_t=design&op=write&ref_c=16273013-f2a2-4631-a99c-89b7f6f25783",
-    },
-    {
-        id: 3,
-        systemName: "通知公告",
-        url:
-            "tzgg_statistics%252F%25E9%2580%259A%25E7%259F%25A5%25E5%2585%25AC%25E5%2591%258A%25E5%258C%25BA%25E5%259F%259F%25E6%2595%25B0%25E6%258D%25AE%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=16273013-f2a2-4631-a99c-89b7f6f25783",
-    },
-    {
-        id: 4,
-        systemName: "快传",
-        url: "",
-    },
-    {
-        id: 5,
-        systemName: "组织机构",
-        url: "",
-    },
-    {
-        id: 6,
-        systemName: "公文",
-        url: "",
-    },
-    {
-        id: 7,
-        systemName: "事务办理",
-        url: "",
-    },
-    {
-        id: 8,
-        systemName: "单点登录",
-        url: "",
-    },
-];
+import dataStatistics from "@src/mixins/data-statistics";
 export default {
-    mixins: [pickerOptions],
+    mixins: [pickerOptions, dataStatistics],
     data() {
         return {
-            searchDate: [],
-            hostApi:
-                "http://localhost:8088/webroot/decision/view/report?viewlet=",
-            srcUrl: "",
-            reportSrcList: reportList,
             unitType: 2,
             stateParams: {},
             areaParams: {},
             stateId: "",
             treeType: "",
-            startDate: "",
-            formatParams: {
-                format1: "",
-                format2: "",
-                format3: "",
-                format4: "",
-            },
-            endDate: "",
             systemId: 2,
-            unitTypeList: [
-                { name: "非考核单位", type: 0 },
-                { name: "考核单位", type: 1 },
-                { name: "全部", type: 2 },
-            ],
-
             stateList: [],
             areaList: [],
         };
     },
     created() {
-        console.log(this.app.rolesInfo);
+        console.log(this.app.rolesInfo, this.reportSrcList);
         this.getStateList();
         this.initializeDate();
     },
@@ -194,40 +131,9 @@ export default {
         ...mapState(["app"]),
     },
     methods: {
-        initializeDate() {
-            let data1 = new Date();
-            let data2 = new Date();
-            data1.setDate(data2.getDate() - 7);
-            let startDate = this.formatDate(data1);
-            let endDate = this.formatDate(data2);
-            let newstartDate = "";
-            if (
-                new Date(startDate).getMonth() + 1 <
-                new Date(endDate).getMonth() + 1
-            ) {
-                newstartDate = endDate.substring(0, 8) + "01";
-                console.log(newstartDate);
-            } else {
-                newstartDate = startDate;
-            }
-            this.searchDate[0] = newstartDate;
-            this.searchDate[1] = endDate;
-            this.startDate = this.searchDate[0];
-            this.endDate = this.searchDate[1];
-            this.doformatParams();
-        },
-        doformatParams() {
-            this.formatParams.format1 = this.startDate.substring(0, 8) + "0";
-            this.formatParams.format2 = this.startDate.substring(0, 8);
-            this.formatParams.format3 = new Date(this.startDate).getDate() - 1;
-            this.formatParams.format4 =
-                new Date(this.endDate).getDate() -
-                new Date(this.startDate).getDate() +
-                1;
-        },
         getStateList() {
             if (
-                this.app.rolesInfo.roleName === "SYSTEM_MANAGER" ||
+                this.app.rolesInfo.roleName === "SUPER_MANAGER" ||
                 this.app.rolesInfo.roleName === "PROVINCE_MANAGER"
             ) {
                 api[urlNames["getTreeList"]]({
@@ -237,7 +143,7 @@ export default {
                     if (res.data) {
                         this.stateList = res.data;
                         if (this.stateList.length > 0) {
-                            this.stateParams = this.stateList[1];
+                            this.stateParams = this.stateList[0];
                             this.initArea(
                                 this.stateParams.treeId,
                                 this.stateParams.treeType
@@ -306,7 +212,6 @@ export default {
         stateChange(data) {
             this.areaParams = {};
             this.areaList = [];
-            console.log(data, this.stateParams);
             this.stateId = data.treeId;
             this.treeType = data.treeType;
             this.initArea(this.stateId, this.treeType);
@@ -316,16 +221,17 @@ export default {
             console.log(this.systemId);
             this.searchData();
         },
-        initSystem(reportSrcList, str) {
-            let ary = reportSrcList.filter((item) => {
-                return item.id === this.systemId;
-            });
-            this.srcUrl = this.hostApi + ary[0].url + str;
-        },
         searchData() {
             let data = {
-                isStat: this.unitType,
-                codeNum: this.stateParams.treeId,
+                isStat: this.unitType === 2 ? "" : this.unitType,
+                cityNum:
+                    this.stateParams.treeId === "520000"
+                        ? 0
+                        : this.stateParams.treeId,
+                codeNum:
+                    this.stateParams.treeId === "520000"
+                        ? this.stateParams.treeId
+                        : this.areaParams.treeId,
                 qxNum:
                     this.stateParams.treeId === "520000"
                         ? 0
@@ -337,14 +243,7 @@ export default {
                 startDay: this.formatParams.format3,
                 size: this.formatParams.format4,
             };
-            console.log(data);
-            let str = "";
-            Object.getOwnPropertyNames(data).forEach(function (key) {
-                if (data[key] !== "") {
-                    str += "&" + key + "=" + data[key];
-                }
-            });
-            this.initSystem(this.reportSrcList, str);
+            this.initSystem("area", this.doSrcParams(data));
         },
         // 格式化时间
         formatDate(value) {
@@ -380,7 +279,7 @@ export default {
     width: 100%;
     padding: 20px 0;
 }
-#reportFrame {
+#areaFrame {
     width: 100%;
     height: 480px;
     overflow: hidden;
