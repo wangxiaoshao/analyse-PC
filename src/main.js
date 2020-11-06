@@ -45,7 +45,8 @@ Vue.use(elementUI, {
 
 api[urlNames["getUserRole"]]().then((res) => {
     if (res.status === 0) {
-        let router = initRouter([]);
+        // let router = initRouter([]);
+        let router = initRouter(res.data);
         initVueInstance(router, res.data);
     } else {
         alert(res.message);
@@ -62,7 +63,15 @@ const initVueInstance = (router, userInfo) => {
     }).$mount("#app");
 };
 
-// let router = initRouter([]);
+// const userInfo = {
+//     authorizedType: 2,
+//     roleId: 3,
+//     roleName: "CITY_MANAGER",
+//     roleTitle: "市州管理员",
+//     uid: "7713347423288511675",
+//   }
+
+// let router = initRouter(userInfo);
 // new Vue({
 //     router,
 //     store,

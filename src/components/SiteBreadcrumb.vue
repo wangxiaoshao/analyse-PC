@@ -2,22 +2,33 @@
     <div class="site-breadcrumb">
         <el-row>
             <el-col :span="20">
-                <el-breadcrumb v-if="breadcrumb.length > 0">
+                <el-breadcrumb>
                     <el-breadcrumb-item>
                         <i class="fa fa-home"></i>
                     </el-breadcrumb-item>
-                    <el-breadcrumb-item
-                        v-for="item in breadcrumb"
-                        class="breadcrumb-item"
-                        :key="item.menuId"
-                        >{{ item.name }}</el-breadcrumb-item
-                    >
-                    <el-breadcrumb-item
+                    <template v-if="$route.meta.breadcrumb">
+                        <el-breadcrumb-item
+                            v-for="(item, index) in $route.meta.breadcrumb"
+                            class="breadcrumb-item"
+                            :key="index"
+                            >{{ item.name }}</el-breadcrumb-item
+                        >
+                    </template>
+                    <template v-else>
+                        <el-breadcrumb-item
+                            v-for="item in levelList"
+                            class="breadcrumb-item"
+                            :key="item.path"
+                            >{{ item.meta.title }}</el-breadcrumb-item
+                        >
+                    </template>
+
+                    <!-- <el-breadcrumb-item
                         v-for="(pageItem, index) in pageBreadcrumb"
                         :key="index"
                         class="breadcrumb-item"
                         >{{ pageItem.name }}</el-breadcrumb-item
-                    >
+                    > -->
                 </el-breadcrumb>
             </el-col>
             <el-col :span="4" class="text-right">
@@ -39,9 +50,6 @@
     </div>
 </template>
 <script>
-/**
- * Created by lxe on 2019-09-18.
- */
 export default {
     components: {},
     name: "SiteBreadcrumb",
@@ -52,12 +60,12 @@ export default {
                 return {};
             },
         },
-        breadcrumb: {
-            type: Array,
-            default() {
-                return [];
-            },
-        },
+        // breadcrumb: {
+        //     type: Array,
+        //     default() {
+        //         return [];
+        //     },
+        // },
         noticeShowBtn: {
             type: Boolean,
             default() {
@@ -72,15 +80,42 @@ export default {
         },
     },
     data() {
-        return {};
+        return {
+            // breadcrumb: [],
+            levelList: [],
+        };
     },
-    created() {},
+
+    watch: {
+        $route() {
+            this.getBreadcrumb();
+        },
+    },
+    created() {
+        this.getBreadcrumb();
+    },
     methods: {
         goBack() {
             this.$emit("go-back");
         },
         goHome() {
             this.$emit("goHome");
+        },
+
+        getBreadcrumb() {
+            // debugger
+            // only show routes with meta.title
+            let matched = this.$route.matched.filter(
+                (item) => item.meta && item.meta.title
+            );
+            const first = matched[0];
+
+            this.levelList = matched.filter(
+                (item) =>
+                    item.meta &&
+                    item.meta.title &&
+                    item.meta.breadcrumb !== false
+            );
         },
     },
 };

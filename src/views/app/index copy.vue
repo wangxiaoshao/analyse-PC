@@ -52,9 +52,7 @@ export default {
             scrollPage: true,
             user: null,
             userInfo: {},
-            asideMenu: {
-              list: this.$router.options.routes
-            },
+            asideMenu: asideMenu,
             asideMenuActive: "0",
         };
     },
@@ -118,14 +116,14 @@ export default {
             // 在初始化菜单是，手动将breakLoop置为false，否则findMenuByPath不进入循环
             this.breakLoop = false;
 
-            // if (!isCustomBreadcrumb) {
-            //     this.findMenuByPath(this.asideMenu.list, path, 0);
-            //     if (this.breadcrumb.length > 0) {
-            //         this.asideMenuActive = this.breadcrumb[
-            //             this.breadcrumb.length - 1
-            //         ].menuId.toString();
-            //     }
-            // }
+            if (!isCustomBreadcrumb) {
+                this.findMenuByPath(this.asideMenu.list, path, 0);
+                if (this.breadcrumb.length > 0) {
+                    this.asideMenuActive = this.breadcrumb[
+                        this.breadcrumb.length - 1
+                    ].menuId.toString();
+                }
+            }
 
             this.SET_BREADCRUMB(this.breadcrumb);
             this.SET_WINDOWHEIGHT(document.body.offsetHeight);
