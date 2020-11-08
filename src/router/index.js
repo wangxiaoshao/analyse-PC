@@ -2,7 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import AllRoutes from "./routes";
 
-import roles from "./roles";
+// import roles from "./roles";
 
 import path from "path";
 
@@ -15,10 +15,10 @@ Vue.use(VueRouter);
 const initRouter = (userInfo) => {
     let roleId = userInfo.roleId;
 
-    // 超级管理员和系统管理员权限一样
-    if (roleId === roles.super) {
-        roleId = roles.sys;
-    }
+    // // 超级管理员和系统管理员权限一样
+    // if (roleId === roles.super) {
+    //     roleId = roles.sys;
+    // }
     const routes = getRouters(AllRoutes, roleId);
 
     // 所有的路由path、用来做无权限提示，不是的话相当于404页面

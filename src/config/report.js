@@ -13,6 +13,8 @@ export const areaReportList = [
             "homepage_whole_province%252F%25E5%2585%25A8%25E7%259C%2581%25E9%2597%25A8%25E6%2588%25B7%25E5%25BA%2594%25E7%2594%25A8%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=f0f3b31d-4565-4d97-a727-3996f28620c5",
         cityOrCountyUrl:
             "homepage_whole_city_qx%252F%25E5%2585%25A8%25E5%25B8%2582%25E5%258C%25BA%25E9%2597%25A8%25E6%2588%25B7%25E5%25BA%2594%25E7%2594%25A8%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=8b0e8398-30c4-457f-83de-19ff32bad3d7",
+        homeUnitUrl:
+            "homepage_organization%252F%25E5%258D%2595%25E4%25BD%258D%25E9%2597%25A8%25E6%2588%25B7%25E5%25BA%2594%25E7%2594%25A8%25E8%25B6%258B%25E5%258A%25BF%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=8b0e8398-30c4-457f-83de-19ff32bad3d7",
     },
     {
         id: 2,
@@ -29,6 +31,8 @@ export const areaReportList = [
             "homepage_whole_province%252F%25E5%2585%25A8%25E7%259C%2581%25E5%258F%25B0%25E8%25B4%25A6%25E5%25BA%2594%25E7%2594%25A8%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=f0f3b31d-4565-4d97-a727-3996f28620c5",
         cityOrCountyUrl:
             "homepage_whole_city_qx%252F%25E5%2585%25A8%25E5%25B8%2582%25E5%258C%25BA%25E5%258F%25B0%25E8%25B4%25A6%25E5%25BA%2594%25E7%2594%25A8%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=8b0e8398-30c4-457f-83de-19ff32bad3d7",
+        homeUnitUrl:
+            "homepage_organization%252F%25E5%258D%2595%25E4%25BD%258D%25E5%258F%25B0%25E8%25B4%25A6%25E5%25BA%2594%25E7%2594%25A8%25E8%25B6%258B%25E5%258A%25BF%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=8b0e8398-30c4-457f-83de-19ff32bad3d7",
     },
     {
         id: 3,
@@ -45,6 +49,8 @@ export const areaReportList = [
             "homepage_whole_province%252F%25E5%2585%25A8%25E7%259C%2581%25E9%2580%259A%25E7%259F%25A5%25E5%2585%25AC%25E5%2591%258A%25E5%25BA%2594%25E7%2594%25A8%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=f0f3b31d-4565-4d97-a727-3996f28620c5",
         cityOrCountyUrl:
             "homepage_whole_city_qx%252F%25E5%2585%25A8%25E5%25B8%2582%25E5%258C%25BA%25E9%2580%259A%25E7%259F%25A5%25E5%2585%25AC%25E5%2591%258A%25E5%25BA%2594%25E7%2594%25A8%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=8b0e8398-30c4-457f-83de-19ff32bad3d7",
+        homeUnitUrl:
+            "homepage_organization%252F%25E5%258D%2595%25E4%25BD%258D%25E9%2580%259A%25E7%259F%25A5%25E5%2585%25AC%25E5%2591%258A%25E5%25BA%2594%25E7%2594%25A8%25E8%25B6%258B%25E5%258A%25BF%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=8b0e8398-30c4-457f-83de-19ff32bad3d7",
     },
     {
         id: 4,
@@ -58,9 +64,11 @@ export const areaReportList = [
         homePersonUrl:
             "homepage_person%252F%25E4%25B8%25AA%25E4%25BA%25BA%25E5%25BF%25AB%25E4%25BC%25A0%25E5%25BA%2594%25E7%2594%25A8%25E8%25B6%258B%25E5%258A%25BF%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=8b0e8398-30c4-457f-83de-19ff32bad3d7",
         allProvinceUrl:
-            "=homepage_whole_province%252F%25E5%2585%25A8%25E7%259C%2581%25E5%25BF%25AB%25E4%25BC%25A0%25E5%25BA%2594%25E7%2594%25A8%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=f0f3b31d-4565-4d97-a727-3996f28620c5",
+            "homepage_whole_province%252F%25E5%2585%25A8%25E7%259C%2581%25E5%25BF%25AB%25E4%25BC%25A0%25E5%25BA%2594%25E7%2594%25A8%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=f0f3b31d-4565-4d97-a727-3996f28620c5",
         cityOrCountyUrl:
             "homepage_whole_city_qx%252F%25E5%2585%25A8%25E5%25B8%2582%25E5%258C%25BA%25E5%25BF%25AB%25E4%25BC%25A0%25E5%25BA%2594%25E7%2594%25A8%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=8b0e8398-30c4-457f-83de-19ff32bad3d7",
+        homeUnitUrl:
+            "http://localhost:8088/webroot/decision/view/report?viewlet=homepage_organization%252F%25E5%258D%2595%25E4%25BD%258D%25E5%25BF%25AB%25E4%25BC%25A0%25E5%25BA%2594%25E7%2594%25A8%25E8%25B6%258B%25E5%258A%25BF%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=8b0e8398-30c4-457f-83de-19ff32bad3d7",
     },
     {
         id: 5,
@@ -93,6 +101,8 @@ export const areaReportList = [
             "homepage_whole_province%252F%25E5%2585%25A8%25E7%259C%2581%25E7%25BB%259F%25E4%25B8%2580%25E8%25AE%25A4%25E8%25AF%2581%25E5%25BA%2594%25E7%2594%25A8%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=f0f3b31d-4565-4d97-a727-3996f28620c5",
         cityOrCountyUrl:
             "homepage_whole_city_qx%252F%25E5%2585%25A8%25E5%25B8%2582%25E5%258C%25BA%25E7%25BB%259F%25E4%25B8%2580%25E8%25AE%25A4%25E8%25AF%2581%25E5%25BA%2594%25E7%2594%25A8%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=8b0e8398-30c4-457f-83de-19ff32bad3d7",
+        homeUnitUrl:
+            "homepage_organization%252F%25E5%258D%2595%25E4%25BD%258D%25E7%25BB%259F%25E4%25B8%2580%25E8%25AE%25A4%25E8%25AF%2581%25E5%25BA%2594%25E7%2594%25A8%25E8%25B6%258B%25E5%258A%25BF%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=8b0e8398-30c4-457f-83de-19ff32bad3d7",
     },
 ];
 export const reportParams = {

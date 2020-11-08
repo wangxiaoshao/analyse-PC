@@ -69,7 +69,7 @@ export default {
     },
     data() {
         return {
-            memberName: "",
+            memberName: this.$store.state.app.rolesInfo.userName,
             appList: [],
             systemId: 2,
             userId: this.$store.state.app.rolesInfo.uid,
@@ -101,7 +101,7 @@ export default {
         doApplyList() {
             let appList = [...this.app.applicationList];
             appList.map((item, index) => {
-                if (item.id === 1 || item.id === 7) {
+                if (item.id === 1 || item.id === 6) {
                     appList.splice(index, 1);
                 }
             });

@@ -77,6 +77,10 @@ export default {
     updateNoticeRule: "updateNoticeRule",
     // 数据模板--获取数据模板列表
     getTemplateList: "getTemplateList",
+    // 数据模板--在线预览
+    getView: "getView",
+    // 数据模板--获取模板名称列表
+    getTemplateName: "getTemplateName",
     // 帮助中心--获取文档列表
     getHelpFileList: "getHelpFileList",
     // 数据统计--通过区域列表获取区域名称

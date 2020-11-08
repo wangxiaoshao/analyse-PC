@@ -45,15 +45,10 @@ Vue.use(elementUI, {
 
 api[urlNames["getUserRole"]]().then((res) => {
     if (res.status === 0) {
-        // let router = initRouter([]);
         let router = initRouter(res.data);
-        res.data.roleName = "CITY_MANAGER";
-        res.data.authorizedOid = [520000, 520100, 520200, 520300];
-        res.data.authorizedType = 3;
-        // res.data.authorizedOid=[520000,520100,520200,520300]
         initVueInstance(router, res.data);
     } else {
-        alert(res.message);
+        // alert(res.message);
     }
 });
 const initVueInstance = (router, userInfo) => {

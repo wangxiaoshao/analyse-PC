@@ -173,6 +173,20 @@
         <div class="total-box">
             <el-card class="total-card">
                 <div class="params-box">
+                    <div class="date-box">
+                        <el-button
+                            :type="rangeDate === -7 ? 'primary' : ''"
+                            size="mini"
+                            @click="rangeDateChange(-7)"
+                            >近7天</el-button
+                        >
+                        <el-button
+                            :type="rangeDate === -30 ? 'primary' : ''"
+                            size="mini"
+                            @click="rangeDateChange(-30)"
+                            >近30天</el-button
+                        >
+                    </div>
                     <el-tabs v-model="activeName" @tab-click="handleClick">
                         <el-tab-pane
                             label="全省应用情况使用趋势"
@@ -248,7 +262,7 @@
                                 <el-col :span="21">
                                     <div class="system-right">
                                         <iframe
-                                            :src="cityOrCountySrc"
+                                            :src="cityOrCountyUrl"
                                             class="staticFrame"
                                             frameborder="0"
                                             width="100%"
@@ -281,8 +295,8 @@
                                 <el-col :span="21">
                                     <div class="system-right">
                                         <iframe
-                                            :src="srcUrl"
-                                            id="staticFrame"
+                                            :src="homeUnitUrl"
+                                            class="staticFrame"
                                             frameborder="0"
                                             width="100%"
                                         ></iframe>
@@ -334,12 +348,14 @@ export default {
     mixins: [dataStatistics],
     data() {
         return {
+            rangeDate: -7,
             personAppList: [],
             reportParams: reportParams,
             exportUrl: "",
             allProvinceUrlUrl: "",
             homePersonUrl: "",
-            cityOrCountySrc: "",
+            cityOrCountyUrl: "",
+            homeUnitUrl: "",
             systemId1: "",
             systemId2: "",
             systemId3: "",
@@ -363,23 +379,11 @@ export default {
         };
     },
     created() {
-        this.initializeDate(true);
+        this.initializeDate(true, this.rangeDate);
     },
     mounted() {
         this.init();
-        if (this.isShowAllProvince()) {
-            this.activeName = "first";
-            this.initAllProvince();
-        } else if (this.isShowCityOrCounty()) {
-            this.getAreaList();
-            this.activeName = "second";
-            this.systemId2 = this.systemId;
-            this.initCityOrCounty();
-        } else if (this.app.rolesInfo.roleName === "UNIT_MANAGER") {
-            this.activeName = "third";
-        } else {
-            this.activeName = "four";
-        }
+        this.initIframeResult();
         if (this.app.applicationList.length > 0) {
             let ary = [...this.app.applicationList];
             this.doApplyList(ary);
@@ -424,47 +428,21 @@ export default {
                 this.app.rolesInfo.roleName === "COUNTY_MANAGER"
             );
         },
-        handleClick(data) {
-            if (this.activeName === "four") {
-                this.systemId4 = this.personAppList[0].id;
-                this.initPerson();
-            } else if (this.activeName === "first") {
-                this.systemId1 = this.app.applicationList[0].id;
-                this.initAllProvince();
-            } else if (this.activeName === "second") {
-                this.systemId2 = this.app.applicationList[0].id;
-                this.initCityOrCounty();
-            }
-        },
-        applyChange(index, id) {
-            if (this.activeName === "four") {
-                this.systemId4 = id;
-                this.initPerson();
-            } else if (this.activeName === "first") {
-                this.systemId1 = id;
-                this.initAllProvince();
-            } else if (this.activeName === "second") {
-                this.systemId2 = id;
-                console.log(this.systemId2);
-                this.initCityOrCounty();
-            }
-        },
         initCityOrCounty() {
             let data = {
                 startDate: this.startDate,
                 endDate: this.endDate,
-                format1: this.formatParams.format1,
-                format2: this.formatParams.format2,
-                startDay: this.formatParams.format3,
-                size: this.formatParams.format4,
                 codeNum: this.areaId,
             };
             if (this.app.rolesInfo.roleName === "CITY_MANAGER") {
                 data.type = 1;
+                data.cityNum = this.areaId === "520000" ? 0 : this.areaId;
+                data.qxNum = "";
             } else {
                 data.type = 2;
+                data.cityNum = "";
+                data.qxNum = this.areaId;
             }
-            console.log(this.systemId2, "dddddddd");
             this.initSystem(
                 "cityOrCounty",
                 this.doSrcParams(data),
@@ -475,10 +453,6 @@ export default {
             let data = {
                 startDate: this.startDate,
                 endDate: this.endDate,
-                format1: this.formatParams.format1,
-                format2: this.formatParams.format2,
-                startDay: this.formatParams.format3,
-                size: this.formatParams.format4,
             };
             this.initSystem("province", this.doSrcParams(data), this.systemId1);
         },
@@ -498,7 +472,63 @@ export default {
                 this.systemId4
             );
         },
-
+        initUnit() {
+            let authList = this.app.rolesInfo.authorizedOid;
+            let str = "";
+            let codeNum = "";
+            if (authList && authList.length > 0) {
+                authList.forEach((item) => {
+                    str += item + ",";
+                });
+                codeNum = str.substring(0, str.length - 1);
+            }
+            let data = {
+                startDate: this.startDate,
+                endDate: this.endDate,
+                format1: this.formatParams.format1,
+                format2: this.formatParams.format2,
+                startDay: this.formatParams.format3,
+                size: this.formatParams.format4,
+                codeNum: codeNum,
+            };
+            this.initSystem("homeUnit", this.doSrcParams(data), this.systemId3);
+        },
+        handleClick(data) {
+            if (this.activeName === "four") {
+                this.systemId4 = this.personAppList[0].id;
+                this.initPerson();
+            } else if (this.activeName === "first") {
+                this.systemId1 = this.app.applicationList[0].id;
+                this.initAllProvince();
+            } else if (this.activeName === "second") {
+                this.systemId2 = this.app.applicationList[0].id;
+                this.initCityOrCounty();
+            } else if (this.activeName === "third") {
+                this.systemId3 = this.app.applicationList[0].id;
+                this.initUnit();
+            }
+        },
+        rangeDateChange(time) {
+            this.rangeDate = time;
+            this.initializeDate(true, this.rangeDate);
+            this.initIframeResult();
+        },
+        applyChange(index, id) {
+            if (this.activeName === "four") {
+                this.systemId4 = id;
+                this.initPerson();
+            } else if (this.activeName === "first") {
+                this.systemId1 = id;
+                this.initAllProvince();
+            } else if (this.activeName === "second") {
+                this.systemId2 = id;
+                console.log(this.systemId2);
+                this.initCityOrCounty();
+            } else if (this.activeName === "third") {
+                this.systemId3 = id;
+                this.initUnit();
+            }
+        },
         doApplyList(appList) {
             appList.map((item, index) => {
                 if (item.id === 1 || item.id === 7) {
@@ -508,11 +538,23 @@ export default {
             this.personAppList = appList;
             if (this.activeName === "four") {
                 this.systemId4 = this.personAppList[0].id;
-                console.log(this.systemId4, 33333333);
                 this.initPerson();
             }
         },
-        iframeResult() {},
+        initIframeResult() {
+            if (this.isShowAllProvince()) {
+                this.activeName = "first";
+                this.initAllProvince();
+            } else if (this.isShowCityOrCounty()) {
+                this.activeName = "second";
+                this.getAreaList();
+            } else if (this.app.rolesInfo.roleName === "UNIT_MANAGER") {
+                this.activeName = "third";
+                this.initUnit();
+            } else {
+                this.activeName = "four";
+            }
+        },
         getIframeSrc() {
             let roleName = this.app.rolesInfo.roleName;
             let authList = this.app.rolesInfo.authorizedOid;
@@ -608,6 +650,7 @@ export default {
                     this.areaList = aryList;
                     if (this.areaList.length > 0) {
                         this.areaId = this.areaList[0].treeId;
+                        this.initCityOrCounty();
                     }
                 }
             });
@@ -646,7 +689,7 @@ export default {
             this.$router.push("/moreAnnoument");
         },
         areaChange(val) {
-            // this.isPerson = false;
+            this.initCityOrCounty();
         },
     },
     computed: {
@@ -657,7 +700,7 @@ export default {
     },
     watch: {
         appList() {
-            this.systemId2 = this.systemId1 = this.systemId = this.appList[0].id;
+            this.systemId3 = this.systemId2 = this.systemId1 = this.systemId = this.appList[0].id;
             let ary = [...this.appList];
             this.doApplyList(ary);
         },

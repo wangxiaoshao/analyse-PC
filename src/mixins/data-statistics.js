@@ -7,6 +7,8 @@ export default {
         return {
             searchDate: [],
             reportSrcList: areaReportList,
+            // hostApi:
+            //     "http://172.16.68.41:8080/webroot/decision/view/report?viewlet=",
             hostApi:
                 "http://localhost:8088/webroot/decision/view/report?viewlet=",
             srcUrl: "",
@@ -24,16 +26,16 @@ export default {
         };
     },
     methods: {
-        initializeDate(flag) {
+        initializeDate(flag, range) {
             // flag 是否处理时间  true,不处理 fasle处理。如：2020-10-28~~2020-11-03 一周时间 处理为：2020-11-11-01~~2020-11-03
             if (!flag) {
                 flag = false;
             }
-            let data1 = new Date();
-            let data2 = new Date();
-            data1.setDate(data2.getDate() - 7);
-            let startDate = this.formatDate(data1);
-            let endDate = this.formatDate(data2);
+            if (!range) {
+                range = -7; // 获取近7天日期
+            }
+            let startDate = this.getDay(range);
+            let endDate = this.getDay(0);
             let newstartDate = "";
             if (
                 new Date(startDate).getMonth() + 1 <
@@ -50,6 +52,24 @@ export default {
             this.startDate = this.searchDate[0];
             this.endDate = this.searchDate[1];
             this.doformatParams();
+        },
+        getDay(day) {
+            var today = new Date();
+            var milliseconds = today.getTime() + 1000 * 60 * 60 * 24 * day;
+            today.setTime(milliseconds); // 注意，这行是关键代码
+            var tYear = today.getFullYear();
+            var tMonth = today.getMonth();
+            var tDate = today.getDate();
+            tMonth = this.doHandleMonth(tMonth + 1);
+            tDate = this.doHandleMonth(tDate);
+            return tYear + "-" + tMonth + "-" + tDate;
+        },
+        doHandleMonth(month) {
+            var m = month;
+            if (month.toString().length === 1) {
+                m = "0" + month;
+            }
+            return m;
         },
         doformatParams() {
             this.formatParams.format1 = this.startDate.substring(0, 8) + "0";
@@ -108,9 +128,12 @@ export default {
                     this.homePersonUrl = url;
                     break;
                 case "cityOrCounty":
-                    console.log(ary);
                     url = this.hostApi + ary[0].cityOrCountyUrl + str;
-                    this.cityOrCountySrc = url;
+                    this.cityOrCountyUrl = url;
+                    break;
+                case "homeUnit":
+                    url = this.hostApi + ary[0].homeUnitUrl + str;
+                    this.homeUnitUrl = url;
                     break;
                 default:
                     return null;
@@ -119,9 +142,9 @@ export default {
         doSrcParams(data) {
             let str = "";
             Object.getOwnPropertyNames(data).forEach(function (key) {
-                if (data[key] !== "") {
-                    str += "&" + key + "=" + data[key];
-                }
+                // if (data[key] !== "") {
+                str += "&" + key + "=" + data[key];
+                // }
             });
             return str;
         },

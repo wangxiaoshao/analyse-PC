@@ -92,7 +92,7 @@ export default [
                 /* webpackChunkName: "DataStatistics" */ "@src/views/data-statistics/index.vue"
             ),
         onlyRolesShow: [
-            roles.sys,
+            roles.super,
             roles.province,
             roles.city,
             roles.county,
@@ -105,7 +105,7 @@ export default [
                 name: "AreaTotal",
                 meta: { title: "区域汇总" },
                 onlyRolesShow: [
-                    roles.sys,
+                    roles.super,
                     roles.province,
                     roles.city,
                     roles.county,
@@ -120,7 +120,7 @@ export default [
                 name: "UnitTotal",
                 meta: { title: "单位汇总" },
                 onlyRolesShow: [
-                    roles.sys,
+                    roles.super,
                     roles.province,
                     roles.city,
                     roles.roles,
@@ -136,7 +136,7 @@ export default [
                 path: "/member-total",
                 name: "MemberTotal",
                 onlyRolesShow: [
-                    roles.sys,
+                    roles.super,
                     roles.province,
                     roles.city,
                     roles.county,
@@ -166,7 +166,7 @@ export default [
         path: "/data-template",
         name: "DataTemplate",
         meta: { title: "数据模板", icon: "el-icon-set-up" },
-        onlyRolesShow: [roles.sys],
+        onlyRolesShow: [roles.super, roles.city],
         component: () =>
             import(
                 /* webpackChunkName: "DataTemplate" */ "@src/views/data-template/index.vue"
@@ -178,7 +178,7 @@ export default [
         path: "/assessment",
         name: "Assessment",
         meta: { title: "考核情况查询", icon: "el-icon-set-up" },
-        onlyRolesShow: [roles.sys],
+        onlyRolesShow: [roles.super, roles.city, roles.county, roles.unit],
         component: () =>
             import(
                 /* webpackChunkName: "Assessment" */ "@src/views/assessment/index.vue"
@@ -190,7 +190,7 @@ export default [
         path: "/shared-manage",
         name: "SharedManage",
         meta: { title: "共享管理", icon: "fa fa-address-card-o" },
-        onlyRolesShow: [roles.sys],
+        onlyRolesShow: [roles.super, roles.sys],
         alwaysShow: true,
         component: () =>
             import(
@@ -239,7 +239,7 @@ export default [
             {
                 path: "/message-reminding",
                 meta: { title: "通知提醒" },
-                onlyRolesShow: [roles.sys, roles.unit],
+                onlyRolesShow: [roles.super, roles.unit],
                 component: () =>
                     import(
                         /* webpackChunkName: "MessageReminding" */ "@src/views/system-setting/message-reminding/index.vue"
@@ -276,8 +276,9 @@ export default [
                         /* webpackChunkName: "RoleManage" */ "@src/views/system-setting/role-manage/index.vue"
                     ),
                 onlyRolesShow: [
-                    roles.sys,
-                    /* roles.province, */ roles.city,
+                    roles.super,
+                    roles.province,
+                    roles.city,
                     roles.county,
                     roles.unit,
                     roles.secrecy,
@@ -319,7 +320,7 @@ export default [
                 path: "/system-log",
                 name: "SystemLog",
                 meta: { title: "系统日志" },
-                onlyRolesShow: [roles.sys, roles.audit],
+                onlyRolesShow: [roles.sys, roles.super, roles.audit],
                 component: () =>
                     import(
                         /* webpackChunkName: "SystemLog" */ "@src/views/system-setting/system-log/index.vue"

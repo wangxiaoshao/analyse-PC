@@ -5,14 +5,15 @@
                 >模板</el-button
             >
             <el-select
-                v-model="tableName"
+                filterable
+                v-model="templateId"
                 placeholder="请选择"
-                @change="tableChange"
+                @change="templateNameChange"
             >
                 <el-option
-                    v-for="item in tableList"
-                    :key="item.value"
-                    :label="item.name"
+                    v-for="item in templateNameList"
+                    :key="item.id"
+                    :label="item.modelName"
                     :value="item.id"
                 >
                 </el-option>
@@ -39,7 +40,11 @@
                         />
                     </div>
                     <div class="template-footer">
-                        <el-button size="mini" type="text" style="float: left;"
+                        <el-button
+                            size="mini"
+                            type="text"
+                            style="float: left;"
+                            @click="fileView(item.id)"
                             >在线预览</el-button
                         >
                         <el-button
@@ -72,55 +77,20 @@ export default {
     mixins: [handleTable, downloadBinaryFile],
     data() {
         return {
-            tableName: 3,
-            tableList: [
-                { id: 1, name: "安顺市考核情况" },
-                { id: 2, name: "贵阳市考核情况" },
-                { id: 3, name: "情况3" },
-                { id: 4, name: "情况4" },
-            ],
-            templateList: [
+            templateId: 3,
+            templateList: [],
+            templateNameList: [
                 {
-                    modelName: "模板1：安顺市考核情况.doc",
-                    modelId: 6486,
-                    createTime: 104172363955,
-                    id: 6882,
-                    modelUrl: "",
+                    id: 1,
+                    modelName: "模板1",
                 },
                 {
-                    modelName: "模板2：安顺市考核情况.doc",
-                    modelId: 6486,
-                    createTime: 104172363955,
-                    id: 6883,
-                    modelUrl: "",
+                    id: 2,
+                    modelName: "测试1",
                 },
                 {
-                    modelName: "模板3：安顺市考核情况.xlsx",
-                    modelId: 6486,
-                    createTime: 104172363955,
-                    id: 6884,
-                    modelUrl: "",
-                },
-                {
-                    modelName: "模板4：安顺市考核情况.txt",
-                    modelId: 6486,
-                    createTime: 104172363955,
-                    id: 6885,
-                    modelUrl: "",
-                },
-                {
-                    modelName: "模板5：安顺市考核情况.xlsx",
-                    modelId: 6486,
-                    createTime: 104172363955,
-                    id: 6886,
-                    modelUrl: "",
-                },
-                {
-                    modelName: "模板5：安顺市考核情况.pdf",
-                    modelId: 6486,
-                    createTime: 104172363955,
-                    id: 6887,
-                    modelUrl: "",
+                    id: 3,
+                    modelName: "wxs",
                 },
             ],
             url1: require("@src/common/images/excel.png"),
@@ -130,16 +100,26 @@ export default {
         };
     },
     mounted() {
+        this.getTemplateTypeList();
         this.getGrid();
     },
     methods: {
-        tableChange(data) {
-            this.tableName = data;
+        getTemplateTypeList() {
+            api[urlNames["getTemplateName"]]().then((res) => {
+                if (res.code) {
+                    // this.templateNameList = res.data;
+                }
+            });
+        },
+        templateNameChange(id) {
+            this.templateId = id;
+            this.getGrid();
         },
         getGrid() {
             let data = {
                 page: this.page.current,
                 pageSize: 8,
+                templateId: this.templateId,
             };
             let reg1 = RegExp(/doc/);
             let reg2 = RegExp(/xlsx/);
@@ -169,6 +149,13 @@ export default {
         downloadTemplate(modelUrl) {
             let params = { path: modelUrl };
             this.downloadBinaryFile("template", params);
+        },
+        fileView(id) {
+            api[urlNames["getView"]]({ id }).then((res) => {
+                if (res.code) {
+                    window.open(res.statusUrl);
+                }
+            });
         },
     },
 };
