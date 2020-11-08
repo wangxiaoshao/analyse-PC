@@ -2,7 +2,12 @@
     <div class="homePage">
         <div class="first-box">
             <el-row :gutter="20">
-                <el-col :span="8" v-if="app.rolesInfo.roleName">
+                <el-col
+                    :span="8"
+                    v-if="
+                        app.rolesInfo.roleName && !this.isShowAuditOrSecrect()
+                    "
+                >
                     <el-card class="item-card">
                         <el-row>
                             <el-col :span="13">
@@ -29,7 +34,7 @@
                         </el-row>
                     </el-card>
                 </el-col>
-                <el-col :span="5" v-else>
+                <el-col :span="5" v-if="!app.rolesInfo.roleName">
                     <el-card class="item-card-person">
                         <div class="item-right">
                             <img src="@src/common/images/today.png" alt="" />
@@ -44,7 +49,7 @@
                         </div>
                     </el-card>
                 </el-col>
-                <el-col :span="8" v-if="isShow()">
+                <el-col :span="8" v-if="isShowSuperOrSystem()">
                     <el-card class="item-card">
                         <el-row>
                             <el-col :span="13">
@@ -67,20 +72,39 @@
                         </el-row>
                     </el-card>
                 </el-col>
-                <el-col :span="8" v-if="isShow()">
+                <el-col :span="8" v-if="isShowSuperOrSystem()">
                     <el-card class="item-card">
-                        <iframe src="" frameborder="0"></iframe>
+                        <iframe :src="exportUrl" frameborder="0"></iframe>
                     </el-card>
                 </el-col>
 
-                <el-col :span="8" v-if="!isShow()">
+                <el-col
+                    :span="8"
+                    v-if="
+                        !isShowSuperOrSystem() && !this.isShowAuditOrSecrect()
+                    "
+                    style="min-width: 200px;"
+                >
                     <el-card class="item-card">
-                        <iframe :src="unitSrc" frameborder="0"></iframe>
+                        <div style="margin-top: -10px;">
+                            <iframe
+                                :src="unitSrc"
+                                frameborder="0"
+                                width="100%"
+                            ></iframe>
+                        </div>
                     </el-card>
                 </el-col>
-                <el-col :span="8" v-if="!isShow()">
+                <el-col
+                    :span="8"
+                    v-if="
+                        !isShowSuperOrSystem() && !this.isShowAuditOrSecrect()
+                    "
+                >
                     <el-card class="item-card">
-                        <iframe :src="userSrc" frameborder="0"></iframe>
+                        <div style="margin-top: -10px;">
+                            <iframe :src="userSrc" frameborder="0"></iframe>
+                        </div>
                     </el-card>
                 </el-col>
                 <el-col :span="app.rolesInfo.roleName ? 24 : 19">
@@ -149,50 +173,154 @@
         <div class="total-box">
             <el-card class="total-card">
                 <div class="params-box">
-                    <el-select
-                        size="small"
-                        style="width: 100px;"
-                        v-model="areaId"
-                        @change="areaChange"
-                        placeholder="请选择"
-                    >
-                        <el-option
-                            v-for="item in areaList"
-                            :key="item.treeId"
-                            :label="item.treeName"
-                            :value="item.treeId"
-                        ></el-option>
-                    </el-select>
-                    <span> 各应用使用情况趋势</span>
-                    <el-divider direction="vertical"></el-divider>
-                    <span>个人应用情况使用趋势</span>
-                    <!-- <el-divider direction="vertical"></el-divider> -->
-                    <!-- <span>草木深</span> -->
+                    <el-tabs v-model="activeName" @tab-click="handleClick">
+                        <el-tab-pane
+                            label="全省应用情况使用趋势"
+                            name="first"
+                            v-if="isShowAllProvince()"
+                        >
+                            <el-row>
+                                <el-col :span="3">
+                                    <div class="system-left">
+                                        <p
+                                            :class="{
+                                                isActive: systemId1 == item.id,
+                                            }"
+                                            v-for="(item,
+                                            index) in app.applicationList"
+                                            :key="item.id"
+                                            @click="applyChange(index, item.id)"
+                                        >
+                                            {{ item.systemName }}
+                                        </p>
+                                    </div>
+                                </el-col>
+                                <el-col :span="21">
+                                    <div class="system-right">
+                                        <iframe
+                                            :src="srcUrl"
+                                            class="staticFrame"
+                                            frameborder="0"
+                                            width="100%"
+                                        ></iframe>
+                                    </div>
+                                </el-col>
+                            </el-row>
+                        </el-tab-pane>
+                        <el-tab-pane
+                            label="区域应用情况使用趋势"
+                            name="second"
+                            v-if="isShowCityOrCounty()"
+                        >
+                            <el-row>
+                                <el-col :span="3">
+                                    <div class="system-left">
+                                        <span>
+                                            <el-select
+                                                size="small"
+                                                style="width: 100px;"
+                                                v-model="areaId"
+                                                :disabled="isPerson"
+                                                @change="areaChange"
+                                                placeholder="请选择"
+                                            >
+                                                <el-option
+                                                    v-for="item in areaList"
+                                                    :key="item.treeId"
+                                                    :label="item.treeName"
+                                                    :value="item.treeId"
+                                                ></el-option>
+                                            </el-select>
+                                        </span>
+                                        <p
+                                            :class="{
+                                                isActive: systemId2 == item.id,
+                                            }"
+                                            v-for="(item,
+                                            index) in app.applicationList"
+                                            :key="item.id"
+                                            @click="applyChange(index, item.id)"
+                                        >
+                                            {{ item.systemName }}
+                                        </p>
+                                    </div>
+                                </el-col>
+                                <el-col :span="21">
+                                    <div class="system-right">
+                                        <iframe
+                                            :src="cityOrCountySrc"
+                                            class="staticFrame"
+                                            frameborder="0"
+                                            width="100%"
+                                        ></iframe>
+                                    </div>
+                                </el-col>
+                            </el-row>
+                        </el-tab-pane>
+                        <el-tab-pane
+                            label="单位应用情况使用趋势"
+                            name="third"
+                            v-if="app.rolesInfo.roleName === 'UNIT_MANAGER'"
+                        >
+                            <el-row>
+                                <el-col :span="3">
+                                    <div class="system-left">
+                                        <p
+                                            :class="{
+                                                isActive: systemId3 == item.id,
+                                            }"
+                                            v-for="(item,
+                                            index) in app.applicationList"
+                                            :key="item.id"
+                                            @click="applyChange(index, item.id)"
+                                        >
+                                            {{ item.systemName }}
+                                        </p>
+                                    </div>
+                                </el-col>
+                                <el-col :span="21">
+                                    <div class="system-right">
+                                        <iframe
+                                            :src="srcUrl"
+                                            id="staticFrame"
+                                            frameborder="0"
+                                            width="100%"
+                                        ></iframe>
+                                    </div>
+                                </el-col>
+                            </el-row>
+                        </el-tab-pane>
+                        <el-tab-pane label="个人应用情况使用趋势" name="four">
+                            <el-row>
+                                <el-col :span="3">
+                                    <div class="system-left">
+                                        <p
+                                            :class="{
+                                                isActive: systemId4 == item.id,
+                                            }"
+                                            v-for="(item,
+                                            index) in personAppList"
+                                            :key="item.id"
+                                            @click="applyChange(index, item.id)"
+                                        >
+                                            {{ item.systemName }}
+                                        </p>
+                                    </div>
+                                </el-col>
+                                <el-col :span="21">
+                                    <div class="system-right">
+                                        <iframe
+                                            :src="homePersonUrl"
+                                            class="staticFrame"
+                                            frameborder="0"
+                                            width="100%"
+                                        ></iframe>
+                                    </div>
+                                </el-col>
+                            </el-row>
+                        </el-tab-pane>
+                    </el-tabs>
                 </div>
-                <el-row>
-                    <el-col :span="3">
-                        <div class="system-left">
-                            <p
-                                :class="{ isActive: index == current }"
-                                v-for="(item, index) in app.applicationList"
-                                :key="item.id"
-                                @click="applyChange(index, item.id)"
-                            >
-                                {{ item.systemName }}
-                            </p>
-                        </div>
-                    </el-col>
-                    <el-col :span="21">
-                        <div class="system-right">
-                            <iframe
-                                :src="srcUrl"
-                                id="staticFrame"
-                                frameborder="0"
-                                width="100%"
-                            ></iframe>
-                        </div>
-                    </el-col>
-                </el-row>
             </el-card>
         </div>
     </div>
@@ -200,120 +328,244 @@
 <script>
 import { api, urlNames } from "@src/api";
 import { mapState } from "vuex";
+import { reportParams } from "@src/config/report";
+import dataStatistics from "@src/mixins/data-statistics";
 export default {
+    mixins: [dataStatistics],
     data() {
         return {
-            // typeList: [
-            //     { label: "单位应用情况使用趋势", val: 0 },
-            //     { label: "个人应用情况使用趋势", val: 1 },
-            // ],
-            srcUrl:
-                "http://localhost:8088/webroot/decision/view/report?viewlet=homepage_whole_province%252F%25E5%2585%25A8%25E7%259C%2581%25E5%258F%25B0%25E8%25B4%25A6%25E5%25BA%2594%25E7%2594%25A8%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=16273013-f2a2-4631-a99c-89b7f6f25783",
-            current: 0,
-            systemId: "",
+            personAppList: [],
+            reportParams: reportParams,
+            exportUrl: "",
+            allProvinceUrlUrl: "",
+            homePersonUrl: "",
+            cityOrCountySrc: "",
+            systemId1: "",
+            systemId2: "",
+            systemId3: "",
+            systemId4: "",
+            srcUrl: "",
+            srcUrl1: "",
+            activeName: "",
+            systemId: 1,
             useType: 0,
+            isPerson: false,
             yesterdayLogin: 2345,
             loginNumber: 1256,
             unitSrc: "",
             userSrc: "",
             areaId: 1,
-            areaList: [
-                {
-                    treeName: "贵阳市",
-                    treeId: 1,
-                },
-                {
-                    treeName: "贵阳市333",
-                    treeId: 2,
-                },
-                {
-                    treeName: "贵阳市444",
-                    treeId: 3,
-                },
-            ],
+            areaList: [],
             // 平台公告列表
-            announcementList: [
-                {
-                    id: 1,
-                    content: "为推进改造，系统密码强度优化通知。",
-                    title: "通知1",
-                    creareTime: "2020-03-01 20:07:17",
-                    url: "",
-                },
-                {
-                    id: 2,
-                    content:
-                        "组织机构添加单位时，单位地址信息为必填相关通知。组织机构添加单位时，单位地址信息为必填相关通知",
-                    title: "审核通知",
-                    creareTime: "2020-03-01 20:07:17",
-                    url: "",
-                },
-                {
-                    id: 3,
-                    content: "2020年春节期间系统运维时间调整公告！",
-                    title: "审核通知",
-                    creareTime: "2020-02-26 20:07:17",
-                    url: "",
-                },
-                {
-                    id: 4,
-                    content: "2020年春节系统更新及版本V1.0.1公告！",
-                    title: "审核通知",
-                    creareTime: "2020-02-15 20:07:17",
-                    url: "",
-                },
-            ],
+            announcementList: [],
             // 处理平台公告列表
             doAnnouncementList: [],
-            applicationList: [
-                {
-                    systemName: "台账",
-                    systemSymbol: "mTqBGxtb",
-                    id: 3151,
-                },
-                {
-                    systemName: "快传",
-                    systemSymbol: "mTqBGxtb",
-                    id: 3152,
-                },
-                {
-                    systemName: "通知公告",
-                    systemSymbol: "mTqBGxtb",
-                    id: 3153,
-                },
-                {
-                    systemName: "快传1",
-                    systemSymbol: "mTqBGxtb",
-                    id: 3154,
-                },
-                {
-                    systemName: "通知公告1",
-                    systemSymbol: "mTqBGxtb",
-                    id: 3155,
-                },
-            ],
         };
     },
     created() {
-        // this.unitSrc=""
-        // this.userSrc=""
+        this.initializeDate(true);
     },
     mounted() {
-        // var test = document
-        //     .getElementById("frame1")
-        //     .contentWindow.document.getElementById("content-container");
-        // console.log(test);
-        // test.style.overflow = "hidden";
         this.init();
-        // this.doArray();
+        if (this.isShowAllProvince()) {
+            this.activeName = "first";
+            this.initAllProvince();
+        } else if (this.isShowCityOrCounty()) {
+            this.getAreaList();
+            this.activeName = "second";
+            this.systemId2 = this.systemId;
+            this.initCityOrCounty();
+        } else if (this.app.rolesInfo.roleName === "UNIT_MANAGER") {
+            this.activeName = "third";
+        } else {
+            this.activeName = "four";
+        }
+        if (this.app.applicationList.length > 0) {
+            let ary = [...this.app.applicationList];
+            this.doApplyList(ary);
+        }
     },
     methods: {
         init() {
             this.getSystemNoticeList();
-            this.getLastDayLoginUser();
+            if (this.isShowSuperOrSystem()) {
+                this.exportUrl = this.hostApi + this.reportParams.exportUrl;
+                this.getLastDayLoginUser();
+            } else if (!this.isShowAuditOrSecrect()) {
+                this.getIframeSrc();
+            }
         },
-        isShow() {
-            return this.app.rolesInfo.roleName === "PROVINCE_MANAGER";
+        // 超管和系统管理员
+        isShowSuperOrSystem() {
+            return (
+                this.app.rolesInfo.roleName === "SUPER_MANAGER" ||
+                this.app.rolesInfo.roleName === "SYSTEM_MANAGER"
+            );
+        },
+        // 审计管理员 安全保密员
+        isShowAuditOrSecrect() {
+            return (
+                this.app.rolesInfo.roleName === "SECURITY_AUDIT_MANAGER" ||
+                this.app.rolesInfo.roleName === "SECURITY_SECRECY_MANAGER"
+            );
+        },
+        // 超级管理员 系统 省级
+        isShowAllProvince() {
+            return (
+                this.app.rolesInfo.roleName === "PROVINCE_MANAGER" ||
+                this.app.rolesInfo.roleName === "SYSTEM_MANAGER" ||
+                this.app.rolesInfo.roleName === "SUPER_MANAGER"
+            );
+        },
+        // 市州 区域
+        isShowCityOrCounty() {
+            return (
+                this.app.rolesInfo.roleName === "CITY_MANAGER" ||
+                this.app.rolesInfo.roleName === "COUNTY_MANAGER"
+            );
+        },
+        handleClick(data) {
+            if (this.activeName === "four") {
+                this.systemId4 = this.personAppList[0].id;
+                this.initPerson();
+            } else if (this.activeName === "first") {
+                this.systemId1 = this.app.applicationList[0].id;
+                this.initAllProvince();
+            } else if (this.activeName === "second") {
+                this.systemId2 = this.app.applicationList[0].id;
+                this.initCityOrCounty();
+            }
+        },
+        applyChange(index, id) {
+            if (this.activeName === "four") {
+                this.systemId4 = id;
+                this.initPerson();
+            } else if (this.activeName === "first") {
+                this.systemId1 = id;
+                this.initAllProvince();
+            } else if (this.activeName === "second") {
+                this.systemId2 = id;
+                console.log(this.systemId2);
+                this.initCityOrCounty();
+            }
+        },
+        initCityOrCounty() {
+            let data = {
+                startDate: this.startDate,
+                endDate: this.endDate,
+                format1: this.formatParams.format1,
+                format2: this.formatParams.format2,
+                startDay: this.formatParams.format3,
+                size: this.formatParams.format4,
+                codeNum: this.areaId,
+            };
+            if (this.app.rolesInfo.roleName === "CITY_MANAGER") {
+                data.type = 1;
+            } else {
+                data.type = 2;
+            }
+            console.log(this.systemId2, "dddddddd");
+            this.initSystem(
+                "cityOrCounty",
+                this.doSrcParams(data),
+                this.systemId2
+            );
+        },
+        initAllProvince() {
+            let data = {
+                startDate: this.startDate,
+                endDate: this.endDate,
+                format1: this.formatParams.format1,
+                format2: this.formatParams.format2,
+                startDay: this.formatParams.format3,
+                size: this.formatParams.format4,
+            };
+            this.initSystem("province", this.doSrcParams(data), this.systemId1);
+        },
+        initPerson() {
+            let data = {
+                startDate: this.startDate,
+                endDate: this.endDate,
+                format1: this.formatParams.format1,
+                format2: this.formatParams.format2,
+                startDay: this.formatParams.format3,
+                size: this.formatParams.format4,
+                userId: this.app.rolesInfo.uid,
+            };
+            this.initSystem(
+                "homePerson",
+                this.doSrcParams(data),
+                this.systemId4
+            );
+        },
+
+        doApplyList(appList) {
+            appList.map((item, index) => {
+                if (item.id === 1 || item.id === 7) {
+                    appList.splice(index, 1);
+                }
+            });
+            this.personAppList = appList;
+            if (this.activeName === "four") {
+                this.systemId4 = this.personAppList[0].id;
+                console.log(this.systemId4, 33333333);
+                this.initPerson();
+            }
+        },
+        iframeResult() {},
+        getIframeSrc() {
+            let roleName = this.app.rolesInfo.roleName;
+            let authList = this.app.rolesInfo.authorizedOid;
+            let data = {};
+            let name = "";
+            let unitSrc = "";
+            let userSrc = "";
+            if (roleName === "COUNTY_MANAGER") {
+                name = "CITY_MANAGER";
+            } else {
+                name = roleName;
+            }
+            let ary = this.reportParams.rolesUnitUser.filter((item) => {
+                return item.roleName === name;
+            });
+            let str = "";
+            let codeNum = "";
+            if (authList && authList.length > 0) {
+                authList.forEach((item) => {
+                    str += item + ",";
+                });
+                codeNum = str.substring(0, str.length - 1);
+            }
+            console.log(ary);
+            unitSrc = this.hostApi + ary[0].unitSrc;
+            userSrc = this.hostApi + ary[0].userSrc;
+
+            switch (roleName) {
+                case "UNIT_MANAGER":
+                    data.orgId = codeNum;
+                    this.unitSrc = unitSrc + "&orgId" + data.orgId;
+                    this.userSrc = userSrc + "&orgId" + data.orgId;
+                    break;
+                case "CITY_MANAGER":
+                    data.type = 1;
+                    data.codeNum = codeNum;
+                    this.unitSrc = unitSrc + this.doSrcParams(data);
+                    this.userSrc = userSrc + this.doSrcParams(data);
+                    break;
+                case "COUNTY_MANAGER":
+                    data.type = 2;
+                    data.codeNum = codeNum;
+                    this.unitSrc = unitSrc + this.doSrcParams(data);
+                    this.userSrc = userSrc + this.doSrcParams(data);
+
+                    break;
+                case "PROVINCE_MANAGER":
+                    this.unitSrc = unitSrc;
+                    this.userSrc = userSrc;
+                    break;
+                default:
+                    return null;
+            }
         },
         // 获取平台公告列表
         getSystemNoticeList() {
@@ -336,9 +588,29 @@ export default {
                 }
             });
         },
-        applyChange(index, id) {
-            this.current = index;
-            this.systemId = id;
+        // 获取市州或区县
+        getAreaList() {
+            let data = {
+                codeList: this.app.rolesInfo.authorizedOid,
+                authorizedType: this.app.rolesInfo.authorizedType,
+            };
+            api[urlNames["getAreaList"]](data).then((res) => {
+                if (res.data) {
+                    let aryList = [];
+                    res.data.forEach((item) => {
+                        let obj = {
+                            treeId: item.areaCode,
+                            treeName: item.areaName,
+                            treeType: item.areaType,
+                        };
+                        aryList.push(obj);
+                    });
+                    this.areaList = aryList;
+                    if (this.areaList.length > 0) {
+                        this.areaId = this.areaList[0].treeId;
+                    }
+                }
+            });
         },
         // 获取今天是周几
         weekDate() {
@@ -373,10 +645,22 @@ export default {
         goMoreAnnounts() {
             this.$router.push("/moreAnnoument");
         },
-        areaChange(val) {},
+        areaChange(val) {
+            // this.isPerson = false;
+        },
     },
     computed: {
         ...mapState(["app"]),
+        appList() {
+            return this.app.applicationList;
+        },
+    },
+    watch: {
+        appList() {
+            this.systemId2 = this.systemId1 = this.systemId = this.appList[0].id;
+            let ary = [...this.appList];
+            this.doApplyList(ary);
+        },
     },
 };
 </script>

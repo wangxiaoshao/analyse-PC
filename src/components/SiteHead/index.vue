@@ -55,7 +55,7 @@ export default {
         ...mapState(["app"]),
     },
     created() {
-        this.logoutURL = "/api/gate/logout";
+        this.logoutURL = "/api/gate/cas/logout";
         // this.findSessionUserList();
     },
     methods: {

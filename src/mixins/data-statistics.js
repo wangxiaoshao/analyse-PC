@@ -1,12 +1,12 @@
 /**
  * Created by wangxiaoshao on 2020/11/05.
  */
-import urlList from "@src/views/data-statistics/index";
+import { areaReportList } from "@src/config/report";
 export default {
     data() {
         return {
             searchDate: [],
-            reportSrcList: urlList,
+            reportSrcList: areaReportList,
             hostApi:
                 "http://localhost:8088/webroot/decision/view/report?viewlet=",
             srcUrl: "",
@@ -24,7 +24,11 @@ export default {
         };
     },
     methods: {
-        initializeDate() {
+        initializeDate(flag) {
+            // flag 是否处理时间  true,不处理 fasle处理。如：2020-10-28~~2020-11-03 一周时间 处理为：2020-11-11-01~~2020-11-03
+            if (!flag) {
+                flag = false;
+            }
             let data1 = new Date();
             let data2 = new Date();
             data1.setDate(data2.getDate() - 7);
@@ -33,7 +37,8 @@ export default {
             let newstartDate = "";
             if (
                 new Date(startDate).getMonth() + 1 <
-                new Date(endDate).getMonth() + 1
+                    new Date(endDate).getMonth() + 1 &&
+                !flag
             ) {
                 newstartDate = endDate.substring(0, 8) + "01";
                 console.log(newstartDate);
@@ -73,26 +78,43 @@ export default {
                 return "";
             }
         },
-        initSystem(type, str) {
+        initSystem(type, str, systemId) {
+            if (!systemId) {
+                systemId = this.systemId;
+            }
             let ary = this.reportSrcList.filter((item) => {
-                return item.id === this.systemId;
+                return item.id === systemId;
             });
-            console.log(ary, "fffff");
             let url = "";
             switch (type) {
                 case "area":
                     url = this.hostApi + ary[0].areaUrl + str;
+                    this.srcUrl = url;
                     break;
                 case "unit":
                     url = this.hostApi + ary[0].unitUrl + str;
+                    this.srcUrl = url;
                     break;
                 case "person":
                     url = this.hostApi + ary[0].personUrl + str;
+                    this.srcUrl = url;
+                    break;
+                case "province":
+                    url = this.hostApi + ary[0].allProvinceUrl + str;
+                    this.srcUrl = url;
+                    break;
+                case "homePerson":
+                    url = this.hostApi + ary[0].homePersonUrl + str;
+                    this.homePersonUrl = url;
+                    break;
+                case "cityOrCounty":
+                    console.log(ary);
+                    url = this.hostApi + ary[0].cityOrCountySrc + str;
+                    this.cityOrCountySrc = url;
                     break;
                 default:
                     return null;
             }
-            this.srcUrl = url;
         },
         doSrcParams(data) {
             let str = "";

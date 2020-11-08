@@ -130,8 +130,6 @@ export default {
             systemId: 1,
             treeType: "",
             areaId: "",
-            startDate: "",
-            endDate: "",
             unitId: "",
             stateList: [],
             areaList: [],

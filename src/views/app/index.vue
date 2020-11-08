@@ -96,9 +96,10 @@ export default {
     },
     created() {},
     mounted() {
+        this.getApplicationList();
         this.addEventListenForResize();
         this.getNoticeWayList();
-        this.getApplicationList();
+
         // this.confirmInfo();
     },
     methods: {
