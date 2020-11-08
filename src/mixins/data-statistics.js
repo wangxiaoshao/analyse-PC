@@ -109,7 +109,7 @@ export default {
                     break;
                 case "cityOrCounty":
                     console.log(ary);
-                    url = this.hostApi + ary[0].cityOrCountySrc + str;
+                    url = this.hostApi + ary[0].cityOrCountyUrl + str;
                     this.cityOrCountySrc = url;
                     break;
                 default:
