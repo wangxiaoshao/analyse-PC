@@ -1,7 +1,7 @@
 <template>
     <div class="member-total">
         <el-form label-position="right" inline>
-            <el-form-item>
+            <el-form-item label="选择人员：">
                 <el-input
                     @focus="openSelectDailog"
                     placeholder="请选择人员"
@@ -10,7 +10,7 @@
                     style="width: 130px; margin: 0px 10px;"
                 ></el-input>
             </el-form-item>
-            <el-form-item>
+            <el-form-item label="日期：">
                 <!-- <span>日期：</span> -->
                 <el-date-picker
                     v-model="searchDate"
@@ -73,6 +73,10 @@ export default {
             appList: [],
             systemId: 2,
             userId: this.$store.state.app.rolesInfo.uid,
+            orgId: this.$store.state.app.rolesInfo.orgId,
+            deptId: this.$store.state.app.rolesInfo.deptId
+                ? this.$store.state.app.rolesInfo.deptId
+                : "",
             selectTreeDailog: {
                 title: "选择人员",
                 openSelectTreeVisiable: false,
@@ -101,7 +105,7 @@ export default {
         doApplyList() {
             let appList = [...this.app.applicationList];
             appList.map((item, index) => {
-                if (item.id === 1 || item.id === 6) {
+                if (item.id === 1 || item.id === 5) {
                     appList.splice(index, 1);
                 }
             });
@@ -128,6 +132,8 @@ export default {
             let data = {
                 userId: this.userId,
                 startDate: this.startDate,
+                orgId: this.orgId,
+                deptId: this.deptId,
                 endDate: this.endDate,
                 format1: this.formatParams.format1,
                 format2: this.formatParams.format2,

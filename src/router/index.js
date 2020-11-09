@@ -34,14 +34,31 @@ const initRouter = (userInfo) => {
     router.beforeEach((to, from, next) => {
         let route = to.matched[0];
         if (!route) {
-            // 没有找到
-            if (allRoutePaths.includes(to.path)) {
-                return next("/no-right");
-            }
-            // 404
-            return router.back();
+            router.back();
+            return;
         }
-        next();
+        if (allRoutePaths.includes(to.path)) {
+            // let flag = menus.find((item) => {
+            //     return item.moduleName === route.meta.key;
+            // });
+            let flag = true;
+            if (flag) {
+                next();
+            } else {
+                next("/no-right");
+            }
+        } else {
+            next();
+        }
+        // if (!route) {
+        //     // 没有找到
+        //     if (allRoutePaths.includes(to.path)) {
+        //         return next("/no-right");
+        //     }
+        //     // 404
+        //     return router.back();
+        // }
+        // next();
     });
 
     return router;
@@ -56,10 +73,12 @@ function getRouters(routes, roleId) {
     if (!(Array.isArray(routes) && routes.length)) {
         return;
     }
+
     const result = [];
     routes.map((route) => {
         // 仅仅这些角色这显示
         if (route.onlyRolesShow) {
+            // route.onlyRolesShow.push(roleId);
             if (!route.onlyRolesShow.includes(roleId)) {
                 return;
             }

@@ -10,6 +10,7 @@
                     end-placeholder="结束日期"
                     :picker-options="pickerOptions"
                     @change="dateChange"
+                    @blur="onDateBlur"
                     value-format="yyyy-MM-dd"
                 >
                 </el-date-picker>
@@ -48,59 +49,64 @@
         <div class="table-box">
             <iframe
                 width="100%"
-                height="100%"
-                src="http://localhost:8088/webroot/decision/v10/entry/access/2da1b288-77f4-4e71-8e09-0f66d59a85f6?preview=true"
+                height="400px"
+                :src="srcUrl"
                 frameborder="0"
             ></iframe>
-            <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="page.current"
-                :page-sizes="[10, 30, 50, 100]"
-                :page-size="page.limit"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="page.total"
-            ></el-pagination>
         </div>
     </div>
 </template>
 <script>
 import handleTable from "@src/mixins/new/handle-table";
+import dataStatistics from "@src/mixins/data-statistics";
+import pickerOptions from "@src/mixins/picker-options";
 export default {
-    mixins: [handleTable],
+    mixins: [handleTable, dataStatistics, pickerOptions],
     data() {
         return {
-            pickerOptions: {
-                disabledDate(time) {
-                    return time.getTime() > Date.now() - 8.64e6;
-                },
-                shortcuts: null,
-            },
             logTypeList: [
                 { type: 1, name: "查询日志" },
                 { type: 2, name: "导出日志" },
                 { type: 3, name: "权限日志" },
             ],
-            searchDate: "",
             searchParams: {
-                startDate: "",
-                endDate: "",
                 actionType: 1,
                 keyWord: "",
             },
         };
     },
+    created() {
+        this.dateFormat();
+        this.initializeDate();
+    },
+    mounted() {
+        this.findCondition();
+    },
     methods: {
         dateChange(val) {
-            this.searchParams.startDate = val[0];
-            this.searchParams.endDate = val[1];
-            console.log(val, this.searchParams.date);
+            this.startDate = val[0];
+            this.endDate = val[1];
+            console.log(this.startDate, this.startDate);
         },
         logChange() {
             console.log(this.searchParams.actionType);
         },
         iptChange() {},
-        findCondition() {},
+        findCondition() {
+            let data = {
+                startDate: this.startDate,
+                endDate: this.endDate,
+                actionType: this.searchParams.actionType,
+                keyWord: this.searchParams.keyWord,
+                tableName: this.tableName + this.dateFormat(),
+            };
+            this.srcUrl =
+                this.hostApi + this.reportSystemSrc + this.doSrcParams(data);
+        },
+        dateFormat() {
+            let date = new Date();
+            return String(date.getFullYear()) + String(date.getMonth() + 1);
+        },
         // 查看日志详情
         openDetialDialog() {},
     },

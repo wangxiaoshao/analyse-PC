@@ -38,7 +38,7 @@ export default {
                 },
                 {
                     menuId: "0023",
-                    name: "人员汇总",
+                    name: "人员明细",
                     path: "/member-total",
                     type: 1,
                     key: "menuHome",

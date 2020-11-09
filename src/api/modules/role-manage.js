@@ -17,9 +17,9 @@ export default {
         serve: "organizationManagePC",
     },
     // 权限管理--添加成员授权范围
-    [urlNames.addUserAuthScope]: {
+    [urlNames.addUsersAuthScope]: {
         type: "post",
-        url: "/api/appdata/auth/addUserAuthScope",
+        url: "/api/appdata/auth/addUsersAuthScope",
         keepOriginResponse: true,
         showLoading: true,
         serve: "organizationManagePC",

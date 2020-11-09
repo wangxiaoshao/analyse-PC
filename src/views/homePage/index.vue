@@ -1,12 +1,23 @@
 <template>
     <div class="homePage">
         <div class="first-box">
+            <div
+                class="home-header"
+                v-if="app.rolesInfo.roleName && isShowAuditOrSecrect()"
+            >
+                <div class="item-left">
+                    <h3>欢迎您，</h3>
+                    <p class="date">
+                        {{ new Date() | dataFilter("YYYY-MM-DD") }}
+                        {{ weekDate() }},登录考核应用分析平台！
+                    </p>
+                    <p></p>
+                </div>
+            </div>
             <el-row :gutter="20">
                 <el-col
                     :span="8"
-                    v-if="
-                        app.rolesInfo.roleName && !this.isShowAuditOrSecrect()
-                    "
+                    v-if="app.rolesInfo.roleName && !isShowAuditOrSecrect()"
                 >
                     <el-card class="item-card">
                         <el-row>
@@ -34,7 +45,10 @@
                         </el-row>
                     </el-card>
                 </el-col>
-                <el-col :span="5" v-if="!app.rolesInfo.roleName">
+                <el-col
+                    :span="5"
+                    v-if="!app.rolesInfo.roleName && !isShowAuditOrSecrect()"
+                >
                     <el-card class="item-card-person">
                         <div class="item-right">
                             <img src="@src/common/images/today.png" alt="" />
@@ -81,7 +95,9 @@
                 <el-col
                     :span="8"
                     v-if="
-                        !isShowSuperOrSystem() && !this.isShowAuditOrSecrect()
+                        app.rolesInfo.roleName &&
+                        !isShowSuperOrSystem() &&
+                        !isShowAuditOrSecrect()
                     "
                     style="min-width: 200px;"
                 >
@@ -98,7 +114,9 @@
                 <el-col
                     :span="8"
                     v-if="
-                        !isShowSuperOrSystem() && !this.isShowAuditOrSecrect()
+                        app.rolesInfo.roleName &&
+                        !isShowSuperOrSystem() &&
+                        !isShowAuditOrSecrect()
                     "
                 >
                     <el-card class="item-card">
@@ -107,13 +125,21 @@
                         </div>
                     </el-card>
                 </el-col>
+
                 <el-col :span="app.rolesInfo.roleName ? 24 : 19">
                     <div class="home-box">
                         <el-card class="box-card">
                             <div slot="header" class="clearfix">
                                 <span>平台公告</span>
                             </div>
-                            <div class="announcement-box">
+                            <div
+                                class="announcement-box"
+                                :style="
+                                    !app.rolesInfo.roleName
+                                        ? 'height:110px'
+                                        : ''
+                                "
+                            >
                                 <div
                                     class="noticeInfo"
                                     v-for="(itemList,
@@ -395,7 +421,10 @@ export default {
             if (this.isShowSuperOrSystem()) {
                 this.exportUrl = this.hostApi + this.reportParams.exportUrl;
                 this.getLastDayLoginUser();
-            } else if (!this.isShowAuditOrSecrect()) {
+            } else if (
+                !this.isShowAuditOrSecrect() &&
+                this.app.rolesInfo.roleName
+            ) {
                 this.getIframeSrc();
             }
         },
@@ -409,15 +438,16 @@ export default {
         // 审计管理员 安全保密员
         isShowAuditOrSecrect() {
             return (
-                this.app.rolesInfo.roleName === "SECURITY_AUDIT_MANAGER" ||
-                this.app.rolesInfo.roleName === "SECURITY_SECRECY_MANAGER"
+                this.app.rolesInfo.roleName.includes(
+                    "SECURITY_SECRECY_MANAGER"
+                ) ||
+                this.app.rolesInfo.roleName.includes("SECURITY_AUDIT_MANAGER")
             );
         },
         // 超级管理员 系统 省级
         isShowAllProvince() {
             return (
                 this.app.rolesInfo.roleName === "PROVINCE_MANAGER" ||
-                this.app.rolesInfo.roleName === "SYSTEM_MANAGER" ||
                 this.app.rolesInfo.roleName === "SUPER_MANAGER"
             );
         },
@@ -437,7 +467,7 @@ export default {
             if (this.app.rolesInfo.roleName === "CITY_MANAGER") {
                 data.type = 1;
                 data.cityNum = this.areaId === "520000" ? 0 : this.areaId;
-                data.qxNum = "";
+                data.qxNum = this.areaId === "520000" ? 0 : "";
             } else {
                 data.type = 2;
                 data.cityNum = "";
@@ -489,7 +519,7 @@ export default {
                 format2: this.formatParams.format2,
                 startDay: this.formatParams.format3,
                 size: this.formatParams.format4,
-                codeNum: codeNum,
+                orgId: codeNum,
             };
             this.initSystem("homeUnit", this.doSrcParams(data), this.systemId3);
         },
@@ -511,7 +541,16 @@ export default {
         rangeDateChange(time) {
             this.rangeDate = time;
             this.initializeDate(true, this.rangeDate);
-            this.initIframeResult();
+            if (this.activeName === "four") {
+                this.initPerson();
+            } else if (this.activeName === "first") {
+                this.initAllProvince();
+            } else if (this.activeName === "second") {
+                console.log(this.systemId2);
+                this.initCityOrCounty();
+            } else if (this.activeName === "third") {
+                this.initUnit();
+            }
         },
         applyChange(index, id) {
             if (this.activeName === "four") {
@@ -531,7 +570,7 @@ export default {
         },
         doApplyList(appList) {
             appList.map((item, index) => {
-                if (item.id === 1 || item.id === 7) {
+                if (item.id === 1 || item.id === 5) {
                     appList.splice(index, 1);
                 }
             });
@@ -545,7 +584,10 @@ export default {
             if (this.isShowAllProvince()) {
                 this.activeName = "first";
                 this.initAllProvince();
-            } else if (this.isShowCityOrCounty()) {
+            } else if (
+                this.isShowCityOrCounty() &&
+                this.app.rolesInfo.roleName
+            ) {
                 this.activeName = "second";
                 this.getAreaList();
             } else if (this.app.rolesInfo.roleName === "UNIT_MANAGER") {

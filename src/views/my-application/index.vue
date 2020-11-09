@@ -55,6 +55,10 @@ export default {
             appList: [],
             systemId: 2,
             userId: this.$store.state.app.rolesInfo.uid,
+            orgId: this.$store.state.app.rolesInfo.orgId,
+            deptId: this.$store.state.app.rolesInfo.deptId
+                ? this.$store.state.app.rolesInfo.deptId
+                : "",
         };
     },
     created() {
@@ -77,7 +81,7 @@ export default {
         doApplyList() {
             let appList = [...this.app.applicationList];
             appList.map((item, index) => {
-                if (item.id === 1 || item.id === 6) {
+                if (item.id === 1 || item.id === 5) {
                     appList.splice(index, 1);
                 }
             });
@@ -91,6 +95,8 @@ export default {
         searchData() {
             let data = {
                 userId: this.userId,
+                orgId: this.orgId,
+                deptId: this.deptId,
                 startDate: this.startDate,
                 endDate: this.endDate,
                 format1: this.formatParams.format1,

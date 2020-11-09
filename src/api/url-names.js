@@ -54,7 +54,7 @@ export default {
     // 权限管理--获取指定角色的人员列表
     getAuthUsersByRole: "getAuthUsersByRole",
     // 权限管理--添加成员授权范围
-    addUserAuthScope: "addUserAuthScope",
+    addUsersAuthScope: "addUsersAuthScope",
     // 权限管理--删除角色成员
     deleteRoleUser: "deleteRoleUser",
     // 权限管理--获取人员的授权区域
@@ -83,6 +83,7 @@ export default {
     getTemplateName: "getTemplateName",
     // 帮助中心--获取文档列表
     getHelpFileList: "getHelpFileList",
+    getHelperview: "getHelperview",
     // 数据统计--通过区域列表获取区域名称
     getAreaList: "getAreaList",
     // 数据统计--获取市州区县下面的单位列表

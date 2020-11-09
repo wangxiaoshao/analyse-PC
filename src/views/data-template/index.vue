@@ -19,45 +19,47 @@
                 </el-option>
             </el-select>
         </div>
-        <el-row :gutter="20">
-            <el-col :span="6" v-for="item in templateList" :key="item.id">
-                <div class="template-item">
-                    <p class="title" :title="item.modelName">
-                        {{ item.modelName }}
-                    </p>
-                    <div class="content">
-                        <img
-                            :src="
-                                item.type === 'doc'
-                                    ? url3
-                                    : item.type === 'txt'
-                                    ? url2
-                                    : item.type === 'xlsx'
-                                    ? url1
-                                    : url4
-                            "
-                            alt=""
-                        />
+        <div class="table-box">
+            <el-row :gutter="20">
+                <el-col :span="6" v-for="item in templateList" :key="item.id">
+                    <div class="template-item">
+                        <p class="title" :title="item.modelName">
+                            {{ item.modelName }}
+                        </p>
+                        <div class="content">
+                            <img
+                                :src="
+                                    item.type === 'doc'
+                                        ? url3
+                                        : item.type === 'txt'
+                                        ? url2
+                                        : item.type === 'xlsx'
+                                        ? url1
+                                        : url4
+                                "
+                                alt=""
+                            />
+                        </div>
+                        <div class="template-footer">
+                            <el-button
+                                size="mini"
+                                type="text"
+                                style="float: left;"
+                                @click="fileView(item.id)"
+                                >在线预览</el-button
+                            >
+                            <el-button
+                                size="mini"
+                                type="text"
+                                style="float: right;"
+                                @click="downloadTemplate(item.modelUrl)"
+                                >下载</el-button
+                            >
+                        </div>
                     </div>
-                    <div class="template-footer">
-                        <el-button
-                            size="mini"
-                            type="text"
-                            style="float: left;"
-                            @click="fileView(item.id)"
-                            >在线预览</el-button
-                        >
-                        <el-button
-                            size="mini"
-                            type="text"
-                            style="float: right;"
-                            @click="downloadTemplate(item.modelUrl)"
-                            >下载</el-button
-                        >
-                    </div>
-                </div>
-            </el-col>
-        </el-row>
+                </el-col>
+            </el-row>
+        </div>
         <el-pagination
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
@@ -77,22 +79,9 @@ export default {
     mixins: [handleTable, downloadBinaryFile],
     data() {
         return {
-            templateId: 3,
+            templateId: "",
             templateList: [],
-            templateNameList: [
-                {
-                    id: 1,
-                    modelName: "模板1",
-                },
-                {
-                    id: 2,
-                    modelName: "测试1",
-                },
-                {
-                    id: 3,
-                    modelName: "wxs",
-                },
-            ],
+            templateNameList: [],
             url1: require("@src/common/images/excel.png"),
             url2: require("@src/common/images/txt.png"),
             url3: require("@src/common/images/word.png"),
@@ -106,8 +95,8 @@ export default {
     methods: {
         getTemplateTypeList() {
             api[urlNames["getTemplateName"]]().then((res) => {
-                if (res.code) {
-                    // this.templateNameList = res.data;
+                if (res.status === 0) {
+                    this.templateNameList = res.data;
                 }
             });
         },
@@ -152,9 +141,10 @@ export default {
         },
         fileView(id) {
             api[urlNames["getView"]]({ id }).then((res) => {
-                if (res.code) {
-                    window.open(res.statusUrl);
-                }
+                console.log(res);
+                // if (res.code) {
+                window.open(res);
+                // }
             });
         },
     },

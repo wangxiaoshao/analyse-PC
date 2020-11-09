@@ -19,7 +19,10 @@
                         <p style="padding: 8px 0;">
                             <span> {{ scope.row.fileName }}</span>
                             <span style="float: right;">
-                                <el-button size="mini" type="text"
+                                <el-button
+                                    size="mini"
+                                    type="text"
+                                    @click="getView(scope.row.id)"
                                     >在线预览</el-button
                                 >
                                 <el-button
@@ -75,6 +78,13 @@ export default {
                     this.page.total = 0;
                 }
             );
+        },
+        getView(id) {
+            api[urlNames["getHelperview"]]({ id }).then((res) => {
+                if (res) {
+                    window.open(res);
+                }
+            });
         },
         downLoadWord(filePath) {
             window.open(filePath);

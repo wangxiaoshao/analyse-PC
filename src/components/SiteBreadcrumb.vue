@@ -23,12 +23,12 @@
                         >
                     </template>
 
-                    <!-- <el-breadcrumb-item
+                    <el-breadcrumb-item
                         v-for="(pageItem, index) in pageBreadcrumb"
                         :key="index"
                         class="breadcrumb-item"
                         >{{ pageItem.name }}</el-breadcrumb-item
-                    > -->
+                    >
                 </el-breadcrumb>
             </el-col>
             <el-col :span="4" class="text-right">

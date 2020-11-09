@@ -181,7 +181,7 @@ export default {
             this.addUserAuth(data);
         },
         addUserAuth(data) {
-            api[urlNames["addUserAuthScope"]](data).then(
+            api[urlNames["addUsersAuthScope"]](data).then(
                 (res) => {
                     this.$message.success(`授权成功`);
                     this.init();

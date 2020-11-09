@@ -17,7 +17,7 @@ export default {
     // 数据模板--获取模板名称列表
     [urlNames.getTemplateName]: {
         type: "get",
-        url: "/api/appdata/modelGenerated/getTemplateName",
+        url: "/api/appdata/modelGenerated/getTemplateList",
         keepOriginResponse: true,
         serve: "organizationManagePC",
     },

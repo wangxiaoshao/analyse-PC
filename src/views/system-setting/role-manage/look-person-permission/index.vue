@@ -70,7 +70,7 @@
                     <el-button
                         size="mini"
                         type="text"
-                        v-if="roleId !== 1 && roleId !== 2"
+                        v-if="roleId === 3 || roleId === 4 || roleId === 5"
                         @click="toAuthorization(scope.row)"
                         >授权{{ authorizedName }}</el-button
                     >
@@ -247,7 +247,7 @@ export default {
             this.addUserAuth(data);
         },
         addUserAuth(data) {
-            api[urlNames["addUserAuthScope"]](data).then(
+            api[urlNames["addUsersAuthScope"]](data).then(
                 (res) => {
                     this.$message.success(`添加成功`);
                     this.getGrid();

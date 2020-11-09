@@ -1,17 +1,21 @@
 /**
  * Created by wangxiaoshao on 2020/11/05.
  */
-import { areaReportList } from "@src/config/report";
+import { areaReportList, reportSystemSrc } from "@src/config/report";
 export default {
     data() {
         return {
+            // startDate: "",
+            // endDate: "",
             searchDate: [],
             reportSrcList: areaReportList,
-            // hostApi:
-            //     "http://172.16.68.41:8080/webroot/decision/view/report?viewlet=",
+            tableName: "`static_db`.logger_action_",
             hostApi:
-                "http://localhost:8088/webroot/decision/view/report?viewlet=",
+                "http://172.16.68.41:8080/webroot/decision/view/report?viewlet=",
+            // hostApi:
+            //     "http://localhost:8088/webroot/decision/view/report?viewlet=",
             srcUrl: "",
+            reportSystemSrc: reportSystemSrc,
             unitTypeList: [
                 { name: "非考核单位", type: 0 },
                 { name: "考核单位", type: 1 },
@@ -36,22 +40,22 @@ export default {
             }
             let startDate = this.getDay(range);
             let endDate = this.getDay(0);
-            let newstartDate = "";
-            if (
-                new Date(startDate).getMonth() + 1 <
-                    new Date(endDate).getMonth() + 1 &&
-                !flag
-            ) {
-                newstartDate = endDate.substring(0, 8) + "01";
-                console.log(newstartDate);
-            } else {
-                newstartDate = startDate;
-            }
-            this.searchDate[0] = newstartDate;
+            // let newstartDate = "";
+            // if (
+            //     new Date(startDate).getMonth() + 1 <
+            //         new Date(endDate).getMonth() + 1 &&
+            //     !flag
+            // ) {
+            //     newstartDate = endDate.substring(0, 8) + "01";
+            //     console.log(newstartDate);
+            // } else {
+            //     newstartDate = startDate;
+            // }
+            this.searchDate[0] = startDate;
             this.searchDate[1] = endDate;
             this.startDate = this.searchDate[0];
             this.endDate = this.searchDate[1];
-            this.doformatParams();
+            // this.doformatParams();
         },
         getDay(day) {
             var today = new Date();

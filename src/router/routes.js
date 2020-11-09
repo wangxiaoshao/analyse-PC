@@ -141,7 +141,7 @@ export default [
                     roles.city,
                     roles.county,
                 ],
-                meta: { title: "人员汇总" },
+                meta: { title: "人员明细" },
                 component: () =>
                     import(
                         /* webpackChunkName: "DataStatistics" */ "@src/views/data-statistics/member-total/index.vue"
@@ -166,7 +166,7 @@ export default [
         path: "/data-template",
         name: "DataTemplate",
         meta: { title: "数据模板", icon: "el-icon-set-up" },
-        onlyRolesShow: [roles.super, roles.city],
+        onlyRolesShow: [roles.super, roles.unit],
         component: () =>
             import(
                 /* webpackChunkName: "DataTemplate" */ "@src/views/data-template/index.vue"
@@ -178,7 +178,13 @@ export default [
         path: "/assessment",
         name: "Assessment",
         meta: { title: "考核情况查询", icon: "el-icon-set-up" },
-        onlyRolesShow: [roles.super, roles.city, roles.county, roles.unit],
+        onlyRolesShow: [
+            roles.super,
+            roles.city,
+            roles.county,
+            roles.province,
+            roles.unit,
+        ],
         component: () =>
             import(
                 /* webpackChunkName: "Assessment" */ "@src/views/assessment/index.vue"
@@ -249,16 +255,17 @@ export default [
                 //         hidden: true,
                 //         path: "/message-reminding/message-rules",
                 //         name: "MessageRules",
-                //         meta: { title: "通知规则设置" },
+                //         // meta: { title: "通知规则设置" },
                 //         component: () =>
                 //             import(
                 //                 /* webpackChunkName: "MessageReminding" */ "@src/views/system-setting/message-reminding/message-rules/index.vue"
                 //             ),
-                //         // meta: { activeMenu: "/message-reminding" },
+                //         meta: { activeMenu: "/message-reminding" },
                 //     },
                 // ],
             },
             {
+                onlyRolesShow: [roles.super, roles.unit],
                 hidden: true,
                 path: "/message-reminding/message-rules",
                 name: "MessageRules",
@@ -280,7 +287,6 @@ export default [
                     roles.province,
                     roles.city,
                     roles.county,
-                    roles.unit,
                     roles.secrecy,
                 ],
                 children: [

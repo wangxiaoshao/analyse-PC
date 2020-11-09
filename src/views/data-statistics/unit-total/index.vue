@@ -1,21 +1,6 @@
 <template>
     <div class="area-total">
         <el-form label-position="right" inline>
-            <el-form-item label="单位类型">
-                <el-select
-                    size="medium"
-                    placeholder="请选择单位类型"
-                    @change="unitTypeChange"
-                    v-model="unitType"
-                >
-                    <el-option
-                        v-for="item in unitTypeList"
-                        :key="item.type"
-                        :label="item.name"
-                        :value="item.type"
-                    ></el-option>
-                </el-select>
-            </el-form-item>
             <el-form-item
                 label="选择区域"
                 v-if="
@@ -57,6 +42,21 @@
                     ></el-option>
                 </el-select>
             </el-form-item>
+            <el-form-item label="单位类型">
+                <el-select
+                    size="medium"
+                    placeholder="请选择单位类型"
+                    @change="unitTypeChange"
+                    v-model="unitType"
+                >
+                    <el-option
+                        v-for="item in unitTypeList"
+                        :key="item.type"
+                        :label="item.name"
+                        :value="item.type"
+                    ></el-option>
+                </el-select>
+            </el-form-item>
             <el-form-item label="选择单位">
                 <el-select
                     size="medium"
@@ -73,7 +73,6 @@
                 </el-select>
             </el-form-item>
             <el-form-item>
-                <!-- <span>日期：</span> -->
                 <el-date-picker
                     v-model="searchDate"
                     type="daterange"
@@ -95,7 +94,7 @@
             <el-radio-group v-model="systemId" @change="applyChange">
                 <el-radio-button
                     :label="item.id"
-                    v-for="item in app.applicationList"
+                    v-for="item in appList"
                     :key="item.systemSymbol"
                     >{{ item.systemName }}</el-radio-button
                 >
@@ -123,6 +122,9 @@ export default {
     mixins: [dataStatistics, pickerOptions],
     data() {
         return {
+            appList: [],
+            startDate1: "",
+            endDate1: "",
             unitType: 2,
             stateParams: {},
             areaParams: {},
@@ -138,8 +140,8 @@ export default {
     },
     created() {
         this.pickDateOptionRules();
+        this.doApplyList();
         this.initializeDate();
-        console.log(this.app.rolesInfo);
         this.getStateList();
     },
     mounted() {
@@ -149,6 +151,16 @@ export default {
         ...mapState(["app"]),
     },
     methods: {
+        doApplyList() {
+            let appList = [...this.app.applicationList];
+            appList.map((item, index) => {
+                if (item.id === 5) {
+                    appList.splice(index, 1);
+                }
+            });
+            this.appList = appList;
+            console.log(appList, "qqqq");
+        },
         getStateList() {
             if (this.app.rolesInfo.roleName === "UNIT_MANAGER") {
                 this.initUnit("", "", this.unitType);
@@ -166,6 +178,10 @@ export default {
                         this.stateList = res.data;
                         if (this.stateList.length > 0) {
                             this.stateParams = this.stateList[0];
+                            this.initArea(
+                                this.stateParams.treeId,
+                                this.stateParams.treeType
+                            );
                         }
                     }
                 });
@@ -185,18 +201,31 @@ export default {
                             };
                             aryList.push(obj);
                         });
-                        this.stateList = aryList;
-                        if (this.stateList.length > 0) {
-                            this.stateParams = this.stateList[0];
-                            this.initArea(
-                                this.stateParams.treeId,
-                                this.stateParams.treeType
-                            );
-                        }
                         if (this.app.rolesInfo.roleName === "COUNTY_MANAGER") {
                             this.areaList = aryList;
                             if (this.areaList.length > 0) {
-                                this.areaParams = this.stateList[0];
+                                this.areaParams = this.areaList[0];
+                                this.initUnit(
+                                    "",
+                                    this.areaParams.treeId,
+                                    this.unitType
+                                );
+                            }
+                            return;
+                        }
+                        if (
+                            this.app.rolesInfo.roleName === "SUPER_MANAGER" ||
+                            this.app.rolesInfo.roleName ===
+                                "PROVINCE_MANAGER" ||
+                            this.app.rolesInfo.roleName === "CITY_MANAGER"
+                        ) {
+                            this.stateList = aryList;
+                            if (this.stateList.length > 0) {
+                                this.stateParams = this.stateList[0];
+                                this.initArea(
+                                    this.stateParams.treeId,
+                                    this.stateParams.treeType
+                                );
                             }
                         }
                     }
@@ -220,7 +249,12 @@ export default {
                     }
                     this.areaList = res.data;
                     if (this.areaList.length > 0) {
-                        this.areaParams = this.stateList[0];
+                        this.areaParams = this.areaList[0];
+                        this.initUnit(
+                            this.stateParams.treeId,
+                            this.areaParams.treeId,
+                            this.unitType
+                        );
                     }
                 }
             });
@@ -228,7 +262,11 @@ export default {
         initUnit(cityCode, countyCode, assessType, treeType) {
             let data = {};
             let apiUrl = "";
-            if (this.app.rolesInfo.roleName === "CITY_MANAGER") {
+            if (
+                this.app.rolesInfo.roleName === "CITY_MANAGER" ||
+                this.app.rolesInfo.roleName === "SUPER_MANAGER" ||
+                this.app.rolesInfo.roleName === "PROVINCE_MANAGER"
+            ) {
                 data.cityCode = cityCode;
                 data.countyCode = countyCode;
                 data.assessType = assessType;
@@ -241,36 +279,58 @@ export default {
                 data.assessType = assessType;
                 data.orgIds = this.app.rolesInfo.authorizedOid;
                 apiUrl = "getOrgListByIds";
-            } else {
-                data.treeId = countyCode;
-                data.treeType = treeType;
-                apiUrl = "getTreeList";
             }
             api[urlNames[apiUrl]](data).then((res) => {
                 if (res.data) {
                     this.unitList = res.data;
                     if (this.unitList.length > 0) {
                         this.unitId = res.data[0].orgId || res.data[0].treeId;
+                    } else {
+                        this.unitId = "";
+                        this.unitList = [];
                     }
                 }
             });
         },
-        unitTypeChange() {},
+        unitTypeChange() {
+            console.log(this.stateParams, this.areaParams);
+            let data = {
+                treeId: this.stateParams.treeId,
+                areaId: this.areaParams.treeId ? this.areaParams.treeId : "",
+                unitType: this.unitType,
+                treeType: this.stateParams.treeType,
+            };
+            this.initUnit(
+                data.treeId,
+                data.areaId,
+                data.unitType,
+                data.treeType
+            );
+        },
         dateChange(val) {
             console.log(val);
             this.startDate = val[0];
             this.endDate = val[1];
-            this.doformatParams();
+            if (this.systemId === 6) {
+                this.startDate1 = val[0];
+                this.endDate1 = val[1];
+                this.searchDate[0] = this.startDate1;
+                this.searchDate[1] = this.endDate1;
+            } else {
+                this.doformatParams();
+            }
         },
         stateChange(data) {
             this.stateId = data.treeId;
             this.treeType = data.treeType;
             this.unitId = "";
             this.unitList = [];
+            if (this.areaParams.treeId) {
+                this.areaParams = {};
+            }
             this.initArea(this.stateId, this.treeType);
         },
         areaChange(val) {
-            console.log(val, "kkkkk");
             this.areaId = val.treeId;
             this.treeType = val.treeType;
             this.unitId = "";
@@ -284,7 +344,23 @@ export default {
         },
         unitChange() {},
         applyChange(val) {
-            console.log(this.systemId);
+            // if (val === 6) {
+            //     this.startDate1 = this.getDay(-30).substring(0, 7);
+            //     this.endDate1 = this.getDay(0).substring(0, 7);
+            //     this.searchDate[0] = this.startDate1;
+            //     this.searchDate[1] = this.endDate1;
+            //     this.pickerOptions = {
+            //         disabledDate(time) {
+            //             return time.getTime() > Date.now() - 8.64e6;
+            //         },
+            //         shortcuts: null,
+            //     };
+            //     console.log(this.startDate1, this.searchDate);
+            //     // this.startDate1 = this.doTime(this.getDay(-30).substring(0, 7));
+            //     // this.endDate1 = this.doTime(this.getDay(0).substring(0, 7));
+            // } else {
+            //     this.pickDateOptionRules();
+            // }
             this.searchData();
         },
         searchData() {
@@ -305,14 +381,23 @@ export default {
                 startDate: this.startDate,
                 endDate: this.endDate,
                 orgId: this.unitId,
-                format1: this.formatParams.format1,
-                format2: this.formatParams.format2,
-                startDay: this.formatParams.format3,
-                size: this.formatParams.format4,
+                // format1: this.startDate1.substring(0, 4) + "0";
+                // format2: this.startDate1.substring(0, 4),
+                // startDay:  new Date(this.startDate1).getMonth();
+                // size:  new Date(this.endDate1).getDate() -
+                // new Date(this.startDate1).getDate() +
+                // 1;
             };
-            console.log(data);
+            if (this.systemId === 6) {
+                data.startDate = "202005";
+                data.endDate = "202008";
+            }
             this.initSystem("unit", this.doSrcParams(data));
         },
+        // doTime(dateString) {
+        //     let pattern = /(\d{4})\-(\d{2})/;
+        //     return dateString.replace(pattern, "$1$2");
+        // },
     },
     watch: {
         unitId(val1, val2) {

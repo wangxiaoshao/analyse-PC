@@ -6,7 +6,7 @@ export const areaReportList = [
         areaUrl:
             "mh_statistics%252F%25E9%2597%25A8%25E6%2588%25B7%25E5%258C%25BA%25E5%259F%259F%25E6%2595%25B0%25E6%258D%25AE%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=16273013-f2a2-4631-a99c-89b7f6f25783",
         unitUrl:
-            "tz_statistics%252F%25E5%258F%25B0%25E8%25B4%25A6%25E4%25BA%25BA%25E5%2591%2598%25E8%25AF%25A6%25E7%25BB%2586%25E6%2595%25B0%25E6%258D%25AE.cpt&ref_t=design&op=write&ref_c=16273013-f2a2-4631-a99c-89b7f6f25783",
+            "mh_statistics%252F%25E9%2597%25A8%25E6%2588%25B7%25E5%258D%2595%25E4%25BD%258D%25E6%2595%25B0%25E6%258D%25AE%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=16273013-f2a2-4631-a99c-89b7f6f25783",
         personUrl: "",
         homePersonUrl: "",
         allProvinceUrl:
@@ -20,7 +20,7 @@ export const areaReportList = [
         id: 2,
         systemName: "台账",
         areaUrl:
-            "tz_statistics%252F%25E5%258F%25B0%25E8%25B4%25A6%25E4%25BA%25BA%25E5%2591%2598%25E8%25AF%25A6%25E7%25BB%2586%25E6%2595%25B0%25E6%258D%25AE.cpt&ref_t=design&op=write&ref_c=16273013-f2a2-4631-a99c-89b7f6f25783",
+            "tz_statistics%252F%25E5%258F%25B0%25E8%25B4%25A6%25E5%258C%25BA%25E5%259F%259F%25E6%2595%25B0%25E6%258D%25AE%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=29ea0bd9-e633-449a-b4c7-78f9dc34dc3b",
         unitUrl:
             "tz_statistics%252F%25E5%258F%25B0%25E8%25B4%25A6%25E5%258D%2595%25E4%25BD%258D%25E6%2595%25B0%25E6%258D%25AE%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=16273013-f2a2-4631-a99c-89b7f6f25783",
         personUrl:
@@ -68,7 +68,7 @@ export const areaReportList = [
         cityOrCountyUrl:
             "homepage_whole_city_qx%252F%25E5%2585%25A8%25E5%25B8%2582%25E5%258C%25BA%25E5%25BF%25AB%25E4%25BC%25A0%25E5%25BA%2594%25E7%2594%25A8%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=8b0e8398-30c4-457f-83de-19ff32bad3d7",
         homeUnitUrl:
-            "http://localhost:8088/webroot/decision/view/report?viewlet=homepage_organization%252F%25E5%258D%2595%25E4%25BD%258D%25E5%25BF%25AB%25E4%25BC%25A0%25E5%25BA%2594%25E7%2594%25A8%25E8%25B6%258B%25E5%258A%25BF%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=8b0e8398-30c4-457f-83de-19ff32bad3d7",
+            "homepage_organization%252F%25E5%258D%2595%25E4%25BD%258D%25E5%25BF%25AB%25E4%25BC%25A0%25E5%25BA%2594%25E7%2594%25A8%25E8%25B6%258B%25E5%258A%25BF%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=29ea0bd9-e633-449a-b4c7-78f9dc34dc3b",
     },
     {
         id: 5,
@@ -82,8 +82,10 @@ export const areaReportList = [
     {
         id: 6,
         systemName: "公文与事务办理",
-        areaUrl: "",
-        unitUrl: "",
+        areaUrl:
+            "gw_statistics%252F%25E5%2585%25AC%25E6%2596%2587%25E5%258C%25BA%25E5%259F%259F%25E6%2595%25B0%25E6%258D%25AE%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=29ea0bd9-e633-449a-b4c7-78f9dc34dc3b",
+        unitUrl:
+            "gw_statistics%252F%25E5%2585%25AC%25E6%2596%2587%25E5%258D%2595%25E4%25BD%258D%25E6%2595%25B0%25E6%258D%25AE%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=29ea0bd9-e633-449a-b4c7-78f9dc34dc3b",
         personUrl: "",
     },
     {
@@ -134,3 +136,7 @@ export const reportParams = {
         },
     ],
 };
+
+// 系统日志
+export const reportSystemSrc =
+    "system_log_statistics%252F%25E7%25B3%25BB%25E7%25BB%259F%25E6%2597%25A5%25E5%25BF%2597.cpt&ref_t=design&ref_c=29ea0bd9-e633-449a-b4c7-78f9dc34dc3b";
