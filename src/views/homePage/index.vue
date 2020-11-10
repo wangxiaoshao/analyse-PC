@@ -11,7 +11,6 @@
                         {{ new Date() | dataFilter("YYYY-MM-DD") }}
                         {{ weekDate() }},登录考核应用分析平台！
                     </p>
-                    <p></p>
                 </div>
             </div>
             <el-row :gutter="20">
@@ -437,12 +436,18 @@ export default {
         },
         // 审计管理员 安全保密员
         isShowAuditOrSecrect() {
-            return (
-                this.app.rolesInfo.roleName.includes(
-                    "SECURITY_SECRECY_MANAGER"
-                ) ||
-                this.app.rolesInfo.roleName.includes("SECURITY_AUDIT_MANAGER")
-            );
+            if (this.app.rolesInfo.roleName) {
+                return (
+                    this.app.rolesInfo.roleName.includes(
+                        "SECURITY_SECRECY_MANAGER"
+                    ) ||
+                    this.app.rolesInfo.roleName.includes(
+                        "SECURITY_AUDIT_MANAGER"
+                    )
+                );
+            } else {
+                return false;
+            }
         },
         // 超级管理员 系统 省级
         isShowAllProvince() {

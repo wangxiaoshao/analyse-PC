@@ -14,7 +14,9 @@
                     <a
                         ><span class="el-icon-user userIcon"></span
                         >{{
-                            this.$store.state.app.rolesInfo.roleTitle || ""
+                            this.$store.state.app.rolesInfo.roleTitle ||
+                            this.$store.state.app.rolesInfo.userName ||
+                            ""
                         }}</a
                     >
                     <a class="my-apply" @click="goMyApplication"

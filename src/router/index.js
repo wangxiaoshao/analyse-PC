@@ -34,31 +34,14 @@ const initRouter = (userInfo) => {
     router.beforeEach((to, from, next) => {
         let route = to.matched[0];
         if (!route) {
-            router.back();
-            return;
-        }
-        if (allRoutePaths.includes(to.path)) {
-            // let flag = menus.find((item) => {
-            //     return item.moduleName === route.meta.key;
-            // });
-            let flag = true;
-            if (flag) {
-                next();
-            } else {
-                next("/no-right");
+            // 没有找到
+            if (allRoutePaths.includes(to.path)) {
+                return next("/no-right");
             }
-        } else {
-            next();
+            // 404
+            return router.back();
         }
-        // if (!route) {
-        //     // 没有找到
-        //     if (allRoutePaths.includes(to.path)) {
-        //         return next("/no-right");
-        //     }
-        //     // 404
-        //     return router.back();
-        // }
-        // next();
+        next();
     });
 
     return router;
