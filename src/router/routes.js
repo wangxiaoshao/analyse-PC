@@ -244,6 +244,7 @@ export default [
         children: [
             {
                 path: "/message-reminding",
+                name: "MessageReminding",
                 meta: { title: "通知提醒" },
                 onlyRolesShow: [roles.super, roles.unit],
                 component: () =>
@@ -323,13 +324,13 @@ export default [
                 ],
             },
             {
-                path: "/system-log",
-                name: "SystemLog",
+                path: "/log-manage",
+                name: "LogManage",
                 meta: { title: "系统日志" },
                 onlyRolesShow: [roles.sys, roles.super, roles.audit],
                 component: () =>
                     import(
-                        /* webpackChunkName: "SystemLog" */ "@src/views/system-setting/system-log/index.vue"
+                        /* webpackChunkName: "SystemLog" */ "@src/views/system-setting/log-manage/index.vue"
                     ),
             },
             {

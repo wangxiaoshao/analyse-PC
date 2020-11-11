@@ -48,6 +48,7 @@
                     placeholder="请选择单位类型"
                     @change="unitTypeChange"
                     v-model="unitType"
+                    filterable
                 >
                     <el-option
                         v-for="item in unitTypeList"
@@ -63,6 +64,7 @@
                     placeholder="请选择单位"
                     @change="unitChange"
                     v-model="unitId"
+                    filterable
                 >
                     <el-option
                         v-for="item in unitList"
@@ -74,14 +76,29 @@
             </el-form-item>
             <el-form-item>
                 <el-date-picker
+                    v-if="systemId !== 6"
                     v-model="searchDate"
                     type="daterange"
+                    format="yyyy-MM-dd"
+                    value-format="yyyy-MM-dd"
                     start-placeholder="开始日期"
                     end-placeholder="结束日期"
                     :picker-options="pickerOptions"
                     @change="dateChange"
                     @blur="onDateBlur"
-                    value-format="yyyy-MM-dd"
+                >
+                </el-date-picker>
+                <el-date-picker
+                    v-else
+                    v-model="searchMouth"
+                    type="monthrange"
+                    format="yyyy-MM"
+                    value-format="yyyyMM"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期"
+                    :picker-options="pickerMounthOptions"
+                    @change="mounthChange"
+                    @blur="onDateBlur"
                 >
                 </el-date-picker>
             </el-form-item>
@@ -139,13 +156,14 @@ export default {
         };
     },
     created() {
-        this.pickDateOptionRules();
-        this.doApplyList();
         this.initializeDate();
+        this.initializeMounth();
+        this.doApplyList();
         this.getStateList();
     },
     mounted() {
-        // this.searchData();
+        this.pickDateOptionRules();
+        this.pickMounthOptionRules();
     },
     computed: {
         ...mapState(["app"]),
@@ -344,23 +362,6 @@ export default {
         },
         unitChange() {},
         applyChange(val) {
-            // if (val === 6) {
-            //     this.startDate1 = this.getDay(-30).substring(0, 7);
-            //     this.endDate1 = this.getDay(0).substring(0, 7);
-            //     this.searchDate[0] = this.startDate1;
-            //     this.searchDate[1] = this.endDate1;
-            //     this.pickerOptions = {
-            //         disabledDate(time) {
-            //             return time.getTime() > Date.now() - 8.64e6;
-            //         },
-            //         shortcuts: null,
-            //     };
-            //     console.log(this.startDate1, this.searchDate);
-            //     // this.startDate1 = this.doTime(this.getDay(-30).substring(0, 7));
-            //     // this.endDate1 = this.doTime(this.getDay(0).substring(0, 7));
-            // } else {
-            //     this.pickDateOptionRules();
-            // }
             this.searchData();
         },
         searchData() {
@@ -381,23 +382,13 @@ export default {
                 startDate: this.startDate,
                 endDate: this.endDate,
                 orgId: this.unitId,
-                // format1: this.startDate1.substring(0, 4) + "0";
-                // format2: this.startDate1.substring(0, 4),
-                // startDay:  new Date(this.startDate1).getMonth();
-                // size:  new Date(this.endDate1).getDate() -
-                // new Date(this.startDate1).getDate() +
-                // 1;
             };
             if (this.systemId === 6) {
-                data.startDate = "202005";
-                data.endDate = "202008";
+                data.startDate = this.startDate1;
+                data.endDate = this.endDate1;
             }
             this.initSystem("unit", this.doSrcParams(data));
         },
-        // doTime(dateString) {
-        //     let pattern = /(\d{4})\-(\d{2})/;
-        //     return dateString.replace(pattern, "$1$2");
-        // },
     },
     watch: {
         unitId(val1, val2) {

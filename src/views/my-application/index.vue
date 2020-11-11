@@ -86,7 +86,7 @@ export default {
                 }
             });
             this.appList = appList;
-            console.log(appList, "qqqq");
+            // console.log(appList, "qqqq");
         },
         applyChange(val) {
             console.log(this.systemId);

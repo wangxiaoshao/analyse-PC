@@ -5,15 +5,16 @@ import { areaReportList, reportSystemSrc } from "@src/config/report";
 export default {
     data() {
         return {
-            // startDate: "",
-            // endDate: "",
+            startDate: "",
+            endDate: "",
+            startDate1: "",
+            endDate1: "",
             searchDate: [],
+            searchMouth: [],
             reportSrcList: areaReportList,
             tableName: "`static_db`.logger_action_",
             hostApi:
                 "http://172.16.68.41:8080/webroot/decision/view/report?viewlet=",
-            // hostApi:
-            //     "http://localhost:8088/webroot/decision/view/report?viewlet=",
             srcUrl: "",
             reportSystemSrc: reportSystemSrc,
             unitTypeList: [
@@ -30,77 +31,53 @@ export default {
         };
     },
     methods: {
-        initializeDate(flag, range) {
-            // flag 是否处理时间  true,不处理 fasle处理。如：2020-10-28~~2020-11-03 一周时间 处理为：2020-11-11-01~~2020-11-03
-            if (!flag) {
-                flag = false;
-            }
-            if (!range) {
-                range = -7; // 获取近7天日期
-            }
-            let startDate = this.getDay(range);
-            let endDate = this.getDay(0);
-            // let newstartDate = "";
-            // if (
-            //     new Date(startDate).getMonth() + 1 <
-            //         new Date(endDate).getMonth() + 1 &&
-            //     !flag
-            // ) {
-            //     newstartDate = endDate.substring(0, 8) + "01";
-            //     console.log(newstartDate);
-            // } else {
-            //     newstartDate = startDate;
-            // }
+        initializeDate() {
+            let startDate = this.$moment()
+                .subtract(1, "weeks")
+                .format("YYYY-MM-DD");
+            let endDate = this.$moment().format("YYYY-MM-DD");
             this.searchDate[0] = startDate;
             this.searchDate[1] = endDate;
             this.startDate = this.searchDate[0];
             this.endDate = this.searchDate[1];
-            // this.doformatParams();
         },
-        getDay(day) {
-            var today = new Date();
-            var milliseconds = today.getTime() + 1000 * 60 * 60 * 24 * day;
-            today.setTime(milliseconds); // 注意，这行是关键代码
-            var tYear = today.getFullYear();
-            var tMonth = today.getMonth();
-            var tDate = today.getDate();
-            tMonth = this.doHandleMonth(tMonth + 1);
-            tDate = this.doHandleMonth(tDate);
-            return tYear + "-" + tMonth + "-" + tDate;
+        initializeMounth() {
+            let startDate = this.$moment()
+                .subtract(1, "months")
+                .format("YYYYMM");
+            let endDate = this.$moment().format("YYYYMM");
+            this.searchMouth[0] = startDate;
+            this.searchMouth[1] = endDate;
+            this.startDate1 = this.searchMouth[0];
+            this.endDate1 = this.searchMouth[1];
+            this.doformatParams();
         },
-        doHandleMonth(month) {
-            var m = month;
-            if (month.toString().length === 1) {
-                m = "0" + month;
+        dateChange(val) {
+            if (val) {
+                this.startDate = val[0];
+                this.endDate = val[1];
             }
-            return m;
+        },
+        mounthChange(val) {
+            if (val) {
+                this.startDate1 = val[0];
+                this.endDate1 = val[1];
+            }
+            this.doformatParams();
         },
         doformatParams() {
-            this.formatParams.format1 = this.startDate.substring(0, 8) + "0";
-            this.formatParams.format2 = this.startDate.substring(0, 8);
-            this.formatParams.format3 = new Date(this.startDate).getDate() - 1;
+            this.formatParams.format1 =
+                this.$moment(this.startDate1).format("YYYY") + "0";
+            this.formatParams.format2 = this.$moment(this.startDate1).format(
+                "YYYY"
+            );
+            this.formatParams.format3 =
+                this.$moment(this.startDate1).format("MM") - 1;
             this.formatParams.format4 =
-                new Date(this.endDate).getDate() -
-                new Date(this.startDate).getDate() +
+                this.$moment(this.endDate1).format("MM") -
+                this.$moment(this.startDate1).format("MM") +
                 1;
-        },
-        // 格式化时间
-        formatDate(value) {
-            if (value) {
-                var Y = value.getFullYear() + "-";
-                var M =
-                    (value.getMonth() + 1 < 10
-                        ? "0" + (value.getMonth() + 1)
-                        : value.getMonth() + 1) + "-";
-                var D =
-                    value.getDate() < 10
-                        ? "0" + value.getDate()
-                        : value.getDate();
-                var df = Y + M + D;
-                return df;
-            } else {
-                return "";
-            }
+            console.log(this.$moment(this.startDate1).format("MM"), "ffff");
         },
         initSystem(type, str, systemId) {
             if (!systemId) {

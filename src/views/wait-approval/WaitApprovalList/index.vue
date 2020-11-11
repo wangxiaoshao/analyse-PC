@@ -82,10 +82,9 @@ import SiteTable from "@src/components/SiteTable/index.vue";
 import { api, urlNames } from "@src/api";
 import { mapState, mapMutations } from "vuex";
 import tableConfig from "./tableConfig";
-import HasRight from "@src/mixins/has-right";
 export default {
     components: { SiteTable },
-    mixins: [handleTable, HasRight],
+    mixins: [handleTable],
     data() {
         return {
             tableConfig,

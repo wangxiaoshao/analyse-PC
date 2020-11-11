@@ -44,6 +44,7 @@
                             @change="areaChange"
                             v-model="areaParams"
                             value-key="treeId"
+                            filterable
                         >
                             <el-option
                                 v-for="item in areaList"
@@ -56,6 +57,7 @@
                     <el-form-item>
                         <!-- <span>日期：</span> -->
                         <el-date-picker
+                            v-if="systemId !== 6"
                             v-model="searchDate"
                             type="daterange"
                             format="yyyy-MM-dd"
@@ -64,6 +66,19 @@
                             end-placeholder="结束日期"
                             :picker-options="pickerOptions"
                             @change="dateChange"
+                            @blur="onDateBlur"
+                        >
+                        </el-date-picker>
+                        <el-date-picker
+                            v-else
+                            v-model="searchMouth"
+                            type="monthrange"
+                            format="yyyy-MM"
+                            value-format="yyyyMM"
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期"
+                            :picker-options="pickerMounthOptions"
+                            @change="mounthChange"
                             @blur="onDateBlur"
                         >
                         </el-date-picker>
@@ -91,6 +106,7 @@
         <div class="system-data">
             <div class="chart-box">
                 <iframe
+                    @onload="afterload"
                     :src="srcUrl"
                     id="areaFrame"
                     frameborder="0"
@@ -122,18 +138,45 @@ export default {
         };
     },
     created() {
-        console.log(this.app.rolesInfo, this.reportSrcList);
         this.initializeDate();
+        this.initializeMounth();
         this.doApplyList();
         this.getStateList();
     },
     mounted() {
         this.pickDateOptionRules();
+        this.pickMounthOptionRules();
     },
     computed: {
         ...mapState(["app"]),
     },
     methods: {
+        afterload() {
+            // iframe 加载后触发
+            console.log(11111);
+            console.log(this.$refs.iframe.contentWindow);
+            var contentPane = document.getElementById("reportFrame")
+                .contentWindow.contentPane; // 获取报表 contentPane
+            var cPageIndex = contentPane.currentPageIndex; // 当前所在页
+            var pv =
+                "第" +
+                cPageIndex +
+                "页/共" +
+                contentPane.reportTotalPage +
+                "页"; // 报表首次加载结束后显示的页码信息
+            document.getElementById("page").value = pv; // 将页码信息赋给 page 文本
+            contentPane.on("afterload", function () {
+                // 报表加载结束监听事件
+                cPageIndex = contentPane.currentPageIndex; // 每次加载完后重新获取当前页码
+                pv =
+                    "第" +
+                    cPageIndex +
+                    "页/共" +
+                    contentPane.reportTotalPage +
+                    "页"; // 重新生成页码信息
+                document.getElementById("page").value = pv; // 重新给 page 文本赋页码信息
+            });
+        },
         doApplyList() {
             let appList = [...this.app.applicationList];
             appList.map((item, index) => {
@@ -142,7 +185,6 @@ export default {
                 }
             });
             this.appList = appList;
-            console.log(appList, "qqqq");
         },
         getStateList() {
             if (
@@ -224,14 +266,8 @@ export default {
                 }
             });
         },
-        unitTypeChange() {},
-        dateChange(val) {
-            console.log(val, this.searchDate);
-            if (val) {
-                this.startDate = val[0];
-                this.endDate = val[1];
-            }
-            this.doformatParams();
+        unitTypeChange() {
+            this.searchData();
         },
         stateChange(data) {
             this.areaParams = {};
@@ -263,38 +299,17 @@ export default {
                         : this.areaParams.treeId,
                 startDate: this.startDate,
                 endDate: this.endDate,
-                // format1: this.formatParams.format1,
-                // format2: this.formatParams.format2,
-                // startDay: this.formatParams.format3,
-                // size: this.formatParams.format4,
             };
             if (this.systemId === 6) {
-                data.startDate = "202005";
-                data.endDate = "202008";
-                data.format1 = "20200";
-                data.format2 = "2020";
-                data.size = "4";
-                data.startDay = "4";
+                data.startDate = this.startDate1;
+                data.endDate = this.endDate1;
+                data.format1 = this.formatParams.format1;
+                data.format2 = this.formatParams.format2;
+                data.startDay = this.formatParams.format3;
+                data.size = this.formatParams.format4;
             }
+            console.log(data);
             this.initSystem("area", this.doSrcParams(data));
-        },
-        // 格式化时间
-        formatDate(value) {
-            if (value) {
-                var Y = value.getFullYear() + "-";
-                var M =
-                    (value.getMonth() + 1 < 10
-                        ? "0" + (value.getMonth() + 1)
-                        : value.getMonth() + 1) + "-";
-                var D =
-                    value.getDate() < 10
-                        ? "0" + value.getDate()
-                        : value.getDate();
-                var df = Y + M + D;
-                return df;
-            } else {
-                return "";
-            }
         },
     },
     watch: {

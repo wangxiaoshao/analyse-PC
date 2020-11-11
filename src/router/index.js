@@ -61,7 +61,6 @@ function getRouters(routes, roleId) {
     routes.map((route) => {
         // 仅仅这些角色这显示
         if (route.onlyRolesShow) {
-            // route.onlyRolesShow.push(roleId);
             if (!route.onlyRolesShow.includes(roleId)) {
                 return;
             }

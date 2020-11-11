@@ -11,6 +11,7 @@ export default {
                 },
                 shortcuts: null,
             },
+            pickerMounthOptions: {},
             selectDate: "",
         };
     },
@@ -30,6 +31,28 @@ export default {
                     if (selectDate) {
                         return (
                             selectDate.getMonth() !== time.getMonth() ||
+                            time.getTime() > Date.now() - 8.64e6
+                        );
+                    }
+                    return time.getTime() > Date.now() - 8.64e6;
+                },
+            };
+        },
+        pickMounthOptionRules() {
+            const that = this;
+            this.pickerMounthOptions = {
+                onPick({ maxDate, minDate }) {
+                    if (maxDate && minDate) {
+                    } else {
+                        const date = maxDate || minDate;
+                        that.selectDate = date;
+                    }
+                },
+                disabledDate(time) {
+                    const { selectDate } = that;
+                    if (selectDate) {
+                        return (
+                            selectDate.getYear() !== time.getYear() ||
                             time.getTime() > Date.now() - 8.64e6
                         );
                     }

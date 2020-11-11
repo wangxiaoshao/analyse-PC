@@ -6,7 +6,7 @@ import dataStatistics from "./modules/data-statistics";
 import messageReminding from "./modules/message-reminding";
 import roleManage from "./modules/role-manage";
 import dataTemplate from "./modules/data-template";
-import systemLog from "./modules/system-log";
+import logManage from "./modules/log-manage";
 import helpCenter from "./modules/help-center";
 import shareManage from "./modules/share-manage";
 import assessment from "./modules/assessment";
@@ -18,7 +18,7 @@ export default {
     ...messageReminding,
     ...roleManage,
     ...dataTemplate,
-    ...systemLog,
+    ...logManage,
     ...helpCenter,
     ...shareManage,
     ...assessment,

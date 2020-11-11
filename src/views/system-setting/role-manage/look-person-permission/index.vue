@@ -100,12 +100,11 @@
 <script>
 import handleTable from "@src/mixins/handle-table";
 import handleBreadcrumb from "@src/mixins/handle-breadcrumb.js";
-import hasRight from "@src/mixins/has-right";
 import { api, urlNames } from "@src/api";
 import SelectTree from "@src/components/SelectTree/index";
 export default {
     name: "LookPersonPermission",
-    mixins: [handleTable, handleBreadcrumb, hasRight],
+    mixins: [handleTable, handleBreadcrumb],
     components: { SelectTree },
     data() {
         return {

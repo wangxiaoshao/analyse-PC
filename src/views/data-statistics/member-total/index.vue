@@ -110,7 +110,6 @@ export default {
                 }
             });
             this.appList = appList;
-            console.log(appList, "qqqq");
         },
         openSelectDailog() {
             this.selectTreeDailog.openSelectTreeVisiable = true;

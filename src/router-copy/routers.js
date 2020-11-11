@@ -5,7 +5,7 @@ import dataStatistics from "./modules1/data-statistics";
 import messageReminding from "./modules1/message-reminding";
 import roleManage from "./modules1/role-manage";
 import dataTemplate from "./modules1/data-template";
-import systemLog from "./modules1/system-log";
+import systemLog from "./modules1/log-manage";
 import helpCenter from "./modules1/help-center";
 import shareManage from "./modules1/share-manage";
 import assessment from "./modules1/assessment";

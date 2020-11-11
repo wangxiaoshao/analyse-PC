@@ -8,6 +8,7 @@
             marginheight="0"
             marginwidth="0"
             width="100%"
+            ref="main_page_iframe"
         ></iframe>
     </div>
 </template>
@@ -17,7 +18,6 @@ export default {
         return {};
     },
     mounted() {
-        // this.onloadIfrme();
         const oIframe = document.getElementById("bdIframe");
         // const deviceWidth = document.documentElement.clientWidth;
         const deviceHeight = document.documentElement.clientHeight;
@@ -26,6 +26,16 @@ export default {
     },
     methods: {
         handleClick() {},
+        setIframeHeight(id) {
+            var iframe = document.getElementById("bdIframe");
+            try {
+                var bHeight = iframe.contentWindow.document.body.scrollHeight;
+                var dHeight =
+                    iframe.contentWindow.document.documentElement.scrollHeight;
+                var height = Math.min(bHeight, dHeight);
+                iframe.height = height + 20;
+            } catch (ex) {}
+        },
     },
 };
 </script>

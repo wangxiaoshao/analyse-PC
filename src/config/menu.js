@@ -135,7 +135,7 @@ export default {
                 {
                     menuId: "0073",
                     name: "系统日志",
-                    path: "/system-log",
+                    path: "/log-manage",
                     type: 1,
                     key: "menuSystemLog",
                     icon: "fa fa-address-book",

@@ -15,9 +15,12 @@ import "@src/common/font_1568136_nu78g9xw7jp/iconfont.css";
 import "@src/common/font_1568136_nu78g9xw7jp/iconfont.js";
 import "@src/common/font_1568136_nu78g9xw7jp/icon.css";
 import VueCookies from "vue-cookie";
+import moment from "moment";
 import "./filters";
 import { api, urlNames } from "@src/api";
 import initRouter from "@src/router/index";
+moment.locale("zh-cn");
+Vue.prototype.$moment = moment;
 Vue.use(VueCookies);
 Vue.use(elementUI, {
     size: "medium",
