@@ -1,10 +1,10 @@
 import urlNames from "../url-names";
 export default {
-    [urlNames.getTreeList]: {
+    // 系统日志--获取所有日志类型
+    [urlNames.getAllLogTypes]: {
         type: "get",
-        url: "/api/appdata/areaOrg/getTreeList",
+        url: "/api/appdata/log/getAllLogTypes",
         keepOriginResponse: true,
-        showLoading: true,
         serve: "organizationManagePC",
     },
 };

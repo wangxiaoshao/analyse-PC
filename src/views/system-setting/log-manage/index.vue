@@ -4,15 +4,21 @@
             <el-tab-pane label="操作日志" name="first">
                 <operation-log></operation-log>
             </el-tab-pane>
-            <el-tab-pane label="系统日志" name="second">系统日志</el-tab-pane>
-            <el-tab-pane label="共享日志" name="third">共享日志</el-tab-pane>
+            <el-tab-pane label="系统日志" name="second">
+                <system-log></system-log>
+            </el-tab-pane>
+            <el-tab-pane label="共享日志" name="third">
+                <share-log></share-log>
+            </el-tab-pane>
         </el-tabs>
     </div>
 </template>
 <script>
 import OperationLog from "./components/operation-log";
+import SystemLog from "./components/system-log";
+import ShareLog from "./components/share-log";
 export default {
-    components: { OperationLog },
+    components: { OperationLog, SystemLog, ShareLog },
     data() {
         return {
             activeName: "first",

@@ -74,9 +74,10 @@ export default {
     },
     methods: {
         dateChange(val) {
-            this.startDate = val[0];
-            this.endDate = val[1];
-            this.doformatParams();
+            if (val) {
+                this.startDate = val[0];
+                this.endDate = val[1];
+            }
         },
         doApplyList() {
             let appList = [...this.app.applicationList];
@@ -86,7 +87,6 @@ export default {
                 }
             });
             this.appList = appList;
-            // console.log(appList, "qqqq");
         },
         applyChange(val) {
             console.log(this.systemId);
@@ -99,10 +99,6 @@ export default {
                 deptId: this.deptId,
                 startDate: this.startDate,
                 endDate: this.endDate,
-                format1: this.formatParams.format1,
-                format2: this.formatParams.format2,
-                startDay: this.formatParams.format3,
-                size: this.formatParams.format4,
             };
             this.initSystem("person", this.doSrcParams(data));
         },

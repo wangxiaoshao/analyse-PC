@@ -1,11 +1,27 @@
 
+
 .site__head {
   padding: 0 10px 0 0;
   color: #333;
-  height: 60px;
+  height: 80px;
   min-width: 900px;
-
+  display: flex;
+  .logo {
+    min-width: 210px;
+    height: 100%;
+    text-align: center;
+    background-color: #F6F8FC;
+    border-bottom: 2px solid #f5f5f5;
+    box-sizing: border-box;
+    img {
+      width: 60px;
+      margin-top: 10px;
+      border-radius: 50%;
+      // vertical-align: middle;
+    }
+  }
   .site__head-content {
+    padding-left: 20px;
     display: flex;
     height: inherit;
     width: 100%;
@@ -18,22 +34,21 @@
     flex: 1 1 auto;
     display: flex;
 
-    .logo {
-      img {
-        // border-radius: 50%;~
-        width: 45px;
-        height: 45px;
-        vertical-align: middle;
-        border-radius: 6px;
-      }
-    }
+  
 
     .name {
       flex: 1;
       h2 {
-        padding: 9px 0 0 10px;
-        color: #E7E70D;
-        font-family: "書體坊顏體㊣";
+        // padding: 9px 0 0 10px;
+        font-family: "書體坊顏體㊣"; 
+        color: #364064;
+        span{
+         cursor: pointer;
+        img{
+          width:24px;
+          vertical-align: middle;
+        }
+        }
       }
     }
   }
@@ -41,7 +56,7 @@
   .site__head--left, .site__head--right {
     flex: 0 1 auto;
     height: inherit;
-    line-height: 60px;
+    line-height: 80px;
   }
 
   .site__head--left img {
@@ -53,15 +68,15 @@
     padding-right: 5px;
     text-align: right;
     font-size: 16px;
-    background-color: #b1a8e4 8700% 8700%;
+    background-color: #3997fa 8700% 8700%;
     .my-apply{
       margin: 0px 15px;
       cursor: pointer;
     }
     .userIcon{
-      color:#E7E70D;
+      color:#3694f7;
       font-weight: bold;
-      // #A9CFC8F5  #b1a8e4
+      // #A9CFC8F5  #3997fa
       margin-right: 3px;
     }
     .ico {

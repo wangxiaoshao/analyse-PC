@@ -134,9 +134,9 @@
 import { mapState } from "vuex";
 import { api, urlNames } from "@src/api";
 import dataStatistics from "@src/mixins/data-statistics";
-import pickerOptions from "@src/mixins/picker-options";
+import applicationList from "@src/mixins/apply";
 export default {
-    mixins: [dataStatistics, pickerOptions],
+    mixins: [dataStatistics, applicationList],
     data() {
         return {
             appList: [],
@@ -170,14 +170,13 @@ export default {
     },
     methods: {
         doApplyList() {
-            let appList = [...this.app.applicationList];
+            let appList = [...this.applicationList];
             appList.map((item, index) => {
                 if (item.id === 5) {
                     appList.splice(index, 1);
                 }
             });
             this.appList = appList;
-            console.log(appList, "qqqq");
         },
         getStateList() {
             if (this.app.rolesInfo.roleName === "UNIT_MANAGER") {
@@ -326,16 +325,15 @@ export default {
             );
         },
         dateChange(val) {
-            console.log(val);
-            this.startDate = val[0];
-            this.endDate = val[1];
-            if (this.systemId === 6) {
-                this.startDate1 = val[0];
-                this.endDate1 = val[1];
-                this.searchDate[0] = this.startDate1;
-                this.searchDate[1] = this.endDate1;
-            } else {
-                this.doformatParams();
+            if (val) {
+                this.startDate = val[0];
+                this.endDate = val[1];
+                if (this.systemId === 6) {
+                    this.startDate1 = val[0];
+                    this.endDate1 = val[1];
+                    this.searchDate[0] = this.startDate1;
+                    this.searchDate[1] = this.endDate1;
+                }
             }
         },
         stateChange(data) {

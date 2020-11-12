@@ -1,8 +1,9 @@
 <template>
     <div class="operation-log">
         <el-form label-position="right" inline>
-            <!-- <el-form-item>
+            <el-form-item label="分类：">
                 <el-select
+                    filterable
                     size="medium"
                     placeholder="请选择日志类型"
                     @change="logChange"
@@ -10,14 +11,13 @@
                 >
                     <el-option
                         v-for="item in logTypeList"
-                        :key="item.type"
-                        :label="item.name"
-                        :value="item.type"
+                        :key="item.id"
+                        :label="item.subject"
+                        :value="item.id"
                     ></el-option>
                 </el-select>
-            </el-form-item> -->
+            </el-form-item>
             <el-form-item>
-                <!-- <span>日期：</span> -->
                 <el-date-picker
                     v-model="searchDate"
                     type="daterange"
@@ -32,21 +32,6 @@
                 </el-date-picker>
             </el-form-item>
             <el-form-item>
-                <el-select
-                    size="medium"
-                    placeholder="请选择日志类型"
-                    @change="logChange"
-                    v-model="searchParams.actionType"
-                >
-                    <el-option
-                        v-for="item in logTypeList"
-                        :key="item.type"
-                        :label="item.name"
-                        :value="item.type"
-                    ></el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item>
                 <el-input
                     placeholder="请输入搜索关键词"
                     v-model="searchParams.keyWord"
@@ -55,6 +40,11 @@
                     prefix-icon="el-icon-search"
                     style="width: 175px;"
                 ></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" plain @click="openSelectDailog"
+                    >选择单位</el-button
+                >
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="findCondition"
@@ -71,38 +61,61 @@
                 frameborder="0"
             ></iframe>
         </div>
+        <select-tree
+            :selectTreeDailog="selectTreeDailog"
+            @dialogReturnData="dialogReturnData"
+            @closeSelectDailog="closeSelectDailog"
+        ></select-tree>
     </div>
 </template>
 <script>
+import { api, urlNames } from "@src/api";
 import handleTable from "@src/mixins/new/handle-table";
 import dataStatistics from "@src/mixins/data-statistics";
-import pickerOptions from "@src/mixins/picker-options";
+import SelectTree from "@src/components/SelectTree/index";
 export default {
-    mixins: [handleTable, dataStatistics, pickerOptions],
+    mixins: [handleTable, dataStatistics],
+    components: {
+        SelectTree,
+    },
     data() {
         return {
-            logTypeList: [
-                { type: 1, name: "查询日志" },
-                { type: 2, name: "导出日志" },
-                { type: 3, name: "权限日志" },
-            ],
+            selectTreeDailog: {
+                title: "选择查询单位",
+                openSelectTreeVisiable: false,
+                isSelectType: 2, // 1 区县  2  单位  3 人员 4市州
+                isSingSelect: false, // 是否单选,true 单选，false:多选
+                isClearSelected: true, // 再次打开是否清空已选框
+            },
+            logTypeList: [],
             searchParams: {
-                actionType: 1,
+                actionType: "",
                 keyWord: "",
             },
         };
     },
     created() {
         this.initializeDate();
+        this.getAllLogTypes();
     },
     mounted() {
         this.findCondition();
     },
     methods: {
+        // 系统日志--获取所有日志类型
+        getAllLogTypes() {
+            api[urlNames["getAllLogTypes"]]({}).then((res) => {
+                if (res.data) {
+                    this.logTypeList = res.data;
+                    this.searchParams.actionType = this.logTypeList[0].id;
+                }
+            });
+        },
         dateChange(val) {
-            this.startDate = val[0];
-            this.endDate = val[1];
-            console.log(this.startDate, this.startDate);
+            if (val) {
+                this.startDate = val[0];
+                this.endDate = val[1];
+            }
         },
         logChange() {
             console.log(this.searchParams.actionType);
@@ -119,8 +132,17 @@ export default {
             this.srcUrl =
                 this.hostApi + this.reportSystemSrc + this.doSrcParams(data);
         },
-        // 查看日志详情
-        openDetialDialog() {},
+        openSelectDailog() {
+            this.selectTreeDailog.openSelectTreeVisiable = true;
+        },
+        closeSelectDailog() {
+            this.selectTreeDailog.openSelectTreeVisiable = false;
+        },
+        dialogReturnData(userData, authData) {
+            authData = authData || [];
+            let dataAry = [...userData, ...authData];
+            console.log(dataAry);
+        },
     },
 };
 </script>

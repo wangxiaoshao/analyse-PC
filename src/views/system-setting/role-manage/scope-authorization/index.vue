@@ -97,7 +97,7 @@ export default {
     data() {
         return {
             selectTreeDailog: {
-                title: "选择授权区县",
+                title: "选择授权单位",
                 openSelectTreeVisiable: false,
                 isSelectType: 2, // 1 区县  2  单位  3 人员 4市州
                 isSingSelect: true, // 是否单选,true 单选，false:多选

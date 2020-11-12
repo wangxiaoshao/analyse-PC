@@ -511,13 +511,12 @@ export default {
 
         // 返回数据
         submitSelectedData() {
-            console.log(
-                this.selectCheckList,
-                this.selectedList,
-                this.selectingList
-            );
             this.$emit("dialogReturnData", this.selectCheckList, this.lastData);
-            this.handleClose();
+            if (this.selectTreeDailog.isClearSelected) {
+                this.$emit("closeSelectDailog");
+            } else {
+                this.handleClose();
+            }
         },
 
         // 关闭授权区域弹窗组件

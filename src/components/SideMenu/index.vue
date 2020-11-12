@@ -3,6 +3,9 @@
         <el-aside :width="isCollapse ? '64px' : '210px'">
             <el-scrollbar :style="asideStyle">
                 <div v-bind:class="isCollapse ? 'collapse' : ''">
+                    <!-- <div class="logo">
+                        <img src="@src/common/images/logo1.png" alt="" />
+                    </div> -->
                     <!--        <div index="brand" class="site-brand" v-on:click="toggleAsideCollapse">-->
                     <!--          <span v-show="!isCollapse" class="brand-name">组织机构管控平台</span>-->
                     <!--          <span class="aside-toggle"></span>-->
@@ -14,7 +17,7 @@
                         @open="open"
                         @close="close"
                         @select="select"
-                        background-color="#FFFFFF"
+                        background-color="#F6F8FC"
                         text-color="#4A4A4A"
                         class="example"
                         :router="false"

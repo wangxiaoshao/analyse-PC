@@ -98,4 +98,6 @@ export default {
     searchOrgUser: "searchOrgUser",
     // 授权范围--搜索单位
     searchAreaOrgs: "searchAreaOrgs",
+    // 系统日志--获取所有日志类型
+    getAllLogTypes: "getAllLogTypes",
 };

@@ -60,10 +60,10 @@
 <script>
 import SelectTree from "@src/components/SelectTree/index";
 import dataStatistics from "@src/mixins/data-statistics";
-import pickerOptions from "@src/mixins/picker-options";
 import { mapState } from "vuex";
+import applicationList from "@src/mixins/apply";
 export default {
-    mixins: [dataStatistics, pickerOptions],
+    mixins: [dataStatistics, applicationList],
     components: {
         SelectTree,
     },
@@ -98,12 +98,13 @@ export default {
     },
     methods: {
         dateChange(val) {
-            this.startDate = val[0];
-            this.endDate = val[1];
-            this.doformatParams();
+            if (val) {
+                this.startDate = val[0];
+                this.endDate = val[1];
+            }
         },
         doApplyList() {
-            let appList = [...this.app.applicationList];
+            let appList = [...this.applicationList];
             appList.map((item, index) => {
                 if (item.id === 1 || item.id === 5) {
                     appList.splice(index, 1);
@@ -134,10 +135,6 @@ export default {
                 orgId: this.orgId,
                 deptId: this.deptId,
                 endDate: this.endDate,
-                format1: this.formatParams.format1,
-                format2: this.formatParams.format2,
-                startDay: this.formatParams.format3,
-                size: this.formatParams.format4,
             };
             this.initSystem("person", this.doSrcParams(data));
         },

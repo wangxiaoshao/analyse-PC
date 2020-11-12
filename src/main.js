@@ -69,7 +69,7 @@ const initVueInstance = (router, userInfo) => {
 //     authorizedType: 2,
 //     roleId: 1,
 //     roleName: "CITY_MANAGER",
-//     roleTitle: "市州管理员",
+//     roleTitle: "超级管理员",
 //     uid: "7713347423288511675",
 // };
 
@@ -81,7 +81,7 @@ const initVueInstance = (router, userInfo) => {
 //     created() {
 //         // api[urlNames["getUserRole"]]().then((res) => {
 //         //     if (res.status === 0) {
-//         //         this.$store.commit("SET_ROLE_INFO", res.data || {});
+//         this.$store.commit("SET_ROLE_INFO", userInfo || {});
 //         //     } else {
 //         //         alert(res.message);
 //         //     }

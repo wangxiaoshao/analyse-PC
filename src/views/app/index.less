@@ -1,9 +1,9 @@
 @import "~@src/common/style/_variables";
 
-
 .site {
   &-padding{
     padding: 20px;
+    border-top: 1px solid #f5f5f5;
   }
   &-border{
     border-bottom: 1px solid @border-color;
@@ -32,6 +32,8 @@
     //site 主要模块样式
     .site-block {
       display: block;
+      // f5f5f5
+      background: #fff; 
       height: 100vh;
     }
     .operator-row{
@@ -111,6 +113,7 @@
       top: 0px;
       bottom: 0;
       background: #fff;
+      border: 1px solid #f5f5f5;
     }
   }
   &-module {
@@ -124,6 +127,7 @@
   &-breadcrumb{
     font-size: 16px !important;
     color: #888888;
+    // background: #f5f5f5;
     line-height: @breadcrumb-height;
     .fa{
       margin-right: 5px;
@@ -173,13 +177,18 @@
   }
 }
 .el-header{
-  background-color: #b1a8e4;
-  border-bottom: 1px solid #b1a8e4;
+  padding:0 20px 0 0 !important;
+  height: 80px !important;
+  background-color: #ffff;
+  border-bottom: 2px solid #f5f5f5;
 }
 .el-menu-item{
   &.is-active{
-    color: @theme !important;
-    background: #F5F5F5 !important;
+    // color: @theme !important;
+    color:#ffff !important;
+    // background: #3694f7 !important;
+background: linear-gradient(0deg, #2D8CF0, #3E9CFE) !important;
+    border-radius: 5px;
   }
   font-size: 14px;
   a {

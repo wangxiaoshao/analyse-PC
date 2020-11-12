@@ -1,14 +1,42 @@
 <template>
     <div id="app">
         <el-container class="site-container">
-            <el-header>
-                <site-head :user="user"></site-head>
-            </el-header>
             <!-- <side-menu
                 @select="select"
                 :asideMenu="asideMenu"
                 :defaultActive="asideMenuActive"
             ></side-menu> -->
+
+            <!-- <el-header>
+                <site-head :user="user"></site-head>
+            </el-header>
+            <el-container>
+                <side-menu
+                    @select="select"
+                    :asideMenu="asideMenu"
+                    :defaultActive="asideMenuActive"
+                ></side-menu>
+                <el-container class="site-block">
+                    <site-breadcrumb
+                        :breadcrumb="app.breadcrumb"
+                        :pageBreadcrumb="app.pageBreadcrumb"
+                        :noticeShowBtn="app.noticeShowBtn"
+                        @go-back="goBack"
+                        @goHome="goHome"
+                    ></site-breadcrumb>
+                    <el-scrollbar :style="scrollStyle" class="site-scroll">
+                        <el-main id="siteMain" class="site-main">
+                            <transition name="fade-transform" mode="out-in">
+                                <router-view></router-view>
+                            </transition>
+                        </el-main>
+                    </el-scrollbar>
+                </el-container>
+            </el-container> -->
+            <el-header>
+                <site-head :user="user"></site-head>
+            </el-header>
+
             <el-container>
                 <side-menu
                     @select="select"
@@ -36,7 +64,6 @@
         <!--    <login></login>-->
     </div>
 </template>
-
 <script>
 import { api, urlNames } from "@src/api";
 import { mapState, mapMutations } from "vuex";
@@ -89,7 +116,7 @@ export default {
         ...mapState(["app"]),
         scrollStyle() {
             return {
-                height: this.app.windowHeight - 123 + "px",
+                height: this.app.windowHeight - 150 + "px",
                 width: "100%",
             };
         },

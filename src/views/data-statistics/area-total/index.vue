@@ -104,6 +104,7 @@
         </div>
 
         <div class="system-data">
+            <!-- <el-button @click="send('_g().gotoNextPage()')">点击</el-button> -->
             <div class="chart-box">
                 <iframe
                     @onload="afterload"
@@ -111,7 +112,7 @@
                     id="areaFrame"
                     frameborder="0"
                     scrolling="no"
-                    ref="iframe"
+                    ref="areaFrame"
                 ></iframe>
             </div>
         </div>
@@ -120,10 +121,10 @@
 <script>
 import { mapState } from "vuex";
 import { api, urlNames } from "@src/api";
-import pickerOptions from "@src/mixins/picker-options";
 import dataStatistics from "@src/mixins/data-statistics";
+import applicationList from "@src/mixins/apply";
 export default {
-    mixins: [pickerOptions, dataStatistics],
+    mixins: [dataStatistics, applicationList],
     data() {
         return {
             appList: [],
@@ -146,17 +147,64 @@ export default {
     mounted() {
         this.pickDateOptionRules();
         this.pickMounthOptionRules();
+        // this.$refs.areaFrame.onload = this.afterload();
+        // setTimeout(function () {
+        //     let contentPane = document.getElementById("areaFrame").contentPane;
+        //     console.log("contentPane:", contentPane);
+        // }, 1000);
+        // (function (win, doc) {
+        //     var ifr = doc.getElementById("areaFrame").contentWindow;
+        //     var cb = function (json) {
+        //         eval(json);
+        //     };
+        //     var sendMessage = function () {
+        //         if (win.postMessage) {
+        //             if (win.addEventListener) {
+        //                 win.addEventListener(
+        //                     "message",
+        //                     function (e) {
+        //                         cb.call(win, e.data);
+        //                     },
+        //                     false
+        //                 );
+        //             } else if (win.attachEvent) {
+        //                 win.attachEvent("onmessage", function (e) {
+        //                     cb.call(win, e.data);
+        //                 });
+        //             }
+        //             return function (data) {
+        //                 ifr.postMessage(data, "*");
+        //             };
+        //         } else {
+        //             var hash = "";
+
+        //             setInterval(function () {
+        //                 if (win.name !== hash) {
+        //                     hash = win.name;
+        //                     cb.call(win, hash);
+        //                 }
+        //             }, 200);
+        //             return function (data) {
+        //                 ifr.name = data;
+        //             };
+        //         }
+        //     };
+        //     win.sendMessage = sendMessage();
+        // })(window, document);
     },
     computed: {
         ...mapState(["app"]),
     },
     methods: {
+        // send(msg) {
+        //     sendMessage(msg);
+        // },
         afterload() {
             // iframe 加载后触发
             console.log(11111);
             console.log(this.$refs.iframe.contentWindow);
-            var contentPane = document.getElementById("reportFrame")
-                .contentWindow.contentPane; // 获取报表 contentPane
+            var contentPane = document.getElementById("areaFrame").contentWindow
+                .contentPane; // 获取报表 contentPane
             var cPageIndex = contentPane.currentPageIndex; // 当前所在页
             var pv =
                 "第" +
@@ -178,7 +226,7 @@ export default {
             });
         },
         doApplyList() {
-            let appList = [...this.app.applicationList];
+            let appList = [...this.applicationList];
             appList.map((item, index) => {
                 if (item.id === 5) {
                     appList.splice(index, 1);
@@ -283,6 +331,7 @@ export default {
         searchData() {
             let data = {
                 isStat: this.unitType === 2 ? "" : this.unitType,
+                notStat: this.unitType === 2 ? this.unitType : "",
                 cityNum:
                     this.stateParams.treeId === "520000"
                         ? 0
@@ -308,7 +357,7 @@ export default {
                 data.startDay = this.formatParams.format3;
                 data.size = this.formatParams.format4;
             }
-            console.log(data);
+            // console.log(data);
             this.initSystem("area", this.doSrcParams(data));
         },
     },

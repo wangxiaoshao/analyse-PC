@@ -2,7 +2,9 @@
  * Created by wangxiaoshao on 2020/11/05.
  */
 import { areaReportList, reportSystemSrc } from "@src/config/report";
+import pickerOptions from "@src/mixins/picker-options";
 export default {
+    mixins: [pickerOptions],
     data() {
         return {
             startDate: "",
