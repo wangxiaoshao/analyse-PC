@@ -33,35 +33,35 @@
                     </el-scrollbar>
                 </el-container>
             </el-container> -->
-            <el-header>
-                <site-head :user="user"></site-head>
-            </el-header>
-
             <el-container>
                 <side-menu
                     @select="select"
                     :asideMenu="asideMenu"
                     :defaultActive="asideMenuActive"
                 ></side-menu>
-                <el-container class="site-block">
-                    <site-breadcrumb
-                        :breadcrumb="app.breadcrumb"
-                        :pageBreadcrumb="app.pageBreadcrumb"
-                        :noticeShowBtn="app.noticeShowBtn"
-                        @go-back="goBack"
-                        @goHome="goHome"
-                    ></site-breadcrumb>
-                    <el-scrollbar :style="scrollStyle" class="site-scroll">
-                        <el-main id="siteMain" class="site-main">
-                            <transition name="fade-transform" mode="out-in">
-                                <router-view></router-view>
-                            </transition>
-                        </el-main>
-                    </el-scrollbar>
+                <el-container>
+                    <el-header>
+                        <site-head :user="user"></site-head>
+                    </el-header>
+                    <el-container class="site-block">
+                        <site-breadcrumb
+                            :breadcrumb="app.breadcrumb"
+                            :pageBreadcrumb="app.pageBreadcrumb"
+                            :noticeShowBtn="app.noticeShowBtn"
+                            @go-back="goBack"
+                            @goHome="goHome"
+                        ></site-breadcrumb>
+                        <el-scrollbar :style="scrollStyle" class="site-scroll">
+                            <el-main id="siteMain" class="site-main">
+                                <transition name="fade-transform" mode="out-in">
+                                    <router-view></router-view>
+                                </transition>
+                            </el-main>
+                        </el-scrollbar>
+                    </el-container>
                 </el-container>
             </el-container>
         </el-container>
-        <!--    <login></login>-->
     </div>
 </template>
 <script>

@@ -1,9 +1,9 @@
 <template>
     <div>
         <div class="site__head">
-            <div class="logo">
-                <img src="@src/common/images/logo1.png" alt="" />
-            </div>
+            <!-- <div class="logo">
+                <img src="@src/common/images/logo.png" alt="" />
+            </div> -->
             <div class="site__head-content">
                 <div class="site__head--center">
                     <div class="name">
@@ -16,7 +16,7 @@
                                 @click="goMyApplication"
                             >
                                 <img
-                                    src="@src/common/images/apply1.png"
+                                    src="@src/common/images/apply.svg"
                                     alt=""
                                 />
                             </span>
@@ -27,14 +27,12 @@
                                 @click="loginout"
                             >
                                 <img
-                                    src="@src/common/images/loginout.png"
+                                    src="@src/common/images/loginout.svg"
                                     alt=""
                                 />
                             </span>
                         </h2>
                     </div>
-
-                    <span></span>
                 </div>
                 <div class="site__head--right">
                     <a

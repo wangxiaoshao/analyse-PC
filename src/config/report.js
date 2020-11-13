@@ -1,6 +1,22 @@
 // 数据统计 report
 export const areaReportList = [
     {
+        id: -1,
+        systemName: "全部",
+        areaUrl:
+            "mh_statistics%252F%25E9%2597%25A8%25E6%2588%25B7%25E5%258C%25BA%25E5%259F%259F%25E6%2595%25B0%25E6%258D%25AE%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=16273013-f2a2-4631-a99c-89b7f6f25783",
+        unitUrl:
+            "mh_statistics%252F%25E9%2597%25A8%25E6%2588%25B7%25E5%258D%2595%25E4%25BD%258D%25E6%2595%25B0%25E6%258D%25AE%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=16273013-f2a2-4631-a99c-89b7f6f25783",
+        personUrl: "",
+        homePersonUrl: "",
+        allProvinceUrl:
+            "homepage_whole_province%252F%25E5%2585%25A8%25E7%259C%2581%25E9%2597%25A8%25E6%2588%25B7%25E5%25BA%2594%25E7%2594%25A8%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=f0f3b31d-4565-4d97-a727-3996f28620c5",
+        cityOrCountyUrl:
+            "homepage_whole_city_qx%252F%25E5%2585%25A8%25E5%25B8%2582%25E5%258C%25BA%25E9%2597%25A8%25E6%2588%25B7%25E5%25BA%2594%25E7%2594%25A8%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=8b0e8398-30c4-457f-83de-19ff32bad3d7",
+        homeUnitUrl:
+            "homepage_organization%252F%25E5%258D%2595%25E4%25BD%258D%25E9%2597%25A8%25E6%2588%25B7%25E5%25BA%2594%25E7%2594%25A8%25E8%25B6%258B%25E5%258A%25BF%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=8b0e8398-30c4-457f-83de-19ff32bad3d7",
+    },
+    {
         id: 1,
         systemName: "门户",
         areaUrl:
@@ -56,7 +72,7 @@ export const areaReportList = [
         id: 4,
         systemName: "快传",
         areaUrl:
-            "kc_statistics%252F%25E5%25BF%25AB%25E4%25BC%25A0%25E5%258C%25BA%25E5%259F%259F%25E6%2595%25B0%25E6%258D%25AE%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=6cc8d849-f936-44b1-93d8-eaac44ba0a1c",
+            "kc_statistics%252F%25E5%25BF%25AB%25E4%25BC%25A0%25E5%258C%25BA%25E5%259F%259F%25E5%259B%25BE%25E8%25A1%25A8%25E6%2595%25B0%25E6%258D%25AE%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=900a43f6-931f-4b9d-96e4-4f72710a4b3d",
         unitUrl:
             "kc_statistics%252F%25E5%25BF%25AB%25E4%25BC%25A0%25E5%258D%2595%25E4%25BD%258D%25E6%2595%25B0%25E6%258D%25AE%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=6cc8d849-f936-44b1-93d8-eaac44ba0a1c",
         personUrl:

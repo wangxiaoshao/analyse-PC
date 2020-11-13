@@ -161,7 +161,7 @@
                                                         v-if="num === 0"
                                                     >
                                                         <img
-                                                            src="@src/common/images/notice.png"
+                                                            src="@src/common/images/notice.svg"
                                                             alt=""
                                                         />
                                                     </span>

@@ -107,15 +107,18 @@
             </el-form-item>
         </el-form>
         <div class="system-list">
-            <span>系统应用： </span>
-            <el-radio-group v-model="systemId" @change="applyChange">
-                <el-radio-button
-                    :label="item.id"
-                    v-for="item in appList"
-                    :key="item.systemSymbol"
-                    >{{ item.systemName }}</el-radio-button
+            <transition-group tag="ul" appear>
+                <li
+                    v-for="item in app.applicationList"
+                    :key="item.id"
+                    :class="{
+                        isActive: systemId == item.id,
+                    }"
+                    @click="applyChange(item.id)"
                 >
-            </el-radio-group>
+                    {{ item.systemName }}
+                </li>
+            </transition-group>
         </div>
         <div class="system-data">
             <div class="chart-box">
@@ -139,7 +142,6 @@ export default {
     mixins: [dataStatistics, applicationList],
     data() {
         return {
-            appList: [],
             startDate1: "",
             endDate1: "",
             unitType: 2,
@@ -158,7 +160,6 @@ export default {
     created() {
         this.initializeDate();
         this.initializeMounth();
-        this.doApplyList();
         this.getStateList();
     },
     mounted() {
@@ -169,15 +170,6 @@ export default {
         ...mapState(["app"]),
     },
     methods: {
-        doApplyList() {
-            let appList = [...this.applicationList];
-            appList.map((item, index) => {
-                if (item.id === 5) {
-                    appList.splice(index, 1);
-                }
-            });
-            this.appList = appList;
-        },
         getStateList() {
             if (this.app.rolesInfo.roleName === "UNIT_MANAGER") {
                 this.initUnit("", "", this.unitType);
@@ -360,6 +352,7 @@ export default {
         },
         unitChange() {},
         applyChange(val) {
+            this.systemId = val;
             this.searchData();
         },
         searchData() {
@@ -396,10 +389,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.chart-box {
-    width: 100%;
-    padding: 20px 0;
-}
+@import "../area-total/index.less";
 #unitFrame {
     width: 100%;
     height: 480px;

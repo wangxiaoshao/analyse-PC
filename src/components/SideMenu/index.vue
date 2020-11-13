@@ -1,11 +1,11 @@
 <template>
     <div class="site-aside">
         <el-aside :width="isCollapse ? '64px' : '210px'">
+            <div class="logo">
+                <img src="@src/common/images/logo.png" alt="" />
+            </div>
             <el-scrollbar :style="asideStyle">
                 <div v-bind:class="isCollapse ? 'collapse' : ''">
-                    <!-- <div class="logo">
-                        <img src="@src/common/images/logo1.png" alt="" />
-                    </div> -->
                     <!--        <div index="brand" class="site-brand" v-on:click="toggleAsideCollapse">-->
                     <!--          <span v-show="!isCollapse" class="brand-name">组织机构管控平台</span>-->
                     <!--          <span class="aside-toggle"></span>-->
@@ -50,7 +50,7 @@ export default {
         ...mapState(["app"]),
         asideStyle() {
             return {
-                height: this.app.windowHeight - 60 + "px",
+                height: this.app.windowHeight - 110 + "px",
                 width: "100%",
             };
         },

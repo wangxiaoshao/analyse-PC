@@ -1,4 +1,4 @@
-import { mapState, mapMutations } from "vuex";
+import { mapState } from "vuex";
 export default {
     data() {
         return {};
@@ -8,8 +8,5 @@ export default {
         applicationList() {
             return this.app.applicationList;
         },
-    },
-    methods: {
-        ...mapMutations(["SET_APPLY_LIST"]),
     },
 };

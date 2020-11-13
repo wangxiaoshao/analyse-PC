@@ -43,7 +43,7 @@ export default [
     {
         path: "/",
         name: "default",
-        meta: { title: "首页" },
+        meta: { title: "首页", icon: "fa fa-home" },
         redirect: "/homePage",
         component: Blank,
         children: [
@@ -154,7 +154,7 @@ export default [
     {
         path: "/my-application",
         name: "MyApplication",
-        meta: { title: "我的应用情况", icon: "fa fa-bar-chart-o" },
+        meta: { title: "我的应用情况", icon: "el-icon-bangzhu" },
         component: () =>
             import(
                 /* webpackChunkName: "HomePage" */ "@src/views/my-application/index.vue"
@@ -165,7 +165,7 @@ export default [
     {
         path: "/data-template",
         name: "DataTemplate",
-        meta: { title: "数据模板", icon: "el-icon-set-up" },
+        meta: { title: "数据模板", icon: "el-icon-data-analysis" },
         onlyRolesShow: [roles.super, roles.unit],
         component: () =>
             import(
@@ -251,19 +251,6 @@ export default [
                     import(
                         /* webpackChunkName: "MessageReminding" */ "@src/views/system-setting/message-reminding/index.vue"
                     ),
-                // children: [
-                //     {
-                //         hidden: true,
-                //         path: "/message-reminding/message-rules",
-                //         name: "MessageRules",
-                //         // meta: { title: "通知规则设置" },
-                //         component: () =>
-                //             import(
-                //                 /* webpackChunkName: "MessageReminding" */ "@src/views/system-setting/message-reminding/message-rules/index.vue"
-                //             ),
-                //         meta: { activeMenu: "/message-reminding" },
-                //     },
-                // ],
             },
             {
                 onlyRolesShow: [roles.super, roles.unit],

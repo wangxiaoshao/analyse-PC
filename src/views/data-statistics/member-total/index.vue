@@ -29,15 +29,18 @@
             </el-form-item>
         </el-form>
         <div class="system-list">
-            <span>系统应用： </span>
-            <el-radio-group v-model="systemId" @change="applyChange">
-                <el-radio-button
-                    :label="item.id"
+            <transition-group tag="ul" appear>
+                <li
                     v-for="item in appList"
-                    :key="item.systemSymbol"
-                    >{{ item.systemName }}</el-radio-button
+                    :key="item.id"
+                    :class="{
+                        isActive: systemId == item.id,
+                    }"
+                    @click="applyChange(item.id)"
                 >
-            </el-radio-group>
+                    {{ item.systemName }}
+                </li>
+            </transition-group>
         </div>
         <div class="system-data">
             <div class="chart-box">
@@ -86,11 +89,11 @@ export default {
         };
     },
     created() {
+        this.doApplyList();
         this.pickDateOptionRules();
         this.initializeDate();
     },
     mounted() {
-        this.doApplyList();
         this.searchData();
     },
     computed: {
@@ -125,7 +128,7 @@ export default {
             this.userId = dataAry[0].treeId;
         },
         applyChange(val) {
-            console.log(this.systemId);
+            this.systemId = val;
             this.searchData();
         },
         searchData() {
@@ -139,13 +142,15 @@ export default {
             this.initSystem("person", this.doSrcParams(data));
         },
     },
+    watch: {
+        applicationList() {
+            this.doApplyList();
+        },
+    },
 };
 </script>
 <style lang="less" scoped>
-.chart-box {
-    width: 100%;
-    padding: 20px 0;
-}
+@import "../area-total/index.less";
 #memberFrame {
     width: 100%;
     height: 480px;

@@ -91,15 +91,27 @@
                 </el-row>
             </el-form>
             <div class="system-list">
-                <span>系统应用： </span>
-                <el-radio-group v-model="systemId" @change="applyChange">
-                    <el-radio-button
-                        :label="item.id"
-                        v-for="item in appList"
-                        :key="item.systemSymbol"
-                        >{{ item.systemName }}</el-radio-button
+                <transition-group tag="ul" appear>
+                    <li
+                        :key="-1"
+                        @click="applyChange(-1)"
+                        :class="{
+                            isActive: systemId == -1,
+                        }"
                     >
-                </el-radio-group>
+                        全部
+                    </li>
+                    <li
+                        v-for="item in app.applicationList"
+                        :key="item.id"
+                        :class="{
+                            isActive: systemId == item.id,
+                        }"
+                        @click="applyChange(item.id)"
+                    >
+                        {{ item.systemName }}
+                    </li>
+                </transition-group>
             </div>
         </div>
 
@@ -127,13 +139,12 @@ export default {
     mixins: [dataStatistics, applicationList],
     data() {
         return {
-            appList: [],
             unitType: 2,
             stateParams: {},
             areaParams: {},
             stateId: "",
             treeType: "",
-            systemId: 1,
+            systemId: -1,
             stateList: [],
             areaList: [],
         };
@@ -141,64 +152,65 @@ export default {
     created() {
         this.initializeDate();
         this.initializeMounth();
-        this.doApplyList();
         this.getStateList();
     },
     mounted() {
         this.pickDateOptionRules();
         this.pickMounthOptionRules();
-        // this.$refs.areaFrame.onload = this.afterload();
-        // setTimeout(function () {
-        //     let contentPane = document.getElementById("areaFrame").contentPane;
-        //     console.log("contentPane:", contentPane);
-        // }, 1000);
-        // (function (win, doc) {
-        //     var ifr = doc.getElementById("areaFrame").contentWindow;
+        // this.getStart();
+    },
+    computed: {
+        ...mapState(["app"]),
+    },
+    methods: {
+        // getStart() {
+        //     var ifr = document.getElementById("areaFrame").contentWindow;
+        //     console.log(ifr.contentPane);
         //     var cb = function (json) {
         //         eval(json);
         //     };
         //     var sendMessage = function () {
-        //         if (win.postMessage) {
-        //             if (win.addEventListener) {
-        //                 win.addEventListener(
+        //         if (window.postMessage) {
+        //             if (window.addEventListener) {
+        //                 window.addEventListener(
         //                     "message",
         //                     function (e) {
-        //                         cb.call(win, e.data);
+        //                         console.log(e.data, 1111);
+        //                         cb.call(window, e.data);
         //                     },
         //                     false
         //                 );
-        //             } else if (win.attachEvent) {
-        //                 win.attachEvent("onmessage", function (e) {
-        //                     cb.call(win, e.data);
+        //             } else if (window.attachEvent) {
+        //                 window.attachEvent("onmessage", function (e) {
+        //                     console.log(e.data, 2222);
+        //                     cb.call(window, e.data);
         //                 });
         //             }
         //             return function (data) {
+        //                 console.log(data, 333);
         //                 ifr.postMessage(data, "*");
         //             };
         //         } else {
         //             var hash = "";
 
         //             setInterval(function () {
-        //                 if (win.name !== hash) {
-        //                     hash = win.name;
-        //                     cb.call(win, hash);
+        //                 if (window.name !== hash) {
+        //                     hash = window.name;
+        //                     cb.call(window, hash);
         //                 }
         //             }, 200);
         //             return function (data) {
+        //                 console.log(data, 444);
         //                 ifr.name = data;
         //             };
         //         }
         //     };
-        //     win.sendMessage = sendMessage();
-        // })(window, document);
-    },
-    computed: {
-        ...mapState(["app"]),
-    },
-    methods: {
-        // send(msg) {
-        //     sendMessage(msg);
+        //     console.log(ifr.contentPane, 88888);
+        //     window.sendMessage = sendMessage();
         // },
+        send(msg) {
+            window.sendMessage(msg);
+        },
         afterload() {
             // iframe 加载后触发
             console.log(11111);
@@ -225,15 +237,6 @@ export default {
                 document.getElementById("page").value = pv; // 重新给 page 文本赋页码信息
             });
         },
-        doApplyList() {
-            let appList = [...this.applicationList];
-            appList.map((item, index) => {
-                if (item.id === 5) {
-                    appList.splice(index, 1);
-                }
-            });
-            this.appList = appList;
-        },
         getStateList() {
             if (
                 this.app.rolesInfo.roleName === "SUPER_MANAGER" ||
@@ -245,13 +248,6 @@ export default {
                 }).then((res) => {
                     if (res.data) {
                         this.stateList = res.data;
-                        if (this.stateList.length > 0) {
-                            this.stateParams = this.stateList[0];
-                            this.initArea(
-                                this.stateParams.treeId,
-                                this.stateParams.treeType
-                            );
-                        }
                     }
                 });
             } else {
@@ -272,9 +268,6 @@ export default {
                         });
                         if (this.app.rolesInfo.roleName === "COUNTY_MANAGER") {
                             this.areaList = aryList;
-                            if (this.areaList.length > 0) {
-                                this.areaParams = this.areaList[0];
-                            }
                             return;
                         }
                         if (
@@ -284,13 +277,6 @@ export default {
                             this.app.rolesInfo.roleName === "CITY_MANAGER"
                         ) {
                             this.stateList = aryList;
-                            if (this.stateList.length > 0) {
-                                this.stateParams = this.stateList[0];
-                                this.initArea(
-                                    this.stateParams.treeId,
-                                    this.stateParams.treeType
-                                );
-                            }
                         }
                     }
                 });
@@ -326,6 +312,7 @@ export default {
         },
         areaChange(val) {},
         applyChange(val) {
+            this.systemId = val;
             this.searchData();
         },
         searchData() {
@@ -334,18 +321,16 @@ export default {
                 notStat: this.unitType === 2 ? this.unitType : "",
                 cityNum:
                     this.stateParams.treeId === "520000"
-                        ? 0
-                        : this.stateParams.treeId
-                        ? this.stateParams.treeId
-                        : "",
+                        ? ""
+                        : this.stateParams.treeId || "",
                 codeNum:
                     this.stateParams.treeId === "520000"
                         ? this.stateParams.treeId
-                        : this.areaParams.treeId,
+                        : this.areaParams.treeId || "",
                 qxNum:
                     this.stateParams.treeId === "520000"
-                        ? 0
-                        : this.areaParams.treeId,
+                        ? ""
+                        : this.areaParams.treeId || "",
                 startDate: this.startDate,
                 endDate: this.endDate,
             };
@@ -372,13 +357,5 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.chart-box {
-    width: 100%;
-    padding: 20px 0;
-}
-#areaFrame {
-    width: 100%;
-    height: 480px;
-    overflow: hidden;
-}
+@import "./index.less";
 </style>
