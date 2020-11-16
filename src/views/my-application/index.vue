@@ -47,8 +47,9 @@
 import dataStatistics from "@src/mixins/data-statistics";
 import pickerOptions from "@src/mixins/picker-options";
 import { mapState } from "vuex";
+import applicationList from "@src/mixins/apply";
 export default {
-    mixins: [dataStatistics, pickerOptions],
+    mixins: [dataStatistics, pickerOptions, applicationList],
     data() {
         return {
             memberName: "",
@@ -101,6 +102,11 @@ export default {
                 endDate: this.endDate,
             };
             this.initSystem("person", this.doSrcParams(data));
+        },
+    },
+    watch: {
+        applicationList() {
+            this.doApplyList();
         },
     },
 };

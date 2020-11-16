@@ -15,8 +15,11 @@ export default {
             searchMouth: [],
             reportSrcList: areaReportList,
             tableName: "`static_db`.logger_action_",
+            areaTableSrc: "",
             hostApi:
                 "http://172.16.68.41:8080/webroot/decision/view/report?viewlet=",
+            // hostApi:
+            //     "http://localhost:8088/webroot/decision/view/report?viewlet=",
             srcUrl: "",
             reportSystemSrc: reportSystemSrc,
             unitTypeList: [
@@ -89,10 +92,13 @@ export default {
                 return item.id === systemId;
             });
             let url = "";
+            let tableUrl = "";
             switch (type) {
                 case "area":
                     url = this.hostApi + ary[0].areaUrl + str;
+                    tableUrl = this.hostApi + ary[0].areaTableSrc + str;
                     this.srcUrl = url;
+                    this.areaTableSrc = tableUrl;
                     break;
                 case "unit":
                     url = this.hostApi + ary[0].unitUrl + str;

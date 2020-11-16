@@ -57,7 +57,7 @@
                     <el-form-item>
                         <!-- <span>日期：</span> -->
                         <el-date-picker
-                            v-if="systemId !== 6"
+                            v-if="systemId !== 6 && systemId !== 5"
                             v-model="searchDate"
                             type="daterange"
                             format="yyyy-MM-dd"
@@ -117,15 +117,33 @@
 
         <div class="system-data">
             <!-- <el-button @click="send('_g().gotoNextPage()')">点击</el-button> -->
+            <!-- <el-button @click="changSize">点击</el-button> -->
             <div class="chart-box">
                 <iframe
-                    @onload="afterload"
                     :src="srcUrl"
                     id="areaFrame"
                     frameborder="0"
                     scrolling="no"
                     ref="areaFrame"
                 ></iframe>
+                <iframe
+                    :src="areaTableSrc"
+                    id="areaTableFrame"
+                    frameborder="0"
+                    scrolling="no"
+                    ref="areaTableFrame"
+                ></iframe>
+                <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    @prev-click="send('_g().gotoPreviousPage()')"
+                    @next-click="send('_g().gotoNextPage()')"
+                    :current-page="page.current"
+                    :page-sizes="[10]"
+                    :page-size="page.limit"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="page.total"
+                ></el-pagination>
             </div>
         </div>
     </div>
@@ -140,13 +158,20 @@ export default {
     data() {
         return {
             unitType: 2,
-            stateParams: {},
+            stateParams: {
+                // treeId: "520000",
+            },
             areaParams: {},
             stateId: "",
             treeType: "",
-            systemId: -1,
+            systemId: 1,
             stateList: [],
             areaList: [],
+            page: {
+                current: 1,
+                limit: 10,
+                total: 0,
+            },
         };
     },
     created() {
@@ -157,86 +182,112 @@ export default {
     mounted() {
         this.pickDateOptionRules();
         this.pickMounthOptionRules();
-        // this.getStart();
+        this.searchData();
+        this.initReportPage();
+        // this.initTotalHeight("areaFrame");
+        this.initTotalHeight("areaTableFrame");
     },
     computed: {
         ...mapState(["app"]),
     },
     methods: {
-        // getStart() {
-        //     var ifr = document.getElementById("areaFrame").contentWindow;
-        //     console.log(ifr.contentPane);
-        //     var cb = function (json) {
-        //         eval(json);
-        //     };
-        //     var sendMessage = function () {
-        //         if (window.postMessage) {
-        //             if (window.addEventListener) {
-        //                 window.addEventListener(
-        //                     "message",
-        //                     function (e) {
-        //                         console.log(e.data, 1111);
-        //                         cb.call(window, e.data);
-        //                     },
-        //                     false
-        //                 );
-        //             } else if (window.attachEvent) {
-        //                 window.attachEvent("onmessage", function (e) {
-        //                     console.log(e.data, 2222);
-        //                     cb.call(window, e.data);
-        //                 });
-        //             }
-        //             return function (data) {
-        //                 console.log(data, 333);
-        //                 ifr.postMessage(data, "*");
-        //             };
-        //         } else {
-        //             var hash = "";
-
-        //             setInterval(function () {
-        //                 if (window.name !== hash) {
-        //                     hash = window.name;
-        //                     cb.call(window, hash);
-        //                 }
-        //             }, 200);
-        //             return function (data) {
-        //                 console.log(data, 444);
-        //                 ifr.name = data;
-        //             };
-        //         }
-        //     };
-        //     console.log(ifr.contentPane, 88888);
-        //     window.sendMessage = sendMessage();
-        // },
+        changSize() {
+            var win = document.getElementById("areaTableFrame").contentWindow;
+            win.postMessage(this.page.limit, "*");
+        },
+        initReportPage() {
+            var ifr = document.getElementById("areaTableFrame").contentWindow;
+            var sendMessage = function () {
+                if (window.postMessage) {
+                    if (window.addEventListener) {
+                        // window.addEventListener(
+                        //     "message",
+                        //     function (e) {
+                        //         // console.log(e.data, 1111);
+                        //     },
+                        //     false
+                        // );
+                    } else if (window.attachEvent) {
+                        window.attachEvent("onmessage", function (e) {
+                            console.log(e.data, 2222);
+                        });
+                    }
+                    return function (data) {
+                        console.log(data, 333);
+                        ifr.postMessage(data, "*");
+                    };
+                } else {
+                    var hash = "";
+                    setInterval(function () {
+                        if (window.name !== hash) {
+                            hash = window.name;
+                        }
+                    }, 200);
+                    return function (data) {
+                        console.log(data, 444);
+                        ifr.name = data;
+                    };
+                }
+            };
+            window.sendMessage = sendMessage();
+        },
         send(msg) {
             window.sendMessage(msg);
         },
-        afterload() {
-            // iframe 加载后触发
-            console.log(11111);
-            console.log(this.$refs.iframe.contentWindow);
-            var contentPane = document.getElementById("areaFrame").contentWindow
-                .contentPane; // 获取报表 contentPane
-            var cPageIndex = contentPane.currentPageIndex; // 当前所在页
-            var pv =
-                "第" +
-                cPageIndex +
-                "页/共" +
-                contentPane.reportTotalPage +
-                "页"; // 报表首次加载结束后显示的页码信息
-            document.getElementById("page").value = pv; // 将页码信息赋给 page 文本
-            contentPane.on("afterload", function () {
-                // 报表加载结束监听事件
-                cPageIndex = contentPane.currentPageIndex; // 每次加载完后重新获取当前页码
-                pv =
-                    "第" +
-                    cPageIndex +
-                    "页/共" +
-                    contentPane.reportTotalPage +
-                    "页"; // 重新生成页码信息
-                document.getElementById("page").value = pv; // 重新给 page 文本赋页码信息
-            });
+        initTotalHeight(iframeId) {
+            let that = this;
+            document.getElementById(iframeId).onload = function () {
+                window.addEventListener(
+                    "message",
+                    function (e) {
+                        console.log(e.data, e, "message");
+                        if (
+                            typeof e.data === "object" &&
+                            iframeId === "areaTableFrame"
+                        ) {
+                            that.page.total = e.data.total;
+                            document.getElementById(iframeId).height =
+                                e.data.height + "px";
+                        } else if (iframeId === "areaFrame") {
+                            // document.getElementById(iframeId).height =
+                            //     e.data + "px";
+                        }
+                    },
+                    false
+                );
+            };
         },
+        initTotalHeight1(iframeId) {
+            let that = this;
+            document.getElementById(iframeId).onload = function () {
+                window.addEventListener(
+                    "message",
+                    function (e) {
+                        console.log(e.data, e, "wwwwwwww");
+                        if (
+                            typeof e.data === "object" &&
+                            iframeId === "areaTableFrame"
+                        ) {
+                            that.page.total = e.data.total;
+                            document.getElementById(iframeId).style.height =
+                                e.data.height + "px";
+                        } else if (iframeId === "areaFrame") {
+                            document.getElementById(iframeId).style.height =
+                                e.data + "px";
+                        }
+                    },
+                    false
+                );
+            };
+        },
+        handleSizeChange(val) {
+            this.page.limit = val;
+        },
+        handleCurrentChange(val) {
+            this.page.current = val;
+            this.send(`_g().gotoPage(${this.page.current})`);
+        },
+
         getStateList() {
             if (
                 this.app.rolesInfo.roleName === "SUPER_MANAGER" ||
@@ -294,9 +345,6 @@ export default {
             }).then((res) => {
                 if (res.data) {
                     this.areaList = res.data;
-                    if (this.areaList.length > 0) {
-                        this.areaParams = this.areaList[0];
-                    }
                 }
             });
         },
@@ -312,7 +360,15 @@ export default {
         },
         areaChange(val) {},
         applyChange(val) {
+            this.areaList = [];
+            this.stateParams = {};
+            this.areaParams = {};
             this.systemId = val;
+            if (this.systemId === 5) {
+                document.getElementById("areaFrame").style.height = "330px";
+            } else {
+                document.getElementById("areaFrame").style.height = "710px";
+            }
             this.searchData();
         },
         searchData() {
@@ -325,15 +381,21 @@ export default {
                         : this.stateParams.treeId || "",
                 codeNum:
                     this.stateParams.treeId === "520000"
-                        ? this.stateParams.treeId
-                        : this.areaParams.treeId || "",
-                qxNum:
-                    this.stateParams.treeId === "520000"
+                        ? 0
+                        : this.stateParams.treeId
                         ? ""
-                        : this.areaParams.treeId || "",
+                        : 520000,
+                qxNum: this.areaParams.treeId || "",
                 startDate: this.startDate,
                 endDate: this.endDate,
             };
+            if (this.systemId === 5) {
+                data.startDate = this.$moment(this.startDate1).format(
+                    "YYYY-MM"
+                );
+                data.endDate = this.$moment(this.endDate).format("YYYY-MM");
+                // return;
+            }
             if (this.systemId === 6) {
                 data.startDate = this.startDate1;
                 data.endDate = this.endDate1;
@@ -347,12 +409,12 @@ export default {
         },
     },
     watch: {
-        stateParams() {
-            this.searchData();
-        },
-        areaParams() {
-            this.searchData();
-        },
+        // stateParams() {
+        //     this.searchData();
+        // },
+        // areaParams() {
+        //     this.searchData();
+        // },
     },
 };
 </script>
