@@ -14,12 +14,12 @@ Vue.use(VueRouter);
  */
 const initRouter = (userInfo) => {
     let roleId = userInfo.roleId;
-
+    let authorizedOid = userInfo.authorizedOid;
     // // 超级管理员和系统管理员权限一样
     // if (roleId === roles.super) {
     //     roleId = roles.sys;
     // }
-    const routes = getRouters(AllRoutes, roleId);
+    const routes = getRouters(AllRoutes, roleId, authorizedOid);
 
     // 所有的路由path、用来做无权限提示，不是的话相当于404页面
     const allRoutePaths = [];
@@ -52,7 +52,7 @@ const initRouter = (userInfo) => {
  * @param {*} routes
  * @param {*} roleId
  */
-function getRouters(routes, roleId) {
+function getRouters(routes, roleId, authorizedOid) {
     if (!(Array.isArray(routes) && routes.length)) {
         return;
     }
@@ -70,6 +70,11 @@ function getRouters(routes, roleId) {
                 return;
             }
         }
+        // 处理单位管理员授权范围不包含人民政府办公厅的菜单，如果包含才显示数据模板菜单，不包含就不显示
+        // if (route.customShow) {
+        //     const flag = route.customShow(authorizedOid);
+        //     if (!flag) return;
+        // }
         // 都显示
         // 添加一个
         const addItem = {
@@ -77,11 +82,9 @@ function getRouters(routes, roleId) {
             children: undefined,
         };
 
-        addItem.children = getRouters(route.children, roleId);
-
+        addItem.children = getRouters(route.children, roleId, authorizedOid);
         result.push(addItem);
     });
-
     return result;
 }
 

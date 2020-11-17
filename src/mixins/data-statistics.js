@@ -13,6 +13,7 @@ export default {
             endDate1: "",
             searchDate: [],
             searchMouth: [],
+            searchEaraMouth: "",
             reportSrcList: areaReportList,
             tableName: "`static_db`.logger_action_",
             areaTableSrc: "",
@@ -37,14 +38,26 @@ export default {
     },
     methods: {
         initializeDate() {
+            // let startDate = this.$moment()
+            //     .subtract(1, "weeks")
+            //     .format("YYYY-MM-DD");
             let startDate = this.$moment()
-                .subtract(1, "weeks")
+                .startOf("month")
                 .format("YYYY-MM-DD");
-            let endDate = this.$moment().format("YYYY-MM-DD");
+            let endDate = this.$moment()
+                .subtract(1, "days")
+                .format("YYYY-MM-DD");
             this.searchDate[0] = startDate;
             this.searchDate[1] = endDate;
             this.startDate = this.searchDate[0];
             this.endDate = this.searchDate[1];
+        },
+        initializeEaraMounth() {
+            let startDate = this.$moment()
+                .subtract(1, "months")
+                .format("YYYYMM");
+            this.searchEaraMouth = startDate;
+            this.startDate1 = this.searchEaraMouth;
         },
         initializeMounth() {
             let startDate = this.$moment()
@@ -67,8 +80,13 @@ export default {
             if (val) {
                 this.startDate1 = val[0];
                 this.endDate1 = val[1];
+                this.doformatParams();
             }
-            this.doformatParams();
+        },
+        earaMounthChange(val) {
+            if (val) {
+                this.startDate1 = val;
+            }
         },
         doformatParams() {
             this.formatParams.format1 =

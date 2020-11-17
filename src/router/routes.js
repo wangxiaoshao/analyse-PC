@@ -9,7 +9,7 @@ const menuConfigExample = {
     // 是否隐藏，隐藏的话就代表这个不显示，相当于不是菜单
     hidden: true,
     meta: {
-        // 这个呢是菜单的标题
+        // 菜单的标题
         title: "",
         // 如果有了这个，就使用这个作为 breadcrumb, 否则了就自动根据菜单来渲染
         breadcrumb: [],
@@ -19,7 +19,7 @@ const menuConfigExample = {
     // 不显示子菜单， 设置了这个的话， 这个菜单下面的所有子菜单都不显示
     noShowingChildren: false,
 
-    // onlyRolesShow: [] 仅仅这些角色这显示，不写的话全部的都显示
+    // onlyShowRoles: [] 仅仅这些角色这显示，不写的话全部的都显示
     // onlyRolesNOShow: [] 这些角色不显示、不写的话全部的都显示
     // 两个同时存在时， 以 onlyShowRoles 为准
 };
@@ -167,6 +167,11 @@ export default [
         name: "DataTemplate",
         meta: { title: "数据模板", icon: "el-icon-data-analysis" },
         onlyRolesShow: [roles.super, roles.unit],
+        // 自定义条件是否显示数据模板菜单
+        customShow(authorizedOid) {
+            const arr = authorizedOid || [];
+            return arr.includes("-3631625248176780884");
+        },
         component: () =>
             import(
                 /* webpackChunkName: "DataTemplate" */ "@src/views/data-template/index.vue"

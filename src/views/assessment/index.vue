@@ -18,6 +18,7 @@ export default {
         return {};
     },
     mounted() {
+        // this.setIframeHeight();
         const oIframe = document.getElementById("bdIframe");
         // const deviceWidth = document.documentElement.clientWidth;
         const deviceHeight = document.documentElement.clientHeight;
@@ -26,7 +27,7 @@ export default {
     },
     methods: {
         handleClick() {},
-        setIframeHeight(id) {
+        setIframeHeight() {
             var iframe = document.getElementById("bdIframe");
             try {
                 var bHeight = iframe.contentWindow.document.body.scrollHeight;

@@ -5,6 +5,7 @@
                 <el-row>
                     <el-form-item label="单位类型">
                         <el-select
+                            style="width: 160px;"
                             size="medium"
                             placeholder="请选择单位类型"
                             @change="unitTypeChange"
@@ -71,14 +72,13 @@
                         </el-date-picker>
                         <el-date-picker
                             v-else
-                            v-model="searchMouth"
-                            type="monthrange"
+                            style="width: 170px;"
+                            v-model="searchEaraMouth"
+                            type="month"
                             format="yyyy-MM"
                             value-format="yyyyMM"
-                            start-placeholder="开始日期"
-                            end-placeholder="结束日期"
                             :picker-options="pickerMounthOptions"
-                            @change="mounthChange"
+                            @change="earaMounthChange"
                             @blur="onDateBlur"
                         >
                         </el-date-picker>
@@ -167,6 +167,7 @@ export default {
             systemId: 1,
             stateList: [],
             areaList: [],
+            dataAry: [],
             page: {
                 current: 1,
                 limit: 10,
@@ -176,16 +177,16 @@ export default {
     },
     created() {
         this.initializeDate();
-        this.initializeMounth();
+        this.initializeEaraMounth();
+        this.pickDateOptionRules();
+        this.pickMounthOptionRules();
         this.getStateList();
     },
     mounted() {
-        this.pickDateOptionRules();
-        this.pickMounthOptionRules();
         this.searchData();
         this.initReportPage();
-        // this.initTotalHeight("areaFrame");
-        this.initTotalHeight("areaTableFrame");
+        this.initChartHeight();
+        this.initTableTotalHeight();
     },
     computed: {
         ...mapState(["app"]),
@@ -234,48 +235,35 @@ export default {
         send(msg) {
             window.sendMessage(msg);
         },
-        initTotalHeight(iframeId) {
+        initChartHeight() {
             let that = this;
-            document.getElementById(iframeId).onload = function () {
+            document.getElementById("areaFrame").onload = function () {
                 window.addEventListener(
                     "message",
                     function (e) {
-                        console.log(e.data, e, "message");
-                        if (
-                            typeof e.data === "object" &&
-                            iframeId === "areaTableFrame"
-                        ) {
-                            that.page.total = e.data.total;
-                            document.getElementById(iframeId).height =
-                                e.data.height + "px";
-                        } else if (iframeId === "areaFrame") {
-                            // document.getElementById(iframeId).height =
-                            //     e.data + "px";
+                        if (!that.dataAry.includes(e.data) && e.data.height) {
+                            that.dataAry.push(e.data);
                         }
                     },
+
                     false
                 );
             };
         },
-        initTotalHeight1(iframeId) {
+        initTableTotalHeight() {
             let that = this;
-            document.getElementById(iframeId).onload = function () {
+            document.getElementById("areaTableFrame").onload = function () {
+                that.dataAry = [];
                 window.addEventListener(
                     "message",
                     function (e) {
-                        console.log(e.data, e, "wwwwwwww");
-                        if (
-                            typeof e.data === "object" &&
-                            iframeId === "areaTableFrame"
-                        ) {
-                            that.page.total = e.data.total;
-                            document.getElementById(iframeId).style.height =
-                                e.data.height + "px";
-                        } else if (iframeId === "areaFrame") {
-                            document.getElementById(iframeId).style.height =
-                                e.data + "px";
+                        console.log(e.data, "areaTableFrame");
+                        if (!that.dataAry.includes(e.data) && e.data.height) {
+                            that.dataAry.push(e.data);
                         }
+                        console.log(that.dataAry, "333333");
                     },
+
                     false
                 );
             };
@@ -360,21 +348,22 @@ export default {
         },
         areaChange(val) {},
         applyChange(val) {
+            this.dataAry = [];
             this.areaList = [];
             this.stateParams = {};
             this.areaParams = {};
             this.systemId = val;
-            if (this.systemId === 5) {
-                document.getElementById("areaFrame").style.height = "330px";
+            if (this.systemId === 5 || this.systemId === 6) {
+                this.initializeEaraMounth();
             } else {
-                document.getElementById("areaFrame").style.height = "710px";
+                this.initializeDate();
             }
             this.searchData();
         },
         searchData() {
             let data = {
-                isStat: this.unitType === 2 ? "" : this.unitType,
-                notStat: this.unitType === 2 ? this.unitType : "",
+                isStat: this.unitType === 0 ? 1 : "",
+                notStat: this.unitType === 1 ? 1 : "",
                 cityNum:
                     this.stateParams.treeId === "520000"
                         ? ""
@@ -393,22 +382,40 @@ export default {
                 data.startDate = this.$moment(this.startDate1).format(
                     "YYYY-MM"
                 );
-                data.endDate = this.$moment(this.endDate).format("YYYY-MM");
-                // return;
+                data.endDate = "";
+                // data.endDate = this.$moment(this.endDate).format("YYYY-MM");
             }
             if (this.systemId === 6) {
                 data.startDate = this.startDate1;
-                data.endDate = this.endDate1;
-                data.format1 = this.formatParams.format1;
-                data.format2 = this.formatParams.format2;
-                data.startDay = this.formatParams.format3;
-                data.size = this.formatParams.format4;
+                data.endDate = "";
+                // data.endDate = this.endDate1;
+                // data.format1 = this.formatParams.format1;
+                // data.format2 = this.formatParams.format2;
+                // data.startDay = this.formatParams.format3;
+                // data.size = this.formatParams.format4;
             }
-            // console.log(data);
             this.initSystem("area", this.doSrcParams(data));
         },
     },
     watch: {
+        dataAry() {
+            if (this.dataAry.length === 0) {
+                document.getElementById("areaTableFrame").style.height = "100%";
+                document.getElementById("areaFrame").style.height = "100%";
+                return;
+            }
+
+            this.dataAry.forEach((item) => {
+                if (item.total && item.height) {
+                    this.page.total = item.total;
+                    document.getElementById("areaTableFrame").style.height =
+                        item.height + "px";
+                } else if (item.height) {
+                    document.getElementById("areaFrame").style.height =
+                        item.height + "px";
+                }
+            });
+        },
         // stateParams() {
         //     this.searchData();
         // },

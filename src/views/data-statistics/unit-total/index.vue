@@ -76,7 +76,7 @@
             </el-form-item>
             <el-form-item>
                 <el-date-picker
-                    v-if="systemId !== 6"
+                    v-if="systemId !== 5 && systemId !== 6"
                     v-model="searchDate"
                     type="daterange"
                     format="yyyy-MM-dd"
@@ -374,7 +374,7 @@ export default {
                 endDate: this.endDate,
                 orgId: this.unitId,
             };
-            if (this.systemId === 6) {
+            if (this.systemId === 5 || this.systemId === 6) {
                 data.startDate = this.startDate1;
                 data.endDate = this.endDate1;
             }
