@@ -37,24 +37,42 @@
                 scrolling="no"
                 :src="srcUrl"
                 frameborder="0"
+                id="systemIframe"
             ></iframe>
+            <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                @prev-click="send('_g().gotoPreviousPage()')"
+                @next-click="send('_g().gotoNextPage()')"
+                :current-page="page.current"
+                :page-sizes="[10]"
+                :page-size="page.limit"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="page.total"
+            ></el-pagination>
         </div>
     </div>
 </template>
 <script>
-// import { api, urlNames } from "@src/api";
+import initReport from "@src/mixins/initReport";
 import handleTable from "@src/mixins/new/handle-table";
 import dataStatistics from "@src/mixins/data-statistics";
 export default {
-    mixins: [handleTable, dataStatistics],
+    mixins: [handleTable, dataStatistics, initReport],
+    props: ["activeName"],
     data() {
         return {
             keyword: "",
             srcUrl: "",
+            totalAry: [],
         };
     },
     created() {
         this.initializeDate();
+    },
+    mounted() {
+        this.initLogHeight("systemIframe");
+        this.initReportPage("systemIframe");
     },
     methods: {
         dateChange(val) {
@@ -68,8 +86,26 @@ export default {
                 startDate: this.startDate,
                 endDate: this.endDate,
                 keyword: this.keyword,
+                tableName:
+                    "`static_db`.logger_api_access_" +
+                    this.$moment(this.startDate).format("YYYYMM"),
             };
-            console.log(data);
+            this.srcUrl =
+                this.hostApi + this.logSrc.systemSrc + this.doSrcParams(data);
+        },
+    },
+    watch: {
+        activeName(val) {
+            if (val === "second") {
+                this.findCondition();
+                if (this.totalAry.length > 0) {
+                    this.page.total = this.totalAry[0].total;
+                    // document.getElementById(
+                    //     "logIframe"
+                    // ).style = this.totalAry[0].height;
+                }
+                console.log(this.totalAry);
+            }
         },
     },
 };

@@ -1,7 +1,7 @@
 /**
  * Created by wangxiaoshao on 2020/11/05.
  */
-import { areaReportList, reportSystemSrc } from "@src/config/report";
+import { areaReportList, logSrc } from "@src/config/report";
 import pickerOptions from "@src/mixins/picker-options";
 export default {
     mixins: [pickerOptions],
@@ -22,7 +22,7 @@ export default {
             // hostApi:
             //     "http://localhost:8088/webroot/decision/view/report?viewlet=",
             srcUrl: "",
-            reportSystemSrc: reportSystemSrc,
+            logSrc: logSrc,
             unitTypeList: [
                 { name: "非考核单位", type: 0 },
                 { name: "考核单位", type: 1 },
@@ -37,13 +37,22 @@ export default {
         };
     },
     methods: {
-        initializeDate() {
+        initializeDate(date) {
             // let startDate = this.$moment()
             //     .subtract(1, "weeks")
             //     .format("YYYY-MM-DD");
-            let startDate = this.$moment()
-                .startOf("month")
-                .format("YYYY-MM-DD");
+            let startDate = "";
+            // 首页情况趋势日期处理
+            if (date) {
+                startDate = this.$moment()
+                    .subtract(date, "days")
+                    .format("YYYY-MM-DD");
+            } else {
+                startDate = this.$moment()
+                    .startOf("month")
+                    .format("YYYY-MM-DD");
+            }
+            console.log(startDate, "ggggggggggggggggg");
             let endDate = this.$moment()
                 .subtract(1, "days")
                 .format("YYYY-MM-DD");

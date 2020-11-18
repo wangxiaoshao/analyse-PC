@@ -13,7 +13,7 @@
                         v-for="item in logTypeList"
                         :key="item.id"
                         :label="item.subject"
-                        :value="item.id"
+                        :value="item.type"
                     ></el-option>
                 </el-select>
             </el-form-item>
@@ -54,12 +54,24 @@
         </el-form>
         <div class="table-box">
             <iframe
+                id="logIframe"
                 width="100%"
-                height="400px"
+                height="370px"
                 scrolling="no"
                 :src="srcUrl"
                 frameborder="0"
             ></iframe>
+            <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                @prev-click="send('_g().gotoPreviousPage()')"
+                @next-click="send('_g().gotoNextPage()')"
+                :current-page="page.current"
+                :page-sizes="[10]"
+                :page-size="page.limit"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="page.total"
+            ></el-pagination>
         </div>
         <select-tree
             :selectTreeDailog="selectTreeDailog"
@@ -72,9 +84,11 @@
 import { api, urlNames } from "@src/api";
 import handleTable from "@src/mixins/new/handle-table";
 import dataStatistics from "@src/mixins/data-statistics";
+import initReport from "@src/mixins/initReport";
 import SelectTree from "@src/components/SelectTree/index";
 export default {
-    mixins: [handleTable, dataStatistics],
+    mixins: [handleTable, dataStatistics, initReport],
+    props: ["activeName"],
     components: {
         SelectTree,
     },
@@ -92,6 +106,7 @@ export default {
                 actionType: "",
                 keyWord: "",
             },
+            totalAry: [],
         };
     },
     created() {
@@ -99,7 +114,11 @@ export default {
         this.getAllLogTypes();
     },
     mounted() {
-        this.findCondition();
+        if (this.activeName === "first") {
+            this.findCondition();
+            this.initLogHeight("logIframe");
+            this.initReportPage("logIframe");
+        }
     },
     methods: {
         // 系统日志--获取所有日志类型
@@ -107,7 +126,6 @@ export default {
             api[urlNames["getAllLogTypes"]]({}).then((res) => {
                 if (res.data) {
                     this.logTypeList = res.data;
-                    this.searchParams.actionType = this.logTypeList[0].id;
                 }
             });
         },
@@ -127,10 +145,14 @@ export default {
                 endDate: this.endDate,
                 actionType: this.searchParams.actionType,
                 keyWord: this.searchParams.keyWord,
-                tableName: this.tableName + this.$moment().format("YYYYMM"),
+                tableName:
+                    this.tableName +
+                    this.$moment(this.startDate).format("YYYYMM"),
             };
             this.srcUrl =
-                this.hostApi + this.reportSystemSrc + this.doSrcParams(data);
+                this.hostApi +
+                this.logSrc.operationSrc +
+                this.doSrcParams(data);
         },
         openSelectDailog() {
             this.selectTreeDailog.openSelectTreeVisiable = true;
@@ -142,6 +164,22 @@ export default {
             authData = authData || [];
             let dataAry = [...userData, ...authData];
             console.log(dataAry);
+        },
+    },
+    watch: {
+        activeName(val) {
+            console.log(val, "oooooooo");
+            if (val === "first") {
+                this.findCondition();
+                if (this.totalAry.length > 0) {
+                    this.page.total = this.totalAry[0].total;
+                    // document.getElementById(
+                    //     "logIframe"
+                    // ).style = this.totalAry[0].height;
+                }
+
+                console.log(this.totalAry);
+            }
         },
     },
 };

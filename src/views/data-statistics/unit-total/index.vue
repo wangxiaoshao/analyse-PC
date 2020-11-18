@@ -104,10 +104,20 @@
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="searchData">查询</el-button>
+                <el-button type="primary" @click="resetData">重置</el-button>
             </el-form-item>
         </el-form>
         <div class="system-list">
             <transition-group tag="ul" appear>
+                <li
+                    :key="-1"
+                    @click="applyChange(-1)"
+                    :class="{
+                        isActive: systemId == -1,
+                    }"
+                >
+                    全部
+                </li>
                 <li
                     v-for="item in app.applicationList"
                     :key="item.id"
@@ -148,13 +158,14 @@ export default {
             stateParams: {},
             areaParams: {},
             stateId: "",
-            systemId: 1,
+            systemId: -1,
             treeType: "",
             areaId: "",
             unitId: "",
             stateList: [],
             areaList: [],
             unitList: [],
+            unitFrameHeight: "300px",
         };
     },
     created() {
@@ -165,11 +176,32 @@ export default {
     mounted() {
         this.pickDateOptionRules();
         this.pickMounthOptionRules();
+        this.initUnitHeight();
     },
     computed: {
         ...mapState(["app"]),
     },
     methods: {
+        initUnitHeight() {
+            let that = this;
+            const unitFrame = document.getElementById("unitFrame");
+            unitFrame.onload = function () {
+                that.dataAry = [];
+                window.addEventListener(
+                    "message",
+                    function (e) {
+                        if (e.data.height) {
+                            unitFrame.style.height = e.data.height + "px";
+                        } else {
+                            unitFrame.style.height = "480px";
+                        }
+                        console.log(e.data, "unitFrame");
+                    },
+
+                    false
+                );
+            };
+        },
         getStateList() {
             if (this.app.rolesInfo.roleName === "UNIT_MANAGER") {
                 this.initUnit("", "", this.unitType);
@@ -352,6 +384,11 @@ export default {
         },
         unitChange() {},
         applyChange(val) {
+            const unitFrame = document.getElementById("unitFrame");
+            unitFrame.style.height = "500px";
+            this.unitType = 2;
+            this.stateParams = this.stateList[0];
+            this.stateChange(this.stateParams);
             this.systemId = val;
             this.searchData();
         },
@@ -374,15 +411,23 @@ export default {
                 endDate: this.endDate,
                 orgId: this.unitId,
             };
-            if (this.systemId === 5 || this.systemId === 6) {
+            if (this.systemId === 5) {
+                data.months = this.$moment(this.startDate1).format("YYYY-MM");
+                data.endDate = "";
+                data.startDate = "";
+            }
+            if (this.systemId === 6) {
                 data.startDate = this.startDate1;
                 data.endDate = this.endDate1;
             }
             this.initSystem("unit", this.doSrcParams(data));
         },
+        resetData() {
+            this.applyChange(this.systemId);
+        },
     },
     watch: {
-        unitId(val1, val2) {
+        unitId() {
             this.searchData();
         },
     },

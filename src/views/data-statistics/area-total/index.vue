@@ -87,6 +87,9 @@
                         <el-button type="primary" @click="searchData"
                             >查询</el-button
                         >
+                        <el-button type="primary" @click="resetData"
+                            >重置</el-button
+                        >
                     </el-form-item>
                 </el-row>
             </el-form>
@@ -164,7 +167,7 @@ export default {
             areaParams: {},
             stateId: "",
             treeType: "",
-            systemId: 1,
+            systemId: -1,
             stateList: [],
             areaList: [],
             dataAry: [],
@@ -241,11 +244,12 @@ export default {
                 window.addEventListener(
                     "message",
                     function (e) {
+                        console.log(e.data, "areaFrame");
                         if (!that.dataAry.includes(e.data) && e.data.height) {
                             that.dataAry.push(e.data);
                         }
+                        console.log(that.dataAry, "areaFrame");
                     },
-
                     false
                 );
             };
@@ -261,7 +265,7 @@ export default {
                         if (!that.dataAry.includes(e.data) && e.data.height) {
                             that.dataAry.push(e.data);
                         }
-                        console.log(that.dataAry, "333333");
+                        console.log(that.dataAry, "areaTableFrame");
                     },
 
                     false
@@ -348,6 +352,7 @@ export default {
         },
         areaChange(val) {},
         applyChange(val) {
+            this.unitType = 2;
             this.dataAry = [];
             this.areaList = [];
             this.stateParams = {};
@@ -395,6 +400,9 @@ export default {
                 // data.size = this.formatParams.format4;
             }
             this.initSystem("area", this.doSrcParams(data));
+        },
+        resetData() {
+            this.applyChange(this.systemId);
         },
     },
     watch: {

@@ -318,7 +318,7 @@ export default [
             {
                 path: "/log-manage",
                 name: "LogManage",
-                meta: { title: "系统日志" },
+                meta: { title: "日志管理" },
                 onlyRolesShow: [roles.sys, roles.super, roles.audit],
                 component: () =>
                     import(

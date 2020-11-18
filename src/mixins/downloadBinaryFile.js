@@ -28,6 +28,10 @@ export default {
             let params = {};
             let openUrl = "";
             switch (type) {
+                case "shareLog":
+                    apiUrl = "api/logger/switchLogger/exportShareLogger";
+                    params = loadParams;
+                    break;
                 case "template":
                     apiUrl = "/api/appdata/modelGenerated/download";
                     params = { path: loadParams.path };
@@ -39,6 +43,7 @@ export default {
             params._ = timestamp;
             params.sign = this.getSign(params, timestamp);
             openUrl = host + apiUrl + "?" + this.buildUrlQuery(params);
+            // console.log(openUrl, "nnnnnnn");
             window.open(openUrl);
         },
 

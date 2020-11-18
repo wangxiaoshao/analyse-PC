@@ -100,4 +100,6 @@ export default {
     searchAreaOrgs: "searchAreaOrgs",
     // 系统日志--获取所有日志类型
     getAllLogTypes: "getAllLogTypes",
+    // 系统日志--获取共享日志列表
+    findShareLoggerList: "findShareLoggerList",
 };

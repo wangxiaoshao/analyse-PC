@@ -200,15 +200,15 @@
                 <div class="params-box">
                     <div class="date-box">
                         <el-button
-                            :type="rangeDate === -7 ? 'primary' : ''"
+                            :type="rangeDate === 7 ? 'primary' : ''"
                             size="mini"
-                            @click="rangeDateChange(-7)"
+                            @click="rangeDateChange(7)"
                             >近7天</el-button
                         >
                         <el-button
-                            :type="rangeDate === -30 ? 'primary' : ''"
+                            :type="rangeDate === 30 ? 'primary' : ''"
                             size="mini"
-                            @click="rangeDateChange(-30)"
+                            @click="rangeDateChange(30)"
                             >近30天</el-button
                         >
                     </div>
@@ -247,7 +247,11 @@
                             </el-row>
                         </el-tab-pane>
                         <el-tab-pane
-                            label="区域应用情况使用趋势"
+                            :label="
+                                app.rolesInfo.roleName === 'COUNTY_MANAGER'
+                                    ? '区县应用情况使用趋势'
+                                    : '区域应用情况使用趋势'
+                            "
                             name="second"
                             v-if="isShowCityOrCounty()"
                         >
@@ -373,7 +377,7 @@ export default {
     mixins: [dataStatistics],
     data() {
         return {
-            rangeDate: -7,
+            rangeDate: 7,
             personAppList: [],
             reportParams: reportParams,
             exportUrl: "",
@@ -404,7 +408,7 @@ export default {
         };
     },
     created() {
-        this.initializeDate(true, this.rangeDate);
+        this.initializeDate(this.rangeDate);
     },
     mounted() {
         this.init();
@@ -545,7 +549,7 @@ export default {
         },
         rangeDateChange(time) {
             this.rangeDate = time;
-            this.initializeDate(true, this.rangeDate);
+            this.initializeDate(this.rangeDate);
             if (this.activeName === "four") {
                 this.initPerson();
             } else if (this.activeName === "first") {

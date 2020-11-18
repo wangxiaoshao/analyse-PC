@@ -7,4 +7,12 @@ export default {
         keepOriginResponse: true,
         serve: "organizationManagePC",
     },
+    // 系统日志--获取共享日志列表
+    [urlNames.findShareLoggerList]: {
+        type: "get",
+        url: "/api/logger/switchLogger/findSwitchLoggerList",
+        keepOriginResponse: true,
+        showLoading: true,
+        serve: "organizationManagePC",
+    },
 };

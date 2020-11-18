@@ -31,6 +31,15 @@
         <div class="system-list">
             <transition-group tag="ul" appear>
                 <li
+                    :key="-1"
+                    @click="applyChange(-1)"
+                    :class="{
+                        isActive: systemId == -1,
+                    }"
+                >
+                    全部
+                </li>
+                <li
                     v-for="item in appList"
                     :key="item.id"
                     :class="{
@@ -74,7 +83,7 @@ export default {
         return {
             memberName: this.$store.state.app.rolesInfo.userName,
             appList: [],
-            systemId: 2,
+            systemId: -1,
             userId: this.$store.state.app.rolesInfo.uid,
             orgId: this.$store.state.app.rolesInfo.orgId,
             deptId: this.$store.state.app.rolesInfo.deptId
@@ -95,11 +104,36 @@ export default {
     },
     mounted() {
         this.searchData();
+        this.initMemberHeight();
     },
     computed: {
         ...mapState(["app"]),
     },
     methods: {
+        initMemberHeight() {
+            let that = this;
+            const memberFrame = document.getElementById("memberFrame");
+            memberFrame.onload = function () {
+                that.dataAry = [];
+                window.addEventListener(
+                    "message",
+                    function (e) {
+                        if (e.data.height) {
+                            memberFrame.style.height = e.data.height + "px";
+                        } else {
+                            memberFrame.style.height = "500px";
+                        }
+                        console.log(
+                            e.data,
+                            memberFrame.style.height,
+                            "memberFrame"
+                        );
+                    },
+
+                    false
+                );
+            };
+        },
         dateChange(val) {
             if (val) {
                 this.startDate = val[0];
@@ -126,8 +160,12 @@ export default {
             let dataAry = [...userData, ...authData];
             this.memberName = dataAry[0].treeName;
             this.userId = dataAry[0].treeId;
+            this.orgId = "";
+            this.deptId = "";
         },
         applyChange(val) {
+            const memberFrame = document.getElementById("memberFrame");
+            memberFrame.style.height = "500px";
             this.systemId = val;
             this.searchData();
         },
@@ -135,9 +173,9 @@ export default {
             let data = {
                 userId: this.userId,
                 startDate: this.startDate,
+                endDate: this.endDate,
                 orgId: this.orgId,
                 deptId: this.deptId,
-                endDate: this.endDate,
             };
             this.initSystem("person", this.doSrcParams(data));
         },

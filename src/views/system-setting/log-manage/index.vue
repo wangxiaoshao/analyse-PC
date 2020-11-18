@@ -2,10 +2,10 @@
     <div class="log-manage">
         <el-tabs v-model="activeName" @tab-click="handleClick">
             <el-tab-pane label="操作日志" name="first">
-                <operation-log></operation-log>
+                <operation-log :activeName="activeName"></operation-log>
             </el-tab-pane>
             <el-tab-pane label="系统日志" name="second">
-                <system-log></system-log>
+                <system-log :activeName="activeName"></system-log>
             </el-tab-pane>
             <el-tab-pane label="共享日志" name="third">
                 <share-log></share-log>
@@ -25,7 +25,7 @@ export default {
         };
     },
     methods: {
-        handleClick() {},
+        handleClick(val) {},
     },
 };
 </script>
