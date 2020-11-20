@@ -28,6 +28,11 @@ export default {
             let params = {};
             let openUrl = "";
             switch (type) {
+                case "systemLog":
+                case "actionLog":
+                    apiUrl = "/api/appdata/log/exportLogs";
+                    params = loadParams;
+                    break;
                 case "shareLog":
                     apiUrl = "api/logger/switchLogger/exportShareLogger";
                     params = loadParams;

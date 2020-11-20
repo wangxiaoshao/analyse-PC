@@ -51,7 +51,7 @@ export const areaReportList = [
         id: 2,
         systemName: "台账",
         areaTableSrc:
-            "tz_statistics%252F%25E5%258F%25B0%25E8%25B4%25A6%25E5%258C%25BA%25E5%259F%259F%25E8%25A1%25A8%25E6%25A0%25BC%25E6%2595%25B0%25E6%258D%25AE%25E7%25BB%259F%25E8%25AE%25A11.cpt&ref_t=design&ref_c=43abfdf2-f306-4a8a-96cc-69ce74a927a3",
+            "tz_statistics%252F%25E5%258F%25B0%25E8%25B4%25A6%25E5%258C%25BA%25E5%259F%259F%25E6%2595%25B0%25E6%258D%25AE%25E8%25A1%25A8%25E6%25A0%25BC%25E7%25BB%259F%25E8%25AE%25A12.cpt&ref_t=design&ref_c=e6093753-e661-4664-932f-f07192e80a21",
         areaUrl:
             "tz_statistics%252F%25E5%258F%25B0%25E8%25B4%25A6%25E5%258C%25BA%25E5%259F%259F%25E6%2595%25B0%25E6%258D%25AE%25E7%25BB%259F%25E8%25AE%25A1.cpt&ref_t=design&op=write&ref_c=29ea0bd9-e633-449a-b4c7-78f9dc34dc3b",
         unitUrl:

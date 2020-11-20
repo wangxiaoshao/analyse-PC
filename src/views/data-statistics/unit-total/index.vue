@@ -387,8 +387,11 @@ export default {
             const unitFrame = document.getElementById("unitFrame");
             unitFrame.style.height = "500px";
             this.unitType = 2;
-            this.stateParams = this.stateList[0];
-            this.stateChange(this.stateParams);
+            this.unitTypeChange();
+            if (this.app.rolesInfo.roleName !== "UNIT_MANAGER") {
+                this.stateParams = this.stateList[0];
+                this.stateChange(this.stateParams);
+            }
             this.systemId = val;
             this.searchData();
         },

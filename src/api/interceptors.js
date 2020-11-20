@@ -144,7 +144,7 @@ axios.interceptors.response.use(
                 window.location.href = `${match[0]}${location.protocol}//${window.location.host}/api/gate/forward`;
                 return { status: -1, message: "未登录" };
             } else {
-                window.location.href = `http://172.16.68.62/cas/login?service=http://${window.location.host}/api/gate/forward`;
+                window.location.href = `http://cas.gz.cegn.cn/cas/login?service=http://${window.location.host}/api/gate/forward`;
                 return { status: -1, message: "未登录" };
             }
         }

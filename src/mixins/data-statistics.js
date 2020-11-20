@@ -42,7 +42,7 @@ export default {
             //     .subtract(1, "weeks")
             //     .format("YYYY-MM-DD");
             let startDate = "";
-            // 首页情况趋势日期处理
+            // 首页情况趋势日期处理 date如果存在，则开始日期以传入日期为准
             if (date) {
                 startDate = this.$moment()
                     .subtract(date, "days")
@@ -52,7 +52,6 @@ export default {
                     .startOf("month")
                     .format("YYYY-MM-DD");
             }
-            console.log(startDate, "ggggggggggggggggg");
             let endDate = this.$moment()
                 .subtract(1, "days")
                 .format("YYYY-MM-DD");

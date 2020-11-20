@@ -354,7 +354,9 @@ export default {
         applyChange(val) {
             this.unitType = 2;
             this.dataAry = [];
-            this.areaList = [];
+            if (this.app.rolesInfo.roleName !== "COUNTY_MANAGER") {
+                this.areaList = [];
+            }
             this.stateParams = {};
             this.areaParams = {};
             this.systemId = val;
@@ -366,6 +368,15 @@ export default {
             this.searchData();
         },
         searchData() {
+            let authList = this.app.rolesInfo.authorizedOid;
+            let str = "";
+            let codeNum = "";
+            if (authList && authList.length > 0) {
+                authList.forEach((item) => {
+                    str += item + ",";
+                });
+                codeNum = str.substring(0, str.length - 1);
+            }
             let data = {
                 isStat: this.unitType === 0 ? 1 : "",
                 notStat: this.unitType === 1 ? 1 : "",
@@ -378,8 +389,14 @@ export default {
                         ? 0
                         : this.stateParams.treeId
                         ? ""
+                        : this.app.rolesInfo.roleName === "CITY_MANAGER"
+                        ? codeNum
                         : 520000,
-                qxNum: this.areaParams.treeId || "",
+                qxNum: this.areaParams.treeId
+                    ? this.areaParams.treeId
+                    : this.app.rolesInfo.roleName === "COUNTY_MANAGER"
+                    ? codeNum
+                    : "",
                 startDate: this.startDate,
                 endDate: this.endDate,
             };
@@ -424,12 +441,6 @@ export default {
                 }
             });
         },
-        // stateParams() {
-        //     this.searchData();
-        // },
-        // areaParams() {
-        //     this.searchData();
-        // },
     },
 };
 </script>

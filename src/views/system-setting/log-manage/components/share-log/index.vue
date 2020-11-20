@@ -29,7 +29,9 @@
                 <el-button type="primary" @click="getGrid(true)"
                     >查询</el-button
                 >
-                <el-button type="primary" @click="exportLog">导出</el-button>
+                <el-button type="primary" @click="exportLog"
+                    >导出日志</el-button
+                >
             </el-form-item>
         </el-form>
         <div class="table-box">
@@ -68,8 +70,12 @@
                 ></el-table-column>
                 <el-table-column prop="is_banned" label="状态" align="center">
                     <template slot-scope="scope">
-                        <span v-if="parseInt(scope.row.start) === 0">成功</span>
-                        <span v-else style="color: red;">失败</span>
+                        <span
+                            v-if="parseInt(scope.row.start) === 0"
+                            class="text-green"
+                            >成功</span
+                        >
+                        <span v-else class="text-red">失败</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" align="center" width="110px">
@@ -116,10 +122,12 @@
                     </el-form-item>
                     <el-form-item label="同步状态：">
                         <div class="table-td">
-                            <span v-if="parseInt(detialInfoForm.start) === 0"
+                            <span
+                                v-if="parseInt(detialInfoForm.start) === 0"
+                                class="text-green"
                                 >成功</span
                             >
-                            <span v-else style="color: red;">失败</span>
+                            <span v-else class="text-red">失败</span>
                         </div>
                     </el-form-item>
                     <el-form-item label="应用名称：">

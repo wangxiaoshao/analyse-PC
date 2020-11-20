@@ -1,7 +1,7 @@
 <template>
     <div class="operation-log">
         <el-form label-position="right" inline>
-            <el-form-item label="分类：">
+            <el-form-item>
                 <el-select
                     filterable
                     size="medium"
@@ -19,6 +19,7 @@
             </el-form-item>
             <el-form-item>
                 <el-date-picker
+                    style="width: 250px;"
                     v-model="searchDate"
                     type="daterange"
                     format="yyyy-MM-dd"
@@ -34,7 +35,7 @@
             <el-form-item>
                 <el-input
                     placeholder="请输入搜索关键词"
-                    v-model="searchParams.keyWord"
+                    v-model="searchParams.keyword"
                     @blur="iptChange"
                     clearable
                     prefix-icon="el-icon-search"
@@ -45,33 +46,127 @@
                 <el-button type="primary" plain @click="openSelectDailog"
                     >选择单位</el-button
                 >
-            </el-form-item>
-            <el-form-item>
-                <el-button type="primary" @click="findCondition"
+                <el-button type="primary" @click="getGrid(true)"
                     >查询</el-button
+                >
+                <el-button type="primary" @click="resetData">重置</el-button>
+                <el-button type="primary" @click="exportLog"
+                    >导出日志</el-button
                 >
             </el-form-item>
         </el-form>
         <div class="table-box">
-            <iframe
-                id="logIframe"
-                width="100%"
-                height="370px"
-                scrolling="no"
-                :src="srcUrl"
-                frameborder="0"
-            ></iframe>
+            <el-table
+                :data="actionLoggerList"
+                stripe
+                border
+                style="width: 100%;"
+            >
+                <template slot="empty">
+                    <div class="empty">
+                        <p>
+                            <img
+                                class="data-pic"
+                                src="@src/common/images/no-data1.png"
+                                alt=""
+                            />
+                        </p>
+                        <p><span style="padding-left: 8px;">暂无数据</span></p>
+                    </div>
+                </template>
+                <el-table-column
+                    prop="actionTime"
+                    label="操作时间"
+                    align="center"
+                ></el-table-column>
+                <el-table-column
+                    prop="actionUser"
+                    label="操作人"
+                    align="center"
+                ></el-table-column>
+                <el-table-column
+                    prop="actionDesc"
+                    label="描述"
+                    align="center"
+                ></el-table-column>
+                <el-table-column prop="success" label="是否成功" align="center">
+                    <template slot-scope="scope">
+                        <span
+                            v-if="scope.row.success === '是'"
+                            class="text-green"
+                            >是</span
+                        >
+                        <span v-else class="text-red">失败</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="操作" align="center" width="110px">
+                    <template slot-scope="scope">
+                        <el-button
+                            size="mini"
+                            type="text"
+                            @click="opendetialInfo(scope.row)"
+                            >详情</el-button
+                        >
+                    </template>
+                </el-table-column>
+            </el-table>
             <el-pagination
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
-                @prev-click="send('_g().gotoPreviousPage()')"
-                @next-click="send('_g().gotoNextPage()')"
                 :current-page="page.current"
-                :page-sizes="[10]"
+                :page-sizes="[10, 30, 50, 100]"
                 :page-size="page.limit"
                 layout="total, sizes, prev, pager, next, jumper"
                 :total="page.total"
             ></el-pagination>
+        </div>
+        <!-- 详细信息弹窗 -->
+        <div class="dialog-box">
+            <el-dialog :visible.sync="detialInfoVisible" width="600px">
+                <div slot="title" style="padding: 20px;">
+                    日志详情
+                    <i
+                        class="el-icon-document-copy"
+                        style="color: #5d71d0;"
+                    ></i>
+                </div>
+                <el-form inline label-width="130px" class="systemDetial">
+                    <el-form-item label="操作时间：">
+                        <div class="table-td">
+                            {{ detialInfoForm.actionTime }}
+                        </div>
+                    </el-form-item>
+                    <el-form-item label="操作人：">
+                        <div class="table-td">
+                            {{ detialInfoForm.actionUser }}
+                        </div>
+                    </el-form-item>
+                    <el-form-item label="是否成功：">
+                        <div class="table-td">
+                            <span
+                                v-if="detialInfoForm.success === '是'"
+                                class="text-green"
+                                >是</span
+                            >
+                            <span v-else class="text-red">失败</span>
+                        </div>
+                    </el-form-item>
+                    <el-form-item label="操作描述：">
+                        <div class="table-td">
+                            {{ detialInfoForm.actionDesc }}
+                        </div>
+                    </el-form-item>
+                </el-form>
+
+                <div slot="footer" class="dialog-footer">
+                    <el-button
+                        type="primary"
+                        @click="detialInfoVisible = false"
+                        width="120px"
+                        >确 定</el-button
+                    >
+                </div>
+            </el-dialog>
         </div>
         <select-tree
             :selectTreeDailog="selectTreeDailog"
@@ -84,11 +179,11 @@
 import { api, urlNames } from "@src/api";
 import handleTable from "@src/mixins/new/handle-table";
 import dataStatistics from "@src/mixins/data-statistics";
-import initReport from "@src/mixins/initReport";
+import downloadBinaryFile from "@src/mixins/downloadBinaryFile";
 import SelectTree from "@src/components/SelectTree/index";
 export default {
-    mixins: [handleTable, dataStatistics, initReport],
-    props: ["activeName"],
+    mixins: [handleTable, dataStatistics, downloadBinaryFile],
+
     components: {
         SelectTree,
     },
@@ -98,32 +193,32 @@ export default {
                 title: "选择查询单位",
                 openSelectTreeVisiable: false,
                 isSelectType: 2, // 1 区县  2  单位  3 人员 4市州
-                isSingSelect: false, // 是否单选,true 单选，false:多选
+                isSingSelect: true, // 是否单选,true 单选，false:多选
                 isClearSelected: true, // 再次打开是否清空已选框
             },
             logTypeList: [],
             searchParams: {
                 actionType: "",
-                keyWord: "",
+                keyword: "",
+                orgId: "",
             },
-            totalAry: [],
+            actionLoggerList: [],
+            detialInfoVisible: false,
+            detialInfoForm: {},
         };
     },
     created() {
         this.initializeDate();
+        this.pickDateOptionRules();
         this.getAllLogTypes();
     },
     mounted() {
-        if (this.activeName === "first") {
-            this.findCondition();
-            this.initLogHeight("logIframe");
-            this.initReportPage("logIframe");
-        }
+        this.getGrid();
     },
     methods: {
         // 系统日志--获取所有日志类型
         getAllLogTypes() {
-            api[urlNames["getAllLogTypes"]]({}).then((res) => {
+            api[urlNames["getAllLogTypes"]]().then((res) => {
                 if (res.data) {
                     this.logTypeList = res.data;
                 }
@@ -139,20 +234,29 @@ export default {
             console.log(this.searchParams.actionType);
         },
         iptChange() {},
-        findCondition() {
+        getGrid(flag) {
+            if (flag) {
+                this.page.current = 1;
+            }
             let data = {
-                startDate: this.startDate,
+                beginDate: this.startDate,
                 endDate: this.endDate,
                 actionType: this.searchParams.actionType,
-                keyWord: this.searchParams.keyWord,
-                tableName:
-                    this.tableName +
-                    this.$moment(this.startDate).format("YYYYMM"),
+                keyword: this.searchParams.keyword,
+                orgId: this.searchParams.orgId,
+                page: this.page.current,
+                pageSize: this.page.limit,
             };
-            this.srcUrl =
-                this.hostApi +
-                this.logSrc.operationSrc +
-                this.doSrcParams(data);
+            api[urlNames["getActionLoggerList"]](data).then(
+                (res) => {
+                    this.actionLoggerList = res.data;
+                    this.page.total = res.total;
+                },
+                () => {
+                    this.actionLoggerList = [];
+                    this.page.total = 0;
+                }
+            );
         },
         openSelectDailog() {
             this.selectTreeDailog.openSelectTreeVisiable = true;
@@ -163,22 +267,38 @@ export default {
         dialogReturnData(userData, authData) {
             authData = authData || [];
             let dataAry = [...userData, ...authData];
-            console.log(dataAry);
+            this.searchParams.orgId = dataAry[0].treeId;
+        },
+        opendetialInfo(row) {
+            this.detialInfoForm = {};
+            this.detialInfoVisible = true;
+            this.detialInfoForm = row;
+        },
+        exportLog() {
+            let data = {
+                beginDate: this.startDate,
+                endDate: this.endDate,
+                actionType: this.searchParams.actionType,
+                keyword: this.searchParams.keyword,
+                orgId: this.searchParams.orgId,
+                page: this.page.current,
+                pageSize: this.page.limit,
+                logType: 1,
+            };
+            this.downloadBinaryFile("actionLog", data);
+        },
+        resetData() {
+            this.initializeDate();
+            this.searchParams.actionType = "";
+            this.searchParams.orgId = "";
+            this.searchParams.keyword = "";
+            this.getGrid(true);
         },
     },
     watch: {
         activeName(val) {
-            console.log(val, "oooooooo");
             if (val === "first") {
-                this.findCondition();
-                if (this.totalAry.length > 0) {
-                    this.page.total = this.totalAry[0].total;
-                    // document.getElementById(
-                    //     "logIframe"
-                    // ).style = this.totalAry[0].height;
-                }
-
-                console.log(this.totalAry);
+                this.resetData();
             }
         },
     },
