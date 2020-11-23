@@ -123,7 +123,7 @@
             <!-- <el-button @click="changSize">点击</el-button> -->
             <div class="chart-box">
                 <iframe
-                    :src="srcUrl"
+                    :src="areaSrc"
                     id="areaFrame"
                     frameborder="0"
                     scrolling="no"
@@ -160,6 +160,7 @@ export default {
     mixins: [dataStatistics, applicationList],
     data() {
         return {
+            areaSrc: "",
             unitType: 2,
             stateParams: {
                 // treeId: "520000",
@@ -248,7 +249,6 @@ export default {
                         if (!that.dataAry.includes(e.data) && e.data.height) {
                             that.dataAry.push(e.data);
                         }
-                        console.log(that.dataAry, "areaFrame");
                     },
                     false
                 );

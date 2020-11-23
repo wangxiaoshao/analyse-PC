@@ -48,7 +48,6 @@
                     placeholder="请选择单位类型"
                     @change="unitTypeChange"
                     v-model="unitType"
-                    filterable
                 >
                     <el-option
                         v-for="item in unitTypeList"
@@ -133,12 +132,32 @@
         <div class="system-data">
             <div class="chart-box">
                 <iframe
-                    :src="srcUrl"
+                    :src="unitSrc"
                     id="unitFrame"
                     frameborder="0"
                     scrolling="no"
                     ref="iframe"
                 ></iframe>
+                <iframe
+                    :src="tableOrMemberSrc"
+                    id="unitMemberIframe"
+                    frameborder="0"
+                    width="100%"
+                    height="300px"
+                    scrolling="no"
+                    ref="unitMemberIframe"
+                ></iframe>
+                <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    @prev-click="send('_g().gotoPreviousPage()')"
+                    @next-click="send('_g().gotoNextPage()')"
+                    :current-page="page.current"
+                    :page-sizes="[10]"
+                    :page-size="page.limit"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="page.total"
+                ></el-pagination>
             </div>
         </div>
     </div>
@@ -152,6 +171,8 @@ export default {
     mixins: [dataStatistics, applicationList],
     data() {
         return {
+            unitSrc: "",
+            tableOrMemberSrc: "",
             startDate1: "",
             endDate1: "",
             unitType: 2,
@@ -166,6 +187,12 @@ export default {
             areaList: [],
             unitList: [],
             unitFrameHeight: "300px",
+            page: {
+                current: 1,
+                limit: 10,
+                total: 0,
+            },
+            isTable: false,
         };
     },
     created() {
@@ -176,12 +203,43 @@ export default {
     mounted() {
         this.pickDateOptionRules();
         this.pickMounthOptionRules();
+        this.initReportPage();
         this.initUnitHeight();
+        this.initTableTotalHeight();
     },
     computed: {
         ...mapState(["app"]),
     },
     methods: {
+        initReportPage() {
+            var ifr = document.getElementById("unitMemberIframe").contentWindow;
+            var sendMessage = function () {
+                if (window.postMessage) {
+                    if (window.addEventListener) {
+                    } else if (window.attachEvent) {
+                        window.attachEvent("onmessage", function (e) {
+                            console.log(e.data, 2222);
+                        });
+                    }
+                    return function (data) {
+                        console.log(data, 333);
+                        ifr.postMessage(data, "*");
+                    };
+                } else {
+                    var hash = "";
+                    setInterval(function () {
+                        if (window.name !== hash) {
+                            hash = window.name;
+                        }
+                    }, 200);
+                    return function (data) {
+                        console.log(data, 444);
+                        ifr.name = data;
+                    };
+                }
+            };
+            window.sendMessage = sendMessage();
+        },
         initUnitHeight() {
             let that = this;
             const unitFrame = document.getElementById("unitFrame");
@@ -197,12 +255,36 @@ export default {
                         }
                         console.log(e.data, "unitFrame");
                     },
+                    false
+                );
+            };
+        },
+        initTableTotalHeight() {
+            let that = this;
+            document.getElementById("unitMemberIframe").onload = function () {
+                that.dataAry = [];
+                window.addEventListener(
+                    "message",
+                    function (e) {
+                        console.log(e.data, "unitMemberIframe");
+                    },
 
                     false
                 );
             };
         },
+        isRoleState() {
+            return (
+                this.app.rolesInfo.roleName === "CITY_MANAGER" ||
+                this.app.rolesInfo.roleName === "SUPER_MANAGER" ||
+                this.app.rolesInfo.roleName === "PROVINCE_MANAGER"
+            );
+        },
         getStateList() {
+            this.unitType = 2;
+            if (this.app.rolesInfo.roleName === "UNIT_MANAGER") {
+                this.isTable = true;
+            }
             if (this.app.rolesInfo.roleName === "UNIT_MANAGER") {
                 this.initUnit("", "", this.unitType);
                 return;
@@ -254,12 +336,7 @@ export default {
                             }
                             return;
                         }
-                        if (
-                            this.app.rolesInfo.roleName === "SUPER_MANAGER" ||
-                            this.app.rolesInfo.roleName ===
-                                "PROVINCE_MANAGER" ||
-                            this.app.rolesInfo.roleName === "CITY_MANAGER"
-                        ) {
+                        if (this.isRoleState()) {
                             this.stateList = aryList;
                             if (this.stateList.length > 0) {
                                 this.stateParams = this.stateList[0];
@@ -273,7 +350,10 @@ export default {
                 });
             }
         },
-        initArea(treeId, treeType) {
+        initArea(treeId, treeType, isSet) {
+            if (!isSet) {
+                isSet = false;
+            }
             api[urlNames["getTreeList"]]({
                 treeId,
                 treeType,
@@ -283,13 +363,14 @@ export default {
                         this.areaList = [];
                         this.areaParams = {};
                         this.unitList = res.data;
-                        if (this.unitList.length > 0) {
+                        if (this.unitList.length > 0 && !isSet) {
                             this.unitId = this.unitList[0].treeId;
+                            this.searchData();
                         }
                         return;
                     }
                     this.areaList = res.data;
-                    if (this.areaList.length > 0) {
+                    if (this.areaList.length > 0 && !isSet) {
                         this.areaParams = this.areaList[0];
                         this.initUnit(
                             this.stateParams.treeId,
@@ -300,14 +381,13 @@ export default {
                 }
             });
         },
-        initUnit(cityCode, countyCode, assessType, treeType) {
+        initUnit(cityCode, countyCode, assessType, treeType, isSearch) {
+            if (!isSearch) {
+                isSearch = false;
+            }
             let data = {};
             let apiUrl = "";
-            if (
-                this.app.rolesInfo.roleName === "CITY_MANAGER" ||
-                this.app.rolesInfo.roleName === "SUPER_MANAGER" ||
-                this.app.rolesInfo.roleName === "PROVINCE_MANAGER"
-            ) {
+            if (this.isRoleState()) {
                 data.cityCode = cityCode;
                 data.countyCode = countyCode;
                 data.assessType = assessType;
@@ -324,17 +404,31 @@ export default {
             api[urlNames[apiUrl]](data).then((res) => {
                 if (res.data) {
                     this.unitList = res.data;
-                    if (this.unitList.length > 0) {
+                    if (
+                        this.unitList.length > 0 &&
+                        this.app.rolesInfo.roleName !== "UNIT_MANAGER" &&
+                        !isSearch
+                    ) {
+                        this.unitId = res.data[0].orgId || res.data[0].treeId;
+                    } else if (this.unitList.length === 1 && !isSearch) {
                         this.unitId = res.data[0].orgId || res.data[0].treeId;
                     } else {
                         this.unitId = "";
-                        this.unitList = [];
+                    }
+                    if (!isSearch) {
+                        this.searchData();
                     }
                 }
             });
         },
+        handleSizeChange(val) {
+            this.page.limit = val;
+        },
+        handleCurrentChange(val) {
+            this.page.current = val;
+            this.send(`_g().gotoPage(${this.page.current})`);
+        },
         unitTypeChange() {
-            console.log(this.stateParams, this.areaParams);
             let data = {
                 treeId: this.stateParams.treeId,
                 areaId: this.areaParams.treeId ? this.areaParams.treeId : "",
@@ -345,7 +439,8 @@ export default {
                 data.treeId,
                 data.areaId,
                 data.unitType,
-                data.treeType
+                data.treeType,
+                true
             );
         },
         dateChange(val) {
@@ -368,7 +463,7 @@ export default {
             if (this.areaParams.treeId) {
                 this.areaParams = {};
             }
-            this.initArea(this.stateId, this.treeType);
+            this.initArea(this.stateId, this.treeType, true);
         },
         areaChange(val) {
             this.areaId = val.treeId;
@@ -379,40 +474,54 @@ export default {
                 this.stateId,
                 this.areaId,
                 this.unitType,
-                this.treeType
+                this.treeType,
+                true
             );
         },
-        unitChange() {},
+        unitChange(val) {},
         applyChange(val) {
+            this.systemId = val;
+            this.isTable =
+                this.unitId === "" ||
+                this.systemId === 1 ||
+                this.systemId === 5 ||
+                this.systemId === 6;
             const unitFrame = document.getElementById("unitFrame");
             unitFrame.style.height = "500px";
-            this.unitType = 2;
-            this.unitTypeChange();
-            if (this.app.rolesInfo.roleName !== "UNIT_MANAGER") {
-                this.stateParams = this.stateList[0];
-                this.stateChange(this.stateParams);
-            }
-            this.systemId = val;
-            this.searchData();
+            this.getStateList();
         },
         searchData() {
+            console.log(this.unitId, this.isTable, "hhhhhhhhhhhhh");
+            let authList = this.app.rolesInfo.authorizedOid;
+            let str = "";
+            let unitIds = "";
+            if (this.app.rolesInfo.roleName === "UNIT_MANAGER") {
+                if (authList && authList.length > 0) {
+                    authList.forEach((item) => {
+                        str += item + ",";
+                    });
+                    unitIds = str.substring(0, str.length - 1);
+                }
+            } else {
+                unitIds = this.unitId;
+            }
             let data = {
                 isStat: this.unitType === 2 ? "" : this.unitType,
                 cityNum:
                     this.stateParams.treeId === "520000"
                         ? 0
-                        : this.stateParams.treeId,
+                        : this.stateParams.treeId || "",
                 codeNum:
                     this.stateParams.treeId === "520000"
                         ? this.stateParams.treeId
-                        : this.areaParams.treeId,
+                        : this.areaParams.treeId || "",
                 qxNum:
                     this.stateParams.treeId === "520000"
                         ? 0
-                        : this.areaParams.treeId,
+                        : this.areaParams.treeId || "",
                 startDate: this.startDate,
                 endDate: this.endDate,
-                orgId: this.unitId,
+                orgId: this.unitId === "" ? unitIds : this.unitId,
             };
             if (this.systemId === 5) {
                 data.months = this.$moment(this.startDate1).format("YYYY-MM");
@@ -423,15 +532,20 @@ export default {
                 data.startDate = this.startDate1;
                 data.endDate = this.endDate1;
             }
-            this.initSystem("unit", this.doSrcParams(data));
+            this.initSystem("unit", this.doSrcParams(data), null, this.isTable);
         },
         resetData() {
             this.applyChange(this.systemId);
         },
     },
     watch: {
-        unitId() {
-            this.searchData();
+        unitId(newValue, old) {
+            console.log("newValue:", newValue, "old:", old);
+            this.isTable =
+                newValue === "" ||
+                this.systemId === 1 ||
+                this.systemId === 5 ||
+                this.systemId === 6;
         },
     },
 };

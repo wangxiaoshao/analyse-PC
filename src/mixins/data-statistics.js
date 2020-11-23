@@ -110,7 +110,8 @@ export default {
                 1;
             console.log(this.$moment(this.startDate1).format("MM"), "ffff");
         },
-        initSystem(type, str, systemId) {
+        initSystem(type, str, systemId, isUnitTable) {
+            // 首页处理
             if (!systemId) {
                 systemId = this.systemId;
             }
@@ -123,12 +124,19 @@ export default {
                 case "area":
                     url = this.hostApi + ary[0].areaUrl + str;
                     tableUrl = this.hostApi + ary[0].areaTableSrc + str;
-                    this.srcUrl = url;
+                    this.areaSrc = url;
                     this.areaTableSrc = tableUrl;
                     break;
                 case "unit":
                     url = this.hostApi + ary[0].unitUrl + str;
-                    this.srcUrl = url;
+                    this.unitSrc = url;
+                    if (isUnitTable) {
+                        this.tableOrMemberSrc =
+                            this.hostApi + ary[0].unitTableSrc + str;
+                    } else {
+                        this.tableOrMemberSrc =
+                            this.hostApi + ary[0].unitMemberTableSrc + str;
+                    }
                     break;
                 case "person":
                     url = this.hostApi + ary[0].personUrl + str;
