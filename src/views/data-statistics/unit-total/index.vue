@@ -143,7 +143,7 @@
                     id="unitMemberIframe"
                     frameborder="0"
                     width="100%"
-                    height="300px"
+                    height="100%"
                     scrolling="no"
                     ref="unitMemberIframe"
                 ></iframe>
@@ -186,13 +186,17 @@ export default {
             stateList: [],
             areaList: [],
             unitList: [],
-            unitFrameHeight: "300px",
             page: {
                 current: 1,
                 limit: 10,
                 total: 0,
             },
             isTable: false,
+            autoParams: {
+                chartHeight: 0,
+                tableHeight: 0,
+                total: 0,
+            },
         };
     },
     created() {
@@ -205,12 +209,14 @@ export default {
         this.pickMounthOptionRules();
         this.initReportPage();
         this.initUnitHeight();
-        this.initTableTotalHeight();
     },
     computed: {
         ...mapState(["app"]),
     },
     methods: {
+        send(msg) {
+            window.sendMessage(msg);
+        },
         initReportPage() {
             var ifr = document.getElementById("unitMemberIframe").contentWindow;
             var sendMessage = function () {
@@ -222,7 +228,7 @@ export default {
                         });
                     }
                     return function (data) {
-                        console.log(data, 333);
+                        // console.log(data, 333);
                         ifr.postMessage(data, "*");
                     };
                 } else {
@@ -244,31 +250,21 @@ export default {
             let that = this;
             const unitFrame = document.getElementById("unitFrame");
             unitFrame.onload = function () {
-                that.dataAry = [];
                 window.addEventListener(
                     "message",
                     function (e) {
-                        if (e.data.height) {
-                            unitFrame.style.height = e.data.height + "px";
-                        } else {
-                            unitFrame.style.height = "480px";
+                        if (e.data.height > -1 && e.data.total > -1) {
+                            that.autoParams.tableHeight = e.data.height;
+                            that.autoParams.total = e.data.total;
+                        } else if (
+                            e.data.height > -1 &&
+                            !e.data.total &&
+                            e.data.total !== 0
+                        ) {
+                            that.autoParams.chartHeight = e.data.height;
                         }
-                        console.log(e.data, "unitFrame");
+                        console.log(e.data, "uuuuuuu");
                     },
-                    false
-                );
-            };
-        },
-        initTableTotalHeight() {
-            let that = this;
-            document.getElementById("unitMemberIframe").onload = function () {
-                that.dataAry = [];
-                window.addEventListener(
-                    "message",
-                    function (e) {
-                        console.log(e.data, "unitMemberIframe");
-                    },
-
                     false
                 );
             };
@@ -284,8 +280,6 @@ export default {
             this.unitType = 2;
             if (this.app.rolesInfo.roleName === "UNIT_MANAGER") {
                 this.isTable = true;
-            }
-            if (this.app.rolesInfo.roleName === "UNIT_MANAGER") {
                 this.initUnit("", "", this.unitType);
                 return;
             }
@@ -486,12 +480,27 @@ export default {
                 this.systemId === 1 ||
                 this.systemId === 5 ||
                 this.systemId === 6;
-            const unitFrame = document.getElementById("unitFrame");
-            unitFrame.style.height = "500px";
             this.getStateList();
         },
         searchData() {
-            console.log(this.unitId, this.isTable, "hhhhhhhhhhhhh");
+            this.page.current = 1;
+            if (
+                this.isRoleState() ||
+                this.app.rolesInfo.roleName === "COUNTY_MANAGER"
+            ) {
+                if (
+                    !this.areaParams.treeId &&
+                    this.unitId === "" &&
+                    this.stateParams.treeId !== "520000"
+                ) {
+                    this.$message.warning("请先选择区县");
+                    return;
+                }
+                if (this.unitId === "") {
+                    this.$message.warning("请先选择单位");
+                    return;
+                }
+            }
             let authList = this.app.rolesInfo.authorizedOid;
             let str = "";
             let unitIds = "";
@@ -540,12 +549,22 @@ export default {
     },
     watch: {
         unitId(newValue, old) {
-            console.log("newValue:", newValue, "old:", old);
             this.isTable =
                 newValue === "" ||
                 this.systemId === 1 ||
                 this.systemId === 5 ||
                 this.systemId === 6;
+        },
+        autoParams: {
+            deep: true, // 深度监听设置为 true
+            handler: function (newV, oldV) {
+                this.page.total = newV.total;
+                document.getElementById("unitMemberIframe").style.height =
+                    newV.tableHeight + "px";
+                document.getElementById("unitFrame").style.height =
+                    newV.chartHeight + "px";
+                console.log("watch中：", newV);
+            },
         },
     },
 };
@@ -554,7 +573,6 @@ export default {
 @import "../area-total/index.less";
 #unitFrame {
     width: 100%;
-    height: 480px;
     overflow: hidden;
 }
 </style>

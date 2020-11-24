@@ -123,11 +123,7 @@ export default {
                         } else {
                             memberFrame.style.height = "500px";
                         }
-                        console.log(
-                            e.data,
-                            memberFrame.style.height,
-                            "memberFrame"
-                        );
+                        // console.log(e.data, "memberFrame");
                     },
 
                     false

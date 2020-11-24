@@ -171,10 +171,14 @@ export default {
             systemId: -1,
             stateList: [],
             areaList: [],
-            dataAry: [],
             page: {
                 current: 1,
                 limit: 10,
+                total: 0,
+            },
+            autoParams: {
+                chartHeight: 0,
+                tableHeight: 0,
                 total: 0,
             },
         };
@@ -190,7 +194,6 @@ export default {
         this.searchData();
         this.initReportPage();
         this.initChartHeight();
-        this.initTableTotalHeight();
     },
     computed: {
         ...mapState(["app"]),
@@ -245,29 +248,18 @@ export default {
                 window.addEventListener(
                     "message",
                     function (e) {
-                        console.log(e.data, "areaFrame");
-                        if (!that.dataAry.includes(e.data) && e.data.height) {
-                            that.dataAry.push(e.data);
+                        if (e.data.height > -1 && e.data.total > -1) {
+                            that.autoParams.tableHeight = e.data.height;
+                            that.autoParams.total = e.data.total;
+                        } else if (
+                            e.data.height > -1 &&
+                            !e.data.total &&
+                            e.data.total !== 0
+                        ) {
+                            that.autoParams.chartHeight = e.data.height;
                         }
+                        // console.log(e.data, "jjjjjjj");
                     },
-                    false
-                );
-            };
-        },
-        initTableTotalHeight() {
-            let that = this;
-            document.getElementById("areaTableFrame").onload = function () {
-                that.dataAry = [];
-                window.addEventListener(
-                    "message",
-                    function (e) {
-                        console.log(e.data, "areaTableFrame");
-                        if (!that.dataAry.includes(e.data) && e.data.height) {
-                            that.dataAry.push(e.data);
-                        }
-                        console.log(that.dataAry, "areaTableFrame");
-                    },
-
                     false
                 );
             };
@@ -353,7 +345,6 @@ export default {
         areaChange(val) {},
         applyChange(val) {
             this.unitType = 2;
-            this.dataAry = [];
             if (this.app.rolesInfo.roleName !== "COUNTY_MANAGER") {
                 this.areaList = [];
             }
@@ -368,6 +359,7 @@ export default {
             this.searchData();
         },
         searchData() {
+            this.page.current = 1;
             let authList = this.app.rolesInfo.authorizedOid;
             let str = "";
             let codeNum = "";
@@ -423,23 +415,16 @@ export default {
         },
     },
     watch: {
-        dataAry() {
-            if (this.dataAry.length === 0) {
-                document.getElementById("areaTableFrame").style.height = "100%";
-                document.getElementById("areaFrame").style.height = "100%";
-                return;
-            }
-
-            this.dataAry.forEach((item) => {
-                if (item.total && item.height) {
-                    this.page.total = item.total;
-                    document.getElementById("areaTableFrame").style.height =
-                        item.height + "px";
-                } else if (item.height) {
-                    document.getElementById("areaFrame").style.height =
-                        item.height + "px";
-                }
-            });
+        autoParams: {
+            deep: true, // 深度监听设置为 true
+            handler: function (newV, oldV) {
+                this.page.total = newV.total;
+                document.getElementById("areaFrame").style.height =
+                    newV.chartHeight + "px";
+                document.getElementById("areaTableFrame").style.height =
+                    newV.tableHeight + "px";
+                console.log("watch中：", newV);
+            },
         },
     },
 };
