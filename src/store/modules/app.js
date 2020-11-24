@@ -34,9 +34,6 @@ const app = {
         [types.SET_PAGE_BREADCRUMB](state, val) {
             state.pageBreadcrumb = val;
         },
-        [types.DIC_LIST](state, val) {
-            state.dicList = val;
-        },
         [types.GET_CONFIRM_INFO](state, val) {
             state.confirmState = val;
         },

@@ -105,7 +105,6 @@ export default {
             "SET_WINDOWHEIGHT",
             "SET_WINDOWWIDTH",
             "SET_PAGE_BREADCRUMB",
-            "DIC_LIST",
             "GET_CONFIRM_INFO",
             "SET_NOTICE_WAY",
             "SET_NOTICE_TYPE",

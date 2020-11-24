@@ -20,8 +20,6 @@ export const PERSON_PAGE = "PERSON_PAGE";
 export const LIST_ID = "LIST_ID";
 export const ROLE_ID = "ROLE_ID";
 
-export const DIC_LIST = "DIC_LIST";
-
 // 角色信息
 export const SET_ROLE_INFO = "SET_ROLE_INFO";
 // 通知类型和通知方式
