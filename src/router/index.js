@@ -71,10 +71,10 @@ function getRouters(routes, roleId, authorizedOid) {
             }
         }
         // 处理单位管理员授权范围不包含人民政府办公厅的菜单，如果包含才显示数据模板菜单，不包含就不显示
-        // if (route.customShow) {
-        //     const flag = route.customShow(authorizedOid);
-        //     if (!flag) return;
-        // }
+        if (route.customShow) {
+            const flag = route.customShow(authorizedOid);
+            if (!flag) return;
+        }
         // 都显示
         // 添加一个
         const addItem = {

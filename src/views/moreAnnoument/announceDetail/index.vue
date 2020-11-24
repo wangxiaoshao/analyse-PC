@@ -25,7 +25,7 @@
 <script>
 import { api, urlNames } from "@src/api";
 import { mapState } from "vuex";
-import handleBreadcrumb from "@src/mixins/new/handle-breadcrumb.js";
+import handleBreadcrumb from "@src/mixins/handle-breadcrumb.js";
 export default {
     name: "announceDetail",
     mixins: [handleBreadcrumb],

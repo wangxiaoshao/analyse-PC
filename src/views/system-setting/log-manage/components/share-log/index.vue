@@ -67,7 +67,11 @@
                     prop="timeConsuming"
                     label="耗时"
                     align="center"
-                ></el-table-column>
+                >
+                    <template slot-scope="scope">
+                        {{ scope.row.timeConsuming + "ms" }}
+                    </template>
+                </el-table-column>
                 <el-table-column prop="is_banned" label="状态" align="center">
                     <template slot-scope="scope">
                         <span
@@ -161,7 +165,7 @@
 </template>
 <script>
 import { api, urlNames } from "@src/api";
-import handleTable from "@src/mixins/new/handle-table";
+import handleTable from "@src/mixins/handle-table";
 import pickerOptions from "@src/mixins/picker-options";
 import downloadBinaryFile from "@src/mixins/downloadBinaryFile";
 export default {

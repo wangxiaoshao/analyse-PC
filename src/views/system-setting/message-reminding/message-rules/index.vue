@@ -85,7 +85,7 @@
     </div>
 </template>
 <script>
-import handleBreadcrumb from "@src/mixins/new/handle-breadcrumb.js";
+import handleBreadcrumb from "@src/mixins/handle-breadcrumb.js";
 import SelectTree from "@src/components/SelectTree/index";
 import { mapState } from "vuex";
 import { api, urlNames } from "@src/api";

@@ -278,11 +278,13 @@ export default {
         },
         getStateList() {
             this.unitType = 2;
+            /* 1.单位管理员 初始化单单位 */
             if (this.app.rolesInfo.roleName === "UNIT_MANAGER") {
                 this.isTable = true;
                 this.initUnit("", "", this.unitType);
                 return;
             }
+            /* 1.超级管理员 省级管理员 */
             if (
                 this.app.rolesInfo.roleName === "SUPER_MANAGER" ||
                 this.app.rolesInfo.roleName === "PROVINCE_MANAGER"
@@ -302,6 +304,7 @@ export default {
                         }
                     }
                 });
+                /* 3.市州管理员，区县管理员 */
             } else {
                 let data = {
                     codeList: this.app.rolesInfo.authorizedOid,
@@ -318,6 +321,7 @@ export default {
                             };
                             aryList.push(obj);
                         });
+                        /* 区县管理员初始化单位 */
                         if (this.app.rolesInfo.roleName === "COUNTY_MANAGER") {
                             this.areaList = aryList;
                             if (this.areaList.length > 0) {
@@ -330,6 +334,7 @@ export default {
                             }
                             return;
                         }
+                        /* 市州管理员 超管 省级 初始化单位 */
                         if (this.isRoleState()) {
                             this.stateList = aryList;
                             if (this.stateList.length > 0) {
@@ -344,6 +349,7 @@ export default {
                 });
             }
         },
+        // isSet 是否默认选中第一个单位参数
         initArea(treeId, treeType, isSet) {
             if (!isSet) {
                 isSet = false;
@@ -375,7 +381,8 @@ export default {
                 }
             });
         },
-        initUnit(cityCode, countyCode, assessType, treeType, isSearch) {
+        /* cityCode市州编码 countyCode区县编码  assessType单位类型 isSearch是否默人选中下拉选和查询数据 */
+        initUnit(cityCode, countyCode, assessType, isSearch) {
             if (!isSearch) {
                 isSearch = false;
             }
@@ -429,13 +436,7 @@ export default {
                 unitType: this.unitType,
                 treeType: this.stateParams.treeType,
             };
-            this.initUnit(
-                data.treeId,
-                data.areaId,
-                data.unitType,
-                data.treeType,
-                true
-            );
+            this.initUnit(data.treeId, data.areaId, data.unitType, true);
         },
         dateChange(val) {
             if (val) {
@@ -464,13 +465,7 @@ export default {
             this.treeType = val.treeType;
             this.unitId = "";
             this.unitList = [];
-            this.initUnit(
-                this.stateId,
-                this.areaId,
-                this.unitType,
-                this.treeType,
-                true
-            );
+            this.initUnit(this.stateId, this.areaId, this.unitType, true);
         },
         unitChange(val) {},
         applyChange(val) {

@@ -161,7 +161,7 @@
 </template>
 <script>
 import { api, urlNames } from "@src/api";
-import handleTable from "@src/mixins/new/handle-table";
+import handleTable from "@src/mixins/handle-table";
 export default {
     mixins: [handleTable],
     data() {

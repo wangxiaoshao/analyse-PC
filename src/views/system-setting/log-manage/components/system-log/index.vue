@@ -183,7 +183,7 @@
 </template>
 <script>
 import { api, urlNames } from "@src/api";
-import handleTable from "@src/mixins/new/handle-table";
+import handleTable from "@src/mixins/handle-table";
 import dataStatistics from "@src/mixins/data-statistics";
 import downloadBinaryFile from "@src/mixins/downloadBinaryFile";
 export default {

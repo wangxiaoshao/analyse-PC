@@ -113,7 +113,7 @@
     </div>
 </template>
 <script>
-import handleTable from "@src/mixins/new/handle-table";
+import handleTable from "@src/mixins/handle-table";
 import { api, urlNames } from "@src/api";
 import { mapState } from "vuex";
 export default {
