@@ -4,7 +4,7 @@
             <el-tab-pane
                 label="操作日志"
                 name="first"
-                v-if="app.rolesInfo.roleName === 'SECURITY_AUDIT_MANAGER'"
+                v-if="isShowSuperOrSecurity()"
             >
                 <operation-log :activeName="activeName"></operation-log>
             </el-tab-pane>
@@ -12,7 +12,7 @@
                 label="系统日志"
                 name="second"
                 v-if="
-                    app.rolesInfo.roleName === 'SECURITY_AUDIT_MANAGER' ||
+                    isShowSuperOrSecurity() ||
                     app.rolesInfo.roleName === 'SYSTEM_MANAGER'
                 "
             >
@@ -21,7 +21,7 @@
             <el-tab-pane
                 label="共享日志"
                 name="third"
-                v-if="app.rolesInfo.roleName === 'SECURITY_AUDIT_MANAGER'"
+                v-if="isShowSuperOrSecurity()"
             >
                 <share-log></share-log>
             </el-tab-pane>
@@ -42,6 +42,12 @@ export default {
     },
     methods: {
         handleClick(val) {},
+        isShowSuperOrSecurity() {
+            return (
+                this.app.rolesInfo.roleName === "SUPER_MANAGER" ||
+                this.app.rolesInfo.roleName === "SECURITY_AUDIT_MANAGER"
+            );
+        },
     },
     computed: {
         ...mapState(["app"]),
