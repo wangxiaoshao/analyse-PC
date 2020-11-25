@@ -20,15 +20,36 @@
             </el-form-item>
         </el-form>
         <div class="system-list">
-            <span>系统应用： </span>
-            <el-radio-group v-model="systemId" @change="applyChange">
+            <!-- <span>系统应用： </span> -->
+            <!-- <el-radio-group v-model="systemId" @change="applyChange">
                 <el-radio-button
                     :label="item.id"
                     v-for="item in appList"
                     :key="item.systemSymbol"
                     >{{ item.systemName }}</el-radio-button
                 >
-            </el-radio-group>
+            </el-radio-group> -->
+            <transition-group tag="ul" appear>
+                <li
+                    :key="-1"
+                    @click="applyChange(-1)"
+                    :class="{
+                        isActive: systemId == -1,
+                    }"
+                >
+                    全部
+                </li>
+                <li
+                    v-for="item in appList"
+                    :key="item.id"
+                    :class="{
+                        isActive: systemId == item.id,
+                    }"
+                    @click="applyChange(item.id)"
+                >
+                    {{ item.systemName }}
+                </li>
+            </transition-group>
         </div>
         <div class="system-data">
             <div class="chart-box">
@@ -54,7 +75,7 @@ export default {
         return {
             memberName: "",
             appList: [],
-            systemId: 2,
+            systemId: -1,
             userId: this.$store.state.app.rolesInfo.uid,
             orgId: this.$store.state.app.rolesInfo.orgId,
             deptId: this.$store.state.app.rolesInfo.deptId
@@ -69,11 +90,30 @@ export default {
     },
     mounted() {
         this.searchData();
+        this.initMemberHeight();
     },
     computed: {
         ...mapState(["app"]),
     },
     methods: {
+        initMemberHeight() {
+            let that = this;
+            const memberFrame = document.getElementById("memberFrame");
+            memberFrame.onload = function () {
+                that.dataAry = [];
+                window.addEventListener(
+                    "message",
+                    function (e) {
+                        if (e.data.height) {
+                            memberFrame.style.height = e.data.height + "px";
+                        } else {
+                            memberFrame.style.height = "500px";
+                        }
+                    },
+                    false
+                );
+            };
+        },
         dateChange(val) {
             if (val) {
                 this.startDate = val[0];
@@ -90,7 +130,7 @@ export default {
             this.appList = appList;
         },
         applyChange(val) {
-            console.log(this.systemId);
+            this.systemId = val;
             this.searchData();
         },
         searchData() {
@@ -112,6 +152,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+@import "../data-statistics/area-total/index.less";
 .chart-box {
     width: 100%;
     padding: 20px 0;

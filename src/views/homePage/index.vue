@@ -636,8 +636,8 @@ export default {
             switch (roleName) {
                 case "UNIT_MANAGER":
                     data.orgId = codeNum;
-                    this.unitSrc = unitSrc + "&orgId" + data.orgId;
-                    this.userSrc = userSrc + "&orgId" + data.orgId;
+                    this.unitSrc = unitSrc + "&orgId=" + data.orgId;
+                    this.userSrc = userSrc + "&orgId=" + data.orgId;
                     break;
                 case "CITY_MANAGER":
                     data.type = 1;

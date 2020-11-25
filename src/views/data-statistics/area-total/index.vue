@@ -379,7 +379,8 @@ export default {
                 codeNum:
                     this.stateParams.treeId === "520000"
                         ? 0
-                        : this.stateParams.treeId
+                        : this.stateParams.treeId ||
+                          this.app.rolesInfo.roleName === "COUNTY_MANAGER"
                         ? ""
                         : this.app.rolesInfo.roleName === "CITY_MANAGER"
                         ? codeNum

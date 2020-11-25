@@ -20,6 +20,7 @@ export default {
     mounted() {
         // this.setIframeHeight();
         this.setIframeHeight1();
+        window.open("http://pinggu.mh.gz.cegn.cn/");
         // let that = this;
         // window.onresize = function () {
         //     that.setIframeHeight1();
