@@ -193,8 +193,8 @@ export default {
             },
             isTable: false,
             autoParams: {
-                chartHeight: 0,
-                tableHeight: 0,
+                chartHeight: 300,
+                tableHeight: 300,
                 total: 0,
             },
         };
