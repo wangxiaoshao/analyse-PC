@@ -118,6 +118,7 @@ export default {
             let ary = this.reportSrcList.filter((item) => {
                 return item.id === systemId;
             });
+            console.log(this.systemId, ary[0], "bbbbbb");
             let url = "";
             let tableUrl = "";
             switch (type) {
@@ -152,11 +153,11 @@ export default {
                     break;
                 case "cityOrCounty":
                     url = this.hostApi + ary[0].cityOrCountyUrl + str;
-                    this.cityOrCountyUrl = url;
+                    this.srcUrl = url;
                     break;
                 case "homeUnit":
                     url = this.hostApi + ary[0].homeUnitUrl + str;
-                    this.homeUnitUrl = url;
+                    this.srcUrl = url;
                     break;
                 default:
                     return null;

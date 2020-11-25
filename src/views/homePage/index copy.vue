@@ -214,37 +214,16 @@
                     </div>
                     <el-tabs v-model="activeName" @tab-click="handleClick">
                         <el-tab-pane
-                            :label="tabLabel"
-                            name="authType"
-                            v-if="
-                                isShowAllProvince() ||
-                                isShowCityOrCounty() ||
-                                app.rolesInfo.roleName === 'UNIT_MANAGER'
-                            "
+                            label="全省应用情况使用趋势"
+                            name="first"
+                            v-if="isShowAllProvince()"
                         >
                             <el-row>
                                 <el-col :span="3">
                                     <div class="system-left">
-                                        <span v-if="isShowCityOrCounty()">
-                                            <el-select
-                                                size="small"
-                                                style="width: 100px;"
-                                                v-model="areaId"
-                                                :disabled="isPerson"
-                                                @change="areaChange"
-                                                placeholder="请选择"
-                                            >
-                                                <el-option
-                                                    v-for="item in areaList"
-                                                    :key="item.treeId"
-                                                    :label="item.treeName"
-                                                    :value="item.treeId"
-                                                ></el-option>
-                                            </el-select>
-                                        </span>
                                         <p
                                             :class="{
-                                                isActive: systemId == item.id,
+                                                isActive: systemId1 == item.id,
                                             }"
                                             v-for="(item,
                                             index) in app.applicationList"
@@ -267,14 +246,100 @@
                                 </el-col>
                             </el-row>
                         </el-tab-pane>
-
-                        <el-tab-pane label="个人应用情况使用趋势" name="person">
+                        <el-tab-pane
+                            :label="
+                                app.rolesInfo.roleName === 'COUNTY_MANAGER'
+                                    ? '区县应用情况使用趋势'
+                                    : '区域应用情况使用趋势'
+                            "
+                            name="second"
+                            v-if="isShowCityOrCounty()"
+                        >
+                            <el-row>
+                                <el-col :span="3">
+                                    <div class="system-left">
+                                        <span>
+                                            <el-select
+                                                size="small"
+                                                style="width: 100px;"
+                                                v-model="areaId"
+                                                :disabled="isPerson"
+                                                @change="areaChange"
+                                                placeholder="请选择"
+                                            >
+                                                <el-option
+                                                    v-for="item in areaList"
+                                                    :key="item.treeId"
+                                                    :label="item.treeName"
+                                                    :value="item.treeId"
+                                                ></el-option>
+                                            </el-select>
+                                        </span>
+                                        <p
+                                            :class="{
+                                                isActive: systemId2 == item.id,
+                                            }"
+                                            v-for="(item,
+                                            index) in app.applicationList"
+                                            :key="item.id"
+                                            @click="applyChange(index, item.id)"
+                                        >
+                                            {{ item.systemName }}
+                                        </p>
+                                    </div>
+                                </el-col>
+                                <el-col :span="21">
+                                    <div class="system-right">
+                                        <iframe
+                                            :src="cityOrCountyUrl"
+                                            class="staticFrame"
+                                            frameborder="0"
+                                            width="100%"
+                                        ></iframe>
+                                    </div>
+                                </el-col>
+                            </el-row>
+                        </el-tab-pane>
+                        <el-tab-pane
+                            label="单位应用情况使用趋势"
+                            name="third"
+                            v-if="app.rolesInfo.roleName === 'UNIT_MANAGER'"
+                        >
                             <el-row>
                                 <el-col :span="3">
                                     <div class="system-left">
                                         <p
                                             :class="{
-                                                isActive: systemId == item.id,
+                                                isActive: systemId3 == item.id,
+                                            }"
+                                            v-for="(item,
+                                            index) in app.applicationList"
+                                            :key="item.id"
+                                            @click="applyChange(index, item.id)"
+                                        >
+                                            {{ item.systemName }}
+                                        </p>
+                                    </div>
+                                </el-col>
+                                <el-col :span="21">
+                                    <div class="system-right">
+                                        <iframe
+                                            :src="homeUnitUrl"
+                                            class="staticFrame"
+                                            frameborder="0"
+                                            width="100%"
+                                        ></iframe>
+                                    </div>
+                                </el-col>
+                            </el-row>
+                        </el-tab-pane>
+                        <el-tab-pane label="个人应用情况使用趋势" name="four">
+                            <el-row>
+                                <el-col :span="3">
+                                    <div class="system-left">
+                                        <p
+                                            :class="{
+                                                isActive: systemId4 == item.id,
                                             }"
                                             v-for="(item,
                                             index) in personAppList"
@@ -316,8 +381,16 @@ export default {
             personAppList: [],
             reportParams: reportParams,
             exportUrl: "",
+            allProvinceUrlUrl: "",
             homePersonUrl: "",
+            cityOrCountyUrl: "",
+            homeUnitUrl: "",
+            systemId1: "",
+            systemId2: "",
+            systemId3: "",
+            systemId4: "",
             srcUrl: "",
+            srcUrl1: "",
             activeName: "",
             systemId: 1,
             useType: 0,
@@ -332,7 +405,6 @@ export default {
             announcementList: [],
             // 处理平台公告列表
             doAnnouncementList: [],
-            tabLabel: "全省应用情况使用趋势",
         };
     },
     created() {
@@ -349,8 +421,6 @@ export default {
     methods: {
         init() {
             this.getSystemNoticeList();
-
-            /* 根据权限初始化 first-box内容 */
             if (this.isShowSuperOrSystem()) {
                 this.exportUrl = this.hostApi + this.reportParams.exportUrl;
                 this.getLastDayLoginUser();
@@ -383,7 +453,7 @@ export default {
                 return false;
             }
         },
-        // 超级管理员  省级
+        // 超级管理员 系统 省级
         isShowAllProvince() {
             return (
                 this.app.rolesInfo.roleName === "PROVINCE_MANAGER" ||
@@ -412,14 +482,18 @@ export default {
                 data.cityNum = "";
                 data.qxNum = this.areaId;
             }
-            this.initSystem("cityOrCounty", this.doSrcParams(data));
+            this.initSystem(
+                "cityOrCounty",
+                this.doSrcParams(data),
+                this.systemId2
+            );
         },
         initAllProvince() {
             let data = {
                 startDate: this.startDate,
                 endDate: this.endDate,
             };
-            this.initSystem("province", this.doSrcParams(data));
+            this.initSystem("province", this.doSrcParams(data), this.systemId1);
         },
         initPerson() {
             let data = {
@@ -431,7 +505,11 @@ export default {
                 size: this.formatParams.format4,
                 userId: this.app.rolesInfo.uid,
             };
-            this.initSystem("homePerson", this.doSrcParams(data));
+            this.initSystem(
+                "homePerson",
+                this.doSrcParams(data),
+                this.systemId4
+            );
         },
         initUnit() {
             let authList = this.app.rolesInfo.authorizedOid;
@@ -452,7 +530,81 @@ export default {
                 size: this.formatParams.format4,
                 orgId: codeNum,
             };
-            this.initSystem("homeUnit", this.doSrcParams(data));
+            this.initSystem("homeUnit", this.doSrcParams(data), this.systemId3);
+        },
+        handleClick(data) {
+            if (this.activeName === "four") {
+                this.systemId4 = this.personAppList[0].id;
+                this.initPerson();
+            } else if (this.activeName === "first") {
+                this.systemId1 = this.app.applicationList[0].id;
+                this.initAllProvince();
+            } else if (this.activeName === "second") {
+                this.systemId2 = this.app.applicationList[0].id;
+                this.initCityOrCounty();
+            } else if (this.activeName === "third") {
+                this.systemId3 = this.app.applicationList[0].id;
+                this.initUnit();
+            }
+        },
+        rangeDateChange(time) {
+            this.rangeDate = time;
+            this.initializeDate(this.rangeDate);
+            if (this.activeName === "four") {
+                this.initPerson();
+            } else if (this.activeName === "first") {
+                this.initAllProvince();
+            } else if (this.activeName === "second") {
+                console.log(this.systemId2);
+                this.initCityOrCounty();
+            } else if (this.activeName === "third") {
+                this.initUnit();
+            }
+        },
+        applyChange(index, id) {
+            if (this.activeName === "four") {
+                this.systemId4 = id;
+                this.initPerson();
+            } else if (this.activeName === "first") {
+                this.systemId1 = id;
+                this.initAllProvince();
+            } else if (this.activeName === "second") {
+                this.systemId2 = id;
+                console.log(this.systemId2);
+                this.initCityOrCounty();
+            } else if (this.activeName === "third") {
+                this.systemId3 = id;
+                this.initUnit();
+            }
+        },
+        doApplyList(appList) {
+            appList.map((item, index) => {
+                if (item.id === 1 || item.id === 5) {
+                    appList.splice(index, 1);
+                }
+            });
+            this.personAppList = appList;
+            if (this.activeName === "four") {
+                this.systemId4 = this.personAppList[0].id;
+                this.initPerson();
+            }
+        },
+        initIframeResult() {
+            if (this.isShowAllProvince()) {
+                this.activeName = "first";
+                this.initAllProvince();
+            } else if (
+                this.isShowCityOrCounty() &&
+                this.app.rolesInfo.roleName
+            ) {
+                this.activeName = "second";
+                this.getAreaList();
+            } else if (this.app.rolesInfo.roleName === "UNIT_MANAGER") {
+                this.activeName = "third";
+                this.initUnit();
+            } else {
+                this.activeName = "four";
+            }
         },
         getIframeSrc() {
             let roleName = this.app.rolesInfo.roleName;
@@ -508,74 +660,6 @@ export default {
                     return null;
             }
         },
-        initIframeResult() {
-            /* 根据权限初始化 应用情况趋势 */
-            this.activeName = "authType";
-            if (this.isShowAllProvince()) {
-                this.tabLabel = "全省应用情况使用趋势";
-                this.initAllProvince();
-            } else if (this.isShowCityOrCounty()) {
-                if (this.app.rolesInfo.roleName === "CITY_MANAGER") {
-                    this.tabLabel = "区域应用情况使用趋势";
-                } else {
-                    this.tabLabel = "区县应用情况使用趋势";
-                }
-                this.getAreaList();
-            } else if (this.app.rolesInfo.roleName === "UNIT_MANAGER") {
-                this.tabLabel = "单位应用情况使用趋势";
-                this.initUnit();
-            } else {
-                this.activeName = "person";
-            }
-        },
-        handleClick(data) {
-            if (this.activeName === "person") {
-                this.systemId = this.personAppList[0].id;
-                this.initPerson();
-            } else if (this.activeName === "authType") {
-                this.systemId = this.app.applicationList[0].id;
-                this.authTypeIframe();
-            }
-        },
-        authTypeIframe() {
-            if (this.isShowAllProvince()) {
-                this.initAllProvince();
-            } else if (this.isShowCityOrCounty()) {
-                this.initCityOrCounty();
-            } else if (this.app.rolesInfo.roleName === "UNIT_MANAGER") {
-                this.initUnit();
-            }
-        },
-        rangeDateChange(time) {
-            this.rangeDate = time;
-            this.initializeDate(this.rangeDate);
-            if (this.activeName === "person") {
-                this.initPerson();
-            } else if (this.activeName === "authType") {
-                this.authTypeIframe();
-            }
-        },
-        applyChange(index, id) {
-            this.systemId = id;
-            if (this.activeName === "person") {
-                this.initPerson();
-            } else if (this.activeName === "authType") {
-                this.authTypeIframe();
-            }
-        },
-        doApplyList(appList) {
-            appList.map((item, index) => {
-                if (item.id === 1 || item.id === 5) {
-                    appList.splice(index, 1);
-                }
-            });
-            this.personAppList = appList;
-            if (this.activeName === "person") {
-                this.systemId = this.personAppList[0].id;
-                this.initPerson();
-            }
-        },
-
         // 获取平台公告列表
         getSystemNoticeList() {
             let data = {
@@ -656,7 +740,6 @@ export default {
             this.$router.push("/moreAnnoument");
         },
         areaChange(val) {
-            this.areaId = val;
             this.initCityOrCounty();
         },
     },
@@ -668,7 +751,7 @@ export default {
     },
     watch: {
         appList() {
-            this.systemId = this.appList[0].id;
+            this.systemId3 = this.systemId2 = this.systemId1 = this.systemId = this.appList[0].id;
             let ary = [...this.appList];
             this.doApplyList(ary);
         },

@@ -240,15 +240,6 @@ export default {
                 this.companyList = res.data;
             });
         },
-        createStateFilter(queryString) {
-            return (state) => {
-                return (
-                    state.company
-                        .toLowerCase()
-                        .indexOf(queryString.toLowerCase()) === 0
-                );
-            };
-        },
         systemNameSelect(item) {
             this.createdOrUpdateForm.system_id = item.systemId;
         },
