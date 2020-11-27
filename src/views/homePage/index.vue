@@ -156,31 +156,35 @@
                                         >
                                             <el-collapse-item :name="val.id">
                                                 <template slot="title">
-                                                    <p
-                                                        :title="val.title"
-                                                        class="msg"
-                                                    >
+                                                    <p>
                                                         <el-row>
                                                             <el-col :span="16">
                                                                 <span
-                                                                    class="icon"
-                                                                    v-if="
-                                                                        num ===
-                                                                        0
+                                                                    :title="
+                                                                        val.title
                                                                     "
+                                                                    class="msg"
                                                                 >
-                                                                    <img
-                                                                        src="@src/common/images/notice.svg"
-                                                                        alt=""
-                                                                    />
+                                                                    <span
+                                                                        class="icon"
+                                                                        v-if="
+                                                                            num ===
+                                                                            0
+                                                                        "
+                                                                    >
+                                                                        <img
+                                                                            src="@src/common/images/notice.svg"
+                                                                            alt=""
+                                                                        />
+                                                                    </span>
+                                                                    <i
+                                                                        v-else
+                                                                        class="title-list"
+                                                                    ></i>
+                                                                    <span>{{
+                                                                        val.title
+                                                                    }}</span>
                                                                 </span>
-                                                                <i
-                                                                    v-else
-                                                                    class="title-list"
-                                                                ></i>
-                                                                <span>{{
-                                                                    val.title
-                                                                }}</span>
                                                             </el-col>
                                                             <el-col :span="8">
                                                                 <span
@@ -197,7 +201,12 @@
                                                         </el-row>
                                                     </p>
                                                 </template>
-                                                <div class="content">
+                                                <div
+                                                    class="content"
+                                                    @click="
+                                                        goFindAnnountDetial(val)
+                                                    "
+                                                >
                                                     {{ val.content }}
                                                 </div>
                                             </el-collapse-item>
@@ -361,7 +370,7 @@ export default {
             // 处理平台公告列表
             doAnnouncementList: [],
             tabLabel: "全省应用情况使用趋势",
-            noticeActiveNames: [4],
+            noticeActiveNames: [1, 4],
         };
     },
     created() {
@@ -613,8 +622,6 @@ export default {
             };
             api[urlNames["getSystemNoticeList"]](data).then((res) => {
                 if (res) {
-                    // res.data[0].title =
-                    //     "本月考核成绩公告,请前往应用评估平台查看本月考核成绩公告,请前往应用评估平台查看本月考核成绩公告,请前往应用评估平台查看";
                     this.announcementList = res.data;
                     this.doArray();
                 }
