@@ -65,6 +65,9 @@
   .home-box{
     width: 100%;
     // margin: 20px 0;
+    .box-card{
+      position: relative;
+    }
     /deep/.box-card .el-card__header{
       padding: 10px 20px;
     }
@@ -73,9 +76,12 @@
       display: flex;
       justify-content: space-between;
       position: relative;
+      overflow: hidden;
+      &:hover{
+        overflow-y: auto;
+      }
       .noticeInfo:nth-child(1){
         padding-right: 25px;
-       
         border-right: 1px  solid rgba(0, 0, 0, 0.1);
       }
       .noticeInfo:nth-child(2){
@@ -140,19 +146,22 @@
             display: inline-block;
             width: 100%;
             text-align: right;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
             vertical-align: middle;
             padding-right: 10px;
           }
         }
 
       }
-      a{
-        font-size: 12px;
-        color:#3997fa;
-        position: absolute;
-        right: 0px;
-        bottom: -4px;
-      }
+    }
+    a{
+      font-size: 12px;
+      color:#3997fa;
+      position: absolute;
+      right: 16px;
+      bottom: 10px;
     }
   }
   .total-box{

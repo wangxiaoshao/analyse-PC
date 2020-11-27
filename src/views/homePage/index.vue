@@ -135,7 +135,7 @@
                                 class="announcement-box"
                                 :style="
                                     !app.rolesInfo.roleName
-                                        ? 'height:110px'
+                                        ? 'height:110px;'
                                         : ''
                                 "
                             >
@@ -202,6 +202,7 @@
                                                     </p>
                                                 </template>
                                                 <div
+                                                    title="点击查看公告详情"
                                                     class="content"
                                                     @click="
                                                         goFindAnnountDetial(val)
@@ -213,13 +214,11 @@
                                         </el-collapse>
                                     </div>
                                 </div>
-                                <a
-                                    href="javaScript:void(0)"
-                                    @click="goMoreAnnounts"
-                                    >查看更多公告
-                                    <i class="el-icon-d-arrow-right"></i
-                                ></a>
                             </div>
+                            <a href="javaScript:void(0)" @click="goMoreAnnounts"
+                                >查看更多公告
+                                <i class="el-icon-d-arrow-right"></i
+                            ></a>
                         </el-card>
                     </div>
                 </el-col>
