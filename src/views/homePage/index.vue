@@ -145,43 +145,64 @@
                                     index) in doAnnouncementList"
                                     :key="index"
                                 >
-                                    <p
+                                    <!-- @click="goFindAnnountDetial(val)" -->
+                                    <div
+                                        class="notice-tr"
                                         v-for="(val, num) in itemList"
                                         :key="val.id"
-                                        @click="goFindAnnountDetial(val)"
                                     >
-                                        <el-row>
-                                            <el-col :span="16">
-                                                <span
-                                                    class="msg"
-                                                    :title="val.title"
-                                                >
-                                                    <span
-                                                        class="icon"
-                                                        v-if="num === 0"
+                                        <el-collapse
+                                            v-model="noticeActiveNames"
+                                        >
+                                            <el-collapse-item :name="val.id">
+                                                <template slot="title">
+                                                    <p
+                                                        :title="val.title"
+                                                        class="msg"
                                                     >
-                                                        <img
-                                                            src="@src/common/images/notice.svg"
-                                                            alt=""
-                                                        />
-                                                    </span>
-                                                    <span
-                                                        v-else
-                                                        style="
-                                                            margin-left: 27px;
-                                                        "
-                                                    ></span>
-                                                    {{ val.title }}</span
-                                                >
-                                                <!-- <span>{{ val.content }}</span> -->
-                                            </el-col>
-                                            <el-col :span="8">
-                                                <span class="date">{{
-                                                    val.creareTime
-                                                }}</span></el-col
-                                            >
-                                        </el-row>
-                                    </p>
+                                                        <el-row>
+                                                            <el-col :span="16">
+                                                                <span
+                                                                    class="icon"
+                                                                    v-if="
+                                                                        num ===
+                                                                        0
+                                                                    "
+                                                                >
+                                                                    <img
+                                                                        src="@src/common/images/notice.svg"
+                                                                        alt=""
+                                                                    />
+                                                                </span>
+                                                                <i
+                                                                    v-else
+                                                                    class="title-list"
+                                                                ></i>
+                                                                <span>{{
+                                                                    val.title
+                                                                }}</span>
+                                                            </el-col>
+                                                            <el-col :span="8">
+                                                                <span
+                                                                    class="date"
+                                                                >
+                                                                    {{
+                                                                        val.createTime
+                                                                            | dataFilter(
+                                                                                "YYYY-MM-DD HH:mm:ss"
+                                                                            )
+                                                                    }}
+                                                                </span></el-col
+                                                            >
+                                                        </el-row>
+                                                    </p>
+                                                </template>
+                                                <div class="content">
+                                                    {{ val.content }}
+                                                </div>
+                                            </el-collapse-item>
+                                        </el-collapse>
+                                    </div>
                                 </div>
                                 <a
                                     href="javaScript:void(0)"
@@ -301,6 +322,12 @@
                 </div>
             </el-card>
         </div>
+        <valid-signature-manage
+            :visible.sync="validVisable"
+            :isValidSuccess="isValidSuccess"
+            validSuccessMsg="个人签名验证成功。"
+            validFailMsg="签名验证失败，请联系运维人员进行处理。"
+        ></valid-signature-manage>
     </div>
 </template>
 <script>
@@ -308,8 +335,9 @@ import { api, urlNames } from "@src/api";
 import { mapState } from "vuex";
 import { reportParams } from "@src/config/report";
 import dataStatistics from "@src/mixins/data-statistics";
+import validSignature from "@src/mixins/validSignature";
 export default {
-    mixins: [dataStatistics],
+    mixins: [dataStatistics, validSignature],
     data() {
         return {
             rangeDate: 7,
@@ -322,8 +350,8 @@ export default {
             systemId: 1,
             useType: 0,
             isPerson: false,
-            yesterdayLogin: 2345,
-            loginNumber: 1256,
+            yesterdayLogin: 0,
+            loginNumber: 0,
             unitSrc: "",
             userSrc: "",
             areaId: 1,
@@ -333,9 +361,11 @@ export default {
             // 处理平台公告列表
             doAnnouncementList: [],
             tabLabel: "全省应用情况使用趋势",
+            noticeActiveNames: [4],
         };
     },
     created() {
+        this.validSignature(1, this.app.rolesInfo.uid, "");
         this.initializeDate(this.rangeDate);
     },
     mounted() {
@@ -349,7 +379,6 @@ export default {
     methods: {
         init() {
             this.getSystemNoticeList();
-
             /* 根据权限初始化 first-box内容 */
             if (this.isShowSuperOrSystem()) {
                 this.exportUrl = this.hostApi + this.reportParams.exportUrl;
@@ -584,6 +613,8 @@ export default {
             };
             api[urlNames["getSystemNoticeList"]](data).then((res) => {
                 if (res) {
+                    // res.data[0].title =
+                    //     "本月考核成绩公告,请前往应用评估平台查看本月考核成绩公告,请前往应用评估平台查看本月考核成绩公告,请前往应用评估平台查看";
                     this.announcementList = res.data;
                     this.doArray();
                 }

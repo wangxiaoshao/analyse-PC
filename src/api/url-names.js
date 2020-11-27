@@ -106,4 +106,6 @@ export default {
     getAllLogTypes: "getAllLogTypes",
     // 系统日志--获取共享日志列表
     findShareLoggerList: "findShareLoggerList",
+    // 验签
+    validSignature: "validSignature",
 };

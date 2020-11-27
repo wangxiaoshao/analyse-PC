@@ -58,4 +58,12 @@ export default {
         keepOriginResponse: true,
         serve: "organizationManagePC",
     },
+    // 验签
+    [urlNames.validSignature]: {
+        type: "get",
+        url: "/api/appdata/sign/checkSign",
+        keepOriginResponse: true,
+        serve: "organizationManagePC",
+        fullscreen: true,
+    },
 };

@@ -85,7 +85,7 @@ export default {
             url1: require("@src/common/images/excel.png"),
             url2: require("@src/common/images/txt.png"),
             url3: require("@src/common/images/word.png"),
-            url4: require("@src/common/images/v2_qb1aza.png"),
+            url4: require("@src/common/images/v2_qb1aza.svg"),
         };
     },
     mounted() {
