@@ -57,6 +57,7 @@ export default {
     data() {
         return {
             tableData: [],
+            activeName: "second",
         };
     },
     mounted() {

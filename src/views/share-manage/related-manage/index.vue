@@ -118,9 +118,16 @@
                     align="center"
                 >
                     <template slot-scope="scope">
-                        <span>{{
-                            scope.row.is_banned === 0 ? "启用" : "禁用"
-                        }}</span>
+                        <span
+                            :class="
+                                scope.row.is_banned === 0
+                                    ? 'text-green'
+                                    : 'text-red'
+                            "
+                            >{{
+                                scope.row.is_banned === 0 ? "启用" : "禁用"
+                            }}</span
+                        >
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" align="center" width="110px">
@@ -170,9 +177,7 @@ export default {
             }
         };
         return {
-            accountList: [
-                { account_number: "123@", is_banned: 0, password: "222" },
-            ],
+            accountList: [],
             dialogTitle: "创建关联",
             createdOrUpdateVisiable: false,
             createdOrUpdateForm: {

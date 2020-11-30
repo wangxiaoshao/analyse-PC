@@ -28,7 +28,7 @@
                 >确定
             </el-button>
             <span v-else
-                ><el-button type="danger" @click="hide" plain
+                ><el-button type="primary" @click="hide" plain
                     >继续使用系统
                 </el-button>
                 <el-button

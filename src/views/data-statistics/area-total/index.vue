@@ -94,7 +94,8 @@
                 </el-row>
             </el-form>
             <div class="system-list">
-                <transition-group tag="ul" appear>
+                <ul>
+                    <!-- <div class="is-bottom" id="is-bottom"></div> -->
                     <li
                         :key="-1"
                         @click="applyChange(-1)"
@@ -114,7 +115,7 @@
                     >
                         {{ item.systemName }}
                     </li>
-                </transition-group>
+                </ul>
             </div>
         </div>
 
@@ -181,6 +182,7 @@ export default {
                 tableHeight: 300,
                 total: 0,
             },
+            liWidth: 0,
         };
     },
     created() {
