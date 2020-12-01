@@ -78,7 +78,7 @@ export default {
     },
     // 应用接入--根据公司名称查询公司id
     [urlNames.getSystemId]: {
-        type: "post",
+        type: "get",
         url: "/api/logger/createSystem/getSystemId",
         keepOriginResponse: true,
         serve: "organizationManagePC",
@@ -127,7 +127,7 @@ export default {
         keepOriginResponse: true,
         serve: "organizationManagePC",
         headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",
         },
     },
 };

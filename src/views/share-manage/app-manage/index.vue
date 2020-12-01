@@ -14,8 +14,8 @@
                 :rules="rulesOption"
                 ref="createdOrUpdateForm"
             >
-                <el-form-item label="单位名称：" prop="companyName">
-                    <el-select
+                <el-form-item label="单位名称：" prop="company_id">
+                    <!-- <el-select
                         value-key="company_id"
                         v-model="createdOrUpdateForm.companyName"
                         filterable
@@ -25,6 +25,22 @@
                         @change="companyChange"
                         :remote-method="getInfoByCompanyName"
                         :loading="loading"
+                    >
+                        <el-option
+                            v-for="item in companyList"
+                            :key="item.company_id"
+                            :label="item.company"
+                            :value="item"
+                        >
+                        </el-option>
+                    </el-select> -->
+                    <el-select
+                        style="width: 100%;"
+                        v-model="companyParams"
+                        filterable
+                        @change="companyChange"
+                        value-key="company_id"
+                        placeholder="请选择单位名称"
                     >
                         <el-option
                             v-for="item in companyList"
@@ -168,6 +184,29 @@ import handleTable from "@src/mixins/handle-table";
 export default {
     mixins: [handleTable],
     data() {
+        let validateTableName = (rule, value, callback) => {
+            if (value === "") {
+                callback(
+                    new Error(
+                        "表格名称不能为空，名称前缀已固定为logger_server_"
+                    )
+                );
+            } else {
+                if (this.createdOrUpdateForm.system_id === "") {
+                    let reg = /^[a-zA-Z]{4,20}$/;
+                    reg.test(value)
+                        ? callback()
+                        : callback(
+                              new Error(
+                                  "仅允许输入大小写字母，不能有空格和特殊字符，长度为4-20的字符"
+                              )
+                          );
+                    return;
+                }
+
+                callback();
+            }
+        };
         return {
             loading: false,
             companyParams: {},
@@ -190,17 +229,17 @@ export default {
             oldState: 0,
             timeout: null,
             rulesOption: {
-                companyName: [
+                company_id: [
                     {
                         required: true,
-                        message: "应用名称不能为空",
-                        trigger: "blur",
+                        message: "单位名称不能为空",
+                        trigger: ["blur", "change"],
                     },
                 ],
                 system_name: [
                     {
                         required: true,
-                        message: "系统名称不能为空",
+                        message: "应用名称不能为空",
                         trigger: "blur",
                     },
                 ],
@@ -210,11 +249,13 @@ export default {
                         message: `表格名称不能为空，名称前缀已固定为logger_server_`,
                         trigger: "blur",
                     },
+                    { validator: validateTableName, trigger: "blur" },
                 ],
             },
         };
     },
     created() {
+        this.getInfoByCompanyName();
         this.getGrid();
     },
     methods: {
@@ -234,20 +275,14 @@ export default {
                 }
             );
         },
-        getInfoByCompanyName(queryString, cb) {
-            if (queryString.length === 0) {
-                return;
-            }
+        getInfoByCompanyName() {
             this.loading = true;
-            api[urlNames["getSystemId"]]({
-                companyName: queryString,
-            }).then(
+            api[urlNames["getSystemId"]]().then(
                 (res) => {
-                    this.loading = false;
                     this.companyList = res.data;
                 },
                 () => {
-                    this.loading = false;
+                    this.companyList = [];
                 }
             );
         },
@@ -257,7 +292,6 @@ export default {
         },
         openCreateDailog(formName) {
             this.resetForm();
-            this.companyList = [];
             this.dialogTitle = "创建应用";
             this.createdOrUpdateVisiable = true;
         },
@@ -265,7 +299,9 @@ export default {
             this.createdOrUpdateVisiable = false;
         },
         openEditDialog(row) {
+            this.resetForm();
             this.dialogTitle = "编辑应用";
+            this.companyParams.company_id = row.companyId;
             this.createdOrUpdateForm.company_id = row.companyId;
             this.createdOrUpdateForm.system_id = row.systemId;
             this.createdOrUpdateForm.companyName = row.company;
@@ -380,6 +416,7 @@ export default {
                 company_id: "",
                 system_id: "",
             };
+            this.companyParams = {};
         },
     },
 };

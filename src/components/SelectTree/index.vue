@@ -381,8 +381,8 @@ export default {
                     }).then((res) => {
                         if (this.selectTreeDailog.isSelectType === 2) {
                             res.data.forEach((item) => {
-                                /* 排除单位下面有人员的情况 ：只显示单位部门 */
-                                if (item.treeType !== 5) {
+                                /* 排除单位下面有人员部门的情况 ：只显示单位 */
+                                if (item.treeType === 3) {
                                     this.optionalList.push(item);
                                 }
                             });

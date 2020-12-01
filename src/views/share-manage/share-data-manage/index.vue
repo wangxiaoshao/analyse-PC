@@ -14,16 +14,14 @@
                 :rules="rulesOption"
                 ref="createdOrUpdateForm"
             >
-                <el-form-item label="应用名称：" prop="system_name">
+                <el-form-item label="应用名称：" prop="system_id">
                     <el-select
-                        v-model="createdOrUpdateForm.system_name"
+                        style="width: 100%;"
+                        v-model="systemParams"
                         filterable
-                        remote
-                        reserve-keyword
-                        value-key="systemId"
-                        placeholder="请输入关键词"
                         @change="systemNameSelect"
-                        :remote-method="getInfoBySystemName"
+                        value-key="systemId"
+                        placeholder="请选择应用"
                     >
                         <el-option
                             v-for="item in systemList"
@@ -34,16 +32,13 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="单位名称：" prop="companyName">
+                <el-form-item label="单位名称：" prop="company_id">
                     <el-select
-                        v-model="createdOrUpdateForm.companyName"
+                        v-model="companyParams"
                         filterable
-                        remote
-                        reserve-keyword
                         value-key="companyId"
-                        placeholder="请输入关键词"
+                        placeholder="请选择单位"
                         @change="companyNameSelect"
-                        :remote-method="getInfoByCompanyName"
                     >
                         <el-option
                             v-for="item in companyList"
@@ -166,6 +161,8 @@ export default {
     mixins: [handleTable],
     data() {
         return {
+            companyParams: {},
+            systemParams: {},
             shareDataList: [{}],
             companyList: [],
             systemList: [],
@@ -181,24 +178,26 @@ export default {
                 comment: "",
             },
             rulesOption: {
-                system_name: [
+                system_id: [
                     {
                         required: true,
                         message: "应用名称不能为空",
-                        trigger: "blur",
+                        trigger: ["blur", "change"],
                     },
                 ],
-                companyName: [
+                company_id: [
                     {
                         required: true,
                         message: "公司名称不能为空",
-                        trigger: "blur",
+                        trigger: ["blur", "change"],
                     },
                 ],
             },
         };
     },
     created() {
+        this.getInfoBySystemName(1);
+        this.getInfoBySystemName(0);
         this.getGrid();
     },
     methods: {
@@ -218,34 +217,23 @@ export default {
                 }
             );
         },
-        getInfoBySystemName(queryString, cb) {
-            if (queryString.length === 0) {
-                return;
-            }
-            api[urlNames["findShareIdByName"]]({
-                systemName: queryString,
-                companyName: "",
-            }).then((res) => {
-                this.systemList = res.data;
-            });
-        },
-        getInfoByCompanyName(queryString, cb) {
-            if (queryString.length === 0) {
-                return;
-            }
-            api[urlNames["findShareIdByName"]]({
-                companyName: queryString,
-                systemName: "",
-            }).then((res) => {
-                this.companyList = res.data;
+        // 1 公司  0  系统 type
+        getInfoBySystemName(type) {
+            api[urlNames["findShareIdByName"]]({ type }).then((res) => {
+                if (type === 1) {
+                    this.companyList = res.data;
+                } else {
+                    this.systemList = res.data;
+                }
             });
         },
         systemNameSelect(item) {
             this.createdOrUpdateForm.system_id = item.systemId;
+            this.createdOrUpdateForm.system_name = item.systemName;
         },
         companyNameSelect(item) {
-            console.log(item);
             this.createdOrUpdateForm.company_id = item.companyId;
+            this.createdOrUpdateForm.companyName = item.company;
         },
         openCreateDailog(formName) {
             this.dialogTitle = "创建共享任务";
@@ -256,7 +244,10 @@ export default {
             this.createdOrUpdateVisiable = false;
         },
         openEditDialog(row) {
+            this.resetForm();
             this.dialogTitle = "编辑共享任务";
+            this.companyParams.companyId = row.companyId;
+            this.systemParams.systemId = row.systemId;
             this.createdOrUpdateForm.shareId = row.shareId;
             this.createdOrUpdateForm.system_name = row.systemName;
             this.createdOrUpdateForm.companyName = row.companyName;
@@ -329,6 +320,8 @@ export default {
                 shareId: "",
                 comment: "",
             };
+            this.systemParams = {};
+            this.companyName = {};
         },
     },
 };

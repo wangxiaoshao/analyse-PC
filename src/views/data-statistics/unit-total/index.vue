@@ -73,6 +73,21 @@
                     ></el-option>
                 </el-select>
             </el-form-item>
+            <el-form-item label="选择部门">
+                <el-select
+                    size="medium"
+                    placeholder="请选择部门"
+                    v-model="deptId"
+                    filterable
+                >
+                    <el-option
+                        v-for="item in deptList"
+                        :key="item.treeId"
+                        :label="item.treeName"
+                        :value="item.treeId"
+                    ></el-option>
+                </el-select>
+            </el-form-item>
             <el-form-item>
                 <el-date-picker
                     v-if="systemId !== 5 && systemId !== 6"
@@ -183,9 +198,11 @@ export default {
             treeType: "",
             areaId: "",
             unitId: "",
+            deptId: "",
             stateList: [],
             areaList: [],
             unitList: [],
+            deptList: [],
             page: {
                 current: 1,
                 limit: 10,
@@ -365,6 +382,7 @@ export default {
                         this.unitList = res.data;
                         if (this.unitList.length > 0 && !isSet) {
                             this.unitId = this.unitList[0].treeId;
+                            this.initDept(this.unitId);
                             this.searchData();
                         }
                         return;
@@ -411,8 +429,10 @@ export default {
                         !isSearch
                     ) {
                         this.unitId = res.data[0].orgId || res.data[0].treeId;
+                        this.initDept(this.unitId);
                     } else if (this.unitList.length === 1 && !isSearch) {
                         this.unitId = res.data[0].orgId || res.data[0].treeId;
+                        this.initDept(this.unitId);
                     } else {
                         this.unitId = "";
                     }
@@ -420,6 +440,20 @@ export default {
                         this.searchData();
                     }
                 }
+            });
+        },
+        initDept(treeId) {
+            api[urlNames["getTreeList"]]({
+                treeId,
+                treeType: 3,
+            }).then((res) => {
+                res.data.forEach((item) => {
+                    this.deptList = [];
+                    /* 排除单位下面有人员的情况 ：只显示单位部门 */
+                    if (item.treeType === 4) {
+                        this.deptList.push(item);
+                    }
+                });
             });
         },
         handleSizeChange(val) {
@@ -455,9 +489,12 @@ export default {
             this.treeType = data.treeType;
             this.unitId = "";
             this.unitList = [];
+            this.deptList = [];
+            this.deptId = "";
             if (this.areaParams.treeId) {
                 this.areaParams = {};
             }
+            this.areaList = [];
             this.initArea(this.stateId, this.treeType, true);
         },
         areaChange(val) {
@@ -465,9 +502,15 @@ export default {
             this.treeType = val.treeType;
             this.unitId = "";
             this.unitList = [];
+            this.deptList = [];
+            this.deptId = "";
             this.initUnit(this.stateId, this.areaId, this.unitType, true);
         },
-        unitChange(val) {},
+        unitChange(treeId) {
+            this.deptList = [];
+            this.deptId = "";
+            this.initDept(treeId);
+        },
         applyChange(val) {
             this.systemId = val;
             this.isTable =
@@ -475,6 +518,8 @@ export default {
                 this.systemId === 1 ||
                 this.systemId === 5 ||
                 this.systemId === 6;
+            this.deptId = "";
+            this.deptList = [];
             this.getStateList();
         },
         searchData() {
@@ -526,6 +571,7 @@ export default {
                 startDate: this.startDate,
                 endDate: this.endDate,
                 orgId: this.unitId === "" ? unitIds : this.unitId,
+                deptId: this.deptId,
             };
             if (this.systemId === 5) {
                 data.months = this.$moment(this.startDate1).format("YYYY-MM");
