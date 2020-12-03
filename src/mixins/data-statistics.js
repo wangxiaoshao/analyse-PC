@@ -36,6 +36,7 @@ export default {
     },
     methods: {
         initializeDate(date) {
+            this.searchDate = [];
             // let startDate = this.$moment()
             //     .subtract(1, "weeks")
             //     .format("YYYY-MM-DD");
@@ -66,6 +67,7 @@ export default {
             this.startDate1 = this.searchEaraMouth;
         },
         initializeMounth() {
+            this.searchMouth = [];
             let startDate = this.$moment()
                 .subtract(1, "months")
                 .format("YYYYMM");
@@ -106,7 +108,6 @@ export default {
                 this.$moment(this.endDate1).format("MM") -
                 this.$moment(this.startDate1).format("MM") +
                 1;
-            console.log(this.$moment(this.startDate1).format("MM"), "ffff");
         },
         initSystem(type, str, systemId, isUnitTable) {
             // 首页处理

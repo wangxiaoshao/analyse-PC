@@ -518,9 +518,10 @@ export default {
                 this.systemId === 1 ||
                 this.systemId === 5 ||
                 this.systemId === 6;
-            this.deptId = "";
-            this.deptList = [];
-            this.getStateList();
+            // this.deptId = "";
+            // this.deptList = [];
+            // this.getStateList();
+            this.searchData();
         },
         searchData() {
             this.page.current = 1;
@@ -585,7 +586,15 @@ export default {
             this.initSystem("unit", this.doSrcParams(data), null, this.isTable);
         },
         resetData() {
-            this.applyChange(this.systemId);
+            // this.applyChange(this.systemId);
+            if (this.systemId === 5 || this.systemId === 6) {
+                this.initializeMounth();
+            } else {
+                this.initializeDate();
+            }
+            this.deptId = "";
+            this.deptList = [];
+            this.getStateList();
         },
     },
     watch: {

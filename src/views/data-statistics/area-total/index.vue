@@ -347,17 +347,17 @@ export default {
         areaChange(val) {},
         applyChange(val) {
             this.unitType = 2;
-            if (this.app.rolesInfo.roleName !== "COUNTY_MANAGER") {
-                this.areaList = [];
-            }
-            this.stateParams = {};
-            this.areaParams = {};
+            // if (this.app.rolesInfo.roleName !== "COUNTY_MANAGER") {
+            //     this.areaList = [];
+            // }
+            // this.stateParams = {};
+            // this.areaParams = {};
             this.systemId = val;
-            if (this.systemId === 5 || this.systemId === 6) {
-                this.initializeEaraMounth();
-            } else {
-                this.initializeDate();
-            }
+            // if (this.systemId === 5 || this.systemId === 6) {
+            //     this.initializeEaraMounth();
+            // } else {
+            //     this.initializeDate();
+            // }
             this.searchData();
         },
         searchData() {
@@ -414,7 +414,19 @@ export default {
             this.initSystem("area", this.doSrcParams(data));
         },
         resetData() {
-            this.applyChange(this.systemId);
+            // this.applyChange(this.systemId);
+            this.unitType = 2;
+            if (this.app.rolesInfo.roleName !== "COUNTY_MANAGER") {
+                this.areaList = [];
+            }
+            this.stateParams = {};
+            this.areaParams = {};
+            if (this.systemId !== 5 && this.systemId !== 6) {
+                this.initializeDate();
+            } else {
+                this.initializeEaraMounth();
+            }
+            this.searchData();
         },
     },
     watch: {
