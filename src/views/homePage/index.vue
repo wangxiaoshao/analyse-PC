@@ -224,6 +224,57 @@
                 </el-col>
             </el-row>
         </div>
+        <div
+            class="unit-top"
+            v-if="
+                app.rolesInfo.roleName === 'UNIT_MANAGER' ||
+                !app.rolesInfo.roleName
+            "
+        >
+            <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                    <span class="title">单位排行榜</span>
+                    <span class="top">Top</span>
+                    <span class="num">10</span>
+                    <el-select
+                        v-if="app.rolesInfo.roleName === 'UNIT_MANAGER'"
+                        size="small"
+                        style="width: 160px;"
+                        v-model="orgId"
+                        @change="unitChange"
+                        placeholder="请选择"
+                    >
+                        <el-option
+                            v-for="item in unitList"
+                            :key="item.orgId"
+                            :label="item.orgName"
+                            :value="item.orgId"
+                        ></el-option>
+                    </el-select>
+                </div>
+                <iframe
+                    :src="unitTopUrl"
+                    frameborder="0"
+                    width="100%"
+                    id="unit-top"
+                ></iframe>
+                <div>
+                    <el-pagination
+                        style="float: right; border: none;"
+                        small
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        @prev-click="send('_g().gotoPreviousPage()')"
+                        @next-click="send('_g().gotoNextPage()')"
+                        :current-page="page.current"
+                        :page-sizes="[5]"
+                        :page-size="page.limit"
+                        layout=" prev, pager, next"
+                        :total="page.total"
+                    ></el-pagination>
+                </div>
+            </el-card>
+        </div>
         <div class="total-box">
             <el-card class="total-card">
                 <div class="params-box">
@@ -353,6 +404,7 @@ export default {
             reportParams: reportParams,
             exportUrl: "",
             homePersonUrl: "",
+            unitTopUrl: "",
             srcUrl: "",
             activeName: "",
             systemId: 1,
@@ -363,13 +415,24 @@ export default {
             unitSrc: "",
             userSrc: "",
             areaId: 1,
+            orgId: "",
             areaList: [],
+            unitList: [],
             // 平台公告列表
             announcementList: [],
             // 处理平台公告列表
             doAnnouncementList: [],
             tabLabel: "全省应用情况使用趋势",
             noticeActiveNames: [1, 4],
+            page: {
+                current: 1,
+                limit: 5,
+                total: 10,
+            },
+            autoParams: {
+                unitTopHeight: 200,
+                unitTopTotal: 0,
+            },
         };
     },
     created() {
@@ -377,6 +440,8 @@ export default {
         this.initializeDate(this.rangeDate);
     },
     mounted() {
+        this.initReportPage();
+        this.initChartHeight();
         this.init();
         this.initIframeResult();
         if (this.app.applicationList.length > 0) {
@@ -397,6 +462,60 @@ export default {
             ) {
                 this.getIframeSrc();
             }
+            /* 根据权限获取排行榜内容 */
+            if (
+                this.app.rolesInfo.roleName === "UNIT_MANAGER" ||
+                !this.app.rolesInfo.roleName
+            ) {
+                this.orgId = this.app.rolesInfo.orgId;
+                if (this.app.rolesInfo.roleName === "UNIT_MANAGER") {
+                    this.getUnitList();
+                }
+                this.initUnitTop();
+            }
+        },
+        send(msg) {
+            window.sendMessage(msg);
+        },
+        initReportPage() {
+            const ifr = document.getElementById("unit-top").contentWindow;
+            let sendMessage = function () {
+                return function (data) {
+                    console.log(data, 333);
+                    ifr.postMessage(data, "*");
+                };
+            };
+            window.sendMessage = sendMessage();
+        },
+        initChartHeight() {
+            let that = this;
+            document.getElementById("unit-top").onload = function () {
+                window.addEventListener(
+                    "message",
+                    function (e) {
+                        if (e.data.height && e.data.total) {
+                            that.autoParams.unitTopHeight = e.data.height;
+                            that.autoParams.unitTopTotal = e.data.total;
+                        }
+                        console.log(e.data, "jjjjjjj");
+                    },
+                    false
+                );
+            };
+        },
+        handleSizeChange(val) {
+            this.page.limit = val;
+        },
+        handleCurrentChange(val) {
+            this.page.current = val;
+            this.send(`_g().gotoPage(${this.page.current})`);
+        },
+        initUnitTop() {
+            this.unitTopUrl =
+                this.hostApi +
+                this.reportParams.unitTopUrl +
+                "&orgId=" +
+                this.orgId;
         },
         // 超管和系统管理员
         isShowSuperOrSystem() {
@@ -514,7 +633,6 @@ export default {
                 });
                 codeNum = str.substring(0, str.length - 1);
             }
-            console.log(ary);
             unitSrc = this.hostApi + ary[0].unitSrc;
             userSrc = this.hostApi + ary[0].userSrc;
 
@@ -634,6 +752,34 @@ export default {
                 }
             });
         },
+        // 获取授权单位
+        getUnitList() {
+            let data = {
+                assessType: 2,
+                orgIds: this.app.rolesInfo.authorizedOid,
+            };
+            api[urlNames["getOrgListByIds"]](data).then((res) => {
+                if (res.data) {
+                    this.unitList = res.data;
+                    // if (this.unitList.length > 0) {
+                    //     this.orgId = this.unitList[0].orgId;
+                    //     this.unitTopUrl =
+                    //         this.hostApi +
+                    //         this.reportParams.unitTopUrl +
+                    //         "&orgId=" +
+                    //         this.orgId;
+                    // }
+                }
+            });
+        },
+        unitChange(val) {
+            this.page.current = 1;
+            this.unitTopUrl =
+                this.hostApi +
+                this.reportParams.unitTopUrl +
+                "&orgId=" +
+                this.orgId;
+        },
         // 获取市州或区县
         getAreaList() {
             let data = {
@@ -708,6 +854,15 @@ export default {
             this.systemId = this.appList[0].id;
             let ary = [...this.appList];
             this.doApplyList(ary);
+        },
+        autoParams: {
+            deep: true, // 深度监听设置为 true
+            handler: function (newV, oldV) {
+                this.page.total = newV.unitTopTotal;
+                document.getElementById("unit-top").style.height =
+                    newV.unitTopHeight + "px";
+                console.log("watch中：", newV);
+            },
         },
     },
 };

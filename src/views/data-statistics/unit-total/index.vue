@@ -447,9 +447,9 @@ export default {
                 treeId,
                 treeType: 3,
             }).then((res) => {
+                this.deptList = [];
                 res.data.forEach((item) => {
-                    this.deptList = [];
-                    /* 排除单位下面有人员的情况 ：只显示单位部门 */
+                    /* 排除单位下面有单位人员的情况 ：只显示部门 */
                     if (item.treeType === 4) {
                         this.deptList.push(item);
                     }

@@ -19,8 +19,6 @@ export default {
             areaTableSrc: "",
             hostApi:
                 "http://172.16.68.41:8080/webroot/decision/view/report?viewlet=",
-            // hostApi:
-            //     "http://localhost:8088/webroot/decision/view/report?viewlet=",
             srcUrl: "",
             logSrc: logSrc,
             unitTypeList: [
@@ -118,7 +116,6 @@ export default {
             let ary = this.reportSrcList.filter((item) => {
                 return item.id === systemId;
             });
-            console.log(this.systemId, ary[0], "bbbbbb");
             let url = "";
             let tableUrl = "";
             switch (type) {
