@@ -440,8 +440,6 @@ export default {
         this.initializeDate(this.rangeDate);
     },
     mounted() {
-        this.initReportPage();
-        this.initChartHeight();
         this.init();
         this.initIframeResult();
         if (this.app.applicationList.length > 0) {
@@ -467,6 +465,8 @@ export default {
                 this.app.rolesInfo.roleName === "UNIT_MANAGER" ||
                 !this.app.rolesInfo.roleName
             ) {
+                this.initReportPage();
+                this.initChartHeight();
                 this.orgId = this.app.rolesInfo.orgId;
                 if (this.app.rolesInfo.roleName === "UNIT_MANAGER") {
                     this.getUnitList();
