@@ -83,6 +83,10 @@ export default {
     getTemplateName: "getTemplateName",
     // 帮助中心--获取文档列表
     getHelpFileList: "getHelpFileList",
+    // 帮助中心--删除文件列表
+    deleteFile: "deleteFile",
+    // 帮助中心--上传文件
+    uploadFile: "uploadFile",
     getHelperview: "getHelperview",
     // 数据统计--通过区域列表获取区域名称
     getAreaList: "getAreaList",

@@ -1,7 +1,19 @@
 .help-center{
-  border: 1px solid #EBEEF5;
-  border-bottom: none;
+  .table-box{
+    border: 1px solid #EBEEF5;
+    border-bottom: none;
+  }
+ 
   // height: 100%;
   // padding: 10px;
   // border-radius: 4px;
+  .uploadBox{
+    padding: 12px;
+    margin-bottom: 10px;
+    /deep/.el-upload-list{
+      width: 50%;
+      box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)
+    }
+  }
+  
 }

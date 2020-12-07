@@ -41,6 +41,10 @@ export default {
                     apiUrl = "/api/appdata/modelGenerated/download";
                     params = { path: loadParams.path };
                     break;
+                case "helpCenter":
+                    apiUrl = "/api/appdata/helpFile/download/helpFile";
+                    params = loadParams;
+                    break;
                 default:
                     return null;
             }
