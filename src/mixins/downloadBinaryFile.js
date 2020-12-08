@@ -38,8 +38,8 @@ export default {
                     params = loadParams;
                     break;
                 case "template":
-                    apiUrl = "/api/appdata/modelGenerated/download";
-                    params = { path: loadParams.path };
+                    apiUrl = "api/appdata/modelGenerated/download/modelFile";
+                    params = loadParams;
                     break;
                 case "helpCenter":
                     apiUrl = "/api/appdata/helpFile/download/helpFile";

@@ -8,9 +8,9 @@ export default {
         serve: "organizationManagePC",
     },
     // 数据模板--在线预览
-    [urlNames.getView]: {
+    [urlNames.modelFileView]: {
         type: "get",
-        url: "/api/appdata/modelGenerated/getView",
+        url: "/api/appdata/modelGenerated/view/modelFile",
         keepOriginResponse: true,
         serve: "organizationManagePC",
     },
@@ -19,6 +19,7 @@ export default {
         type: "get",
         url: "/api/appdata/modelGenerated/getTemplateList",
         keepOriginResponse: true,
+        showLoading: true,
         serve: "organizationManagePC",
     },
 };

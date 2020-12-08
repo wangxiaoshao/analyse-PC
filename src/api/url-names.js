@@ -78,7 +78,7 @@ export default {
     // 数据模板--获取数据模板列表
     getTemplateList: "getTemplateList",
     // 数据模板--在线预览
-    getView: "getView",
+    modelFileView: "modelFileView",
     // 数据模板--获取模板名称列表
     getTemplateName: "getTemplateName",
     // 帮助中心--获取文档列表

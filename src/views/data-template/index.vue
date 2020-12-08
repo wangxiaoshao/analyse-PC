@@ -52,7 +52,7 @@
                                 size="mini"
                                 type="text"
                                 style="float: right;"
-                                @click="downloadTemplate(item.modelUrl)"
+                                @click="downloadTemplate(item.id)"
                                 >下载</el-button
                             >
                         </div>
@@ -135,16 +135,16 @@ export default {
                 }
             );
         },
-        downloadTemplate(modelUrl) {
-            let params = { path: modelUrl };
+        downloadTemplate(id) {
+            let params = { id };
             this.downloadBinaryFile("template", params);
         },
         fileView(id) {
-            api[urlNames["getView"]]({ id }).then((res) => {
+            api[urlNames["modelFileView"]]({ id }).then((res) => {
                 console.log(res);
-                // if (res.code) {
-                window.open(res);
-                // }
+                if (res) {
+                    window.open(res);
+                }
             });
         },
     },
