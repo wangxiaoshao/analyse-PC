@@ -1,6 +1,6 @@
 <template>
     <div class="help-center">
-        <div class="uploadBox">
+        <div class="uploadBox" v-if="isProvinceOrAudit()">
             <el-upload
                 :limit="6"
                 :auto-upload="false"
@@ -26,6 +26,13 @@
                 >
                 <div slot="tip" class="el-upload__tip">
                     上传文件类型为 txt/doc/docx/pdf/excel 等格式!
+                    <p
+                        class="text-style"
+                        style="padding-top: 10px;"
+                        v-show="fileList.length > 0"
+                    >
+                        选取文件后点击上传按钮方可生效。
+                    </p>
                 </div>
             </el-upload>
         </div>
@@ -63,6 +70,7 @@
                                 <el-button
                                     size="mini"
                                     type="text"
+                                    v-show="isProvinceOrAudit()"
                                     @click="confirmDeleteFile(scope.row.id)"
                                     >删除</el-button
                                 >
@@ -86,6 +94,7 @@
 <script>
 import { api, urlNames } from "@src/api";
 import handleTable from "@src/mixins/handle-table";
+import { mapState } from "vuex";
 import downloadBinaryFile from "@src/mixins/downloadBinaryFile";
 export default {
     mixins: [handleTable, downloadBinaryFile],
@@ -100,7 +109,17 @@ export default {
     mounted() {
         this.getGrid();
     },
+    computed: {
+        ...mapState(["app"]),
+    },
     methods: {
+        isProvinceOrAudit() {
+            return (
+                this.app.rolesInfo.roleName === "PROVINCE_MANAGER" ||
+                this.app.rolesInfo.roleName === "SECURITY_AUDIT_MANAGER" ||
+                this.app.rolesInfo.roleName === "SUPER_MANAGER"
+            );
+        },
         getGrid() {
             let data = {
                 page: this.page.current,
@@ -125,7 +144,7 @@ export default {
             });
         },
         confirmDeleteFile(id) {
-            this.handleRow("确定要删除改文件吗？", id, this.deleteFile);
+            this.handleRow("确定要删除该文件吗？", id, this.deleteFile);
         },
         deleteFile(id) {
             api[urlNames["deleteFile"]]({ id }).then((res) => {

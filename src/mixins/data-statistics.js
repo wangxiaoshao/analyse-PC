@@ -17,8 +17,10 @@ export default {
             reportSrcList: areaReportList,
             tableName: "`static_db`.logger_action_",
             areaTableSrc: "",
+            // hostApi:
+            //     "http://172.16.68.41:8080/webroot/decision/view/report?viewlet=",
             hostApi:
-                "http://172.16.68.41:8080/webroot/decision/view/report?viewlet=",
+                "http://172.16.68.136/webroot/decision/view/report?viewlet=",
             srcUrl: "",
             logSrc: logSrc,
             unitTypeList: [
