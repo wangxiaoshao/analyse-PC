@@ -19,8 +19,10 @@ export default {
             areaTableSrc: "",
             // hostApi:
             //     "http://172.16.68.41:8080/webroot/decision/view/report?viewlet=",
+            // hostApi:
+            //     "http://172.16.68.136/webroot/decision/view/report?viewlet=",
             hostApi:
-                "http://172.16.68.136/webroot/decision/view/report?viewlet=",
+                "http://tjpt.report.gz.cegn.cn/webroot/decision/view/report?viewlet=",
             srcUrl: "",
             logSrc: logSrc,
             unitTypeList: [
