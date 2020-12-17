@@ -327,7 +327,7 @@
                                                 isActive: systemId == item.id,
                                             }"
                                             v-for="(item,
-                                            index) in app.applicationList"
+                                            index) in applicationList"
                                             :key="item.id"
                                             @click="applyChange(index, item.id)"
                                         >
@@ -433,6 +433,7 @@ export default {
                 unitTopHeight: 200,
                 unitTopTotal: 0,
             },
+            applicationList: [],
         };
     },
     created() {
@@ -444,6 +445,8 @@ export default {
         this.initIframeResult();
         if (this.app.applicationList.length > 0) {
             let ary = [...this.app.applicationList];
+            let ary1 = [...this.app.applicationList];
+            this.doOrgList(ary1);
             this.doApplyList(ary);
         }
     },
@@ -688,7 +691,7 @@ export default {
                 this.systemId = this.personAppList[0].id;
                 this.initPerson();
             } else if (this.activeName === "authType") {
-                this.systemId = this.app.applicationList[0].id;
+                this.systemId = this.applicationList[0].id;
                 this.authTypeIframe();
             }
         },
@@ -729,6 +732,14 @@ export default {
                 this.systemId = this.personAppList[0].id;
                 this.initPerson();
             }
+        },
+        doOrgList(appList) {
+            appList.map((item, index) => {
+                if (item.id === 5) {
+                    appList.splice(index, 1);
+                }
+            });
+            this.applicationList = appList;
         },
 
         // 获取平台公告列表
@@ -853,6 +864,8 @@ export default {
         appList() {
             this.systemId = this.appList[0].id;
             let ary = [...this.appList];
+            let ary1 = [...this.appList];
+            this.doOrgList(ary1);
             this.doApplyList(ary);
         },
         autoParams: {
