@@ -64,6 +64,7 @@
                                 <el-button
                                     size="mini"
                                     type="text"
+                                    v-preventReClick
                                     @click="downLoadWord(scope.row)"
                                     >下载</el-button
                                 >
@@ -71,6 +72,7 @@
                                     size="mini"
                                     type="text"
                                     v-show="isProvinceOrAudit()"
+                                    v-preventReClick
                                     @click="confirmDeleteFile(scope.row.id)"
                                     >删除</el-button
                                 >
