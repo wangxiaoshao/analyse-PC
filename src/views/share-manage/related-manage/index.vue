@@ -17,11 +17,13 @@
                 <el-form-item label="账号：" prop="account_number">
                     <el-input
                         placeholder="请输入账号"
+                        readonly
                         v-model="createdOrUpdateForm.account_number"
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="密码：" prop="password">
                     <el-input
+                        readonly
                         type="password"
                         show-password
                         placeholder="请输入密码"
@@ -176,6 +178,26 @@ export default {
                 callback();
             }
         };
+        let validateContacts = (rule, value, callback) => {
+            if (value !== "" && value) {
+                let reg = /^[\u4e00-\u9fa5a-zA-Z_]{1,10}$/;
+                reg.test(value)
+                    ? callback()
+                    : callback(new Error("只能输入中英文，不超过10个字符"));
+            } else {
+                callback();
+            }
+        };
+        let validateCompany = (rule, value, callback) => {
+            if (value !== "" && value) {
+                let reg = /^[\u4e00-\u9fa5a-zA-Z_]{1,20}$/;
+                reg.test(value)
+                    ? callback()
+                    : callback(new Error("只能输入中英文，不超过20个字符"));
+            } else {
+                callback();
+            }
+        };
         return {
             accountList: [],
             dialogTitle: "创建关联",
@@ -209,9 +231,10 @@ export default {
                 company: [
                     {
                         required: true,
-                        message: "公司名称不能为空",
+                        message: "单位名称不能为空",
                         trigger: "blur",
                     },
+                    { validator: validateCompany, trigger: "blur" },
                 ],
                 contacts: [
                     {
@@ -219,6 +242,7 @@ export default {
                         message: "联系人不能为空",
                         trigger: "blur",
                     },
+                    { validator: validateContacts, trigger: "blur" },
                 ],
                 telephone_number: [
                     {
@@ -345,7 +369,7 @@ export default {
                         }
                     );
                 } else {
-                    this.$message.warning("请根据提示填写必填字段");
+                    this.$message.warning("请根据提示填写相关字段");
                 }
             });
         },

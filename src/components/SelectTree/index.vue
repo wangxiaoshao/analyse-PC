@@ -211,6 +211,7 @@ export default {
             lastData: [],
             nextData: [],
             selectCheckList: [],
+            listData: [],
         };
     },
     created() {
@@ -294,6 +295,8 @@ export default {
         },
         // 加载下一级
         loadArea(node, resolve) {
+            // console.log(node, "hhhhhhh");
+            // this.listData = [];
             if (node.level === 0) {
                 return resolve(this.treeData);
             }
@@ -331,11 +334,21 @@ export default {
                             if (item.hasChild === 0 || !item.hasChild) {
                                 item.leaf = true;
                             }
-                            /* 排除单位下面有人员的情况 ：只显示部门和单位 */
-                            if (item.treeType !== 5) {
-                                treeData.push(item);
+                            if (this.selectTreeDailog.isSelectType === 2) {
+                                if (
+                                    item.treeType !== 5 &&
+                                    item.treeType !== 4
+                                ) {
+                                    treeData.push(item);
+                                }
+                            } else {
+                                /* 排除单位下面有人员的情况 ：只显示部门和单位 */
+                                if (item.treeType !== 5) {
+                                    treeData.push(item);
+                                }
                             }
                         });
+                        this.listData = treeData;
                     } else if (this.selectTreeDailog.isSelectType === 4) {
                         let list = res.data || [];
                         list.forEach((item) => {
@@ -343,13 +356,15 @@ export default {
                         });
                         treeData = list;
                     }
-
+                    // this.listData = treeData;
                     resolve(treeData);
                 }
             });
         },
         handleAreaClick(data) {
-            this.optionalList = [];
+            if (data.hasChild) {
+                this.optionalList = [];
+            }
             // 1. 区县
             if (this.selectTreeDailog.isSelectType === 1) {
                 // 候选框只加载到区县
@@ -408,6 +423,59 @@ export default {
                     res.data.forEach((item) => {
                         this.optionalList.push(item);
                     });
+                });
+            } else {
+                this.optionalList = [];
+            }
+        },
+        handleAreaClick1(data) {
+            console.log(888888, this.listData);
+            if (data.hasChild) {
+                this.optionalList = [];
+            }
+            // 1. 区县
+            if (this.selectTreeDailog.isSelectType === 1) {
+                // 候选框只加载到区县
+                if (data.treeType === 1) {
+                    this.listData.forEach((item) => {
+                        this.optionalList.push(item);
+                    });
+                } else {
+                    this.optionalList = [];
+                }
+                // 2.单位  treeType=2 treeId = "520000"，单独处理省直单位
+                // 3.人员  treeType=3
+            } else if (
+                this.selectTreeDailog.isSelectType === 2 ||
+                this.selectTreeDailog.isSelectType === 3
+            ) {
+                if (
+                    (data.treeType !== 1 && data.treeType) ||
+                    (data.treeId === "520000" && data.treeType)
+                ) {
+                    if (this.selectTreeDailog.isSelectType === 2) {
+                        this.listData.forEach((item) => {
+                            /* 排除单位下面有人员部门的情况 ：只显示单位 */
+                            if (item.treeType === 3) {
+                                this.optionalList.push(item);
+                            }
+                        });
+                    } else if (this.selectTreeDailog.isSelectType === 3) {
+                        this.listData.forEach((item) => {
+                            /* 排除单位下面有单位部门的情况 ：只显示人员 */
+                            if (item.treeType === 5) {
+                                this.optionalList.push(item);
+                            }
+                        });
+                    }
+                }
+                // 4 选择市州
+            } else if (
+                this.selectTreeDailog.isSelectType === 4 &&
+                data.treeType === 0
+            ) {
+                this.listData.forEach((item) => {
+                    this.optionalList.push(item);
                 });
             } else {
                 this.optionalList = [];

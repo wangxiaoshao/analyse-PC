@@ -64,7 +64,7 @@
                                 <el-button
                                     size="mini"
                                     type="text"
-                                    @click="downLoadWord(scope.row.id)"
+                                    @click="downLoadWord(scope.row)"
                                     >下载</el-button
                                 >
                                 <el-button
@@ -95,9 +95,8 @@
 import { api, urlNames } from "@src/api";
 import handleTable from "@src/mixins/handle-table";
 import { mapState } from "vuex";
-import downloadBinaryFile from "@src/mixins/downloadBinaryFile";
 export default {
-    mixins: [handleTable, downloadBinaryFile],
+    mixins: [handleTable],
     data() {
         return {
             tableData: [],
@@ -156,9 +155,17 @@ export default {
                 }
             });
         },
-        downLoadWord(id) {
-            let params = { id };
-            this.downloadBinaryFile("helpCenter", params);
+        downLoadWord(row) {
+            let apiUrl = "/api/appdata/helpFile/download/helpFile";
+            let host = window.location.href.split("#")[0];
+            let openUrl = host + apiUrl + "?id=" + row.id;
+            let a = document.createElement("a");
+            a.download = row.fileName;
+            a.style.display = "none";
+            a.href = openUrl;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         },
         fileChange(file, fileList) {
             this.fileList = fileList;
@@ -173,6 +180,7 @@ export default {
             // this.showFileList = true;
         },
         submitUpload() {
+            this.uploadForm = new FormData();
             for (let i = 0; i < this.fileList.length; i++) {
                 this.uploadForm.append("file", this.fileList[i].raw);
             }
@@ -187,14 +195,6 @@ export default {
                 .catch(() => {
                     this.uploadForm = new FormData();
                 });
-        },
-        successFileUpload(response, file, fileList) {
-            if (response.status === 0) {
-                this.getGrid();
-                this.fileList = [];
-                this.$message.success("文件上传成功");
-            }
-            console.log(response, file, fileList);
         },
     },
 };

@@ -40,6 +40,11 @@ export default {
             activeName: "first",
         };
     },
+    mounted() {
+        if (this.app.rolesInfo.roleName === "SYSTEM_MANAGER") {
+            this.activeName = "second";
+        }
+    },
     methods: {
         handleClick(val) {},
         isShowSuperOrSecurity() {
