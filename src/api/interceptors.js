@@ -102,8 +102,10 @@ const appLogin = () => {
     }
 };
 function dowloadFile(response) {
+    // console.log(response, "ddddddddddd");
     let headers = response.headers;
-    let title = headers["content-disposition"].split("=")[1];
+    let title = window.decodeURI(headers["content-disposition"].split("=")[1]);
+    // console.log(title, "title");
     if (window.navigator && window.navigator.msSaveOrOpenBlob) {
         let blob = new Blob([response.data]);
         window.navigator.msSaveOrOpenBlob(blob, `${title}`);
@@ -181,7 +183,7 @@ axios.interceptors.response.use(
             dowloadFile(response);
         } else {
             Message({
-                message: data.message || "服务器异常，请稍后重试",
+                message: data.message || "服务器异常1，请稍后重试",
                 showClose: true,
                 type: "error",
             });

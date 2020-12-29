@@ -285,6 +285,10 @@ export default {
                 pageSize: this.page.limit,
                 logType: 1,
             };
+            // api[urlNames["actionLogExport"]](data).then((res) => {
+            //     // let data = new Blob([res]);
+            //     // console.log(data, "kkkkk");
+            // });
             this.downloadBinaryFile("actionLog", data);
         },
         resetData() {

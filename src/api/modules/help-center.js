@@ -33,4 +33,12 @@ export default {
             "Content-Type": "application/json",
         },
     },
+    [urlNames.helpFileExport]: {
+        type: "get",
+        url: "/api/appdata/helpFile/download/helpFile",
+        serve: "organizationManagePC",
+        headers: {
+            "Response-Type": "bolb",
+        },
+    },
 };

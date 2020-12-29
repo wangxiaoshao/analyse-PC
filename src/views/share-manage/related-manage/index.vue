@@ -5,6 +5,7 @@
             width="40%"
             :title="dialogTitle"
             :close-on-click-modal="false"
+            :modal-append-to-body="false"
             :visible.sync="createdOrUpdateVisiable"
             center
         >

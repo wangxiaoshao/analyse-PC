@@ -96,9 +96,10 @@
 <script>
 import { api, urlNames } from "@src/api";
 import handleTable from "@src/mixins/handle-table";
+import downloadBinaryFile from "@src/mixins/downloadBinaryFile";
 import { mapState } from "vuex";
 export default {
-    mixins: [handleTable],
+    mixins: [handleTable, downloadBinaryFile],
     data() {
         return {
             tableData: [],
@@ -158,16 +159,18 @@ export default {
             });
         },
         downLoadWord(row) {
-            let apiUrl = "/api/appdata/helpFile/download/helpFile";
-            let host = window.location.href.split("#")[0];
-            let openUrl = host + apiUrl + "?id=" + row.id;
-            let a = document.createElement("a");
-            a.download = row.fileName;
-            a.style.display = "none";
-            a.href = openUrl;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
+            // let apiUrl = "/api/appdata/helpFile/download/helpFile";
+            // let host = window.location.href.split("#")[0];
+            // let openUrl = host + apiUrl + "?id=" + row.id;
+            // window.open(openUrl);
+            // let a = document.createElement("a");
+            // a.href = openUrl;
+            // a.download = row.fileName.split(".")[0];
+            // a.style.display = "none";
+            // document.body.appendChild(a);
+            // a.click();
+            // document.body.removeChild(a);
+            this.downloadBinaryFile("helpCenter", { id: row.id });
         },
         fileChange(file, fileList) {
             this.fileList = fileList;

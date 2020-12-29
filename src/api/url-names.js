@@ -112,4 +112,7 @@ export default {
     findShareLoggerList: "findShareLoggerList",
     // 验签
     validSignature: "validSignature",
+    // 操作日志--文件下载
+    actionLogExport: "actionLogExport",
+    helpFileExport: "helpFileExport",
 };

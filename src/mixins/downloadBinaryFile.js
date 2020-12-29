@@ -21,7 +21,6 @@ export default {
 
                 return;
             }
-
             let timestamp = new Date().getTime();
             let host = window.location.href.split("#")[0];
             let apiUrl = "";
@@ -34,11 +33,15 @@ export default {
                     params = loadParams;
                     break;
                 case "shareLog":
-                    apiUrl = "api/logger/switchLogger/exportShareLogger";
+                    apiUrl = "/api/logger/switchLogger/exportShareLogger";
                     params = loadParams;
                     break;
                 case "template":
-                    apiUrl = "api/appdata/modelGenerated/download/modelFile";
+                    apiUrl = "/api/appdata/modelGenerated/download/modelFile";
+                    params = loadParams;
+                    break;
+                case "helpCenter":
+                    apiUrl = "/api/appdata/helpFile/download/helpFile";
                     params = loadParams;
                     break;
                 default:
@@ -48,7 +51,6 @@ export default {
             params._ = timestamp;
             params.sign = this.getSign(params, timestamp);
             openUrl = host + apiUrl + "?" + this.buildUrlQuery(params);
-            // console.log(openUrl, "nnnnnnn");
             window.open(openUrl);
         },
 

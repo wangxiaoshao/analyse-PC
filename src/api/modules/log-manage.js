@@ -31,4 +31,12 @@ export default {
         showLoading: true,
         serve: "organizationManagePC",
     },
+    [urlNames.actionLogExport]: {
+        type: "get",
+        url: "/api/appdata/log/exportLogs",
+        serve: "organizationManagePC",
+        headers: {
+            "Response-Type": "bolb",
+        },
+    },
 };
