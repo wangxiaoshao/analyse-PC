@@ -338,11 +338,21 @@
                                 <el-col :span="21">
                                     <div class="system-right">
                                         <iframe
+                                            v-if="systemId !== 6"
                                             :src="srcUrl"
                                             class="staticFrame"
                                             frameborder="0"
                                             width="100%"
                                         ></iframe>
+                                        <div class="no-data" v-else>
+                                            <img
+                                                src="@src/common/images/no-data1.png"
+                                                alt=""
+                                            />
+                                            <div class="no-text">
+                                                暂无数据！
+                                            </div>
+                                        </div>
                                     </div>
                                 </el-col>
                             </el-row>
@@ -368,11 +378,21 @@
                                 <el-col :span="21">
                                     <div class="system-right">
                                         <iframe
+                                            v-if="systemId !== 6"
                                             :src="homePersonUrl"
                                             class="staticFrame"
                                             frameborder="0"
                                             width="100%"
                                         ></iframe>
+                                        <div class="no-data" v-else>
+                                            <img
+                                                src="@src/common/images/no-data1.png"
+                                                alt=""
+                                            />
+                                            <div class="no-text">
+                                                暂无数据！
+                                            </div>
+                                        </div>
                                     </div>
                                 </el-col>
                             </el-row>
