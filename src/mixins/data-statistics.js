@@ -3,6 +3,7 @@
  */
 import { areaReportList, logSrc } from "@src/config/report";
 import pickerOptions from "@src/mixins/picker-options";
+import reportUrl from "@src/config/reportUrl";
 export default {
     mixins: [pickerOptions],
     data() {
@@ -21,8 +22,7 @@ export default {
             //     "http://172.16.68.41:8080/webroot/decision/view/report?viewlet=",
             // hostApi:
             //     "http://172.16.68.136/webroot/decision/view/report?viewlet=",
-            hostApi:
-                "http://tjpt.report.gz.cegn.cn/webroot/decision/view/report?viewlet=",
+            hostApi: reportUrl + "webroot/decision/view/report?viewlet=",
             srcUrl: "",
             logSrc: logSrc,
             unitTypeList: [
