@@ -110,9 +110,9 @@ export default {
         pageSize: 8,
         templateId: this.templateId
       }
-      const reg1 = RegExp(/doc/)
-      const reg2 = RegExp(/xlsx/)
-      const reg3 = RegExp(/txt/)
+      const reg1 = /^\S+\.doc$/
+      const reg2 = /^\S+\.xlsx$/
+      const reg3 = /^\S+\.txt$/
       api[urlNames.getTemplateList](data).then(
         (res) => {
           res.data.forEach((item) => {

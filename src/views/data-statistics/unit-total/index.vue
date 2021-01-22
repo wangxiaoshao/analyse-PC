@@ -238,8 +238,7 @@ export default {
       const ifr = document.getElementById('unitMemberIframe').contentWindow
       const sendMessage = function () {
         if (window.postMessage) {
-          if (window.addEventListener) {
-          } else if (window.attachEvent) {
+          if (window.attachEvent) {
             window.attachEvent('onmessage', function (e) {
               console.log(e.data, 2222)
             })

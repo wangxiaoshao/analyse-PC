@@ -746,6 +746,7 @@ export default {
         if (item.id === 1 || item.id === 5) {
           appList.splice(index, 1)
         }
+        return true
       })
       this.personAppList = appList
       if (this.activeName === 'person') {
@@ -758,6 +759,7 @@ export default {
         if (item.id === 5) {
           appList.splice(index, 1)
         }
+        return true
       })
       this.applicationList = appList
     },

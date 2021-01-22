@@ -126,6 +126,7 @@ export default {
         if (item.id === 1 || item.id === 5) {
           appList.splice(index, 1)
         }
+        return true
       })
       this.appList = appList
     },

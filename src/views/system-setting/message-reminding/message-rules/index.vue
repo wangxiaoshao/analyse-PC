@@ -125,7 +125,6 @@ export default {
     })
     if (this.$route.query.id) {
       this.getOrgRulesDetail()
-    } else {
     }
   },
   computed: {

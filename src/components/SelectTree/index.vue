@@ -248,7 +248,7 @@ export default {
           if (res.data) {
             // 授权区县的时候处理贵安新区和省直单位
             if (this.selectTreeDailog.isSelectType === 1) {
-              res.data.map((item, index) => {
+              res.data.forEach((item, index) => {
                 if (
                   item.areaCode === '522800' ||
                                     item.areaCode === '520000'
@@ -309,7 +309,7 @@ export default {
           // 1. 选择区县
           // 处理省直单位和贵安新区（无区域）
           if (this.selectTreeDailog.isSelectType === 1) {
-            res.data.map((item, index) => {
+            res.data.forEach((item, index) => {
               if (
                 item.treeId === '522800' ||
                                 item.treeId === '520000'

@@ -20,8 +20,7 @@ export default {
       const that = this
       this.pickerOptions = {
         onPick ({ maxDate, minDate }) {
-          if (maxDate && minDate) {
-          } else {
+          if (maxDate || minDate) {
             const date = maxDate || minDate
             that.selectDate = date
           }
@@ -42,8 +41,7 @@ export default {
       const that = this
       this.pickerMounthOptions = {
         onPick ({ maxDate, minDate }) {
-          if (maxDate && minDate) {
-          } else {
+          if (maxDate || minDate) {
             const date = maxDate || minDate
             that.selectDate = date
           }

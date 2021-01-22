@@ -62,18 +62,18 @@ function getRouters (routes, roleId, authorizedOid) {
     // 仅仅这些角色这显示
     if (route.onlyRolesShow) {
       if (!route.onlyRolesShow.includes(roleId)) {
-        return
+        return false
       }
     } else if (route.onlyRolesNOShow) {
       // 这些角色不显示
       if (route.onlyRolesNOShow.includes(roleId)) {
-        return
+        return false
       }
     }
     // 处理单位管理员授权范围不包含人民政府办公厅的菜单，如果包含才显示数据模板菜单（超管特殊放权），不包含就不显示
     if (route.customShow) {
       const flag = route.customShow(authorizedOid) || roleId === 1
-      if (!flag) return
+      if (!flag) return false
     }
     // 都显示
     // 添加一个
@@ -84,6 +84,7 @@ function getRouters (routes, roleId, authorizedOid) {
 
     addItem.children = getRouters(route.children, roleId, authorizedOid)
     result.push(addItem)
+    return false
   })
   return result
 }
@@ -100,6 +101,7 @@ function getRoutePaths (routes, result, basePath = '') {
       const rpath = path.resolve(basePath, route.path)
       result.push(rpath)
       getRoutePaths(route.children, result, rpath)
+      return true
     })
   }
 }

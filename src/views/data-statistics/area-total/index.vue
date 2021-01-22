@@ -209,15 +209,7 @@ export default {
       const ifr = document.getElementById('areaTableFrame').contentWindow
       const sendMessage = function () {
         if (window.postMessage) {
-          if (window.addEventListener) {
-            // window.addEventListener(
-            //     "message",
-            //     function (e) {
-            //         // console.log(e.data, 1111);
-            //     },
-            //     false
-            // );
-          } else if (window.attachEvent) {
+          if (window.attachEvent) {
             window.attachEvent('onmessage', function (e) {
               console.log(e.data, 2222)
             })
