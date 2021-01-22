@@ -182,84 +182,84 @@
     </div>
 </template>
 <script>
-import { api, urlNames } from "@src/api";
-import handleTable from "@src/mixins/handle-table";
-import dataStatistics from "@src/mixins/data-statistics";
-import downloadBinaryFile from "@src/mixins/downloadBinaryFile";
+import { api, urlNames } from '@src/api'
+import handleTable from '@src/mixins/handle-table'
+import dataStatistics from '@src/mixins/data-statistics'
+import downloadBinaryFile from '@src/mixins/downloadBinaryFile'
 export default {
-    mixins: [handleTable, dataStatistics, downloadBinaryFile],
-    props: ["activeName"],
-    data() {
-        return {
-            keyword: "",
-            systemLoggerList: [],
-            detialInfoVisible: false,
-            detialInfoForm: {},
-        };
+  mixins: [handleTable, dataStatistics, downloadBinaryFile],
+  props: ['activeName'],
+  data () {
+    return {
+      keyword: '',
+      systemLoggerList: [],
+      detialInfoVisible: false,
+      detialInfoForm: {}
+    }
+  },
+  created () {
+    this.initializeDate()
+  },
+  mounted () {
+    this.getGrid()
+  },
+  methods: {
+    dateChange (val) {
+      if (val) {
+        this.startDate = val[0]
+        this.endDate = val[1]
+      }
     },
-    created() {
-        this.initializeDate();
+    getGrid (flag) {
+      if (flag) {
+        this.page.current = 1
+      }
+      const data = {
+        beginDate: this.startDate,
+        endDate: this.endDate,
+        keyword: this.keyword,
+        page: this.page.current,
+        pageSize: this.page.limit
+      }
+      api[urlNames.getApiLoggerList](data).then(
+        (res) => {
+          this.systemLoggerList = res.data
+          this.page.total = res.total
+        },
+        () => {
+          this.systemLoggerList = []
+          this.page.total = 0
+        }
+      )
     },
-    mounted() {
-        this.getGrid();
+    opendetialInfo (row) {
+      this.detialInfoForm = {}
+      this.detialInfoVisible = true
+      this.detialInfoForm = row
     },
-    methods: {
-        dateChange(val) {
-            if (val) {
-                this.startDate = val[0];
-                this.endDate = val[1];
-            }
-        },
-        getGrid(flag) {
-            if (flag) {
-                this.page.current = 1;
-            }
-            let data = {
-                beginDate: this.startDate,
-                endDate: this.endDate,
-                keyword: this.keyword,
-                page: this.page.current,
-                pageSize: this.page.limit,
-            };
-            api[urlNames["getApiLoggerList"]](data).then(
-                (res) => {
-                    this.systemLoggerList = res.data;
-                    this.page.total = res.total;
-                },
-                () => {
-                    this.systemLoggerList = [];
-                    this.page.total = 0;
-                }
-            );
-        },
-        opendetialInfo(row) {
-            this.detialInfoForm = {};
-            this.detialInfoVisible = true;
-            this.detialInfoForm = row;
-        },
-        resetData() {
-            this.initializeDate();
-            this.keyword = "";
-            this.getGrid(true);
-        },
-        exportLog() {
-            let data = {
-                beginDate: this.startDate,
-                endDate: this.endDate,
-                keyword: this.keyword,
-                page: this.page.current,
-                pageSize: this.page.limit,
-                logType: 2,
-            };
-            this.downloadBinaryFile("systemLog", data);
-        },
+    resetData () {
+      this.initializeDate()
+      this.keyword = ''
+      this.getGrid(true)
     },
-    watch: {
-        // activeName(val) {
-        //     if (val === "second") {
-        //         this.resetData();
-        //     }
-        // },
-    },
-};
+    exportLog () {
+      const data = {
+        beginDate: this.startDate,
+        endDate: this.endDate,
+        keyword: this.keyword,
+        page: this.page.current,
+        pageSize: this.page.limit,
+        logType: 2
+      }
+      this.downloadBinaryFile('systemLog', data)
+    }
+  },
+  watch: {
+    // activeName(val) {
+    //     if (val === "second") {
+    //         this.resetData();
+    //     }
+    // },
+  }
+}
 </script>

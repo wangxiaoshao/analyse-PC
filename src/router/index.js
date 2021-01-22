@@ -1,91 +1,91 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
-import AllRoutes from "./routes";
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import AllRoutes from './routes'
 
 // import roles from "./roles";
 
-import path from "path";
+import path from 'path'
 
-Vue.use(VueRouter);
+Vue.use(VueRouter)
 
 /**
  *
  * @param {*} userInfo 用户信息
  */
 const initRouter = (userInfo) => {
-    let roleId = userInfo.roleId;
-    let authorizedOid = userInfo.authorizedOid;
-    // // 超级管理员和系统管理员权限一样
-    // if (roleId === roles.super) {
-    //     roleId = roles.sys;
-    // }
-    const routes = getRouters(AllRoutes, roleId, authorizedOid);
+  const roleId = userInfo.roleId
+  const authorizedOid = userInfo.authorizedOid
+  // // 超级管理员和系统管理员权限一样
+  // if (roleId === roles.super) {
+  //     roleId = roles.sys;
+  // }
+  const routes = getRouters(AllRoutes, roleId, authorizedOid)
 
-    // 所有的路由path、用来做无权限提示，不是的话相当于404页面
-    const allRoutePaths = [];
-    getRoutePaths(AllRoutes, allRoutePaths);
+  // 所有的路由path、用来做无权限提示，不是的话相当于404页面
+  const allRoutePaths = []
+  getRoutePaths(AllRoutes, allRoutePaths)
 
-    let router = new VueRouter({
-        base: "static/work/admin",
-        routes: routes,
-        mode: "hash",
-    });
+  const router = new VueRouter({
+    base: 'static/work/admin',
+    routes: routes,
+    mode: 'hash'
+  })
 
-    router.beforeEach((to, from, next) => {
-        let route = to.matched[0];
-        if (!route) {
-            // 没有找到
-            if (allRoutePaths.includes(to.path)) {
-                return next("/no-right");
-            }
-            // 404
-            return router.back();
-        }
-        next();
-    });
+  router.beforeEach((to, from, next) => {
+    const route = to.matched[0]
+    if (!route) {
+      // 没有找到
+      if (allRoutePaths.includes(to.path)) {
+        return next('/no-right')
+      }
+      // 404
+      return router.back()
+    }
+    next()
+  })
 
-    return router;
-};
+  return router
+}
 
 /**
  *
  * @param {*} routes
  * @param {*} roleId
  */
-function getRouters(routes, roleId, authorizedOid) {
-    if (!(Array.isArray(routes) && routes.length)) {
-        return;
+function getRouters (routes, roleId, authorizedOid) {
+  if (!(Array.isArray(routes) && routes.length)) {
+    return
+  }
+
+  const result = []
+  routes.map((route) => {
+    // 仅仅这些角色这显示
+    if (route.onlyRolesShow) {
+      if (!route.onlyRolesShow.includes(roleId)) {
+        return
+      }
+    } else if (route.onlyRolesNOShow) {
+      // 这些角色不显示
+      if (route.onlyRolesNOShow.includes(roleId)) {
+        return
+      }
+    }
+    // 处理单位管理员授权范围不包含人民政府办公厅的菜单，如果包含才显示数据模板菜单（超管特殊放权），不包含就不显示
+    if (route.customShow) {
+      const flag = route.customShow(authorizedOid) || roleId === 1
+      if (!flag) return
+    }
+    // 都显示
+    // 添加一个
+    const addItem = {
+      ...route,
+      children: undefined
     }
 
-    const result = [];
-    routes.map((route) => {
-        // 仅仅这些角色这显示
-        if (route.onlyRolesShow) {
-            if (!route.onlyRolesShow.includes(roleId)) {
-                return;
-            }
-        } else if (route.onlyRolesNOShow) {
-            // 这些角色不显示
-            if (route.onlyRolesNOShow.includes(roleId)) {
-                return;
-            }
-        }
-        // 处理单位管理员授权范围不包含人民政府办公厅的菜单，如果包含才显示数据模板菜单（超管特殊放权），不包含就不显示
-        if (route.customShow) {
-            const flag = route.customShow(authorizedOid) || roleId === 1;
-            if (!flag) return;
-        }
-        // 都显示
-        // 添加一个
-        const addItem = {
-            ...route,
-            children: undefined,
-        };
-
-        addItem.children = getRouters(route.children, roleId, authorizedOid);
-        result.push(addItem);
-    });
-    return result;
+    addItem.children = getRouters(route.children, roleId, authorizedOid)
+    result.push(addItem)
+  })
+  return result
 }
 
 /**
@@ -94,14 +94,14 @@ function getRouters(routes, roleId, authorizedOid) {
  * @param {*} result
  * @param {*} basePath
  */
-function getRoutePaths(routes, result, basePath = "") {
-    if (Array.isArray(routes) && routes.length) {
-        routes.map((route) => {
-            const rpath = path.resolve(basePath, route.path);
-            result.push(rpath);
-            getRoutePaths(route.children, result, rpath);
-        });
-    }
+function getRoutePaths (routes, result, basePath = '') {
+  if (Array.isArray(routes) && routes.length) {
+    routes.map((route) => {
+      const rpath = path.resolve(basePath, route.path)
+      result.push(rpath)
+      getRoutePaths(route.children, result, rpath)
+    })
+  }
 }
 
-export default initRouter;
+export default initRouter

@@ -72,83 +72,83 @@
     </div>
 </template>
 <script>
-import { api, urlNames } from "@src/api";
-import handleTable from "@src/mixins/handle-table";
-import downloadBinaryFile from "@src/mixins/downloadBinaryFile";
+import { api, urlNames } from '@src/api'
+import handleTable from '@src/mixins/handle-table'
+import downloadBinaryFile from '@src/mixins/downloadBinaryFile'
 export default {
-    mixins: [handleTable, downloadBinaryFile],
-    data() {
-        return {
-            templateId: "",
-            templateList: [],
-            templateNameList: [],
-            url1: require("@src/common/images/excel.png"),
-            url2: require("@src/common/images/txt.png"),
-            url3: require("@src/common/images/word.png"),
-            url4: require("@src/common/images/v2_qb1aza.svg"),
-        };
+  mixins: [handleTable, downloadBinaryFile],
+  data () {
+    return {
+      templateId: '',
+      templateList: [],
+      templateNameList: [],
+      url1: require('@src/common/images/excel.png'),
+      url2: require('@src/common/images/txt.png'),
+      url3: require('@src/common/images/word.png'),
+      url4: require('@src/common/images/v2_qb1aza.svg')
+    }
+  },
+  mounted () {
+    this.getTemplateTypeList()
+    this.getGrid()
+  },
+  methods: {
+    getTemplateTypeList () {
+      api[urlNames.getTemplateName]().then((res) => {
+        if (res.status === 0) {
+          this.templateNameList = res.data
+        }
+      })
     },
-    mounted() {
-        this.getTemplateTypeList();
-        this.getGrid();
+    templateNameChange (id) {
+      this.templateId = id
+      this.getGrid()
     },
-    methods: {
-        getTemplateTypeList() {
-            api[urlNames["getTemplateName"]]().then((res) => {
-                if (res.status === 0) {
-                    this.templateNameList = res.data;
-                }
-            });
+    getGrid () {
+      const data = {
+        page: this.page.current,
+        pageSize: 8,
+        templateId: this.templateId
+      }
+      const reg1 = RegExp(/doc/)
+      const reg2 = RegExp(/xlsx/)
+      const reg3 = RegExp(/txt/)
+      api[urlNames.getTemplateList](data).then(
+        (res) => {
+          res.data.forEach((item) => {
+            if (reg1.test(item.modelName)) {
+              item.type = 'doc'
+            } else if (reg2.test(item.modelName)) {
+              item.type = 'xlsx'
+            } else if (reg3.test(item.modelName)) {
+              item.type = 'txt'
+            } else {
+              item.type = 'pdf'
+            }
+          })
+          this.templateList = res.data
+          this.page.total = res.total
         },
-        templateNameChange(id) {
-            this.templateId = id;
-            this.getGrid();
-        },
-        getGrid() {
-            let data = {
-                page: this.page.current,
-                pageSize: 8,
-                templateId: this.templateId,
-            };
-            let reg1 = RegExp(/doc/);
-            let reg2 = RegExp(/xlsx/);
-            let reg3 = RegExp(/txt/);
-            api[urlNames["getTemplateList"]](data).then(
-                (res) => {
-                    res.data.forEach((item) => {
-                        if (reg1.test(item.modelName)) {
-                            item.type = "doc";
-                        } else if (reg2.test(item.modelName)) {
-                            item.type = "xlsx";
-                        } else if (reg3.test(item.modelName)) {
-                            item.type = "txt";
-                        } else {
-                            item.type = "pdf";
-                        }
-                    });
-                    this.templateList = res.data;
-                    this.page.total = res.total;
-                },
-                () => {
-                    this.templateList = [];
-                    this.page.total = 0;
-                }
-            );
-        },
-        downloadTemplate(id) {
-            let params = { id };
-            this.downloadBinaryFile("template", params);
-        },
-        fileView(id) {
-            api[urlNames["modelFileView"]]({ id }).then((res) => {
-                console.log(res);
-                if (res) {
-                    window.open(res);
-                }
-            });
-        },
+        () => {
+          this.templateList = []
+          this.page.total = 0
+        }
+      )
     },
-};
+    downloadTemplate (id) {
+      const params = { id }
+      this.downloadBinaryFile('template', params)
+    },
+    fileView (id) {
+      api[urlNames.modelFileView]({ id }).then((res) => {
+        console.log(res)
+        if (res) {
+          window.open(res)
+        }
+      })
+    }
+  }
+}
 </script>
 <style lang="less" scoped>
 @import "index.less";

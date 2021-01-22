@@ -70,118 +70,118 @@
     </div>
 </template>
 <script>
-import SelectTree from "@src/components/SelectTree/index";
-import dataStatistics from "@src/mixins/data-statistics";
-import { mapState } from "vuex";
-import applicationList from "@src/mixins/apply";
+import SelectTree from '@src/components/SelectTree/index'
+import dataStatistics from '@src/mixins/data-statistics'
+import { mapState } from 'vuex'
+import applicationList from '@src/mixins/apply'
 export default {
-    mixins: [dataStatistics, applicationList],
-    components: {
-        SelectTree,
-    },
-    data() {
-        return {
-            memberName: this.$store.state.app.rolesInfo.userName,
-            appList: [],
-            systemId: -1,
-            userId: this.$store.state.app.rolesInfo.uid,
-            orgId: this.$store.state.app.rolesInfo.orgId,
-            deptId: this.$store.state.app.rolesInfo.deptId
-                ? this.$store.state.app.rolesInfo.deptId
-                : "",
-            selectTreeDailog: {
-                title: "选择人员",
-                openSelectTreeVisiable: false,
-                isSelectType: 3, // 1 区县  2  单位  3 人员 4 市州
-                isSingSelect: true, // 是否单选,true 单选，false:多选
-            },
-        };
-    },
-    created() {
-        this.doApplyList();
-        this.pickDateOptionRules();
-        this.initializeDate();
-    },
-    mounted() {
-        this.searchData();
-        this.initMemberHeight();
-    },
-    computed: {
-        ...mapState(["app"]),
-    },
-    methods: {
-        initMemberHeight() {
-            let that = this;
-            const memberFrame = document.getElementById("memberFrame");
-            memberFrame.onload = function () {
-                that.dataAry = [];
-                window.addEventListener(
-                    "message",
-                    function (e) {
-                        if (e.data.height) {
-                            memberFrame.style.height = e.data.height + "px";
-                        } else {
-                            memberFrame.style.height = "500px";
-                        }
-                        // console.log(e.data, "memberFrame");
-                    },
-
-                    false
-                );
-            };
-        },
-        dateChange(val) {
-            if (val) {
-                this.startDate = val[0];
-                this.endDate = val[1];
+  mixins: [dataStatistics, applicationList],
+  components: {
+    SelectTree
+  },
+  data () {
+    return {
+      memberName: this.$store.state.app.rolesInfo.userName,
+      appList: [],
+      systemId: -1,
+      userId: this.$store.state.app.rolesInfo.uid,
+      orgId: this.$store.state.app.rolesInfo.orgId,
+      deptId: this.$store.state.app.rolesInfo.deptId
+        ? this.$store.state.app.rolesInfo.deptId
+        : '',
+      selectTreeDailog: {
+        title: '选择人员',
+        openSelectTreeVisiable: false,
+        isSelectType: 3, // 1 区县  2  单位  3 人员 4 市州
+        isSingSelect: true // 是否单选,true 单选，false:多选
+      }
+    }
+  },
+  created () {
+    this.doApplyList()
+    this.pickDateOptionRules()
+    this.initializeDate()
+  },
+  mounted () {
+    this.searchData()
+    this.initMemberHeight()
+  },
+  computed: {
+    ...mapState(['app'])
+  },
+  methods: {
+    initMemberHeight () {
+      const that = this
+      const memberFrame = document.getElementById('memberFrame')
+      memberFrame.onload = function () {
+        that.dataAry = []
+        window.addEventListener(
+          'message',
+          function (e) {
+            if (e.data.height) {
+              memberFrame.style.height = e.data.height + 'px'
+            } else {
+              memberFrame.style.height = '500px'
             }
-        },
-        doApplyList() {
-            let appList = [...this.applicationList];
-            appList.map((item, index) => {
-                if (item.id === 1 || item.id === 5) {
-                    appList.splice(index, 1);
-                }
-            });
-            this.appList = appList;
-        },
-        openSelectDailog() {
-            this.selectTreeDailog.openSelectTreeVisiable = true;
-        },
-        closeSelectDailog() {
-            this.selectTreeDailog.openSelectTreeVisiable = false;
-        },
-        dialogReturnData(userData, authData) {
-            authData = authData || [];
-            let dataAry = [...userData, ...authData];
-            this.memberName = dataAry[0].treeName;
-            this.userId = dataAry[0].treeId;
-            this.orgId = "";
-            this.deptId = "";
-        },
-        applyChange(val) {
-            const memberFrame = document.getElementById("memberFrame");
-            memberFrame.style.height = "500px";
-            this.systemId = val;
-            this.searchData();
-        },
-        searchData() {
-            let data = {
-                userId: this.userId,
-                startDate: this.startDate,
-                endDate: this.endDate,
-                orgId: this.orgId,
-                deptId: this.deptId,
-            };
-            this.initSystem("person", this.doSrcParams(data));
-        },
+            // console.log(e.data, "memberFrame");
+          },
+
+          false
+        )
+      }
     },
-    watch: {
-        applicationList() {
-            this.doApplyList();
-        },
+    dateChange (val) {
+      if (val) {
+        this.startDate = val[0]
+        this.endDate = val[1]
+      }
     },
-};
+    doApplyList () {
+      const appList = [...this.applicationList]
+      appList.map((item, index) => {
+        if (item.id === 1 || item.id === 5) {
+          appList.splice(index, 1)
+        }
+      })
+      this.appList = appList
+    },
+    openSelectDailog () {
+      this.selectTreeDailog.openSelectTreeVisiable = true
+    },
+    closeSelectDailog () {
+      this.selectTreeDailog.openSelectTreeVisiable = false
+    },
+    dialogReturnData (userData, authData) {
+      authData = authData || []
+      const dataAry = [...userData, ...authData]
+      this.memberName = dataAry[0].treeName
+      this.userId = dataAry[0].treeId
+      this.orgId = ''
+      this.deptId = ''
+    },
+    applyChange (val) {
+      const memberFrame = document.getElementById('memberFrame')
+      memberFrame.style.height = '500px'
+      this.systemId = val
+      this.searchData()
+    },
+    searchData () {
+      const data = {
+        userId: this.userId,
+        startDate: this.startDate,
+        endDate: this.endDate,
+        orgId: this.orgId,
+        deptId: this.deptId
+      }
+      this.initSystem('person', this.doSrcParams(data))
+    }
+  },
+  watch: {
+    applicationList () {
+      this.doApplyList()
+    }
+  }
+}
 </script>
 <style lang="less" scoped>
 @import "../area-total/index.less";

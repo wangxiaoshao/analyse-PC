@@ -23,50 +23,50 @@
     </div>
 </template>
 <script>
-import { api, urlNames } from "@src/api";
-import { mapState } from "vuex";
-import handleBreadcrumb from "@src/mixins/handle-breadcrumb.js";
+import { api, urlNames } from '@src/api'
+import { mapState } from 'vuex'
+import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
 export default {
-    name: "announceDetail",
-    mixins: [handleBreadcrumb],
-    data() {
-        return {
-            noticeDetail: {
-                id: 8228,
-                title: "p",
-                content: "B",
-                url: "t0WA67xwi",
-                createTime: "2020-03-12",
-            },
-        };
-    },
+  name: 'announceDetail',
+  mixins: [handleBreadcrumb],
+  data () {
+    return {
+      noticeDetail: {
+        id: 8228,
+        title: 'p',
+        content: 'B',
+        url: 't0WA67xwi',
+        createTime: '2020-03-12'
+      }
+    }
+  },
 
-    created() {},
-    mounted() {
-        this.app.noticeShowBtn = true;
-        this.SET_BREADCRUMB([{ name: "公告详情" }]);
-        this.getSystemNoticeDetail();
-    },
-    methods: {
-        getSystemNoticeDetail() {
-            api[urlNames["getSystemNoticeDetail"]]({
-                id: this.$route.query.id,
-            }).then(
-                (res) => {
-                    if (res) {
-                        this.noticeDetail = res.data;
-                    }
-                },
-                () => {
-                    this.noticeDetail = {};
-                }
-            );
+  created () {},
+  mounted () {
+    this.app.noticeShowBtn = true
+    this.SET_BREADCRUMB([{ name: '公告详情' }])
+    this.getSystemNoticeDetail()
+  },
+  methods: {
+    getSystemNoticeDetail () {
+      api[urlNames.getSystemNoticeDetail]({
+        id: this.$route.query.id
+      }).then(
+        (res) => {
+          if (res) {
+            this.noticeDetail = res.data
+          }
         },
-    },
-    computed: {
-        ...mapState(["app"]),
-    },
-};
+        () => {
+          this.noticeDetail = {}
+        }
+      )
+    }
+  },
+  computed: {
+    ...mapState(['app'])
+  }
+}
 </script>
 <style lang="less" scoped>
 @import "./index";

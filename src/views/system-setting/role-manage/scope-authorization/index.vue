@@ -83,161 +83,161 @@
 </template>
 
 <script>
-import handleTable from "@src/mixins/handle-table";
-import handleBreadcrumb from "@src/mixins/handle-breadcrumb.js";
-import SelectTree from "@src/components/SelectTree/index";
-import { api, urlNames } from "@src/api";
-import { mapState } from "vuex";
+import handleTable from '@src/mixins/handle-table'
+import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
+import SelectTree from '@src/components/SelectTree/index'
+import { api, urlNames } from '@src/api'
+import { mapState } from 'vuex'
 export default {
-    mixins: [handleTable, handleBreadcrumb],
-    name: "ScopeAuthorization",
-    components: {
-        SelectTree,
-    },
-    data() {
-        return {
-            selectTreeDailog: {
-                title: "选择授权单位",
-                openSelectTreeVisiable: false,
-                isSelectType: 2, // 1 区县  2  单位  3 人员 4市州
-                isSingSelect: true, // 是否单选,true 单选，false:多选
-            },
-            orgNameList: [],
-            cityStateOrUnitList: [],
-            roleId: parseInt(this.$route.params.roleId),
-            authorizedType: null, // 授权类型: 1[全省]，2[市州],3[区县]，4[单位]
-        };
-    },
-    computed: {
-        ...mapState(["app"]),
-    },
-    created() {},
-    mounted() {
-        this.pushBreadcrumb({
-            name: "授权范围",
-            parent: {
-                path: "/role-manage/look-person-permission",
-                query: { id: this.$route.params.roleId },
-            },
-        });
-        this.init();
-    },
-    methods: {
-        init() {
-            if (
-                this.$route.params.roleName === "CITY_MANAGER" ||
-                this.$route.params.roleName === "COUNTY_MANAGER"
-            ) {
-                this.getAuthorizedArea();
-            } else {
-                this.getAuthorizedOrg();
-            }
-            this.authorizedType =
-                this.$route.params.roleName === "CITY_MANAGER"
-                    ? 2
-                    : this.$route.params.roleName === "COUNTY_MANAGER"
+  mixins: [handleTable, handleBreadcrumb],
+  name: 'ScopeAuthorization',
+  components: {
+    SelectTree
+  },
+  data () {
+    return {
+      selectTreeDailog: {
+        title: '选择授权单位',
+        openSelectTreeVisiable: false,
+        isSelectType: 2, // 1 区县  2  单位  3 人员 4市州
+        isSingSelect: true // 是否单选,true 单选，false:多选
+      },
+      orgNameList: [],
+      cityStateOrUnitList: [],
+      roleId: parseInt(this.$route.params.roleId),
+      authorizedType: null // 授权类型: 1[全省]，2[市州],3[区县]，4[单位]
+    }
+  },
+  computed: {
+    ...mapState(['app'])
+  },
+  created () {},
+  mounted () {
+    this.pushBreadcrumb({
+      name: '授权范围',
+      parent: {
+        path: '/role-manage/look-person-permission',
+        query: { id: this.$route.params.roleId }
+      }
+    })
+    this.init()
+  },
+  methods: {
+    init () {
+      if (
+        this.$route.params.roleName === 'CITY_MANAGER' ||
+                this.$route.params.roleName === 'COUNTY_MANAGER'
+      ) {
+        this.getAuthorizedArea()
+      } else {
+        this.getAuthorizedOrg()
+      }
+      this.authorizedType =
+                this.$route.params.roleName === 'CITY_MANAGER'
+                  ? 2
+                  : this.$route.params.roleName === 'COUNTY_MANAGER'
                     ? 3
-                    : this.$route.params.roleName === "UNIT_MANAGER"
-                    ? 4
-                    : "";
-        },
-        addCityState() {
-            this.selectTreeDailog.isSelectType = 4;
-            this.selectTreeDailog.title = "选择授权市州";
-            this.selectTreeDailog.openSelectTreeVisiable = true;
-            this.selectTreeDailog.isSingSelect = false;
-        },
-        addArea() {
-            this.selectTreeDailog.isSelectType = 1;
-            this.selectTreeDailog.title = "选择授权区县";
-            this.selectTreeDailog.openSelectTreeVisiable = true;
-            this.selectTreeDailog.isSingSelect = false;
-        },
-        addDep() {
-            this.selectTreeDailog.isSelectType = 2;
-            this.selectTreeDailog.title = "选择授权单位";
-            this.selectTreeDailog.openSelectTreeVisiable = true;
-            this.selectTreeDailog.isSingSelect = false;
-        },
-        closeSelectDailog() {
-            this.selectTreeDailog.openSelectTreeVisiable = false;
-        },
-        dialogReturnData(userData, authData) {
-            authData = authData || [];
-            console.log(this.$store.state.app.rolesInfo);
-            let dataAry = [...userData, ...authData];
-            let authorizedOid = [];
-            dataAry.forEach((item) => {
-                authorizedOid.push(item.treeId);
-            });
-            let uid = [];
-            uid.push(this.$route.params.uid);
-            let data = {
-                roleId: this.$route.params.roleId,
-                authorizedType: this.authorizedType,
-                uid,
-                authorizedOid,
-            };
-            this.addUserAuth(data);
-        },
-        addUserAuth(data) {
-            api[urlNames["addUsersAuthScope"]](data).then(
-                (res) => {
-                    this.$message.success(`授权成功`);
-                    this.init();
-                },
-                () => {
-                    this.$message.error(`操作失败，请稍后重试`);
-                }
-            );
-        },
-        // 获取授权市州 区域
-        getAuthorizedArea() {
-            api[urlNames["getAuthAreaByUid"]]({
-                uid: this.$route.params.uid,
-                roleId: this.$route.params.roleId,
-            }).then((res) => {
-                if (res.data.length > 0) {
-                    this.cityStateOrUnitList = res.data;
-                }
-            });
-        },
-        // 获取授权单位
-        getAuthorizedOrg() {
-            api[urlNames["getAuthOrgByUid"]]({
-                uid: this.$route.params.uid,
-                roleId: this.$route.params.roleId,
-            }).then((res) => {
-                if (res.data.length > 0) {
-                    this.orgNameList = res.data;
-                }
-            });
-        },
-        deleteAuthorizedEntity(row) {
-            // authorizedType 2市州 3区县 4 单位
-            let str =
-                this.authorizedType === 2
-                    ? "市州"
-                    : this.authorizedType === 3
-                    ? "区县"
-                    : "单位";
-            let text = "确定要删除该" + str + "吗？";
-            let data = {
-                roleId: this.$route.params.roleId,
-                uid: this.$route.params.uid,
-                entityId: row.areaCode || row.orgId,
-                entityType: this.authorizedType,
-            };
-            this.handleRow(text, data, this.confirmDeleteEntity);
-        },
-        confirmDeleteEntity(data) {
-            api[urlNames["deleteUserScope"]](data).then((res) => {
-                this.$message.success(`删除成功`);
-                this.init();
-            });
-        },
+                    : this.$route.params.roleName === 'UNIT_MANAGER'
+                      ? 4
+                      : ''
     },
-};
+    addCityState () {
+      this.selectTreeDailog.isSelectType = 4
+      this.selectTreeDailog.title = '选择授权市州'
+      this.selectTreeDailog.openSelectTreeVisiable = true
+      this.selectTreeDailog.isSingSelect = false
+    },
+    addArea () {
+      this.selectTreeDailog.isSelectType = 1
+      this.selectTreeDailog.title = '选择授权区县'
+      this.selectTreeDailog.openSelectTreeVisiable = true
+      this.selectTreeDailog.isSingSelect = false
+    },
+    addDep () {
+      this.selectTreeDailog.isSelectType = 2
+      this.selectTreeDailog.title = '选择授权单位'
+      this.selectTreeDailog.openSelectTreeVisiable = true
+      this.selectTreeDailog.isSingSelect = false
+    },
+    closeSelectDailog () {
+      this.selectTreeDailog.openSelectTreeVisiable = false
+    },
+    dialogReturnData (userData, authData) {
+      authData = authData || []
+      console.log(this.$store.state.app.rolesInfo)
+      const dataAry = [...userData, ...authData]
+      const authorizedOid = []
+      dataAry.forEach((item) => {
+        authorizedOid.push(item.treeId)
+      })
+      const uid = []
+      uid.push(this.$route.params.uid)
+      const data = {
+        roleId: this.$route.params.roleId,
+        authorizedType: this.authorizedType,
+        uid,
+        authorizedOid
+      }
+      this.addUserAuth(data)
+    },
+    addUserAuth (data) {
+      api[urlNames.addUsersAuthScope](data).then(
+        (res) => {
+          this.$message.success('授权成功')
+          this.init()
+        },
+        () => {
+          this.$message.error('操作失败，请稍后重试')
+        }
+      )
+    },
+    // 获取授权市州 区域
+    getAuthorizedArea () {
+      api[urlNames.getAuthAreaByUid]({
+        uid: this.$route.params.uid,
+        roleId: this.$route.params.roleId
+      }).then((res) => {
+        if (res.data.length > 0) {
+          this.cityStateOrUnitList = res.data
+        }
+      })
+    },
+    // 获取授权单位
+    getAuthorizedOrg () {
+      api[urlNames.getAuthOrgByUid]({
+        uid: this.$route.params.uid,
+        roleId: this.$route.params.roleId
+      }).then((res) => {
+        if (res.data.length > 0) {
+          this.orgNameList = res.data
+        }
+      })
+    },
+    deleteAuthorizedEntity (row) {
+      // authorizedType 2市州 3区县 4 单位
+      const str =
+                this.authorizedType === 2
+                  ? '市州'
+                  : this.authorizedType === 3
+                    ? '区县'
+                    : '单位'
+      const text = '确定要删除该' + str + '吗？'
+      const data = {
+        roleId: this.$route.params.roleId,
+        uid: this.$route.params.uid,
+        entityId: row.areaCode || row.orgId,
+        entityType: this.authorizedType
+      }
+      this.handleRow(text, data, this.confirmDeleteEntity)
+    },
+    confirmDeleteEntity (data) {
+      api[urlNames.deleteUserScope](data).then((res) => {
+        this.$message.success('删除成功')
+        this.init()
+      })
+    }
+  }
+}
 </script>
 
 <style scoped lang="less">

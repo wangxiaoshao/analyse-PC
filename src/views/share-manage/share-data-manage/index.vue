@@ -156,174 +156,174 @@
     </div>
 </template>
 <script>
-import { api, urlNames } from "@src/api";
-import handleTable from "@src/mixins/handle-table";
+import { api, urlNames } from '@src/api'
+import handleTable from '@src/mixins/handle-table'
 export default {
-    mixins: [handleTable],
-    data() {
-        return {
-            companyParams: {},
-            systemParams: {},
-            shareDataList: [{}],
-            companyList: [],
-            systemList: [],
-            dialogTitle: "创建共享任务",
-            createdOrUpdateVisiable: false,
-            createdOrUpdateForm: {
-                system_id: "",
-                system_name: "",
-                company_id: "",
-                companyName: "",
-                is_banned: "0",
-                shareId: "",
-                comment: "",
-            },
-            rulesOption: {
-                system_id: [
-                    {
-                        required: true,
-                        message: "应用名称不能为空",
-                        trigger: ["blur", "change"],
-                    },
-                ],
-                company_id: [
-                    {
-                        required: true,
-                        message: "公司名称不能为空",
-                        trigger: ["blur", "change"],
-                    },
-                ],
-            },
-        };
+  mixins: [handleTable],
+  data () {
+    return {
+      companyParams: {},
+      systemParams: {},
+      shareDataList: [{}],
+      companyList: [],
+      systemList: [],
+      dialogTitle: '创建共享任务',
+      createdOrUpdateVisiable: false,
+      createdOrUpdateForm: {
+        system_id: '',
+        system_name: '',
+        company_id: '',
+        companyName: '',
+        is_banned: '0',
+        shareId: '',
+        comment: ''
+      },
+      rulesOption: {
+        system_id: [
+          {
+            required: true,
+            message: '应用名称不能为空',
+            trigger: ['blur', 'change']
+          }
+        ],
+        company_id: [
+          {
+            required: true,
+            message: '公司名称不能为空',
+            trigger: ['blur', 'change']
+          }
+        ]
+      }
+    }
+  },
+  created () {
+    this.getInfoBySystemName(1)
+    this.getInfoBySystemName(0)
+    this.getGrid()
+  },
+  methods: {
+    getGrid () {
+      const data = {
+        page: this.page.current,
+        limit: this.page.limit
+      }
+      api[urlNames.findShareList](data).then(
+        (res) => {
+          this.shareDataList = res.data
+          this.page.total = res.total
+        },
+        () => {
+          this.shareDataList = []
+          this.page.total = 0
+        }
+      )
     },
-    created() {
-        this.getInfoBySystemName(1);
-        this.getInfoBySystemName(0);
-        this.getGrid();
+    // 1 公司  0  系统 type
+    getInfoBySystemName (type) {
+      api[urlNames.findShareIdByName]({ type }).then((res) => {
+        if (type === 1) {
+          this.companyList = res.data
+        } else {
+          this.systemList = res.data
+        }
+      })
     },
-    methods: {
-        getGrid() {
-            let data = {
-                page: this.page.current,
-                limit: this.page.limit,
-            };
-            api[urlNames["findShareList"]](data).then(
-                (res) => {
-                    this.shareDataList = res.data;
-                    this.page.total = res.total;
-                },
-                () => {
-                    this.shareDataList = [];
-                    this.page.total = 0;
-                }
-            );
-        },
-        // 1 公司  0  系统 type
-        getInfoBySystemName(type) {
-            api[urlNames["findShareIdByName"]]({ type }).then((res) => {
-                if (type === 1) {
-                    this.companyList = res.data;
-                } else {
-                    this.systemList = res.data;
-                }
-            });
-        },
-        systemNameSelect(item) {
-            this.createdOrUpdateForm.system_id = item.systemId;
-            this.createdOrUpdateForm.system_name = item.systemName;
-        },
-        companyNameSelect(item) {
-            this.createdOrUpdateForm.company_id = item.companyId;
-            this.createdOrUpdateForm.companyName = item.company;
-        },
-        openCreateDailog(formName) {
-            this.dialogTitle = "创建共享任务";
-            this.resetForm();
-            this.createdOrUpdateVisiable = true;
-        },
-        closeCreateDailog() {
-            this.createdOrUpdateVisiable = false;
-        },
-        openEditDialog(row) {
-            this.resetForm();
-            this.dialogTitle = "编辑共享任务";
-            this.companyParams.companyId = row.companyId;
-            this.systemParams.systemId = row.systemId;
-            this.createdOrUpdateForm.shareId = row.shareId;
-            this.createdOrUpdateForm.system_name = row.systemName;
-            this.createdOrUpdateForm.companyName = row.companyName;
-            this.createdOrUpdateForm.system_id = row.systemId;
-            this.createdOrUpdateForm.company_id = row.companyId;
-            this.createdOrUpdateForm.is_banned = row.is_banned;
-            this.createdOrUpdateForm.comment = row.comment;
-            this.createdOrUpdateVisiable = true;
-        },
-        createdOrUpdateShareData(form) {
-            this.$refs[form].validate((valid) => {
-                if (valid) {
-                    let data = {
-                        system_id: this.createdOrUpdateForm.system_id,
-                        system_name: this.createdOrUpdateForm.system_name,
-                        company_id: this.createdOrUpdateForm.company_id,
-                        comment: this.createdOrUpdateForm.comment,
-                        is_banned: this.createdOrUpdateForm.is_banned,
-                        shareId: this.createdOrUpdateForm.shareId,
-                    };
-                    let apiUrl =
-                        this.createdOrUpdateForm.shareId === ""
-                            ? "saveShareSystemMessage"
-                            : "updateDataShare";
-                    api[urlNames[apiUrl]](data).then((res) => {
-                        if (res.status === 0) {
-                            this.closeCreateDailog();
-                            this.getGrid();
-                            this.$message.success(
-                                this.createdOrUpdateForm.shareId === ""
-                                    ? "创建成功"
-                                    : "编辑成功"
-                            );
-                        } else {
-                            this.$message.warning("操作失败，请稍后再试");
-                        }
-                    });
-                } else {
-                    this.$message.warning("请根据提示填写必填字段");
-                }
-            });
-        },
-        comfirmDeleteShareData(shareId) {
-            this.handleRow(
-                "确定要删除该数据吗？",
-                shareId,
-                this.deleteShareData
-            );
-        },
-        deleteShareData(shareId) {
-            api[urlNames["deleteDataShare"]]({ shareId }).then(
-                (res) => {
-                    if (res) {
-                        this.getGrid();
-                        this.$message.success("删除成功");
-                    }
-                },
-                () => {
-                    this.$message.error("操作失败，请稍后重试");
-                }
-            );
-        },
-        resetForm() {
-            this.createdOrUpdateForm = {
-                system_id: "",
-                system_name: "",
-                company_id: "",
-                companyName: "",
-                is_banned: "0",
-                shareId: "",
-                comment: "",
-            };
-            this.systemParams = {};
-            this.companyName = {};
-        },
+    systemNameSelect (item) {
+      this.createdOrUpdateForm.system_id = item.systemId
+      this.createdOrUpdateForm.system_name = item.systemName
     },
-};
+    companyNameSelect (item) {
+      this.createdOrUpdateForm.company_id = item.companyId
+      this.createdOrUpdateForm.companyName = item.company
+    },
+    openCreateDailog (formName) {
+      this.dialogTitle = '创建共享任务'
+      this.resetForm()
+      this.createdOrUpdateVisiable = true
+    },
+    closeCreateDailog () {
+      this.createdOrUpdateVisiable = false
+    },
+    openEditDialog (row) {
+      this.resetForm()
+      this.dialogTitle = '编辑共享任务'
+      this.companyParams.companyId = row.companyId
+      this.systemParams.systemId = row.systemId
+      this.createdOrUpdateForm.shareId = row.shareId
+      this.createdOrUpdateForm.system_name = row.systemName
+      this.createdOrUpdateForm.companyName = row.companyName
+      this.createdOrUpdateForm.system_id = row.systemId
+      this.createdOrUpdateForm.company_id = row.companyId
+      this.createdOrUpdateForm.is_banned = row.is_banned
+      this.createdOrUpdateForm.comment = row.comment
+      this.createdOrUpdateVisiable = true
+    },
+    createdOrUpdateShareData (form) {
+      this.$refs[form].validate((valid) => {
+        if (valid) {
+          const data = {
+            system_id: this.createdOrUpdateForm.system_id,
+            system_name: this.createdOrUpdateForm.system_name,
+            company_id: this.createdOrUpdateForm.company_id,
+            comment: this.createdOrUpdateForm.comment,
+            is_banned: this.createdOrUpdateForm.is_banned,
+            shareId: this.createdOrUpdateForm.shareId
+          }
+          const apiUrl =
+                        this.createdOrUpdateForm.shareId === ''
+                          ? 'saveShareSystemMessage'
+                          : 'updateDataShare'
+          api[urlNames[apiUrl]](data).then((res) => {
+            if (res.status === 0) {
+              this.closeCreateDailog()
+              this.getGrid()
+              this.$message.success(
+                this.createdOrUpdateForm.shareId === ''
+                  ? '创建成功'
+                  : '编辑成功'
+              )
+            } else {
+              this.$message.warning('操作失败，请稍后再试')
+            }
+          })
+        } else {
+          this.$message.warning('请根据提示填写必填字段')
+        }
+      })
+    },
+    comfirmDeleteShareData (shareId) {
+      this.handleRow(
+        '确定要删除该数据吗？',
+        shareId,
+        this.deleteShareData
+      )
+    },
+    deleteShareData (shareId) {
+      api[urlNames.deleteDataShare]({ shareId }).then(
+        (res) => {
+          if (res) {
+            this.getGrid()
+            this.$message.success('删除成功')
+          }
+        },
+        () => {
+          this.$message.error('操作失败，请稍后重试')
+        }
+      )
+    },
+    resetForm () {
+      this.createdOrUpdateForm = {
+        system_id: '',
+        system_name: '',
+        company_id: '',
+        companyName: '',
+        is_banned: '0',
+        shareId: '',
+        comment: ''
+      }
+      this.systemParams = {}
+      this.companyName = {}
+    }
+  }
+}
 </script>

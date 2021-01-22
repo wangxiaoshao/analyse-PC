@@ -44,34 +44,34 @@
 
 <script>
 export default {
-    name: "validSignatureManage",
-    props: {
-        visible: {
-            type: Boolean,
-            default: false,
-        },
-        isValidSuccess: {
-            type: Boolean,
-            default: true,
-        },
-        validSuccessMsg: {
-            type: String,
-            default: "签名验证通过",
-        },
-        validFailMsg: {
-            type: String,
-            default: "签名验证未通过，请及时联系运维人员处理。",
-        },
+  name: 'validSignatureManage',
+  props: {
+    visible: {
+      type: Boolean,
+      default: false
     },
-    data() {
-        return {};
+    isValidSuccess: {
+      type: Boolean,
+      default: true
     },
-    methods: {
-        hide() {
-            this.$emit("update:visible", false);
-        },
+    validSuccessMsg: {
+      type: String,
+      default: '签名验证通过'
     },
-};
+    validFailMsg: {
+      type: String,
+      default: '签名验证未通过，请及时联系运维人员处理。'
+    }
+  },
+  data () {
+    return {}
+  },
+  methods: {
+    hide () {
+      this.$emit('update:visible', false)
+    }
+  }
+}
 </script>
 
 <style lang="less">

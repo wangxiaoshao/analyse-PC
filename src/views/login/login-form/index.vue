@@ -29,17 +29,17 @@
 
 <script>
 export default {
-    name: "loginForm",
-    data() {
-        return {
-            ruleForm: {
-                pass: "",
-                checkPass: "",
-                age: "",
-            },
-        };
-    },
-};
+  name: 'loginForm',
+  data () {
+    return {
+      ruleForm: {
+        pass: '',
+        checkPass: '',
+        age: ''
+      }
+    }
+  }
+}
 </script>
 
 <style scoped lang="less">

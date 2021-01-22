@@ -48,76 +48,76 @@
     </div>
 </template>
 <script>
-import path from "path";
+import path from 'path'
 
-function isExternal(path) {
-    return /^(https?:|mailto:|tel:)/.test(path);
+function isExternal (path) {
+  return /^(https?:|mailto:|tel:)/.test(path)
 }
 
 export default {
-    name: "subMenu",
-    props: {
-        menuItem: {
-            type: Object,
-            default() {
-                return {};
-            },
-        },
-        showIcon: {
-            type: Boolean,
-            default() {
-                return true;
-            },
-        },
-        basePath: {
-            type: String,
-            default: "",
-        },
+  name: 'subMenu',
+  props: {
+    menuItem: {
+      type: Object,
+      default () {
+        return {}
+      }
     },
-    data() {
-        // To fix https://github.com/PanJiaChen/vue-admin-template/issues/237
-        // TODO: refactor with render function
-        this.onlyOneChild = null;
-        return {};
+    showIcon: {
+      type: Boolean,
+      default () {
+        return true
+      }
     },
-    methods: {
-        hasOneShowingChild(children = [], parent) {
-            const showingChildren = children.filter((menuItem) => {
-                if (menuItem.hidden) {
-                    return false;
-                } else {
-                    // Temp set(will be used if only has one showing child)
-                    this.onlyOneChild = menuItem;
-                    return true;
-                }
-            });
+    basePath: {
+      type: String,
+      default: ''
+    }
+  },
+  data () {
+    // To fix https://github.com/PanJiaChen/vue-admin-template/issues/237
+    // TODO: refactor with render function
+    this.onlyOneChild = null
+    return {}
+  },
+  methods: {
+    hasOneShowingChild (children = [], parent) {
+      const showingChildren = children.filter((menuItem) => {
+        if (menuItem.hidden) {
+          return false
+        } else {
+          // Temp set(will be used if only has one showing child)
+          this.onlyOneChild = menuItem
+          return true
+        }
+      })
 
-            // When there is only one child router, the child router is displayed by default
-            if (showingChildren.length === 1) {
-                return true;
-            }
+      // When there is only one child router, the child router is displayed by default
+      if (showingChildren.length === 1) {
+        return true
+      }
 
-            // Show parent if there are no child router to display
-            if (showingChildren.length === 0) {
-                this.onlyOneChild = {
-                    ...parent,
-                    path: "",
-                    noShowingChildren: true,
-                };
-                return true;
-            }
+      // Show parent if there are no child router to display
+      if (showingChildren.length === 0) {
+        this.onlyOneChild = {
+          ...parent,
+          path: '',
+          noShowingChildren: true
+        }
+        return true
+      }
 
-            return false;
-        },
-        resolvePath(routePath) {
-            if (isExternal(routePath)) {
-                return routePath;
-            }
-            if (isExternal(this.basePath)) {
-                return this.basePath;
-            }
-            return path.resolve(this.basePath, routePath);
-        },
+      return false
     },
-};
+    resolvePath (routePath) {
+      if (isExternal(routePath)) {
+        return routePath
+      }
+      if (isExternal(this.basePath)) {
+        return this.basePath
+      }
+      return path.resolve(this.basePath, routePath)
+    }
+  }
+}
 </script>

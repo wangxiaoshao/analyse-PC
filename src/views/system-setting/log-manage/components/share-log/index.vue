@@ -164,72 +164,72 @@
     </div>
 </template>
 <script>
-import { api, urlNames } from "@src/api";
-import handleTable from "@src/mixins/handle-table";
-import pickerOptions from "@src/mixins/picker-options";
-import downloadBinaryFile from "@src/mixins/downloadBinaryFile";
+import { api, urlNames } from '@src/api'
+import handleTable from '@src/mixins/handle-table'
+import pickerOptions from '@src/mixins/picker-options'
+import downloadBinaryFile from '@src/mixins/downloadBinaryFile'
 export default {
-    mixins: [handleTable, pickerOptions, downloadBinaryFile],
-    data() {
-        return {
-            searchDate: [],
-            startDate: "",
-            endDate: "",
-            keyword: "",
-            shareLogList: [{}],
-            detialInfoVisible: false,
-            detialInfoForm: {},
-        };
+  mixins: [handleTable, pickerOptions, downloadBinaryFile],
+  data () {
+    return {
+      searchDate: [],
+      startDate: '',
+      endDate: '',
+      keyword: '',
+      shareLogList: [{}],
+      detialInfoVisible: false,
+      detialInfoForm: {}
+    }
+  },
+  created () {
+    this.getGrid()
+  },
+  methods: {
+    getGrid (flag) {
+      if (flag) {
+        this.page.current = 1
+      }
+      const data = {
+        startTime: this.startDate,
+        endTime: this.endDate,
+        keyword: this.keyword,
+        page: this.page.current,
+        limit: this.page.limit
+      }
+      api[urlNames.findShareLoggerList](data).then(
+        (res) => {
+          this.shareLogList = res.data
+          this.page.total = res.total
+        },
+        () => {
+          this.shareLogList = []
+          this.page.total = 0
+        }
+      )
     },
-    created() {
-        this.getGrid();
+    dateChange (val) {
+      if (val) {
+        this.startDate = val[0]
+        this.endDate = val[1]
+        console.log(this.startDate, this.startDate)
+      }
     },
-    methods: {
-        getGrid(flag) {
-            if (flag) {
-                this.page.current = 1;
-            }
-            let data = {
-                startTime: this.startDate,
-                endTime: this.endDate,
-                keyword: this.keyword,
-                page: this.page.current,
-                limit: this.page.limit,
-            };
-            api[urlNames["findShareLoggerList"]](data).then(
-                (res) => {
-                    this.shareLogList = res.data;
-                    this.page.total = res.total;
-                },
-                () => {
-                    this.shareLogList = [];
-                    this.page.total = 0;
-                }
-            );
-        },
-        dateChange(val) {
-            if (val) {
-                this.startDate = val[0];
-                this.endDate = val[1];
-                console.log(this.startDate, this.startDate);
-            }
-        },
-        // 日志详情弹窗
-        opendetialInfo(row) {
-            this.detialInfoForm = {};
-            this.detialInfoVisible = true;
-            this.detialInfoForm = row;
-        },
-        exportLog() {
-            let data = {
-                // startTime: this.startDate,
-                // endTime: this.endDate,
-                // keyword: this.keyword,
-                page: this.page.current,
-                limit: this.page.limit,
-            };
-            this.downloadBinaryFile("shareLog", data);
-        },
+    // 日志详情弹窗
+    opendetialInfo (row) {
+      this.detialInfoForm = {}
+      this.detialInfoVisible = true
+      this.detialInfoForm = row
     },
-};
+    exportLog () {
+      const data = {
+        // startTime: this.startDate,
+        // endTime: this.endDate,
+        // keyword: this.keyword,
+        page: this.page.current,
+        limit: this.page.limit
+      }
+      this.downloadBinaryFile('shareLog', data)
+    }
+  }
+}
 </script>

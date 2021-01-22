@@ -17,30 +17,30 @@
     </div>
 </template>
 <script>
-import loginForm from "@src/views/login/login-form/index";
+import loginForm from '@src/views/login/login-form/index'
 export default {
-    name: "Login",
-    components: {
-        loginForm,
-    },
-    data() {
-        return {
-            formPosition: {
-                left: "",
-                top: "",
-            },
-        };
-    },
-    created() {
-        this.getWindowInner();
-    },
-    methods: {
-        getWindowInner() {
-            this.formPosition.left = (window.innerWidth - 400) / 2 + "px";
-            this.formPosition.top = (window.innerHeight - 450) / 2 + "px";
-        },
-    },
-};
+  name: 'Login',
+  components: {
+    loginForm
+  },
+  data () {
+    return {
+      formPosition: {
+        left: '',
+        top: ''
+      }
+    }
+  },
+  created () {
+    this.getWindowInner()
+  },
+  methods: {
+    getWindowInner () {
+      this.formPosition.left = (window.innerWidth - 400) / 2 + 'px'
+      this.formPosition.top = (window.innerHeight - 450) / 2 + 'px'
+    }
+  }
+}
 </script>
 
 <style scoped lang="less">

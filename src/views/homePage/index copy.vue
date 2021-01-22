@@ -369,394 +369,394 @@
     </div>
 </template>
 <script>
-import { api, urlNames } from "@src/api";
-import { mapState } from "vuex";
-import { reportParams } from "@src/config/report";
-import dataStatistics from "@src/mixins/data-statistics";
+import { api, urlNames } from '@src/api'
+import { mapState } from 'vuex'
+import { reportParams } from '@src/config/report'
+import dataStatistics from '@src/mixins/data-statistics'
 export default {
-    mixins: [dataStatistics],
-    data() {
-        return {
-            rangeDate: 7,
-            personAppList: [],
-            reportParams: reportParams,
-            exportUrl: "",
-            allProvinceUrlUrl: "",
-            homePersonUrl: "",
-            cityOrCountyUrl: "",
-            homeUnitUrl: "",
-            systemId1: "",
-            systemId2: "",
-            systemId3: "",
-            systemId4: "",
-            srcUrl: "",
-            srcUrl1: "",
-            activeName: "",
-            systemId: 1,
-            useType: 0,
-            isPerson: false,
-            yesterdayLogin: 2345,
-            loginNumber: 1256,
-            unitSrc: "",
-            userSrc: "",
-            areaId: 1,
-            areaList: [],
-            // 平台公告列表
-            announcementList: [],
-            // 处理平台公告列表
-            doAnnouncementList: [],
-        };
-    },
-    created() {
-        this.initializeDate(this.rangeDate);
-    },
-    mounted() {
-        this.init();
-        this.initIframeResult();
-        if (this.app.applicationList.length > 0) {
-            let ary = [...this.app.applicationList];
-            this.doApplyList(ary);
-        }
-    },
-    methods: {
-        init() {
-            this.getSystemNoticeList();
-            if (this.isShowSuperOrSystem()) {
-                this.exportUrl = this.hostApi + this.reportParams.exportUrl;
-                this.getLastDayLoginUser();
-            } else if (
-                !this.isShowAuditOrSecrect() &&
+  mixins: [dataStatistics],
+  data () {
+    return {
+      rangeDate: 7,
+      personAppList: [],
+      reportParams: reportParams,
+      exportUrl: '',
+      allProvinceUrlUrl: '',
+      homePersonUrl: '',
+      cityOrCountyUrl: '',
+      homeUnitUrl: '',
+      systemId1: '',
+      systemId2: '',
+      systemId3: '',
+      systemId4: '',
+      srcUrl: '',
+      srcUrl1: '',
+      activeName: '',
+      systemId: 1,
+      useType: 0,
+      isPerson: false,
+      yesterdayLogin: 2345,
+      loginNumber: 1256,
+      unitSrc: '',
+      userSrc: '',
+      areaId: 1,
+      areaList: [],
+      // 平台公告列表
+      announcementList: [],
+      // 处理平台公告列表
+      doAnnouncementList: []
+    }
+  },
+  created () {
+    this.initializeDate(this.rangeDate)
+  },
+  mounted () {
+    this.init()
+    this.initIframeResult()
+    if (this.app.applicationList.length > 0) {
+      const ary = [...this.app.applicationList]
+      this.doApplyList(ary)
+    }
+  },
+  methods: {
+    init () {
+      this.getSystemNoticeList()
+      if (this.isShowSuperOrSystem()) {
+        this.exportUrl = this.hostApi + this.reportParams.exportUrl
+        this.getLastDayLoginUser()
+      } else if (
+        !this.isShowAuditOrSecrect() &&
                 this.app.rolesInfo.roleName
-            ) {
-                this.getIframeSrc();
-            }
-        },
-        // 超管和系统管理员
-        isShowSuperOrSystem() {
-            return (
-                this.app.rolesInfo.roleName === "SUPER_MANAGER" ||
-                this.app.rolesInfo.roleName === "SYSTEM_MANAGER"
-            );
-        },
-        // 审计管理员 安全保密员
-        isShowAuditOrSecrect() {
-            if (this.app.rolesInfo.roleName) {
-                return (
+      ) {
+        this.getIframeSrc()
+      }
+    },
+    // 超管和系统管理员
+    isShowSuperOrSystem () {
+      return (
+        this.app.rolesInfo.roleName === 'SUPER_MANAGER' ||
+                this.app.rolesInfo.roleName === 'SYSTEM_MANAGER'
+      )
+    },
+    // 审计管理员 安全保密员
+    isShowAuditOrSecrect () {
+      if (this.app.rolesInfo.roleName) {
+        return (
+          this.app.rolesInfo.roleName.includes(
+            'SECURITY_SECRECY_MANAGER'
+          ) ||
                     this.app.rolesInfo.roleName.includes(
-                        "SECURITY_SECRECY_MANAGER"
-                    ) ||
-                    this.app.rolesInfo.roleName.includes(
-                        "SECURITY_AUDIT_MANAGER"
+                      'SECURITY_AUDIT_MANAGER'
                     )
-                );
-            } else {
-                return false;
-            }
-        },
-        // 超级管理员 系统 省级
-        isShowAllProvince() {
-            return (
-                this.app.rolesInfo.roleName === "PROVINCE_MANAGER" ||
-                this.app.rolesInfo.roleName === "SUPER_MANAGER"
-            );
-        },
-        // 市州 区域
-        isShowCityOrCounty() {
-            return (
-                this.app.rolesInfo.roleName === "CITY_MANAGER" ||
-                this.app.rolesInfo.roleName === "COUNTY_MANAGER"
-            );
-        },
-        initCityOrCounty() {
-            let data = {
-                startDate: this.startDate,
-                endDate: this.endDate,
-                codeNum: this.areaId,
-            };
-            if (this.app.rolesInfo.roleName === "CITY_MANAGER") {
-                data.type = 1;
-                data.cityNum = this.areaId === "520000" ? 0 : this.areaId;
-                data.qxNum = this.areaId === "520000" ? 0 : "";
-            } else {
-                data.type = 2;
-                data.cityNum = "";
-                data.qxNum = this.areaId;
-            }
-            this.initSystem(
-                "cityOrCounty",
-                this.doSrcParams(data),
-                this.systemId2
-            );
-        },
-        initAllProvince() {
-            let data = {
-                startDate: this.startDate,
-                endDate: this.endDate,
-            };
-            this.initSystem("province", this.doSrcParams(data), this.systemId1);
-        },
-        initPerson() {
-            let data = {
-                startDate: this.startDate,
-                endDate: this.endDate,
-                format1: this.formatParams.format1,
-                format2: this.formatParams.format2,
-                startDay: this.formatParams.format3,
-                size: this.formatParams.format4,
-                userId: this.app.rolesInfo.uid,
-            };
-            this.initSystem(
-                "homePerson",
-                this.doSrcParams(data),
-                this.systemId4
-            );
-        },
-        initUnit() {
-            let authList = this.app.rolesInfo.authorizedOid;
-            let str = "";
-            let codeNum = "";
-            if (authList && authList.length > 0) {
-                authList.forEach((item) => {
-                    str += item + ",";
-                });
-                codeNum = str.substring(0, str.length - 1);
-            }
-            let data = {
-                startDate: this.startDate,
-                endDate: this.endDate,
-                format1: this.formatParams.format1,
-                format2: this.formatParams.format2,
-                startDay: this.formatParams.format3,
-                size: this.formatParams.format4,
-                orgId: codeNum,
-            };
-            this.initSystem("homeUnit", this.doSrcParams(data), this.systemId3);
-        },
-        handleClick(data) {
-            if (this.activeName === "four") {
-                this.systemId4 = this.personAppList[0].id;
-                this.initPerson();
-            } else if (this.activeName === "first") {
-                this.systemId1 = this.app.applicationList[0].id;
-                this.initAllProvince();
-            } else if (this.activeName === "second") {
-                this.systemId2 = this.app.applicationList[0].id;
-                this.initCityOrCounty();
-            } else if (this.activeName === "third") {
-                this.systemId3 = this.app.applicationList[0].id;
-                this.initUnit();
-            }
-        },
-        rangeDateChange(time) {
-            this.rangeDate = time;
-            this.initializeDate(this.rangeDate);
-            if (this.activeName === "four") {
-                this.initPerson();
-            } else if (this.activeName === "first") {
-                this.initAllProvince();
-            } else if (this.activeName === "second") {
-                console.log(this.systemId2);
-                this.initCityOrCounty();
-            } else if (this.activeName === "third") {
-                this.initUnit();
-            }
-        },
-        applyChange(index, id) {
-            if (this.activeName === "four") {
-                this.systemId4 = id;
-                this.initPerson();
-            } else if (this.activeName === "first") {
-                this.systemId1 = id;
-                this.initAllProvince();
-            } else if (this.activeName === "second") {
-                this.systemId2 = id;
-                console.log(this.systemId2);
-                this.initCityOrCounty();
-            } else if (this.activeName === "third") {
-                this.systemId3 = id;
-                this.initUnit();
-            }
-        },
-        doApplyList(appList) {
-            appList.map((item, index) => {
-                if (item.id === 1 || item.id === 5) {
-                    appList.splice(index, 1);
-                }
-            });
-            this.personAppList = appList;
-            if (this.activeName === "four") {
-                this.systemId4 = this.personAppList[0].id;
-                this.initPerson();
-            }
-        },
-        initIframeResult() {
-            if (this.isShowAllProvince()) {
-                this.activeName = "first";
-                this.initAllProvince();
-            } else if (
-                this.isShowCityOrCounty() &&
+        )
+      } else {
+        return false
+      }
+    },
+    // 超级管理员 系统 省级
+    isShowAllProvince () {
+      return (
+        this.app.rolesInfo.roleName === 'PROVINCE_MANAGER' ||
+                this.app.rolesInfo.roleName === 'SUPER_MANAGER'
+      )
+    },
+    // 市州 区域
+    isShowCityOrCounty () {
+      return (
+        this.app.rolesInfo.roleName === 'CITY_MANAGER' ||
+                this.app.rolesInfo.roleName === 'COUNTY_MANAGER'
+      )
+    },
+    initCityOrCounty () {
+      const data = {
+        startDate: this.startDate,
+        endDate: this.endDate,
+        codeNum: this.areaId
+      }
+      if (this.app.rolesInfo.roleName === 'CITY_MANAGER') {
+        data.type = 1
+        data.cityNum = this.areaId === '520000' ? 0 : this.areaId
+        data.qxNum = this.areaId === '520000' ? 0 : ''
+      } else {
+        data.type = 2
+        data.cityNum = ''
+        data.qxNum = this.areaId
+      }
+      this.initSystem(
+        'cityOrCounty',
+        this.doSrcParams(data),
+        this.systemId2
+      )
+    },
+    initAllProvince () {
+      const data = {
+        startDate: this.startDate,
+        endDate: this.endDate
+      }
+      this.initSystem('province', this.doSrcParams(data), this.systemId1)
+    },
+    initPerson () {
+      const data = {
+        startDate: this.startDate,
+        endDate: this.endDate,
+        format1: this.formatParams.format1,
+        format2: this.formatParams.format2,
+        startDay: this.formatParams.format3,
+        size: this.formatParams.format4,
+        userId: this.app.rolesInfo.uid
+      }
+      this.initSystem(
+        'homePerson',
+        this.doSrcParams(data),
+        this.systemId4
+      )
+    },
+    initUnit () {
+      const authList = this.app.rolesInfo.authorizedOid
+      let str = ''
+      let codeNum = ''
+      if (authList && authList.length > 0) {
+        authList.forEach((item) => {
+          str += item + ','
+        })
+        codeNum = str.substring(0, str.length - 1)
+      }
+      const data = {
+        startDate: this.startDate,
+        endDate: this.endDate,
+        format1: this.formatParams.format1,
+        format2: this.formatParams.format2,
+        startDay: this.formatParams.format3,
+        size: this.formatParams.format4,
+        orgId: codeNum
+      }
+      this.initSystem('homeUnit', this.doSrcParams(data), this.systemId3)
+    },
+    handleClick (data) {
+      if (this.activeName === 'four') {
+        this.systemId4 = this.personAppList[0].id
+        this.initPerson()
+      } else if (this.activeName === 'first') {
+        this.systemId1 = this.app.applicationList[0].id
+        this.initAllProvince()
+      } else if (this.activeName === 'second') {
+        this.systemId2 = this.app.applicationList[0].id
+        this.initCityOrCounty()
+      } else if (this.activeName === 'third') {
+        this.systemId3 = this.app.applicationList[0].id
+        this.initUnit()
+      }
+    },
+    rangeDateChange (time) {
+      this.rangeDate = time
+      this.initializeDate(this.rangeDate)
+      if (this.activeName === 'four') {
+        this.initPerson()
+      } else if (this.activeName === 'first') {
+        this.initAllProvince()
+      } else if (this.activeName === 'second') {
+        console.log(this.systemId2)
+        this.initCityOrCounty()
+      } else if (this.activeName === 'third') {
+        this.initUnit()
+      }
+    },
+    applyChange (index, id) {
+      if (this.activeName === 'four') {
+        this.systemId4 = id
+        this.initPerson()
+      } else if (this.activeName === 'first') {
+        this.systemId1 = id
+        this.initAllProvince()
+      } else if (this.activeName === 'second') {
+        this.systemId2 = id
+        console.log(this.systemId2)
+        this.initCityOrCounty()
+      } else if (this.activeName === 'third') {
+        this.systemId3 = id
+        this.initUnit()
+      }
+    },
+    doApplyList (appList) {
+      appList.map((item, index) => {
+        if (item.id === 1 || item.id === 5) {
+          appList.splice(index, 1)
+        }
+      })
+      this.personAppList = appList
+      if (this.activeName === 'four') {
+        this.systemId4 = this.personAppList[0].id
+        this.initPerson()
+      }
+    },
+    initIframeResult () {
+      if (this.isShowAllProvince()) {
+        this.activeName = 'first'
+        this.initAllProvince()
+      } else if (
+        this.isShowCityOrCounty() &&
                 this.app.rolesInfo.roleName
-            ) {
-                this.activeName = "second";
-                this.getAreaList();
-            } else if (this.app.rolesInfo.roleName === "UNIT_MANAGER") {
-                this.activeName = "third";
-                this.initUnit();
-            } else {
-                this.activeName = "four";
-            }
-        },
-        getIframeSrc() {
-            let roleName = this.app.rolesInfo.roleName;
-            let authList = this.app.rolesInfo.authorizedOid;
-            let data = {};
-            let name = "";
-            let unitSrc = "";
-            let userSrc = "";
-            if (roleName === "COUNTY_MANAGER") {
-                name = "CITY_MANAGER";
-            } else {
-                name = roleName;
-            }
-            let ary = this.reportParams.rolesUnitUser.filter((item) => {
-                return item.roleName === name;
-            });
-            let str = "";
-            let codeNum = "";
-            if (authList && authList.length > 0) {
-                authList.forEach((item) => {
-                    str += item + ",";
-                });
-                codeNum = str.substring(0, str.length - 1);
-            }
-            console.log(ary);
-            unitSrc = this.hostApi + ary[0].unitSrc;
-            userSrc = this.hostApi + ary[0].userSrc;
+      ) {
+        this.activeName = 'second'
+        this.getAreaList()
+      } else if (this.app.rolesInfo.roleName === 'UNIT_MANAGER') {
+        this.activeName = 'third'
+        this.initUnit()
+      } else {
+        this.activeName = 'four'
+      }
+    },
+    getIframeSrc () {
+      const roleName = this.app.rolesInfo.roleName
+      const authList = this.app.rolesInfo.authorizedOid
+      const data = {}
+      let name = ''
+      let unitSrc = ''
+      let userSrc = ''
+      if (roleName === 'COUNTY_MANAGER') {
+        name = 'CITY_MANAGER'
+      } else {
+        name = roleName
+      }
+      const ary = this.reportParams.rolesUnitUser.filter((item) => {
+        return item.roleName === name
+      })
+      let str = ''
+      let codeNum = ''
+      if (authList && authList.length > 0) {
+        authList.forEach((item) => {
+          str += item + ','
+        })
+        codeNum = str.substring(0, str.length - 1)
+      }
+      console.log(ary)
+      unitSrc = this.hostApi + ary[0].unitSrc
+      userSrc = this.hostApi + ary[0].userSrc
 
-            switch (roleName) {
-                case "UNIT_MANAGER":
-                    data.orgId = codeNum;
-                    this.unitSrc = unitSrc + "&orgId=" + data.orgId;
-                    this.userSrc = userSrc + "&orgId=" + data.orgId;
-                    break;
-                case "CITY_MANAGER":
-                    data.type = 1;
-                    data.codeNum = codeNum;
-                    this.unitSrc = unitSrc + this.doSrcParams(data);
-                    this.userSrc = userSrc + this.doSrcParams(data);
-                    break;
-                case "COUNTY_MANAGER":
-                    data.type = 2;
-                    data.codeNum = codeNum;
-                    this.unitSrc = unitSrc + this.doSrcParams(data);
-                    this.userSrc = userSrc + this.doSrcParams(data);
+      switch (roleName) {
+        case 'UNIT_MANAGER':
+          data.orgId = codeNum
+          this.unitSrc = unitSrc + '&orgId=' + data.orgId
+          this.userSrc = userSrc + '&orgId=' + data.orgId
+          break
+        case 'CITY_MANAGER':
+          data.type = 1
+          data.codeNum = codeNum
+          this.unitSrc = unitSrc + this.doSrcParams(data)
+          this.userSrc = userSrc + this.doSrcParams(data)
+          break
+        case 'COUNTY_MANAGER':
+          data.type = 2
+          data.codeNum = codeNum
+          this.unitSrc = unitSrc + this.doSrcParams(data)
+          this.userSrc = userSrc + this.doSrcParams(data)
 
-                    break;
-                case "PROVINCE_MANAGER":
-                    this.unitSrc = unitSrc;
-                    this.userSrc = userSrc;
-                    break;
-                default:
-                    return null;
+          break
+        case 'PROVINCE_MANAGER':
+          this.unitSrc = unitSrc
+          this.userSrc = userSrc
+          break
+        default:
+          return null
+      }
+    },
+    // 获取平台公告列表
+    getSystemNoticeList () {
+      const data = {
+        page: 1,
+        pageSize: 6
+      }
+      api[urlNames.getSystemNoticeList](data).then((res) => {
+        if (res) {
+          this.announcementList = res.data
+          this.doArray()
+        }
+      })
+    },
+    // 获取昨日登录人员数据
+    getLastDayLoginUser () {
+      api[urlNames.getLastDayLoginUser]().then((res) => {
+        if (res) {
+          this.yesterdayLogin = res.data
+        }
+      })
+    },
+    // 获取市州或区县
+    getAreaList () {
+      const data = {
+        codeList: this.app.rolesInfo.authorizedOid,
+        authorizedType: this.app.rolesInfo.authorizedType
+      }
+      api[urlNames.getAreaList](data).then((res) => {
+        if (res.data) {
+          const aryList = []
+          res.data.forEach((item) => {
+            const obj = {
+              treeId: item.areaCode,
+              treeName: item.areaName,
+              treeType: item.areaType
             }
-        },
-        // 获取平台公告列表
-        getSystemNoticeList() {
-            let data = {
-                page: 1,
-                pageSize: 6,
-            };
-            api[urlNames["getSystemNoticeList"]](data).then((res) => {
-                if (res) {
-                    this.announcementList = res.data;
-                    this.doArray();
-                }
-            });
-        },
-        // 获取昨日登录人员数据
-        getLastDayLoginUser() {
-            api[urlNames["getLastDayLoginUser"]]().then((res) => {
-                if (res) {
-                    this.yesterdayLogin = res.data;
-                }
-            });
-        },
-        // 获取市州或区县
-        getAreaList() {
-            let data = {
-                codeList: this.app.rolesInfo.authorizedOid,
-                authorizedType: this.app.rolesInfo.authorizedType,
-            };
-            api[urlNames["getAreaList"]](data).then((res) => {
-                if (res.data) {
-                    let aryList = [];
-                    res.data.forEach((item) => {
-                        let obj = {
-                            treeId: item.areaCode,
-                            treeName: item.areaName,
-                            treeType: item.areaType,
-                        };
-                        aryList.push(obj);
-                    });
-                    this.areaList = aryList;
-                    if (this.areaList.length > 0) {
-                        this.areaId = this.areaList[0].treeId;
-                        this.initCityOrCounty();
-                    }
-                }
-            });
-        },
-        // 获取今天是周几
-        weekDate() {
-            let now = new Date();
-            let day = now.getDay();
-            let weeks = [
-                "星期日",
-                "星期一",
-                "星期二",
-                "星期三",
-                "星期四",
-                "星期五",
-                "星期六",
-            ];
-            let week = weeks[day];
-            return week;
-        },
-        doArray() {
-            this.doAnnouncementList.push(
-                this.announcementList.slice(0, 3),
-                this.announcementList.slice(3)
-            );
-        },
-        goFindAnnountDetial(val) {
-            this.$router.push({
-                path: "/moreAnnoument/announceDetail",
-                query: {
-                    id: val.id,
-                },
-            });
-        },
-        goMoreAnnounts() {
-            this.$router.push("/moreAnnoument");
-        },
-        areaChange(val) {
-            this.initCityOrCounty();
-        },
+            aryList.push(obj)
+          })
+          this.areaList = aryList
+          if (this.areaList.length > 0) {
+            this.areaId = this.areaList[0].treeId
+            this.initCityOrCounty()
+          }
+        }
+      })
     },
-    computed: {
-        ...mapState(["app"]),
-        appList() {
-            return this.app.applicationList;
-        },
+    // 获取今天是周几
+    weekDate () {
+      const now = new Date()
+      const day = now.getDay()
+      const weeks = [
+        '星期日',
+        '星期一',
+        '星期二',
+        '星期三',
+        '星期四',
+        '星期五',
+        '星期六'
+      ]
+      const week = weeks[day]
+      return week
     },
-    watch: {
-        appList() {
-            this.systemId3 = this.systemId2 = this.systemId1 = this.systemId = this.appList[0].id;
-            let ary = [...this.appList];
-            this.doApplyList(ary);
-        },
+    doArray () {
+      this.doAnnouncementList.push(
+        this.announcementList.slice(0, 3),
+        this.announcementList.slice(3)
+      )
     },
-};
+    goFindAnnountDetial (val) {
+      this.$router.push({
+        path: '/moreAnnoument/announceDetail',
+        query: {
+          id: val.id
+        }
+      })
+    },
+    goMoreAnnounts () {
+      this.$router.push('/moreAnnoument')
+    },
+    areaChange (val) {
+      this.initCityOrCounty()
+    }
+  },
+  computed: {
+    ...mapState(['app']),
+    appList () {
+      return this.app.applicationList
+    }
+  },
+  watch: {
+    appList () {
+      this.systemId3 = this.systemId2 = this.systemId1 = this.systemId = this.appList[0].id
+      const ary = [...this.appList]
+      this.doApplyList(ary)
+    }
+  }
+}
 </script>
 <style lang="less" scoped>
 @import "index.less";

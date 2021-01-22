@@ -1,141 +1,141 @@
 // examine
-import urlNames from "../url-names";
+import urlNames from '../url-names'
 
 export default {
-    [urlNames.getDictionaryList]: {
-        type: "get",
-        url: "/api/jg_manage/system/findDictList",
-        keepOriginResponse: true,
-        showLoading: true,
-        serve: "organizationManagePC",
-    },
-    [urlNames.addDictionary]: {
-        type: "post",
-        url: "/api/jg_manage/system/addDictItem",
-        serve: "organizationManagePC",
+  [urlNames.getDictionaryList]: {
+    type: 'get',
+    url: '/api/jg_manage/system/findDictList',
+    keepOriginResponse: true,
+    showLoading: true,
+    serve: 'organizationManagePC'
+  },
+  [urlNames.addDictionary]: {
+    type: 'post',
+    url: '/api/jg_manage/system/addDictItem',
+    serve: 'organizationManagePC',
 
-        headers: {
-            "Content-Type": "application/json",
-        },
-    },
-    [urlNames.getDicListByType]: {
-        type: "get",
-        url: "/api/jg_manage/system/dictList",
-        keepOriginResponse: true,
-        serve: "organizationManagePC",
-    },
-    [urlNames.deleteDictItem]: {
-        type: "post",
-        url: "/api/jg_manage/system/deleteDictItem",
-        keepOriginResponse: true,
-        serve: "organizationManagePC",
-        headers: {
-            "Content-Type": "application/json",
-        },
-    },
-    [urlNames.updatePwd]: {
-        type: "post",
-        url: "/api/jg_manage/system/updatePwd",
-        keepOriginResponse: true,
-        serve: "organizationManagePC",
-        headers: {
-            "Content-Type": "application/json",
-        },
-    },
-    [urlNames.resetPwd]: {
-        type: "get",
-        url: "/api/jg_manage/system/resetPwd",
-        keepOriginResponse: true,
-        serve: "organizationManagePC",
-    },
-    [urlNames.getVerifyCode]: {
-        type: "get",
-        url: "/api/jg_manage/system/getVerifyCode",
-        keepOriginResponse: true,
-        serve: "organizationManagePC",
-    },
-    /*
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  },
+  [urlNames.getDicListByType]: {
+    type: 'get',
+    url: '/api/jg_manage/system/dictList',
+    keepOriginResponse: true,
+    serve: 'organizationManagePC'
+  },
+  [urlNames.deleteDictItem]: {
+    type: 'post',
+    url: '/api/jg_manage/system/deleteDictItem',
+    keepOriginResponse: true,
+    serve: 'organizationManagePC',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  },
+  [urlNames.updatePwd]: {
+    type: 'post',
+    url: '/api/jg_manage/system/updatePwd',
+    keepOriginResponse: true,
+    serve: 'organizationManagePC',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  },
+  [urlNames.resetPwd]: {
+    type: 'get',
+    url: '/api/jg_manage/system/resetPwd',
+    keepOriginResponse: true,
+    serve: 'organizationManagePC'
+  },
+  [urlNames.getVerifyCode]: {
+    type: 'get',
+    url: '/api/jg_manage/system/getVerifyCode',
+    keepOriginResponse: true,
+    serve: 'organizationManagePC'
+  },
+  /*
      * 参数设置 */
-    [urlNames.getSystemParameter]: {
-        type: "get",
-        url: "/api/jg_manage/option",
-        keepOriginResponse: true,
-        serve: "organizationManagePC",
-    },
+  [urlNames.getSystemParameter]: {
+    type: 'get',
+    url: '/api/jg_manage/option',
+    keepOriginResponse: true,
+    serve: 'organizationManagePC'
+  },
 
-    /*
+  /*
      * 提交配置设置 */
-    [urlNames.setClientOptions]: {
-        type: "post",
-        url: "/api/jg_manage/option",
-        keepOriginResponse: true,
-        serve: "organizationManagePC",
-        headers: {
-            "Content-Type": "application/json",
-        },
-    },
+  [urlNames.setClientOptions]: {
+    type: 'post',
+    url: '/api/jg_manage/option',
+    keepOriginResponse: true,
+    serve: 'organizationManagePC',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  },
 
-    /*
+  /*
      * 配置级别的配置信息 */
-    [urlNames.getSystemParameterlevel]: {
-        type: "get",
-        url: "/api/jg_manage/option/levelOptions",
-        keepOriginResponse: true,
-        serve: "organizationManagePC",
-    },
-    /*
+  [urlNames.getSystemParameterlevel]: {
+    type: 'get',
+    url: '/api/jg_manage/option/levelOptions',
+    keepOriginResponse: true,
+    serve: 'organizationManagePC'
+  },
+  /*
      * 获取通讯录配置信息 */
-    [urlNames.txlOptions]: {
-        type: "get",
-        url: "/api/jg_manage/option/txlOptions",
-        keepOriginResponse: true,
-        serve: "organizationManagePC",
-    },
-    /*
+  [urlNames.txlOptions]: {
+    type: 'get',
+    url: '/api/jg_manage/option/txlOptions',
+    keepOriginResponse: true,
+    serve: 'organizationManagePC'
+  },
+  /*
      * 帮助文档列表 */
-    [urlNames.getDocList]: {
-        type: "get",
-        url: "/api/jg_manage/doc/getDocList",
-        keepOriginResponse: true,
-        serve: "organizationManagePC",
-    },
-    /*
+  [urlNames.getDocList]: {
+    type: 'get',
+    url: '/api/jg_manage/doc/getDocList',
+    keepOriginResponse: true,
+    serve: 'organizationManagePC'
+  },
+  /*
      * 创建文档 */
-    [urlNames.createDoc]: {
-        type: "post",
-        url: "/api/jg_manage/doc/createDoc",
-        keepOriginResponse: true,
-        serve: "organizationManagePC",
-        headers: {
-            "Content-Type": "application/json",
-        },
-    },
-    /*
+  [urlNames.createDoc]: {
+    type: 'post',
+    url: '/api/jg_manage/doc/createDoc',
+    keepOriginResponse: true,
+    serve: 'organizationManagePC',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  },
+  /*
      * 删除文档 */
-    [urlNames.deleteDoc]: {
-        type: "post",
-        url: "/api/jg_manage/doc/deleteDoc",
-        keepOriginResponse: true,
-        serve: "organizationManagePC",
-        headers: {
-            "Content-Type": "application/json",
-        },
-    },
-    /*
+  [urlNames.deleteDoc]: {
+    type: 'post',
+    url: '/api/jg_manage/doc/deleteDoc',
+    keepOriginResponse: true,
+    serve: 'organizationManagePC',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  },
+  /*
      * 获取文档详情 */
-    [urlNames.findDocById]: {
-        type: "get",
-        url: "/api/jg_manage/doc/findDocById",
-        keepOriginResponse: true,
-        serve: "organizationManagePC",
-    },
+  [urlNames.findDocById]: {
+    type: 'get',
+    url: '/api/jg_manage/doc/findDocById',
+    keepOriginResponse: true,
+    serve: 'organizationManagePC'
+  },
 
-    // 国密验签
-    [urlNames.validSignature]: {
-        type: "get",
-        url: "/api/jg_manage/signature/validSignature",
-        keepOriginResponse: true,
-        serve: "organizationManagePC",
-        fullscreen: true,
-    },
-};
+  // 国密验签
+  [urlNames.validSignature]: {
+    type: 'get',
+    url: '/api/jg_manage/signature/validSignature',
+    keepOriginResponse: true,
+    serve: 'organizationManagePC',
+    fullscreen: true
+  }
+}

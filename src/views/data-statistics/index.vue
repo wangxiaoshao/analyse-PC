@@ -10,11 +10,11 @@
 </template>
 <script>
 export default {
-    data() {
-        return {};
-    },
-    methods: {},
-};
+  data () {
+    return {}
+  },
+  methods: {}
+}
 </script>
 <style lang="less" scoped>
 @import "index.less";

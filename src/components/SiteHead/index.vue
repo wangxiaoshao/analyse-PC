@@ -65,54 +65,54 @@
 /**
  * Created by lxe on 2019-09-18.
  */
-import { api, urlNames } from "@src/api";
-import { mapState } from "vuex";
+import { api, urlNames } from '@src/api'
+import { mapState } from 'vuex'
 export default {
-    name: "Head",
-    props: ["breadcrumb", "pageBreadcrumb"],
-    data() {
-        return {
-            logoutURL: "",
-            userList: [], // 用户身份列表
-            defaultName: "", // 默认身份
-        };
+  name: 'Head',
+  props: ['breadcrumb', 'pageBreadcrumb'],
+  data () {
+    return {
+      logoutURL: '',
+      userList: [], // 用户身份列表
+      defaultName: '' // 默认身份
+    }
+  },
+  computed: {
+    ...mapState(['app'])
+  },
+  created () {
+    this.logoutURL = '/api/gate/cas/logout'
+    // this.findSessionUserList();
+  },
+  methods: {
+    goBack () {
+      this.$emit('go-back')
     },
-    computed: {
-        ...mapState(["app"]),
+    loginout () {
+      window.location.href = this.logoutURL
     },
-    created() {
-        this.logoutURL = "/api/gate/cas/logout";
-        // this.findSessionUserList();
+    // 获取用户身份列表
+    findSessionUserList () {
+      api[urlNames.findSessionUserList]().then((res) => {
+        this.userList = res.data.userIdVos
+        this.userList.forEach((item) => {
+          item.typeName = item.typeName ? item.typeName : ' '
+          if (item.userId === res.data.id) {
+            this.defaultName =
+                            (item.orgName || '') +
+                            ' ' +
+                            (item.dutyName || '') +
+                            ' ' +
+                            (item.typeName || '')
+          }
+        })
+      })
     },
-    methods: {
-        goBack() {
-            this.$emit("go-back");
-        },
-        loginout() {
-            window.location.href = this.logoutURL;
-        },
-        // 获取用户身份列表
-        findSessionUserList() {
-            api[urlNames["findSessionUserList"]]().then((res) => {
-                this.userList = res.data.userIdVos;
-                this.userList.forEach((item) => {
-                    item.typeName = item.typeName ? item.typeName : " ";
-                    if (item.userId === res.data.id) {
-                        this.defaultName =
-                            (item.orgName || "") +
-                            " " +
-                            (item.dutyName || "") +
-                            " " +
-                            (item.typeName || "");
-                    }
-                });
-            });
-        },
-        goMyApplication() {
-            this.$router.push("/my-application");
-        },
-    },
-};
+    goMyApplication () {
+      this.$router.push('/my-application')
+    }
+  }
+}
 </script>
 <style lang="less">
 @import "./index";

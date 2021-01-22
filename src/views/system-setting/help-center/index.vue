@@ -94,115 +94,115 @@
     </div>
 </template>
 <script>
-import { api, urlNames } from "@src/api";
-import handleTable from "@src/mixins/handle-table";
-import downloadBinaryFile from "@src/mixins/downloadBinaryFile";
-import { mapState } from "vuex";
+import { api, urlNames } from '@src/api'
+import handleTable from '@src/mixins/handle-table'
+import downloadBinaryFile from '@src/mixins/downloadBinaryFile'
+import { mapState } from 'vuex'
 export default {
-    mixins: [handleTable, downloadBinaryFile],
-    data() {
-        return {
-            tableData: [],
-            activeName: "second",
-            fileList: [],
-            uploadForm: new FormData(),
-        };
+  mixins: [handleTable, downloadBinaryFile],
+  data () {
+    return {
+      tableData: [],
+      activeName: 'second',
+      fileList: [],
+      uploadForm: new FormData()
+    }
+  },
+  mounted () {
+    this.getGrid()
+  },
+  computed: {
+    ...mapState(['app'])
+  },
+  methods: {
+    isProvinceOrAudit () {
+      return (
+        this.app.rolesInfo.roleName === 'PROVINCE_MANAGER' ||
+                this.app.rolesInfo.roleName === 'SECURITY_AUDIT_MANAGER' ||
+                this.app.rolesInfo.roleName === 'SUPER_MANAGER'
+      )
     },
-    mounted() {
-        this.getGrid();
+    getGrid () {
+      const data = {
+        page: this.page.current,
+        pageSize: this.page.limit
+      }
+      api[urlNames.getHelpFileList](data).then(
+        (res) => {
+          this.tableData = res.data
+          this.page.total = res.total
+        },
+        () => {
+          this.tableData = []
+          this.page.total = 0
+        }
+      )
     },
-    computed: {
-        ...mapState(["app"]),
+    getView (id) {
+      api[urlNames.getHelperview]({ id }).then((res) => {
+        if (res) {
+          window.open(res)
+        }
+      })
     },
-    methods: {
-        isProvinceOrAudit() {
-            return (
-                this.app.rolesInfo.roleName === "PROVINCE_MANAGER" ||
-                this.app.rolesInfo.roleName === "SECURITY_AUDIT_MANAGER" ||
-                this.app.rolesInfo.roleName === "SUPER_MANAGER"
-            );
-        },
-        getGrid() {
-            let data = {
-                page: this.page.current,
-                pageSize: this.page.limit,
-            };
-            api[urlNames["getHelpFileList"]](data).then(
-                (res) => {
-                    this.tableData = res.data;
-                    this.page.total = res.total;
-                },
-                () => {
-                    this.tableData = [];
-                    this.page.total = 0;
-                }
-            );
-        },
-        getView(id) {
-            api[urlNames["getHelperview"]]({ id }).then((res) => {
-                if (res) {
-                    window.open(res);
-                }
-            });
-        },
-        confirmDeleteFile(id) {
-            this.handleRow("确定要删除该文件吗？", id, this.deleteFile);
-        },
-        deleteFile(id) {
-            api[urlNames["deleteFile"]]({ id }).then((res) => {
-                if (res) {
-                    if (res.status === 0) {
-                        this.getGrid();
-                        this.$message.success("文件删除成功");
-                    }
-                }
-            });
-        },
-        downLoadWord(row) {
-            // let apiUrl = "/api/appdata/helpFile/download/helpFile";
-            // let host = window.location.href.split("#")[0];
-            // let openUrl = host + apiUrl + "?id=" + row.id;
-            // window.open(openUrl);
-            // let a = document.createElement("a");
-            // a.href = openUrl;
-            // a.download = row.fileName.split(".")[0];
-            // a.style.display = "none";
-            // document.body.appendChild(a);
-            // a.click();
-            // document.body.removeChild(a);
-            this.downloadBinaryFile("helpCenter", { id: row.id });
-        },
-        fileChange(file, fileList) {
-            this.fileList = fileList;
-        },
-        handleRemove(file, fileList) {
-            this.fileList = fileList;
-        },
-        beforeRemove(file, fileList) {
-            return this.$confirm(`确定要移除文件 ${file.name}吗？`);
-        },
-        beforeAvatarUpload() {
-            // this.showFileList = true;
-        },
-        submitUpload() {
-            this.uploadForm = new FormData();
-            for (let i = 0; i < this.fileList.length; i++) {
-                this.uploadForm.append("file", this.fileList[i].raw);
-            }
-            api[urlNames["uploadFile"]](this.uploadForm)
-                .then((res) => {
-                    if (res.status === 0) {
-                        this.getGrid();
-                        this.fileList = [];
-                        this.$message.success("文件上传成功");
-                    }
-                })
-                .catch(() => {
-                    this.uploadForm = new FormData();
-                });
-        },
+    confirmDeleteFile (id) {
+      this.handleRow('确定要删除该文件吗？', id, this.deleteFile)
     },
-};
+    deleteFile (id) {
+      api[urlNames.deleteFile]({ id }).then((res) => {
+        if (res) {
+          if (res.status === 0) {
+            this.getGrid()
+            this.$message.success('文件删除成功')
+          }
+        }
+      })
+    },
+    downLoadWord (row) {
+      // let apiUrl = "/api/appdata/helpFile/download/helpFile";
+      // let host = window.location.href.split("#")[0];
+      // let openUrl = host + apiUrl + "?id=" + row.id;
+      // window.open(openUrl);
+      // let a = document.createElement("a");
+      // a.href = openUrl;
+      // a.download = row.fileName.split(".")[0];
+      // a.style.display = "none";
+      // document.body.appendChild(a);
+      // a.click();
+      // document.body.removeChild(a);
+      this.downloadBinaryFile('helpCenter', { id: row.id })
+    },
+    fileChange (file, fileList) {
+      this.fileList = fileList
+    },
+    handleRemove (file, fileList) {
+      this.fileList = fileList
+    },
+    beforeRemove (file, fileList) {
+      return this.$confirm(`确定要移除文件 ${file.name}吗？`)
+    },
+    beforeAvatarUpload () {
+      // this.showFileList = true;
+    },
+    submitUpload () {
+      this.uploadForm = new FormData()
+      for (let i = 0; i < this.fileList.length; i++) {
+        this.uploadForm.append('file', this.fileList[i].raw)
+      }
+      api[urlNames.uploadFile](this.uploadForm)
+        .then((res) => {
+          if (res.status === 0) {
+            this.getGrid()
+            this.fileList = []
+            this.$message.success('文件上传成功')
+          }
+        })
+        .catch(() => {
+          this.uploadForm = new FormData()
+        })
+    }
+  }
+}
 </script>
 <style lang="less" scoped>
 @import "index.less";

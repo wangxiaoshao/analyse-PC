@@ -11,13 +11,13 @@
 
 <script>
 export default {
-    props: {},
-    data() {
-        return {};
-    },
-    created() {},
-    methods: {},
-};
+  props: {},
+  data () {
+    return {}
+  },
+  created () {},
+  methods: {}
+}
 </script>
 <style scoped lang="less">
 @import "./index";

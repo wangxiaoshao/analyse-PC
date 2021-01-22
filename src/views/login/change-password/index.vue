@@ -4,8 +4,8 @@
 
 <script>
 export default {
-    name: "ChangePassword",
-};
+  name: 'ChangePassword'
+}
 </script>
 
 <style scoped lang="less">

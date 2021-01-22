@@ -178,446 +178,446 @@
     </div>
 </template>
 <script>
-import { mapState } from "vuex";
-import { api, urlNames } from "@src/api";
-import dataStatistics from "@src/mixins/data-statistics";
-import applicationList from "@src/mixins/apply";
+import { mapState } from 'vuex'
+import { api, urlNames } from '@src/api'
+import dataStatistics from '@src/mixins/data-statistics'
+import applicationList from '@src/mixins/apply'
 export default {
-    mixins: [dataStatistics, applicationList],
-    data() {
-        return {
-            unitSrc: "",
-            tableOrMemberSrc: "",
-            startDate1: "",
-            endDate1: "",
-            unitType: 2,
-            stateParams: {},
-            areaParams: {},
-            stateId: "",
-            systemId: -1,
-            treeType: "",
-            areaId: "",
-            unitId: "",
-            deptId: "",
-            stateList: [],
-            areaList: [],
-            unitList: [],
-            deptList: [],
-            page: {
-                current: 1,
-                limit: 10,
-                total: 0,
-            },
-            isTable: false,
-            autoParams: {
-                chartHeight: 300,
-                tableHeight: 300,
-                total: 0,
-            },
-        };
+  mixins: [dataStatistics, applicationList],
+  data () {
+    return {
+      unitSrc: '',
+      tableOrMemberSrc: '',
+      startDate1: '',
+      endDate1: '',
+      unitType: 2,
+      stateParams: {},
+      areaParams: {},
+      stateId: '',
+      systemId: -1,
+      treeType: '',
+      areaId: '',
+      unitId: '',
+      deptId: '',
+      stateList: [],
+      areaList: [],
+      unitList: [],
+      deptList: [],
+      page: {
+        current: 1,
+        limit: 10,
+        total: 0
+      },
+      isTable: false,
+      autoParams: {
+        chartHeight: 300,
+        tableHeight: 300,
+        total: 0
+      }
+    }
+  },
+  created () {
+    this.initializeDate()
+    this.initializeMounth()
+    this.getStateList()
+  },
+  mounted () {
+    this.pickDateOptionRules()
+    this.pickMounthOptionRules()
+    this.initReportPage()
+    this.initUnitHeight()
+  },
+  computed: {
+    ...mapState(['app'])
+  },
+  methods: {
+    send (msg) {
+      window.sendMessage(msg)
     },
-    created() {
-        this.initializeDate();
-        this.initializeMounth();
-        this.getStateList();
+    initReportPage () {
+      const ifr = document.getElementById('unitMemberIframe').contentWindow
+      const sendMessage = function () {
+        if (window.postMessage) {
+          if (window.addEventListener) {
+          } else if (window.attachEvent) {
+            window.attachEvent('onmessage', function (e) {
+              console.log(e.data, 2222)
+            })
+          }
+          return function (data) {
+            // console.log(data, 333);
+            ifr.postMessage(data, '*')
+          }
+        } else {
+          let hash = ''
+          setInterval(function () {
+            if (window.name !== hash) {
+              hash = window.name
+            }
+          }, 200)
+          return function (data) {
+            console.log(data, 444)
+            ifr.name = data
+          }
+        }
+      }
+      window.sendMessage = sendMessage()
     },
-    mounted() {
-        this.pickDateOptionRules();
-        this.pickMounthOptionRules();
-        this.initReportPage();
-        this.initUnitHeight();
-    },
-    computed: {
-        ...mapState(["app"]),
-    },
-    methods: {
-        send(msg) {
-            window.sendMessage(msg);
-        },
-        initReportPage() {
-            var ifr = document.getElementById("unitMemberIframe").contentWindow;
-            var sendMessage = function () {
-                if (window.postMessage) {
-                    if (window.addEventListener) {
-                    } else if (window.attachEvent) {
-                        window.attachEvent("onmessage", function (e) {
-                            console.log(e.data, 2222);
-                        });
-                    }
-                    return function (data) {
-                        // console.log(data, 333);
-                        ifr.postMessage(data, "*");
-                    };
-                } else {
-                    var hash = "";
-                    setInterval(function () {
-                        if (window.name !== hash) {
-                            hash = window.name;
-                        }
-                    }, 200);
-                    return function (data) {
-                        console.log(data, 444);
-                        ifr.name = data;
-                    };
-                }
-            };
-            window.sendMessage = sendMessage();
-        },
-        initUnitHeight() {
-            let that = this;
-            const unitFrame = document.getElementById("unitFrame");
-            unitFrame.onload = function () {
-                window.addEventListener(
-                    "message",
-                    function (e) {
-                        if (e.data.height > -1 && e.data.total > -1) {
-                            that.autoParams.tableHeight = e.data.height;
-                            that.autoParams.total = e.data.total;
-                        } else if (
-                            e.data.height > -1 &&
+    initUnitHeight () {
+      const that = this
+      const unitFrame = document.getElementById('unitFrame')
+      unitFrame.onload = function () {
+        window.addEventListener(
+          'message',
+          function (e) {
+            if (e.data.height > -1 && e.data.total > -1) {
+              that.autoParams.tableHeight = e.data.height
+              that.autoParams.total = e.data.total
+            } else if (
+              e.data.height > -1 &&
                             !e.data.total &&
                             e.data.total !== 0
-                        ) {
-                            that.autoParams.chartHeight = e.data.height;
-                        }
-                        console.log(e.data, "uuuuuuu");
-                    },
-                    false
-                );
-            };
-        },
-        isRoleState() {
-            return (
-                this.app.rolesInfo.roleName === "CITY_MANAGER" ||
-                this.app.rolesInfo.roleName === "SUPER_MANAGER" ||
-                this.app.rolesInfo.roleName === "PROVINCE_MANAGER"
-            );
-        },
-        getStateList() {
-            this.unitType = 2;
-            /* 1.单位管理员 初始化单单位 */
-            if (this.app.rolesInfo.roleName === "UNIT_MANAGER") {
-                this.isTable = true;
-                this.initUnit("", "", this.unitType);
-                return;
-            }
-            /* 1.超级管理员 省级管理员 */
-            if (
-                this.app.rolesInfo.roleName === "SUPER_MANAGER" ||
-                this.app.rolesInfo.roleName === "PROVINCE_MANAGER"
             ) {
-                api[urlNames["getTreeList"]]({
-                    treeId: "520000",
-                    treeType: 0,
-                }).then((res) => {
-                    if (res.data) {
-                        this.stateList = res.data;
-                        if (this.stateList.length > 0) {
-                            this.stateParams = this.stateList[0];
-                            this.initArea(
-                                this.stateParams.treeId,
-                                this.stateParams.treeType
-                            );
-                        }
-                    }
-                });
-                /* 3.市州管理员，区县管理员 */
-            } else {
-                let data = {
-                    codeList: this.app.rolesInfo.authorizedOid,
-                    authorizedType: this.app.rolesInfo.authorizedType,
-                };
-                api[urlNames["getAreaList"]](data).then((res) => {
-                    if (res.data) {
-                        let aryList = [];
-                        res.data.forEach((item) => {
-                            let obj = {
-                                treeId: item.areaCode,
-                                treeName: item.areaName,
-                                treeType: item.areaType,
-                            };
-                            aryList.push(obj);
-                        });
-                        /* 区县管理员初始化单位 */
-                        if (this.app.rolesInfo.roleName === "COUNTY_MANAGER") {
-                            this.areaList = aryList;
-                            if (this.areaList.length > 0) {
-                                this.areaParams = this.areaList[0];
-                                this.initUnit(
-                                    "",
-                                    this.areaParams.treeId,
-                                    this.unitType
-                                );
-                            }
-                            return;
-                        }
-                        /* 市州管理员 超管 省级 初始化单位 */
-                        if (this.isRoleState()) {
-                            this.stateList = aryList;
-                            if (this.stateList.length > 0) {
-                                this.stateParams = this.stateList[0];
-                                this.initArea(
-                                    this.stateParams.treeId,
-                                    this.stateParams.treeType
-                                );
-                            }
-                        }
-                    }
-                });
+              that.autoParams.chartHeight = e.data.height
             }
-        },
-        // isSet 是否默认选中第一个单位参数
-        initArea(treeId, treeType, isSet) {
-            if (!isSet) {
-                isSet = false;
+            console.log(e.data, 'uuuuuuu')
+          },
+          false
+        )
+      }
+    },
+    isRoleState () {
+      return (
+        this.app.rolesInfo.roleName === 'CITY_MANAGER' ||
+                this.app.rolesInfo.roleName === 'SUPER_MANAGER' ||
+                this.app.rolesInfo.roleName === 'PROVINCE_MANAGER'
+      )
+    },
+    getStateList () {
+      this.unitType = 2
+      /* 1.单位管理员 初始化单单位 */
+      if (this.app.rolesInfo.roleName === 'UNIT_MANAGER') {
+        this.isTable = true
+        this.initUnit('', '', this.unitType)
+        return
+      }
+      /* 1.超级管理员 省级管理员 */
+      if (
+        this.app.rolesInfo.roleName === 'SUPER_MANAGER' ||
+                this.app.rolesInfo.roleName === 'PROVINCE_MANAGER'
+      ) {
+        api[urlNames.getTreeList]({
+          treeId: '520000',
+          treeType: 0
+        }).then((res) => {
+          if (res.data) {
+            this.stateList = res.data
+            if (this.stateList.length > 0) {
+              this.stateParams = this.stateList[0]
+              this.initArea(
+                this.stateParams.treeId,
+                this.stateParams.treeType
+              )
             }
-            api[urlNames["getTreeList"]]({
-                treeId,
-                treeType,
-            }).then((res) => {
-                if (res.data) {
-                    if (treeId === "520000" && treeType === 1) {
-                        this.areaList = [];
-                        this.areaParams = {};
-                        this.unitList = res.data;
-                        if (this.unitList.length > 0 && !isSet) {
-                            this.unitId = this.unitList[0].treeId;
-                            this.initDept(this.unitId);
-                            this.searchData();
-                        }
-                        return;
-                    }
-                    this.areaList = res.data;
-                    if (this.areaList.length > 0 && !isSet) {
-                        this.areaParams = this.areaList[0];
-                        this.initUnit(
-                            this.stateParams.treeId,
-                            this.areaParams.treeId,
-                            this.unitType
-                        );
-                    }
-                }
-            });
-        },
-        /* cityCode市州编码 countyCode区县编码  assessType单位类型 isSearch是否默人选中下拉选和查询数据 */
-        initUnit(cityCode, countyCode, assessType, isSearch) {
-            if (!isSearch) {
-                isSearch = false;
+          }
+        })
+        /* 3.市州管理员，区县管理员 */
+      } else {
+        const data = {
+          codeList: this.app.rolesInfo.authorizedOid,
+          authorizedType: this.app.rolesInfo.authorizedType
+        }
+        api[urlNames.getAreaList](data).then((res) => {
+          if (res.data) {
+            const aryList = []
+            res.data.forEach((item) => {
+              const obj = {
+                treeId: item.areaCode,
+                treeName: item.areaName,
+                treeType: item.areaType
+              }
+              aryList.push(obj)
+            })
+            /* 区县管理员初始化单位 */
+            if (this.app.rolesInfo.roleName === 'COUNTY_MANAGER') {
+              this.areaList = aryList
+              if (this.areaList.length > 0) {
+                this.areaParams = this.areaList[0]
+                this.initUnit(
+                  '',
+                  this.areaParams.treeId,
+                  this.unitType
+                )
+              }
+              return
             }
-            let data = {};
-            let apiUrl = "";
+            /* 市州管理员 超管 省级 初始化单位 */
             if (this.isRoleState()) {
-                data.cityCode = cityCode;
-                data.countyCode = countyCode;
-                data.assessType = assessType;
-                apiUrl = "getCityCountyOrgList";
-            } else if (this.app.rolesInfo.roleName === "COUNTY_MANAGER") {
-                data.countyCode = countyCode;
-                data.assessType = assessType;
-                apiUrl = "getCountyOrgList";
-            } else if (this.app.rolesInfo.roleName === "UNIT_MANAGER") {
-                data.assessType = assessType;
-                data.orgIds = this.app.rolesInfo.authorizedOid;
-                apiUrl = "getOrgListByIds";
+              this.stateList = aryList
+              if (this.stateList.length > 0) {
+                this.stateParams = this.stateList[0]
+                this.initArea(
+                  this.stateParams.treeId,
+                  this.stateParams.treeType
+                )
+              }
             }
-            api[urlNames[apiUrl]](data).then((res) => {
-                if (res.data) {
-                    this.unitList = res.data;
-                    if (
-                        this.unitList.length > 0 &&
-                        this.app.rolesInfo.roleName !== "UNIT_MANAGER" &&
+          }
+        })
+      }
+    },
+    // isSet 是否默认选中第一个单位参数
+    initArea (treeId, treeType, isSet) {
+      if (!isSet) {
+        isSet = false
+      }
+      api[urlNames.getTreeList]({
+        treeId,
+        treeType
+      }).then((res) => {
+        if (res.data) {
+          if (treeId === '520000' && treeType === 1) {
+            this.areaList = []
+            this.areaParams = {}
+            this.unitList = res.data
+            if (this.unitList.length > 0 && !isSet) {
+              this.unitId = this.unitList[0].treeId
+              this.initDept(this.unitId)
+              this.searchData()
+            }
+            return
+          }
+          this.areaList = res.data
+          if (this.areaList.length > 0 && !isSet) {
+            this.areaParams = this.areaList[0]
+            this.initUnit(
+              this.stateParams.treeId,
+              this.areaParams.treeId,
+              this.unitType
+            )
+          }
+        }
+      })
+    },
+    /* cityCode市州编码 countyCode区县编码  assessType单位类型 isSearch是否默人选中下拉选和查询数据 */
+    initUnit (cityCode, countyCode, assessType, isSearch) {
+      if (!isSearch) {
+        isSearch = false
+      }
+      const data = {}
+      let apiUrl = ''
+      if (this.isRoleState()) {
+        data.cityCode = cityCode
+        data.countyCode = countyCode
+        data.assessType = assessType
+        apiUrl = 'getCityCountyOrgList'
+      } else if (this.app.rolesInfo.roleName === 'COUNTY_MANAGER') {
+        data.countyCode = countyCode
+        data.assessType = assessType
+        apiUrl = 'getCountyOrgList'
+      } else if (this.app.rolesInfo.roleName === 'UNIT_MANAGER') {
+        data.assessType = assessType
+        data.orgIds = this.app.rolesInfo.authorizedOid
+        apiUrl = 'getOrgListByIds'
+      }
+      api[urlNames[apiUrl]](data).then((res) => {
+        if (res.data) {
+          this.unitList = res.data
+          if (
+            this.unitList.length > 0 &&
+                        this.app.rolesInfo.roleName !== 'UNIT_MANAGER' &&
                         !isSearch
-                    ) {
-                        this.unitId = res.data[0].orgId || res.data[0].treeId;
-                        this.initDept(this.unitId);
-                    } else if (this.unitList.length === 1 && !isSearch) {
-                        this.unitId = res.data[0].orgId || res.data[0].treeId;
-                        this.initDept(this.unitId);
-                    } else {
-                        this.unitId = "";
-                    }
-                    if (!isSearch) {
-                        this.searchData();
-                    }
-                }
-            });
-        },
-        initDept(treeId) {
-            api[urlNames["getTreeList"]]({
-                treeId,
-                treeType: 3,
-            }).then((res) => {
-                this.deptList = [];
-                res.data.forEach((item) => {
-                    /* 排除单位下面有单位人员的情况 ：只显示部门 */
-                    if (item.treeType === 4) {
-                        this.deptList.push(item);
-                    }
-                });
-            });
-        },
-        handleSizeChange(val) {
-            this.page.limit = val;
-        },
-        handleCurrentChange(val) {
-            this.page.current = val;
-            this.send(`_g().gotoPage(${this.page.current})`);
-        },
-        unitTypeChange() {
-            let data = {
-                treeId: this.stateParams.treeId,
-                areaId: this.areaParams.treeId ? this.areaParams.treeId : "",
-                unitType: this.unitType,
-                treeType: this.stateParams.treeType,
-            };
-            this.initUnit(data.treeId, data.areaId, data.unitType, true);
-        },
-        dateChange(val) {
-            if (val) {
-                this.startDate = val[0];
-                this.endDate = val[1];
-                if (this.systemId === 6) {
-                    this.startDate1 = val[0];
-                    this.endDate1 = val[1];
-                    this.searchDate[0] = this.startDate1;
-                    this.searchDate[1] = this.endDate1;
-                }
-            }
-        },
-        stateChange(data) {
-            this.stateId = data.treeId;
-            this.treeType = data.treeType;
-            this.unitId = "";
-            this.unitList = [];
-            this.deptList = [];
-            this.deptId = "";
-            if (this.areaParams.treeId) {
-                this.areaParams = {};
-            }
-            this.areaList = [];
-            this.initArea(this.stateId, this.treeType, true);
-        },
-        areaChange(val) {
-            this.areaId = val.treeId;
-            this.treeType = val.treeType;
-            this.unitId = "";
-            this.unitList = [];
-            this.deptList = [];
-            this.deptId = "";
-            this.initUnit(this.stateId, this.areaId, this.unitType, true);
-        },
-        unitChange(treeId) {
-            this.deptList = [];
-            this.deptId = "";
-            this.initDept(treeId);
-        },
-        applyChange(val) {
-            this.systemId = val;
-            this.isTable =
-                this.unitId === "" ||
+          ) {
+            this.unitId = res.data[0].orgId || res.data[0].treeId
+            this.initDept(this.unitId)
+          } else if (this.unitList.length === 1 && !isSearch) {
+            this.unitId = res.data[0].orgId || res.data[0].treeId
+            this.initDept(this.unitId)
+          } else {
+            this.unitId = ''
+          }
+          if (!isSearch) {
+            this.searchData()
+          }
+        }
+      })
+    },
+    initDept (treeId) {
+      api[urlNames.getTreeList]({
+        treeId,
+        treeType: 3
+      }).then((res) => {
+        this.deptList = []
+        res.data.forEach((item) => {
+          /* 排除单位下面有单位人员的情况 ：只显示部门 */
+          if (item.treeType === 4) {
+            this.deptList.push(item)
+          }
+        })
+      })
+    },
+    handleSizeChange (val) {
+      this.page.limit = val
+    },
+    handleCurrentChange (val) {
+      this.page.current = val
+      this.send(`_g().gotoPage(${this.page.current})`)
+    },
+    unitTypeChange () {
+      const data = {
+        treeId: this.stateParams.treeId,
+        areaId: this.areaParams.treeId ? this.areaParams.treeId : '',
+        unitType: this.unitType,
+        treeType: this.stateParams.treeType
+      }
+      this.initUnit(data.treeId, data.areaId, data.unitType, true)
+    },
+    dateChange (val) {
+      if (val) {
+        this.startDate = val[0]
+        this.endDate = val[1]
+        if (this.systemId === 6) {
+          this.startDate1 = val[0]
+          this.endDate1 = val[1]
+          this.searchDate[0] = this.startDate1
+          this.searchDate[1] = this.endDate1
+        }
+      }
+    },
+    stateChange (data) {
+      this.stateId = data.treeId
+      this.treeType = data.treeType
+      this.unitId = ''
+      this.unitList = []
+      this.deptList = []
+      this.deptId = ''
+      if (this.areaParams.treeId) {
+        this.areaParams = {}
+      }
+      this.areaList = []
+      this.initArea(this.stateId, this.treeType, true)
+    },
+    areaChange (val) {
+      this.areaId = val.treeId
+      this.treeType = val.treeType
+      this.unitId = ''
+      this.unitList = []
+      this.deptList = []
+      this.deptId = ''
+      this.initUnit(this.stateId, this.areaId, this.unitType, true)
+    },
+    unitChange (treeId) {
+      this.deptList = []
+      this.deptId = ''
+      this.initDept(treeId)
+    },
+    applyChange (val) {
+      this.systemId = val
+      this.isTable =
+                this.unitId === '' ||
                 this.systemId === 1 ||
                 this.systemId === 5 ||
-                this.systemId === 6;
-            // this.deptId = "";
-            // this.deptList = [];
-            // this.getStateList();
-            this.searchData();
-        },
-        searchData() {
-            this.page.current = 1;
-            if (
-                this.isRoleState() ||
-                this.app.rolesInfo.roleName === "COUNTY_MANAGER"
-            ) {
-                if (
-                    !this.areaParams.treeId &&
-                    this.unitId === "" &&
-                    this.stateParams.treeId !== "520000"
-                ) {
-                    this.$message.warning("请先选择区县");
-                    return;
-                }
-                if (this.unitId === "") {
-                    this.$message.warning("请先选择单位");
-                    return;
-                }
-            }
-            let authList = this.app.rolesInfo.authorizedOid;
-            let str = "";
-            let unitIds = "";
-            if (this.app.rolesInfo.roleName === "UNIT_MANAGER") {
-                if (authList && authList.length > 0) {
-                    authList.forEach((item) => {
-                        str += item + ",";
-                    });
-                    unitIds = str.substring(0, str.length - 1);
-                }
-            } else {
-                unitIds = this.unitId;
-            }
-            let data = {
-                isStat: this.unitType === 2 ? "" : this.unitType,
-                cityNum:
-                    this.stateParams.treeId === "520000"
-                        ? 0
-                        : this.stateParams.treeId || "",
-                codeNum:
-                    this.stateParams.treeId === "520000"
-                        ? this.stateParams.treeId
-                        : this.areaParams.treeId || "",
-                qxNum:
-                    this.stateParams.treeId === "520000"
-                        ? 0
-                        : this.areaParams.treeId || "",
-                startDate: this.startDate,
-                endDate: this.endDate,
-                orgId: this.unitId === "" ? unitIds : this.unitId,
-                deptId: this.deptId,
-            };
-            if (this.systemId === 5) {
-                data.months = this.$moment(this.startDate1).format("YYYY-MM");
-                data.endDate = "";
-                data.startDate = "";
-            }
-            if (this.systemId === 6) {
-                data.startDate = this.startDate1;
-                data.endDate = this.endDate1;
-            }
-            this.initSystem("unit", this.doSrcParams(data), null, this.isTable);
-        },
-        resetData() {
-            // this.applyChange(this.systemId);
-            if (this.systemId === 5 || this.systemId === 6) {
-                this.initializeMounth();
-            } else {
-                this.initializeDate();
-            }
-            this.deptId = "";
-            this.deptList = [];
-            this.getStateList();
-        },
+                this.systemId === 6
+      // this.deptId = "";
+      // this.deptList = [];
+      // this.getStateList();
+      this.searchData()
     },
-    watch: {
-        unitId(newValue, old) {
-            this.isTable =
-                newValue === "" ||
+    searchData () {
+      this.page.current = 1
+      if (
+        this.isRoleState() ||
+                this.app.rolesInfo.roleName === 'COUNTY_MANAGER'
+      ) {
+        if (
+          !this.areaParams.treeId &&
+                    this.unitId === '' &&
+                    this.stateParams.treeId !== '520000'
+        ) {
+          this.$message.warning('请先选择区县')
+          return
+        }
+        if (this.unitId === '') {
+          this.$message.warning('请先选择单位')
+          return
+        }
+      }
+      const authList = this.app.rolesInfo.authorizedOid
+      let str = ''
+      let unitIds = ''
+      if (this.app.rolesInfo.roleName === 'UNIT_MANAGER') {
+        if (authList && authList.length > 0) {
+          authList.forEach((item) => {
+            str += item + ','
+          })
+          unitIds = str.substring(0, str.length - 1)
+        }
+      } else {
+        unitIds = this.unitId
+      }
+      const data = {
+        isStat: this.unitType === 2 ? '' : this.unitType,
+        cityNum:
+                    this.stateParams.treeId === '520000'
+                      ? 0
+                      : this.stateParams.treeId || '',
+        codeNum:
+                    this.stateParams.treeId === '520000'
+                      ? this.stateParams.treeId
+                      : this.areaParams.treeId || '',
+        qxNum:
+                    this.stateParams.treeId === '520000'
+                      ? 0
+                      : this.areaParams.treeId || '',
+        startDate: this.startDate,
+        endDate: this.endDate,
+        orgId: this.unitId === '' ? unitIds : this.unitId,
+        deptId: this.deptId
+      }
+      if (this.systemId === 5) {
+        data.months = this.$moment(this.startDate1).format('YYYY-MM')
+        data.endDate = ''
+        data.startDate = ''
+      }
+      if (this.systemId === 6) {
+        data.startDate = this.startDate1
+        data.endDate = this.endDate1
+      }
+      this.initSystem('unit', this.doSrcParams(data), null, this.isTable)
+    },
+    resetData () {
+      // this.applyChange(this.systemId);
+      if (this.systemId === 5 || this.systemId === 6) {
+        this.initializeMounth()
+      } else {
+        this.initializeDate()
+      }
+      this.deptId = ''
+      this.deptList = []
+      this.getStateList()
+    }
+  },
+  watch: {
+    unitId (newValue, old) {
+      this.isTable =
+                newValue === '' ||
                 this.systemId === 1 ||
                 this.systemId === 5 ||
-                this.systemId === 6;
-        },
-        autoParams: {
-            deep: true, // 深度监听设置为 true
-            handler: function (newV, oldV) {
-                this.page.total = newV.total;
-                document.getElementById("unitMemberIframe").style.height =
-                    newV.tableHeight + "px";
-                document.getElementById("unitFrame").style.height =
-                    newV.chartHeight + "px";
-                console.log("watch中：", newV);
-            },
-        },
+                this.systemId === 6
     },
-};
+    autoParams: {
+      deep: true, // 深度监听设置为 true
+      handler: function (newV, oldV) {
+        this.page.total = newV.total
+        document.getElementById('unitMemberIframe').style.height =
+                    newV.tableHeight + 'px'
+        document.getElementById('unitFrame').style.height =
+                    newV.chartHeight + 'px'
+        console.log('watch中：', newV)
+      }
+    }
+  }
+}
 </script>
 <style lang="less" scoped>
 @import "../area-total/index.less";

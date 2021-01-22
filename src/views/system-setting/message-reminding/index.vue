@@ -113,77 +113,77 @@
     </div>
 </template>
 <script>
-import handleTable from "@src/mixins/handle-table";
-import { api, urlNames } from "@src/api";
-import { mapState } from "vuex";
+import handleTable from '@src/mixins/handle-table'
+import { api, urlNames } from '@src/api'
+import { mapState } from 'vuex'
 export default {
-    mixins: [handleTable],
-    data() {
-        return {
-            hasRight: false,
-            keyWord: "",
-            messageList: [{ id: "1" }],
-        };
-    },
+  mixins: [handleTable],
+  data () {
+    return {
+      hasRight: false,
+      keyWord: '',
+      messageList: [{ id: '1' }]
+    }
+  },
 
-    mounted() {
-        console.log(this.app.rolesInfo.roleId);
-        this.getGrid();
+  mounted () {
+    console.log(this.app.rolesInfo.roleId)
+    this.getGrid()
+  },
+  methods: {
+    getGrid (flag) {
+      if (flag) {
+        this.page.current = 1
+      }
+      const data = {
+        roleId: this.$store.state.app.rolesInfo.roleId,
+        page: this.page.current,
+        pageSize: this.page.limit,
+        keyword: this.keyWord
+      }
+      api[urlNames.getNoticeList](data).then((res) => {
+        this.messageList = res.data
+        this.page.total = res.total
+      })
     },
-    methods: {
-        getGrid(flag) {
-            if (flag) {
-                this.page.current = 1;
-            }
-            let data = {
-                roleId: this.$store.state.app.rolesInfo.roleId,
-                page: this.page.current,
-                pageSize: this.page.limit,
-                keyword: this.keyWord,
-            };
-            api[urlNames["getNoticeList"]](data).then((res) => {
-                this.messageList = res.data;
-                this.page.total = res.total;
-            });
-        },
-        openCreateRules(row) {
-            this.$router.push({
-                path: "/message-reminding/message-rules",
-                query: { orgId: row.orgId, treeName: row.orgName },
-            });
-        },
-        openEditRules(row) {
-            this.$router.push({
-                name: "MessageRules",
-                query: { orgId: row.orgId, id: row.id, treeName: row.orgName },
-            });
-        },
-        // 删除通知提醒列表
-        confirmDeleteRules(id) {
-            this.handleRow(
-                "确定要删除该单位的设置规则吗？",
-                id,
-                this.deleteRules
-            );
-        },
-        deleteRules(id) {
-            api[urlNames["deleteOrgNotice"]]({ noticeId: id }).then(
-                (res) => {
-                    if (res) {
-                        this.$message.success("操作成功");
-                        this.getGrid();
-                    }
-                },
-                () => {
-                    this.$message.error("操作失败，请稍后再试");
-                }
-            );
-        },
+    openCreateRules (row) {
+      this.$router.push({
+        path: '/message-reminding/message-rules',
+        query: { orgId: row.orgId, treeName: row.orgName }
+      })
     },
-    computed: {
-        ...mapState(["app"]),
+    openEditRules (row) {
+      this.$router.push({
+        name: 'MessageRules',
+        query: { orgId: row.orgId, id: row.id, treeName: row.orgName }
+      })
     },
-};
+    // 删除通知提醒列表
+    confirmDeleteRules (id) {
+      this.handleRow(
+        '确定要删除该单位的设置规则吗？',
+        id,
+        this.deleteRules
+      )
+    },
+    deleteRules (id) {
+      api[urlNames.deleteOrgNotice]({ noticeId: id }).then(
+        (res) => {
+          if (res) {
+            this.$message.success('操作成功')
+            this.getGrid()
+          }
+        },
+        () => {
+          this.$message.error('操作失败，请稍后再试')
+        }
+      )
+    }
+  },
+  computed: {
+    ...mapState(['app'])
+  }
+}
 </script>
 <style lang="less" scoped>
 @import "index.less";

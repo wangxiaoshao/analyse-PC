@@ -65,91 +65,91 @@
     </div>
 </template>
 <script>
-import dataStatistics from "@src/mixins/data-statistics";
-import pickerOptions from "@src/mixins/picker-options";
-import { mapState } from "vuex";
-import applicationList from "@src/mixins/apply";
+import dataStatistics from '@src/mixins/data-statistics'
+import pickerOptions from '@src/mixins/picker-options'
+import { mapState } from 'vuex'
+import applicationList from '@src/mixins/apply'
 export default {
-    mixins: [dataStatistics, pickerOptions, applicationList],
-    data() {
-        return {
-            memberName: "",
-            appList: [],
-            systemId: -1,
-            userId: this.$store.state.app.rolesInfo.uid,
-            orgId: this.$store.state.app.rolesInfo.orgId,
-            deptId: this.$store.state.app.rolesInfo.deptId
-                ? this.$store.state.app.rolesInfo.deptId
-                : "",
-        };
-    },
-    created() {
-        this.pickDateOptionRules();
-        this.initializeDate();
-        this.doApplyList();
-    },
-    mounted() {
-        this.searchData();
-        this.initMemberHeight();
-    },
-    computed: {
-        ...mapState(["app"]),
-    },
-    methods: {
-        initMemberHeight() {
-            let that = this;
-            const memberFrame = document.getElementById("memberFrame");
-            memberFrame.onload = function () {
-                that.dataAry = [];
-                window.addEventListener(
-                    "message",
-                    function (e) {
-                        if (e.data.height) {
-                            memberFrame.style.height = e.data.height + "px";
-                        } else {
-                            memberFrame.style.height = "500px";
-                        }
-                    },
-                    false
-                );
-            };
-        },
-        dateChange(val) {
-            if (val) {
-                this.startDate = val[0];
-                this.endDate = val[1];
+  mixins: [dataStatistics, pickerOptions, applicationList],
+  data () {
+    return {
+      memberName: '',
+      appList: [],
+      systemId: -1,
+      userId: this.$store.state.app.rolesInfo.uid,
+      orgId: this.$store.state.app.rolesInfo.orgId,
+      deptId: this.$store.state.app.rolesInfo.deptId
+        ? this.$store.state.app.rolesInfo.deptId
+        : ''
+    }
+  },
+  created () {
+    this.pickDateOptionRules()
+    this.initializeDate()
+    this.doApplyList()
+  },
+  mounted () {
+    this.searchData()
+    this.initMemberHeight()
+  },
+  computed: {
+    ...mapState(['app'])
+  },
+  methods: {
+    initMemberHeight () {
+      const that = this
+      const memberFrame = document.getElementById('memberFrame')
+      memberFrame.onload = function () {
+        that.dataAry = []
+        window.addEventListener(
+          'message',
+          function (e) {
+            if (e.data.height) {
+              memberFrame.style.height = e.data.height + 'px'
+            } else {
+              memberFrame.style.height = '500px'
             }
-        },
-        doApplyList() {
-            let appList = [...this.app.applicationList];
-            appList.map((item, index) => {
-                if (item.id === 1 || item.id === 5) {
-                    appList.splice(index, 1);
-                }
-            });
-            this.appList = appList;
-        },
-        applyChange(val) {
-            this.systemId = val;
-            this.searchData();
-        },
-        searchData() {
-            let data = {
-                userId: this.userId,
-                orgId: this.orgId,
-                deptId: this.deptId,
-                startDate: this.startDate,
-                endDate: this.endDate,
-            };
-            this.initSystem("person", this.doSrcParams(data));
-        },
+          },
+          false
+        )
+      }
     },
-    watch: {
-        applicationList() {
-            this.doApplyList();
-        },
+    dateChange (val) {
+      if (val) {
+        this.startDate = val[0]
+        this.endDate = val[1]
+      }
     },
-};
+    doApplyList () {
+      const appList = [...this.app.applicationList]
+      appList.map((item, index) => {
+        if (item.id === 1 || item.id === 5) {
+          appList.splice(index, 1)
+        }
+      })
+      this.appList = appList
+    },
+    applyChange (val) {
+      this.systemId = val
+      this.searchData()
+    },
+    searchData () {
+      const data = {
+        userId: this.userId,
+        orgId: this.orgId,
+        deptId: this.deptId,
+        startDate: this.startDate,
+        endDate: this.endDate
+      }
+      this.initSystem('person', this.doSrcParams(data))
+    }
+  },
+  watch: {
+    applicationList () {
+      this.doApplyList()
+    }
+  }
+}
 </script>
 <style lang="less" scoped>
 @import "../data-statistics/area-total/index.less";

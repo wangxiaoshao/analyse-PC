@@ -38,72 +38,72 @@
     </div>
 </template>
 <script>
-import Menus from "@src/components/Packages/menus";
-import "./index.less";
-import { mapState } from "vuex";
+import Menus from '@src/components/Packages/menus'
+import './index.less'
+import { mapState } from 'vuex'
 
 export default {
-    components: {
-        Menus,
+  components: {
+    Menus
+  },
+  computed: {
+    ...mapState(['app']),
+    asideStyle () {
+      return {
+        height: this.app.windowHeight - 110 + 'px',
+        width: '100%'
+      }
     },
-    computed: {
-        ...mapState(["app"]),
-        asideStyle() {
-            return {
-                height: this.app.windowHeight - 110 + "px",
-                width: "100%",
-            };
-        },
-        arrowClass() {
-            return this.isCollapse
-                ? "el-icon-arrow-right"
-                : "el-icon-arrow-left";
-        },
+    arrowClass () {
+      return this.isCollapse
+        ? 'el-icon-arrow-right'
+        : 'el-icon-arrow-left'
+    }
+  },
+  watch: {
+    asideMenu (newVal) {
+      if (newVal) {
+        this.asideMenuList = newVal.list
+      }
+    }
+  },
+  props: {
+    defaultActive: {
+      type: String,
+      default () {
+        return ''
+      }
     },
-    watch: {
-        asideMenu(newVal) {
-            if (newVal) {
-                this.asideMenuList = newVal.list;
-            }
+    asideMenu: {
+      type: Object,
+      default () {
+        return { list: [] }
+      }
+    }
+  },
+  data () {
+    return {
+      isCollapse: false,
+      asideMenuList: []
+    }
+  },
+  created () {},
+  mounted () {
+    this.asideMenuList = this.asideMenu.list
+  },
+  methods: {
+    open: function (name, menu) {
+      // eslint-disable-next-line
         },
+    close: function (name, menu) {
+      // eslint-disable-next-line
+        },
+    toggleAsideCollapse () {
+      this.isCollapse = !this.isCollapse
     },
-    props: {
-        defaultActive: {
-            type: String,
-            default() {
-                return "";
-            },
-        },
-        asideMenu: {
-            type: Object,
-            default() {
-                return { list: [] };
-            },
-        },
-    },
-    data() {
-        return {
-            isCollapse: false,
-            asideMenuList: [],
-        };
-    },
-    created() {},
-    mounted() {
-        this.asideMenuList = this.asideMenu.list;
-    },
-    methods: {
-        open: function (name, menu) {
-            // eslint-disable-next-line
-        },
-        close: function (name, menu) {
-            // eslint-disable-next-line
-        },
-        toggleAsideCollapse() {
-            this.isCollapse = !this.isCollapse;
-        },
-        select(code, menuItem, selectPath) {
-            this.$emit("select", code, menuItem, selectPath);
-        },
-    },
-};
+    select (code, menuItem, selectPath) {
+      this.$emit('select', code, menuItem, selectPath)
+    }
+  }
+}
 </script>

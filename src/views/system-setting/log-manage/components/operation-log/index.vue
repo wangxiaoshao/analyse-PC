@@ -176,137 +176,137 @@
     </div>
 </template>
 <script>
-import { api, urlNames } from "@src/api";
-import handleTable from "@src/mixins/handle-table";
-import dataStatistics from "@src/mixins/data-statistics";
-import downloadBinaryFile from "@src/mixins/downloadBinaryFile";
-import SelectTree from "@src/components/SelectTree/index";
+import { api, urlNames } from '@src/api'
+import handleTable from '@src/mixins/handle-table'
+import dataStatistics from '@src/mixins/data-statistics'
+import downloadBinaryFile from '@src/mixins/downloadBinaryFile'
+import SelectTree from '@src/components/SelectTree/index'
 export default {
-    mixins: [handleTable, dataStatistics, downloadBinaryFile],
+  mixins: [handleTable, dataStatistics, downloadBinaryFile],
 
-    components: {
-        SelectTree,
+  components: {
+    SelectTree
+  },
+  data () {
+    return {
+      selectTreeDailog: {
+        title: '选择查询单位',
+        openSelectTreeVisiable: false,
+        isSelectType: 2, // 1 区县  2  单位  3 人员 4市州
+        isSingSelect: true, // 是否单选,true 单选，false:多选
+        isClearSelected: true // 再次打开是否清空已选框
+      },
+      logTypeList: [],
+      searchParams: {
+        actionType: '',
+        keyword: '',
+        orgId: ''
+      },
+      actionLoggerList: [],
+      detialInfoVisible: false,
+      detialInfoForm: {}
+    }
+  },
+  created () {
+    this.initializeDate()
+    this.pickDateOptionRules()
+    this.getAllLogTypes()
+  },
+  mounted () {
+    this.getGrid()
+  },
+  methods: {
+    // 系统日志--获取所有日志类型
+    getAllLogTypes () {
+      api[urlNames.getAllLogTypes]().then((res) => {
+        if (res.data) {
+          this.logTypeList = res.data
+        }
+      })
     },
-    data() {
-        return {
-            selectTreeDailog: {
-                title: "选择查询单位",
-                openSelectTreeVisiable: false,
-                isSelectType: 2, // 1 区县  2  单位  3 人员 4市州
-                isSingSelect: true, // 是否单选,true 单选，false:多选
-                isClearSelected: true, // 再次打开是否清空已选框
-            },
-            logTypeList: [],
-            searchParams: {
-                actionType: "",
-                keyword: "",
-                orgId: "",
-            },
-            actionLoggerList: [],
-            detialInfoVisible: false,
-            detialInfoForm: {},
-        };
+    dateChange (val) {
+      if (val) {
+        this.startDate = val[0]
+        this.endDate = val[1]
+      }
     },
-    created() {
-        this.initializeDate();
-        this.pickDateOptionRules();
-        this.getAllLogTypes();
+    logChange () {
+      console.log(this.searchParams.actionType)
     },
-    mounted() {
-        this.getGrid();
+    iptChange () {},
+    getGrid (flag) {
+      if (flag) {
+        this.page.current = 1
+      }
+      const data = {
+        beginDate: this.startDate,
+        endDate: this.endDate,
+        actionType: this.searchParams.actionType,
+        keyword: this.searchParams.keyword,
+        orgId: this.searchParams.orgId,
+        page: this.page.current,
+        pageSize: this.page.limit
+      }
+      api[urlNames.getActionLoggerList](data).then(
+        (res) => {
+          this.actionLoggerList = res.data
+          this.page.total = res.total
+        },
+        () => {
+          this.actionLoggerList = []
+          this.page.total = 0
+        }
+      )
     },
-    methods: {
-        // 系统日志--获取所有日志类型
-        getAllLogTypes() {
-            api[urlNames["getAllLogTypes"]]().then((res) => {
-                if (res.data) {
-                    this.logTypeList = res.data;
-                }
-            });
-        },
-        dateChange(val) {
-            if (val) {
-                this.startDate = val[0];
-                this.endDate = val[1];
-            }
-        },
-        logChange() {
-            console.log(this.searchParams.actionType);
-        },
-        iptChange() {},
-        getGrid(flag) {
-            if (flag) {
-                this.page.current = 1;
-            }
-            let data = {
-                beginDate: this.startDate,
-                endDate: this.endDate,
-                actionType: this.searchParams.actionType,
-                keyword: this.searchParams.keyword,
-                orgId: this.searchParams.orgId,
-                page: this.page.current,
-                pageSize: this.page.limit,
-            };
-            api[urlNames["getActionLoggerList"]](data).then(
-                (res) => {
-                    this.actionLoggerList = res.data;
-                    this.page.total = res.total;
-                },
-                () => {
-                    this.actionLoggerList = [];
-                    this.page.total = 0;
-                }
-            );
-        },
-        openSelectDailog() {
-            this.selectTreeDailog.openSelectTreeVisiable = true;
-        },
-        closeSelectDailog() {
-            this.selectTreeDailog.openSelectTreeVisiable = false;
-        },
-        dialogReturnData(userData, authData) {
-            authData = authData || [];
-            let dataAry = [...userData, ...authData];
-            this.searchParams.orgId = dataAry[0].treeId;
-        },
-        opendetialInfo(row) {
-            this.detialInfoForm = {};
-            this.detialInfoVisible = true;
-            this.detialInfoForm = row;
-        },
-        exportLog() {
-            let data = {
-                beginDate: this.startDate,
-                endDate: this.endDate,
-                actionType: this.searchParams.actionType,
-                keyword: this.searchParams.keyword,
-                orgId: this.searchParams.orgId,
-                page: this.page.current,
-                pageSize: this.page.limit,
-                logType: 1,
-            };
-            // api[urlNames["actionLogExport"]](data).then((res) => {
-            //     // let data = new Blob([res]);
-            //     // console.log(data, "kkkkk");
-            // });
-            this.downloadBinaryFile("actionLog", data);
-        },
-        resetData() {
-            this.initializeDate();
-            this.searchParams.actionType = "";
-            this.searchParams.orgId = "";
-            this.searchParams.keyword = "";
-            this.getGrid(true);
-        },
+    openSelectDailog () {
+      this.selectTreeDailog.openSelectTreeVisiable = true
     },
-    watch: {
-        activeName(val) {
-            if (val === "first") {
-                this.resetData();
-            }
-        },
+    closeSelectDailog () {
+      this.selectTreeDailog.openSelectTreeVisiable = false
     },
-};
+    dialogReturnData (userData, authData) {
+      authData = authData || []
+      const dataAry = [...userData, ...authData]
+      this.searchParams.orgId = dataAry[0].treeId
+    },
+    opendetialInfo (row) {
+      this.detialInfoForm = {}
+      this.detialInfoVisible = true
+      this.detialInfoForm = row
+    },
+    exportLog () {
+      const data = {
+        beginDate: this.startDate,
+        endDate: this.endDate,
+        actionType: this.searchParams.actionType,
+        keyword: this.searchParams.keyword,
+        orgId: this.searchParams.orgId,
+        page: this.page.current,
+        pageSize: this.page.limit,
+        logType: 1
+      }
+      // api[urlNames["actionLogExport"]](data).then((res) => {
+      //     // let data = new Blob([res]);
+      //     // console.log(data, "kkkkk");
+      // });
+      this.downloadBinaryFile('actionLog', data)
+    },
+    resetData () {
+      this.initializeDate()
+      this.searchParams.actionType = ''
+      this.searchParams.orgId = ''
+      this.searchParams.keyword = ''
+      this.getGrid(true)
+    }
+  },
+  watch: {
+    activeName (val) {
+      if (val === 'first') {
+        this.resetData()
+      }
+    }
+  }
+}
 </script>
 <style lang="less" scoped>
 @import "index.less";

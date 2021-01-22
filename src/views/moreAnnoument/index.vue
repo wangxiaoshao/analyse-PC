@@ -39,57 +39,57 @@
     </div>
 </template>
 <script>
-import handleTable from "@src/mixins/handle-table";
-import { mapState, mapMutations } from "vuex";
-import { api, urlNames } from "@src/api";
+import handleTable from '@src/mixins/handle-table'
+import { mapState, mapMutations } from 'vuex'
+import { api, urlNames } from '@src/api'
 export default {
-    mixins: [handleTable],
-    data() {
-        return {
-            tableData: [
-                {
-                    title: "为推进改造，系统登录密码深度优化通知。",
-                    content:
-                        "为推进改造，系统登录密码深度优化通知,为推进改造，系统登录密码深度优化通知。",
-                    creareTime: "2020-03-12",
-                    id: 1,
-                    url: "",
-                },
-            ],
-        };
+  mixins: [handleTable],
+  data () {
+    return {
+      tableData: [
+        {
+          title: '为推进改造，系统登录密码深度优化通知。',
+          content:
+                        '为推进改造，系统登录密码深度优化通知,为推进改造，系统登录密码深度优化通知。',
+          creareTime: '2020-03-12',
+          id: 1,
+          url: ''
+        }
+      ]
+    }
+  },
+  mounted () {
+    this.page.total = 1
+    this.app.noticeShowBtn = true
+    this.SET_BREADCRUMB([{ name: '平台公告' }])
+    this.getGird()
+  },
+  computed: {
+    ...mapState(['app'])
+  },
+  methods: {
+    ...mapMutations(['SET_BREADCRUMB']),
+    getGird () {
+      const data = {
+        page: this.page.current,
+        pageSize: this.page.limit
+      }
+      api[urlNames.getSystemNoticeList](data).then((res) => {
+        if (res) {
+          this.tableData = res.data
+        }
+      })
     },
-    mounted() {
-        this.page.total = 1;
-        this.app.noticeShowBtn = true;
-        this.SET_BREADCRUMB([{ name: "平台公告" }]);
-        this.getGird();
-    },
-    computed: {
-        ...mapState(["app"]),
-    },
-    methods: {
-        ...mapMutations(["SET_BREADCRUMB"]),
-        getGird() {
-            let data = {
-                page: this.page.current,
-                pageSize: this.page.limit,
-            };
-            api[urlNames["getSystemNoticeList"]](data).then((res) => {
-                if (res) {
-                    this.tableData = res.data;
-                }
-            });
-        },
-        goFindAnnountDetial(id) {
-            this.$router.push({
-                path: "/moreAnnoument/announceDetail",
-                query: {
-                    id: id,
-                },
-            });
-        },
-    },
-};
+    goFindAnnountDetial (id) {
+      this.$router.push({
+        path: '/moreAnnoument/announceDetail',
+        query: {
+          id: id
+        }
+      })
+    }
+  }
+}
 </script>
 <style lang="less" scoped>
 @import "./index";

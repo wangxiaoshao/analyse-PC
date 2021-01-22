@@ -89,53 +89,53 @@
 </template>
 
 <script>
-import handleTable from "@src/mixins/handle-table";
-import { api, urlNames } from "@src/api";
-import { mapState } from "vuex";
+import handleTable from '@src/mixins/handle-table'
+import { api, urlNames } from '@src/api'
+import { mapState } from 'vuex'
 export default {
-    mixins: [handleTable],
-    data() {
-        return {
-            rolesList: [],
-            loading: false,
-        };
-    },
-    created() {
-        this.getGrid();
-    },
-    computed: {
-        ...mapState(["app"]),
-    },
-    methods: {
-        getGrid() {
-            let data = {
-                page: 1,
-                pageSize: 20,
-                roleId: this.app.rolesInfo.roleId,
-            };
-            this.loading = true;
-            api[urlNames["getRoleList"]](data).then(
-                (res) => {
-                    this.loading = false;
-                    this.rolesList = res.data;
-                },
-                () => {
-                    this.rolesList = [];
-                    this.loading = false;
-                }
-            );
+  mixins: [handleTable],
+  data () {
+    return {
+      rolesList: [],
+      loading: false
+    }
+  },
+  created () {
+    this.getGrid()
+  },
+  computed: {
+    ...mapState(['app'])
+  },
+  methods: {
+    getGrid () {
+      const data = {
+        page: 1,
+        pageSize: 20,
+        roleId: this.app.rolesInfo.roleId
+      }
+      this.loading = true
+      api[urlNames.getRoleList](data).then(
+        (res) => {
+          this.loading = false
+          this.rolesList = res.data
         },
-        goLookPerson(row) {
-            this.$router.push({
-                name: "lookPersonPermission",
-                params: {
-                    roleId: row.roleId,
-                    roleName: row.roleName,
-                },
-            });
-        },
+        () => {
+          this.rolesList = []
+          this.loading = false
+        }
+      )
     },
-};
+    goLookPerson (row) {
+      this.$router.push({
+        name: 'lookPersonPermission',
+        params: {
+          roleId: row.roleId,
+          roleName: row.roleName
+        }
+      })
+    }
+  }
+}
 </script>
 
 <style scoped lang="less">

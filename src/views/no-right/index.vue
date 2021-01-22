@@ -6,15 +6,15 @@
 </template>
 
 <script>
-import noDataImg from "@src/common/images/no-data1.png";
+import noDataImg from '@src/common/images/no-data1.png'
 
 export default {
-    data() {
-        return {
-            imgSrc: noDataImg,
-        };
-    },
-};
+  data () {
+    return {
+      imgSrc: noDataImg
+    }
+  }
+}
 </script>
 <style lang="less" scoped>
 .no-right {

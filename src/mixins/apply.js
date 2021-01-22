@@ -1,12 +1,12 @@
-import { mapState } from "vuex";
+import { mapState } from 'vuex'
 export default {
-    data() {
-        return {};
-    },
-    computed: {
-        ...mapState(["app"]),
-        applicationList() {
-            return this.app.applicationList;
-        },
-    },
-};
+  data () {
+    return {}
+  },
+  computed: {
+    ...mapState(['app']),
+    applicationList () {
+      return this.app.applicationList
+    }
+  }
+}

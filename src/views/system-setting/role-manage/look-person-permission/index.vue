@@ -98,189 +98,189 @@
 </template>
 
 <script>
-import handleTable from "@src/mixins/handle-table";
-import handleBreadcrumb from "@src/mixins/handle-breadcrumb.js";
-import { api, urlNames } from "@src/api";
-import SelectTree from "@src/components/SelectTree/index";
+import handleTable from '@src/mixins/handle-table'
+import handleBreadcrumb from '@src/mixins/handle-breadcrumb.js'
+import { api, urlNames } from '@src/api'
+import SelectTree from '@src/components/SelectTree/index'
 export default {
-    name: "LookPersonPermission",
-    mixins: [handleTable, handleBreadcrumb],
-    components: { SelectTree },
-    data() {
-        return {
-            userlist: [{ uid: 3211 }],
-            loading: false,
-            roleId: parseInt(this.$route.params.roleId),
-            searchName: "",
-            authorizedName: "市州",
-            selectTreeDailog: {
-                title: "选择人员",
-                openSelectTreeVisiable: false,
-                isSelectType: 3, // 1 区县  2  单位  3 人员 4 市州
-                isSingSelect: false, // 是否单选,true 单选，false:多选
-                isNext: true, // 显示授权范围上一步，
-                isLast: false, // 显示授权范围下一步
-                isDisabled: true, // 是否禁止选择人员有其他角色的情况  true  禁选人员有其他角色的情况；
-            },
-            userId: [],
-            authorizedType: null,
-        };
+  name: 'LookPersonPermission',
+  mixins: [handleTable, handleBreadcrumb],
+  components: { SelectTree },
+  data () {
+    return {
+      userlist: [{ uid: 3211 }],
+      loading: false,
+      roleId: parseInt(this.$route.params.roleId),
+      searchName: '',
+      authorizedName: '市州',
+      selectTreeDailog: {
+        title: '选择人员',
+        openSelectTreeVisiable: false,
+        isSelectType: 3, // 1 区县  2  单位  3 人员 4 市州
+        isSingSelect: false, // 是否单选,true 单选，false:多选
+        isNext: true, // 显示授权范围上一步，
+        isLast: false, // 显示授权范围下一步
+        isDisabled: true // 是否禁止选择人员有其他角色的情况  true  禁选人员有其他角色的情况；
+      },
+      userId: [],
+      authorizedType: null
+    }
+  },
+  created () {
+    this.init()
+    this.getGrid()
+  },
+  mounted () {
+    this.pushBreadcrumb({
+      name: '查看成员及权限',
+      parent: {
+        name: 'RoleList',
+        query: {
+          type: 'back'
+        }
+      }
+    })
+  },
+  methods: {
+    init () {
+      switch (this.$route.params.roleName) {
+        case 'CITY_MANAGER':
+          this.authorizedType = 2
+          this.authorizedName = '市州'
+          break
+        case 'COUNTY_MANAGER':
+          this.authorizedType = 3
+          this.authorizedName = '区县'
+          break
+        case 'UNIT_MANAGER':
+          this.authorizedType = 4
+          this.authorizedName = '单位'
+          break
+        default:
+          return ''
+      }
     },
-    created() {
-        this.init();
-        this.getGrid();
+    getGrid (flag) {
+      if (flag) {
+        this.page.current = 1
+      }
+      const data = {
+        keyword: this.searchName,
+        roleId: this.$route.params.roleId,
+        page: this.page.current,
+        pageSize: this.page.limit
+      }
+      this.loading = true
+      api[urlNames.getAuthUsersByRole](data).then(
+        (res) => {
+          this.loading = false
+          this.userlist = res.data
+          this.page.total = res.total
+        },
+        () => {
+          this.loading = false
+        }
+      )
     },
-    mounted() {
-        this.pushBreadcrumb({
-            name: "查看成员及权限",
-            parent: {
-                name: "RoleList",
-                query: {
-                    type: "back",
-                },
-            },
-        });
+    toAuthorization (val) {
+      this.$router.push({
+        name: 'ScopeAuthorization',
+        params: {
+          oleId: this.roleId,
+          uid: val.uid,
+          roleName: this.$route.params.roleName
+        }
+      })
     },
-    methods: {
-        init() {
-            switch (this.$route.params.roleName) {
-                case "CITY_MANAGER":
-                    this.authorizedType = 2;
-                    this.authorizedName = "市州";
-                    break;
-                case "COUNTY_MANAGER":
-                    this.authorizedType = 3;
-                    this.authorizedName = "区县";
-                    break;
-                case "UNIT_MANAGER":
-                    this.authorizedType = 4;
-                    this.authorizedName = "单位";
-                    break;
-                default:
-                    return "";
-            }
-        },
-        getGrid(flag) {
-            if (flag) {
-                this.page.current = 1;
-            }
-            let data = {
-                keyword: this.searchName,
-                roleId: this.$route.params.roleId,
-                page: this.page.current,
-                pageSize: this.page.limit,
-            };
-            this.loading = true;
-            api[urlNames["getAuthUsersByRole"]](data).then(
-                (res) => {
-                    this.loading = false;
-                    this.userlist = res.data;
-                    this.page.total = res.total;
-                },
-                () => {
-                    this.loading = false;
-                }
-            );
-        },
-        toAuthorization(val) {
-            this.$router.push({
-                name: `ScopeAuthorization`,
-                params: {
-                    oleId: this.roleId,
-                    uid: val.uid,
-                    roleName: this.$route.params.roleName,
-                },
-            });
-        },
-        deleteRoleUser(row) {
-            this.handleRow(
-                "此操作将永久删除该数据, 是否继续?",
-                row,
-                this.deleteRoleBindUser
-            );
-        },
-        // 删除角色绑定人员
-        deleteRoleBindUser(row) {
-            api[urlNames["deleteRoleUser"]]({
-                roleId: this.$route.params.roleId,
-                uid: row.uid,
-            }).then(
-                (res) => {
-                    this.$message.success(`删除成功`);
-                    this.getGrid();
-                },
-                (/* error */) => {
-                    this.$message.error(`保存失败，请重试`);
-                }
-            );
-        },
-        openselectMember() {
-            this.selectTreeDailog.openSelectTreeVisiable = true;
-            this.selectTreeDailog.title = "选择人员";
-            this.selectTreeDailog.isSelectType = 3;
-            this.selectTreeDailog.isNext = true;
-            this.selectTreeDailog.isLast = false;
-        },
-        closeselectMenmber() {
-            this.selectTreeDailog.openSelectTreeVisiable = false;
-        },
-        dialogReturnData(userData, authData) {
-            authData = authData || [];
-            console.log(this.$store.state.app.rolesInfo);
-            let dataAry = [...userData, ...authData];
-            let uid = [];
-            let authorizedOid = [];
-            dataAry.forEach((item) => {
-                if (item.treeType === 5) {
-                    uid.push(item.treeId);
-                } else {
-                    authorizedOid.push(item.treeId);
-                }
-            });
-            let data = {
-                roleId: this.$route.params.roleId,
-                authorizedType: this.authorizedType,
-                uid,
-                authorizedOid,
-            };
-            this.addUserAuth(data);
-        },
-        addUserAuth(data) {
-            api[urlNames["addUsersAuthScope"]](data).then(
-                (res) => {
-                    this.$message.success(`添加成功`);
-                    this.getGrid();
-                },
-                () => {
-                    this.$message.error(`保存失败，请重试`);
-                }
-            );
-        },
-        next() {
-            this.selectTreeDailog.isNext = false;
-            this.selectTreeDailog.isLast = true;
-            if (this.$route.params.roleName === "CITY_MANAGER") {
-                this.selectTreeDailog.isSelectType = 4;
-                this.selectTreeDailog.title = "授权市州";
-                this.selectTreeDailog.isSingSelect = true;
-            } else if (this.$route.params.roleName === "COUNTY_MANAGER") {
-                this.selectTreeDailog.isSelectType = 1;
-                this.selectTreeDailog.title = "授权区县";
-            } else if (this.$route.params.roleName === "UNIT_MANAGER") {
-                this.selectTreeDailog.isSelectType = 2;
-                this.selectTreeDailog.title = "授权单位";
-            } else {
-                this.selectTreeDailog.isSelectType = 3;
-            }
-        },
-        last() {
-            this.selectTreeDailog.title = "选择人员";
-            this.selectTreeDailog.isSelectType = 3;
-            this.selectTreeDailog.isNext = true;
-            this.selectTreeDailog.isLast = false;
-        },
+    deleteRoleUser (row) {
+      this.handleRow(
+        '此操作将永久删除该数据, 是否继续?',
+        row,
+        this.deleteRoleBindUser
+      )
     },
-};
+    // 删除角色绑定人员
+    deleteRoleBindUser (row) {
+      api[urlNames.deleteRoleUser]({
+        roleId: this.$route.params.roleId,
+        uid: row.uid
+      }).then(
+        (res) => {
+          this.$message.success('删除成功')
+          this.getGrid()
+        },
+        (/* error */) => {
+          this.$message.error('保存失败，请重试')
+        }
+      )
+    },
+    openselectMember () {
+      this.selectTreeDailog.openSelectTreeVisiable = true
+      this.selectTreeDailog.title = '选择人员'
+      this.selectTreeDailog.isSelectType = 3
+      this.selectTreeDailog.isNext = true
+      this.selectTreeDailog.isLast = false
+    },
+    closeselectMenmber () {
+      this.selectTreeDailog.openSelectTreeVisiable = false
+    },
+    dialogReturnData (userData, authData) {
+      authData = authData || []
+      console.log(this.$store.state.app.rolesInfo)
+      const dataAry = [...userData, ...authData]
+      const uid = []
+      const authorizedOid = []
+      dataAry.forEach((item) => {
+        if (item.treeType === 5) {
+          uid.push(item.treeId)
+        } else {
+          authorizedOid.push(item.treeId)
+        }
+      })
+      const data = {
+        roleId: this.$route.params.roleId,
+        authorizedType: this.authorizedType,
+        uid,
+        authorizedOid
+      }
+      this.addUserAuth(data)
+    },
+    addUserAuth (data) {
+      api[urlNames.addUsersAuthScope](data).then(
+        (res) => {
+          this.$message.success('添加成功')
+          this.getGrid()
+        },
+        () => {
+          this.$message.error('保存失败，请重试')
+        }
+      )
+    },
+    next () {
+      this.selectTreeDailog.isNext = false
+      this.selectTreeDailog.isLast = true
+      if (this.$route.params.roleName === 'CITY_MANAGER') {
+        this.selectTreeDailog.isSelectType = 4
+        this.selectTreeDailog.title = '授权市州'
+        this.selectTreeDailog.isSingSelect = true
+      } else if (this.$route.params.roleName === 'COUNTY_MANAGER') {
+        this.selectTreeDailog.isSelectType = 1
+        this.selectTreeDailog.title = '授权区县'
+      } else if (this.$route.params.roleName === 'UNIT_MANAGER') {
+        this.selectTreeDailog.isSelectType = 2
+        this.selectTreeDailog.title = '授权单位'
+      } else {
+        this.selectTreeDailog.isSelectType = 3
+      }
+    },
+    last () {
+      this.selectTreeDailog.title = '选择人员'
+      this.selectTreeDailog.isSelectType = 3
+      this.selectTreeDailog.isNext = true
+      this.selectTreeDailog.isLast = false
+    }
+  }
+}
 </script>
 
 <style lang="less">

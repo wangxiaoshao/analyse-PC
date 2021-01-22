@@ -43,45 +43,45 @@
  * Created by lxe on 2019-09-18.
  */
 export default {
-    components: {},
-    name: "SiteBreadcrumb",
-    props: {
-        user: {
-            type: Object,
-            default() {
-                return {};
-            },
-        },
-        breadcrumb: {
-            type: Array,
-            default() {
-                return [];
-            },
-        },
-        noticeShowBtn: {
-            type: Boolean,
-            default() {
-                return false;
-            },
-        },
-        pageBreadcrumb: {
-            type: Array,
-            default() {
-                return [];
-            },
-        },
+  components: {},
+  name: 'SiteBreadcrumb',
+  props: {
+    user: {
+      type: Object,
+      default () {
+        return {}
+      }
     },
-    data() {
-        return {};
+    breadcrumb: {
+      type: Array,
+      default () {
+        return []
+      }
     },
-    created() {},
-    methods: {
-        goBack() {
-            this.$emit("go-back");
-        },
-        goHome() {
-            this.$emit("goHome");
-        },
+    noticeShowBtn: {
+      type: Boolean,
+      default () {
+        return false
+      }
     },
-};
+    pageBreadcrumb: {
+      type: Array,
+      default () {
+        return []
+      }
+    }
+  },
+  data () {
+    return {}
+  },
+  created () {},
+  methods: {
+    goBack () {
+      this.$emit('go-back')
+    },
+    goHome () {
+      this.$emit('goHome')
+    }
+  }
+}
 </script>

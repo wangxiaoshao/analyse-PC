@@ -1,10 +1,33 @@
+# IDE必须打开EditorConfig支持
+# EditorConfig is awesome: https://EditorConfig.org
+
+# top-most EditorConfig file
 root = true
 
+# Unix-style newlines with a newline ending every file
 [*]
+indent_size = 2
+indent_style = space
 charset = utf-8
 end_of_line = lf
 insert_final_newline = true
-indent_style = space
-indent_size = 4
-max_line_length = 80
 trim_trailing_whitespace = true
+max_line_length = 100
+
+[*.md]
+insert_final_newline = false
+trim_trailing_whitespace = false
+
+[*.{js,jsx,ts,tsx,scss}]
+quote_type = single
+
+# windows批处理脚本格式使用crlf
+[*.{bat,com}]
+end_of_line = crlf
+
+[COMMIT_EDITMSG]
+max_line_length = 0
+
+# 保证form-data时格式不错误
+[*.{http,rest}]
+end_of_line = crlf

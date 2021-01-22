@@ -29,33 +29,33 @@
     </div>
 </template>
 <script>
-import OperationLog from "./components/operation-log";
-import SystemLog from "./components/system-log";
-import ShareLog from "./components/share-log";
-import { mapState } from "vuex";
+import OperationLog from './components/operation-log'
+import SystemLog from './components/system-log'
+import ShareLog from './components/share-log'
+import { mapState } from 'vuex'
 export default {
-    components: { OperationLog, SystemLog, ShareLog },
-    data() {
-        return {
-            activeName: "first",
-        };
-    },
-    mounted() {
-        if (this.app.rolesInfo.roleName === "SYSTEM_MANAGER") {
-            this.activeName = "second";
-        }
-    },
-    methods: {
-        handleClick(val) {},
-        isShowSuperOrSecurity() {
-            return (
-                this.app.rolesInfo.roleName === "SUPER_MANAGER" ||
-                this.app.rolesInfo.roleName === "SECURITY_AUDIT_MANAGER"
-            );
-        },
-    },
-    computed: {
-        ...mapState(["app"]),
-    },
-};
+  components: { OperationLog, SystemLog, ShareLog },
+  data () {
+    return {
+      activeName: 'first'
+    }
+  },
+  mounted () {
+    if (this.app.rolesInfo.roleName === 'SYSTEM_MANAGER') {
+      this.activeName = 'second'
+    }
+  },
+  methods: {
+    handleClick (val) {},
+    isShowSuperOrSecurity () {
+      return (
+        this.app.rolesInfo.roleName === 'SUPER_MANAGER' ||
+                this.app.rolesInfo.roleName === 'SECURITY_AUDIT_MANAGER'
+      )
+    }
+  },
+  computed: {
+    ...mapState(['app'])
+  }
+}
 </script>

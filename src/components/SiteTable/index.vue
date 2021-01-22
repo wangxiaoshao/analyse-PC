@@ -81,58 +81,58 @@
 </template>
 <script>
 export default {
-    name: "SiteTable",
-    props: {
-        tableConfig: {
-            type: Object,
-            default() {
-                return {};
-            },
-        },
-        tableData: {
-            type: Array,
-            default() {
-                return [];
-            },
-        },
-        tableHeight: {
-            type: [Number, String, null],
-            default: null,
-        },
-        mergeConfig: {
-            type: [Array, null],
-            default: null,
-        },
-        // 以下在wf基础上新增的
-        tableCheckbox: {
-            type: Boolean,
-            default: false,
-        },
-        tableIndex: {
-            type: Boolean,
-            default: false,
-        },
-        tableLoading: {
-            type: Boolean,
-            default: false,
-        },
-        operate: {
-            type: Boolean,
-            default: true,
-        },
-        operateWidth: {
-            type: [Number, null],
-            default: 300,
-        },
-        pageConfig: {
-            type: Object,
-            default() {
-                return {};
-            },
-        },
+  name: 'SiteTable',
+  props: {
+    tableConfig: {
+      type: Object,
+      default () {
+        return {}
+      }
     },
-    methods: {
-        /*
+    tableData: {
+      type: Array,
+      default () {
+        return []
+      }
+    },
+    tableHeight: {
+      type: [Number, String, null],
+      default: null
+    },
+    mergeConfig: {
+      type: [Array, null],
+      default: null
+    },
+    // 以下在wf基础上新增的
+    tableCheckbox: {
+      type: Boolean,
+      default: false
+    },
+    tableIndex: {
+      type: Boolean,
+      default: false
+    },
+    tableLoading: {
+      type: Boolean,
+      default: false
+    },
+    operate: {
+      type: Boolean,
+      default: true
+    },
+    operateWidth: {
+      type: [Number, null],
+      default: 300
+    },
+    pageConfig: {
+      type: Object,
+      default () {
+        return {}
+      }
+    }
+  },
+  methods: {
+    /*
       * @openColMerge：开启表格合并功能
       * @param：
       *  mergeConfig: {
@@ -142,27 +142,27 @@ export default {
               colspan: 2, 列合并数
             },
       */
-        openColMerge({ rowIndex, columnIndex }) {
-            let len = this.mergeConfig ? this.mergeConfig.length : 0;
-            for (let i = 0; i < len; i++) {
-                let ele =
-                    this.mergeConfig[i].ele === "col" ? columnIndex : rowIndex;
-                if (ele === this.mergeConfig[i].eleIndex) {
-                    let rowspan = this.mergeConfig[i].rowspan;
-                    let colspan = this.mergeConfig[i].colspan;
-                    return [rowspan, colspan];
-                }
-            }
-        },
-        // 排序
-        sort() {
-            this.$emit("sort-change");
-        },
-        selectionChange(selection) {
-            this.$emit("selection-change", selection);
-        },
+    openColMerge ({ rowIndex, columnIndex }) {
+      const len = this.mergeConfig ? this.mergeConfig.length : 0
+      for (let i = 0; i < len; i++) {
+        const ele =
+                    this.mergeConfig[i].ele === 'col' ? columnIndex : rowIndex
+        if (ele === this.mergeConfig[i].eleIndex) {
+          const rowspan = this.mergeConfig[i].rowspan
+          const colspan = this.mergeConfig[i].colspan
+          return [rowspan, colspan]
+        }
+      }
     },
-};
+    // 排序
+    sort () {
+      this.$emit('sort-change')
+    },
+    selectionChange (selection) {
+      this.$emit('selection-change', selection)
+    }
+  }
+}
 </script>
 <style scoped lang="less">
 .empty {
