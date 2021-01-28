@@ -142,15 +142,28 @@ export default {
           }
           break
         case 'person':
-          url = this.hostApi + ary[0].personUrl + str
+          if (ary[0].personUrl === '') {
+            url = ''
+          } else {
+            url = this.hostApi + ary[0].personUrl + str
+          }
           this.srcUrl = url
           break
         case 'province':
-          url = this.hostApi + ary[0].allProvinceUrl + str
+          if (ary[0].allProvinceUrl === '' || !ary[0].allProvinceUrl) {
+            url = ''
+          } else {
+            url = this.hostApi + ary[0].allProvinceUrl + str
+          }
+
           this.srcUrl = url
           break
         case 'homePerson':
-          url = this.hostApi + ary[0].homePersonUrl + str
+          if (ary[0].homePersonUrl === '' || !ary[0].homePersonUrl) {
+            url = ''
+          } else {
+            url = this.hostApi + ary[0].homePersonUrl + str
+          }
           this.homePersonUrl = url
           break
         case 'cityOrCounty':

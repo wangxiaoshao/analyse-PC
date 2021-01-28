@@ -338,7 +338,7 @@
                                 <el-col :span="21">
                                     <div class="system-right">
                                         <iframe
-                                            v-if="systemId !== 6"
+                                            v-if="srcUrl"
                                             :src="srcUrl"
                                             class="staticFrame"
                                             frameborder="0"
@@ -378,7 +378,7 @@
                                 <el-col :span="21">
                                     <div class="system-right">
                                         <iframe
-                                            v-if="systemId !== 6"
+                                            v-if="homePersonUrl"
                                             :src="homePersonUrl"
                                             class="staticFrame"
                                             frameborder="0"

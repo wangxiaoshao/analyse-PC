@@ -54,7 +54,7 @@
         <div class="system-data">
             <div class="chart-box">
                 <iframe
-                 v-if="systemId !== 6"
+                 v-if="srcUrl"
                     :src="srcUrl"
                     id="memberFrame"
                     frameborder="0"
@@ -123,6 +123,9 @@ export default {
     initMemberHeight () {
       const that = this
       const memberFrame = document.getElementById('memberFrame')
+      if (!memberFrame) {
+        return false
+      }
       memberFrame.onload = function () {
         that.dataAry = []
         window.addEventListener(
