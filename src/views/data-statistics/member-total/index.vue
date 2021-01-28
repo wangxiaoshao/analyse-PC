@@ -54,12 +54,22 @@
         <div class="system-data">
             <div class="chart-box">
                 <iframe
+                 v-if="systemId !== 6"
                     :src="srcUrl"
                     id="memberFrame"
                     frameborder="0"
                     scrolling="no"
                     ref="iframe"
                 ></iframe>
+                <div class="no-data" v-else>
+                  <img
+                      src="@src/common/images/no-data1.png"
+                      alt=""
+                  />
+                  <div class="no-text">
+                      暂无数据！
+                  </div>
+              </div>
             </div>
         </div>
         <select-tree
@@ -162,7 +172,10 @@ export default {
     },
     applyChange (val) {
       const memberFrame = document.getElementById('memberFrame')
-      memberFrame.style.height = '500px'
+      if (memberFrame) {
+        memberFrame.style.height = '500px'
+      }
+
       this.systemId = val
       this.searchData()
     },
@@ -190,5 +203,21 @@ export default {
     width: 100%;
     height: 480px;
     overflow: hidden;
+}
+.system-data{
+  .chart-box{
+    .no-data{
+      width:100%;
+      height: 200px;
+     border: 1px solid #d9dee9;
+     border-radius: 4px;
+      text-align: center;
+      img{
+        width: 100px;
+        margin-top: 55px;
+      }
+
+    }
+  }
 }
 </style>
