@@ -240,6 +240,9 @@ export default {
       this.dialogTitle = '创建共享任务'
       this.resetForm()
       this.createdOrUpdateVisiable = true
+      this.$nextTick(() => {
+        this.$refs.createdOrUpdateForm.clearValidate()
+      })
     },
     closeCreateDailog () {
       this.createdOrUpdateVisiable = false
@@ -257,6 +260,9 @@ export default {
       this.createdOrUpdateForm.is_banned = row.is_banned
       this.createdOrUpdateForm.comment = row.comment
       this.createdOrUpdateVisiable = true
+      this.$nextTick(() => {
+        this.$refs.createdOrUpdateForm.clearValidate()
+      })
     },
     createdOrUpdateShareData (form) {
       this.$refs[form].validate((valid) => {

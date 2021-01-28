@@ -309,6 +309,9 @@ export default {
       this.generateRandomAccount()
       this.dialogTitle = '创建关联'
       this.createdOrUpdateVisiable = true
+      this.$nextTick(() => {
+        this.$refs.createdOrUpdateForm.clearValidate()
+      })
     },
     closeCreateDailog () {
       this.createdOrUpdateVisiable = false
@@ -324,6 +327,9 @@ export default {
       this.createdOrUpdateForm.is_banned = row.is_banned
       this.oldState = row.is_banned
       this.createdOrUpdateVisiable = true
+      this.$nextTick(() => {
+        this.$refs.createdOrUpdateForm.clearValidate()
+      })
     },
     submitAccount (form) {
       this.$refs[form].validate((valid) => {

@@ -295,6 +295,9 @@ export default {
       this.resetForm()
       this.dialogTitle = '创建应用'
       this.createdOrUpdateVisiable = true
+      this.$nextTick(() => {
+        this.$refs.createdOrUpdateForm.clearValidate()
+      })
     },
     closeCreateDailog () {
       this.createdOrUpdateVisiable = false
@@ -312,6 +315,9 @@ export default {
       this.oldState = row.is_banned
       this.createdOrUpdateForm.comment = row.comment
       this.createdOrUpdateVisiable = true
+      this.$nextTick(() => {
+        this.$refs.createdOrUpdateForm.clearValidate()
+      })
     },
     createdOrUpdateApp (form) {
       let apiUrl = ''
