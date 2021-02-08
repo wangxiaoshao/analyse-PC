@@ -2,7 +2,7 @@
     <div class="app-manage">
         <!-- 创建账号弹窗 -->
         <el-dialog
-            width="40%"
+            width="50%"
             :title="dialogTitle"
             :close-on-click-modal="false"
             :modal-append-to-body="false"
@@ -16,30 +16,12 @@
                 ref="createdOrUpdateForm"
             >
                 <el-form-item label="单位名称：" prop="company_id">
-                    <!-- <el-select
-                        value-key="company_id"
-                        v-model="createdOrUpdateForm.companyName"
-                        filterable
-                        remote
-                        reserve-keyword
-                        placeholder="请输入关键词"
-                        @change="companyChange"
-                        :remote-method="getInfoByCompanyName"
-                        :loading="loading"
-                    >
-                        <el-option
-                            v-for="item in companyList"
-                            :key="item.company_id"
-                            :label="item.company"
-                            :value="item"
-                        >
-                        </el-option>
-                    </el-select> -->
                     <el-select
                         style="width: 100%;"
                         v-model="companyParams"
                         filterable
                         @change="companyChange"
+                        :disabled="isEdit==='detial'"
                         value-key="company_id"
                         placeholder="请选择单位名称"
                     >
@@ -54,11 +36,14 @@
                 </el-form-item>
                 <el-form-item label="应用名称：" prop="system_name">
                     <el-input
+                     :readonly="isEdit==='detial'"
                         placeholder="请输入应用名称"
                         v-model="createdOrUpdateForm.system_name"
                     ></el-input>
                 </el-form-item>
+                <template v-if="isEdit!=='detial'">
                 <el-form-item label="表格名称：" prop="table_name">
+                  <div class="input-item">
                     <el-input
                         placeholder="请输入表格名称"
                         v-model="createdOrUpdateForm.table_name"
@@ -67,12 +52,49 @@
                         <span
                             slot="prepend"
                             v-if="createdOrUpdateForm.system_id === ''"
+                            >{{ table_header }}</span>
+                    </el-input>
+
+                    <div class="add_box" >
+                       <i class="el-icon-circle-plus-outline" @click="addTableInput" title="添加表格"></i>
+                    </div>
+                  </div>
+                </el-form-item>
+                <el-form-item  :prop="'addTableList.' + index + '.value'"  v-for="(item,index) in createdOrUpdateForm.addTableList" :key="index" :rules="rulesOption.table_name">
+                  <div class="table-form-item">
+                    <el-input
+                        placeholder="请输入表格名称"
+                        v-model="item.value"
+                        :disabled='item.notAdd'
+                    >
+                        <span
+                            slot="prepend"
+                             v-if="!item.notAdd"
                             >{{ table_header }}</span
                         >
                     </el-input>
+                    <div class="delete_box"><i class="el-icon-circle-close" title="删除表格" @click="deleteTableInput(index,item)"></i></div>
+                  </div>
+                </el-form-item>
+                </template>
+                <el-form-item label="表格名称：" prop="table_name" v-else>
+                  <el-row>
+                    <el-col :span="12" v-for="(item,index) in detialTableList" :key="index" :style="index%2===0?'padding-right:5px;margin-bottom:5px':'margin-bottom:5px'">
+                      <el-input
+                          placeholder="请输入表格名称"
+                          v-model="item.value"
+                          readonly
+                      >
+                      <span
+                            slot="prepend"
+                            >表{{ index+1 }}</span>
+                      </el-input>
+                    </el-col>
+                  </el-row>
                 </el-form-item>
                 <el-form-item label="是否启用：" prop="is_banned">
                     <el-switch
+                    :disabled="isEdit==='detial'"
                         active-value="0"
                         inactive-value="1"
                         v-model="createdOrUpdateForm.is_banned"
@@ -80,6 +102,7 @@
                 </el-form-item>
                 <el-form-item label="备注说明：" prop="comment">
                     <el-input
+                     :readonly="isEdit==='detial'"
                         v-model="createdOrUpdateForm.comment"
                         type="textarea"
                         placeholder="请输入..."
@@ -87,12 +110,20 @@
                 </el-form-item>
             </el-form>
             <div style="text-align: center; margin-top: -25px;" slot="footer">
+              <template v-if="isEdit!=='detial'">
                 <el-button
                     type="primary"
                     @click="createdOrUpdateApp('createdOrUpdateForm')"
                     >保存</el-button
                 >
                 <el-button @click="closeCreateDailog">取消</el-button>
+                </template>
+                <el-button
+                v-else
+                    type="primary"
+                    @click="closeCreateDailog"
+                    >确定</el-button
+                >
             </div>
         </el-dialog>
         <div style="margin-bottom: 10px;">
@@ -127,8 +158,8 @@
                     align="center"
                 ></el-table-column>
                 <el-table-column
-                    prop="tableName"
-                    label="表名称"
+                    prop="tableNumber"
+                    label="表单数量"
                     align="center"
                 ></el-table-column>
                 <el-table-column
@@ -150,13 +181,19 @@
                         }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" align="center" width="100px">
+                <el-table-column label="操作" align="center">
                     <template slot-scope="scope">
                         <el-button
                             size="mini"
                             type="text"
-                            @click="openEditDialog(scope.row)"
+                            @click="openEditDialog(scope.row,'edit')"
                             >编辑</el-button
+                        >
+                         <el-button
+                            size="mini"
+                            type="text"
+                            @click="openEditDialog(scope.row,'detial')"
+                            >详情</el-button
                         >
                         <el-button
                             size="mini"
@@ -225,7 +262,8 @@ export default {
         is_banned: 0,
         comment: '',
         company_id: '',
-        system_id: ''
+        system_id: '',
+        addTableList: []
       },
       oldState: 0,
       timeout: null,
@@ -252,7 +290,9 @@ export default {
           },
           { validator: validateTableName, trigger: 'blur' }
         ]
-      }
+      },
+      detialTableList: [],
+      isEdit: ''
     }
   },
   created () {
@@ -287,6 +327,34 @@ export default {
         }
       )
     },
+    addTableInput () {
+      this.createdOrUpdateForm.addTableList.push({ value: '' })
+    },
+    deleteTableInput (index, item) {
+      if (item.notAdd) {
+        const data = {
+          name: item.value,
+          index: index
+        }
+        this.handleRow('删除后该表格将从数据库里面移除，确定要删除该表格吗？', data, this.deleteTableByName)
+      } else {
+        this.createdOrUpdateForm.addTableList.splice(index, 1)
+      }
+    },
+    deleteTableByName (data) {
+      api[urlNames.deleteTableByName]({ tableName: data.name }).then(
+        (res) => {
+          if (res) {
+            this.createdOrUpdateForm.addTableList.splice(data.index, 1)
+            this.getGrid()
+            this.$message.success('操作成功')
+          }
+        },
+        () => {
+          this.$message.error('操作失败，请稍后重试')
+        }
+      )
+    },
     companyChange (val) {
       this.createdOrUpdateForm.company_id = val.company_id
       this.createdOrUpdateForm.companyName = val.company
@@ -302,14 +370,29 @@ export default {
     closeCreateDailog () {
       this.createdOrUpdateVisiable = false
     },
-    openEditDialog (row) {
+    openEditDialog (row, type) {
       this.resetForm()
-      this.dialogTitle = '编辑应用'
+      if (type === 'edit') {
+        this.dialogTitle = '编辑应用'
+      } else {
+        this.dialogTitle = '应用详情'
+      }
+
+      // const tableNameList = ['table1', 'table2', 'table3']
+      // row.tableNameList = tableNameList
+      this.isEdit = type
+      row.tableNameList.forEach((name, index) => {
+        if (index !== 0) {
+          this.createdOrUpdateForm.addTableList.push({ value: name, notAdd: true })
+        }
+        this.detialTableList.push({ value: name, notAdd: true })
+      })
       this.companyParams.company_id = row.companyId
       this.createdOrUpdateForm.company_id = row.companyId
       this.createdOrUpdateForm.system_id = row.systemId
       this.createdOrUpdateForm.companyName = row.company
-      this.createdOrUpdateForm.table_name = row.tableName
+      // this.createdOrUpdateForm.table_name = row.tableName
+      this.createdOrUpdateForm.table_name = row.tableNameList[0]
       this.createdOrUpdateForm.system_name = row.systemName
       this.createdOrUpdateForm.is_banned = row.is_banned
       this.oldState = row.is_banned
@@ -324,14 +407,33 @@ export default {
       const data = {
         company: this.createdOrUpdateForm.companyName,
         system_name: this.createdOrUpdateForm.system_name,
-        table_name: this.createdOrUpdateForm.table_name,
+        tableNameList: [],
+        // table_name: this.createdOrUpdateForm.table_name,
         is_banned: this.createdOrUpdateForm.is_banned,
         comment: this.createdOrUpdateForm.comment,
         company_id: this.createdOrUpdateForm.company_id,
         system_id: this.createdOrUpdateForm.system_id
       }
+      let flag = false
+      this.createdOrUpdateForm.addTableList.forEach(item => {
+        if (item.value === '') {
+          flag = true
+        }
+      })
+      if (flag) {
+        this.$message.warning('请填写完所有表格名称或删除多余表格字段')
+        return false
+      }
+      const tableNameAry = []
+      this.createdOrUpdateForm.addTableList.forEach(item => {
+        if (!item.notAdd) {
+          tableNameAry.push('logger_server_' + item.value)
+        }
+      })
+      data.tableNameList = tableNameAry
       if (this.createdOrUpdateForm.system_id === '') {
         apiUrl = 'createTable'
+
         data.table_name =
                     this.table_header + this.createdOrUpdateForm.table_name
       } else {
@@ -347,8 +449,15 @@ export default {
           }
         }
       }
+      this.submitForm(form, apiUrl, data)
+    },
+    submitForm (form, apiUrl, data) {
       this.$refs[form].validate((valid) => {
         if (valid) {
+          if (this.createdOrUpdateForm.system_id === '') {
+            data.tableNameList.unshift('logger_server_' + this.createdOrUpdateForm.table_name)
+          }
+          console.log(data.tableNameList, ' data.tableNameList')
           api[urlNames[apiUrl]](data).then(
             (res) => {
               if (res.status === 0) {
@@ -414,6 +523,7 @@ export default {
       )
     },
     resetForm () {
+      this.isEdit = ''
       this.createdOrUpdateForm = {
         companyName: '',
         system_name: '',
@@ -421,10 +531,45 @@ export default {
         is_banned: '0',
         comment: '',
         company_id: '',
-        system_id: ''
+        system_id: '',
+        addTableList: []
       }
       this.companyParams = {}
+      this.detialTableList = []
     }
   }
 }
 </script>
+<style lang="less" scoped>
+.table-form-item{
+//  margin-bottom: 10px;
+ display: flex;
+ align-items: center;
+ .delete_box{
+   i{
+      display: block;
+      font-size: 18px;
+      color:#ff6247;
+      margin-left: 8px;
+      cursor: pointer;
+   }
+ }
+}
+.add_box{
+  cursor: pointer;
+  // text-align: center;
+}
+.input-item{
+   display: flex;
+ align-items: center;
+ .add_box{
+   i{
+      display: block;
+      font-size: 18px;
+     color:#3997FA;
+      margin-left: 8px;
+      cursor: pointer;
+   }
+ }
+}
+</style>

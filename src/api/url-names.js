@@ -37,6 +37,8 @@ export default {
   createTable: 'createTable',
   // 应用接入--删除应用接入
   deleteSystemTableMessage: 'deleteSystemTableMessage',
+  // 应用接入--删除表格
+  deleteTableByName: 'deleteTableByName',
   // 应用接入--更新应用
   updateSystemTableMessage: 'updateSystemTableMessage',
   // 应用接入--根据公司名称查询公司id

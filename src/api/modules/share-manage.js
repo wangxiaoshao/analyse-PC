@@ -13,7 +13,6 @@ export default {
     type: 'post',
     url: '/api/logger/createSystem/createSystemMessage',
     keepOriginResponse: true,
-    showLoading: true,
     serve: 'organizationManagePC',
     headers: {
       'Content-Type': 'application/json'
@@ -24,7 +23,6 @@ export default {
     type: 'post',
     url: '/api/logger/createSystem/updatesSystemMessage',
     keepOriginResponse: true,
-    showLoading: true,
     serve: 'organizationManagePC',
     headers: {
       'Content-Type': 'application/json'
@@ -35,7 +33,6 @@ export default {
     type: 'get',
     url: '/api/logger/createSystem/deleteAccountNumber',
     keepOriginResponse: true,
-    showLoading: true,
     serve: 'organizationManagePC'
   },
   // 应用接入-查询应用接入列表
@@ -51,18 +48,16 @@ export default {
     type: 'post',
     url: '/api/logger/createSystem/createTable',
     keepOriginResponse: true,
-    showLoading: true,
     serve: 'organizationManagePC',
     headers: {
       'Content-Type': 'application/json'
     }
   },
-  // 应用接入--创建系统表信息
+  // 应用接入--更新系统表信息
   [urlNames.updateSystemTableMessage]: {
     type: 'post',
     url: '/api/logger/createSystem/updateSystemTableMessage',
     keepOriginResponse: true,
-    showLoading: true,
     serve: 'organizationManagePC',
     headers: {
       'Content-Type': 'application/json'
@@ -73,7 +68,13 @@ export default {
     type: 'get',
     url: '/api/logger/createSystem/deleteSystemTableMessage',
     keepOriginResponse: true,
-    showLoading: true,
+    serve: 'organizationManagePC'
+  },
+  // 应用接入--删除应用表格
+  [urlNames.deleteTableByName]: {
+    type: 'get',
+    url: '/api/logger/createSystem/deleteTable',
+    keepOriginResponse: true,
     serve: 'organizationManagePC'
   },
   // 应用接入--根据公司名称查询公司id
@@ -96,7 +97,6 @@ export default {
     type: 'get',
     url: '/api/logger/shareSystem/deleteDataShare',
     keepOriginResponse: true,
-    showLoading: true,
     serve: 'organizationManagePC'
   },
   // 共享管理--创建共享数据
@@ -104,7 +104,6 @@ export default {
     type: 'post',
     url: '/api/logger/shareSystem/saveShareSystemMessage',
     keepOriginResponse: true,
-    showLoading: true,
     serve: 'organizationManagePC',
     headers: {
       'Content-Type': 'application/json'
